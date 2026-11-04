@@ -33,6 +33,8 @@ FILES = [
     '13. GAIA_ZAIN SISTEMA (zirkulazio-sistema IV) (zuzendu gabe).pdf',
     # Topic 14 came in two PDFs (part 2 = sections 4–6 and the respiratory system): one notes file, part 2's blocks after part 1's.
     ('14.GAIA_DIGESTIO APARATUA 1.ATALA (Zuzenduta).pdf', '14.GAIA_DIGESTIO APARATUA 2.Atala (Zuzenduta).docx.pdf'),
+    '15._GAIA_SISTEMA_UROGENITALA_Zuzenduta.pdf',
+    '16_GAIA_SISTEMA_UROGENITALA_GONADAK_zuzenduta.pdf',
 ]
 
 # Week 14 part 2's unnumbered headings open sections of their own.
@@ -251,9 +253,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true')
     parser.add_argument('--source-dir', type=pathlib.Path, default=pathlib.Path.home() / 'Downloads')
+    # Only these topics (e.g. --weeks 15 16): the other topics' files and manifest entries are kept as they are.
+    parser.add_argument('--weeks', type=int, nargs='+')
     args = parser.parse_args()
-    metadata = {}
+    manifest_path = OUT / 'manifest.json'
+    metadata = json.loads(manifest_path.read_text(encoding='utf-8')) if args.weeks and manifest_path.exists() else {}
     for week, filename in enumerate(FILES, 1):
+        if args.weeks and week not in args.weeks:
+            continue
         if isinstance(filename, tuple):
             # One topic in several PDFs: each checked against its own PDF, then joined (sections never repeat across parts).
             counts = collections.Counter()
@@ -277,6 +284,7 @@ def main():
             OUT.mkdir(parents=True, exist_ok=True)
             dest.write_text(source, encoding='utf-8', newline='\n')
         print(f'w{week}: {len(blocks)} blocks, {sum(len(b["sentences"]) for b in blocks)} sentences, {meta["characters"]} characters; PDF differences = 0; removed {len(meta["removed"])} header/footer lines')
+    metadata = dict(sorted(metadata.items(), key=lambda kv: int(kv[0])))
     manifest = json.dumps(metadata, ensure_ascii=False, indent=2) + '\n'
     dest = OUT / 'manifest.json'
     if args.check:

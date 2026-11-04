@@ -192,6 +192,17 @@ export const NOTES: Record<number, NotesSection[]> = {
     { n: '6', title: 'Eratorrien kokapena laburbilduta', depth: 0, stages: ['eratorrien-kokapena'] },
     { n: '0', title: 'Arnas aparatua', depth: 0, stages: ['arnas-zuhaitza', 'albeoloak'] },
   ],
+  15: [
+    { n: '1', title: 'Gernu-sistema', depth: 0, stages: ['sarrera'] },
+    { n: '1.1', title: 'Pronefrosa', depth: 1, stages: ['pronefrosa', 'nefrotomak', 'glomeruluak'] },
+    { n: '1.2', title: 'Mesonefrosa', depth: 1, stages: ['mesonefrosa', 'mesonefros-hodixkak'] },
+    { n: '1.3', title: 'Metanefrosa', depth: 1, stages: ['metanefrosa', 'sistema-biltzailea', 'nefrona'] },
+    { n: '2', title: 'Giltzurrunak', depth: 0, stages: ['giltzurrun-igoera'] },
+    { n: '2.1', title: 'Giltzurrun gaineko guruinak', depth: 1, stages: ['giltzurrun-gaineko-guruinak'] },
+    { n: '2.2', title: 'Sinu urogenitala', depth: 1, stages: ['sinu-urogenitala'] },
+    { n: '2.3', title: 'Gernu maskuria', depth: 1, stages: ['gernu-maskuria'] },
+    { n: '2.4', title: 'Uretra', depth: 1, stages: ['uretra', 'zakil-uretra'] },
+  ],
 };
 
 /** The notes section a stage belongs to, and its parent heading when it is a sub-heading. */

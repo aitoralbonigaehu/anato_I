@@ -43,6 +43,9 @@ const GROUPS: Group[] = [
   [14, 'lakioa', 'Heste-lakioaren adarrak, biraketa eta itzulera', ['lakioaren-ibilbidea', 'erlazioak-heste-lakioa']],
   [14, 'mesoak', 'Urdaila, mesogastrioak eta poltsa omentala', ['urdailaren-biraketa', 'erlazioak-mesogastrioen-eratorriak', 'erlazioak-poltsa-omentala']],
   [14, 'guruinak', 'Gibela, area eta digestio-egituren kokapena', ['gibel-area-garapena', 'digestio-egituren-kokapena']],
+  [15, 'giltzurruna', 'Gernu sistema: hiru azpisistemetatik behin betiko giltzurrunera', ['gernu-hiru-azpisistema', 'giltzurrun-bi-sistema', 'unitatearen-eraketa']],
+  [15, 'guruina', 'Giltzurrun gaineko guruina: kortexa eta muina', ['giltzurrun-gaineko-bi-jatorri']],
+  [15, 'sinua', 'Kloaka, sinu urogenitala, gernu maskuria eta uretra', ['kloaka-sinu-urogenitala', 'alantoidea-lotailua', 'trigonoaren-jatorria', 'uretraren-muturra']],
 ];
 
 const clone = (node: MNode): MNode => ({ ...node, ...(node.kids ? { kids: node.kids.map(clone) } : {}) });

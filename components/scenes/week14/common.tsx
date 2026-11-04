@@ -97,6 +97,10 @@ export interface StageSpec<P = GutPose, O = GutOpts> {
    * the step's lit ids. While it shows, the left name column keeps above it (`left`).
    */
   section?: (t: number, pose: P, lit: readonly string[] | null) => { show: number; node: React.ReactNode; left: [number, number] } | null;
+  /** Other axes than the body's (a section block whose up is dorsal): the frame's edge pills and the axis key. */
+  axes?: React.ComponentProps<typeof ModelView>['axes'];
+  /** The right name column's span (top, bottom), to keep it above the camera keys. */
+  right?: [number, number];
 }
 
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
@@ -144,8 +148,9 @@ export function gutStage(spec: StageSpec) {
 /**
  * A whole stage on any posed model (the embryo's gut, the trunk's foregut): a camera key per step, names said
  * then shown, one note per step, the step's lit set. `embryo`: the model uses the shared week-5 embryo body.
+ * `continuity`: the topic's camera continuity (topics 15–16 use the same machinery with their own).
  */
-export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: number } | null }>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel, embryo = false) {
+export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: number } | null }>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel, embryo = false, continuity = CONT) {
   const { S, steps } = spec;
   function View({ t }: SceneProps) {
     const i = stepAt(S, t);
@@ -179,11 +184,13 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
     return (
       <ModelView
         model={m}
-        continuity={CONT}
+        continuity={continuity}
         camera={camera}
         names={names}
         caption={st.caption ?? spec.caption}
         left={secOn ? sec.left : undefined}
+        axes={spec.axes}
+        right={spec.right}
         over={(at) => (
           <>
             {key && <ColourKey items={[...key]} show={1} title={st.keyTitle ?? spec.keyTitle ?? 'Kolorea'} y={46} />}

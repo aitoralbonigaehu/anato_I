@@ -52,6 +52,7 @@ const GONE: Record<string, string> = {
   '12/eguna-27/5/bostgarren-aorta-arkua': 'agertu eta desagertu egiten da urrats honetan (bira-irudian agertuta)',
   '12/laugarren-arkua/6/bostgarren-aorta-arkua': 'agertu eta guztiz desagertzen da urrats honetan: ez du ezer sortzen',
   '12/beste-aldaketak/2/hodi-karotideoa': 'urrats honetan desagertzen da (bira-irudian izendatuta)',
+  '15/giltzurrun-gaineko-guruinak/5/fetu-kortexa': 'behin-behineko kortexa lehen urtean desagertzen da urrats honetan (hasieran izendatuta)',
   '14/mesenterioa/6/mesenterio-dortsala': 'toraxeko zatia desagertzen da urrats honetan (bira-irudian izendatuta, desagertzen ari dela)',
   '10/eskuineko-aurikula/4/eskuineko-zain-balbula': 'goiko aldea desagertzen da urrats honetan; behekoa kaben eta sinu koronarioaren balbulak (izendatuta)',
 };
@@ -77,6 +78,9 @@ const MENTION_ONLY: Record<string, string> = {
   '3/gastrulazioa/10/hipoblastoa': '"alboetara baztertu da": diskotik kanpo, bitelo zakuaren paretan',
   '3/notokorda/4/notokorda': '"notokorda osatzean": geroago',
   '3/notokorda/7/hodi-neuroenterikoa': 'urrats honetan ixten da',
+  '15/metanefrosa/1/metanefrosa': 'sarrera: ureter kimua eta blastema hurrengo bi urratsetan eratzen dira (metanefrosa bera)',
+  '15/sinu-urogenitala/2/kloaka': 'urrats honetan trenkadatzen da: hasieran marraztuta, bukaeran bi atal',
+  '15/sinu-urogenitala/2/gernu-maskuria': 'sinutik sortuko dena: 3. urratsean bereizten da',
   '4/bitarteko-eta-alboko-mesodermoa/1/bitarteko-mesodermoa': 'bitarteko mesodermoa bere zatien izenez marraztuta: nefrotomak',
   '4/bitarteko-eta-alboko-mesodermoa/2/bitarteko-mesodermoa': 'bitarteko mesodermoa bere zatien izenez marraztuta: kordoi nefrogenoa',
   '4/bitarteko-eta-alboko-mesodermoa/4/kordoi-nefrogenoa': 'jatorria aipatzen da; irudian haren eratorriak (giltzurruna, gonadak)',
