@@ -27,6 +27,7 @@ const SHOTS: Record<number, { stage: string; view: string; rest: number }> = {
   13: { stage: 'kaba-zainak', view: '3d', rest: 0.45 },
   14: { stage: 'mesenterioa', view: '3d', rest: 0.75 },
   15: { stage: 'mesonefrosa', view: '3d', rest: 0.95 },
+  16: { stage: 'hodi-genitalak-arrak', view: '3d', rest: 0.95 },
 };
 
 const PLAY_S = 4.5;

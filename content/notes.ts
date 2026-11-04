@@ -203,6 +203,23 @@ export const NOTES: Record<number, NotesSection[]> = {
     { n: '2.3', title: 'Gernu maskuria', depth: 1, stages: ['gernu-maskuria'] },
     { n: '2.4', title: 'Uretra', depth: 1, stages: ['uretra', 'zakil-uretra'] },
   ],
+  16: [
+    { n: '1', title: 'Sarrera', depth: 0, stages: ['sarrera'] },
+    { n: '2', title: 'Gonaden garapena mesonefrosetan', depth: 0, stages: [] },
+    { n: '2.1', title: 'Hozi zelulen garapena', depth: 1, stages: ['hozi-zelulak', 'desberdindu-gabea', 'muller-hodia'] },
+    { n: '3', title: 'Desberdintzapen aroa', depth: 0, stages: [] },
+    { n: '3.1', title: 'Arren desberdintzapena', depth: 1, stages: ['barrabila', 'hiloa'] },
+    { n: '3.2', title: 'Gonaden ezberdintze-prozesua arretan', depth: 1, stages: ['hodi-genitalak-arrak', 'semen-bidea'], covers: '3.2.1 Semen bidea' },
+    { n: '3.3', title: 'Gonaden ezberdintze-prozesua emeetan', depth: 1, stages: ['obarioa'] },
+    { n: '3.4', title: 'Hodien bereizketa: emeen kasuan', depth: 1, stages: ['hodi-genitalak-emeak', 'bagina', 'lotailu-zabala', 'baginaren-jatorria'], covers: '3.4.1 Umetokiaren kanpo komunikazioa: Bagina' },
+    { n: '4', title: 'Gonaden kokapen aldaketak / gonaden jaisketa', depth: 0, stages: ['jaisketa'] },
+    { n: '4.1', title: 'Arretan', depth: 1, stages: ['jaisketa-arrak'] },
+    { n: '4.2', title: 'Emeetan', depth: 1, stages: ['jaisketa-emeak'] },
+    { n: '5', title: 'Kanpo genitalen ezberdindu gabeko garaia', depth: 0, stages: ['kanpo-genitalak'] },
+    { n: '6', title: 'Kanpo genitalen ezberdintzea', depth: 0, stages: [] },
+    { n: '6.1', title: 'Emeetan', depth: 1, stages: ['kanpo-genitalak-emeak'] },
+    { n: '6.2', title: 'Arretan', depth: 1, stages: ['kanpo-genitalak-arrak'] },
+  ],
 };
 
 /** The notes section a stage belongs to, and its parent heading when it is a sub-heading. */

@@ -39,6 +39,10 @@ export const UC = {
   kidney: '#d9467a',
   kidneyDeep: '#6e1638',
   gonad: '#2dd4bf',
+  /** Topic 16: the paramesonephric (Müller) duct and what it leaves (the notes draw its vestiges orange). */
+  muller: '#f59e0b',
+  mullerDeep: '#8a5200',
+  germ: '#fde047',
   gonadDeep: '#0f6b60',
   adrenal: '#f5b041',
   adrenalDeep: '#8a5a10',
@@ -77,9 +81,14 @@ export interface UroPose {
   gonadDown: number;
   /** The cloaca → the bladder (0..1). */
   bladder: number;
+  /** Topic 16: the paramesonephric (Müller) duct growing down (0..1), its caudal ends brought together at the sinus (0..1). */
+  muller?: number;
+  mullerJoin?: number;
+  /** Topic 16: the primordial germ cells on their way from the yolk sac to the gonadal ridges (0..1). */
+  germ?: number;
 }
 
-export const UP0: UroPose = { im: 1, pro: 0, proDuct: 0, proGone: 0, meso: 0, wolff: 0, mesoGone: 0, gonadal: 0, bud: 0, blast: 0, kidney: 0, ascend: 0, adrenal: 0, gonadDown: 0, bladder: 0 };
+export const UP0: UroPose = { im: 1, pro: 0, proDuct: 0, proGone: 0, meso: 0, wolff: 0, mesoGone: 0, gonadal: 0, bud: 0, blast: 0, kidney: 0, ascend: 0, adrenal: 0, gonadDown: 0, bladder: 0, muller: 0, mullerJoin: 0, germ: 0 };
 
 export interface UroOpts {
   /** The body glass, the somites, the neural tube (0..1). */
@@ -90,6 +99,8 @@ export interface UroOpts {
   glom?: number;
   /** The common iliac arteries (0..1). */
   iliac?: number;
+  /** The yolk sac and its stalk (0..1, topic 16's germ cells). */
+  yolk?: number;
   dim?: { ids: readonly string[]; k: number } | null;
 }
 
@@ -305,5 +316,57 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
       if (s > 0) pts['giltzurrun-gaineko-guruinak'] = add(A, [0.22, 0.12, 0.1]);
     }
   }
+  // ———— topic 16: the paramesonephric (Müller) duct, lateral to the mesonephric duct, then across it to the midline ————
+  const mu = clamp01(pose.muller ?? 0);
+  if (mu > 0.01)
+    for (const s of [-1, 1]) {
+      const line = mullerLine(s, clamp01(pose.mullerJoin ?? 0));
+      tube(`muller${s}`, 'hodi-paramesonefrikoa', grown(line, mu), UC.muller, 0.06, 1, { deep: UC.mullerDeep });
+      // Its cranial end opens into the coelom: a small funnel.
+      ball(`mfun${s}`, 'hodi-paramesonefrikoa', line[0], [0.11, 0.09, 0.11], UC.muller, ss(0, 0.2, mu), { deep: UC.mullerDeep, thin: 0.4 }, 8, 10);
+      if (s > 0) {
+        pts['hodi-paramesonefrikoa'] = line[10];
+        pts['muller-sarrera'] = add(line[0], [0.12, 0.12, 0.1]);
+      }
+    }
+  const tub = ss(0.4, 1, pose.mullerJoin ?? 0) * ss(0.6, 1, mu);
+  if (tub > 0.01) {
+    // The paramesonephric tubercle: the small elevation on the sinus's back wall where the two ducts end together.
+    ball('mtub', 'tuberkulu-paramesonefrikoa', [0, -4.38, 0.02], [0.2 * tub, 0.1 * tub, 0.12 * tub], mixHex(UC.endo, UC.muller, 0.35), 1, { deep: UC.endoDeep }, 8, 12);
+    pts['tuberkulu-paramesonefrikoa'] = [0.22, -4.42, 0.12];
+  }
+
+  // ———— topic 16: the yolk sac (ventral, its stalk to the gut) and the germ cells' way to the gonadal ridges ————
+  const yolk = o.yolk ?? 0;
+  if (yolk > 0.01) {
+    tube('yolkstalk', 'hodi-onfalomesenterikoa', L([[0, -2.1, 0.5], [0, -2.5, 1.3], [0, -2.9, 1.9]], 10), UC.endo, 0.07, 0.7 * yolk, { deep: UC.endoDeep });
+    ball('yolk', 'bitelo-zaku-sekundarioa', [0, -3.35, 2.35], [0.62, 0.6, 0.6], UC.endo, 0.55 * yolk, { deep: UC.endoDeep, outline: false });
+    pts['bitelo-zaku-sekundarioa'] = [0.5, -3.1, 2.6];
+    pts['hodi-onfalomesenterikoa'] = [0.1, -2.5, 1.3];
+  }
+  const germ = pose.germ ?? 0;
+  if (germ > 0.001)
+    for (const s of [-1, 1]) {
+      const path = germPath(s);
+      for (let k = 0; k < 7; k++) {
+        // Each cell starts a little later; they bunch at the ridge as they arrive.
+        const u = clamp01(germ * 1.35 - k * 0.05);
+        const p = path[Math.min(path.length - 1, Math.round(u * (path.length - 1)))];
+        const j: V3 = [Math.sin(k * 2.3 + s) * 0.06, Math.cos(k * 1.9) * 0.07, Math.sin(k * 3.1) * 0.05];
+        ball(`germ${s}${k}`, 'hasierako-hozi-zelulak', add(p, j), [0.075, 0.075, 0.075], UC.germ, 1, { tissue: 'vessel' }, 6, 8);
+      }
+      if (s > 0) {
+        const u = clamp01(germ * 1.35 - 0.15);
+        pts['hasierako-hozi-zelulak'] = add(path[Math.min(path.length - 1, Math.round(u * (path.length - 1)))], [0.1, 0.1, 0.12]);
+      }
+    }
   return { items, pts };
 }
+
+/** The paramesonephric duct of one side: from its coelomic opening at the top of the mesonephros, down lateral to the
+ * mesonephric duct, across it ventrally and medially to the sinus's back wall (`join`: the two ends side by side). */
+export const mullerLine = (s: number, join: number) =>
+  L([X(s, [1.3, 2.45, -0.18]), X(s, [1.3, 0.2, -0.15]), X(s, [1.24, -2.4, -0.1]), X(s, [1.0, -3.45, 0.12]), X(s, [lerp(0.4, 0.12, join), -4.05, 0.12]), X(s, [lerp(0.25, 0.05, join), -4.32, 0.04])], 40);
+
+/** The germ cells' way: the yolk sac's wall near the allantois → the hindgut's wall → the dorsal mesentery → the gonadal ridge. */
+const germPath = (s: number) => L([[0, -3.0, 1.85], [0, -3.75, 0.85], [0, -3.85, 0.32], [0, -3.2, 0.05], [0, -2.0, -0.2], [0, -1.2, -0.38], X(s, [0.25, -0.75, -0.3]), X(s, [0.5, -0.55, -0.12])], 40);

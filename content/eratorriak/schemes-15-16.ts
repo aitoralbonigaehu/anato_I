@@ -100,4 +100,90 @@ export const SCHEMES_15: MigrationTopic = {
   ],
 };
 
-export const SCHEMES_15_16: MigrationTopic[] = [SCHEMES_15];
+export const SCHEMES_16: MigrationTopic = {
+  week: 16,
+  short: 'Gonadak',
+  flows: [
+    {
+      id: 'hozi-zelulen-bidaia',
+      title: 'Hasierako hozi zelulak: bitelo zakutik gonadara',
+      lead: '3. astean bereizi; alantoidea gida; 6. asterako gonada gandorrean.',
+      stage: 'hozi-zelulak',
+      roots: [n('bitelo-zaku-sekundarioa', [n('hasierako-hozi-zelulak', [l('Alantoidea → atzeko hestearen pareta → mesoa', [n('gonada-gandorra', undefined, { note: '6. astea' })], { move: true })], { note: 'endodermoa, alantoidetik hurbil · 3. astea' })])],
+    },
+    {
+      id: 'gonada-bi-bide',
+      title: 'Desberdindu gabeko gonada → barrabila edo obarioa',
+      lead: 'Hasierako sexu kordoiak berdinak dira sexu bietan (6.–7. asteak); 7. astetik bide desberdinak.',
+      stage: 'desberdindu-gabea',
+      roots: [
+        n('gonadaren-epitelioa', [n('hasierako-sexu-kordoiak', [
+          n('muin-kordoiak', [n('barrabil-sarea', undefined, { note: 'hiloan' }), n('barrabil-kordoiak', [n('hodixka-seminiferoak', undefined, { via: 'pubertaroan hustu' })], { note: 'ferra forma' })], { via: 'arrak: epiteliotik askatu' }),
+          n('obarioaren-muina', undefined, { via: 'emeak: endekatu' }),
+        ])]),
+        n('obarioaren-kortexa', [n('kortex-kordoiak', [n('obozito-primarioak', undefined, { via: '4. hilabetean askatu + folikulu zelulak' })], { note: '2. belaunaldia' })], { note: 'emeak: epitelioa loditu' }),
+      ],
+    },
+    {
+      id: 'wolff-eratorriak',
+      title: 'Hodi mesonefrikoa (Wolff): arretan hodi genitalak',
+      lead: 'Testosteronak mantentzen du; emeetan endekatu eta aztarnak uzten ditu.',
+      stage: 'hodi-genitalak-arrak',
+      roots: [
+        n('hodixka-epigenitalak', [n('hodixka-eferenteak', undefined, { via: 'arrak: rete testisaren bidez' }), n('epooforoa', undefined, { via: 'emeak: aztarna' })]),
+        n('hodixka-paragenitalak', [n('paradidimoa', undefined, { via: 'arrak: aztarna' }), n('paraooforoa', undefined, { via: 'emeak: aztarna' })]),
+        n('hodi-mesonefrikoa', [n('epididimoa'), n('hodi-deferentea', [n('semen-xixkua', undefined, { via: 'kimua' }), n('hodi-isurlea', undefined, { via: '+ semen xixkua' })])], { note: 'arrak' }),
+      ],
+    },
+    {
+      id: 'muller-eratorriak',
+      title: 'Hodi paramesonefrikoa (Müller): emeetan hodi genitalak',
+      lead: 'Hormona antimüllerianoak endekatzen du arretan (bi aztarna); emeetan mantentzen da.',
+      stage: 'hodi-genitalak-emeak',
+      roots: [
+        n('hodi-paramesonefrikoa', [
+          n('falopioren-tronpak', undefined, { via: 'emeak: atal kraneala', note: 'goian irekita' }),
+          n('utero-hodia', [n('uteroa', undefined, { note: 'endometrioa' }), n('baginaren-fornixa', undefined, { note: 'goiko herena' })], { via: 'emeak: erdian fusionatu' }),
+          n('barrabil-apendizea', undefined, { via: 'arrak: aztarna' }),
+          n('prostataren-utrikulua', undefined, { via: 'arrak: aztarna' }),
+        ]),
+      ],
+    },
+    {
+      id: 'baginaren-bi-jatorri',
+      title: 'Bagina: bi jatorri',
+      stage: 'bagina',
+      roots: [
+        n('utero-hodia', [n('baginaren-fornixa', undefined, { note: 'goiko herena · mesodermikoa' })]),
+        n('sinu-urogenitala', [n('bulbo-sinubaginalak', [n('plaka-baginala', [n('bagina', undefined, { via: 'lumena (5. hilabetea)', note: 'beheko bi herenak · endodermikoa' })])])]),
+      ],
+    },
+    {
+      id: 'gubernakulua-jaisketa',
+      title: 'Gubernakulua eta gonaden jaisketa',
+      lead: 'Jaisketa pasiboa: gorputza hazi, gubernakulua ez luzatu.',
+      stage: 'jaisketa',
+      roots: [
+        n('gubernakulua', [
+          l('Arrak: laburtu eta desagertu', undefined, { gone: true }),
+          n('lotailu-utero-obarikoa', undefined, { via: 'emeak' }),
+          n('uteroaren-lotailu-biribila', undefined, { via: 'emeak' }),
+        ]),
+        n('luzapen-baginala', [n('iztai-hodia', undefined, { via: 'jaiotzean estutu' }), n('geruza-baginala', undefined, { via: 'barrabilaren inguruan' })], { note: '3. hilabetea' }),
+      ],
+    },
+    {
+      id: 'kanpo-genitalen-eratorriak',
+      title: 'Kanpo genitalak: egitura bera, bi emaitza',
+      stage: 'kanpo-genitalak',
+      roots: [
+        n('tuberkulu-genitala', [n('klitoria', undefined, { via: 'emeak' }), n('faloa', undefined, { via: 'arrak' })]),
+        n('kloaka-tolespenak', [n('tolespen-urogenitalak', [n('ezpain-txikiak', undefined, { via: 'emeak' }), n('zakil-uretra', undefined, { via: 'arrak: ildoa itxi' })])]),
+        n('goragune-genitalak', [n('tolespen-ezpaineskrotalak', [n('ezpain-nagusiak', undefined, { via: 'emeak' }), n('eskrotoa', undefined, { via: 'arrak' })])]),
+        n('ildo-urogenitala', [n('baginaren-bestibulua', undefined, { via: 'emeak' })]),
+      ],
+    },
+  ],
+};
+
+export const SCHEMES_15_16: MigrationTopic[] = [SCHEMES_15, SCHEMES_16];
