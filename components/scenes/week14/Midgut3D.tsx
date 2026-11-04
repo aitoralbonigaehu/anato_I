@@ -141,6 +141,7 @@ export const S18 = [0, 0.16, 0.32, 0.46, 0.6, 0.74] as const;
 const SIDE = orbit(-84, 4, 8.6, [0, -1.05, 0.85], SH);
 
 const spec18: StageSpec<MidPose, MidOpts> = {
+  near: 1,
   S: S18,
   pose: END17.pose,
   opts: END17.opts,
@@ -232,6 +233,7 @@ const END18 = endPose(spec18);
 export const S19 = [0, 0.18, 0.36, 0.54, 0.72, 0.86] as const;
 
 const spec19: StageSpec<MidPose, MidOpts> = {
+  near: 1,
   S: S19,
   pose: END18.pose,
   opts: END18.opts,
@@ -323,6 +325,7 @@ const END19 = endPose(spec19);
 export const S20 = [0, 0.2, 0.4, 0.55, 0.74] as const;
 
 const spec20: StageSpec<MidPose, MidOpts> = {
+  near: 0.92,
   S: S20,
   pose: { ...END19.pose, sma: 0 },
   opts: END19.opts,

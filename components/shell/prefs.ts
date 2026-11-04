@@ -8,7 +8,7 @@ import { useSyncExternalStore } from 'react';
 /** `fsAsk`: offer full screen when a stage starts playing ("Ez galdetu berriro" turns it off). */
 export type PrefKey = 'guided' | 'quick' | 'voice' | 'subtitles' | 'outline' | 'panel' | 'fsAsk' | 'notes' | 'asks';
 
-const DEFAULTS: Record<PrefKey, boolean> = { guided: true, quick: false, voice: false, subtitles: false, outline: true, panel: true, fsAsk: true, notes: false, asks: true };
+const DEFAULTS: Record<PrefKey, boolean> = { guided: true, quick: false, voice: false, subtitles: false, outline: true, panel: false, fsAsk: true, notes: false, asks: true };
 
 export type PlayMode = 'gidatua' | 'arrunta' | 'azkarra';
 
@@ -35,7 +35,7 @@ const readPref = (k: PrefKey): boolean => {
       const saved = window.localStorage.getItem(KEY(k));
       // The stage list starts folded unless the screen has room for it beside the summary (the stage
       // navigator in the heading lists the same index); it opens with "[".
-      v = saved === null ? (k === 'outline' ? window.innerWidth >= (readPref('panel') ? 1600 : 1280) : DEFAULTS[k]) : saved === '1';
+      v = saved === null ? (k === 'outline' ? window.innerWidth >= 1680 : DEFAULTS[k]) : saved === '1';
     } catch {
       v = DEFAULTS[k];
     }

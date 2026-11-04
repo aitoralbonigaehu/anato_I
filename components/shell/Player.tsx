@@ -170,6 +170,9 @@ function Caption({
   const open = openKey === key;
   const recall = (beat.recall ?? []).map((id) => structures.get(id)).filter((r): r is StructureDef => !!r);
   const side = recall.length > 0 || !!(beat.key || beat.exam || beat.caution || beat.more) || !!extra;
+  // What is always shown beside the text: the fact to keep and the trap. The rest (the key idea, what to
+  // recall, the step's structures, the longer detail) waits behind one «Gehiago» so the panel stays quiet.
+  const hasMore = !!beat.key || recall.length > 0 || !!extra || !!beat.more;
   return (
     <div className={`cap-text cap-v2${side ? ' has-side' : ''}`} key={key}>
       <div className="cap-main">
@@ -190,7 +193,7 @@ function Caption({
       </div>
       {side && (
         <div className="cap-side">
-          {beat.key && (
+          {open && beat.key && (
             <p className="cap-note is-key">
               <b>Ulertzeko gakoa</b>
               {beat.key}
@@ -208,7 +211,7 @@ function Caption({
               {beat.caution}
             </p>
           )}
-          {recall.length > 0 && (
+          {open && recall.length > 0 && (
             <p className="cap-note is-recall">
               <b>Gogoratu</b>
               <span>
@@ -227,10 +230,10 @@ function Caption({
               </span>
             </p>
           )}
-          {extra && <div className="cap-extra">{extra}</div>}
-          {beat.more && (
-            <button className="cap-more-btn" aria-expanded={open} onClick={() => setOpenKey(open ? '' : key)}>
-              {open ? 'Laburtu' : 'Sakondu'} <span aria-hidden>{open ? '−' : '+'}</span>
+          {open && extra && <div className="cap-extra">{extra}</div>}
+          {hasMore && (
+            <button className="cap-more-btn" aria-expanded={open} onClick={() => setOpenKey(open ? '' : key)} title="Ulertzeko gakoa, gogoratzekoak, urratsaren egiturak eta xehetasunak">
+              {open ? 'Gutxiago' : 'Gehiago'} <span aria-hidden>{open ? '−' : '+'}</span>
             </button>
           )}
         </div>

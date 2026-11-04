@@ -4,6 +4,7 @@ import { Note, type SceneProps } from '@/components/kit';
 import { Loading3D, type At3 } from '@/components/kit/three/Stage3D';
 import { ModelView, cameraAt, type CalloutSpec } from '@/components/scenes/week10/Heart3D';
 import { ColourKey } from '@/components/scenes/week12/common';
+import { mixHex } from '@/components/scenes/week10/model3d';
 import { seg } from '@/lib/sim/anim';
 import { EMBRYO5 } from '@/lib/three-d/embryo5';
 import { useGeoReady } from '@/lib/three-d/offthread';
@@ -101,6 +102,8 @@ export interface StageSpec<P = GutPose, O = GutOpts> {
   axes?: React.ComponentProps<typeof ModelView>['axes'];
   /** The right name column's span (top, bottom), to keep it above the camera keys. */
   right?: [number, number];
+  /** Topic 14: how much closer than its specs the cameras sit (default 0.82; 1 keeps them as written). */
+  near?: number;
 }
 
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
@@ -137,6 +140,24 @@ export interface PoseModel {
   pts: Record<string, V3>;
 }
 
+/**
+ * While a step lights some structures, everything else turns to a neutral grey glass instead of a darker copy of
+ * its own colour: the lit things keep the only strong colours on screen (as topics 12–13 read), and a stack of
+ * see-through red and brown layers no longer muddies the picture. Opacity is the model's own (unchanged).
+ */
+const SLATE = '#9aa4b6';
+const SLATE_DEEP = '#2f3644';
+function recede(items: Item3[], dim: { ids: readonly string[]; k: number } | null): Item3[] {
+  if (!dim || dim.k <= 0.001) return items;
+  const k = 0.6 * dim.k;
+  const lit = (it: Item3) => !!it.id && (dim.ids.includes(it.id) || (it.groups ?? []).some((g) => dim.ids.includes(g)));
+  return items.map((it) => (it.stream || lit(it) ? it : { ...it, color: mixHex(it.color, SLATE, k), deep: mixHex(it.deep ?? it.color, SLATE_DEEP, k) }));
+}
+
+/** Topic 14's cameras sit a little closer than their specs say: the gut fills more of the frame. */
+const closer = (cam: Camera3, k: number): Camera3 =>
+  k === 1 ? cam : { ...cam, eye: [cam.target[0] + (cam.eye[0] - cam.target[0]) * k, cam.target[1] + (cam.eye[1] - cam.target[1]) * k, cam.target[2] + (cam.eye[2] - cam.target[2]) * k] };
+
 /** vis with the stage-end case: a name or note of the last step stays to the end. */
 const vis2 = (t: number, a: number, b: number) => Math.min(a <= 0 ? 1 : seg(t, a, a + 0.03), b >= 1.5 ? 1 : 1 - seg(t, b - 0.03, b));
 
@@ -162,10 +183,12 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
     const dimK = st.dim ? (prevDim ? 1 : seg(t, S[i], S[i] + 0.025)) : prevDim ? 1 - seg(t, S[i], S[i] + 0.025) : 0;
     const dimIds = st.dim ?? (prevDim ? steps[i - 1].dim! : []);
     const dim = dimK > 0.001 ? { ids: dimIds, k: dimK } : null;
-    const m = build(pose, { ...opts, dim });
+    const built = build(pose, { ...opts, dim });
+    const m = { ...built, items: recede(built.items, dim) };
+    const near = continuity === CONT ? (spec.near ?? 0.82) : 1;
     const camera = cameraAt(
       t,
-      steps.map((s, k) => (s.glide ? ([S[k], s.cam, s.glide] as const) : ([S[k], s.cam] as const))),
+      steps.map((s, k) => (s.glide ? ([S[k], closer(s.cam, near), s.glide] as const) : ([S[k], closer(s.cam, near)] as const))),
     );
     // A name kept by the next step stays up (one callout, no fade between steps).
     const runs: { n: NameSpec; a: number; b: number; k: number }[] = [];

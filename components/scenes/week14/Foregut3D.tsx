@@ -627,6 +627,7 @@ const END12 = endPose(spec12);
 export const S13 = [0, 0.2, 0.38, 0.6, 0.78] as const;
 
 const spec13: StageSpec<ForePose, ForeOpts> = {
+  near: 0.92,
   S: S13,
   pose: END12.pose,
   opts: END12.opts,

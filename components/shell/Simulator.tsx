@@ -1762,43 +1762,44 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
         </Link>
         <WeekNav current={week} stageId={stage.id} />
         <div className="tb-tools">
-          {/* Test yourself (Aurkitu, Galderak) · ask (Kimu) · what the right column shows · more · the one help. */}
-          <div className="tb-group" role="group" aria-label="Frogatu">
-            <button data-tour="aurkitu" className={`tool tool-main mobile-tool-hidden${find ? ' is-on' : ''}`} aria-label={find ? 'Aurkitu amaitu' : 'Aurkitu'} aria-pressed={!!find} onClick={() => (find ? setFind(null) : startFind())} data-tip={find ? 'Aurkitzeko jokoa amaitu · Esc' : 'Frogatu: irudian galdetzen zaizun egitura klikatu'} data-tip-pos="bottom">
-              <IconTarget size={16} /> <span>Aurkitu</span>
-            </button>
-            <button
-              className="tool tool-main mobile-questions"
-              data-tour="galderak"
-              aria-label="Galderak"
-              onClick={() => {
-                setQuestionsConcept(undefined);
-                setQuestionsOpen(true);
-              }}
-              data-tip="Frogatu: aukera anitzeko galderak, azalpenarekin"
-              data-tip-pos="bottom"
-            >
-              <IconQuiz size={16} /> <span>Galderak</span>
-            </button>
-          </div>
+          {/* Ask (Kimu) first; testing yourself (Aurkitu, Galderak) is one menu; the right column's two panels
+              are two quiet icons; everything else (glossary, chronology, help…) lives in the «⋯» menu. */}
           <button data-tour="kimu" className={`tool tool-main kimu-tool mobile-tool-hidden${kimuOpen ? ' is-on' : ''}`} onClick={toggleKimu} aria-label="Galdetu Kimuri" aria-expanded={kimuOpen} data-tip="Galdetu Kimuri: lekura eramango zaitu · K" data-tip-pos="bottom">
-            <KimuFace size={26} mood="happy" still /> <span className="tb-l">Galdetu Kimuri</span>
+            <KimuFace size={24} mood="happy" still /> <span className="tb-l">Kimu</span>
             <span className="tb-s" aria-hidden>Kimu</span>
           </button>
+          <Popover
+            trigger={({ open, toggle }) => (
+              <button data-tour="galderak" className={`tool tool-main mobile-questions${open || find ? ' is-on' : ''}`} aria-label="Frogatu" onClick={toggle} aria-expanded={open} aria-haspopup="menu" data-tip="Frogatu zure burua: galderak edo irudian aurkitu" data-tip-pos="bottom">
+                <IconQuiz size={16} /> <span>Frogatu</span>
+              </button>
+            )}
+          >
+            {(close) => (
+              <div className="menu" role="menu">
+                <button role="menuitem" onClick={() => { close(); setQuestionsConcept(undefined); setQuestionsOpen(true); }}>
+                  <IconQuiz size={16} /> Galderak <small>aukera anitzekoak, azalpenarekin</small>
+                </button>
+                <button role="menuitem" onClick={() => { close(); if (find) setFind(null); else startFind(); }}>
+                  <IconTarget size={16} /> {find ? 'Aurkitu amaitu' : 'Aurkitu'} <small>egitura irudian klikatu</small>
+                </button>
+              </div>
+            )}
+          </Popover>
           <span className="tb-sep mobile-tool-hidden" aria-hidden />
           {/* The right column shows the stage summary or the original notes (or nothing): one switch. */}
           <div className="tb-panels" role="group" aria-label="Eskuineko zutabea">
-            <button className={`tool mobile-tool-hidden${summaryShown ? ' is-on' : ''}`} aria-label="Laburpena" onClick={togglePanel} data-tip={summaryShown ? 'Laburpena ezkutatu · ]' : 'Etaparen laburpena: gakoak, datak eta egiturak · ]'} data-tip-pos="bottom" aria-pressed={summaryShown}>
-              <IconRail open={summaryShown} side="right" /> <span>Laburpena</span>
+            <button className={`tool tool-icon mobile-tool-hidden${summaryShown ? ' is-on' : ''}`} aria-label="Laburpena" onClick={togglePanel} data-tip={summaryShown ? 'Laburpena ezkutatu · ]' : 'Etaparen laburpena: gakoak, datak eta egiturak · ]'} data-tip-pos="bottom" aria-pressed={summaryShown}>
+              <IconRail open={summaryShown} side="right" />
             </button>
-            <button data-tour="apunteak" className={`tool mobile-notes${notesShown ? ' is-on' : ''}`} aria-label="Apunteak" onClick={toggleNotes} aria-pressed={notesShown} data-tip={notesShown ? 'Apunteak ezkutatu · N' : 'Jatorrizko apunteak, simulazioarekin batera · N'} data-tip-pos="bottom-end">
-              <IconNotes size={16} /> <span>Apunteak</span>
+            <button data-tour="apunteak" className={`tool tool-icon mobile-notes${notesShown ? ' is-on' : ''}`} aria-label="Apunteak" onClick={toggleNotes} aria-pressed={notesShown} data-tip={notesShown ? 'Apunteak ezkutatu · N' : 'Jatorrizko apunteak, simulazioarekin batera · N'} data-tip-pos="bottom-end">
+              <IconNotes size={16} />
             </button>
           </div>
           <Popover
             trigger={({ open, toggle }) => (
-              <button data-tour="tresnak" className={`tool${open ? ' is-on' : ''}`} aria-label="Tresnak" onClick={toggle} aria-expanded={open} aria-haspopup="menu" data-tip="Glosarioa, kronologia, eratorriak, irudiak…" data-tip-pos="bottom">
-                <IconMore size={16} /> <span>Tresnak</span>
+              <button data-tour="tresnak" className={`tool tool-icon${open ? ' is-on' : ''}`} aria-label="Tresnak" onClick={toggle} aria-expanded={open} aria-haspopup="menu" data-tip="Glosarioa, kronologia, eratorriak, irudiak…" data-tip-pos="bottom">
+                <IconMore size={16} />
               </button>
             )}
           >
@@ -1874,9 +1875,6 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
               </div>
             )}
           </Popover>
-          <button className="tool tool-icon tb-help mobile-tool-hidden" data-tour="laguntza" aria-label="Laguntza" onClick={() => setHelpOpen(true)} data-tip="Laguntza: gida laburra, botoiak, teklak eta koloreak · ?" data-tip-pos="bottom-end">
-            <IconHelp size={17} />
-          </button>
         </div>
       </header>
 
@@ -2031,7 +2029,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
                     </div>
                   )}
                   {turnable === sceneKey && !tour && intro === null && !find && !travel && (
-                    <button className="bira-btn" key={`bira-${sceneKey}`} onClick={startBira} data-tip="Egitura bakoitza bere aldetik: kamera bakoitzera biratzen da" data-tip-pos="bottom-end">
+                    <button className="bira-btn" key={`bira-${sceneKey}`} onClick={startBira} data-tip="Egitura bakoitza bere aldetik: kamera bakoitzera biratzen da · irudia arrastatuz ere biratzen da (klik bikoitza: hasierara)" data-tip-pos="bottom-end">
                       <span className="turn-hint-i" aria-hidden>↻</span>
                       <b>3D bira</b>
                     </button>
