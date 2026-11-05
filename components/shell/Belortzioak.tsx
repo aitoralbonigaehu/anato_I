@@ -20,7 +20,7 @@ import s from './belortzioak.module.css';
  *   structure at a time (each on the copy coloured for it), or all together, coloured by kind.
  */
 
-type Mode = 'esploratu' | 'zer' | 'non';
+export type Mode = 'esploratu' | 'zer' | 'non';
 type Style = 'aukerak' | 'buruz' | 'idatzi';
 type Scope = BelSystem | 'denak' | 'fusio';
 /** Kind picked in the merged figures; null: all of them (or, when crowded, the first kind). */
@@ -64,7 +64,7 @@ const STORE = 'enbrioatlas:belortzioak';
 const STYLE_KEY = 'enbrioatlas:belortzioak:style';
 /** Names the student flagged: 1 red (don't know), 2 orange (shaky). Click cycles red → orange → none. */
 const MARKS_KEY = 'enbrioatlas:belortzioak:marks';
-type Marks = Record<string, 1 | 2>;
+export type Marks = Record<string, 1 | 2>;
 const markClass = (m: 1 | 2 | undefined, red: string, orange: string) => (m === 1 ? ` ${red}` : m === 2 ? ` ${orange}` : '');
 const MIN = 60_000;
 const DAY = 86_400_000;
@@ -162,9 +162,11 @@ interface FigureProps {
   tap: Pt | null;
   onTap: (p: Pt) => void;
   missing: boolean;
+  /** The drawing's URL when it is not one of the Belortzioak figures (the image lab's PDF pages). */
+  src?: string;
 }
 
-function Figure({ plate, mode, numbers, covered, active, onHover, onPick, marks, onMark, asked, answered, tap, onTap, missing }: FigureProps) {
+export function Figure({ plate, mode, numbers, covered, active, onHover, onPick, marks, onMark, asked, answered, tap, onTap, missing, src }: FigureProps) {
   const st = stageOf(plate);
   const svg = useRef<SVGSVGElement>(null);
   const explore = mode === 'esploratu';
@@ -263,7 +265,7 @@ function Figure({ plate, mode, numbers, covered, active, onHover, onPick, marks,
 
         <rect className={s.paper} width={st.tw} height={H} rx="18" />
         {/* keyed: a new element per figure (Chrome may keep painting the old bitmap when only href changes) */}
-        {!missing && !plate.imgM && <image key={plate.id} href={imgOf(plate.id)} x={st.fx} y={0} width={st.fw} height={H} className={s.img} />}
+        {!missing && !plate.imgM && <image key={plate.id} href={src ?? imgOf(plate.id)} x={st.fx} y={0} width={st.fw} height={H} className={s.img} />}
         {/* a merged figure: the copy coloured for what is shown, laid exactly onto the base drawing */}
         {!missing && plate.imgM && (
           <>

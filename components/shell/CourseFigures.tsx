@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { BelItem, BelPlate } from '@/content/belortzioak';
+import { Figure, type Marks as BelMarks } from './Belortzioak';
 import styles from './CourseFigures.module.css';
 
 const documents = [
@@ -53,6 +55,28 @@ export function CourseFigures() {
   });
   const [available, setAvailable] = useState(true);
   const id = `${doc + 1}-${page}`;
+  const [size, setSize] = useState<{ id: string; wh: [number, number] } | null>(null);
+  const [active, setActive] = useState<string | null>(null);
+
+  // The drawing's own size, so the Belortzioak stage keeps its aspect ratio.
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => setSize({ id, wh: [img.naturalWidth || 1, img.naturalHeight || 1] });
+    img.src = `/irudiak-pdf/${id}.jpg`;
+  }, [id]);
+
+  const lines = useMemo(() => (pageLines.id === id ? pageLines.lines : []), [pageLines, id]);
+  // Each detected name becomes a Belortzioak item: its name in a side column, a leader to where it sits on the drawing.
+  const plate = useMemo<BelPlate | null>(() => {
+    if (!size || size.id !== id) return null;
+    const items: BelItem[] = lines.map((l, i) => {
+      const c: [number, number] = [l.x + l.w / 2, l.y + l.h / 2];
+      return { key: `${id}:${i}`, n: i + 1, tag: String(i + 1), name: l.text, label: c, targets: [c], marks: [], arrow: true, r: [Math.max(0.03, l.w / 2)] };
+    });
+    return { id: `pdf-${id}`, system: 'fusio', title: `${documents[doc].title}, ${page}. orria`, sub: '', size: size.wh, items };
+  }, [size, id, lines, doc, page]);
+  const belMarks = useMemo<BelMarks>(() => Object.fromEntries(lines.flatMap((_, i) => (marks[`${id}-${i}`] ? [[`${id}:${i}`, marks[`${id}-${i}`]]] : []))), [lines, marks, id]);
+  const pick = (key: string) => mark(Number(key.split(':')[1]));
 
   useEffect(() => {
     let active = true;
@@ -75,7 +99,7 @@ export function CourseFigures() {
     });
   }
   return <div className={styles.root}>
-    <p>Irudietako izenak sakatu: <strong>gorria → laranja → kendu</strong>. Markak gailu honetan gordetzen dira.</p>
+    <p>Irudia geziekin eta izenekin, Belortzioak bezala. Izenak sakatu: <strong>gorria → laranja → kendu</strong>. Markak gailu honetan gordetzen dira.</p>
     <p className={styles.note}>Testua automatikoki detektatu da; baliteke izen batzuk ez antzematea.</p>
     <label htmlFor="figure-doc">Dokumentua</label>{' '}
     <select id="figure-doc" value={doc} onChange={e => { setDoc(Number(e.target.value)); setPage(1); }}>
@@ -87,10 +111,7 @@ export function CourseFigures() {
       <button type="button" disabled={page === documents[doc].pages} onClick={() => setPage(page + 1)}>Hurrengoa →</button>
     </div>
     {available ? <div className={styles.figure}>
-      {/* Source page is kept as an image so the original figure remains unchanged. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={`/irudiak-pdf/${id}.jpg`} alt={`${documents[doc].title}, ${page}. orria`} />
-      {(pageLines.id === id ? pageLines.lines : []).map((line, i) => <button key={i} type="button" className={`${styles.spot} ${marks[`${id}-${i}`] === 1 ? styles.red : marks[`${id}-${i}`] === 2 ? styles.orange : ''}`} style={{ left: `${line.x * 100}%`, top: `${line.y * 100}%`, width: `${line.w * 100}%`, height: `${line.h * 100}%` }} aria-label={`${line.text}: ${marks[`${id}-${i}`] === 1 ? 'gorria' : marks[`${id}-${i}`] === 2 ? 'laranja' : 'markatu gabe'}`} onClick={() => mark(i)} />)}
+      {plate ? <Figure plate={plate} src={`/irudiak-pdf/${id}.jpg`} mode="esploratu" numbers={false} covered={() => false} active={active} onHover={setActive} onPick={pick} marks={belMarks} onMark={pick} asked={null} answered={false} tap={null} onTap={() => {}} missing={false} /> : <p>Kargatzen…</p>}
     </div> : <p>Irudia ezin izan da kargatu. Saiatu berriro.</p>}
   </div>;
 }
