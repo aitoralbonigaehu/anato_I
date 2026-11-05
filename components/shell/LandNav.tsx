@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { weeks } from '@/content/registry';
 import { BrandMark } from './icons';
 import atlasStyles from './structure-atlas.module.css';
+import { StudyMenu } from './NavMenu';
 
 /** A week whose only scenes are placeholders is still being prepared. */
 export const isWip = (w: (typeof weeks)[number]) => w.stages.every((s) => s.views.every((v) => v.description === 'Prestatzen'));
@@ -34,12 +35,9 @@ export function LandNav({ current, help }: { current?: Section; help?: ReactNode
       <nav>
         <Link href="/kronologia" aria-current={here('kronologia')} data-tour="kronologia">Kronologia</Link>
         <Link href="/#gaiak">Gaiak</Link>
-        <Link href="/ikasgela" aria-current={here('ikasgela')}>Ikasgelak</Link>
-        <Link href="/fitxak" aria-current={here('fitxak')}>Fitxak</Link>
-        <Link href="/belortzioak" aria-current={here('belortzioak')}>Belortzioak</Link>
-        <Link href="/irudiak" aria-current={here('irudiak')}>Irudiak</Link>
-        <Link href="/eratorriak" aria-current={here('eratorriak')}>Eratorriak</Link>
-        <Link href="/egiturak" className={atlasStyles.entry} aria-current={here('egiturak')}>Egiturak</Link>
+        {/* The study pages (classrooms, derivatives, arrow quizzes, images and, under them, the structures'
+            atlas, the plate cards) and Kimu: one menu, so the bar keeps three entries and the simulator. */}
+        <StudyMenu current={current} />
         <Link href={`/astea/${firstReady.week}`} className="btn btn-light small" data-tour="simulagailua">
           Ireki simulagailua
         </Link>

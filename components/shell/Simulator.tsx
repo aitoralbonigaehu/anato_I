@@ -1836,22 +1836,25 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
                 <Link role="menuitem" href={`/kronologia?eguna=${Math.round(day)}`} onClick={close}>
                   <IconClock size={16} /> Kronologia <small>zer dago egun honetan?</small>
                 </Link>
-                {hasRoom(weekNumber) && (
-                  <Link role="menuitem" href={`/ikasgela/${weekNumber}`} onClick={close}>
-                    <IconBook size={16} /> Ikasgela <small>gai honen 3D eredua, taula eta fitxak</small>
-                  </Link>
-                )}
+                {/* The study pages, grouped as in the site bar's «Ikasgela» menu (the structures' atlas under the images). */}
+                <span className="menu-head" aria-hidden>Ikasgela</span>
+                <Link role="menuitem" href={hasRoom(weekNumber) ? `/ikasgela/${weekNumber}` : '/ikasgela'} onClick={close}>
+                  <IconBook size={16} /> Ikasgela <small>{hasRoom(weekNumber) ? 'gai honen mapa, taula eta fitxak' : 'gaien mapak, taulak eta fitxak'}</small>
+                </Link>
                 <Link role="menuitem" href="/eratorriak" onClick={close}>
                   <IconTree size={16} /> Eratorriak <small>nondik datoz, zer bihurtzen dira</small>
-                </Link>
-                <Link role="menuitem" href="/fitxak" onClick={close}>
-                  <IconImage size={16} /> Irudi-fitxak <small>irudiak zenbakiekin</small>
                 </Link>
                 <Link role="menuitem" href="/belortzioak" onClick={close}>
                   <IconImage size={16} /> Belortzioak <small>gezia → izena</small>
                 </Link>
                 <Link role="menuitem" href="/irudiak" onClick={close}>
                   <IconImage size={16} /> Irudiak <small>etiketarik gabe</small>
+                </Link>
+                <Link role="menuitem" className="menu-sub" href="/egiturak" onClick={close}>
+                  <span aria-hidden>↳</span> Egiturak <small>egitura guztien atlasa</small>
+                </Link>
+                <Link role="menuitem" href="/fitxak" onClick={close}>
+                  <IconImage size={16} /> Fitxak <small>irudiak zenbakiekin</small>
                 </Link>
                 <hr />
                 <button
