@@ -62,7 +62,7 @@ export const GutParts3D = gutStage({
     {
       to: { narrow: 1 },
       run: [0.3, 0.85],
-      cam: orbit(62, 4, 10.5, [0, -1.2, 0.0], SH),
+      cam: orbit(62, 4, 11.5, [0, -0.95, 0.0], SH),
       glide: 0.05,
       dim: MID3,
       names: [MID, 'hodi-onfalomesenterikoa', { id: 'bitelo-zaku-sekundarioa', text: 'Bitelo zakua', small: true }],
@@ -93,13 +93,15 @@ const CLOSE = orbit(76, 8, 6.2, [0, 1.75, -0.2], SH);
 export const Respiratory3D = gutStage({
   S: S3,
   pose: END2,
-  opts: { body: 0.6, heart: 0.3, septum: 0.6 },
+  // From stage 2's context (no septum yet): the septum transversum fades in with the first step.
+  opts: { body: 0.6, heart: 0.35, septum: 0 },
   caption: '4. astea · arnas aparatuaren hastapena eta hestearen lau atalak (3D eredua, ezkerretik)',
   key: KEY14.three,
   keyTitle: 'Kolorea = atala',
   steps: [
     {
       to: { resp: 0.35 },
+      opts: { heart: 0.3, septum: 0.6 },
       run: [0.15, 0.85],
       cam: CLOSE,
       glide: 0.06,
@@ -124,7 +126,7 @@ export const Respiratory3D = gutStage({
     {
       to: { resp: 1 },
       run: [0.06, 0.6],
-      cam: orbit(34, 12, 6, [0, 1.35, -0.4], SH),
+      cam: orbit(34, 12, 6.8, [0, 1.42, -0.4], SH),
       glide: 0.07,
       dim: RESP,
       names: [{ id: 'birika-hastapenak', from: 0.35, sub: '→ birikak' }, { id: 'hodi-laringotrakeala', small: true }],
@@ -150,12 +152,10 @@ export const Respiratory3D = gutStage({
         { id: 'aurreko-hestea', sub: 'arnas hastapena → gibel hastapena' },
         { ...MID, sub: 'gibel hastapena → zeharkako kolonaren 2/3' },
         { id: 'atzeko-hestea', sub: 'kolonaren 2/3 → kloaka mintza' },
+        { id: 'arnas-hastapena', p: 'st-resp', small: true, from: 0.2 },
+        { id: 'gibel-hastapena', p: 'st-liver', small: true, from: 0.3 },
       ],
-      marks: [
-        { p: 'st-resp', text: 'arnas h.', dx: -30, dy: -18 },
-        { p: 'st-liver', text: 'gibel h.', dx: -30, dy: -4 },
-        { p: 'st-colon', text: '2/3 | 1/3', dx: -46, dy: 8 },
-      ],
+      marks: [{ p: 'st-colon', text: '2/3 | 1/3', dx: -46, dy: 8 }],
       note: 'Aurreko hestea arnas hastapenetik gibel hastapeneraino; bitarteko hestea zeharkako kolonaren 2/3 eta 1/3 artera arte; atzekoa kloaka mintzeraino',
       key: KEY14.four,
     },
@@ -179,15 +179,17 @@ export const S4 = [0, 0.24, 0.48, 0.72] as const;
 export const Arteries3D = gutStage({
   S: S4,
   pose: END3,
-  opts: { body: 0.6, heart: 0.3, septum: 0.4, vessels: 1 },
+  // From stage 3's end; the vessels come up to full with the arteries.
+  opts: { body: 0.6, heart: 0.3, septum: 0.6, vessels: 0.15 },
   caption: 'Hestearen hiru arteriak: kolorea = arteria (3D eredua, ezkerretik)',
   key: KEY14.arteries,
   keyTitle: 'Kolorea = arteria',
   steps: [
     {
       to: { arteries: 1 },
+      opts: { septum: 0.4, vessels: 1 },
       run: [0.1, 0.6],
-      cam: orbit(92, 4, 13, [0, -0.1, -0.9], SH),
+      cam: orbit(90, 4, 15.5, [0, -0.05, -0.75], SH),
       glide: 0.05,
       names: [{ id: 'enbor-zeliakoa', from: 0.25 }, { id: 'goiko-arteria-mesenterikoa', from: 0.4 }, { id: 'beheko-arteria-mesenterikoa', from: 0.55 }, { id: 'aorta-dortsalak', text: 'Aorta', small: true }],
       note: 'Atal guztietatik sortutako eratorriak irrigatzeko hiru arteria daude, aortatik',
@@ -226,7 +228,8 @@ const MESO = ['mesenterio-dortsala', 'mesogastrio-dortsala', 'mesoduodeno-dortsa
 export const Mesentery3D = gutStage({
   S: S5,
   pose: END4,
-  opts: { body: 0.6, heart: 0.25, septum: 0.55 },
+  // From stage 4's end; the vessels go back to faint context with the first step.
+  opts: { body: 0.6, heart: 0.3, septum: 0.4, vessels: 1 },
   caption: 'Peritoneo barrunbea eta mesenterioa (3D eredua)',
   // The notes' transverse section beside the 3D, from the same pose (p1 C, p2): cavity, peritoneum, mesos, retro.
   section: (t, pose, lit) => {
@@ -240,6 +243,7 @@ export const Mesentery3D = gutStage({
   steps: [
     {
       to: { cavity: 1 },
+      opts: { heart: 0.25, septum: 0.55, vessels: 0.15 },
       run: [0.1, 0.6],
       cam: orbit(88, 6, 12, [0, -0.2, -0.9], SH),
       glide: 0.05,
@@ -253,7 +257,7 @@ export const Mesentery3D = gutStage({
       cam: orbit(72, 8, 10.5, [0, -0.5, -0.7], SH),
       glide: 0.05,
       dim: ['errai-peritoneoa', 'aurreko-hestea', 'erdiko-hestea', 'atzeko-hestea', 'urdaila'],
-      names: [{ id: 'errai-peritoneoa', from: 0.3, sub: '(alboko mesodermoaren errai orria)' }],
+      names: [{ id: 'errai-peritoneoa', p: 'erdiko-hestea', from: 0.3, sub: '(alboko mesodermoaren errai orria)' }],
       note: 'Hesteen eratorri guztiak errai peritoneoz (alboko mesodermoaren errai orriz) inguratuta daude',
     },
     {
@@ -275,7 +279,7 @@ export const Mesentery3D = gutStage({
     {
       to: { retro: 1 },
       run: [0.1, 0.55],
-      cam: orbit(128, 10, 9.5, [0, -0.6, -1.4], SH),
+      cam: orbit(128, 10, 10.5, [0, -0.85, -1.4], SH),
       glide: 0.06,
       dim: ['giltzurruna', 'aorta-dortsalak', 'beheko-kaba-zaina', 'paretako-peritoneoa'],
       names: [{ id: 'giltzurruna', from: 0.25, text: 'Giltzurrunak' }, { id: 'aorta-dortsalak', p: 'aorta', text: 'Aorta', from: 0.35 }, { id: 'beheko-kaba-zaina', from: 0.45 }],

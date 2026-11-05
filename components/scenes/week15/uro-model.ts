@@ -202,9 +202,12 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
         if (tub > 0.01) tube(`plat${i}${s}`, 'hodixka-pronefrikoak', grown(L([X(s, [IM_X, y, -0.5]), X(s, [0.97, y, -0.48])], 6), tub), UC.pro, 0.045, op, { groups: ['pronefrosa'] }, 8);
       }
     });
-    pts['nefrotomak'] = X(1, [IM_X, PRO_Y[2], -0.42]);
-    pts['hodixka-pronefrikoak'] = X(1, [0.6, PRO_Y[4], -0.24]);
-    pts['pronefrosa'] = X(1, [0.85, PRO_Y[3], -0.45]);
+    // The names point at what is left: below the gone front (the cranial units go first), gliding down with it.
+    const yAt = (i: number) => PRO_Y[0] - Math.min(7, i) * (PRO_Y[0] - PRO_Y[1]);
+    const front = 8 * clamp01(pose.proGone);
+    pts['nefrotomak'] = X(1, [IM_X, yAt(Math.max(2, front + 0.6)), -0.42]);
+    pts['hodixka-pronefrikoak'] = X(1, [0.6, yAt(Math.max(4, front + 1.6)), -0.24]);
+    pts['pronefrosa'] = X(1, [0.85, yAt(Math.max(3, front + 0.6)), -0.45]);
   }
   if (pose.proDuct > 0.01) {
     const gone = clamp01(pose.proGone);

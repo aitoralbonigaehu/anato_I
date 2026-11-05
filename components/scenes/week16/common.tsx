@@ -52,6 +52,12 @@ export const KEY16 = {
     { color: GC16.oocyte, text: 'obozitoak' },
     { color: GC16.follicle, text: 'folikulu zelulak' },
   ],
+  female: [
+    { color: UC.gonad, text: 'obulutegia' },
+    { color: UC.muller, text: 'tronpak, uteroa' },
+    { color: UC.endo, text: 'sinu urogenitala' },
+    { color: '#c9c1b2', text: 'lotailuak' },
+  ],
   vagina: [
     { color: UC.muller, text: 'Müller (mesodermoa)' },
     { color: UC.endo, text: 'sinua (endodermoa)' },

@@ -116,12 +116,16 @@ const spec12: StageSpec<PelvisPose, PelvisOpts> = {
       note: 'Alantoideak barrunbea galdu eta itxi egiten da: urakoa (soka trinkoa). Hortik erdiko zilbor-lotailua, gernu maskuriaren erpinetik zilborrera',
     },
     {
-      to: { fistula: 1 },
+      // Not closed: an urachus with cavities left in it, not the ligament.
+      to: { fistula: 1, ligament: 0 },
       run: [0.1, 0.5],
       cam: SIDE(8, [0, 0.8, 1.1], 76, 6),
       glide: 0.05,
       dim: ['fistula-urakala', 'urakoa'],
-      names: [{ id: 'fistula-urakala', sub: 'urakoa guztiz itxi ez bada', from: 0.25 }],
+      names: [
+        { id: 'urakoa', sub: 'itxi gabe', small: true, from: 0.2 },
+        { id: 'fistula-urakala', sub: 'urakoa guztiz itxi ez bada', from: 0.3 },
+      ],
       note: 'KONTUZ: urakoa guztiz ixten ez bada (soka forma hartzen ez badu), barnean barrunbeak geratzen dira: fistulak, jaioberrietan arazoak',
       warn: true,
     },
@@ -132,7 +136,8 @@ export const Sinus15 = poseStage(spec12, (p, o) => pelvisModel(p, o));
 // ———————————————————————————— 13. Gernu maskuria: igoera, trigonoa, urakoa ————————————————————————————
 
 export const S13 = [0, 0.18, 0.36, 0.54, 0.72, 0.86] as const;
-const P13: PelvisPose = { ...PP0, sept: 1, split: 1, parts: 1, urachus: 0.6, ducts: 1 };
+// The kidney, the ureter and the duct come in at the start (stage 12 had none).
+const P13: PelvisPose = { ...PP0, sept: 1, split: 1, parts: 1, urachus: 0.6 };
 
 const spec13side: StageSpec<PelvisPose, PelvisOpts> = {
   S: S13,
@@ -147,7 +152,7 @@ const spec13side: StageSpec<PelvisPose, PelvisOpts> = {
   ],
   steps: [
     {
-      to: { kidUp: 1 },
+      to: { kidUp: 1, ducts: 1 },
       run: [0.06, 0.9],
       cam: SIDE(10, [0, 0.4, 0.0], 70, 6),
       glide: 0.06,
@@ -251,7 +256,8 @@ export const BladderBack15 = poseStage(spec13back, (p, o) => trigoneModel(p, o))
 // ———————————————————————————— 14. Uretra ————————————————————————————
 
 export const S14 = [0, 0.2, 0.4, 0.6, 0.8] as const;
-const P14: PelvisPose = { ...PP0, sept: 1, split: 1, parts: 1, urachus: 1, ligament: 1 };
+// From where stage 13 ended (the kidney, the ureter and the duct fade out first: this stage is the urethra).
+const P14: PelvisPose = endPose(spec13side).pose;
 
 const spec14: StageSpec<PelvisPose, PelvisOpts> = {
   S: S14,
@@ -262,6 +268,8 @@ const spec14: StageSpec<PelvisPose, PelvisOpts> = {
   keyTitle: 'Kolorea = jatorria',
   steps: [
     {
+      to: { ducts: 0 },
+      run: [0.02, 0.45],
       cam: SIDE(7.5, [0, -0.6, 0.6]),
       glide: 0.06,
       dim: ['atal-pelbianoa', 'gernu-maskuria'],
@@ -317,7 +325,6 @@ const spec14: StageSpec<PelvisPose, PelvisOpts> = {
   ],
 };
 export const Urethra15 = poseStage(spec14, (p, o) => pelvisModel(p, o));
-void endPose;
 
 // ———————————————————————————— 15. Zakil uretra: glandea ————————————————————————————
 
@@ -359,7 +366,7 @@ const spec15: StageSpec<GlansPose, GlansOpts> = {
     {
       to: { cord: 1 },
       run: [0.08, 0.85],
-      cam: GCAM(6, 6, 6, [2.0, 0, 0]),
+      cam: GCAM(6.8, 6, 6, [1.7, 0, 0]),
       glide: 0.05,
       dim: ['kordoi-ektodermikoa', 'zakil-uretra'],
       names: [
@@ -371,7 +378,7 @@ const spec15: StageSpec<GlansPose, GlansOpts> = {
     {
       to: { hollow: 1, join: 1 },
       run: [0.06, 0.85],
-      cam: GCAM(5.5, 10, 6, [2.2, 0, 0]),
+      cam: GCAM(6.2, 10, 6, [1.9, 0, 0]),
       glide: 0.05,
       dim: ['kanpoko-uretra-zuloa', 'kordoi-ektodermikoa', 'zakil-uretra'],
       names: [
@@ -384,7 +391,7 @@ const spec15: StageSpec<GlansPose, GlansOpts> = {
     {
       to: { fossa: 1 },
       run: [0.06, 0.7],
-      cam: GCAM(5.5, 0, 4, [2.2, 0, 0]),
+      cam: GCAM(6.2, 0, 4, [1.9, 0, 0]),
       glide: 0.05,
       dim: ['hobi-nabikularra', 'kanpoko-uretra-zuloa', 'zakil-uretra'],
       names: [

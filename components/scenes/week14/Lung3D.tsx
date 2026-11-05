@@ -22,7 +22,7 @@ export const KEY_TREE = [
 export const S25 = [0, 0.18, 0.38, 0.58, 0.78] as const;
 
 const spec25: StageSpec<TreePose, TreeOpts> = {
-  where: { th: 1.1, at: [0, 1.75, -1.0], scale: 3, planes: [{ center: [0, 1.4, -0.1], a: [0, 0, 1.4], b: [0, 1.9, 0] }], note: 'Arnas dibertikulua: aurreko hestearen horma bentraletik, bihotzaren atzean; ezkerretik' },
+  where: { th: 1.1, at: [0, 1.75, -1.0], scale: 3, planes: [{ center: [0, 1.4, -0.1], a: [0, 0, 1.4], b: [0, 1.9, 0] }], note: 'Arnas dibertikulua: aurreko hestearen horma bentraletik, bihotzaren atzean; eskuinetik ikusita' },
   S: S25,
   pose: TP0,
   opts: {},
@@ -71,7 +71,7 @@ const spec25: StageSpec<TreePose, TreeOpts> = {
     {
       to: { tertiary: 1, more: 1 },
       run: [0.05, 0.8],
-      cam: FRONT([0, 0.4, 0.05], 5.8, 14, 8),
+      cam: FRONT([0, 0.45, 0.05], 6.7, 14, 8),
       glide: 0.06,
       dim: ['bronkio-segmentarioak', 'bronkio-zuhaitza'],
       names: [
@@ -83,7 +83,7 @@ const spec25: StageSpec<TreePose, TreeOpts> = {
     {
       to: { cartilage: 1 },
       run: [0.05, 0.5],
-      cam: FRONT([0, 0.9, 0.05], 6.2),
+      cam: FRONT([0, 0.92, 0.05], 8.2),
       glide: 0.06,
       dim: ['laringea', 'trakea', 'kartilago-eraztunak', 'bronkio-nagusiak', 'bronkio-lobarrak', 'bronkio-segmentarioak'],
       names: [
@@ -121,7 +121,7 @@ const spec26: StageSpec<AcinusPose, AcinusOpts> = {
   keyTitle: 'Kolorea',
   steps: [
     {
-      cam: CLOSE([0, 1.3, 0], 3.6),
+      cam: CLOSE([0, 1.12, 0], 4.6),
       glide: 0.07,
       dim: ['bukaerazko-bronkioloa'],
       names: [{ id: 'bukaerazko-bronkioloa', sub: '16. asterako; kartilagorik gabe', from: 0.2 }],
@@ -130,7 +130,7 @@ const spec26: StageSpec<AcinusPose, AcinusOpts> = {
     {
       to: { resp: 1 },
       run: [0.05, 0.7],
-      cam: CLOSE([0, 0.95, 0], 3.8),
+      cam: CLOSE([0, 0.56, 0], 3.8),
       glide: 0.06,
       dim: ['arnas-bronkioloak'],
       names: [{ id: 'arnas-bronkioloak', sub: '16. astetik 28. astera', from: 0.3 }],
@@ -139,7 +139,7 @@ const spec26: StageSpec<AcinusPose, AcinusOpts> = {
     {
       to: { sacs: 1 },
       run: [0.05, 0.7],
-      cam: CLOSE([0, 0.6, 0], 4.2),
+      cam: CLOSE([0, 0.3, 0], 4.2),
       glide: 0.06,
       dim: ['bukaerazko-zakuak'],
       names: [{ id: 'bukaerazko-zakuak', text: 'Bukaerazko zakuak', sub: '= hasierako albeoloak (28.–36. astea)', from: 0.3 }],
@@ -148,7 +148,7 @@ const spec26: StageSpec<AcinusPose, AcinusOpts> = {
     {
       to: { caps: 1 },
       run: [0.05, 0.75],
-      cam: CLOSE([0.1, 0.5, 0], 3.8, 18),
+      cam: CLOSE([0.1, 0.24, 0], 4.0, 18),
       glide: 0.06,
       dim: ['kapilarrak', 'bukaerazko-zakuak'],
       names: [
@@ -160,7 +160,7 @@ const spec26: StageSpec<AcinusPose, AcinusOpts> = {
     {
       to: { pneumo: 1, surf: 1 },
       run: [0.05, 0.7],
-      cam: CLOSE([0.55, 0.2, 0.2], 2.2, 10),
+      cam: CLOSE([0.66, 0.17, 0.16], 2.4, 10),
       glide: 0.06,
       dim: ['pneumozitoak-1', 'pneumozitoak-2', 'surfaktantea'],
       names: [
@@ -173,7 +173,7 @@ const spec26: StageSpec<AcinusPose, AcinusOpts> = {
     {
       to: { mature: 1 },
       run: [0.05, 0.7],
-      cam: CLOSE([0.3, 0.35, 0.1], 3.0, 4),
+      cam: CLOSE([0.22, 0.26, 0.1], 3.4, 4),
       glide: 0.06,
       dim: ['pneumozitoak-1', 'kapilarrak', 'albeoloak'],
       names: [
@@ -186,7 +186,7 @@ const spec26: StageSpec<AcinusPose, AcinusOpts> = {
     {
       to: { fluid: 1 },
       run: [0.05, 0.5],
-      cam: CLOSE([0, 0.55, 0], 4.0),
+      cam: CLOSE([0, 0.2, 0], 4.0),
       glide: 0.06,
       dim: ['albeoloetako-likidoa', 'surfaktantea'],
       names: [

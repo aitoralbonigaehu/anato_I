@@ -62,7 +62,7 @@ const spec6: StageSpec<ForePose, ForeOpts> = {
   caption: 'Hestegorria: toraxetik abdomenera (3D eredua, aurretik)',
   steps: [
     {
-      cam: orbit(28, 8, 11.5, [0.1, 2.0, -0.3], SH),
+      cam: orbit(28, 8, 12.6, [0.1, 1.9, -0.3], SH),
       glide: 0.07,
       names: [
         { id: 'aurreko-hestea', p: 'hestegorria', text: 'Aurreko hestea', sub: 'arnas hastapenetik gibel hastapeneraino' },
@@ -202,6 +202,8 @@ const spec7: StageSpec<ForePose, ForeOpts> = {
       run: [0, 0.2],
       cam: orbit(0, 6, 6.8, [0.3, 0.65, -0.25], SH),
       warn: true,
+      // Kept lit as the steps either side: no flash of the whole trunk between them.
+      dim: [...STOM, 'kardiasa', 'piloroa'],
       names: [{ id: 'urdaila', small: true }],
       note: '* Apunteetako oharra (2. atala): heste lakioek 90º hernia fisiologikoan + 180º abdomenean = 270º',
     },
@@ -307,6 +309,9 @@ const END8 = endPose(spec8);
 
 export const S9 = [0, 0.17, 0.34, 0.53, 0.7, 0.85] as const;
 
+/** Once the greater omentum hangs down, the key names its (fat) yellow too. */
+const KEY9 = [...KEY_F.peri, { color: '#f6d77a', text: 'epiploi handia' }] as const;
+
 const spec9: StageSpec<ForePose, ForeOpts> = {
   S: S9,
   pose: END8.pose,
@@ -350,6 +355,7 @@ const spec9: StageSpec<ForePose, ForeOpts> = {
         { id: 'makurdura-handia', small: true },
       ],
       note: 'Atzeko mesogastrioa makurdura handi osotik behera luzatzen da, zeharkako kolonaren eta heste meharraren aurretik: epiploi handia',
+      key: KEY9,
     },
     {
       cam: orbit(90, 4, 8.6, [0.2, -0.9, 0.15], SH),
@@ -360,6 +366,7 @@ const spec9: StageSpec<ForePose, ForeOpts> = {
         { id: 'poltsa-omentala', p: 'poltsa-omentala-beheko', text: 'Poltsa omentalaren beheranzko luzapena', from: 0.3 },
       ],
       note: 'Albotik (ezkerretik): epiploi handiaren aurreko eta atzeko orrien artean poltsa omentalaren beheranzko luzapena',
+      key: KEY9,
     },
     {
       to: { omFuse: 1 },
@@ -372,13 +379,15 @@ const spec9: StageSpec<ForePose, ForeOpts> = {
         { id: 'mesokolon-dortsala', text: 'Zeharkako kolonaren mesoa', small: true, from: 0.45 },
       ],
       note: 'Luzapena desagertzen da: epiploi handiaren bi orriak fusionatzen dira, baita zeharkako kolonaren errai peritoneoarekin eta mesoarekin ere',
+      key: KEY9,
     },
     {
-      cam: orbit(14, 10, 10, [0.35, -0.3, 0.0], SH),
+      cam: orbit(14, 10, 11.2, [0.35, -0.22, 0.0], SH),
       glide: 0.07,
       dim: ['barea', 'epiploi-handia', 'mesogastrio-dortsala', 'urdaila'],
       names: [{ id: 'barea', small: true }, { id: 'epiploi-handia' }, { id: 'urdaila', small: true }],
       note: 'Laburki: urdailaren biraketagatik atzeko mesogastrioa ezkerrera eta behera: barea, bi lotailuak eta epiploi handia',
+      key: KEY9,
     },
   ],
 };
@@ -466,7 +475,7 @@ const KEY_DUO = [
   { color: FC.mid, text: 'bitarteko hestea (goiko a. mesenterikoa)' },
 ] as const;
 const DUO = ['duodenoa', 'duodenoaren-lehen-atala', 'duodenoaren-bigarren-atala', 'duodenoaren-hirugarren-atala', 'duodenoaren-laugarren-atala', 'jejunoa'];
-const DUO_FRONT = orbit(-12, -8, 5.6, [-0.25, -0.2, -0.55], SH);
+const DUO_FRONT = orbit(-12, -8, 5.8, [-0.25, -0.06, -0.55], SH);
 
 const spec11: StageSpec<ForePose, ForeOpts> = {
   S: S11,
@@ -527,7 +536,7 @@ const spec11: StageSpec<ForePose, ForeOpts> = {
     {
       to: { duodRot: 1, fuse: 1 },
       run: [0.06, 0.8],
-      cam: orbit(-52, 12, 6, [-0.3, -0.2, -0.7], SH),
+      cam: orbit(-52, 12, 6.4, [-0.3, -0.1, -0.7], SH),
       glide: 0.05,
       dim: ['mesoduodeno-dortsala', 'paretako-peritoneoa', ...DUO],
       names: [{ id: 'duodenoa', sub: '→ eskuinera biratzen da' }, { id: 'mesoduodeno-dortsala', sub: '→ atzeko paretarekin fusionatzen da', from: 0.45 }],
@@ -538,7 +547,7 @@ const spec11: StageSpec<ForePose, ForeOpts> = {
     {
       to: { veil: 1 },
       run: [0.06, 0.4],
-      cam: orbit(-22, 4, 6, [-0.25, -0.3, -0.6], SH),
+      cam: orbit(-22, 4, 6.4, [-0.25, -0.16, -0.6], SH),
       glide: 0.05,
       dim: [...DUO, 'paretako-peritoneoa'],
       names: [
@@ -563,14 +572,18 @@ const LIVER = ['gibela', 'gibel-hastapena', 'septum-transversum', 'gibel-hodia']
 
 const spec12: StageSpec<ForePose, ForeOpts> = {
   S: S12,
-  pose: { ...END11.pose, veil: 0 },
-  opts: { ...END11.opts, liverGlass: 0 },
+  // From the duodenum's end (veil, see-through liver): both clear with the first step.
+  pose: END11.pose,
+  opts: END11.opts,
   caption: 'Gibela: hastapena septum transversumean (3D eredua, aurretik; enbrioiaren ezkerra zure eskuinean)',
   key: KEY_F.ventral,
   keyTitle: 'Kolorea',
   steps: [
     {
-      cam: orbit(-6, 6, 8.2, [-0.1, 0.4, 0.0], SH),
+      to: { veil: 0 },
+      opts: { liverGlass: 0 },
+      run: [0.04, 0.4],
+      cam: orbit(-6, 6, 8.2, [-0.25, 0.68, 0.05], SH),
       glide: 0.07,
       dim: ['gibela'],
       names: [{ id: 'gibela', sub: 'goi-eskuin koadrantea (eskumako hipokondrioa)' }],
@@ -704,11 +717,12 @@ const BILE_CAM = orbit(-38, -16, 4.4, [-0.32, 0.38, 0.0], SH);
 const spec14: StageSpec<ForePose, ForeOpts> = {
   S: S14,
   pose: { ...END13.pose, gall: 0 },
-  opts: { ...END13.opts, liverGlass: 0.7 },
+  opts: END13.opts,
   caption: 'Behazun-xixkua eta behazun hodiak (3D eredua, aurretik, eskuinetik eta behetik; gibela gardena)',
   steps: [
     {
       to: { gall: 1 },
+      opts: { liverGlass: 0.7 },
       run: [0.1, 0.8],
       cam: BILE_CAM,
       glide: 0.07,

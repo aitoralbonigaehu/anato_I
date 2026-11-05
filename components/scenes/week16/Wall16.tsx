@@ -39,13 +39,14 @@ const spec1: StageSpec<UroPose, UroOpts> = {
     },
     {
       to: { muller: 1, mullerJoin: 1 },
-      run: [0.06, 0.85],
-      cam: FRONT16(15, [0, -1.2, -0.3], 10, 6),
+      run: [0.03, 0.6],
+      cam: FRONT16(17, [0, -0.95, -0.3], 10, 6),
       glide: 0.05,
       dim: ['hodi-mesonefrikoa', 'hodi-paramesonefrikoa'],
       names: [
         { id: 'hodi-mesonefrikoa', sub: 'Wolff' },
-        { id: 'hodi-paramesonefrikoa', sub: 'Müller', from: 0.4 },
+        // Named at its cranial end, where it starts (it grows down from there).
+        { id: 'hodi-paramesonefrikoa', p: 'muller-sarrera', sub: 'Müller · goitik behera hazten' },
       ],
       note: 'Ondoren hodi urogenitalak: hodi mesonefrikoa (Wolff) eta hodi paramesonefrikoa (Müller)',
     },
@@ -90,7 +91,10 @@ const spec2: StageSpec<UroPose, UroOpts> = {
       cam: FRONT16(9, [0, -3.2, 1.2], 55, 10),
       glide: 0.06,
       dim: ['hasierako-hozi-zelulak', 'bitelo-zaku-sekundarioa', 'alantoidea'],
-      names: [{ id: 'hasierako-hozi-zelulak', sub: 'bitelo zakuaren endodermoa, alantoidetik hurbil (3. astea)', from: 0.2 }],
+      names: [
+        { id: 'bitelo-zaku-sekundarioa', text: 'Bitelo zakua', small: true },
+        { id: 'hasierako-hozi-zelulak', sub: 'bitelo zakuaren endodermoa, alantoidetik hurbil (3. astea)', from: 0.2 },
+      ],
       note: '3. astean, alantoidetik hurbileko bitelo zakuaren endodermoko zelulak bereizten dira: hasierako hozi zelulak',
     },
     {

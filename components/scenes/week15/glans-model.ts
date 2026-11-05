@@ -52,18 +52,20 @@ export function glansModel(pose: GlansPose, o: GlansOpts = {}) {
   const pts: Record<string, V3> = {};
   const dim = o.dim;
   const fade = (id: string, groups?: readonly string[]) => (!dim || dim.k <= 0.001 || dim.ids.includes(id) || (groups ?? []).some((g) => dim.ids.includes(g)) ? 1 : 1 - 0.75 * dim.k);
-  const tube = (key: string, id: string, line: V3[], color: string, r: number | ((u: number) => number), op = 1, extra: Partial<Item3> = {}, sides = 16) => {
+  const tube = (key: string, id: string, line: V3[], color: string, r: number | ((u: number) => number), op = 1, extra: Partial<Item3> = {}, sides = 16, caps: [boolean, boolean] = [true, true]) => {
     if (op <= 0.01 || line.length < 2) return;
-    items.push({ key, id, ...tubeParts(line, { radius: typeof r === 'number' ? () => r : r, ref: [0, 1, 0], sides, capStart: true, capEnd: true }), color, deep: darker(color), tissue: 'epithelium', opacity: op * fade(id, extra.groups), ...extra });
+    items.push({ key, id, ...tubeParts(line, { radius: typeof r === 'number' ? () => r : r, ref: [0, 1, 0], sides, capStart: caps[0], capEnd: caps[1] }), color, deep: darker(color), tissue: 'epithelium', opacity: op * fade(id, extra.groups), ...extra });
   };
 
   // ———— the body (mesoderm) with its ectodermal skin, cut in half; the glans at the tip ————
   const axis = Array.from({ length: 40 }, (_, i): V3 => [-1.6 + (i / 39) * 4.75, 0, 0]);
   const rad = (u: number) => R(-1.6 + u * 4.75);
-  tube('body', 'zakila', axis.slice(0, 15), BODY, (u) => rad(u * (14 / 39)) - 0.06, 0.5, { tissue: 'mesenchyme', thin: 0.4 });
+  // The shaft up to the coronal groove (x ≈ 1.72, axis point 27), the glans beyond it: one surface, no caps where they meet.
+  const G = 27;
+  tube('body', 'zakila', axis.slice(0, G + 1), BODY, (u) => rad(u * (G / 39)) - 0.06, 0.5, { tissue: 'mesenchyme', thin: 0.4 }, 16, [true, false]);
   // The body and the glans are the frame of every step: never faded with the step's lit set.
   items[items.length - 1].opacity = 0.5;
-  tube('glans', 'glandea', axis.slice(14), mixHex(BODY, '#f7c4d2', 0.35), (u) => rad((14 + u * 25) / 39) - 0.06, 0.55, { tissue: 'mesenchyme', thin: 0.4 });
+  tube('glans', 'glandea', axis.slice(G), mixHex(BODY, '#f7c4d2', 0.35), (u) => rad((G + u * (39 - G)) / 39) - 0.06, 0.55, { tissue: 'mesenchyme', thin: 0.4 }, 16, [false, true]);
   items[items.length - 1].opacity = 0.55;
   tube('skin', 'azaleko-ektodermoa', axis, ECTO, (u) => rad(u), 0.18, { thin: 0.6, outline: false, quiet: true });
   pts['zakila'] = [-0.6, 0.66, -0.1];
@@ -80,7 +82,7 @@ export function glansModel(pose: GlansPose, o: GlansOpts = {}) {
   // ———— the penile urethra (endoderm): up to the coronal groove, not to the tip ————
   const ur = L([[-1.6, -0.02, 0], [0.4, 0, 0], [1.65, 0, 0]], 14);
   tube('urethra', 'zakil-uretra', ur, ENDO, 0.11, 1, { deep: T.endoDeep });
-  pts['zakil-uretra'] = [-0.4, 0.15, 0.05];
+  pts['zakil-uretra'] = [0.7, 0.15, 0.05];
 
   // ———— the ectodermal cord from the tip in; hollowed: the external urethral orifice; joined; the fossa ————
   const cord = clamp01(pose.cord);
@@ -109,13 +111,16 @@ export function glansModel(pose: GlansPose, o: GlansOpts = {}) {
   if (prep > 0.01) {
     const open = clamp01(pose.prepOpen);
     for (const side of [1, -1]) {
-      const from: V3 = [1.85, side * 0.66, 0];
-      const to: V3 = [lerp(1.85, 3.0, prep), side * lerp(0.66, 0.4, prep), 0];
-      const line = L([from, mix3(from, to, 0.5), to], 12);
+      // Just under the glans's surface, from the coronal groove towards the tip.
+      const x1 = lerp(1.9, 3.0, prep);
+      const line = Array.from({ length: 12 }, (_, i): V3 => {
+        const x = lerp(1.9, x1, i / 11);
+        return [x, side * (R(x) - 0.1), 0];
+      });
       tube(`prep${side}`, 'prepuzioa', line, ECTO, open > 0.01 ? 0.07 + 0.05 * open : 0.07, 1, { deep: T.ectoDeep }, 12);
       if (open > 0.01) tube(`prepl${side}`, 'prepuzioa', line.slice(1, -1), '#0d1a3a', 0.06 * open, 0.9, { outline: false }, 8);
     }
-    pts['prepuzioa'] = [2.5, 0.74, -0.05];
+    pts['prepuzioa'] = [2.45, R(2.45) - 0.04, 0.1];
   }
   return { items, pts };
 }

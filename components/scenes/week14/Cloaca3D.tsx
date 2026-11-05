@@ -21,7 +21,7 @@ export const KEY_C = [
 export const S22 = [0, 0.2, 0.4, 0.6, 0.8] as const;
 
 const spec22: StageSpec<CloacaPose, CloacaOpts> = {
-  where: { th: -1.55, at: [0, 0.55, -1.6], scale: 3.4, planes: [{ center: [0, 0.4, 0.1], a: [0, 0, 1.6], b: [0, 1.6, 0] }], note: 'Kloaka: enbrioiaren isatsaren oinarrian; erdiko ebakidura sagitala, ezkerretik' },
+  where: { th: -1.55, at: [0, 0.55, -1.6], scale: 3.4, planes: [{ center: [0, 0.4, 0.1], a: [0, 0, 1.6], b: [0, 1.6, 0] }], note: 'Kloaka: enbrioiaren isatsaren oinarrian; erdiko ebakidura sagitala, eskuinetik ikusita' },
   S: S22,
   pose: CP0,
   opts: {},
@@ -30,7 +30,7 @@ const spec22: StageSpec<CloacaPose, CloacaOpts> = {
   keyTitle: 'Kolorea = jatorria',
   steps: [
     {
-      cam: SIDE(5.2, [0, 0.55, 0.1]),
+      cam: SIDE(5.4, [0, 0.3, 0.1]),
       glide: 0.07,
       dim: ['atzeko-hestea', 'kloaka', 'kloaka-mintza', 'alantoidea'],
       names: [
@@ -44,7 +44,7 @@ const spec22: StageSpec<CloacaPose, CloacaOpts> = {
     {
       to: { sept: 1 },
       run: [0.08, 0.8],
-      cam: SIDE(4.4),
+      cam: SIDE(4.6, [0, 0.15, 0.05]),
       glide: 0.05,
       dim: ['trenkada-uroerrektala', 'kloaka', 'kloaka-mintza'],
       names: [{ id: 'trenkada-uroerrektala', sub: 'alantoidearen eta atzeko hestearen artetik → kloaka mintzeraino', from: 0.2 }],

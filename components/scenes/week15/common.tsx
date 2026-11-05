@@ -14,8 +14,8 @@ export { orbit, endPose, poseAt, type StageSpec, type Step, type Where } from '@
 export const CONT15 = 'gernua-15';
 
 export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: number } | null }>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel) {
-  // Names keep above the camera keys (bottom right of the frame).
-  return poseStage14({ right: [236, 468], ...spec }, build, false, CONT15);
+  // Names keep above the camera keys (bottom right of the frame; the column also stops above them by itself).
+  return poseStage14({ right: [236, 540], ...spec }, build, false, CONT15);
 }
 
 /** Front view of the posterior wall: yaw 0 = from the front (the embryo's left on the viewer's right). */

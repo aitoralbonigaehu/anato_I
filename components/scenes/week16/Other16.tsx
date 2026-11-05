@@ -68,7 +68,7 @@ const spec12: StageSpec<BroadPose, BroadOpts> = {
       note: 'Bi zaku-hondo: utero-besikala (aurrean, gernu maskuria eta uteroa artean) eta utero-errektala (atzean, uteroa eta ondestea artean); lotailu zabalak bereizten ditu',
     },
     {
-      cam: orbit(-90, 6, 9.5, [0, -0.2, 0], [20, 0]),
+      cam: orbit(-90, 6, 10.5, [0, -0.1, 0], [20, 0]),
       glide: 0.08,
       dim: ['gernu-maskuria', 'zaku-hondo-uterobesikala', 'uteroa', 'zaku-hondo-uteroerrektala', 'ondestea'],
       names: [
@@ -110,7 +110,7 @@ const spec14: StageSpec<DescentPose, DescentOpts> = {
   key: KEY_D,
   steps: [
     {
-      cam: DCAM(10, [0.9, -0.2, 0.2]),
+      cam: DCAM(10, [0.9, 0.25, 0.2]),
       glide: 0.06,
       dim: ['barrabila', 'paretako-peritoneoa'],
       names: [
@@ -120,9 +120,9 @@ const spec14: StageSpec<DescentPose, DescentOpts> = {
       note: 'Gonadek giltzurrunen aurkako bidea: abdomenean eratu (peritoneo atzean) eta behera. Arretan gorputzetik kanpo, emeetan barrunbe pelbianoan',
     },
     {
-      cam: DCAM(10, [0.9, -0.8, 0.3], 80, 4),
+      cam: DCAM(16, [0.9, -0.85, 0.3], 80, 4),
       glide: 0.05,
-      dim: ['gubernakulua', 'eskroto-goragunea'],
+      dim: ['gubernakulua', 'eskroto-goragunea', 'barrabila'],
       names: [
         { id: 'gubernakulua', sub: 'gida: gonadatik larruazaleraino' },
         { id: 'eskroto-goragunea', sub: 'larruazalean ainguratuta', from: 0.35 },
@@ -132,13 +132,13 @@ const spec14: StageSpec<DescentPose, DescentOpts> = {
     {
       to: { down: 0.5 },
       run: [0.06, 0.9],
-      cam: DCAM(10, [0.9, -0.8, 0.3], 96, 4),
+      cam: DCAM(15, [0.9, -0.5, 0.3], 96, 4),
       glide: 0.05,
       dim: ['barrabila', 'gubernakulua'],
       names: [{ id: 'barrabila', sub: 'pasiboki: inguruko guztia igotzen da' }],
       note: 'Gorputza handitu eta gubernakulua ez da luzatzen: gonada gero eta beherago geratzen da, pasiboki (ez du mugimendu aktiborik)',
     },
-    { cam: DCAM(10, [0.9, -0.8, 0.3], 96, 4) },
+    { cam: DCAM(15, [0.9, -0.5, 0.3], 96, 4) },
   ],
 };
 export const Descent16 = poseStage(spec14, (p, o) => descentModel(p, o));
@@ -153,7 +153,7 @@ const spec15: StageSpec<DescentPose, DescentOpts> = {
   key: KEY_D,
   steps: [
     {
-      cam: DCAM(8.5, [0.9, -1.4, 0.6], 92, 4),
+      cam: DCAM(9, [0.9, -1.85, 0.6], 92, 4),
       glide: 0.06,
       dim: ['barrabila', 'sinfisi-pubikoa'],
       names: [
@@ -187,16 +187,16 @@ const spec15: StageSpec<DescentPose, DescentOpts> = {
     {
       to: { down: 1 },
       run: [0.04, 0.9],
-      cam: DCAM(8.5, [0.9, -2.0, 0.9], 90, 4),
+      cam: DCAM(9, [0.9, -2.25, 0.9], 90, 4),
       glide: 0.05,
-      dim: ['barrabila', 'gubernakulua'],
+      dim: ['barrabila', 'gubernakulua', 'luzapen-baginala', 'eskroto-goragunea'],
       names: [{ id: 'gubernakulua', sub: 'gero eta laburragoa' }],
       note: 'Barrabila gero eta beherago; gubernakulua gero eta laburragoa, barrabila larruazaletik hurbil dagoelako',
     },
     {
       to: { close: 1, tunica: 1, gubGone: 1 },
       run: [0.06, 0.85],
-      cam: DCAM(8, [0.9, -2.1, 0.95], 82, 6),
+      cam: DCAM(8.5, [0.9, -2.45, 0.95], 82, 6),
       glide: 0.05,
       dim: ['iztai-hodia', 'geruza-baginala', 'hodi-deferentea', 'barrabila'],
       names: [
@@ -243,7 +243,7 @@ const spec17: StageSpec<ExternalPose, ExternalOpts> = {
     {
       to: { tubercle: 1 },
       run: [0.15, 0.85],
-      cam: ECAM(),
+      cam: ECAM(7, [0, 0.3, 0]),
       glide: 0.06,
       dim: ['kloaka-mintza', 'tuberkulu-genitala'],
       names: [
@@ -255,7 +255,7 @@ const spec17: StageSpec<ExternalPose, ExternalOpts> = {
     {
       to: { folds: 1, swellings: 1 },
       run: [0.06, 0.8],
-      cam: ECAM(6.5, [0, 0, 0], 8, 10),
+      cam: ECAM(7, [0, 0.15, 0], 8, 10),
       glide: 0.05,
       dim: ['kloaka-tolespenak', 'goragune-genitalak'],
       names: [
@@ -280,7 +280,7 @@ const spec17: StageSpec<ExternalPose, ExternalOpts> = {
     {
       to: { groove: 1 },
       run: [0.3, 0.85],
-      cam: ECAM(6, [0, 0.1, 0], -6, 10),
+      cam: ECAM(7, [0, 0.22, 0], -6, 10),
       glide: 0.05,
       dim: ['tolespen-urogenitalak', 'tolespen-ezpaineskrotalak', 'ildo-urogenitala'],
       names: [
@@ -386,7 +386,7 @@ const spec19: StageSpec<ExternalPose, ExternalOpts> = {
     {
       cam: ECAM(6.5, [0, 0.9, 0.9], 70, 8),
       glide: 0.06,
-      dim: ['glandea', 'zakil-uretra'],
+      dim: ['glandea', 'zakil-uretra', 'faloa'],
       names: [
         { id: 'glandea', sub: 'uretrak ez du zeharkatzen' },
         { id: 'zakil-uretra', small: true },

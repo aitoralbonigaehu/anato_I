@@ -17,6 +17,7 @@ const ORIENT = { top: 'Kraneala', bottom: 'Kaudala' };
 const WALL = 'Atzeko pareta 3D, aurretik ikusita (15. gaiko eredu bera): burua goian, enbrioiaren ezkerra zure eskuinean. Gonada gandorra turkesa, hodi mesonefrikoa (Wolff) more iluna, hodi paramesonefrikoa (Müller) laranja, endodermoa (kloaka, bitelo zakua, alantoidea) horia, hozi zelulak hori argiak. Arrastatu biratzeko.';
 const GONAD = 'Gonada zeharka ebakita (3D blokea, goitik): bizkarra goian, aorta zure ezkerrean goian, mesonefrosa (bere hodiekin) zure eskuinean. Gonada turkesa gardena, sexu kordoiak turkesa, hozi zelulak horiak, Leydig zelulak laranjak, obozitoak horiak folikulu zelulekin. Arrastatu biratzeko.';
 const DUCTS = 'Hodi genitalak aurretik (3D): enbrioiaren ezkerra zure eskuinean. Gonadak turkesa, Wolff hodia eta bere eratorriak moreak, Müller hodia eta bere eratorriak (tronpak, uteroa, baginaren goiko herena) laranjak, sinu urogenitala eta gernu maskuria horiak, lotailuak grisak. Arrastatu biratzeko.';
+const DUCTS_BACK = 'Umetokia eta hodi genitalak atzetik (3D): enbrioiaren ezkerra zure ezkerrean; obulutegiak lotailu zabalaren atzean ikusteko. Obulutegiak turkesa, tronpak eta uteroa laranjak, lotailuak grisak, lotailu zabala arrosa gardena. Arrastatu biratzeko.';
 const BROAD = 'Pelbisa zeharka ebakita (3D blokea, goitik): bizkarra goian, sabela behean; enbrioiaren ezkerra zure eskuinean. Müller hodiak eta uteroa laranjak, peritoneoa eta lotailu zabala arrosak, zaku-hondoak urdin gardenak, ondestea eta gernu maskuria horiak. Arrastatu biratzeko.';
 const DESCENT = 'Enbor behea barrabilaren alboan ebakita, ezkerretik ikusita (apunteetako A–D irudiak bezala): sabela zure ezkerrean, bizkarra eskuinean. Barrabila turkesa argia, gubernakulua grisa, peritoneoa eta luzapen baginala arrosak, hodi deferentea morea. Arrastatu biratzeko.';
 const EXTERNAL = 'Kanpo genitalak behetik eta aurretik (3D, apunteetako irudiak bezala): tuberkulua goian, uzkia behean, enbrioiaren ezkerra zure eskuinean. Tuberkulua arrosa, tolespenak arrosa argiak, goraguneak azal kolorekoak, mintzak zuriak, ildoa iluna. Arrastatu biratzeko.';
@@ -42,7 +43,7 @@ const stages: StageDef[] = [
         notes: ['w16/1/p3/s1-s4'],
         recall: ['gandor-urogenitala', 'mesonefrosa', 'gonada-gandorra'],
         idea: 'Gonadak mesonefrosaren aurrean, gandor urogenitalean: gandor urinarioa eta gonadala bereizten dira.',
-        text: 'Gonadak mesonefrosaren aurreko aldean garatzen dira. Hasieran desberdindu gabe daude, gandor urogenitalaren barruan; garapenean bi gandorrak bereizten dira: gandor urinarioa (mesonefrosa) eta gandor gonadala. Gai honetan gandor gonadalaren garapena ikusten da.',
+        text: 'Gonada gandorra mesonefrosaren aurreko aldean garatzen da. Hasieran desberdindu gabe dago, gandor urogenitalaren barruan; garapenean bi gandorrak bereizten dira: gandor urinarioa (mesonefrosa) eta gandor gonadala. Gai honetan gandor gonadalaren garapena ikusten da.',
         focus: ['gonada-gandorra', 'mesonefrosa'],
         exam: 'Gonadak mesonefrosaren aurreko aldean, gandor gonadalean.',
         view: '3d',
@@ -731,7 +732,7 @@ const stages: StageDef[] = [
     intro: 'Hiru zeharkako mozketak erakusten dute hodi paramesonefrikoak beherantz luzatzean erdialderantz mugitzen direla eta mesoa berekin daramatela: meso handi bat, lotailu zabala, uterotik pelbisaren alboko paretetara. Pelbisa bitan banatzen da: zaku-hondo uterobesikala (aurrean) eta uteroerrektala (atzean).',
     duration: 56,
     source: src('3.4. Hodien bereizketa: emeen kasuan'),
-    views: [v(Broad16, 'Pelbisa 3D', BROAD, '3d', BLOCK_O), v(BroadDucts16, 'Umetokia atzetik', DUCTS, 'hodiak')],
+    views: [v(Broad16, 'Pelbisa 3D', BROAD, '3d', BLOCK_O), v(BroadDucts16, 'Umetokia atzetik', DUCTS_BACK, 'hodiak')],
     beats: [
       {
         at: S12[0],

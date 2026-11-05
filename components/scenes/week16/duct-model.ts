@@ -137,11 +137,13 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
     // Mesonephric tubules beside the gonad: epigenital (at the gonad) → efferent ductules; paragenital (below) → paradidymis.
     const tubs = Array.from({ length: 6 }, (_, k) => 1.45 - k * 0.22);
     tubs.forEach((y, k) => {
-      const epi = y > 0.55;
+      const epi = y > 0.65;
       const id = male > 0.5 ? (epi ? 'hodixka-eferenteak' : 'paradidimoa') : female > 0.5 ? (epi ? 'epooforoa' : 'paraooforoa') : epi ? 'hodixka-epigenitalak' : 'hodixka-paragenitalak';
       const toGonad = epi ? clamp01(pose.efferent) : 0;
-      const end = mix3(X(s, [1.5, y, -0.15]), add(gon(s), X(s, [0.22, y - 1.0, -0.05])), toGonad);
-      const line = L([X(s, [1.72, y, -0.25]), X(s, [1.6, y + 0.05, -0.1]), end], 8);
+      // In the female they lie in the mesovarium: they go down with the ovary.
+      const dn = X(s, [-0.2 * ovd, -0.65 * ovd, 0.1 * ovd]);
+      const end = add(mix3(X(s, [1.5, y, -0.15]), add(gon(s), X(s, [0.22, y - 1.0, -0.05])), toGonad), dn);
+      const line = L([add(X(s, [1.72, y, -0.25]), dn), add(X(s, [1.6, y + 0.05, -0.1]), dn), end], 8);
       // Male: the paragenital ones mostly go (a small remnant); female: both groups stay as small vestiges.
       const op = (epi ? 1 : male > 0.5 ? 0.6 : 1) * pose.ducts;
       tube(`tub${s}${k}`, id, epi || male < 0.5 ? line : line.slice(0, 5), mixHex(UC.meso, '#a78bfa', Math.max(male, female)), 0.04, op, { groups: ['hodixka-mesonefrikoak'] }, 8);
@@ -181,7 +183,9 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
   for (const s of [-1, 1]) {
     const m0 = L([X(s, [1.98, 1.95, -0.05]), X(s, [1.98, 0.6, 0.0]), X(s, [1.5, -0.9, 0.28]), X(s, [0.55, -1.85, 0.3]), X(s, [0.07, -2.1, 0.28])], 40);
     // Female: the tube (cranial, open) over the ovary to the uterus's horn; the caudal part is the uterus (drawn below).
-    const mF = L([X(s, [1.55, 1.55, 0.25]), X(s, [1.75, 1.0, 0.25]), X(s, [1.3, 0.35, 0.18]), X(s, [0.7, -0.05, 0.1]), X(s, [0.38, -0.25, 0.05])], 40);
+    // The tube's lateral part goes down with the ovary (ovDown); its uterine end stays.
+    const dw = (w: number): V3 => X(s, [-0.2 * ovd * w, -0.65 * ovd * w, 0.1 * ovd * w]);
+    const mF = L([add(X(s, [1.55, 1.55, 0.25]), dw(1)), add(X(s, [1.75, 1.0, 0.25]), dw(1)), add(X(s, [1.3, 0.35, 0.18]), dw(0.6)), add(X(s, [0.7, -0.05, 0.1]), dw(0.2)), X(s, [0.38, -0.25, 0.05])], 40);
     const line = morph(m0, mF, female);
     const id = female > 0.5 ? 'falopioren-tronpak' : 'hodi-paramesonefrikoa';
     tube(`mul${s}`, id, line, UC.muller, 0.065, mullerOp, { deep: UC.mullerDeep, groups: ['hodi-paramesonefrikoa', 'falopioren-tronpak'] });
@@ -254,7 +258,7 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
         tube(`lov${s}`, 'lotailu-utero-obarikoa', grown(L([add(ov, X(s, [-0.3, -0.35, 0])), X(s, [0.7, 0.05, 0.05]), X(s, [0.42, -0.35, 0.08])], 10), lg), LIG, 0.05, 1, {}, 8);
         tube(`lround${s}`, 'uteroaren-lotailu-biribila', grown(L([X(s, [0.45, -0.45, 0.12]), X(s, [1.2, -1.0, 0.25]), X(s, [1.75, -1.9, 0.4]), X(s, [1.65, -2.9, 0.6])], 14), lg), LIG, 0.05, 1, {}, 8);
         if (s > 0) {
-          pts['obarioaren-euspen-lotailua'] = add(ov, X(s, [0.5, 1.3, 0]));
+          pts['obarioaren-euspen-lotailua'] = add(ov, X(s, [0.28, 0.88, -0.03]));
           pts['lotailu-utero-obarikoa'] = X(s, [0.85, 0.1, 0.12]);
           pts['uteroaren-lotailu-biribila'] = X(s, [1.55, -1.6, 0.45]);
         }
@@ -272,8 +276,13 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
   if (gb > 0.01)
     for (const s of [-1, 1]) {
       const ov = gon(s);
-      tube(`gub${s}`, 'gubernakulua', L([add(ov, X(s, [-0.2, -0.4, 0.05])), X(s, [0.62, -0.25, 0.12]), X(s, [1.25, -1.0, 0.28]), X(s, [1.7, -1.95, 0.42]), X(s, [1.65, -2.9, 0.6])], 20), '#9ca3af', 0.07, gb, { tissue: 'tendon' }, 10);
-      if (s > 0) pts['gubernakulua'] = X(s, [1.32, -1.15, 0.4]);
+      // It grows down from the ovary; once the ligaments come (it gives them), it fades as they grow.
+      const lgOn = clamp01(pose.ligaments) > 0.01;
+      const gline = L([add(ov, X(s, [-0.2, -0.4, 0.05])), X(s, [0.62, -0.25, 0.12]), X(s, [1.25, -1.0, 0.28]), X(s, [1.7, -1.95, 0.42]), X(s, [1.65, -2.9, 0.6])], 20);
+      const gl = lgOn ? gline : grown(gline, gb);
+      tube(`gub${s}`, 'gubernakulua', gl, '#9ca3af', 0.07, lgOn ? gb : ss(0, 0.15, gb), { tissue: 'tendon' }, 10);
+      // Named along what is drawn (it grows down from the ovary).
+      if (s > 0) pts['gubernakulua'] = add(gl[Math.floor((gl.length - 1) * 0.6)], X(s, [0.1, 0, 0.08]));
     }
 
   // ———— the semen's way: seminiferous tubules → rete → efferent ductules → epididymis → vas → ejaculatory duct → prostatic urethra ————

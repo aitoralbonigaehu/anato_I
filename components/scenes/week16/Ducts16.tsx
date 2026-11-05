@@ -29,17 +29,17 @@ const spec6: StageSpec<DuctPose, DuctOpts> = {
   key: KEY16.ducts,
   steps: [
     {
-      cam: LEFTSIDE(6.5, [1.4, 0.9, 0], 24, 8),
+      cam: LEFTSIDE(7, [1.05, 0.9, 0], 24, 8),
       glide: 0.06,
       dim: ['barrabila', 'hodixka-eferenteak', 'epididimoa'],
       names: [
-        { id: 'barrabila', text: 'Barrabilaren hiloa', sub: 'hodiak eta nerbioak sartu/irten · espermatozoideak irten' },
+        { id: 'barrabila', text: 'Barrabilaren hiloa', sub: 'hemendik espermatozoideak irten' },
         { id: 'hodixka-eferenteak', small: true, from: 0.4 },
       ],
       note: 'Hiloa: egitura askoren atal finagoa (lepoa), hortik arteriak, nerbioak eta linfa hodiak sartu eta zainak irteten dira. Barrabilean ez da hain estua: espermatozoideak irteten dira',
     },
     {
-      cam: CAM(10, [0, -1.4, 0], -10, 8),
+      cam: CAM(11.5, [0, -1.0, 0], -10, 8),
       glide: 0.06,
       dim: ['semen-xixkua', 'hodi-deferentea', 'prostata', 'uretra-prostatikoa'],
       names: [
@@ -67,11 +67,11 @@ const spec7: StageSpec<DuctPose, DuctOpts> = {
     {
       to: { male: 1 },
       run: [0.1, 0.9],
-      cam: CAM(11, [0, -0.4, 0]),
+      cam: CAM(12.5, [0, -0.2, 0]),
       glide: 0.06,
       dim: ['barrabila', 'hodi-paramesonefrikoa', 'hodi-mesonefrikoa'],
       names: [
-        { id: 'barrabila', sub: '8. astea: testosterona (Leydig) + AMH (Sertoli)' },
+        { id: 'barrabila', sub: '8. astea: testosterona + AMH' },
         { id: 'hodi-paramesonefrikoa', sub: 'endekatzen', from: 0.3 },
         { id: 'hodi-mesonefrikoa', sub: 'hodi genitalak', from: 0.5 },
       ],
@@ -144,7 +144,7 @@ const spec8: StageSpec<DuctPose, DuctOpts> = {
     {
       to: { semen: 1 },
       run: [0.02, 0.98],
-      cam: CAM(11, [0.5, -0.6, 0], 12, 6),
+      cam: CAM(12, [0.5, -0.35, 0], 12, 6),
       glide: 0.06,
       dim: ['hodixka-seminiferoak', 'barrabila', 'hodixka-eferenteak', 'epididimoa', 'hodi-deferentea', 'uretra-prostatikoa'],
       names: [
@@ -157,7 +157,7 @@ const spec8: StageSpec<DuctPose, DuctOpts> = {
       note: 'Semen bidea: tubulu seminiferoak → barrabil sarea → hodixka eferenteak → epididimoa (metatu) → hodi deferentea → uretra',
     },
     {
-      cam: CAM(10, [0.5, -0.5, 0], 18, 8),
+      cam: CAM(11.5, [0.5, -0.3, 0], 18, 8),
       glide: 0.05,
       dim: ['barrabil-apendizea', 'prostataren-utrikulua'],
       names: [
@@ -203,11 +203,11 @@ const spec10: StageSpec<DuctPose, DuctOpts> = {
   caption: CAP,
   key: KEY16.ducts,
   steps: [
-    { cam: CAM(11) },
+    { cam: CAM(12.5, [0, -0.2, 0]) },
     {
       to: { female: 1 },
       run: [0.08, 0.9],
-      cam: CAM(11, [0, -0.3, 0]),
+      cam: CAM(12.5, [0, -0.2, 0]),
       glide: 0.06,
       dim: ['hodi-mesonefrikoa', 'hodi-paramesonefrikoa', 'falopioren-tronpak', 'obarioa'],
       names: [
@@ -227,7 +227,7 @@ const spec10: StageSpec<DuctPose, DuctOpts> = {
       note: 'Beherantz eta erdialderantz luzatzen dira eta erraboil sinubaginalean amaitzen. Hasieran trenkadatuta; trenkada galdu: utero hodia',
     },
     {
-      cam: CAM(9, [0, -0.3, 0], -10, 8),
+      cam: CAM(10.5, [0, -0.15, 0], -10, 8),
       glide: 0.05,
       dim: ['uteroa', 'falopioren-tronpak'],
       names: [
@@ -249,7 +249,7 @@ const spec10: StageSpec<DuctPose, DuctOpts> = {
     {
       to: { ligaments: 1 },
       run: [0.06, 0.8],
-      cam: CAM(10, [0.6, -0.6, 0.1], 16, 8),
+      cam: CAM(11.5, [0.6, -0.4, 0.1], 16, 8),
       glide: 0.05,
       dim: ['obarioaren-euspen-lotailua', 'lotailu-utero-obarikoa', 'uteroaren-lotailu-biribila'],
       names: [
@@ -260,7 +260,7 @@ const spec10: StageSpec<DuctPose, DuctOpts> = {
       note: 'Mesonefrosa endekatzean lotailuak; emeetan hiru: obarioaren euspen lotailua (paretara), lotailu utero-obarikoa, lotailu biribila (larruazaleraino)',
     },
     {
-      cam: CAM(10.5, [0, -0.4, 0], 0, 6),
+      cam: CAM(11.5, [0, -0.25, 0], 0, 6),
       glide: 0.05,
       dim: ['falopioren-tronpak', 'uteroa'],
       names: [
@@ -277,7 +277,8 @@ export const FemaleDucts16 = poseStage(spec10, build);
 
 export const S11 = [0, 0.25, 0.5, 0.75] as const;
 const F_END = endPose(spec10).pose;
-const VCAM = (dist = 7, yaw = 10, elev = 6) => CAM(dist, [0, -2.0, 0.1], yaw, elev);
+/** The uterus and the vagina (the camera's height: `y`). */
+const VCAM = (dist = 7, yaw = 10, elev = 6, y = -2.0) => CAM(dist, [0, y, 0.1], yaw, elev);
 
 const spec11: StageSpec<DuctPose, DuctOpts> = {
   S: S11,
@@ -290,7 +291,7 @@ const spec11: StageSpec<DuctPose, DuctOpts> = {
     {
       to: { bulbs: 1 },
       run: [0.08, 0.7],
-      cam: VCAM(7.5, 8, 6),
+      cam: VCAM(8.5, 8, 6, -1.75),
       glide: 0.06,
       dim: ['utero-hodia', 'bulbo-sinubaginalak', 'sinu-urogenitala'],
       names: [
@@ -302,14 +303,14 @@ const spec11: StageSpec<DuctPose, DuctOpts> = {
     {
       to: { plate: 1, lumen: 1 },
       run: [0.06, 0.85],
-      cam: VCAM(7, 14, 6),
+      cam: VCAM(8, 14, 6, -1.9),
       glide: 0.05,
       dim: ['bagina', 'plaka-baginala', 'uteroa'],
       names: [{ id: 'bagina', sub: '20. astea: hodi genitala + erraboila fusionatu', from: 0.35 }],
       note: '20. astean hodi genitala eta erraboila fusionatzen dira: uteroaren behealdean bagina; bagina eta uteroa komunikatuta',
     },
     {
-      cam: VCAM(6.5, 22, 8),
+      cam: VCAM(7, 22, 8, -2.15),
       glide: 0.05,
       dim: ['bagina', 'baginaren-fornixa'],
       names: [
@@ -321,7 +322,7 @@ const spec11: StageSpec<DuctPose, DuctOpts> = {
     {
       to: { hymen: 1 },
       run: [0.08, 0.6],
-      cam: VCAM(6, 6, 4),
+      cam: VCAM(6.5, 6, 4, -2.45),
       glide: 0.05,
       dim: ['himena', 'bagina'],
       names: [{ id: 'himena', sub: 'kanpoko zuloan · aro perinatalean zulatu', from: 0.2 }],
@@ -336,22 +337,24 @@ export const Vagina16 = poseStage(spec11, build);
 export const S12 = [0, 0.2, 0.4, 0.6, 0.8] as const;
 const V_END = endPose(spec11).pose;
 
+/** The adult uterus from behind (the ovaries behind the broad ligament): this view's only camera. */
+const BACK = CAM(10, [0.4, -0.4, 0], 180 - 12, 8);
+
 const spec12d: StageSpec<DuctPose, DuctOpts> = {
   S: S12,
   pose: { ...V_END, ligaments: 1 },
   opts: {},
-  caption: CAP,
-  key: KEY16.ducts,
+  caption: 'Hodi genitalak atzetik (3D eredua): enbrioiaren ezkerra zure ezkerrean',
+  key: KEY16.female,
   steps: [
-    { cam: CAM(10.5) },
-    { cam: CAM(10.5) },
-    { cam: CAM(10.5) },
-    { cam: CAM(10.5) },
+    { cam: BACK },
+    { cam: BACK },
+    { cam: BACK },
+    { cam: BACK },
     {
       to: { broad: 1 },
       run: [0.04, 0.5],
-      cam: CAM(10, [0.4, -0.4, 0], 180 - 12, 8),
-      glide: 0.07,
+      cam: BACK,
       dim: ['lotailu-zabala', 'obarioaren-euspen-lotailua', 'lotailu-utero-obarikoa', 'obarioa'],
       names: [
         { id: 'lotailu-zabala', sub: 'hodien mesotik' },
@@ -378,7 +381,7 @@ const spec13: StageSpec<DuctPose, DuctOpts> = {
   keyTitle: 'Kolorea = jatorria',
   steps: [
     {
-      cam: VCAM(8, 8, 6),
+      cam: VCAM(8.5, 8, 6, -1.75),
       glide: 0.06,
       dim: ['utero-hodia', 'sinu-urogenitala'],
       names: [
@@ -390,7 +393,7 @@ const spec13: StageSpec<DuctPose, DuctOpts> = {
     {
       to: { bulbs: 1 },
       run: [0.08, 0.7],
-      cam: VCAM(6.5, 12, 6),
+      cam: VCAM(6.5, 12, 6, -2.05),
       glide: 0.05,
       dim: ['bulbo-sinubaginalak', 'utero-hodia'],
       names: [{ id: 'bulbo-sinubaginalak', sub: 'zati pelbianoaren atzean: bi goragune', from: 0.25 }],
@@ -399,11 +402,11 @@ const spec13: StageSpec<DuctPose, DuctOpts> = {
     {
       to: { plate: 1, lumen: 1 },
       run: [0.06, 0.9],
-      cam: VCAM(7, 16, 6),
+      cam: VCAM(7.5, 16, 6, -2.3),
       glide: 0.05,
       dim: ['plaka-baginala', 'bagina'],
       names: [
-        { id: 'plaka-baginala', sub: 'kaudalerantz hazi; uteroa urrundu' },
+        { id: 'plaka-baginala', sub: 'kaudalerantz hazi; uteroa urrundu', from: 0.2 },
         { id: 'bagina', sub: '5. hilabetea: lumena osoa', from: 0.6 },
       ],
       note: 'Bulboak kaudalerantz hazi: plaka baginala; zefalikorantz hazten denez, uteroa sinutik urruntzen da. 5. hilabetean baginaren argia osatuta',
@@ -411,7 +414,7 @@ const spec13: StageSpec<DuctPose, DuctOpts> = {
     {
       to: { hymen: 1 },
       run: [0.06, 0.6],
-      cam: VCAM(6.5, 24, 8),
+      cam: VCAM(7, 24, 8, -2.4),
       glide: 0.05,
       dim: ['baginaren-fornixa', 'bagina', 'himena'],
       names: [
@@ -434,16 +437,15 @@ const spec14f: StageSpec<DuctPose, DuctOpts> = {
   pose: { ...F_END, ligaments: 0 },
   opts: {},
   caption: CAP,
-  key: KEY16.ducts,
+  key: KEY16.female.slice(0, 3),
   steps: [
-    { cam: CAM(11) },
-    { cam: CAM(11) },
-    { cam: CAM(11) },
+    { cam: CAM(10.5, [0.5, -0.3, 0], 30, 8) },
+    { cam: CAM(10.5, [0.5, -0.3, 0], 30, 8) },
+    { cam: CAM(10.5, [0.5, -0.3, 0], 30, 8) },
     {
       to: { ovDown: 1 },
       run: [0.08, 0.85],
       cam: CAM(10.5, [0.5, -0.3, 0], 30, 8),
-      glide: 0.06,
       dim: ['obarioa', 'falopioren-tronpak'],
       names: [
         { id: 'obarioa', sub: 'atzeko paretatik pelbisera' },
@@ -462,24 +464,24 @@ const spec16: StageSpec<DuctPose, DuctOpts> = {
   pose: { ...F_END, ligaments: 0, ovDown: 0.6 },
   opts: {},
   caption: CAP,
-  key: KEY16.ducts,
+  key: KEY16.female,
   steps: [
     {
       to: { gub: 1, ovDown: 1 },
       run: [0.08, 0.8],
-      cam: CAM(10.5, [0.6, -0.8, 0.1], 26, 8),
+      cam: CAM(11.5, [0.6, -0.6, 0.1], 26, 8),
       glide: 0.06,
       dim: ['gubernakulua', 'obarioa'],
       names: [
         { id: 'obarioa', sub: 'abdomenetik pelbisera (bide motzagoa)' },
-        { id: 'gubernakulua', sub: 'iztai hoditik → ezpain handien larruazala', from: 0.3 },
+        { id: 'gubernakulua', sub: 'iztai hoditik → ezpain handien larruazala', from: 0.5 },
       ],
       note: 'Obulutegiek ere abdomenetik pelbisera. Gubernakulua iztai hoditik atera, pelbis hezurraren aurretik, ezpain handien larruazaleraino; ez da horrenbeste txikitzen',
     },
     {
       to: { gub: 0, ligaments: 1 },
       run: [0.06, 0.85],
-      cam: CAM(10.5, [0.6, -0.8, 0.1], 18, 8),
+      cam: CAM(11.5, [0.6, -0.6, 0.1], 18, 8),
       glide: 0.05,
       dim: ['lotailu-utero-obarikoa', 'uteroaren-lotailu-biribila', 'gubernakulua'],
       names: [

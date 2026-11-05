@@ -60,13 +60,13 @@ const spec8: StageSpec<KidneyPose, KidneyOpts> = {
       run: [0.08, 0.8],
       cam: KCAM(8.5, 8, 8, [-0.1, 0, 0]),
       dim: ['kaliza-nagusiak', 'giltzurrun-pelbisa'],
-      names: [{ id: 'kaliza-nagusiak', sub: 'bi edo hiru, kopa formakoak', from: 0.3 }],
+      names: [{ id: 'kaliza-nagusiak', sub: 'bi edo hiru, kopa formakoak', from: 0.5 }],
       note: 'Pelbisa adarkatzen da: lehen adar nagusiak, kaliza nagusiak (bi edo hiru, kopa formakoak)',
     },
     {
       to: { minor: 1, coll: 1, bean: 1 },
       run: [0.05, 0.85],
-      cam: KCAM(10, 14, 10, [0, 0, 0]),
+      cam: KCAM(12.5, 14, 10, [0, -0.15, 0]),
       glide: 0.05,
       dim: ['kaliza-txikiak', 'hodi-biltzaileak', 'kaliza-nagusiak'],
       names: [
@@ -78,7 +78,7 @@ const spec8: StageSpec<KidneyPose, KidneyOpts> = {
     {
       to: { urine: 1 },
       run: [0.05, 0.95],
-      cam: KCAM(10, -10, 8, [-0.1, -0.4, 0]),
+      cam: KCAM(13, -10, 8, [-0.1, -0.45, 0]),
       glide: 0.05,
       dim: ['hodi-biltzaileak', 'kaliza-txikiak', 'kaliza-nagusiak', 'giltzurrun-pelbisa', 'ureterra'],
       names: [
@@ -174,7 +174,7 @@ const spec9: StageSpec<NephronPose, NephronOpts> = {
     {
       to: { many: 1, urine: 1 },
       run: [0.05, 0.95],
-      cam: NCAM(11.5, 0, 6, [0.3, -0.2, 0]),
+      cam: NCAM(13.5, 0, 6, [0.3, -0.55, 0]),
       glide: 0.06,
       dim: ['nefrona', 'hodi-biltzaileak'],
       names: [

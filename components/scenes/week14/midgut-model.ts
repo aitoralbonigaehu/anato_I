@@ -362,7 +362,7 @@ export function midModel(pose: MidPose, o: MidOpts = {}): MidModel {
   const fg = clamp01(pose.fore);
   const glass = clamp01(o.foreGlass ?? 0);
   const ctx = foreModel(
-    { ...DONE_FORE, front: pose.front, veil: pose.veil, origin: Math.max(pose.celiac, 0) > 0.01 ? 1 : 0, thorax: sum > 0.01 ? 1 : 0 },
+    { ...DONE_FORE, front: pose.front, veil: pose.veil, origin: clamp01(pose.celiac), thorax: ss(0, 0.3, sum) },
     { dim, liverGlass: o.liverGlass ?? 0.55, diaphragm: o.diaphragm ?? 0.2 },
   );
   const items: Item3[] = [];
@@ -409,9 +409,15 @@ export function midModel(pose: MidPose, o: MidOpts = {}): MidModel {
       ];
   // Between the ileum and the ascending colon the line runs through the caecum (drawn as the blob below).
   if (named) pieces.splice(2, 0, { id: 'kolon-itsua', groups: [MID], a: S_ILE, b: S_CAE, color: FC.colon, r: 0.12 });
+  // The named parts take over from the two limbs at parts = 0.5: they start in the limbs' colours and thickness
+  // and ease into their own, so the loop does not flash to new colours mid-move.
+  const own = named ? ss(0.5, 0.95, clamp01(pose.parts)) : 1;
   for (const pc of pieces) {
     const seg = span(mid, pc.a, pc.b);
-    items.push({ key: `mg-${pc.id}-${pc.a}`, id: pc.id, groups: pc.groups, ...tubeOf(seg, () => pc.r, 12), color: place(pc.id, pc.groups, pc.color), deep: darker(pc.color), tissue: 'epithelium', opacity: solid(pc.id, pc.groups) });
+    const limbC = mixHex(FC.mid, pc.a < S_APEX ? MC.cephalic : MC.caudal, limbs);
+    const col = own < 1 ? mixHex(limbC, pc.color, own) : pc.color;
+    const r = own < 1 ? lerp(pc.a < S_APEX ? 0.1 : 0.105, pc.r, own) : pc.r;
+    items.push({ key: `mg-${pc.id}-${pc.a}`, id: pc.id, groups: pc.groups, ...tubeOf(seg, () => r, 12), color: place(pc.id, pc.groups, col), deep: darker(col), tissue: 'epithelium', opacity: solid(pc.id, pc.groups) });
   }
   const mpt = (u: number, lift = 0.1): V3 => add(at(mid, u), [0, 0.02, lift]);
   if (named) {
@@ -437,8 +443,8 @@ export function midModel(pose: MidPose, o: MidOpts = {}): MidModel {
       items.push({ key: 'caecalBud', id: 'kolon-itsuaren-hastapena', groups: [MID], ...tubeOf(seg, (u) => 0.105 + 0.11 * Math.pow(Math.sin(Math.PI * Math.min(1, u * 1.15)), 1.4) * ss(0, 0.7, u), 14), color: mixHex(MC.caudal, '#ffd0a8', 0.4), deep: darker(MC.caudal), tissue: 'epithelium', opacity: bud * solid('kolon-itsuaren-hastapena', [MID]) });
     }
     const grow = lerp(0.07, 0.17, ret);
-    const down: V3 = ret > 0.5 ? [-0.06, -0.16, 0.06] : mul(norm(sub(at(mid, S_CAE + 0.02), at(mid, S_ILE - 0.02))), -0.02);
-    const centre = add(c, mul(down, ret > 0.5 ? 1 : 0));
+    // Sinks under the colon as the gut returns (eased: no jump halfway).
+    const centre = add(c, mul([-0.06, -0.16, 0.06], ss(0.35, 0.65, ret)));
     const id = named ? 'kolon-itsua' : 'kolon-itsuaren-hastapena';
     if (named || ret > 0.3) items.push({ key: 'caecum', id, groups: [MID], ...blobParts({ center: centre, radii: [grow, grow * 1.15, grow], rings: 12, sides: 14 }), color: place('kolon-itsua', undefined, FC.colon), deep: darker(FC.colon), tissue: 'epithelium', opacity: solid(id, [MID]) });
     pts[id] = add(centre, named ? [0, 0, grow * 0.6] : [0, 0, 0.12]);
@@ -581,7 +587,7 @@ export function midModel(pose: MidPose, o: MidOpts = {}): MidModel {
   }
 
   // ———— the arteries: SMA (the loop's axis), IMA, the rectal arteries ————
-  const smaK = Math.max(clamp01(pose.sma), lp > 0.01 ? 1 : 0);
+  const smaK = Math.max(clamp01(pose.sma), ss(0, 0.2, lp));
   if (smaK > 0.01) {
     const loopAx = [SMA0, add(ROOT, [0, 0.1, 0.12]), axis[Math.round(N * S_APEX * 0.6)], axis[Math.round(N * S_APEX)]];
     const adult: V3[] = [SMA0, [0, -0.05, -0.72], [-0.2, -0.7, -0.62], [-0.55, -1.5, -0.5]];

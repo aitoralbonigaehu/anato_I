@@ -149,7 +149,7 @@ const spec5: StageSpec<UroPose, UroOpts> = {
   key: KEY15.meso,
   steps: [
     {
-      to: { meso: 0.65, proGone: 1 },
+      to: { meso: 0.65, proGone: 0.82 },
       run: [0.05, 0.85],
       cam: TRUNK(14, 0, 8, [0, 0.8, -0.4]),
       glide: 0.06,
@@ -212,7 +212,7 @@ const spec7: StageSpec<UroPose, UroOpts> = {
     {
       to: { mesoGone: 0.5 },
       run: [0.1, 0.9],
-      cam: FRONT(14, [0, -1.6, -0.4], 12, 8),
+      cam: FRONT(16.5, [0, -1.15, -0.4], 10, 8),
       glide: 0.06,
       dim: ['mesonefrosa', 'hodi-mesonefrikoa', 'kloaka'],
       names: [
@@ -267,7 +267,7 @@ const spec10: StageSpec<UroPose, UroOpts> = {
   key: KEY15.ascent,
   steps: [
     {
-      cam: FRONT(9.5, [0, -3.4, -0.4], 16, 8),
+      cam: FRONT(11, [0, -3.55, -0.4], 6, 8, [-75, 0]),
       glide: 0.06,
       dim: ['giltzurruna', 'ureterra'],
       names: [
@@ -277,10 +277,10 @@ const spec10: StageSpec<UroPose, UroOpts> = {
       note: 'Giltzurruna: piramideetan hodi biltzaileak eta nefronak; kalizak eta pelbisa enbutuak. Ureterrak gernua gernu maskurira darama',
     },
     {
-      cam: FRONT(9.5, [0, -3.4, -0.4], 8, 6),
+      cam: FRONT(11, [0, -3.55, -0.4], -4, 6, [-75, 0]),
       dim: ['giltzurruna', 'gernu-maskuria'],
       names: [
-        { id: 'giltzurruna', sub: '14. astea: gernua · 35. astea: nefrogenesia amaitzen' },
+        { id: 'giltzurruna', sub: '14. astetik gernua egiten du' },
         { id: 'gernu-maskuria', small: true, from: 0.4 },
       ],
       note: 'Gernuaren ekoizpena 14. astean hasten da; nefrogenesia 35. astean amaitzen da',
@@ -324,17 +324,20 @@ export const spec11wall: StageSpec<UroPose, UroOpts> = {
   opts: { glom: 0, gut: 1, iliac: 1 },
   caption: CAP,
   key: KEY15.ascent,
+  // The stage opens on this view (its first beat): the fly-in is here.
+  where: { ...WALL_WHERE, note: 'Enbrioiaren enborra: atzeko pareta aurretik ikusiko dugu, giltzurrunen mailan' },
   steps: [
     {
       to: { adrenal: 1 },
-      run: [0.02, 0.2],
-      cam: FRONT(9, [0, -0.5, -0.6], 18, 10),
+      run: [0.08, 0.19],
+      cam: FRONT(10.5, [0, -0.35, -0.6], 4, 10, [-45, 0]),
       glide: 0.06,
       dim: ['giltzurrun-gaineko-guruinak', 'giltzurruna'],
       names: [
-        { id: 'giltzurrun-gaineko-guruinak', sub: 'eratzen diren tokian geratzen dira' },
-        { id: 'giltzurruna', sub: 'azpitik igo da', small: true },
+        { id: 'giltzurruna', sub: 'azpitik igo da', small: true, from: 0.08 },
+        { id: 'giltzurrun-gaineko-guruinak', sub: 'eratzen diren tokian geratzen dira', from: 0.11 },
       ],
+      note: 'Giltzurrun gaineko guruinak eratzen diren tokian geratzen dira (ez dira mugitzen); giltzurruna azpitik igotzen zaie',
     },
   ],
 };

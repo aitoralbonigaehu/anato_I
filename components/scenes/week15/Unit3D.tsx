@@ -122,7 +122,7 @@ const spec4: StageSpec<UnitPose, UnitOpts> = {
       dim: ['kapsula-glomerularra', 'barneko-glomeruluak', 'hodixka-pronefrikoak'],
       names: [
         { id: 'barneko-glomeruluak', small: true },
-        { id: 'kapsula-glomerularra', text: 'Txano formako egitura', sub: 'glomerulu gainean: ez dira fusionatzen', from: 0.4 },
+        { id: 'kapsula-glomerularra', text: 'Txano formako egitura', sub: 'glomerulu gainean: ez dira fusionatzen', from: 0.05 },
       ],
       note: 'Hodixka eta barneko glomerulua elkarrengana: hodixkak txano formako egitura osatzen du glomerulu gainean. KONTUZ: ez dira fusionatzen',
       warn: true,

@@ -111,30 +111,36 @@ export function kidneyModel(pose: KidneyPose, o: KidneyOpts = {}) {
 
   // ———— branching: major calyces → minor calyces → collecting tubules ————
   const maj = clamp01(pose.major);
-  const min = clamp01(pose.minor);
-  const col = clamp01(pose.coll);
+  // In one step the minor calyces branch first, then the collecting tubules grow out of their ends.
+  const min = ss(0, 0.6, pose.minor);
+  const col = ss(0.45, 1, pose.coll);
   const urinePaths: V3[][] = [];
   MAJOR.forEach((end, i) => {
-    if (maj <= 0.01) return;
-    const line = L([PELVIS, mix3(PELVIS, end, 0.55), end], 10);
-    tube(`maj${i}`, 'kaliza-nagusiak', grown(line, maj), UC.bud, 0.11, 1, { groups: ['sistema-biltzailea'], deep: UC.budDeep });
+    if (maj <= 0.04) return;
+    // From the pelvis's wall out (the part inside the funnel would grow unseen).
+    const line = L([mix3(PELVIS, end, 0.36), mix3(PELVIS, end, 0.68), end], 10);
+    const majLine = grown(line, maj);
+    tube(`maj${i}`, 'kaliza-nagusiak', majLine, UC.bud, 0.11, 1, { groups: ['sistema-biltzailea'], deep: UC.budDeep });
     ball(`majcup${i}`, 'kaliza-nagusiak', end, [0.17 * ss(0.6, 1, maj), 0.17 * ss(0.6, 1, maj), 0.14 * ss(0.6, 1, maj)], UC.bud, 1, { groups: ['sistema-biltzailea'], deep: UC.budDeep }, 10, 12);
-    if (i === 0) pts['kaliza-nagusiak'] = add(end, [0.12, 0.12, 0.18]);
+    // Names at the growing tips (not where they will end).
+    if (i === 0) pts['kaliza-nagusiak'] = add(majLine[majLine.length - 1], [0.12, 0.12, 0.18]);
     MINOR_DIRS[i].forEach(([dx, dy], j) => {
       if (min <= 0.01) return;
       const mEnd: V3 = [end[0] + dx * 0.45, end[1] + dy * 0.32, 0.03 * (j - 1)];
       const ml = L([end, mix3(end, mEnd, 0.5), mEnd], 8);
-      tube(`min${i}${j}`, 'kaliza-txikiak', grown(ml, min), UC.bud, 0.075, 1, { groups: ['sistema-biltzailea'], deep: UC.budDeep }, 10);
+      const minLine = grown(ml, min);
+      tube(`min${i}${j}`, 'kaliza-txikiak', minLine, UC.bud, 0.075, 1, { groups: ['sistema-biltzailea'], deep: UC.budDeep }, 10);
       ball(`mincup${i}${j}`, 'kaliza-txikiak', mEnd, [0.11 * ss(0.6, 1, min), 0.11 * ss(0.6, 1, min), 0.09 * ss(0.6, 1, min)], UC.bud, 1, { groups: ['sistema-biltzailea'], deep: UC.budDeep }, 8, 10);
-      if (i === 1 && j === 0) pts['kaliza-txikiak'] = add(mEnd, [0.1, 0.1, 0.15]);
+      if (i === 1 && j === 0) pts['kaliza-txikiak'] = add(minLine[minLine.length - 1], [0.1, 0.1, 0.15]);
       // Collecting tubules: long, thin, out to the cortex.
       for (let k = 0; k < 3; k++) {
         if (col <= 0.01) break;
         const a = Math.atan2(dy, dx) + (k - 1) * 0.28;
         const far: V3 = [mEnd[0] + Math.cos(a) * 0.62, mEnd[1] + Math.sin(a) * 0.6, mEnd[2] + 0.05 * (k - 1)];
         const cl = L([mEnd, mix3(mEnd, far, 0.5), far], 8);
-        tube(`col${i}${j}${k}`, 'hodi-biltzaileak', grown(cl, col), UC.bud, 0.032, 1, { groups: ['sistema-biltzailea'], deep: UC.budDeep }, 6);
-        if (i === 0 && j === 1 && k === 1) pts['hodi-biltzaileak'] = add(far, [0, 0.05, 0.12]);
+        const colLine = grown(cl, col);
+        tube(`col${i}${j}${k}`, 'hodi-biltzaileak', colLine, UC.bud, 0.032, 1, { groups: ['sistema-biltzailea'], deep: UC.budDeep }, 6);
+        if (i === 0 && j === 1 && k === 1) pts['hodi-biltzaileak'] = add(colLine[colLine.length - 1], [0, 0.05, 0.12]);
         if (k === 1 && j === 1) urinePaths.push([far, mEnd, end, PELVIS, ...stalk.slice().reverse().slice(1)]);
       }
     });

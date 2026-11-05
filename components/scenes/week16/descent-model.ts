@@ -95,7 +95,8 @@ export function descentModel(pose: DescentPose, o: DescentOpts = {}) {
     const pvLine = L([[X0, -1.2, 0.95], RING, mix3(RING, SCROTUM, 0.5), add(SCROTUM, [0, 0.0, 0.05])], 20);
     const n = Math.max(2, Math.round(pvLine.length * pv));
     tube('pv', 'luzapen-baginala', pvLine.slice(0, n), PERI, (u) => (u < 0.55 ? neck : lerp(neck, 0.42, ss(0.55, 1, u))), 0.45 * (1 - 0.6 * clamp01(pose.tunica)), { thin: 0.6, outline: false, tissue: 'membrane' }, 16);
-    pts['luzapen-baginala'] = add(mix3(RING, SCROTUM, 0.5), [0.25, 0, 0.1]);
+    // Once its neck closes, what is left of it is the sac round the testis (the tunica vaginalis).
+    pts['luzapen-baginala'] = mix3(add(mix3(RING, SCROTUM, 0.5), [0.25, 0, 0.1]), add(SCROTUM, [0.4, 0.45, 0.1]), close);
     // The wall's layers carried round it (in the scrotum they wrap the testis).
     const ly = clamp01(pose.layers);
     if (ly > 0.01)
@@ -106,7 +107,7 @@ export function descentModel(pose: DescentPose, o: DescentOpts = {}) {
   }
   // The inguinal canal: the closed processus's way through the wall (vas, vessels, nerves).
   if (close > 0.01) {
-    tube('canal', 'iztai-hodia', L([[X0, -1.3, 0.9], RING, add(RING, [0, -0.35, 0.25])], 8), '#c084fc', 0.09, close, { thin: 0.5 }, 12);
+    tube('canal', 'iztai-hodia', L([[X0, -1.3, 0.9], RING, add(RING, [0, -0.35, 0.25])], 8), '#d98a9c', 0.11, close, { thin: 0.5, deep: '#7a3346' }, 12);
     pts['iztai-hodia'] = add(RING, [0.2, 0.05, 0.15]);
   }
 
@@ -130,7 +131,12 @@ export function descentModel(pose: DescentPose, o: DescentOpts = {}) {
     pts['gubernakulua'] = add(mid, [0.25, 0, 0]);
   }
   // The vas deferens trailing behind the testis to the pelvis (purple, topic 15's mesonephric duct).
-  tube('vas', 'hodi-deferentea', L([add(T, [-0.1, 0.25, -0.15]), mix3(add(T, [0, 0.3, -0.2]), [0.4, -1.5, -0.6], 0.5), [0.3, -1.6, -0.75]], 16), UC.wolff, 0.05, ss(0.05, 0.4, down), { deep: UC.wolffDeep }, 8);
-  pts['hodi-deferentea'] = [0.6, -1.35, -0.55];
+  // Once the testis is through the wall, the vas runs back up through the inguinal canal into the pelvis.
+  const via = ss(0.55, 0.85, down);
+  const v0 = add(T, [-0.1, 0.25, -0.15]);
+  const vEnd: V3 = [0.3, -1.6, -0.75];
+  const vas = L([v0, mix3(mix3(v0, vEnd, 0.33), add(RING, [-0.12, 0.05, -0.05]), via), mix3(mix3(v0, vEnd, 0.66), [0.55, -1.25, 0.1], via), vEnd], 24);
+  tube('vas', 'hodi-deferentea', vas, UC.wolff, 0.05, ss(0.05, 0.4, down), { deep: UC.wolffDeep }, 8);
+  pts['hodi-deferentea'] = add(vas[15], [0.1, 0.05, 0]);
   return { items, pts };
 }

@@ -95,21 +95,33 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
   tube('rectum', 'atzeko-hestea', hg, UC.endo, 0.24, 0.9, { deep: UC.endoDeep });
   pts['atzeko-hestea'] = add(hg[5], [0.2, 0, -0.1]);
 
-  // ———— the cloaca (undivided) ————
-  if (split < 0.99) {
-    ball('cloaca', 'kloaka', [0, -0.95, 0.12], [0.42, 0.62, 0.8], UC.endo, 0.88 * (1 - split), { deep: UC.endoDeep });
-    pts['kloaka'] = [0.4, -0.95, 0.15];
+  // ———— the cloaca: one cavity; as the septum comes down its front half (the sinus) and its back half (the anal
+  // canal) draw apart, so the division reads as one cavity parting, not as one shape swapped for two ————
+  const bladderC: V3 = [0, lerp(-0.6, -0.05, parts), lerp(0.62, 0.82, parts)];
+  const bladderR: V3 = [lerp(0.38, 0.45, parts), lerp(0.55, 0.62, parts), lerp(0.42, 0.52, parts)];
+  {
+    const k = ss(0, 1, split);
+    // The undivided cavity, handing over to its two halves (in its place) as the septum starts down.
+    const whole = 1 - ss(0, 0.3, split);
+    if (whole > 0.01) ball('cloaca', 'kloaka', [0, -0.95, 0.12], [0.42, 0.62, 0.8], UC.endo, 0.88 * whole, { deep: UC.endoDeep });
+    const halves = ss(0, 0.3, split);
+    const sinusId = split < 0.5 ? 'kloaka' : parts > 0.5 ? 'gernu-maskuria' : 'sinu-urogenitala';
+    const fc = mix3([0, -0.95, 0.4], bladderC, k);
+    const fr = mix3([0.42, 0.62, 0.52], bladderR, k);
+    ball('sinus', sinusId, fc, fr, mixHex(UC.endo, '#ffe08a', 0.2 * k), lerp(0.88, 0.9, k) * halves, { groups: ['kloaka', 'sinu-urogenitala'], deep: UC.endoDeep });
+    if (split > 0.01) {
+      pts[sinusId] = add(bladderC, [0.42, 0.25, 0.15]);
+      pts['sinu-urogenitala'] = add(fc, [0.4, 0.1, 0.1]);
+    }
+    // The back half shrinks into the anal canal (which takes over as it narrows).
+    const back = 0.88 * halves * (1 - ss(0.55, 1, split));
+    ball('cloacaBack', 'kloaka', mix3([0, -0.95, -0.2], [0, -1.05, -0.46], k), mix3([0.42, 0.62, 0.5], [0.2, 0.5, 0.2], k), UC.endo, back, { groups: ['uzki-hodia'], deep: UC.endoDeep });
+    if (split < 0.99) pts['kloaka'] = [0.4, -0.95, 0.15];
   }
 
   // ———— the sinus in front, the anal canal behind ————
   if (split > 0.01) {
-    // Primitive sinus → bladder (top, widest) + pelvic part (narrow) + definitive urogenital sinus (flat).
-    const bladderC: V3 = [0, lerp(-0.6, -0.05, parts), lerp(0.62, 0.82, parts)];
-    const bladderR: V3 = [lerp(0.38, 0.45, parts), lerp(0.55, 0.62, parts), lerp(0.42, 0.52, parts)];
-    const sinusId = parts > 0.5 ? 'gernu-maskuria' : 'sinu-urogenitala';
-    ball('sinus', sinusId, bladderC, bladderR, mixHex(UC.endo, '#ffe08a', 0.2), 0.9 * split, { groups: ['sinu-urogenitala'], deep: UC.endoDeep });
-    pts[sinusId] = add(bladderC, [0.42, 0.25, 0.15]);
-    pts['sinu-urogenitala'] = add(bladderC, [0.4, 0.1, 0.1]);
+    // The sinus → bladder (top, widest) + pelvic part (narrow) + definitive urogenital sinus (flat).
     if (parts > 0.01) {
       // The pelvic part: narrow, below the bladder; with sex, the urethra.
       const pelv = L([add(bladderC, [0, -bladderR[1] + 0.05, -0.1]), [0, -0.95, 0.66], [0, -1.22, 0.64]], 10);
@@ -133,7 +145,7 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
     }
     // The anal canal and its membrane.
     const an = L([[0, -0.55, -0.42], [0, -1.1, -0.48], [0, -1.55, -0.5]], 10);
-    tube('anal', 'uzki-hodia', an, UC.endo, lerp(0.22, 0.16, split), split, { deep: UC.endoDeep, groups: ['hodi-anoerrektala'] });
+    tube('anal', 'uzki-hodia', an, UC.endo, lerp(0.22, 0.16, split), ss(0.3, 1, split), { deep: UC.endoDeep, groups: ['hodi-anoerrektala'] });
     pts['uzki-hodia'] = add(an[5], [0.2, 0, -0.12]);
     ball('am', 'uzki-mintza', [0, -1.62, -0.5], [0.24, 0.035, 0.24], '#f4efe2', split, { groups: ['kloaka-mintza'], thin: 0.7, tissue: 'membrane' }, 8, 12);
     pts['uzki-mintza'] = [0.28, -1.64, -0.5];
@@ -160,11 +172,11 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
   {
     const ura = clamp01(pose.urachus);
     const lig = clamp01(pose.ligament);
-    const base: V3 = split > 0.5 ? [0, lerp(-0.1, 0.5, parts), lerp(0.85, 1.05, parts)] : [0, -0.5, 0.7];
+    const base: V3 = mix3([0, -0.5, 0.7], [0, lerp(-0.1, 0.5, parts), lerp(0.85, 1.05, parts)], ss(0, 1, split));
     const al = L([base, [0, 0.9, 1.4], [0, 1.6, 1.55], add(UMB, [0, -0.05, -0.12])], 18);
     const id = lig > 0.5 ? 'erdiko-zilbor-lotailua' : ura > 0.5 ? 'urakoa' : 'alantoidea';
     const col = mixHex(mixHex(UC.endo, '#d8c08a', ura), LIGAMENT, lig);
-    tube('allantois', id, al, col, lerp(0.14, 0.07, ura), 1, { groups: ['alantoidea', 'urakoa'], deep: darker(col) });
+    tube('allantois', id, al, col, lerp(0.14, 0.07, ura), 1, { groups: ['alantoidea', 'urakoa', 'erdiko-zilbor-lotailua'], deep: darker(col) });
     // The lumen while it lasts (a dark core seen through the wall).
     if (ura < 0.99) tube('allumen', undefined, al.slice(1, -1), '#3a2a10', 0.06, 0.6 * (1 - ura), { quiet: true, outline: false }, 8);
     pts[id] = add(al[10], [0.18, 0, 0.12]);
@@ -180,7 +192,8 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
   }
 
   // ———— the kidney rising, the ureter and the mesonephric duct parting at the bladder ————
-  const ducts = clamp01(pose.ducts);
+  // They come in (and go) early in their step, quicker than the kidney's climb.
+  const ducts = ss(0, 0.3, pose.ducts);
   if (ducts > 0.01) {
     const part = clamp01(pose.part);
     const K: V3 = [0.7, lerp(-0.55, 1.9, clamp01(pose.kidUp)), -1.15];

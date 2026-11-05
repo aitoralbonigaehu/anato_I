@@ -11,7 +11,7 @@ import { GN0, gonadModel, type GonadOpts, type GonadPose } from './gonad-model';
 
 const build = (pose: GonadPose, opts: GonadOpts) => gonadModel(pose, opts);
 const CAP = 'Gonada zeharka ebakita (3D blokea, goitik): bizkarra goian, mesonefrosa zure eskuinean';
-const CAM = (dist = 9.5, target: [number, number, number] = [0.2, 0.1, 0], yaw = 12, elev = 10) => BLOCK16(dist, target, yaw, elev);
+const CAM = (dist = 9.5, target: [number, number, number] = [0.2, -0.3, 0], yaw = 12, elev = 10) => BLOCK16(dist, target, yaw, elev);
 
 // ———————————————————————————— 3. Desberdindu gabeko gonada ————————————————————————————
 
@@ -49,7 +49,7 @@ const spec3: StageSpec<GonadPose, GonadOpts> = {
       note: '6.–7. asteak: desberdindu gabeko aroa. Sexu bietan berdin-berdin: morfologikoki berdinak, genetikoki ez (XX eta XY)',
     },
     {
-      cam: CAM(10, [0.4, 0.2, 0], 20, 12),
+      cam: CAM(10, [0.4, -0.25, 0], 20, 12),
       glide: 0.05,
       dim: ['gonadak', 'hodi-mesonefrikoa', 'hodi-paramesonefrikoa'],
       names: [
@@ -94,7 +94,7 @@ const spec5: StageSpec<GonadPose, GonadOpts> = {
     {
       to: { horseshoe: 1, link: 1 },
       run: [0.05, 0.85],
-      cam: CAM(9, [0.5, 0.1, 0], 22, 12),
+      cam: CAM(9, [0.5, -0.15, 0], 22, 12),
       glide: 0.05,
       dim: ['barrabil-kordoiak', 'barrabil-sarea', 'hodixka-mesonefrikoak'],
       names: [
@@ -125,7 +125,7 @@ const spec5: StageSpec<GonadPose, GonadOpts> = {
     {
       to: { hollow: 1, mullerGone: 1 },
       run: [0.06, 0.85],
-      cam: CAM(10, [0.4, 0.0, 0], 16, 12),
+      cam: CAM(10, [0.4, -0.2, 0], 16, 12),
       glide: 0.05,
       dim: ['hodixka-seminiferoak', 'hodi-paramesonefrikoa', 'hodi-mesonefrikoa'],
       names: [

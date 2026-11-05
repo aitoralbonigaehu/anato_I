@@ -160,8 +160,9 @@ export function gonadModel(pose: GonadPose, o: GonadOpts = {}) {
       const line = L([start, bow, end].map((p) => [p[0], p[1], z] as V3), 14);
       const id = hs > 0.5 ? (pose.hollow > 0.5 ? 'hodixka-seminiferoak' : 'barrabil-kordoiak') : free > 0.5 ? 'muin-kordoiak' : 'hasierako-sexu-kordoiak';
       const col = mixHex(GC16.cord, GC16.testisCord, hs);
-      tube(`cord${i}${k}`, id, grown(line, cords), col, lerp(0.075, 0.1, hs), primOp * (female ? 0.6 : 1), { groups: ['hasierako-sexu-kordoiak', 'muin-kordoiak', 'barrabil-kordoiak', 'hodixka-seminiferoak'] }, 10);
-      if (pose.hollow > 0.01) tube(`lum${i}${k}`, undefined, line.slice(2, -2), '#0a2a26', 0.05 * pose.hollow, 0.85, { outline: false, quiet: true }, 8);
+      // Hollowed (puberty): the wall turns see-through so the lumen inside reads.
+      tube(`cord${i}${k}`, id, grown(line, cords), col, lerp(0.075, 0.1, hs), primOp * (female ? 0.6 : 1) * (1 - 0.5 * clamp01(pose.hollow)), { groups: ['hasierako-sexu-kordoiak', 'muin-kordoiak', 'barrabil-kordoiak', 'hodixka-seminiferoak'] }, 10);
+      if (pose.hollow > 0.01) tube(`lum${i}${k}`, undefined, line.slice(2, -2), '#062520', 0.055 * pose.hollow, 0.95, { outline: false, quiet: true }, 8);
       if (i === 2 && k === 0) pts[id] = add(line[6], [0, -0.05, 0.12]);
       if (i === 2 && k === 0) {
         pts['hasierako-sexu-kordoiak'] = pts[id];
@@ -185,7 +186,7 @@ export function gonadModel(pose: GonadPose, o: GonadOpts = {}) {
   if (pose.leydig > 0.01) {
     for (let i = 0; i < 8; i++) {
       const a = -2.3 + i * 0.27;
-      ball(`ley${i}`, 'leydig-zelulak', [G[0] + GR[0] * 0.55 * Math.cos(a), G[1] + GR[1] * 0.55 * Math.sin(a), ZS[i % 3] + 0.2], [0.07, 0.07, 0.07], GC16.leydig, pose.leydig);
+      ball(`ley${i}`, 'leydig-zelulak', [G[0] + GR[0] * 0.55 * Math.cos(a), G[1] + GR[1] * 0.55 * Math.sin(a), ZS[i % 3] + 0.2], [0.09, 0.09, 0.09], GC16.leydig, pose.leydig);
     }
     pts['leydig-zelulak'] = [G[0] + GR[0] * 0.55 * Math.cos(-1.76), G[1] + GR[1] * 0.55 * Math.sin(-1.76), 0.6];
   }
@@ -195,8 +196,9 @@ export function gonadModel(pose: GonadPose, o: GonadOpts = {}) {
     const medOp = ss(0, 1, pose.primGone);
     ball('ovmed', 'obarioaren-muina', add(G, [0.25, 0.25, 0]), [0.55, 0.45, 0.7], '#7dd3c4', 0.35 * medOp, { outline: false });
     pts['obarioaren-muina'] = add(G, [0.45, 0.45, 0.6]);
-    const cc = clamp01(pose.cortex);
-    const br = clamp01(pose.breakUp);
+    // The cortical cords grow in first, then break up (one step runs both: they read one after the other).
+    const cc = ss(0, 0.6, pose.cortex);
+    const br = ss(0.55, 1, pose.breakUp);
     const fol = clamp01(pose.follicles);
     for (let i = 0; i < 9; i++) {
       const a = -2.75 + (i / 8) * 2.5;

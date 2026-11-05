@@ -84,7 +84,7 @@ const spec17: StageSpec<MidPose, MidOpts> = {
       keyTitle: 'Kolorea',
     },
     {
-      cam: FRONT([0.05, -0.55, -0.45], 7.2),
+      cam: FRONT([0.05, -0.72, -0.45], 8.6),
       glide: 0.05,
       dim: ['erdiko-hestea', 'koledokoa', 'atzeko-hestea'],
       names: [
@@ -101,10 +101,11 @@ const spec17: StageSpec<MidPose, MidOpts> = {
       // A glimpse of where the midgut ends up (the next stages show how).
       to: { loop: 1, rot: 1, ret: 1, cDesc: 1, parts: 1, vit: 0 },
       run: [0.05, 0.55],
-      cam: FRONT([-0.05, -0.95, 0], 8.8),
+      cam: FRONT([-0.05, -1.0, 0], 10.2),
       glide: 0.06,
       dim: MIDGUT,
       names: [
+        { id: 'erdiko-hestea', text: 'Bitarteko hestea', sub: '(dena arrosa)', small: true, from: 0.3 },
         { id: 'duodenoaren-hirugarren-atala', text: 'Duodenoa: 2.aren urrutikoa, 3.a, 4.a', small: true, from: 0.45 },
         { id: 'jejunoa', from: 0.55 },
         { id: 'ileona', from: 0.62 },
@@ -119,12 +120,13 @@ const spec17: StageSpec<MidPose, MidOpts> = {
     {
       to: { sma: 1, celiac: 1 },
       run: [0.06, 0.5],
-      cam: FRONT([-0.1, -0.7, -0.2], 8.2, -24, 8),
+      cam: FRONT([-0.1, -0.88, -0.2], 9.8, -24, 8),
       glide: 0.06,
       dim: [...MIDGUT, 'goiko-arteria-mesenterikoa', 'enbor-zeliakoa', 'duodenoaren-lehen-atala'],
       names: [
         { id: 'goiko-arteria-mesenterikoa', sub: '→ bitarteko hesteko eratorri guztiak', from: 0.15 },
         { id: 'enbor-zeliakoa', sub: '→ duodenoaren 1. atala eta 2.aren hasiera', from: 0.4 },
+        { id: 'erdiko-hestea', text: 'Bitarteko hestea', small: true },
       ],
       note: 'Bitarteko hesteko eratorri guztiak goiko arteria mesenterikoaren adarrek; duodenoak irrigazio bikoitza: hasiera enbor zeliakoak, gainerakoa goiko a. mesenterikoak',
       key: KEY_M.regions,
@@ -178,7 +180,7 @@ const spec18: StageSpec<MidPose, MidOpts> = {
       cam: orbit(-70, 10, 7.2, [0, -0.6, 0.0], SH),
       glide: 0.05,
       dim: ['adar-zefalikoa'],
-      names: [{ id: 'adar-zefalikoa', sub: 'duodenoaren urrutikoa (2.aren urrutikoa, 3.a, 4.a) · jejunoa · ileonaren hasierako lakioak' }],
+      names: [{ id: 'adar-zefalikoa', sub: 'duodenoa (urrutikoa) → ileona (hasiera)' }],
       note: 'Adar zefalikotik: duodenoaren urrutiko atala (2.aren urrutikoa, 3.a eta 4.a), jejunoaren lakio guztiak eta ileonaren hasierako lakioak',
       key: KEY_M.limbs,
       keyTitle: 'Kolorea',
@@ -188,7 +190,7 @@ const spec18: StageSpec<MidPose, MidOpts> = {
       glide: 0.05,
       dim: ['adar-kaudala', 'hodi-onfalomesenterikoa', 'kolon-itsuaren-hastapena'],
       names: [
-        { id: 'adar-kaudala', sub: 'ileonaren urrutiko lakioak · kolon itsua · goranzko kolona · zeharkako kolonaren 2/3' },
+        { id: 'adar-kaudala', sub: 'ileona (urrutikoa) → zeharkako kolonaren 2/3' },
         { id: 'kolon-itsuaren-hastapena', small: true, from: 0.3 },
         { id: 'hodi-onfalomesenterikoa', sub: '(ileonaren mailan)', small: true, from: 0.45 },
       ],
@@ -202,7 +204,7 @@ const spec18: StageSpec<MidPose, MidOpts> = {
       cam: orbit(-60, 8, 7.6, [0, -0.85, -0.2], SH),
       glide: 0.05,
       dim: ['goiko-arteria-mesenterikoa', 'heste-lakioa', 'adar-zefalikoa', 'adar-kaudala'],
-      names: [{ id: 'goiko-arteria-mesenterikoa', sub: '= lakioaren ardatza (adarrak bere inguruan biratzen dira)' }],
+      names: [{ id: 'goiko-arteria-mesenterikoa', sub: '= lakioaren ardatza' }],
       note: 'Lakioaren ardatza goiko arteria mesenterikoa da: eratorriak sortzen diren bitartean bi adarrak arteria horren inguruan biratzen dira',
       key: KEY_M.limbs,
       keyTitle: 'Kolorea',
@@ -328,14 +330,14 @@ export const S20 = [0, 0.2, 0.4, 0.55, 0.74] as const;
 const spec20: StageSpec<MidPose, MidOpts> = {
   near: 0.92,
   S: S20,
-  pose: { ...END19.pose, sma: 0 },
+  pose: END19.pose,
   opts: END19.opts,
   caption: 'Bitarteko hestea eta peritoneoa: barrukoak eta atzekoak (3D eredua)',
   key: KEY_M.peri,
   keyTitle: 'Kolorea',
   steps: [
     {
-      to: { veil: 1 },
+      to: { veil: 1, sma: 0 },
       run: [0.08, 0.5],
       cam: orbit(-22, 4, 6.6, [-0.25, -0.2, -0.6], SH),
       glide: 0.07,
@@ -398,13 +400,15 @@ export const S21 = [0, 0.22, 0.46, 0.7] as const;
 
 const spec21: StageSpec<MidPose, MidOpts> = {
   S: S21,
-  pose: { ...END20.pose, sma: 0 },
+  pose: END20.pose,
   opts: END20.opts,
   caption: 'Atzeko hestea: eratorriak, irrigazioa eta peritoneoa (3D eredua)',
   key: KEY_M.regions,
   keyTitle: 'Kolorea = hestearen atala',
   steps: [
     {
+      to: { sma: 0 },
+      run: [0.04, 0.4],
       cam: FRONT([0.3, -1.85, -0.3], 10.4),
       glide: 0.07,
       dim: [...HINDGUT, 'zeharkako-kolona'],
@@ -418,7 +422,7 @@ const spec21: StageSpec<MidPose, MidOpts> = {
       note: 'Atzeko hestea: zeharkako kolonaren 2/3aren urrutitik kloaka mintzeraino. Eratorri guztiak heste lodikoak: zeharkako 1/3, beheranzko kolona, sigma, ondestea, uzki hodia',
     },
     {
-      cam: FRONT([0.45, -1.2, -0.3], 8.8, 10),
+      cam: FRONT([0.45, -1.42, -0.3], 9.4, 10),
       glide: 0.05,
       dim: HINDGUT,
       names: [
@@ -432,7 +436,7 @@ const spec21: StageSpec<MidPose, MidOpts> = {
     {
       to: { ima: 1 },
       run: [0.06, 0.5],
-      cam: orbit(18, 6, 8.6, [0.3, -1.7, -0.5], SH),
+      cam: orbit(18, 6, 9.4, [0.3, -1.85, -0.5], SH),
       glide: 0.06,
       dim: [...HINDGUT, 'beheko-arteria-mesenterikoa'],
       names: [{ id: 'beheko-arteria-mesenterikoa', sub: '→ atzeko hesteko eratorri guztiak', from: 0.2 }],
@@ -537,14 +541,16 @@ const SUM_CAM = FRONT([0.05, -0.6, -0.2], 11.6, -8, 8);
 
 const spec24: StageSpec<MidPose, MidOpts> = {
   S: S24,
-  pose: { ...END23.pose, rectal: 0, anal: 0, celiac: 0, sma: 0, ima: 0 },
-  opts: { ...END23.opts, foreGlass: 0, liverGlass: 0.7 },
+  // From the arteries' end: they and the anal close-up's glass clear with the first step.
+  pose: END23.pose,
+  opts: END23.opts,
   caption: 'Eratorrien kokapena laburbilduta: peritoneo barrukoak, atzekoak eta kanpokoak (3D eredua, aurretik)',
   key: KEY_M.place,
   keyTitle: 'Kolorea = kokapena',
   steps: [
     {
-      to: { summary: 1 },
+      to: { summary: 1, rectal: 0, anal: 0, celiac: 0, sma: 0, ima: 0 },
+      opts: { foreGlass: 0, liverGlass: 0.7 },
       run: [0.05, 0.4],
       cam: SUM_CAM,
       glide: 0.08,
@@ -584,7 +590,7 @@ const spec24: StageSpec<MidPose, MidOpts> = {
     },
     {
       to: { fore: 1 },
-      cam: orbit(20, 4, 13.2, [0, -0.2, -0.6], SH),
+      cam: orbit(20, 4, 19, [0, -0.7, -0.6], SH),
       glide: 0.07,
       warn: true,
       dim: EXTRA,

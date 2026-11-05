@@ -111,7 +111,7 @@ export function nephronModel(pose: NephronPose, o: NephronOpts = {}) {
   tube('stem', 'hodi-biltzaileak', STEM, UC.bud, 0.16, 1, { deep: UC.budDeep, groups: ['sistema-biltzailea'] });
   const br = clamp01(pose.branch);
   for (const [k, tip] of [['R', TIP_R], ['L', TIP_L]] as const) tube(`br${k}`, 'hodi-biltzaileak', grown(L([STEM[STEM.length - 1], mix3(STEM[STEM.length - 1], tip, 0.5), tip], 10), br), UC.bud, 0.12, 1, { deep: UC.budDeep, groups: ['sistema-biltzailea'] });
-  pts['hodi-biltzaileak'] = [-0.18, -1.4, 0.12];
+  pts['hodi-biltzaileak'] = [-0.18, -0.35, 0.12];
 
   // ———— the nephron at the right branch (and, later, one at every branch) ————
   const tips: [V3, number, number][] = [[TIP_R, 1, 1], [TIP_L, -1, ss(0, 1, pose.many)], [[0.55, -0.3, 0], 1, ss(0.2, 1, pose.many)], [[-0.55, -1.3, 0], -1, ss(0.35, 1, pose.many)]];

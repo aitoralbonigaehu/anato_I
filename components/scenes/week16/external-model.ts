@@ -1,4 +1,4 @@
-import { add, type V3 } from '@/lib/three-d/math';
+import { add, mix3, type V3 } from '@/lib/three-d/math';
 import { curve3 } from '@/lib/three-d/mesh';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
@@ -106,22 +106,27 @@ export function externalModel(pose: ExternalPose, o: ExternalOpts = {}) {
     ball('per', 'perineoa', [0, -0.5, 0.0], [0.28, 0.13, 0.12], mixHex(SKIN, '#d98a7a', 0.4), divide, {}, 8, 12);
     pts['perineoa'] = [0.3, -0.5, 0.05];
   }
-  // The urogenital groove (the membrane broken), closing from behind in the male (the penile urethra).
+  // The urogenital groove's way: on the perineum in front of the anal membrane; in the male it runs on along
+  // the phallus's underside, short of the glans. It closes from behind forwards (the penile urethra inside).
+  const gI: V3[] = [[0, -0.18, 0.03], [0, 0.2, 0.05], [0, 0.45, 0.06], [0, 0.65, 0.07], [0, 0.78, 0.08]];
+  const gM: V3[] = [[0, -0.18, 0.03], [0, 0.45, 0.06], [0, 0.74, 0.2], [0, 1.04, 0.85], [0, 1.25, 1.45]];
+  const gK = gI.map((p, i) => mix3(p, gM[i], male));
+  const close = clamp01(pose.closeGroove) * (male > 0.01 ? 1 : 0);
   if (groove > 0.01) {
-    const close = clamp01(pose.closeGroove);
-    const top = 0.78 + 0.6 * male;
-    const bottom = lerp(-0.18, top - 0.05, close);
+    const full = L(gK, 24);
+    const k = Math.round(close * (full.length - 1));
+    const open = full.slice(k);
+    const shut = full.slice(0, k + 1);
     const id = fem > 0.5 ? 'baginaren-bestibulua' : 'ildo-urogenitala';
-    if (top - bottom > 0.06) {
-      const line: V3[] = L([[0, bottom, 0.03], [0, (bottom + top) / 2, 0.06 + 0.5 * male], [0, top, 0.08 + 0.95 * male]], 10);
-      tube('groove', id, line, DARK, 0.08 + 0.1 * fem, groove, { tissue: 'membrane', groups: ['ildo-urogenitala'] }, 10);
-      pts[id] = add(line[3], [0.12, 0, 0.08]);
+    if (open.length >= 3) {
+      tube('groove', id, open, DARK, 0.08 + 0.1 * fem, groove, { tissue: 'membrane', groups: ['ildo-urogenitala'] }, 10);
+      pts[id] = add(open[Math.floor(open.length / 2)], [0.12, 0, 0.08]);
       pts['ildo-urogenitala'] = pts[id];
     }
-    if (male > 0.01 && close > 0.01) {
-      // The closed part's seam on the underside of the phallus (the penile urethra inside it).
-      tube('raphe', 'zakil-uretra', L([[0, -0.2, 0.06], [0, (bottom - 0.2) / 2, 0.12], [0, bottom, 0.2]], 8), '#f0a0a0', 0.04, close * male, {}, 8);
-      pts['zakil-uretra'] = [0.12, (bottom - 0.2) / 2, 0.2];
+    if (shut.length >= 3) {
+      // The closed part: the penile urethra, seen through the folds fused over it.
+      tube('urethra', 'zakil-uretra', shut, '#f06a7a', 0.06, 1, { deep: '#7a1f2c' }, 8);
+      pts['zakil-uretra'] = add(shut[Math.floor(shut.length * 0.6)], [0.12, 0, 0.06]);
     }
     // Female: the urethra's opening (front) and the vagina's (behind) inside the vestibule.
     if (fem > 0.01) {
@@ -132,18 +137,24 @@ export function externalModel(pose: ExternalPose, o: ExternalOpts = {}) {
     }
   }
 
-  // ———— the folds: cloacal → urogenital (urethral) and anal; female: labia minora ————
+  // ———— the folds: cloacal → urogenital (urethral) and anal; female: labia minora; male: fused over the urethra ————
   const folds = clamp01(pose.folds);
   if (folds > 0.01)
     for (const s of [-1, 1]) {
-      const close = clamp01(pose.closeGroove) * male;
-      const front = L([X(s, [0.22 + 0.05 * fem, 0.75 + 0.6 * male, 0.06 + 0.9 * male]), X(s, [0.27 + 0.08 * fem, 0.25 + 0.3 * male, 0.08 + 0.35 * male]), X(s, [0.24 + 0.06 * fem, -0.2, 0.06])], 12);
+      const wid = [0.24, 0.27, 0.27, 0.25, 0.22].map((w) => w + 0.06 * fem);
+      const line = L(gK.map((p, i): V3 => [s * wid[i], p[1], p[2] + 0.02]), 16);
+      // Behind the closing front they meet in the midline (the seam).
+      const front = line.map((p, j): V3 => [p[0] * (1 - 0.8 * clamp01((close - j / (line.length - 1)) / 0.1)), p[1], p[2]]);
+      const k = Math.round(close * (front.length - 1));
       const id = fem > 0.5 ? 'ezpain-txikiak' : divide > 0.5 ? 'tolespen-urogenitalak' : 'kloaka-tolespenak';
-      tube(`fold${s}`, id, front.map((p) => [p[0] * (1 - close * 0.8), p[1], p[2]] as V3), FOLD, 0.1 * folds, 1, { groups: ['kloaka-tolespenak', 'tolespen-urogenitalak', 'ezpain-txikiak'] }, 10);
+      const extra = { groups: ['kloaka-tolespenak', 'tolespen-urogenitalak', 'ezpain-txikiak'] };
+      if (front.length - k >= 2) tube(`fold${s}`, id, front.slice(k), FOLD, 0.1 * folds, 1, extra, 10);
+      // The fused part is see-through: the urethra shows inside it.
+      if (k >= 1) tube(`foldc${s}`, id, front.slice(0, k + 1), FOLD, 0.1 * folds, 0.45, extra, 10);
       // Behind the perineum the cloacal folds go on round the anal membrane (the anal folds).
       tube(`afold${s}`, 'kloaka-tolespenak', L([X(s, [0.24, -0.25, 0.05]), X(s, [0.28, -0.75, 0.05]), X(s, [0.12, -1.1, 0.04])], 10), FOLD, 0.08 * folds, divide > 0.5 ? 0.6 : 1, { groups: ['kloaka-tolespenak'] }, 8);
       if (s > 0) {
-        pts[id] = X(s, [0.42, 0.35 + 0.3 * male, 0.15 + 0.3 * male]);
+        pts[id] = add(front[Math.max(k, Math.round(front.length * 0.55))], [0.18, 0, 0.1]);
         pts['kloaka-tolespenak'] = id === 'kloaka-tolespenak' ? pts[id] : X(s, [0.4, -0.7, 0.1]);
         pts['tolespen-urogenitalak'] = pts[id];
         pts['ezpain-txikiak'] = pts[id];

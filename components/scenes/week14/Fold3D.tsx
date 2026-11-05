@@ -154,7 +154,8 @@ function foldModel(g: FoldX, dimIds: readonly string[] | null) {
 /** Stage 1 scene. */
 export function Fold3D({ t }: SceneProps) {
   const { f, lam } = timing(t);
-  const g = foldXGeo(f, lam);
+  // Topic 7's longer, wider dorsal mesentery: the gut visibly hangs from the dorsal wall on two layers (p1 C).
+  const g = foldXGeo(f, lam, 42, 5);
   const i = t < S1[1] ? 0 : t < S1[2] ? 1 : t < S1[3] ? 2 : 3;
   const dim = i === 2 ? ['endodermoa', 'heste-lumena', 'hodi-onfalomesenterikoa', 'bitelo-zaku-sekundarioa', 'errai-orria'] : i === 3 ? ['endodermoa', 'errai-orria', 'mesenterio-dortsala', 'heste-lumena'] : null;
   const m = foldModel(g, dim && t > (i === 2 ? S1[2] : S1[3]) + 0.02 ? dim : null);
