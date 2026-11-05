@@ -21,6 +21,7 @@ export const KEY_C = [
 export const S22 = [0, 0.2, 0.4, 0.6, 0.8] as const;
 
 const spec22: StageSpec<CloacaPose, CloacaOpts> = {
+  where: { th: -1.55, at: [0, 0.55, -1.6], scale: 3.4, planes: [{ center: [0, 0.4, 0.1], a: [0, 0, 1.6], b: [0, 1.6, 0] }], note: 'Kloaka: enbrioiaren isatsaren oinarrian; erdiko ebakidura sagitala, ezkerretik' },
   S: S22,
   pose: CP0,
   opts: {},

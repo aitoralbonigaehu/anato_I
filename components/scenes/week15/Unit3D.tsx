@@ -1,6 +1,7 @@
 'use client';
 
 import { BLOCK, KEY15, endPose, poseStage, type StageSpec } from './common';
+import type { V3 } from '@/lib/three-d/math';
 import { BLOCK_AXES, UNIT0, unitModel, type UnitOpts, type UnitPose } from './unit-model';
 
 /**
@@ -18,6 +19,7 @@ const CAP_MESO = 'Torax mailako zeharkako mozketa (3D blokea, goitik): bizkarra 
 export const S3 = [0, 0.25, 0.5, 0.75] as const;
 
 const spec3: StageSpec<UnitPose, UnitOpts> = {
+  where: { th: 1.0, at: [0, 0.1, 0], frame: 'block', scale: 1.8, planes: [-1, 1].map((s) => ({ center: [0, 0.1, s * 1.05] as V3, a: [2.3, 0, 0] as V3, b: [0, 1.75, 0] as V3 })), note: 'Lepoaren mailako zeharkako ebakia: blokea goitik (kranealetik) ikusiko dugu' },
   S: S3,
   pose: UNIT0,
   opts: {},

@@ -22,6 +22,7 @@ export const KEY_TREE = [
 export const S25 = [0, 0.18, 0.38, 0.58, 0.78] as const;
 
 const spec25: StageSpec<TreePose, TreeOpts> = {
+  where: { th: 1.1, at: [0, 1.75, -1.0], scale: 3, planes: [{ center: [0, 1.4, -0.1], a: [0, 0, 1.4], b: [0, 1.9, 0] }], note: 'Arnas dibertikulua: aurreko hestearen horma bentraletik, bihotzaren atzean; ezkerretik' },
   S: S25,
   pose: TP0,
   opts: {},

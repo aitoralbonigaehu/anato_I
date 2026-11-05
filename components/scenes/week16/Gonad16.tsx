@@ -1,6 +1,7 @@
 'use client';
 
 import { BLOCK16, BLOCK_AXES, KEY16, endPose, poseStage, type StageSpec } from './common';
+import type { V3 } from '@/lib/three-d/math';
 import { GN0, gonadModel, type GonadOpts, type GonadPose } from './gonad-model';
 
 /**
@@ -17,6 +18,7 @@ const CAM = (dist = 9.5, target: [number, number, number] = [0.2, 0.1, 0], yaw =
 export const S3 = [0, 0.34, 0.67] as const;
 
 const spec3: StageSpec<GonadPose, GonadOpts> = {
+  where: { th: -0.2, at: [0, 0.1, 0], frame: 'block', scale: 1.8, planes: [-1, 1].map((s) => ({ center: [0, 0.1, s * 0.9] as V3, a: [2.3, 0, 0] as V3, b: [0, 1.75, 0] as V3 })), note: 'Gerriko mailako zeharkako ebakia: gonada mesonefrosaren ondoan; blokea goitik ikusiko dugu' },
   S: S3,
   pose: { ...GN0, germ: 1 },
   opts: {},

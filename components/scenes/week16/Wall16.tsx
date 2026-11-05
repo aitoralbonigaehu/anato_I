@@ -1,6 +1,7 @@
 'use client';
 
 import { FRONT16, KEY16, endPose, poseStage, type StageSpec } from './common';
+import { WALL_WHERE } from '@/components/scenes/week15/Wall3D';
 import { UP0, uroModel, type UroOpts, type UroPose } from '@/components/scenes/week15/uro-model';
 
 /**
@@ -17,6 +18,7 @@ const BASE: UroPose = { ...UP0, meso: 1, wolff: 1, mesoGone: 0.35, gonadal: 1, b
 export const S1 = [0, 0.33, 0.66] as const;
 
 const spec1: StageSpec<UroPose, UroOpts> = {
+  where: WALL_WHERE,
   S: S1,
   pose: { ...BASE, gonadal: 0 },
   opts: { glom: 0, gut: 1 },

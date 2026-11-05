@@ -1,6 +1,6 @@
 'use client';
 
-import { FRONT, KEY15, endPose, poseStage, type StageSpec } from './common';
+import { FRONT, KEY15, endPose, poseStage, type StageSpec, type Where } from './common';
 import { UP0, uroModel, type UroOpts, type UroPose } from './uro-model';
 
 /**
@@ -11,6 +11,15 @@ import { UP0, uroModel, type UroOpts, type UroPose } from './uro-model';
 
 const build = (pose: UroPose, opts: UroOpts) => uroModel(pose, opts);
 const CAP = 'Atzeko pareta aurretik (3D eredua): enbrioiaren ezkerra zure eskuinean';
+
+/** The posterior wall in the embryo: its trunk, neck to cloaca, the wall's plane glowing behind the gut. */
+export const WALL_WHERE: Where = {
+  th: 0,
+  at: [0, -0.3, -0.25],
+  scale: 1.3,
+  planes: [{ center: [0, -0.3, -0.62], a: [1.6, 0, 0], b: [0, 3.4, 0] }],
+  note: 'Enbrioiaren enborra, lepotik kloakaraino: atzeko pareta aurretik ikusiko dugu',
+};
 
 // ———————————————————————————— 1. Sarrera: hiru azpisistemak ————————————————————————————
 
@@ -23,6 +32,7 @@ const spec1: StageSpec<UroPose, UroOpts> = {
   caption: CAP,
   key: KEY15.three,
   keyTitle: 'Kolorea = azpisistema',
+  where: WALL_WHERE,
   steps: [
     {
       cam: FRONT(21, [0, -0.1, -0.4]),

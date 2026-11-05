@@ -65,6 +65,7 @@ const HINDGUT = ['atzeko-hestea', 'beheranzko-kolona', 'kolon-sigmoideoa', 'onde
 export const S17 = [0, 0.24, 0.48, 0.74] as const;
 
 const spec17: StageSpec<MidPose, MidOpts> = {
+  where: { th: -0.1, at: [0, -0.9, -1.2], scale: 2.4, planes: [{ center: [0, -0.9, 0], a: [1.5, 0, 0], b: [0, 1.8, 0] }], note: 'Bitarteko eta atzeko hestea: enborraren behealdea, aurretik ikusita' },
   S: S17,
   pose: { ...MP0, loop: 0 },
   opts: { foreGlass: 0.45, liverGlass: 0.6, diaphragm: 0.2 },

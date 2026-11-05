@@ -55,6 +55,7 @@ const P6: ForePose = { ...FP0, thorax: 1, oeso: 0, dil: 0.2, duod: 1, liver: 0.2
 const OESO = ['hestegorria', 'hestegorriko-muskulu-ilaskatua', 'hestegorriko-muskulu-lisoa', 'nerbio-bagoa', 'nerbio-sistema-begetatiboa'];
 
 const spec6: StageSpec<ForePose, ForeOpts> = {
+  where: { th: 0.7, at: [0, 0.9, -1.2], scale: 2.4, planes: [{ center: [0, 0.6, -0.2], a: [1.5, 0, 0], b: [0, 2.6, 0] }], note: 'Aurreko hestea enborrean: lepotik urdailera, aurretik ikusita' },
   S: S6,
   pose: P6,
   opts: { diaphragm: 0.34 },

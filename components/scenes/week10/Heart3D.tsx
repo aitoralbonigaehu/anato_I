@@ -193,6 +193,8 @@ type ViewProps = {
   left?: [number, number];
   /** Other axes than the body's (a section block whose up is dorsal). */
   axes?: typeof AXES;
+  /** 0..1: the names and the caption (0 while a fly-in still shows the whole embryo). */
+  labels?: number;
 };
 
 /** One 3D heart view: the model for a pose, a camera, and the names. */
@@ -211,6 +213,7 @@ export function ModelView({
   right,
   left,
   axes = AXES,
+  labels = 1,
 }: ViewProps & { model: { items: Scene3['items']; pts: Record<string, V3> }; continuity: string }) {
   const scene: Scene3 = { camera, items: model.items };
   const { mentioned, partsOf } = useScene();
@@ -228,16 +231,16 @@ export function ModelView({
             return s.x > 30 && s.x < 970 && s.y > 30 && s.y < 610;
           };
           for (const n of names) {
-            if (n.show <= 0.01) continue;
+            if (n.show * labels <= 0.01) continue;
             const p = typeof n.p === 'string' ? model.pts[n.p] : n.p;
             if (!p) continue;
             // A dot behind another structure would sit on that one: it moves to the part of its own the eye sees.
             const q = at(typeof n.p === 'string' ? visibleAnchor(model.items, view.eye, p, n.id, inFrame) : p);
-            items.push({ id: n.id, at: q, show: n.show, small: n.small, text: n.text, sub: n.sub, key: n.key });
+            items.push({ id: n.id, at: q, show: n.show * labels, small: n.small, text: n.text, sub: n.sub, key: n.key });
           }
           // What the step's text says is named too, when the model draws it in the frame, even where the
           // scene's own callouts leave it out at this moment.
-          for (const id of mentioned ?? []) {
+          for (const id of labels > 0.6 ? (mentioned ?? []) : []) {
             if (items.some((c) => c.id === id && c.show > 0.3)) continue;
             // Drawn (as itself, as a group of parts, or as the members of a whole), named where the model says
             // or else at its biggest piece.
@@ -245,14 +248,14 @@ export function ModelView({
             if (!own) continue;
             const q = visibleAnchor(model.items, view.eye, model.pts[id] ?? model.pts[own] ?? ownCentre(model.items, own)!, own, inFrame);
             if (!inFrame(q)) continue;
-            items.push({ id, key: `${id}-said`, at: at(q), show: 1, small: true });
+            items.push({ id, key: `${id}-said`, at: at(q), show: labels, small: true });
           }
           return (
             <>
               {over?.(at, asked)}
               <Callouts items={items} left={left ?? [120, 580]} right={right ?? [240, 580]} />
               {caption && (
-                <Note x={24} y={24} size={12.5} align="start">
+                <Note x={24} y={24} size={12.5} align="start" show={labels}>
                   {asked < 0.5 ? `Hasierako ikuspegia: ${caption}` : caption}
                 </Note>
               )}

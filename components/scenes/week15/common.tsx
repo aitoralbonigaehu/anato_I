@@ -4,7 +4,7 @@ import { orbit, poseStage as poseStage14, type PoseModel, type StageSpec } from 
 import type { Camera3, V3 } from '@/lib/three-d/math';
 import { UC } from './uro-model';
 
-export { orbit, endPose, poseAt, type StageSpec, type Step } from '@/components/scenes/week14/common';
+export { orbit, endPose, poseAt, type StageSpec, type Step, type Where } from '@/components/scenes/week14/common';
 
 /**
  * Topic 15 in the circulation topics' way (10–13): one posed 3D model per subject, the whole posterior wall

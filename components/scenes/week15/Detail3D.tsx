@@ -1,6 +1,7 @@
 'use client';
 
 import { orbit, poseStage, type StageSpec } from './common';
+import type { V3 } from '@/lib/three-d/math';
 import { UC } from './uro-model';
 import { KP0, kidneyModel, type KidneyOpts, type KidneyPose } from './kidney-model';
 import { NP0, nephronModel, type NephronOpts, type NephronPose } from './nephron-model';
@@ -23,6 +24,7 @@ const KEY_K = [
 ] as const;
 
 const spec8: StageSpec<KidneyPose, KidneyOpts> = {
+  where: { th: -0.9, at: [-2.4, -0.4, 3.0], scale: 6, planes: [-1, 1].map((s) => ({ center: [0, -0.4 + s * 2.2, 0] as V3, a: [2.2, 0, 0] as V3, b: [0, 0, 1.8] as V3 })), note: 'Ezkerreko metanefrosa: atzeko paretan, sakroaren mailan; aurretik eta gertutik' },
   S: S8,
   pose: KP0,
   opts: {},
@@ -196,6 +198,7 @@ const KEY_A = [
 ] as const;
 
 const spec11: StageSpec<AdrenalPose, AdrenalOpts> = {
+  where: { th: 0.1, at: [-2.6, -0.4, 3.0], scale: 6, planes: [-1, 1].map((s) => ({ center: [-0.2, -0.4 + s * 2.0, 0] as V3, a: [2.2, 0, 0] as V3, b: [0, 0, 1.8] as V3 })), note: 'Ezkerreko giltzurrun gaineko guruina: gonadaren eta giltzurrunaren artean; aurretik eta gertutik' },
   S: S11,
   pose: AP0,
   opts: {},

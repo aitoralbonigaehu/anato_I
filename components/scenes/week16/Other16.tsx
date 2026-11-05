@@ -1,6 +1,7 @@
 'use client';
 
 import { UC } from '@/components/scenes/week15/uro-model';
+import type { V3 } from '@/lib/three-d/math';
 import { BLOCK16, BLOCK_AXES, LEFT16, orbit, poseStage, type StageSpec } from './common';
 import { BR0, broadModel, type BroadOpts, type BroadPose } from './broad-model';
 import { DS0, descentModel, type DescentOpts, type DescentPose } from './descent-model';
@@ -16,6 +17,7 @@ import { EX0, externalModel, type ExternalOpts, type ExternalPose } from './exte
 export const S12 = [0, 0.2, 0.4, 0.6, 0.8] as const;
 
 const spec12: StageSpec<BroadPose, BroadOpts> = {
+  where: { th: -1.1, at: [0, 0, 0], frame: 'block', scale: 1.8, planes: [-1, 1].map((s) => ({ center: [0, 0, s * 0.85] as V3, a: [2.3, 0, 0] as V3, b: [0, 1.8, 0] as V3 })), note: 'Pelbisaren mailako zeharkako ebakia (emea): blokea goitik ikusiko dugu' },
   S: S12,
   pose: BR0,
   opts: {},
@@ -100,6 +102,7 @@ const DCAM = (dist = 9, target: [number, number, number] = [0.9, -0.6, 0.3], yaw
 export const S14 = [0, 0.25, 0.5, 0.75] as const;
 
 const spec14: StageSpec<DescentPose, DescentOpts> = {
+  where: { th: -1.0, at: [0, -0.4, 0.2], scale: 1.5, planes: [{ center: [0.9, -0.6, 0.2], a: [0, 0, 1.8], b: [0, 2.4, 0] }], note: 'Enborraren behealdea, barrabilaren ondotik moztuta (sagitala), ezkerretik ikusita' },
   S: S14,
   pose: DS0,
   opts: {},
@@ -229,6 +232,7 @@ const ECAM = (dist = 6.5, target: [number, number, number] = [0, 0.1, 0], yaw = 
 export const S17 = [0, 0.25, 0.5, 0.75] as const;
 
 const spec17: StageSpec<ExternalPose, ExternalOpts> = {
+  where: { th: -1.75, at: [0, -2.6, 0.6], frame: 'perineum', scale: 3, planes: [{ center: [0, 0, 0.2], a: [2.2, 0, 0], b: [0, 2.2, 0] }], note: 'Kanpo genitalak: enbrioiaren behealdea, behetik eta aurretik ikusita' },
   S: S17,
   pose: EX0,
   opts: {},

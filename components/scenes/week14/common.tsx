@@ -6,7 +6,8 @@ import { ModelView, cameraAt, type CalloutSpec } from '@/components/scenes/week1
 import { ColourKey } from '@/components/scenes/week12/common';
 import { mixHex } from '@/components/scenes/week10/model3d';
 import { seg } from '@/lib/sim/anim';
-import { EMBRYO5 } from '@/lib/three-d/embryo5';
+import { EMBRYO5, sectionMatrix } from '@/lib/three-d/embryo5';
+import { flyIn, reveal, type Plane } from '@/lib/three-d/flyin';
 import { useGeoReady } from '@/lib/three-d/offthread';
 import type { Camera3, V3 } from '@/lib/three-d/math';
 import type { Item3 } from '@/lib/three-d/scene';
@@ -104,6 +105,48 @@ export interface StageSpec<P = GutPose, O = GutOpts> {
   right?: [number, number];
   /** Topic 14: how much closer than its specs the cameras sit (default 0.82; 1 keeps them as written). */
   near?: number;
+  /**
+   * "Where in the body is this?": the stage opens on the whole embryo seen from outside, the region glows, the
+   * embryo turns to glass and fades while the camera flies in to the first step's view (as topics 7 and 9 do).
+   */
+  where?: Where;
+}
+
+/** Where a model sits in the 5-week embryo (lib/three-d/embryo5) for the fly-in that opens a stage. */
+export interface Where {
+  /** The angle along the embryo's curled body axis that sits at `at` (neck ≈ 1.2, mid-trunk 0, tail ≈ −2). */
+  th: number;
+  /** The model point where the body's axis at θ falls. */
+  at: V3;
+  /**
+   * The model's axes: 'trunk' (x left, y cranial, z ventral; the default), 'block' (x left, y dorsal, z cranial)
+   * or 'perineum' (x left, y ventral, z caudal: the external genitalia seen from below).
+   */
+  frame?: 'trunk' | 'block' | 'perineum';
+  /** Model units per embryo unit (default 1). */
+  scale?: number;
+  /** The region's glowing faces, in model space. */
+  planes?: Plane[];
+  /** The bottom note while the embryo shows: what this view is and where it lies. */
+  note: string;
+  /** Stage time the fly-in takes (default 0.07: three or four seconds). */
+  span?: number;
+}
+
+const FRAMES = {
+  trunk: { lateral: [1, 0, 0] as V3, dorsal: [0, 0, -1] as V3, cranial: [0, 1, 0] as V3 },
+  block: { lateral: [1, 0, 0] as V3, dorsal: [0, 1, 0] as V3, cranial: [0, 0, 1] as V3 },
+  perineum: { lateral: [1, 0, 0] as V3, dorsal: [0, -1, 0] as V3, cranial: [0, 0, -1] as V3 },
+};
+
+/** The fly-in at stage time t, onto the view's own camera (null when the stage has none). */
+function whereAt(W: Where | undefined, t: number, reduced: boolean, end: Camera3) {
+  if (!W) return null;
+  const f = FRAMES[W.frame ?? 'trunk'];
+  const s = W.scale ?? 1;
+  const M = sectionMatrix(W.th, W.at, f.lateral, f.dorsal, s);
+  const u = reduced ? 1 : seg(t, 0, W.span ?? 0.07, (q) => q);
+  return flyIn(u, M, end, W.planes ?? [], { dist: 17 * s, cranial: f.cranial, dorsal: f.dorsal });
 }
 
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
@@ -173,7 +216,7 @@ export function gutStage(spec: StageSpec) {
  */
 export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: number } | null }>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel, embryo = false, continuity = CONT) {
   const { S, steps } = spec;
-  function View({ t }: SceneProps) {
+  function View({ t, reduced }: SceneProps) {
     const i = stepAt(S, t);
     const st = steps[i];
     const { pose, opts } = poseAt(spec, t);
@@ -184,12 +227,22 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
     const dimIds = st.dim ?? (prevDim ? steps[i - 1].dim! : []);
     const dim = dimK > 0.001 ? { ids: dimIds, k: dimK } : null;
     const built = build(pose, { ...opts, dim });
-    const m = { ...built, items: recede(built.items, dim) };
     const near = continuity === CONT ? (spec.near ?? 0.82) : 1;
-    const camera = cameraAt(
+    const viewCam = cameraAt(
       t,
       steps.map((s, k) => (s.glide ? ([S[k], closer(s.cam, near), s.glide] as const) : ([S[k], closer(s.cam, near)] as const))),
     );
+    // The opening fly-in: the embryo from outside, then into the model (which shows as the embryo clears).
+    const F = whereAt(spec.where, t, reduced, viewCam);
+    const own = recede(built.items, dim);
+    let m = { ...built, items: own };
+    if (F && (F.block < 0.999 || F.labels < 0.999 || F.items.length)) {
+      const mine = own.map((it) => ({ ...it }));
+      reveal(mine, F);
+      m = { ...built, items: [...F.items, ...mine] };
+    }
+    const camera = F?.camera ?? viewCam;
+    const L = F?.labels ?? 1;
     // A name kept by the next step stays up (one callout, no fade between steps).
     const runs: { n: NameSpec; a: number; b: number; k: number }[] = [];
     steps.forEach((s, k) => {
@@ -214,12 +267,26 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
         left={secOn ? sec.left : undefined}
         axes={spec.axes}
         right={spec.right}
+        labels={L}
         over={(at) => (
           <>
-            {key && <ColourKey items={[...key]} show={1} title={st.keyTitle ?? spec.keyTitle ?? 'Kolorea'} y={46} />}
+            {F && F.where > 0.01 && (
+              <>
+                <Note x={at(F.head).x} y={at(F.head).y - 14} size={13} show={F.where}>
+                  Burua
+                </Note>
+                <Note x={at(F.tail).x} y={at(F.tail).y + 22} size={13} show={F.where}>
+                  Buztana
+                </Note>
+                <Note x={500} y={612} tone="accent" show={F.where}>
+                  {spec.where!.note}
+                </Note>
+              </>
+            )}
+            {key && <ColourKey items={[...key]} show={L} title={st.keyTitle ?? spec.keyTitle ?? 'Kolorea'} y={46} />}
             {steps.map((s, k) =>
               s.note ? (
-                <Note key={`n${k}`} x={500} y={612} tone={s.warn ? 'warn' : 'accent'} show={vis2(t, S[k], S[k + 1] ?? 2)}>
+                <Note key={`n${k}`} x={500} y={612} tone={s.warn ? 'warn' : 'accent'} show={vis2(t, S[k], S[k + 1] ?? 2) * L}>
                   {s.note}
                 </Note>
               ) : null,
@@ -229,7 +296,7 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
                 const p = typeof mk.p === 'string' ? m.pts[mk.p] : mk.p;
                 if (!p) return null;
                 const q = at(p);
-                const show = vis2(t, S[k] + 0.2 * span(k), S[k + 1] ?? 2);
+                const show = vis2(t, S[k] + 0.2 * span(k), S[k + 1] ?? 2) * L;
                 if (show <= 0.02) return null;
                 return (
                   <text key={`m${k}-${j}`} x={q.x + (mk.dx ?? 0)} y={q.y + (mk.dy ?? -10)} textAnchor="middle" className="note note-accent" opacity={show} style={{ fontSize: 12.5, fontWeight: 600 }} pointerEvents="none">
@@ -238,14 +305,14 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
                 );
               }),
             )}
-            {spec.over?.(t, at, pose)}
-            {secOn && sec.node}
+            {L > 0.01 && <g opacity={L}>{spec.over?.(t, at, pose)}</g>}
+            {secOn && L > 0.01 && <g opacity={L}>{sec.node}</g>}
           </>
         )}
       />
     );
   }
-  if (!embryo) return View;
+  if (!embryo && !spec.where) return View;
   function Scene(props: SceneProps) {
     return useGeoReady([EMBRYO5]) ? <View {...props} /> : <Loading3D />;
   }
