@@ -685,3 +685,128 @@
 .tb-tools .tool .kimu-face {
   opacity: 1;
 }
+
+/* ——— The welcome: each time the app is opened, Kimu pops up in the corner and cheers ——— */
+.kimu-cheer {
+  position: fixed;
+  right: 22px;
+  /* Above the corner launcher and the simulator's "Nola ikasi hemen?" card, never over them. */
+  bottom: 176px;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text, #f5f2ec);
+  font: inherit;
+  cursor: pointer;
+  transform-origin: 85% 100%;
+}
+.kimu-cheer.is-in {
+  animation: kimu-cheer-in 620ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.kimu-cheer.is-out {
+  animation: kimu-cheer-out 380ms ease-in both;
+}
+.kimu-cheer-face {
+  order: 2;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, rgba(255, 165, 148, 0.22), rgba(255, 165, 148, 0) 70%);
+}
+.kimu-cheer.is-in .kimu-cheer-face {
+  animation: kimu-cheer-hop 900ms ease-in-out 650ms 2;
+}
+.kimu-cheer-bubble {
+  order: 1;
+  position: relative;
+  padding: 10px 16px;
+  border-radius: 16px;
+  background: var(--surface, #131315);
+  border: 1px solid rgba(255, 165, 148, 0.45);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.kimu-cheer-bubble::after {
+  content: '';
+  position: absolute;
+  right: -7px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  background: var(--surface, #131315);
+  border-right: 1px solid rgba(255, 165, 148, 0.45);
+  border-top: 1px solid rgba(255, 165, 148, 0.45);
+  transform: rotate(45deg);
+}
+.kimu-cheer.is-in .kimu-cheer-bubble {
+  animation: kimu-cheer-bubble 420ms cubic-bezier(0.34, 1.56, 0.64, 1) 260ms both;
+}
+.kimu-cheer:focus-visible {
+  outline: 2px solid rgba(255, 165, 148, 0.8);
+  outline-offset: 4px;
+  border-radius: 18px;
+}
+@keyframes kimu-cheer-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes kimu-cheer-out {
+  to {
+    opacity: 0;
+    transform: translateY(16px) scale(0.85);
+  }
+}
+@keyframes kimu-cheer-hop {
+  0%,
+  100% {
+    transform: none;
+  }
+  35% {
+    transform: translateY(-10px) rotate(-6deg);
+  }
+  65% {
+    transform: translateY(0) rotate(4deg);
+  }
+}
+@keyframes kimu-cheer-bubble {
+  from {
+    opacity: 0;
+    transform: translateX(12px) scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 520px) {
+  .kimu-cheer {
+    right: 14px;
+    bottom: 172px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kimu-cheer.is-in,
+  .kimu-cheer.is-in .kimu-cheer-face,
+  .kimu-cheer.is-in .kimu-cheer-bubble {
+    animation: none;
+  }
+  .kimu-cheer.is-out {
+    animation: kimu-cheer-out 1ms both;
+  }
+}

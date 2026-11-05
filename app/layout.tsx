@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Kimu } from '@/components/kimu/Kimu';
+import { KimuCheer } from '@/components/kimu/KimuCheer';
 
 const sans = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
 const mono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono', display: 'swap' });
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         {children}
         <Kimu />
+        <KimuCheer />
       </body>
     </html>
   );
