@@ -1033,3 +1033,67 @@
     }
   }
 }
+
+/* ——— Plate strips (Belortzioak, Fitxak): a recessed rail, the current plate raised and numbered ——— */
+.plate-strip {
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--r-lg);
+  background: rgb(var(--fg-rgb) / 0.04);
+  box-shadow: var(--well);
+  scrollbar-width: none;
+}
+
+.plate-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.plate-strip button {
+  height: 34px;
+  border: 0;
+  border-radius: calc(var(--r-lg) - 3px);
+  background: transparent;
+  color: var(--text-3);
+  transition: background-color var(--dur-1), color var(--dur-1), box-shadow var(--dur-2);
+}
+
+.plate-strip button:hover {
+  color: var(--text);
+  background: rgb(var(--fg-rgb) / 0.05);
+}
+
+.plate-strip button.is-on {
+  border: 0;
+  background: var(--thumb);
+  color: var(--text);
+  box-shadow: var(--rim-2), var(--highlight), var(--shadow-sm);
+}
+
+.plate-strip-n {
+  border-radius: calc(var(--r-lg) - 7px);
+  background: rgb(var(--fg-rgb) / 0.07);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.plate-strip button.is-on .plate-strip-n {
+  background: var(--signal);
+  color: var(--on-signal);
+}
+
+/* The topic switcher: the current topic lit in its own colour. */
+.tsw-item.is-on {
+  background: var(--topic-soft) !important;
+  border-color: var(--topic-line) !important;
+  box-shadow: inset 0 0 0 1px var(--topic-line);
+}
+
+.tsw-item.is-on .tsw-item-n {
+  background: var(--topic) !important;
+  color: #fff !important;
+}
+
+.tsw-item.is-on small,
+.tsw-item.is-on .tsw-here {
+  color: var(--topic-ink) !important;
+}
