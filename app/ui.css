@@ -1,0 +1,386 @@
+/* ————————————————————————————————————————————————————————————————
+   EnbrioAtlas — interface layer
+   The shared pieces every page uses (bars, search, look switch, command bar, toasts), written on the
+   tokens of app/tokens.css. Loaded after globals.css, so these are the final word for what they style.
+   ———————————————————————————————————————————————————————————————— */
+
+/* ——— One bar everywhere: the site bar and the simulator's bar share height, ground and edge ——— */
+.land-nav,
+.topbar {
+  height: var(--bar-h);
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  backdrop-filter: blur(16px) saturate(1.25);
+  border-bottom: 1px solid var(--line);
+}
+
+.land-nav nav {
+  gap: 4px;
+  font-size: var(--t-sm);
+}
+
+/* Site links: quiet text keys with a soft hover well (the current page keeps its signal underline). */
+.land-nav nav > a:not(.btn) {
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: var(--r-sm);
+  color: var(--text-2);
+  font-weight: 500;
+  transition: color var(--dur-1), background-color var(--dur-1);
+}
+
+.land-nav nav > a:not(.btn):hover {
+  color: var(--text);
+  background: rgb(var(--fg-rgb) / 0.05);
+}
+
+.land-nav nav > a[aria-current='page'] {
+  color: var(--text);
+}
+
+.land-nav .nav-menu-key {
+  height: 34px;
+  padding: 0 10px 0 12px;
+  border-radius: var(--r-sm);
+  font-weight: 500;
+}
+
+.land-nav .nav-menu-key:hover {
+  background: rgb(var(--fg-rgb) / 0.05);
+}
+
+.land-nav .nav-sep {
+  width: 1px;
+  height: 20px;
+  margin: 0 8px;
+  background: var(--line-2);
+}
+
+.land-nav nav > .btn {
+  margin-left: 6px;
+}
+
+/* ——— Search key: looks like a field, opens the command bar ——— */
+.search-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  min-width: 200px;
+  padding: 0 6px 0 11px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: rgb(var(--fg-rgb) / 0.035);
+  color: var(--text-3);
+  font: 450 var(--t-sm) / 1 var(--font-ui);
+  transition: border-color var(--dur-1), background-color var(--dur-1), color var(--dur-1);
+}
+
+.search-key:hover {
+  border-color: var(--line-2);
+  background: rgb(var(--fg-rgb) / 0.06);
+  color: var(--text-2);
+}
+
+.search-key-t {
+  flex: 1;
+  text-align: left;
+}
+
+.search-key-k {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.search-key kbd {
+  min-width: 19px;
+  height: 19px;
+  font-size: 10.5px;
+  border-bottom-width: 1px;
+  background: var(--surface);
+}
+
+.search-key.is-compact {
+  min-width: 0;
+  width: 34px;
+  padding: 0;
+  justify-content: center;
+}
+
+/* ——— Look switch ——— */
+.theme-key-icon {
+  display: inline-grid;
+  place-items: center;
+  animation: theme-key-in var(--dur-3) var(--ease-spring);
+}
+
+@keyframes theme-key-in {
+  from {
+    transform: rotate(-60deg) scale(0.6);
+    opacity: 0;
+  }
+}
+
+.theme-switch {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--r-md);
+  background: rgb(var(--fg-rgb) / 0.05);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.theme-switch button {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 4px 6px;
+  border-radius: 7px;
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 550;
+  transition: background-color var(--dur-1), color var(--dur-1);
+}
+
+.theme-switch button:hover {
+  color: var(--text);
+}
+
+.theme-switch button.is-on {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--lift-1), 0 0 0 1px var(--line);
+}
+
+/* ——— Command bar ——— */
+.cmdk {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: min(14vh, 120px) 16px 16px;
+  background: var(--scrim);
+  animation: cmdk-fade var(--dur-2) var(--ease-out);
+}
+
+.cmdk-panel {
+  display: flex;
+  flex-direction: column;
+  width: min(680px, 100%);
+  max-height: min(70vh, 620px);
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--float);
+  box-shadow: 0 0 0 1px var(--glass-line), var(--lift-3);
+  animation: cmdk-in var(--dur-2) var(--ease-out);
+}
+
+@keyframes cmdk-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes cmdk-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.985);
+  }
+}
+
+.cmdk-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px 0 18px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-3);
+}
+
+.cmdk-field input {
+  flex: 1;
+  min-width: 0;
+  height: 56px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: 450 var(--t-lg) / 1 var(--font-ui);
+  letter-spacing: -0.01em;
+}
+
+.cmdk-field input::placeholder {
+  color: var(--text-4);
+}
+
+.cmdk-esc {
+  cursor: pointer;
+  padding: 0 7px;
+  font-size: 10.5px;
+}
+
+.cmdk-list {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px 8px 8px;
+  scroll-padding: 34px 0 8px;
+}
+
+.cmdk-group + .cmdk-group {
+  margin-top: 4px;
+}
+
+.cmdk-head {
+  position: sticky;
+  top: -6px;
+  z-index: 1;
+  margin: 0;
+  padding: 10px 10px 6px;
+  background: var(--float);
+  color: var(--text-4);
+  font: 600 10.5px / 1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cmdk-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 6px 10px;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  color: var(--text-2);
+}
+
+.cmdk-item.is-on {
+  background: rgb(var(--fg-rgb) / 0.07);
+  color: var(--text);
+}
+
+.cmdk-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgb(var(--fg-rgb) / 0.05);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--text-3);
+}
+
+.cmdk-item.is-on .cmdk-icon {
+  color: var(--signal);
+}
+
+.cmdk-week {
+  font: 600 11px / 1 var(--font-mono);
+  color: var(--text-2);
+}
+
+.cmdk-item.is-on .cmdk-week {
+  color: var(--signal);
+}
+
+.cmdk-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.cmdk-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--t-md);
+  font-weight: 550;
+  color: inherit;
+}
+
+.cmdk-sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12.5px;
+  color: var(--text-4);
+}
+
+.cmdk-go {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--text-4);
+  opacity: 0;
+}
+
+.cmdk-item.is-on .cmdk-go {
+  opacity: 1;
+}
+
+.cmdk-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 36px 16px;
+  color: var(--text-3);
+  text-align: center;
+}
+
+.cmdk-empty button {
+  color: var(--signal);
+  font-weight: 600;
+}
+
+.cmdk-foot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
+  background: rgb(var(--fg-rgb) / 0.02);
+  color: var(--text-4);
+  font-size: 12px;
+}
+
+.cmdk-foot span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cmdk-foot kbd {
+  min-width: 18px;
+  height: 18px;
+  font-size: 10.5px;
+  border-bottom-width: 1px;
+}
+
+.cmdk-foot-end {
+  margin-left: auto;
+}
+
+@media (max-width: 640px) {
+  .cmdk {
+    padding: 10px 8px;
+  }
+  .cmdk-panel {
+    max-height: calc(100dvh - 20px);
+  }
+  .cmdk-foot {
+    display: none;
+  }
+}

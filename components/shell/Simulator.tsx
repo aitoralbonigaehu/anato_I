@@ -60,6 +60,8 @@ import { ClassDock } from '@/components/klasea/ClassDock';
 import { KimuWalker } from '@/components/klasea/KimuWalker';
 import { useKlasea, type ClassDriver, type ClassLink } from '@/components/klasea/useKlasea';
 import { hasRoom } from './eratorriak/roomWeeks';
+import { RUN_COMMAND, SearchKey } from './CommandBar';
+import { ThemeKey } from './ThemeKey';
 
 interface Pos {
   i: number;
@@ -1752,6 +1754,27 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
       : { label: 'Galderak', tip: 'Gaiak amaituta: frogatu zure burua galderekin', onClick: () => { setQuestionsConcept(undefined); setQuestionsOpen(true); } };
   const prevWeek = weeks[weeks.indexOf(week) - 1];
   const prevStage = week.stages[pos.i - 1] ?? prevWeek?.stages[prevWeek.stages.length - 1];
+  // The command bar (⌘K) runs the simulator's own actions through one event.
+  const commandRef = useRef<(a: string) => void>(() => {});
+  useEffect(() => {
+    commandRef.current = (a: string) => {
+    if (a === 'galderak') {
+      setQuestionsConcept(undefined);
+      setQuestionsOpen(true);
+    } else if (a === 'aurkitu') startFind();
+    else if (a === 'apunteak') toggleNotes();
+    else if (a === 'laburpena') togglePanel();
+    else if (a === 'fokua') setFocusMode(true);
+    else if (a === 'glosarioa') setGlossaryOpen(true);
+    else if (a === 'laguntza') setHelpOpen(true);
+    };
+  });
+  useEffect(() => {
+    const run = (e: Event) => commandRef.current((e as CustomEvent<string>).detail);
+    window.addEventListener(RUN_COMMAND, run);
+    return () => window.removeEventListener(RUN_COMMAND, run);
+  }, []);
+
   const sceneT = intro !== null ? easeInOut(Math.min(1, intro)) : pos.t;
 
   return (
@@ -1764,6 +1787,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
         <div className="tb-tools">
           {/* Ask (Kimu) first; testing yourself (Aurkitu, Galderak) is one menu; the right column's two panels
               are two quiet icons; everything else (glossary, chronology, help…) lives in the «⋯» menu. */}
+          <SearchKey compact />
           <button data-tour="kimu" className={`tool tool-main kimu-tool mobile-tool-hidden${kimuOpen ? ' is-on' : ''}`} onClick={toggleKimu} aria-label="Galdetu Kimuri" aria-expanded={kimuOpen} data-tip="Galdetu Kimuri: lekura eramango zaitu · K" data-tip-pos="bottom">
             <KimuFace size={24} mood="happy" still /> <span className="tb-l">Kimu</span>
             <span className="tb-s" aria-hidden>Kimu</span>
@@ -1796,6 +1820,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
               <IconNotes size={16} />
             </button>
           </div>
+          <ThemeKey className="tool tool-icon mobile-tool-hidden" />
           <Popover
             trigger={({ open, toggle }) => (
               <button data-tour="tresnak" className={`tool tool-icon${open ? ' is-on' : ''}`} aria-label="Tresnak" onClick={toggle} aria-expanded={open} aria-haspopup="menu" data-tip="Glosarioa, kronologia, eratorriak, irudiak…" data-tip-pos="bottom">

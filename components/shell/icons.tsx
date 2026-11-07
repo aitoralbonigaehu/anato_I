@@ -353,3 +353,57 @@ export const IconSliders = ({ size }: P) => (
     <circle cx="9" cy="17" r="2" />
   </svg>
 );
+
+/** The device's own setting (theme: follow the system). */
+export const IconMonitor = ({ size }: P) => (
+  <svg {...base(size)}>
+    <rect x="3" y="4.5" width="18" height="12" rx="2" />
+    <path d="M9 20h6M12 16.5V20" />
+  </svg>
+);
+export const IconArrowRight = ({ size }: P) => (
+  <svg {...base(size)}>
+    <path d="M5 12h14M13 6l6 6-6 6" />
+  </svg>
+);
+/** Enter key: "open this". */
+export const IconReturn = ({ size }: P) => (
+  <svg {...base(size)}>
+    <path d="M20 5v7a3 3 0 0 1-3 3H5" />
+    <path d="M9 11l-4 4 4 4" />
+  </svg>
+);
+/** A stage of a topic: frames on a strip. */
+export const IconStage = ({ size }: P) => (
+  <svg {...base(size)}>
+    <rect x="3.5" y="5" width="17" height="14" rx="2.5" />
+    <path d="M9.5 9.5v5l4.5-2.5z" fill="currentColor" stroke="none" />
+  </svg>
+);
+/** A structure: a cell with its nucleus. */
+export const IconCell = ({ size }: P) => (
+  <svg {...base(size)}>
+    <circle cx="12" cy="12" r="8" />
+    <circle cx="13.5" cy="10.5" r="2.6" />
+  </svg>
+);
+/** A page of the site. */
+export const IconPage = ({ size }: P) => (
+  <svg {...base(size)}>
+    <path d="M7 3.5h7l4 4V20.5H7z" />
+    <path d="M14 3.5v4h4" />
+  </svg>
+);
+/** Something to do. */
+export const IconSpark = ({ size }: P) => (
+  <svg {...base(size)}>
+    <path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18" />
+  </svg>
+);
+/** Recently opened. */
+export const IconHistory = ({ size }: P) => (
+  <svg {...base(size)}>
+    <path d="M4 12a8 8 0 1 0 2.4-5.7" />
+    <path d="M4 4v4.5h4.5M12 8v4.5l3 2" />
+  </svg>
+);

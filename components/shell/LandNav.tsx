@@ -4,6 +4,8 @@ import { weeks } from '@/content/registry';
 import { BrandMark } from './icons';
 import atlasStyles from './structure-atlas.module.css';
 import { StudyMenu } from './NavMenu';
+import { SearchKey } from './CommandBar';
+import { ThemeKey } from './ThemeKey';
 
 /** A week whose only scenes are placeholders is still being prepared. */
 export const isWip = (w: (typeof weeks)[number]) => w.stages.every((s) => s.views.every((v) => v.description === 'Prestatzen'));
@@ -38,10 +40,13 @@ export function LandNav({ current, help }: { current?: Section; help?: ReactNode
         {/* The study pages (classrooms, derivatives, arrow quizzes, images and, under them, the structures'
             atlas, the plate cards) and Kimu: one menu, so the bar keeps three entries and the simulator. */}
         <StudyMenu current={current} />
+        <span className="nav-sep" aria-hidden />
+        <SearchKey />
+        <ThemeKey />
+        {help}
         <Link href={`/astea/${firstReady.week}`} className="btn btn-light small" data-tour="simulagailua">
           Ireki simulagailua
         </Link>
-        {help}
       </nav>
     </header>
   );
