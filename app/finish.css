@@ -791,3 +791,122 @@ html.is-theme-reveal::view-transition-new(root) {
     corner-shape: squircle;
   }
 }
+
+/* ————————————————————————————————————————————————————————————————
+   Motion and the last touches
+   ———————————————————————————————————————————————————————————————— */
+
+/* Arriving on a study page: its parts settle in, one after another (the home has its own opening). */
+.landing:not(.is-ready):not(.is-intro) > :not(.land-nav):not(footer) {
+  animation: page-in 520ms var(--ease-out) both;
+}
+
+.landing:not(.is-ready):not(.is-intro) > :nth-child(3) {
+  animation-delay: 60ms;
+}
+
+.landing:not(.is-ready):not(.is-intro) > :nth-child(4) {
+  animation-delay: 120ms;
+}
+
+.landing:not(.is-ready):not(.is-intro) > :nth-child(n + 5) {
+  animation-delay: 180ms;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* Ask Kimu: a frosted pill with a lit edge; it lifts a little under the pointer. */
+.kimu-launch {
+  border: 0;
+  background: color-mix(in srgb, var(--float) 82%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 0 0 1px var(--glass-line), var(--highlight), var(--shadow-lg);
+  transition:
+    transform var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out),
+    color var(--dur-1);
+}
+
+.kimu-launch:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px var(--line-3), var(--highlight), var(--shadow-lg);
+}
+
+.kimu-launch:active {
+  transform: translateY(0) scale(var(--press));
+}
+
+/* The first-time card arrives like a notification. */
+.gida-offer.is-placed {
+  animation: offer-in 420ms var(--ease-out) both;
+}
+
+@keyframes offer-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+    translate: 0 -6px;
+  }
+}
+
+/* The hero's light: softer and slower on paper, warmer on dark. */
+:root[data-theme='light'] .lp-aurora {
+  background:
+    radial-gradient(38% 46% at 76% 40%, rgba(255, 140, 90, 0.14), transparent 70%),
+    radial-gradient(34% 44% at 60% 74%, rgba(120, 160, 255, 0.1), transparent 72%),
+    radial-gradient(30% 40% at 6% 4%, rgba(255, 200, 140, 0.12), transparent 70%);
+}
+
+/* The hero picture: a lightbox with a lit rim and a reflective top. */
+.lp-reel-tilt {
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08), inset 0 1px 0 rgb(255 255 255 / 0.06), var(--shadow-lg);
+}
+
+:root[data-theme='light'] .lp-reel-tilt {
+  box-shadow: 0 0 0 1px rgb(40 30 20 / 0.12), 0 2px 6px rgb(60 40 20 / 0.08), 0 40px 80px -30px rgb(60 40 20 / 0.45);
+}
+
+@supports (corner-shape: squircle) {
+  .lp-reel-tilt,
+  .kimu-launch {
+    corner-shape: squircle;
+  }
+}
+
+/* Section headings: the kicker carries a short signal rule before it. */
+.section-head > .kicker::before,
+.lp-shelf-head .kicker::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 1.5px;
+  margin-right: 10px;
+  vertical-align: middle;
+  border-radius: 2px;
+  background: var(--signal);
+}
+
+/* The stats: hairline dividers that fade at their ends. */
+.lp-stats > div {
+  border-left-color: transparent;
+  border-image: linear-gradient(180deg, transparent, var(--line-2) 20%, var(--line-2) 80%, transparent) 1;
+}
+
+.lp-stats > div:first-child {
+  border-image: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing > *,
+  .gida-offer.is-placed,
+  .kimu-launch {
+    animation: none !important;
+    transition: none !important;
+  }
+}
