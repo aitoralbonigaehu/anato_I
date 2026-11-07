@@ -7,7 +7,8 @@
 :root,
 .theme-stage,
 .viewport,
-.intro {
+.intro,
+.app .stage-bar {
   --font-ui: var(--font-geist), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   --gutter: max(24px, calc((100vw - 1240px) / 2));
@@ -9848,7 +9849,8 @@ button.tp-switch:hover {
 :root,
 .theme-stage,
 .viewport,
-.intro {
+.intro,
+.app .stage-bar {
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -10399,7 +10401,8 @@ button.tp-switch:hover {
 :root,
 .theme-stage,
 .viewport,
-.intro {
+.intro,
+.app .stage-bar {
   /* One elevation scale: hairline edge + soft drop, from resting chips to floating cards. */
   --glass: rgb(var(--surface-rgb) / 0.9);
   --glass-strong: rgb(var(--surface-rgb) / 0.97);
@@ -11112,7 +11115,8 @@ button.tp-switch:hover {
 :root,
 .theme-stage,
 .viewport,
-.intro {
+.intro,
+.app .stage-bar {
   --eyebrow: var(--kicker);
   --warn: #ff8fa3;
   --warn-line: rgba(255, 143, 163, 0.5);
@@ -11998,7 +12002,8 @@ a.ln-chip:focus-visible {
 :root,
 .theme-stage,
 .viewport,
-.intro {
+.intro,
+.app .stage-bar {
   --card-bg: var(--glass-strong);
   --card-radius: 14px;
   --card-shadow: var(--shadow-3);
@@ -13324,7 +13329,8 @@ kbd {
 :root,
 .theme-stage,
 .viewport,
-.intro {
+.intro,
+.app .stage-bar {
   --h-sm: 28px;
   --h-md: 34px;
   --h-lg: 42px;

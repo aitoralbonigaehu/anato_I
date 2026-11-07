@@ -5,22 +5,24 @@ import { getWeek } from '@/content/registry';
 import { blockText, expandNotes, firstAnchorInSection, notesOf, sectionConfig, sentenceAnchors, type NotesAnchor, type NotesBlock, type NotesPart } from '@/content/notes-text';
 import type { StageDef } from '@/lib/sim/types';
 import { IconClose, IconList, IconMoon, IconSun } from './icons';
+import { useTheme } from './theme';
 
 /* ——— Reading preferences (text size, paper/dark), remembered per browser ——— */
 
 const PREFS_KEY = 'enbrioatlas:notes-reading';
 interface Reading {
   font: number;
-  paper: boolean;
+  /** Paper or dark sheet; null = follow the app's look (paper in light mode, dark in dark mode). */
+  paper: boolean | null;
 }
-const DEFAULT_READING: Reading = { font: 16, paper: false };
+const DEFAULT_READING: Reading = { font: 16, paper: null };
 const readingListeners = new Set<() => void>();
 let reading: Reading | undefined;
 const readReading = (): Reading => {
   if (!reading) {
     try {
       const saved = JSON.parse(window.localStorage.getItem(PREFS_KEY) ?? 'null') as Partial<Reading> | null;
-      reading = { font: Math.min(22, Math.max(13, Number(saved?.font) || 16)), paper: !!saved?.paper };
+      reading = { font: Math.min(22, Math.max(13, Number(saved?.font) || 16)), paper: typeof saved?.paper === 'boolean' ? saved.paper : null };
     } catch {
       reading = DEFAULT_READING;
     }
@@ -153,7 +155,10 @@ export function NotesPanel({ week, stage, activeBeat: playbackBeat, progress, so
   const [away, setAway] = useState<'up' | 'down' | null>(null);
   const [hint, setHint] = useState<string | null>(null);
   const [tocOpen, setTocOpen] = useState(false);
-  const { font, paper } = useSyncExternalStore(subscribeReading, readReading, () => DEFAULT_READING);
+  const { font, paper: chosen } = useSyncExternalStore(subscribeReading, readReading, () => DEFAULT_READING);
+  // Unless the student chose a sheet, the notes follow the app's look: paper on paper, dark in the dark.
+  const { theme } = useTheme();
+  const paper = chosen ?? theme === 'light';
 
   const stageIds = useMemo(() => new Set(stage.beats.flatMap((b) => expandNotes(b.notes))), [stage]);
   const markers = useMemo(() => {

@@ -910,3 +910,10 @@ html.is-theme-reveal::view-transition-new(root) {
     transition: none !important;
   }
 }
+
+/* The play key's "start the stage" state stays the inverse key on paper too. */
+:root[data-theme='light'] .dock .play.is-cue {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--inverse) 84%, #fff), var(--inverse));
+  color: var(--on-inverse);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 8px 20px -10px rgb(40 30 20 / 0.45);
+}

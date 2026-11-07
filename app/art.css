@@ -17,7 +17,8 @@
 .viewport,
 .intro,
 .lp-hero,
-[style*='--th'] {
+[style*='--th'],
+.app .stage-bar {
   --topic: oklch(0.76 0.12 var(--th));
   --topic-strong: oklch(0.82 0.13 var(--th));
   --topic-soft: oklch(0.76 0.12 var(--th) / 0.14);
@@ -920,5 +921,115 @@
   }
   .story-sticky {
     transition: none;
+  }
+}
+
+/* ————————————————————————————————————————————————————————————————
+   Simulator: the theatre
+   The centre column is one continuous dark canvas, lit in the topic's colour. The heading sits on it,
+   the specimen fills it edge to edge, and the explanation floats at its foot as a card: paper in light
+   mode (the student's reading surface), dark glass in dark mode. Nothing covers the specimen: the card
+   keeps its own row. Focus mode keeps its own full-screen layout.
+   ———————————————————————————————————————————————————————————————— */
+@media (min-width: 821px) {
+  .app:not(.is-focus) .stage {
+    gap: 0;
+    padding: 0;
+    background:
+      radial-gradient(60% 55% at 50% 42%, oklch(0.55 0.12 var(--th) / 0.16), transparent 70%),
+      radial-gradient(120% 90% at 50% 0%, #17161b, #0c0c0e 70%, #09090a);
+    box-shadow:
+      inset 1px 0 0 rgb(255 255 255 / 0.05),
+      inset -1px 0 0 rgb(255 255 255 / 0.05),
+      inset 12px 0 24px -16px rgb(0 0 0 / 0.6),
+      inset -12px 0 24px -16px rgb(0 0 0 / 0.6);
+  }
+
+  :root[data-theme='light'] .app:not(.is-focus) .stage {
+    box-shadow:
+      inset 1px 0 0 rgb(0 0 0 / 0.6),
+      inset -1px 0 0 rgb(0 0 0 / 0.6),
+      inset 14px 0 26px -18px rgb(0 0 0 / 0.8),
+      inset -14px 0 26px -18px rgb(0 0 0 / 0.8);
+  }
+
+  /* The theatre's own light: the topic glow, a touch stronger than on paper. */
+  .app:not(.is-focus) .stage::before {
+    inset: 6% 10% 28%;
+    opacity: 0.5;
+  }
+
+  /* The heading: on the canvas, with a soft fade into the picture. */
+  .app:not(.is-focus) .stage > .stage-bar {
+    position: relative;
+    z-index: 2;
+    padding: 14px 20px 10px;
+    background: linear-gradient(180deg, rgb(12 12 14 / 0.65), rgb(12 12 14 / 0));
+  }
+
+  .app:not(.is-focus) .stage > .stage-bar .stage-title h2 {
+    color: #f5f2ec;
+  }
+
+  .app .stage-bar .seg > button.is-on {
+    background: var(--surface-3);
+  }
+
+  /* The specimen: edge to edge, no frame of its own. */
+  .app:not(.is-focus) .stage > .viewport {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .app:not(.is-focus) .stage > .viewport::before {
+    display: none;
+  }
+
+  :root[data-theme='light'] .app:not(.is-focus) .stage > .viewport {
+    box-shadow: none;
+  }
+
+  /* The explanation: a card floating at the foot of the canvas. */
+  .app:not(.is-focus) .stage > .dock,
+  .app:not(.is-focus) .stage > .formation-card {
+    position: relative;
+    z-index: 2;
+    margin: 4px 14px 14px;
+    border: 0;
+    border-radius: 18px;
+    background: var(--sheen), var(--frame);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.08),
+      inset 0 1px 0 rgb(255 255 255 / 0.06),
+      0 18px 40px -16px rgb(0 0 0 / 0.75);
+  }
+
+  :root[data-theme='light'] .app:not(.is-focus) .stage > .dock,
+  :root[data-theme='light'] .app:not(.is-focus) .stage > .formation-card {
+    background: linear-gradient(180deg, #fffdf9, #f8f5ef);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.5),
+      inset 0 1px 0 #fff,
+      0 20px 44px -18px rgb(0 0 0 / 0.85),
+      0 2px 6px rgb(0 0 0 / 0.35);
+  }
+
+  /* Compass words on the canvas edge: inside the picture now, never on a frame line. */
+  .app:not(.is-focus) .stage > .viewport .orient .orient-top {
+    top: 8px;
+  }
+
+  .app:not(.is-focus) .stage > .viewport .orient .orient-bottom {
+    bottom: 8px;
+  }
+
+  @supports (corner-shape: squircle) {
+    .app:not(.is-focus) .stage > .dock,
+    .app:not(.is-focus) .stage > .formation-card {
+      corner-shape: squircle;
+      border-radius: 26px;
+    }
   }
 }

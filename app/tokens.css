@@ -10,7 +10,8 @@
 :root,
 .theme-stage,
 .viewport,
-.intro {
+.intro,
+.app .stage-bar {
   /* Ground and surfaces */
   --bg: #0a0a0b;
   --bg-1: #0f0f11;
@@ -195,7 +196,8 @@
    values on .theme-stage/.viewport/.intro themselves, so they win over the light ones they inherit. */
 .theme-stage,
 .viewport,
-.intro {
+.intro,
+.app .stage-bar {
   color: var(--text);
 }
 
