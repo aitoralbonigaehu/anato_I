@@ -7,6 +7,7 @@ import { StudyMenu } from './NavMenu';
 import { SearchKey } from './CommandBar';
 import { ThemeKey, ThemeSwitch } from './ThemeKey';
 import { BarScroll } from './BarScroll';
+import { NewsLink } from './NewsLink';
 
 /** A week whose only scenes are placeholders is still being prepared. */
 export const isWip = (w: (typeof weeks)[number]) => w.stages.every((s) => s.views.every((v) => v.description === 'Prestatzen'));
@@ -25,7 +26,7 @@ export function Wordmark({ size = 22 }: { size?: number }) {
   );
 }
 
-type Section = 'kronologia' | 'ikasgela' | 'fitxak' | 'belortzioak' | 'irudiak' | 'eratorriak' | 'egiturak';
+type Section = 'kronologia' | 'ikasgela' | 'fitxak' | 'belortzioak' | 'irudiak' | 'eratorriak' | 'egiturak' | 'berriak';
 
 /** The site bar; `current` marks the page you are on (aria-current), so the bar also says where you are. */
 export function LandNav({ current, help }: { current?: Section; help?: ReactNode }) {
@@ -42,6 +43,7 @@ export function LandNav({ current, help }: { current?: Section; help?: ReactNode
         {/* The study pages (classrooms, derivatives, arrow quizzes, images and, under them, the structures'
             atlas, the plate cards) and Kimu: one menu, so the bar keeps three entries and the simulator. */}
         <StudyMenu current={current} />
+        <NewsLink current={current === 'berriak'} />
         <span className="nav-sep" aria-hidden />
         <SearchKey />
         <ThemeKey />
@@ -69,6 +71,7 @@ export function LandFoot({ children }: { children?: ReactNode }) {
           <Link href="/ikasgela">Ikasgelak</Link>
           <Link href="/kronologia">Kronologia</Link>
           <Link href="/eratorriak">Eratorriak</Link>
+          <Link href="/berriak">Berriak</Link>
         </nav>
         <nav className="foot-col" aria-label="Praktikatu">
           <p>Praktikatu</p>

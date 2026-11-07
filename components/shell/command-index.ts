@@ -49,6 +49,7 @@ export const PAGES: Command[] = [
   { id: 'p:irudiak', group: 'orriak', title: 'Irudiak', sub: 'Etiketarik gabeko irudiak irakurtzen', href: '/irudiak', also: ['imagenes', 'figuras', 'pdf'] },
   { id: 'p:egiturak', group: 'orriak', title: 'Egiturak', sub: 'Egitura guztien atlasa', href: '/egiturak', also: ['atlas', 'estructuras'] },
   { id: 'p:fitxak', group: 'orriak', title: 'Fitxak', sub: 'Irudiak zenbakiekin', href: '/fitxak', also: ['fichas', 'laminas'] },
+  { id: 'p:berriak', group: 'orriak', title: 'Berriak', sub: 'Zer dago berri: aldaketak eta hobekuntzak', href: '/berriak', also: ['novedades', 'changelog', 'aldaketak', 'zer berri'] },
   { id: 'p:kronologia', group: 'orriak', title: 'Kronologia', sub: 'Zer dago egun bakoitzean?', href: '/kronologia', also: ['cronologia', 'egunak', 'denbora'] },
 ];
 

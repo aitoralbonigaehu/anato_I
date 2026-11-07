@@ -54,6 +54,10 @@ export function StudyMenu({ current }: { current?: string }) {
             <b>Gaiak</b>
             <small>gai guztiak, garapenaren ordenan</small>
           </Link>
+          <Link role="menuitem" href="/berriak" className="nav-menu-phone" onClick={() => setOpen(false)}>
+            <b>Berriak</b>
+            <small>zer dago berri</small>
+          </Link>
           <hr className="nav-menu-phone" />
           {ITEMS.map((i) => (
             <Link key={i.id} role="menuitem" href={i.href} className={i.sub ? 'is-sub' : undefined} aria-current={i.id === current ? 'page' : undefined} onClick={() => setOpen(false)}>
