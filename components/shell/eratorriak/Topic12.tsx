@@ -328,7 +328,7 @@ export function Topic12Study() {
         </div>
 
         <div className={`${styles.timeline}${show3d ? '' : ` ${styles.timelineSolo}`}`}>
-          <div className={styles.ladderBox}>
+          <div className={`${styles.ladderBox} theme-stage`}>
             <ArchLadder stage={stage} mode={mode} lit={lit} focus={focus} hover={hover} labels={labels} onPick={pickSeg} onHover={setHover} />
             <p className={styles.ladderNote}>Aurretik ikusita: enbrioiaren eskuina zure ezkerrean (apunteetako irudietan bezala).</p>
             <Legend mode={mode} stage={stage} />
@@ -778,7 +778,7 @@ function Branches() {
   const [group, setGroup] = useState<BranchGroup | null>(null);
   return (
     <div className={styles.branches}>
-      <div className={styles.figCard}>
+      <div className={`${styles.figCard} theme-stage`}>
         <BranchesFigure group={group} onGroup={setGroup} />
         <p className={styles.figCaption}>Aorta zeharkako ebakian (aurrea goian). Sakatu talde bat. Bi aorta dortsalak torax mailatik behera fusionatuta daude: aorta bakarra, eta hortik hiru norabidetan adarrak.</p>
       </div>
@@ -808,7 +808,7 @@ function Umbilical() {
   const [step, setStep] = useState(0);
   return (
     <div className={styles.umb}>
-      <div className={styles.figCard}>
+      <div className={`${styles.figCard} theme-stage`}>
         <UmbilicalFigure step={step} />
       </div>
       <div className={styles.umbSteps}>

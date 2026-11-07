@@ -12,7 +12,7 @@ export function CavityFigures({ onShow }: { onShow: ShowInTimeline }) {
   return (
     <div>
       <div className={extra.figureGrid}>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Zeloma gorputz barruan gelditzen da</h4>
           <FoldingFigure />
           <p>
@@ -24,7 +24,7 @@ export function CavityFigures({ onShow }: { onShow: ShowInTimeline }) {
             Eskeman ikusi →
           </button>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Mesenterioa: bi orriko lotura</h4>
           <MesenteryFigure />
           <p>
@@ -40,7 +40,7 @@ export function CavityFigures({ onShow }: { onShow: ShowInTimeline }) {
         </article>
       </div>
       <div className={extra.figureGrid} style={{ marginTop: 14 }}>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>C3–C5: zergatik heltzen dira nerbio frenikoak?</h4>
           <DescentFigure />
           <p>
@@ -54,7 +54,7 @@ export function CavityFigures({ onShow }: { onShow: ShowInTimeline }) {
             Simulagailuan ikusi →
           </Link>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Diafragma: muskuluaren atalak eta igarobideak</h4>
           <DiaphragmParts />
           <p>

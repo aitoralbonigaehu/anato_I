@@ -198,7 +198,7 @@ export function Arch3D({
   const ask = (direction: NonNullable<Underlay['orbitRequest']>['direction']) => setTurn((t) => ({ direction, serial: (t?.serial ?? 0) + 1 }));
 
   return (
-    <div className={`${styles.view3d}${big ? ` ${styles.view3dBig}` : ''}`} ref={box}>
+    <div className={`${styles.view3d} theme-stage${big ? ` ${styles.view3dBig}` : ''}`} ref={box}>
       <div ref={setHost} className={styles.underlay} aria-hidden />
       <svg viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet" className={styles.svg3d} role="img" aria-label="Aorta arkuen 3D eredua: arrastatu biratzeko">
         <Defs />

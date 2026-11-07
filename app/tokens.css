@@ -1,0 +1,190 @@
+/* ————————————————————————————————————————————————————————————————
+   EnbrioAtlas — design tokens
+   One set of names for colour, depth, shape, space, type and motion, in two themes:
+   · dark  — the "screening room" (the signature look)
+   · light — warm paper, for daylight and long reading
+   The stage (scenes, 3D, the opening, the hero reel) is a lightbox: it keeps the dark tokens in
+   both themes, so tissue colours always sit on the ground they were tuned for (`.theme-stage`).
+   ———————————————————————————————————————————————————————————————— */
+
+:root,
+.theme-stage,
+.viewport,
+.intro {
+  /* Ground and surfaces */
+  --bg: #0a0a0b;
+  --bg-1: #0f0f11;
+  --surface: #131315;
+  --surface-2: #19191c;
+  --surface-3: #232327;
+  /* Foreground as a channel triple: rgb(var(--fg-rgb) / .08) is a hairline in either theme. */
+  --fg-rgb: 255 255 255;
+  --text-rgb: 245 242 236;
+  --surface-rgb: 19 19 21;
+  --shade-rgb: 0 0 0;
+  --shade-k: 1;
+  /* Lines */
+  --line: rgb(var(--fg-rgb) / 0.09);
+  --line-2: rgb(var(--fg-rgb) / 0.14);
+  --line-3: rgb(var(--fg-rgb) / 0.24);
+  /* Text, strongest to quietest */
+  --text: #f5f2ec;
+  --text-2: #cfcbc2;
+  --text-3: #aaa69d;
+  --text-4: #928e85;
+  /* Inverse: the one solid light key on dark (and dark key on light) */
+  --inverse: var(--text);
+  --inverse-hover: #ffffff;
+  --on-inverse: #0b0b0c;
+  /* Signal (the one accent), states */
+  --signal: #ff6a3d;
+  --signal-hover: #ff7f57;
+  --signal-soft: rgba(255, 106, 61, 0.14);
+  --on-signal: #ffffff;
+  --focus: #ffb86b;
+  --focus-soft: rgba(255, 184, 107, 0.14);
+  --ok: #7ed492;
+  --bad: #ff7b72;
+  --amber: #fbbf24;
+  --ink-signal: #ff875f;
+  --ink-pale-warm: #f6d4c4;
+  --ink-warm: #e8b47c;
+  --ink-bad: #fca5a5;
+  --ink-ok: #86efac;
+  --ink-teal: #5eead4;
+  --ink-sky: #9fd3ff;
+  --ink-indigo: #a5b4fc;
+  --ink-violet: #c4aee0;
+  /* Depth: hairline rings instead of borders, then soft lifts */
+  --hairline: 0 0 0 1px var(--line);
+  --hairline-2: 0 0 0 1px var(--line-2);
+  --lift-1: 0 1px 0 rgb(var(--fg-rgb) / 0.04) inset, 0 1px 2px rgb(var(--shade-rgb) / 0.3);
+  --lift-2: 0 1px 0 rgb(var(--fg-rgb) / 0.05) inset, 0 8px 24px -8px rgb(var(--shade-rgb) / 0.55);
+  --lift-3: 0 1px 0 rgb(var(--fg-rgb) / 0.06) inset, 0 24px 64px -16px rgb(var(--shade-rgb) / 0.7);
+  /* Glass: menus, floating tools, toasts (opaque enough to need no live blur) */
+  --glass-bg: rgb(var(--surface-rgb) / 0.92);
+  --glass-line: rgb(var(--fg-rgb) / 0.1);
+  --glass-shadow: 0 12px 32px -12px rgb(var(--shade-rgb) / 0.6), 0 2px 6px rgb(var(--shade-rgb) / 0.25);
+  --scrim: rgb(var(--shade-rgb) / 0.55);
+  --float: #151518;
+  --frame: #111114;
+  --float-shadow: 0 1px 0 rgb(var(--fg-rgb) / 0.05) inset, 0 22px 56px -18px rgb(var(--shade-rgb) / 0.9), 0 2px 8px rgb(var(--shade-rgb) / 0.35);
+  color-scheme: dark;
+}
+
+:root {
+  /* Shape */
+  --r-xs: 6px;
+  --r-sm: 8px;
+  --r-md: 10px;
+  --radius: 14px;
+  --r-lg: 14px;
+  --r-xl: 16px;
+  --r-pill: 999px;
+  /* Space: a 4px grid */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-16: 64px;
+  /* Type scale */
+  --t-xs: 12px;
+  --t-sm: 13px;
+  --t-md: 14px;
+  --t-lg: 16px;
+  --t-xl: 20px;
+  --t-2xl: 28px;
+  --t-3xl: 40px;
+  --t-4xl: 56px;
+  --track-tight: -0.022em;
+  --track-display: -0.035em;
+  /* Motion */
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 320ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  /* Bars */
+  --bar-h: 56px;
+}
+
+/* ——— Light: warm paper ——— */
+:root[data-theme='light'] {
+  --bg: #f7f5f1;
+  --bg-1: #f1eee8;
+  --surface: #ffffff;
+  --surface-2: #f3f0eb;
+  --surface-3: #e9e5de;
+  --fg-rgb: 28 24 18;
+  --text-rgb: 23 21 15;
+  --surface-rgb: 255 255 255;
+  --shade-rgb: 60 45 30;
+  --shade-k: 0.32;
+  --line: rgb(var(--fg-rgb) / 0.1);
+  --line-2: rgb(var(--fg-rgb) / 0.16);
+  --line-3: rgb(var(--fg-rgb) / 0.28);
+  --text: #17150f;
+  --text-2: #3d3a33;
+  --text-3: #5c5850;
+  --text-4: #6e6a62;
+  --inverse: #17150f;
+  --inverse-hover: #000000;
+  --on-inverse: #fbfaf7;
+  --signal: #c4461a;
+  --signal-hover: #ab3c15;
+  --signal-soft: rgba(196, 70, 26, 0.1);
+  --on-signal: #ffffff;
+  --focus: #a35a00;
+  --focus-soft: rgba(163, 90, 0, 0.1);
+  --ok: #1f7a3f;
+  --bad: #c93a30;
+  --amber: #a16207;
+  --ink-signal: #b23f12;
+  --ink-pale-warm: #7a3417;
+  --ink-warm: #8a4b00;
+  --ink-bad: #b42318;
+  --ink-ok: #17703a;
+  --ink-teal: #0f6e66;
+  --ink-sky: #1d5f99;
+  --ink-indigo: #4338ca;
+  --ink-violet: #6b3fa0;
+  --lift-1: 0 1px 2px rgb(var(--shade-rgb) / 0.08);
+  --lift-2: 0 8px 24px -10px rgb(var(--shade-rgb) / 0.22), 0 1px 3px rgb(var(--shade-rgb) / 0.08);
+  --lift-3: 0 24px 64px -20px rgb(var(--shade-rgb) / 0.3), 0 2px 8px rgb(var(--shade-rgb) / 0.08);
+  --glass-bg: rgb(255 255 255 / 0.94);
+  --glass-line: rgb(var(--fg-rgb) / 0.12);
+  --glass-shadow: 0 14px 36px -14px rgb(var(--shade-rgb) / 0.3), 0 2px 6px rgb(var(--shade-rgb) / 0.08);
+  --scrim: rgb(30 24 16 / 0.35);
+  --float: #ffffff;
+  --frame: #ffffff;
+  --float-shadow: 0 0 0 1px rgb(var(--fg-rgb) / 0.04), 0 22px 56px -22px rgb(var(--shade-rgb) / 0.32), 0 2px 8px rgb(var(--shade-rgb) / 0.08);
+  color-scheme: light;
+}
+
+/* The lightbox keeps its dark ground whatever the theme: the first block above already declares the dark
+   values on .theme-stage/.viewport/.intro themselves, so they win over the light ones they inherit. */
+.theme-stage,
+.viewport,
+.intro {
+  color: var(--text);
+}
+
+/* Theme changes cross-fade instead of snapping (only while switching: see lib theme()). */
+:root.is-theming,
+:root.is-theming * {
+  transition: background-color var(--dur-3) var(--ease), border-color var(--dur-3) var(--ease), color var(--dur-3) var(--ease), fill var(--dur-3) var(--ease) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-1: 0ms;
+    --dur-2: 0ms;
+    --dur-3: 0ms;
+  }
+}

@@ -154,7 +154,7 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
   // Day counter: the span of the stage, as a clock that advances with the scene.
   return (
     <figure className="lp-reel" ref={box} onPointerMove={tilt} onPointerLeave={untilt}>
-      <div className="lp-reel-tilt">
+      <div className="lp-reel-tilt theme-stage">
         <div className="lp-reel-glow" aria-hidden />
         <svg viewBox="0 0 1000 640" role="img" aria-label={`${cur.topic}: ${cur.title}`} className="lp-reel-svg">
           <Defs />

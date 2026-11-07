@@ -80,7 +80,7 @@ function AtlasMini({ id }: { id: string }) {
     onHover: noop,
   };
   return (
-    <span ref={box} className={styles.mini} data-ready={vb !== undefined || undefined} aria-hidden>
+    <span ref={box} className={`${styles.mini} theme-stage`} data-ready={vb !== undefined || undefined} aria-hidden>
       {near && Scene && shot && (
         <svg ref={svg} viewBox={vb ? vb.map((v) => v.toFixed(0)).join(' ') : `0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
           <Defs />

@@ -12,7 +12,7 @@ export function MuscleFigures({ onShow }: { onShow: ShowInTimeline }) {
         jatorri, domeinu eta nerbioaren arteko lotura landu.
       </p>
       <div className={extra.figureGrid}>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Somita → miotoma eta alboko migrazioa</h4>
           <Domains />
           <p>
@@ -24,7 +24,7 @@ export function MuscleFigures({ onShow }: { onShow: ShowInTimeline }) {
             Eskeman ikusi →
           </button>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Sustraia, enborra eta adar primarioa</h4>
           <Nerve />
           <p>
@@ -39,7 +39,7 @@ export function MuscleFigures({ onShow }: { onShow: ShowInTimeline }) {
             Simulagailuan ikusi →
           </Link>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Mioblastoa: fusionatu ala lotu?</h4>
           <svg
             viewBox="0 0 620 350"
@@ -78,7 +78,7 @@ export function MuscleFigures({ onShow }: { onShow: ShowInTimeline }) {
             interkalarren bidez atxikitzen dira (2; 4).
           </p>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Patroiaren iturria ez da muskulu-zelularena</h4>
           <svg viewBox="0 0 620 330" role="img" aria-label="Buruko eta gorputzeko ehun konektibozko patroiak eta mioblastoak">
             <text x="155" y="30" textAnchor="middle">
@@ -109,7 +109,7 @@ export function MuscleFigures({ onShow }: { onShow: ShowInTimeline }) {
             Gandor neuralaren berdea eta pareta orriaren arrosa: ehun konektiboa; gorria: muskulu-aitzindariak (2.1.4).
           </p>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Metameria edo nerbio sarea</h4>
           <svg viewBox="0 0 620 280" role="img" aria-label="Saihets arteko inerbazio segmentarioa eta gorputz adarretako sareak">
             <text x="155" y="30" textAnchor="middle">
@@ -133,7 +133,7 @@ export function MuscleFigures({ onShow }: { onShow: ShowInTimeline }) {
             hainbat mailatako zuntzak iristen dira (2.2.2).
           </p>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Bihotzaren eroapena: muskulu espezializatua</h4>
           <svg viewBox="0 0 620 330" role="img" aria-label="Nodulu sinusaletik Purkinje sarera doan eroapen sekuentzia">
             <text x="310" y="30" textAnchor="middle">

@@ -94,7 +94,7 @@ export function Chronicle() {
       </header>
 
       <div className="chr-stage">
-        <figure className="tl-figure chr-figure">
+        <figure className="tl-figure chr-figure theme-stage">
           {at && <AgeScene at={at} />}
           {at && view && (
             <figcaption>

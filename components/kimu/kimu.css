@@ -9,7 +9,7 @@
   display: block;
   flex: none;
   overflow: visible;
-  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 1px 1.5px rgb(var(--shade-rgb) / calc(0.45 * var(--shade-k))));
 }
 .kimu-face .kf-sprout,
 .kimu-face .kf-eye,
@@ -115,7 +115,7 @@
   color: var(--text-2);
   font-size: 13px;
   font-weight: 550;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
+  box-shadow: 0 6px 18px rgb(var(--shade-rgb) / calc(0.32 * var(--shade-k)));
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
@@ -165,7 +165,7 @@
   border-radius: 18px;
   border: 1px solid var(--line-2);
   background: var(--bg-1);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 24px 64px rgb(var(--shade-rgb) / calc(0.55 * var(--shade-k)));
   animation: kimu-open 0.22s var(--ease) both;
   transform-origin: 100% 100%;
 }
@@ -698,7 +698,7 @@
   gap: 14px;
   padding: 0;
   border: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(10, 10, 11, 0.55), rgba(10, 10, 11, 0) 60%);
+  background: radial-gradient(circle at 50% 50%, rgb(var(--surface-rgb) / 0.55), rgb(var(--surface-rgb) / 0) 60%);
   color: var(--text, #f5f2ec);
   font: inherit;
   cursor: pointer;
@@ -732,7 +732,7 @@
   border-radius: 18px;
   background: var(--surface, #131315);
   border: 1px solid rgba(255, 165, 148, 0.5);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 14px 40px rgb(var(--shade-rgb) / calc(0.5 * var(--shade-k)));
   font-size: 30px;
   font-weight: 800;
   letter-spacing: 0.01em;

@@ -127,7 +127,7 @@ function View3D({
     setTurn((t) => ({ direction, serial: (t?.serial ?? 0) + 1 }));
 
   return (
-    <div className={`${styles.view3d}${big ? ` ${styles.view3dBig}` : ''}`} ref={box}>
+    <div className={`${styles.view3d} theme-stage${big ? ` ${styles.view3dBig}` : ''}`} ref={box}>
       <div ref={setHost} className={styles.underlay} aria-hidden />
       <svg
         viewBox="0 0 1000 640"
@@ -200,7 +200,7 @@ export function Room3D({
   if (!big) return <View3D u={u} frame={frame} continuity={continuity} label={label} big={false} onBig={toggle} />;
   return (
     <>
-      <div className={styles.view3d} aria-hidden />
+      <div className={`${styles.view3d} theme-stage`} aria-hidden />
       {createPortal(
         <div className={styles.bigOverlay} role="dialog" aria-modal="true" aria-label={`${label} handituta`}>
           <div className={styles.bigBar}>

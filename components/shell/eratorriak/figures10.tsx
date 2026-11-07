@@ -6,7 +6,7 @@ import extra from './kit/study.module.css';
 export function HeartTubeFigures({ onShow }: { onShow: ShowInTimeline }) {
   return (
     <div className={extra.figureGrid}>
-      <article className={styles.figCard}>
+      <article className={`${styles.figCard} theme-stage`}>
         <h4>Bi tolespen, bi ondorio</h4>
         <svg viewBox="0 0 620 350" role="img" aria-label="Zeharkako tolespena bi hodi fusionatzeko eta jaitsiera zefalokaudala">
           <text x="310" y="25" textAnchor="middle">
@@ -34,7 +34,7 @@ export function HeartTubeFigures({ onShow }: { onShow: ShowInTimeline }) {
           Eskeman ikusi →
         </button>
       </article>
-      <article className={styles.figCard}>
+      <article className={`${styles.figCard} theme-stage`}>
         <h4>Hiru geruza; gelatina ez da laugarren zelula-geruza</h4>
         <p>
           Barrutik kanpora: endokardioa → miokardioa → epikardioa (errai perikardioa). Miokardioak azido hialuronikotan aberatsa den
@@ -47,7 +47,7 @@ export function HeartTubeFigures({ onShow }: { onShow: ShowInTimeline }) {
         </button>
         <p>Mesokardio dortsala desagertu → perikardioaren zeharkako sinua. Bi muturrek lotuta jarraitzen dute.</p>
       </article>
-      <article className={styles.figCard}>
+      <article className={`${styles.figCard} theme-stage`}>
         <h4>Sarrera eta irteera: noranzkoa da definizioa</h4>
         <svg viewBox="0 0 620 290" role="img" aria-label="Zain sinutik aorta arkuetara doan odol fluxua">
           <text x="310" y="30" textAnchor="middle">
@@ -72,7 +72,7 @@ export function HeartTubeFigures({ onShow }: { onShow: ShowInTimeline }) {
           Simulagailuan ikusi →
         </Link>
       </article>
-      <article className={styles.figCard}>
+      <article className={`${styles.figCard} theme-stage`}>
         <h4>Sinua eskuinera, bi aurikula-pareta</h4>
         <svg viewBox="0 0 620 340" role="img" aria-label="Eskuineko sinu adarraren inkorporazioa eta ezkerreko hondarrak">
           <path d="M100,145 Q120,80 220,100 Q300,120 300,220 Q250,280 170,245Z" fill="#9b7bf0" />

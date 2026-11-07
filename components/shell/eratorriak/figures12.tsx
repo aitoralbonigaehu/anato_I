@@ -74,7 +74,7 @@ function NerveSide({ side, adult }: { side: 'R' | 'L'; adult: boolean }) {
 export function NervesFigure({ onShow3D }: { onShow3D?: () => void }) {
   const [adult, setAdult] = useState(true);
   return (
-    <div className={styles.figCard}>
+    <div className={`${styles.figCard} theme-stage`}>
       <div className={styles.figBar}>
         <div className={styles.seg2} role="tablist" aria-label="Unea">
           <button role="tab" aria-selected={!adult} className={!adult ? styles.on : ''} onClick={() => setAdult(false)}>

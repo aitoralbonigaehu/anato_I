@@ -820,7 +820,7 @@ export function Bone3D(state: RoomViewState) {
   return useGeoReady([CALVARIA_GEO]) ? (
     <Bone3DView {...state} />
   ) : (
-    <div className={styles.view3d}>
+    <div className={`${styles.view3d} theme-stage`}>
       <svg viewBox="0 0 1000 640" className={styles.svg3d}>
         <Loading3D />
       </svg>

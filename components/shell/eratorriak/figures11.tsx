@@ -53,7 +53,7 @@ export function SeptaFigures({ onShow }: { onShow: ShowInTimeline }) {
         Ezkerreko pareta lisoa, aldiz, hasierako birika zain bakarraren lau adarrak inkorporatzean osatzen da (2.2–3).
       </p>
       <div className={extra.figureGrid} style={{ marginTop: 20 }}>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Bi mekanismo: kuxina edo pareta muskularra</h4>
           <MechanismsFigure />
           <p>
@@ -65,7 +65,7 @@ export function SeptaFigures({ onShow }: { onShow: ShowInTimeline }) {
             Simulagailuan ikusi →
           </Link>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Kiribilak mailaren arabera aldatzen du kokapena</h4>
           <SpiralSections />
           <p>

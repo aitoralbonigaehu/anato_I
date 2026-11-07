@@ -586,7 +586,7 @@ export function Muscle3D(state: RoomViewState) {
   return useGeoReady([EMBRYO5, DOMAINS_GEO]) ? (
     <Muscle3DView {...state} />
   ) : (
-    <div className={styles.view3d}>
+    <div className={`${styles.view3d} theme-stage`}>
       <svg viewBox="0 0 1000 640" className={styles.svg3d}>
         <Loading3D />
       </svg>

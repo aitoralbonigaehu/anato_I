@@ -68,7 +68,7 @@ export function VeinFigures({ onShow }: { onShow: ShowInTimeline }) {
       <p className={styles.blockLead}>Itxiera funtzionala eta egiturazko fusioa ez dira aldi berekoak. Apunteak 4.2.</p>
       <TestTable data={VEINS} rows={BIRTH13} columns={['Zerk aldatzen du?', 'Jaio ondoren']} />
       <div className={extra.figureGrid} style={{ marginTop: 20 }}>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Jaio aurretik eta ondoren</h4>
           <CirculationFigure />
           <p>
@@ -80,7 +80,7 @@ export function VeinFigures({ onShow }: { onShow: ShowInTimeline }) {
             Simulagailuan ikusi →
           </Link>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Linfa: sei zakuetatik hodi bakarrera</h4>
           <LymphFigure />
           <p>
@@ -92,7 +92,7 @@ export function VeinFigures({ onShow }: { onShow: ShowInTimeline }) {
             Simulagailuan ikusi →
           </Link>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Beheko kaba: hiru jatorri</h4>
           <svg viewBox="0 0 560 370" role="img" aria-label="Beheko kaba zainaren hiru segmentuak">
             {[

@@ -887,7 +887,7 @@
   border-style: solid;
   border-color: var(--signal);
   background: var(--signal);
-  color: #0b0b0c;
+  color: var(--on-inverse);
 }
 
 .tl-card.is-ok {

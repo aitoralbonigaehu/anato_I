@@ -100,7 +100,7 @@
 .crumb { display: inline-flex; align-items: center; gap: 4px; }
 .crumb button { min-height: 32px; padding: 4px 6px; border-radius: 6px; color: var(--text-3); font-size: 12.5px; }
 .crumb button:hover { color: var(--text); background: var(--surface-2); }
-.crumb button[data-path='true'] { color: #ffd7b0; }
+.crumb button[data-path='true'] { color: var(--ink-warm); }
 /* The selected structure's own road back to the zygote, lit in the schemes. */
 .treeChip[data-path='true'] { border-color: rgba(255, 184, 107, 0.45); box-shadow: inset 0 0 0 1px rgba(255, 184, 107, 0.12); }
 .treeChip[aria-pressed='true'] { background: rgba(255, 184, 107, 0.1); }

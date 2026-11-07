@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import './tokens.css';
 import './globals.css';
 import { Kimu } from '@/components/kimu/Kimu';
 import { KimuCheer } from '@/components/kimu/KimuCheer';
+import { themeScript } from '@/components/shell/theme-script';
 
 const sans = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
 const mono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono', display: 'swap' });
@@ -13,7 +15,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0a0a0b',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f7f5f1' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0b' },
+  ],
 };
 
 // Runs before first paint so the opening sequence never flashes when it was already seen this session.
@@ -23,7 +28,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="eu" className={`${sans.variable} ${mono.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: introFlag }} />
+        <script dangerouslySetInnerHTML={{ __html: themeScript + introFlag }} />
       </head>
       <body>
         {children}

@@ -45,7 +45,7 @@ export function BoneFigures({ onShow }: { onShow: ShowInTimeline }) {
   return (
     <div>
       <div className={extra.figureGrid}>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Bi hezurtzapen bide, mesenkima beretik</h4>
           <svg viewBox="0 0 620 320" role="img" aria-label="Mintzezko eta endokondral hezurtzapenaren bideak">
             <text x="310" y="30" textAnchor="middle">
@@ -84,7 +84,7 @@ export function BoneFigures({ onShow }: { onShow: ShowInTimeline }) {
             Eskeman ikusi →
           </button>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Buru-ganga: hezur plakak eta hutsune konektiboak</h4>
           <Skull />
           <p>
@@ -95,7 +95,7 @@ export function BoneFigures({ onShow }: { onShow: ShowInTimeline }) {
             Berdea: gandor neuraleko aurrealdea · gorria: paraxialeko atzealdea · urdina: joskura/fontanela konektiboa. Forma eskematikoa.
           </p>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Kondrokraneoa: erdiko eta alboko plakak</h4>
           <CranialBase />
           <p>
@@ -110,7 +110,7 @@ export function BoneFigures({ onShow }: { onShow: ShowInTimeline }) {
             Eskeman ikusi →
           </button>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Arkuetako kartilagoa edo haren inguruko mesenkima?</h4>
           <svg
             viewBox="0 0 620 360"
@@ -152,7 +152,7 @@ export function BoneFigures({ onShow }: { onShow: ShowInTimeline }) {
             Eskeman ikusi →
           </button>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Birsegmentazioa, lau pausotan</h4>
           <Resegmentation />
           <button
@@ -163,14 +163,14 @@ export function BoneFigures({ onShow }: { onShow: ShowInTimeline }) {
             Jatorri-mapan ikusi →
           </button>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Hezur luzea: kartilagotik hazkuntza amaitu arte</h4>
           <LongBone />
           <button type="button" className={styles.linkBtn} onClick={() => onShow(['upper', 'lower'], 3)}>
             Eskeman ikusi →
           </button>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Adarrak: sorrera, hatzak eta kontrako biraketak</h4>
           <LimbSteps />
           <p>
@@ -186,7 +186,7 @@ export function BoneFigures({ onShow }: { onShow: ShowInTimeline }) {
             Simulagailuan ikusi →
           </Link>
         </article>
-        <article className={styles.figCard}>
+        <article className={`${styles.figCard} theme-stage`}>
           <h4>Orno zuloa ez da ornoarteko zuloa</h4>
           <svg viewBox="0 0 620 350" role="img" aria-label="Ornoaren gorputza, atzeko arku neurala eta orno zuloa">
             <ellipse cx="310" cy="245" rx="95" ry="65" fill="#efe3c4" />

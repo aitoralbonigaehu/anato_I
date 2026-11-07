@@ -659,7 +659,7 @@ export function Timeline({ sources, initial }: { sources: Record<string, Source>
         <PresenceMap day={day} since={prevDay} system={system} />
 
         <div className="tl-stage">
-          <figure className="tl-figure">
+          <figure className="tl-figure theme-stage">
             {at && <AgeScene at={at} />}
             {at && view && (
               <figcaption>

@@ -262,7 +262,7 @@ export function StudyRoom({
         </div>
         <TimelineLayout
           diagram={
-            <div className={styles.ladderBox}>
+            <div className={`${styles.ladderBox} theme-stage`}>
               {diagram({ stage, mode, lit, labels, focus, onPick })}
               <ul className={styles.legend} aria-label="Kolore gakoa">
                 {Object.entries(mode === 'origin' ? d.origins : d.fates).map(([id, o]) => (

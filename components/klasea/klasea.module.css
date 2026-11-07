@@ -25,7 +25,7 @@
   pointer-events: none;
   transition-property: transform;
   transition-timing-function: cubic-bezier(0.45, 0, 0.3, 1);
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 6px 14px rgb(var(--shade-rgb) / calc(0.45 * var(--shade-k))));
 }
 
 .teacher {
@@ -335,7 +335,7 @@
 }
 
 .tone_why {
-  color: #9fd3ff;
+  color: var(--ink-sky);
   background: rgba(120, 190, 255, 0.12);
 }
 
@@ -413,7 +413,7 @@
 }
 
 .play:hover:not(:disabled) {
-  background: #fff;
+  background: var(--inverse-hover);
   color: var(--bg);
 }
 
