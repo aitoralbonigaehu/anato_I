@@ -1,10 +1,15 @@
 'use client';
 
-import { orbit, poseStage as poseStage14, type PoseModel, type StageSpec } from '@/components/scenes/week14/common';
+import { orbit, poseStage as poseStage14, type PoseModel, type StageSpec as StageSpec14 } from '@/components/scenes/week14/common';
 import type { Camera3, V3 } from '@/lib/three-d/math';
 import { UC } from './uro-model';
+import { MAP_LEFT, UroMap, type UroFocus } from './UroMap';
 
-export { orbit, endPose, poseAt, type StageSpec, type Step, type Where } from '@/components/scenes/week14/common';
+export { orbit, endPose, poseAt, type Step, type Where } from '@/components/scenes/week14/common';
+export type { UroFocus } from './UroMap';
+
+/** A topic-15 stage: topic 14's spec, plus where in the embryo its model is (the corner map). */
+export type StageSpec<P, O> = StageSpec14<P, O> & { map?: UroFocus };
 
 /**
  * Topic 15 in the circulation topics' way (10–13): one posed 3D model per subject, the whole posterior wall
@@ -14,8 +19,12 @@ export { orbit, endPose, poseAt, type StageSpec, type Step, type Where } from '@
 export const CONT15 = 'gernua-15';
 
 export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: number } | null }>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel) {
+  const { map, ...rest } = spec;
+  // "Non gaude?": the notes' side view of the embryo with the three kidneys, the stage's part lit, in the corner
+  // of every view (it hides with the names during the fly-in, which shows the whole embryo itself).
+  const section = rest.section ?? (map ? () => ({ show: 1, node: <UroMap focus={map} />, left: MAP_LEFT }) : undefined);
   // Names keep above the camera keys (bottom right of the frame; the column also stops above them by itself).
-  return poseStage14({ right: [236, 540], ...spec }, build, false, CONT15);
+  return poseStage14({ right: [236, 540], ...rest, section }, build, false, CONT15);
 }
 
 /** Front view of the posterior wall: yaw 0 = from the front (the embryo's left on the viewer's right). */

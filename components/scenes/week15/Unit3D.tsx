@@ -19,6 +19,7 @@ const CAP_MESO = 'Torax mailako zeharkako mozketa (3D blokea, goitik): bizkarra 
 export const S3 = [0, 0.25, 0.5, 0.75] as const;
 
 const spec3: StageSpec<UnitPose, UnitOpts> = {
+  map: 'pro-unit',
   where: { th: 1.0, at: [0, 0.1, 0], frame: 'block', scale: 1.8, planes: [-1, 1].map((s) => ({ center: [0, 0.1, s * 1.05] as V3, a: [2.3, 0, 0] as V3, b: [0, 1.75, 0] as V3 })), note: 'Lepoaren mailako zeharkako ebakia: blokea goitik (kranealetik) ikusiko dugu' },
   S: S3,
   pose: UNIT0,
@@ -84,6 +85,8 @@ export const Neph15 = poseStage(spec3, build);
 export const S4 = [0, 0.25, 0.5, 0.76] as const;
 
 const spec4: StageSpec<UnitPose, UnitOpts> = {
+  map: 'pro-unit',
+  where: { th: 1.0, at: [0, 0.1, 0], frame: 'block', scale: 1.8, planes: [-1, 1].map((s) => ({ center: [0, 0.1, s * 1.05] as V3, a: [2.3, 0, 0] as V3, b: [0, 1.75, 0] as V3 })), note: 'Lepoaren mailako zeharkako ebakia: pronefrosaren glomeruluak' },
   S: S4,
   pose: endPose(spec3).pose,
   opts: {},
@@ -143,6 +146,8 @@ export const S6 = [0, 0.2, 0.4, 0.6, 0.8] as const;
 const MESO0: UnitPose = { ...UNIT0, mode: 1, ridge: 1, gonadal: 1 };
 
 const spec6: StageSpec<UnitPose, UnitOpts> = {
+  map: 'meso-unit',
+  where: { th: 0.1, at: [0, 0.1, 0], frame: 'block', scale: 1.8, planes: [-1, 1].map((s) => ({ center: [0, 0.1, s * 1.05] as V3, a: [2.3, 0, 0] as V3, b: [0, 1.75, 0] as V3 })), note: 'Toraxaren mailako zeharkako ebakia: mesonefrosaren hodixkak' },
   S: S6,
   pose: MESO0,
   opts: {},

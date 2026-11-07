@@ -29,6 +29,7 @@ const KEY_S = [
 export const S12 = [0, 0.12, 0.25, 0.37, 0.5, 0.62, 0.75, 0.88] as const;
 
 const spec12: StageSpec<PelvisPose, PelvisOpts> = {
+  map: 'cloaca',
   where: { th: -1.45, at: [0, -0.2, -0.5], scale: 2.2, planes: [{ center: [0, -0.2, 0.1], a: [0, 0, 2.1], b: [0, 2.7, 0] }], note: 'Enbrioiaren behealdea, erditik moztuta (ebakidura sagitala), ezkerretik ikusita' },
   S: S12,
   pose: PP0,
@@ -140,6 +141,8 @@ export const S13 = [0, 0.18, 0.36, 0.54, 0.72, 0.86] as const;
 const P13: PelvisPose = { ...PP0, sept: 1, split: 1, parts: 1, urachus: 0.6 };
 
 const spec13side: StageSpec<PelvisPose, PelvisOpts> = {
+  map: 'bladder',
+  where: { th: -1.45, at: [0, -0.2, -0.5], scale: 2.2, planes: [{ center: [0, -0.2, 0.1], a: [0, 0, 2.1], b: [0, 2.7, 0] }], note: 'Enbrioiaren behealdea, erditik moztuta: gernu maskuria sinu urogenitaletik' },
   S: S13,
   pose: P13,
   opts: {},
@@ -198,6 +201,7 @@ export const BladderSide15 = poseStage(spec13side, (p, o) => pelvisModel(p, o));
 const BACK = (dist = 8, yaw = 180, elev = 6, target: [number, number, number] = [0, 0, 0]) => orbit(yaw, elev, dist, target, SH);
 
 const spec13back: StageSpec<TrigonePose, TrigoneOpts> = {
+  map: 'bladder',
   S: S13,
   pose: TP0,
   opts: {},
@@ -260,6 +264,8 @@ export const S14 = [0, 0.2, 0.4, 0.6, 0.8] as const;
 const P14: PelvisPose = endPose(spec13side).pose;
 
 const spec14: StageSpec<PelvisPose, PelvisOpts> = {
+  map: 'urethra',
+  where: { th: -1.45, at: [0, -0.2, -0.5], scale: 2.2, planes: [{ center: [0, -0.2, 0.1], a: [0, 0, 2.1], b: [0, 2.7, 0] }], note: 'Enbrioiaren behealdea, erditik moztuta: uretra maskuriaren azpian' },
   S: S14,
   pose: P14,
   opts: {},
@@ -332,6 +338,7 @@ export const S15 = [0, 0.2, 0.4, 0.6, 0.8] as const;
 const GCAM = (dist = 7.5, yaw = 0, elev = 4, target: [number, number, number] = [1.0, 0, 0]) => orbit(yaw, elev, dist, target, SH);
 
 const spec15: StageSpec<GlansPose, GlansOpts> = {
+  map: 'glans',
   where: { th: -1.75, at: [0.6, -2.6, 0.6], frame: 'perineum', scale: 3, planes: [{ center: [0.6, 0, 0.2], a: [2.2, 0, 0], b: [0, 2.2, 0] }], note: 'Kanpo genitalak: enbrioiaren behealdea, behetik eta aurretik ikusita' },
   S: S15,
   pose: GP0,

@@ -26,6 +26,7 @@ export const WALL_WHERE: Where = {
 export const S1 = [0, 0.22, 0.47, 0.73] as const;
 
 const spec1: StageSpec<UroPose, UroOpts> = {
+  map: 'all',
   S: S1,
   pose: UP0,
   opts: { glom: 0 },
@@ -92,6 +93,8 @@ export const S2 = [0, 0.33, 0.66] as const;
 const NECK = (dist = 8.5, yaw = 0, elev = 8) => FRONT(dist, [0, 2.75, -0.5], yaw, elev);
 
 const spec2: StageSpec<UroPose, UroOpts> = {
+  map: 'pro',
+  where: { ...WALL_WHERE, note: 'Lepoaren maila: atzeko paretan, lehen giltzurruna (pronefrosa)' },
   S: S2,
   pose: { ...UP0, meso: 0, wolff: 0 },
   opts: { glom: 0, gut: 0 },
@@ -142,6 +145,8 @@ export const S5 = [0, 0.25, 0.5, 0.75] as const;
 const TRUNK = (dist = 12.5, yaw = 0, elev = 8, target: [number, number, number] = [0, 0.0, -0.4]) => FRONT(dist, target, yaw, elev);
 
 const spec5: StageSpec<UroPose, UroOpts> = {
+  map: 'meso',
+  where: { ...WALL_WHERE, note: 'Toraxaren eta gerriaren maila: atzeko paretako mesonefrosa' },
   S: S5,
   pose: { ...UP0, pro: 1, proDuct: 1, proGone: 0.45 },
   opts: { glom: 0.6, gut: 0.4 },
@@ -203,6 +208,8 @@ export const S7 = [0, 0.26, 0.52, 0.76] as const;
 const SACRAL = (dist = 8.5, yaw = 20, elev = 10) => FRONT(dist, [0, -3.6, -0.35], yaw, elev, [20, 10]);
 
 const spec7: StageSpec<UroPose, UroOpts> = {
+  map: 'meta',
+  where: { ...WALL_WHERE, note: 'Sakroaren maila, kloakaren ondoan: metanefrosa sortzen da' },
   S: S7,
   pose: { ...endPose(spec5).pose, gonadal: 0 },
   opts: { glom: 0, gut: 1 },
@@ -260,6 +267,8 @@ export const Meta15 = poseStage(spec7, build);
 export const S10 = [0, 0.24, 0.46, 0.74] as const;
 
 const spec10: StageSpec<UroPose, UroOpts> = {
+  map: 'ascent',
+  where: { ...WALL_WHERE, note: 'Atzeko pareta osoa: giltzurrunak sakrotik gerrira igotzen dira' },
   S: S10,
   pose: { ...UP0, meso: 1, wolff: 1, mesoGone: 0.5, bud: 1, blast: 1, kidney: 1, gonadal: 1, bladder: 1 },
   opts: { glom: 0, gut: 1, iliac: 1 },
@@ -319,6 +328,7 @@ export const Ascent15 = poseStage(spec10, build);
 // ———————————————————————————— 11. Giltzurrun gaineko guruinak, horman ————————————————————————————
 
 export const spec11wall: StageSpec<UroPose, UroOpts> = {
+  map: 'adrenal',
   S: [0],
   pose: { ...endPose(spec10).pose },
   opts: { glom: 0, gut: 1, iliac: 1 },

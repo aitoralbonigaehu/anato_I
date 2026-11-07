@@ -24,6 +24,7 @@ const KEY_K = [
 ] as const;
 
 const spec8: StageSpec<KidneyPose, KidneyOpts> = {
+  map: 'kidney',
   where: { th: -0.9, at: [-2.4, -0.4, 3.0], scale: 6, planes: [-1, 1].map((s) => ({ center: [0, -0.4 + s * 2.2, 0] as V3, a: [2.2, 0, 0] as V3, b: [0, 0, 1.8] as V3 })), note: 'Ezkerreko metanefrosa: atzeko paretan, sakroaren mailan; aurretik eta gertutik' },
   S: S8,
   pose: KP0,
@@ -105,6 +106,8 @@ const KEY_N = [
 ] as const;
 
 const spec9: StageSpec<NephronPose, NephronOpts> = {
+  map: 'nephron',
+  where: { th: -0.9, at: [-2.4, -0.4, 3.0], scale: 6, planes: [-1, 1].map((s) => ({ center: [0, -0.4 + s * 2.2, 0] as V3, a: [2.2, 0, 0] as V3, b: [0, 0, 1.8] as V3 })), note: 'Giltzurrunaren barrura: nefrona bakoitza giltzurrun kortexean eratzen da' },
   S: S9,
   pose: NP0,
   opts: {},
@@ -198,6 +201,7 @@ const KEY_A = [
 ] as const;
 
 const spec11: StageSpec<AdrenalPose, AdrenalOpts> = {
+  map: 'adrenal',
   where: { th: 0.1, at: [-2.6, -0.4, 3.0], scale: 6, planes: [-1, 1].map((s) => ({ center: [-0.2, -0.4 + s * 2.0, 0] as V3, a: [2.2, 0, 0] as V3, b: [0, 0, 1.8] as V3 })), note: 'Ezkerreko giltzurrun gaineko guruina: gonadaren eta giltzurrunaren artean; aurretik eta gertutik' },
   S: S11,
   pose: AP0,
