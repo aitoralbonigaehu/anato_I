@@ -449,3 +449,476 @@
 .ik-page .ik-room .kicker {
   color: var(--topic-ink);
 }
+
+/* ————————————————————————————————————————————————————————————————
+   Home: the story of development, told by scrolling
+   ———————————————————————————————————————————————————————————————— */
+.story {
+  position: relative;
+  margin-top: 40px;
+}
+
+.story-sticky {
+  position: sticky;
+  top: var(--bar-h);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  height: calc(100svh - var(--bar-h));
+  padding: 26px var(--gutter) 22px;
+  transition: --th 1.2s var(--ease-in-out);
+}
+
+.story-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 4px 24px;
+}
+
+.story-head .kicker {
+  grid-column: 1 / -1;
+}
+
+.story-head h2 {
+  margin: 0;
+  font-size: clamp(28px, 3.2vw, 44px);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, var(--text) 40%, color-mix(in oklab, var(--text) 72%, var(--bg)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+:root[data-theme='light'] .story-head h2 {
+  background: linear-gradient(180deg, #1b1610 30%, #4a3a2c);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* "Asmatu eguna": a switch that hides the days (recall first, then look). */
+.story-quiz {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 14px 0 8px;
+  border-radius: var(--r-pill);
+  background: rgb(var(--fg-rgb) / 0.04);
+  box-shadow: var(--well);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 550;
+  transition: color var(--dur-1);
+}
+
+.story-quiz:hover {
+  color: var(--text);
+}
+
+.story-quiz-track {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border-radius: var(--r-pill);
+  background: rgb(var(--fg-rgb) / 0.14);
+  transition: background-color var(--dur-2) var(--ease-out);
+}
+
+.story-quiz-track span {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+  transition: transform var(--dur-2) var(--ease-spring);
+}
+
+.story-quiz.is-on .story-quiz-track {
+  background: var(--topic);
+}
+
+.story-quiz.is-on .story-quiz-track span {
+  transform: translateX(12px);
+}
+
+.story-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(0, 0.95fr) 196px;
+  align-items: center;
+  gap: 36px;
+  min-height: 0;
+}
+
+/* The scene: a lit jewel in the topic's colour. */
+.story-figure {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 24px;
+  background:
+    radial-gradient(80% 70% at 50% 20%, oklch(0.6 0.1 var(--th) / 0.14), transparent 65%),
+    radial-gradient(120% 100% at 50% 0%, #17151a, #0b0b0d 70%);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.08),
+    inset 0 1px 0 rgb(255 255 255 / 0.07),
+    0 30px 70px -30px var(--topic-glow),
+    0 24px 50px -28px rgb(0 0 0 / 0.7);
+}
+
+:root[data-theme='light'] .story-figure {
+  box-shadow:
+    0 0 0 1px rgb(20 14 8 / 0.9),
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 24px 40px -18px rgb(40 30 20 / 0.28),
+    0 60px 110px -40px var(--topic-glow);
+}
+
+.story-figure::before {
+  content: '';
+  position: absolute;
+  inset: auto 10% -30% 10%;
+  height: 60%;
+  pointer-events: none;
+  background: radial-gradient(closest-side, oklch(0.62 0.17 var(--th) / 0.35), transparent);
+  mix-blend-mode: screen;
+}
+
+.story-scene {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1000 / 640;
+}
+
+.story-figure figcaption {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px 12px 18px;
+  border-top: 1px solid rgb(255 255 255 / 0.07);
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.story-figure figcaption b {
+  color: var(--topic-ink);
+  font-weight: 600;
+}
+
+/* The words of the moment: period, day, name, the notes' sentence, what forms. */
+.story-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  animation: story-in 520ms var(--ease-out) both;
+}
+
+@keyframes story-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+}
+
+.story-period {
+  margin: 0;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: var(--topic-soft);
+  box-shadow: inset 0 0 0 1px var(--topic-line);
+  color: var(--topic-ink);
+  font: 600 11px / 1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.story-day {
+  margin: 4px 0 0;
+  color: var(--text);
+  font-size: clamp(64px, 7vw, 112px);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.story-day small {
+  margin-left: 4px;
+  font-size: 0.22em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-3);
+}
+
+.story-day.is-hidden {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 0;
+  color: var(--topic);
+  cursor: pointer;
+}
+
+.story-day.is-hidden small {
+  font-size: 13px;
+  color: var(--text-3);
+  letter-spacing: 0;
+}
+
+.story-day.is-hidden:hover small {
+  color: var(--text);
+}
+
+.story-when {
+  margin: 0;
+  font: 500 12.5px / 1 var(--font-mono);
+  color: var(--text-3);
+}
+
+.story-text h3 {
+  margin: 6px 0 0;
+  font-size: clamp(22px, 2vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.story-lead {
+  max-width: 46ch;
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.story-makes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.story-makes li {
+  padding: 5px 10px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  box-shadow: var(--rim), var(--highlight);
+  color: var(--text-2);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+.story-makes li::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 7px;
+  border-radius: 50%;
+  vertical-align: 1px;
+  background: var(--topic);
+}
+
+/* The rail: where in development this is. */
+.story-rail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  justify-content: center;
+  gap: 2px;
+  padding-left: 18px;
+}
+
+.story-rail::before,
+.story-rail-fill {
+  content: '';
+  position: absolute;
+  top: 8%;
+  left: 5px;
+  width: 2px;
+  border-radius: 2px;
+}
+
+.story-rail::before {
+  bottom: 8%;
+  background: rgb(var(--fg-rgb) / 0.1);
+}
+
+.story-rail-fill {
+  max-height: 84%;
+  background: linear-gradient(180deg, var(--signal), var(--topic));
+  transition: height 120ms linear;
+}
+
+.story-rail-period {
+  display: block;
+  margin: 10px 0 4px;
+  color: var(--text-4);
+  font: 600 10px / 1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.story-rail-dot {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 6px;
+  width: 100%;
+  padding: 3px 6px;
+  border-radius: var(--r-xs);
+  color: var(--text-4);
+  font-size: 11.5px;
+  text-align: left;
+  transition: color var(--dur-1), background-color var(--dur-1);
+}
+
+.story-rail-dot span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.story-rail-dot small {
+  font: 500 10.5px / 1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-4);
+}
+
+.story-rail-dot i {
+  position: absolute;
+  left: -17px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: 0 0 0 1.5px rgb(var(--fg-rgb) / 0.25);
+  transition: transform var(--dur-2) var(--ease-spring), background-color var(--dur-2);
+}
+
+.story-rail-dot:hover {
+  color: var(--text);
+  background: rgb(var(--fg-rgb) / 0.05);
+}
+
+.story-rail-dot.is-past {
+  color: var(--text-3);
+}
+
+.story-rail-dot.is-past i {
+  background: var(--topic);
+  box-shadow: none;
+}
+
+.story-rail-dot.is-on {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.story-rail-dot.is-on i {
+  background: var(--topic);
+  box-shadow: 0 0 0 4px var(--topic-soft);
+  transform: scale(1.3);
+}
+
+.story-more {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 18px;
+  margin: 0;
+  color: var(--text-4);
+  font: 500 12px / 1 var(--font-mono);
+}
+
+@media (max-width: 1100px) {
+  .story-body {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  }
+  .story-rail {
+    display: none;
+  }
+}
+
+/* Phones: the scene on top, the words under it; the counter says where you are. */
+@media (max-width: 760px) {
+  .story-sticky {
+    padding: 14px 16px 12px;
+    gap: 10px;
+  }
+  .story-head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .story-head h2 {
+    font-size: 24px;
+  }
+  .story-quiz {
+    justify-self: start;
+    height: 32px;
+    font-size: 12.5px;
+  }
+  .story-body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 14px;
+  }
+  .story-figure {
+    border-radius: 18px;
+  }
+  .story-figure figcaption {
+    padding: 8px 10px 10px 14px;
+    font-size: 12px;
+  }
+  .story-text {
+    gap: 6px;
+    overflow: hidden;
+  }
+  .story-day {
+    font-size: 56px;
+  }
+  .story-text h3 {
+    font-size: 20px;
+  }
+  .story-lead {
+    font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .story-makes {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-text {
+    animation: none;
+  }
+  .story-sticky {
+    transition: none;
+  }
+}

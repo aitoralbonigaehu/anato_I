@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, typ
 import { weeks } from '@/content/registry';
 import { POOL, compKey } from '@/content/pool';
 import { isDue, useAnswers } from './answers';
-import { Chronicle } from './Chronicle';
+import { StoryScroll } from './StoryScroll';
 import { HeroReel } from './HeroReel';
 import { TopicMap, countWord, shelfCols, useStudyRoute, type RouteIcon } from './StudyMap';
 import { INTRO_KEY, Intro } from './intro/Intro';
@@ -205,6 +205,9 @@ export function Home() {
             <Link className="link-arrow" href="#gaiak" onClick={() => chooseView('mapa')}>
               Gai osoa 20 segundotan <span aria-hidden>↓</span>
             </Link>
+            <Link className="link-arrow" href="#garapena">
+              Garapena egunez egun <span aria-hidden>↓</span>
+            </Link>
           </div>
           <dl className="lp-stats rv">
             <div>
@@ -268,9 +271,9 @@ export function Home() {
         </div>
       </section>
 
-      <StudyRoute />
+      <StoryScroll />
 
-      <Chronicle />
+      <StudyRoute />
 
       <LandFoot>
         <button className="link-quiet" onClick={replay}>
