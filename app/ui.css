@@ -1072,3 +1072,36 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* ————————————————————————————————————————————————————————————————
+   Simulator on a phone: nothing on top of anything
+   ———————————————————————————————————————————————————————————————— */
+@media (max-width: 640px) {
+  /* "Where am I": the thumbnail only (its card opens on tap); the title keeps the whole width. */
+  .stage-side .live-map .lm-text,
+  .stage-side .live-map .lm-new {
+    display: none;
+  }
+  .stage-side .live-map {
+    gap: 0;
+    padding: 0;
+  }
+  .stage-side .live-map .lm-fig {
+    width: 48px;
+    height: 40px;
+  }
+  .stage-bar:not(:has(.seg)) .stage-title {
+    padding-right: 60px;
+  }
+  /* Compass words: small, quiet plates inside the frame. */
+  .viewport .orient span {
+    padding: 2px 6px;
+    font-size: 9.5px !important;
+    letter-spacing: 0.06em;
+  }
+  /* The 3D look keys sit above the zoom row instead of on it. */
+  .viewport .look-controls {
+    bottom: 56px;
+    right: 6px;
+  }
+}

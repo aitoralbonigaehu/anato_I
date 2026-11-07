@@ -701,7 +701,8 @@ export function Player(p: PlayerProps) {
           </button>
           <button className="btn mobile-study-play" onClick={p.onTogglePlay} aria-label={p.playing ? 'Pausatu' : 'Erreproduzitu'}>
             {p.playing ? <IconPause size={16} /> : <IconPlay size={16} />}
-            <span>{p.playing ? 'Pausatu' : 'Hasi'}</span>
+            {/* Not "Hasi": that is the next key's word for starting the steps; this one runs the film. */}
+            <span>{p.playing ? 'Pausatu' : 'Martxan'}</span>
           </button>
           <button className={`btn mobile-study-next${next.tone === 'go' ? ' is-go' : ''}`} disabled={next.disabled} onClick={next.onClick}>
             {next.label} <IconNext size={15} />
