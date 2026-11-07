@@ -70,8 +70,6 @@ export function CommandBar() {
   // ⌘K / Ctrl+K anywhere, also while typing: it is an explicit ask ("/" stays the pages' own search key).
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
-      const t = e.target as HTMLElement | null;
-      const typing = !!t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
       if ((e.metaKey || e.ctrlKey) && !e.altKey && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         if (open) setOpen(false);
