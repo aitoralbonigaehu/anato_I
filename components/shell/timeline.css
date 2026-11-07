@@ -517,10 +517,11 @@
 
 .tl-col {
   min-width: 0;
-  padding: 14px 16px 16px;
-  border: 1px solid var(--line);
+  padding: 16px 18px 18px;
+  border: 0;
   border-radius: var(--r-xl);
-  background: var(--surface);
+  background: var(--sheen), var(--surface);
+  box-shadow: var(--rim), var(--highlight), var(--shadow-md);
 }
 
 .tl-col header {

@@ -231,9 +231,10 @@
 .cardSection > header h2 { font-size: 21px; line-height: 1.3; letter-spacing: -.02em; margin: 6px 0 0; }
 .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 12px; }
 .cards > li { min-width: 0; content-visibility: auto; contain-intrinsic-size: auto 330px; }
-.card { display: grid; grid-template-rows: auto 1fr; width: 100%; height: 100%; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); text-align: left; color: var(--text-2); transition: border-color .15s, box-shadow .15s, translate .18s var(--ease); }
-.card:hover { border-color: var(--line-3); box-shadow: var(--shadow-2); translate: 0 -2px; }
-.card[aria-pressed="true"] { border-color: var(--signal); box-shadow: 0 0 0 1px var(--signal); }
+.card { display: grid; grid-template-rows: auto 1fr; width: 100%; height: 100%; padding: 0; overflow: hidden; border: 0; border-radius: var(--r-xl); background: var(--surface); text-align: left; color: var(--text-2); box-shadow: var(--rim), var(--highlight), var(--shadow-md); transition: box-shadow var(--dur-3) var(--ease-out), translate var(--dur-3) var(--ease-out); }
+.card:hover { box-shadow: var(--rim-2), var(--highlight), var(--shadow-lg); translate: 0 -3px; }
+.card:active { translate: 0 -1px; scale: .99; transition-duration: 90ms; }
+.card[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--signal), var(--shadow-md); }
 .card:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
 .mini { display: block; aspect-ratio: 1000 / 640; background: radial-gradient(110% 90% at 50% 40%, #17171b 0%, #111114 60%, #0b0b0d 100%); border-bottom: 1px solid var(--line); }
 .mini svg { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity .25s ease-out; }

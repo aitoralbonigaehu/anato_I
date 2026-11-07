@@ -761,3 +761,33 @@ html.is-theme-reveal::view-transition-new(root) {
 :root[data-theme='light'] .viewport {
   box-shadow: 0 0 0 1px rgb(40 30 20 / 0.1), 0 2px 6px rgb(60 40 20 / 0.08), 0 24px 48px -24px rgb(60 40 20 / 0.35);
 }
+
+/* ——— The remaining cards of the study pages: the same recipe ——— */
+.ln-card,
+.ln-layer,
+.now-card,
+.lab-side,
+.road,
+.tl-figure,
+.chr-side,
+.plate-side,
+.modal {
+  border-color: transparent;
+  box-shadow: var(--rim), var(--highlight), var(--shadow-md);
+}
+
+.modal {
+  box-shadow: 0 0 0 1px var(--glass-line), var(--highlight), var(--shadow-lg);
+}
+
+@supports (corner-shape: squircle) {
+  .ln-card,
+  .ln-layer,
+  .now-card,
+  .lab-side,
+  .tl-col,
+  .tl-figure,
+  .modal {
+    corner-shape: squircle;
+  }
+}

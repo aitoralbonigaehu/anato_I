@@ -240,8 +240,9 @@
   gap: 6px;
   padding: 18px 18px 16px;
   border-radius: var(--r-xl);
-  border: 1px solid var(--line);
-  background: linear-gradient(180deg, var(--surface) 0%, var(--bg-1) 100%);
+  border: 0;
+  background: var(--sheen), var(--surface);
+  box-shadow: var(--rim), var(--highlight), var(--shadow-md);
 }
 
 .overview h4 {
@@ -294,7 +295,7 @@
   counter-increment: how;
   padding: 10px 12px;
   border-radius: var(--r-lg);
-  background: var(--bg-1);
+  background: rgb(var(--fg-rgb) / 0.025);
   border: 1px dashed var(--line-2);
   font-size: 12.5px;
   line-height: 1.45;

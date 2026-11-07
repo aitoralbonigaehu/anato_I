@@ -19,7 +19,7 @@
 
 /* Two-column sheets. */
 .tables { display: grid; gap: 20px; }
-.sheet { min-width: 0; padding: 18px 20px 14px; border: 1px solid var(--line-2); border-radius: var(--r-xl); background: var(--surface-2); }
+.sheet { min-width: 0; padding: 20px 22px 16px; border: 0; border-radius: var(--r-xl); background: var(--sheen), var(--surface); box-shadow: var(--rim), var(--highlight), var(--shadow-md); }
 .sheetHead { margin: 0 0 10px; }
 .sheetHead > span { color: var(--ink-violet); font: 500 11px/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .06em; }
 .sheetHead h3 { color: var(--text); margin: 4px 0 0; font-size: clamp(18px, 2vw, 22px); font-weight: 600; letter-spacing: -.02em; line-height: 1.25; }
