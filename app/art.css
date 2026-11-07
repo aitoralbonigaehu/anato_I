@@ -1456,8 +1456,8 @@ span.tsw-ring.is-done {
 }
 
 /* Behind the iris, the page comes into focus: a touch larger and soft, then settled and sharp. */
-.landing.is-intro .lp-hero > .hero-text,
-.landing.is-intro .lp-hero > .hero-visual {
+html:not([data-intro='seen']) .landing.is-intro .lp-hero > .hero-text,
+html:not([data-intro='seen']) .landing.is-intro .lp-hero > .hero-visual {
   transform: scale(1.04);
   filter: blur(10px);
   opacity: 0.4;
@@ -1520,4 +1520,40 @@ span.tsw-ring.is-done {
 .intro-name b {
   color: inherit;
   opacity: 0.72;
+}
+
+/* The hero's quieter ways in, on one line under the main key. */
+.hero-more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 16px 0 0;
+  color: var(--text-4);
+  font-size: 13.5px;
+}
+
+.hero-more a {
+  color: var(--text-2);
+  font-weight: 550;
+  text-decoration: underline;
+  text-decoration-color: var(--line-3);
+  text-underline-offset: 4px;
+  transition: color var(--dur-1), text-decoration-color var(--dur-1);
+}
+
+.hero-more a:hover {
+  color: var(--text);
+  text-decoration-color: var(--signal);
+}
+
+.hero-more i {
+  font-style: normal;
+  color: var(--text-4);
+}
+
+/* The story's scene takes the room it has. */
+.story-body {
+  grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr) 184px;
+  gap: 32px;
 }

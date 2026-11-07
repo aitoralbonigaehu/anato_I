@@ -1012,3 +1012,47 @@
     border-color: #ccc;
   }
 }
+
+/* The class board's sections: numerals in the topic's ink (no boxes), the current one lit with a rule. */
+.chunkBtn {
+  position: relative;
+  transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1);
+}
+
+.chunkBtn:hover {
+  background: rgb(var(--fg-rgb) / 0.05);
+}
+
+.chunkN {
+  width: 22px;
+  height: auto;
+  background: none;
+  color: var(--topic-ink, var(--text-3));
+  font: 650 13px / 1 var(--font-ui);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.here .chunkBtn {
+  background: var(--topic-soft, var(--signal-soft));
+}
+
+.here .chunkBtn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  bottom: 7px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--topic, var(--signal));
+}
+
+.here .chunkN {
+  background: none;
+  color: var(--topic-ink, var(--signal));
+}
+
+.later .chunkN {
+  opacity: 0.6;
+}

@@ -197,13 +197,15 @@ export function Home() {
           <div className="hero-cta rv">
             <ContinueCta />
             <ReviewCta />
-            <Link className="link-arrow" href="#gaiak" onClick={() => chooseView('mapa')}>
-              Gai osoa 20 segundotan <span aria-hidden>↓</span>
-            </Link>
-            <Link className="link-arrow" href="#garapena">
-              Garapena egunez egun <span aria-hidden>↓</span>
-            </Link>
           </div>
+          <p className="hero-more rv">
+            <span>Edo ikusi:</span>
+            <Link href="#gaiak" onClick={() => chooseView('mapa')}>
+              gai osoa 20 segundotan
+            </Link>
+            <i aria-hidden>·</i>
+            <Link href="#garapena">garapena egunez egun</Link>
+          </p>
           <dl className="lp-stats rv">
             <div>
               <dt>gai</dt>
