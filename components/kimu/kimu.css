@@ -130,7 +130,7 @@
   min-width: 20px;
   height: 20px;
   padding: 0 5px;
-  border-radius: 6px;
+  border-radius: var(--r-xs);
   border: 1px solid var(--line-2);
   background: var(--surface);
   color: var(--text-3);
@@ -162,7 +162,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: var(--r-xl);
   border: 1px solid var(--line-2);
   background: var(--bg-1);
   box-shadow: 0 24px 64px rgb(var(--shade-rgb) / calc(0.55 * var(--shade-k)));
@@ -178,7 +178,7 @@
   bottom: auto;
   width: clamp(300px, 28vw, 372px);
   height: min(600px, calc(100dvh - var(--kimu-top) - 16px));
-  border-radius: 16px;
+  border-radius: var(--r-xl);
   transform-origin: 100% 0;
 }
 @keyframes kimu-open {
@@ -201,7 +201,7 @@
   height: 30px;
   display: grid;
   place-items: center;
-  border-radius: 9px;
+  border-radius: var(--r-sm);
   border: 1px solid var(--line-2);
   background: var(--bg-1);
 }
@@ -226,7 +226,7 @@
   height: 30px;
   display: grid;
   place-items: center;
-  border-radius: 9px;
+  border-radius: var(--r-sm);
   color: var(--text-3);
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
@@ -435,7 +435,7 @@
   gap: 10px;
   width: 100%;
   padding: 8px 11px 8px 8px;
-  border-radius: 12px;
+  border-radius: var(--r-lg);
   border: 1px solid var(--line-2);
   background: var(--surface);
   color: var(--text);
@@ -495,7 +495,7 @@
   flex-direction: column;
   gap: 8px;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: var(--r-lg);
   border: 1px solid var(--line-2);
   background: var(--surface);
 }
@@ -522,7 +522,7 @@
 .kimu-opt {
   width: 100%;
   padding: 8px 11px;
-  border-radius: 10px;
+  border-radius: var(--r-md);
   border: 1px solid var(--line-2);
   background: var(--bg-1);
   color: var(--text-2);
@@ -617,7 +617,7 @@
   gap: 8px;
   margin: 4px 12px 0;
   padding: 5px 5px 5px 13px;
-  border-radius: 14px;
+  border-radius: var(--r-lg);
   border: 1px solid var(--line-2);
   background: var(--surface);
   transition: border-color 0.15s;
@@ -648,7 +648,7 @@
   height: 32px;
   display: grid;
   place-items: center;
-  border-radius: 10px;
+  border-radius: var(--r-md);
   background: var(--signal);
   color: #1a0d07;
   cursor: pointer;
@@ -729,7 +729,7 @@
 .kimu-cheer-bubble {
   position: relative;
   padding: 12px 22px;
-  border-radius: 18px;
+  border-radius: var(--r-xl);
   background: var(--surface, #131315);
   border: 1px solid rgba(255, 165, 148, 0.5);
   box-shadow: 0 14px 40px rgb(var(--shade-rgb) / calc(0.5 * var(--shade-k)));

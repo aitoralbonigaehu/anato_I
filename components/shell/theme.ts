@@ -25,17 +25,39 @@ const readPref = (): ThemePref => {
 const resolve = (p: ThemePref): Theme =>
   p === 'system' ? (typeof matchMedia !== 'undefined' && matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : p;
 
-/** Apply a theme with a short cross-fade (never on first paint). */
+/** Where the change was asked from (the key's centre): the new look grows out of it. */
+let origin: { x: number; y: number } | null = null;
+
+/**
+ * Apply a theme: where the browser can, the new look opens as a circle from the key that was pressed
+ * (View Transitions); elsewhere a short cross-fade. Never animated on first paint or with reduced motion.
+ */
 const apply = (t: Theme) => {
   const html = document.documentElement;
   if (html.dataset.theme === t) return;
   const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
+  if (!calm && doc.startViewTransition) {
+    const at = origin ?? { x: innerWidth - 80, y: 28 };
+    const r = Math.hypot(Math.max(at.x, innerWidth - at.x), Math.max(at.y, innerHeight - at.y));
+    html.style.setProperty('--vt-x', `${at.x}px`);
+    html.style.setProperty('--vt-y', `${at.y}px`);
+    html.style.setProperty('--vt-r', `${r}px`);
+    html.classList.add('is-theme-reveal');
+    const vt = doc.startViewTransition(() => {
+      html.dataset.theme = t;
+    }) as { finished?: Promise<void> };
+    vt.finished?.finally(() => html.classList.remove('is-theme-reveal'));
+    origin = null;
+    return;
+  }
   if (!calm) html.classList.add('is-theming');
   html.dataset.theme = t;
   if (!calm) window.setTimeout(() => html.classList.remove('is-theming'), 360);
 };
 
-export function setThemePref(p: ThemePref) {
+export function setThemePref(p: ThemePref, from?: { x: number; y: number }) {
+  origin = from ?? null;
   try {
     if (p === 'system') localStorage.removeItem(THEME_KEY);
     else localStorage.setItem(THEME_KEY, p);

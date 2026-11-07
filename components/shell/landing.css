@@ -174,7 +174,7 @@
 .lp-reel-tilt {
   position: relative;
   border: 1px solid var(--line-2);
-  border-radius: 22px;
+  border-radius: var(--r-2xl);
   background:
     radial-gradient(90% 80% at var(--gx) var(--gy), rgb(var(--fg-rgb) / 0.055), rgb(var(--fg-rgb) / 0) 60%),
     #0c0c0e;
@@ -296,7 +296,7 @@
   right: 0;
   height: 2px;
   overflow: hidden;
-  border-radius: 2px;
+  border-radius: var(--r-2xs);
   background: var(--line-2);
 }
 
@@ -391,7 +391,7 @@
   height: 100%;
   overflow: hidden;
   border: 1px solid var(--edge);
-  border-radius: 20px;
+  border-radius: var(--r-2xl);
   background: var(--surface);
   color: var(--text-2);
   box-shadow: var(--shadow-1);
@@ -609,7 +609,7 @@ a.lp-card-in:hover .lp-card-go span {
 }
 
 .landing .map-card {
-  border-radius: 18px;
+  border-radius: var(--r-xl);
   padding: 20px 20px 22px;
   transition: border-color 0.25s, transform 0.4s var(--ease), box-shadow 0.4s;
 }

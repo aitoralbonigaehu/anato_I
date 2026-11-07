@@ -6,6 +6,7 @@ import atlasStyles from './structure-atlas.module.css';
 import { StudyMenu } from './NavMenu';
 import { SearchKey } from './CommandBar';
 import { ThemeKey, ThemeSwitch } from './ThemeKey';
+import { BarScroll } from './BarScroll';
 
 /** A week whose only scenes are placeholders is still being prepared. */
 export const isWip = (w: (typeof weeks)[number]) => w.stages.every((s) => s.views.every((v) => v.description === 'Prestatzen'));
@@ -31,6 +32,7 @@ export function LandNav({ current, help }: { current?: Section; help?: ReactNode
   const here = (s: Section) => (s === current ? ('page' as const) : undefined);
   return (
     <header className={`land-nav ${atlasStyles.nav}`}>
+      <BarScroll />
       <Link href="/" aria-label="EnbrioAtlas — hasiera">
         <Wordmark />
       </Link>

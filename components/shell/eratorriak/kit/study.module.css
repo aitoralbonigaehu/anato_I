@@ -109,7 +109,7 @@
 .room input {
   width: min(100%, 380px);
   border: 1px solid var(--line-2);
-  border-radius: 8px;
+  border-radius: var(--r-sm);
   background: var(--bg-1);
   color: var(--text);
   padding: 7px 10px;

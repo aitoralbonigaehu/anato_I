@@ -1,0 +1,763 @@
+/* ————————————————————————————————————————————————————————————————
+   EnbrioAtlas — finish layer: "soft & refined"
+   The last word on how things look and move. Every surface is one of four recipes (card, floating,
+   frame, well), every control one family, every corner on one scale and concentric with its parent,
+   every motion ease-out and short. Built on app/tokens.css; scenes and tissues are not touched here.
+   ———————————————————————————————————————————————————————————————— */
+
+/* ——— Ground ——— */
+body {
+  background-color: var(--bg);
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+}
+
+/* A breath of light at the top of every page, so the dark is never flat (and the paper never grey). */
+.landing {
+  background:
+    radial-gradient(1200px 520px at 50% -180px, rgb(var(--fg-rgb) / 0.035), transparent 70%),
+    var(--bg);
+}
+
+:root[data-theme='light'] .landing {
+  background:
+    radial-gradient(1200px 520px at 50% -200px, rgb(255 255 255 / 0.9), transparent 70%),
+    var(--bg);
+}
+
+/* ——— Type: tracking tightens with size; headings balance, paragraphs avoid widows ——— */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li,
+dd,
+figcaption {
+  text-wrap: pretty;
+}
+
+h3 {
+  letter-spacing: -0.015em;
+}
+
+.lp-stats dd,
+.route-state,
+.lp-card-prog small,
+.tl-day,
+.chr-day,
+.lab-score,
+.cmdk-week,
+.map-n,
+.route-n,
+kbd,
+.tp-pager,
+.cap-step,
+.qz-progress,
+[class*='count'] {
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--signal) 32%, transparent);
+  color: var(--text);
+}
+
+/* ——— Focus: a soft ring with a gap, only for the keyboard ——— */
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--signal) 80%, transparent);
+  outline-offset: 2px;
+  transition: outline-offset var(--dur-1) var(--ease-out);
+}
+
+:where(button, a, [role='tab'], [role='radio'], [role='switch'], [role='menuitem'], [role='option']):focus-visible {
+  outline-offset: 3px;
+}
+
+/* ——— Buttons ——— */
+.btn {
+  position: relative;
+  border-color: transparent;
+  background: linear-gradient(180deg, rgb(var(--fg-rgb) / 0.03), rgb(var(--fg-rgb) / 0)) , var(--surface);
+  box-shadow: var(--rim-2), var(--highlight), var(--shadow-sm);
+  transition:
+    transform var(--dur-1) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-1);
+}
+
+.btn:hover:not(:disabled) {
+  border-color: transparent;
+  background: linear-gradient(180deg, rgb(var(--fg-rgb) / 0.06), rgb(var(--fg-rgb) / 0.02)), var(--surface);
+  box-shadow: 0 0 0 1px var(--line-3), var(--highlight), var(--shadow-md);
+}
+
+.btn:active:not(:disabled),
+.icon-btn:active:not(:disabled),
+.seg > button:active,
+.qz-kinds button:active,
+.search-key:active,
+.cmdk-item:active {
+  transform: scale(var(--press));
+  transition-duration: 60ms;
+}
+
+/* Primary: the inverse key, lit from above. */
+.btn-light,
+.btn.primary,
+.btn.btn-light {
+  border-color: transparent;
+  color: var(--on-inverse);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--inverse) 86%, #fff), var(--inverse));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.28),
+    inset 0 -1px 0 rgb(0 0 0 / 0.12),
+    0 1px 2px rgb(var(--shade-rgb) / calc(0.4 * var(--shade-k))),
+    0 8px 18px -10px rgb(var(--shade-rgb) / calc(0.6 * var(--shade-k)));
+}
+
+:root[data-theme='light'] .btn-light,
+:root[data-theme='light'] .btn.primary {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--inverse) 84%, #fff), var(--inverse));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.16),
+    0 1px 2px rgb(40 30 20 / 0.2),
+    0 8px 20px -10px rgb(40 30 20 / 0.45);
+}
+
+.btn-light:hover:not(:disabled),
+.btn.primary:hover:not(:disabled) {
+  border-color: transparent;
+  color: var(--on-inverse);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--inverse-hover) 90%, #fff), var(--inverse-hover));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.3),
+    0 1px 2px rgb(var(--shade-rgb) / calc(0.4 * var(--shade-k))),
+    0 12px 26px -12px rgb(var(--shade-rgb) / calc(0.7 * var(--shade-k)));
+}
+
+.btn.ghost,
+.btn.ghost:hover:not(:disabled) {
+  background: transparent;
+  box-shadow: none;
+}
+
+.btn.ghost:hover:not(:disabled) {
+  background: rgb(var(--fg-rgb) / 0.06);
+}
+
+.btn:disabled {
+  box-shadow: none;
+}
+
+/* Arrows in actions lean the way they point. */
+.btn svg,
+.link-arrow span,
+.lp-card-go span,
+.cmdk-go {
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.btn:hover:not(:disabled) > svg:last-child:not(:first-child),
+.lp-card-in:hover .lp-card-go span {
+  transform: translateX(2px);
+}
+
+/* ——— Icon keys ——— */
+.icon-btn,
+.tool {
+  border-radius: var(--r-sm);
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    color var(--dur-1),
+    transform var(--dur-1) var(--ease-out);
+}
+
+.icon-btn:hover:not(:disabled) {
+  background: rgb(var(--fg-rgb) / 0.07);
+}
+
+/* ——— Keycaps: a real key, lit from above ——— */
+kbd {
+  border: 1px solid var(--line-2);
+  border-bottom-color: var(--line-3);
+  border-bottom-width: 1px;
+  border-radius: var(--r-xs);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  box-shadow: var(--highlight), 0 1px 0 rgb(var(--shade-rgb) / calc(0.25 * var(--shade-k)));
+  color: var(--text-2);
+}
+
+:root[data-theme='light'] kbd {
+  background: linear-gradient(180deg, #fff, #f3f0ea);
+}
+
+/* ——— Tooltips: a small inverse pill that grows from its key ——— */
+[data-tip]::after {
+  padding: 6px 9px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: var(--inverse);
+  color: var(--on-inverse);
+  box-shadow: 0 1px 2px rgb(var(--shade-rgb) / calc(0.3 * var(--shade-k))), 0 10px 24px -10px rgb(var(--shade-rgb) / calc(0.6 * var(--shade-k)));
+  font: 550 12px / 1.3 var(--font-ui);
+  letter-spacing: -0.005em;
+  scale: 0.96;
+  translate: 0 3px;
+  transition:
+    opacity var(--dur-1) var(--ease-out),
+    scale var(--dur-2) var(--ease-out),
+    translate var(--dur-2) var(--ease-out),
+    visibility var(--dur-1);
+}
+
+[data-tip-pos='bottom']::after,
+[data-tip-pos='bottom-end']::after {
+  translate: 0 -3px;
+}
+
+[data-tip]:hover::after,
+[data-tip]:focus-visible::after {
+  scale: 1;
+  translate: 0 0;
+  transition-delay: 0.35s;
+}
+
+/* ——— Floating surfaces: menus, popovers, the command bar ——— */
+.pop-panel,
+.nav-menu-panel,
+.cmdk-panel {
+  border: 0;
+  background: var(--float);
+  box-shadow: 0 0 0 1px var(--glass-line), var(--highlight), var(--shadow-lg);
+}
+
+.pop-panel,
+.nav-menu-panel {
+  padding: 6px;
+  border-radius: var(--r-lg);
+  transform-origin: top right;
+  animation: float-in var(--dur-2) var(--ease-out) both;
+}
+
+.pop-panel.is-start {
+  transform-origin: top left;
+}
+
+.pop-panel.is-up {
+  transform-origin: bottom right;
+  animation-name: float-in-up;
+}
+
+@keyframes float-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.96);
+  }
+}
+
+@keyframes float-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.96);
+  }
+}
+
+/* Items: concentric with the panel (14 − 6 = 8). */
+.menu > a,
+.menu > button,
+.nav-menu-panel a,
+.nav-menu-panel button {
+  border-radius: calc(var(--r-lg) - 6px);
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    color var(--dur-1);
+}
+
+.menu > a:hover,
+.menu > button:hover,
+.nav-menu-panel a:hover,
+.nav-menu-panel button:hover {
+  background: rgb(var(--fg-rgb) / 0.065);
+}
+
+.menu > a:hover svg,
+.menu > button:hover svg {
+  color: var(--signal);
+}
+
+.cmdk-panel {
+  border-radius: var(--r-xl);
+}
+
+.cmdk-item {
+  border-radius: calc(var(--r-xl) - 8px);
+}
+
+.cmdk-item.is-on {
+  background: color-mix(in srgb, var(--signal) 9%, rgb(var(--fg-rgb) / 0.05));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--signal) 18%, transparent);
+}
+
+.cmdk-head {
+  background: color-mix(in srgb, var(--float) 88%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.cmdk-panel {
+  animation: cmdk-in 240ms var(--ease-out);
+}
+
+@keyframes cmdk-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+}
+
+.cmdk-item.is-on .cmdk-go {
+  transform: translateX(1px);
+}
+
+/* ——— Wells and thumbs: segmented controls, the look switch, the topic strip ——— */
+.seg,
+.theme-switch,
+.ik-topics {
+  border-radius: var(--r-md);
+  background: rgb(var(--fg-rgb) / 0.045);
+  box-shadow: var(--well);
+}
+
+.ik-topics {
+  border-radius: var(--r-lg);
+}
+
+/* 3px padding: thumbs are 3px tighter than their well. */
+.seg > button,
+.theme-switch button {
+  border-radius: calc(var(--r-md) - 3px);
+}
+
+.ik-topics a {
+  border-radius: calc(var(--r-lg) - 3px);
+}
+
+.seg > button.is-on,
+.theme-switch button.is-on,
+.ik-topics a.is-on,
+.ik-topics a[aria-current='page'] {
+  background: var(--thumb);
+  box-shadow: var(--rim-2), var(--highlight), var(--shadow-sm);
+}
+
+/* ——— Chips ——— */
+.landing .qz-kinds button {
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1),
+    color var(--dur-1),
+    transform var(--dur-1) var(--ease-out),
+    box-shadow var(--dur-2);
+}
+
+.landing .qz-kinds button.is-on {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--inverse) 88%, #fff), var(--inverse));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 2px 6px -2px rgb(var(--shade-rgb) / calc(0.5 * var(--shade-k)));
+}
+
+/* ——— Fields: recessed, with a soft halo on focus ——— */
+.landing input[type='search'],
+.landing input[type='text'],
+.landing textarea,
+.filter-select select,
+.search-key,
+.lp-search {
+  border-color: transparent;
+  background: rgb(var(--fg-rgb) / 0.035);
+  box-shadow: var(--well);
+  transition:
+    box-shadow var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-1);
+}
+
+:root[data-theme='light'] .landing input[type='search'],
+:root[data-theme='light'] .landing input[type='text'],
+:root[data-theme='light'] .filter-select select,
+:root[data-theme='light'] .search-key,
+:root[data-theme='light'] .lp-search {
+  background: #fff;
+}
+
+.search-key:hover,
+.lp-search:hover,
+.filter-select select:hover {
+  border-color: transparent;
+  box-shadow: var(--well), 0 0 0 1px var(--line-2);
+}
+
+.landing input[type='search']:focus,
+.landing input[type='text']:focus,
+.landing textarea:focus,
+.filter-select select:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--signal) 60%, transparent),
+    0 0 0 4px color-mix(in srgb, var(--signal) 16%, transparent);
+}
+
+.lp-search {
+  border-radius: var(--r-lg);
+}
+
+/* The keycaps inside a field sit concentric with it. */
+.search-key kbd,
+.lp-search kbd {
+  border-radius: calc(var(--r-md) - 5px);
+}
+
+/* ——— Cards ——— */
+.route-card,
+.lp-card-in,
+.map-card {
+  border: 0;
+  background: var(--sheen), var(--surface);
+  box-shadow: var(--rim), var(--highlight), var(--shadow-md);
+  transition:
+    transform var(--dur-3) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out);
+}
+
+.route-card:hover,
+.lp-card-in:hover,
+.map-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--rim-2), var(--highlight), var(--shadow-lg);
+}
+
+.route-card:active,
+.lp-card-in:active,
+.map-card:active {
+  transform: translateY(-1px) scale(0.99);
+  transition-duration: 90ms;
+}
+
+.lp-card-in,
+.route-card {
+  border-radius: var(--r-xl);
+}
+
+/* The scene sits flush at the top of its card: its own corners follow the card's. */
+.lp-card-fig {
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  box-shadow: inset 0 -40px 50px -40px rgb(0 0 0 / 0.45);
+}
+
+.lp-card-fig::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 60px rgb(0 0 0 / 0.35);
+  border-radius: inherit;
+}
+
+/* Badges: soft pills inside the card's padding, never clipped by its edge. */
+.lp-card-new {
+  top: 10px;
+  right: 10px;
+  padding: 4px 9px;
+  border-radius: var(--r-pill);
+  background: rgb(15 15 17 / 0.72);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+}
+
+.lp-card-n {
+  border-radius: var(--r-pill);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* Progress ticks as rounded dashes. */
+.toc-ticks i {
+  border-radius: 2px;
+}
+
+.route-icon {
+  border-radius: var(--r-md);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--signal) 22%, transparent);
+}
+
+.route-card:hover .route-icon {
+  background: color-mix(in srgb, var(--signal) 18%, transparent);
+}
+
+.route-meter {
+  box-shadow: inset 0 1px 1px rgb(var(--shade-rgb) / calc(0.25 * var(--shade-k)));
+}
+
+.route-meter i {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--signal) 70%, var(--focus)), var(--signal));
+}
+
+/* ——— Frames: the specimen and the dock ——— */
+.viewport {
+  border-radius: var(--r-xl);
+}
+
+.stage > .dock {
+  border: 0;
+  background: var(--sheen), var(--frame);
+  box-shadow: var(--rim), var(--highlight), var(--shadow-md);
+}
+
+/* ——— The site bar: flush at the top, a sheet of glass once the page moves under it ——— */
+.land-nav {
+  border-bottom-color: transparent;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+  transition:
+    border-color var(--dur-3) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out),
+    background-color var(--dur-3);
+}
+
+html[data-scrolled] .land-nav {
+  border-bottom-color: var(--line);
+  box-shadow: 0 8px 24px -18px rgb(var(--shade-rgb) / calc(0.6 * var(--shade-k)));
+}
+
+/* The current page: a soft pill, not a rule under the bar. */
+.land-nav nav > a[aria-current='page'],
+.land-nav .nav-menu-key[aria-current='page'] {
+  background: rgb(var(--fg-rgb) / 0.07);
+  color: var(--text);
+}
+
+.land-nav nav a[aria-current='page']::after,
+.land-nav .nav-menu-key[aria-current='page']::after {
+  display: none;
+}
+
+/* ——— Toasts and first-time cards: floating recipe ——— */
+.gida-offer {
+  border: 0;
+  border-radius: var(--r-lg);
+  background: var(--float);
+  box-shadow: 0 0 0 1px var(--glass-line), var(--highlight), var(--shadow-lg);
+}
+
+/* ——— Scrollbars: slimmer, rounder ——— */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2.5px solid transparent;
+  border-radius: 9px;
+}
+
+/* ——— Squircles where the browser draws them (Chromium 139+); a touch more radius compensates ——— */
+@supports (corner-shape: squircle) {
+  .route-card,
+  .lp-card-in,
+  .map-card,
+  .stage > .dock,
+  .viewport,
+  .pop-panel,
+  .nav-menu-panel,
+  .cmdk-panel,
+  .gida-offer,
+  .site-foot .theme-switch,
+  .btn:not(.btn-light):not(.primary),
+  .lp-search,
+  .search-key,
+  .route-icon,
+  .cmdk-icon {
+    corner-shape: squircle;
+  }
+  .route-card,
+  .lp-card-in {
+    border-radius: 26px;
+  }
+  .lp-card-fig {
+    border-radius: 0;
+  }
+  .stage > .dock,
+  .viewport {
+    border-radius: 24px;
+  }
+  .pop-panel,
+  .nav-menu-panel,
+  .gida-offer {
+    border-radius: 20px;
+  }
+  .cmdk-panel {
+    border-radius: 26px;
+  }
+  .lp-search {
+    border-radius: 18px;
+  }
+  .route-icon {
+    border-radius: 14px;
+  }
+}
+
+/* ——— Motion: page reveals, a theme that opens from its key ——— */
+[data-rv] {
+  transition:
+    opacity 600ms var(--ease-out) var(--d, 0ms),
+    transform 700ms var(--ease-out) var(--d, 0ms);
+}
+
+/* The new look grows as a circle from the key that asked for it. */
+html.is-theme-reveal::view-transition-old(root),
+html.is-theme-reveal::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html.is-theme-reveal::view-transition-new(root) {
+  animation: theme-reveal 560ms var(--ease-in-out);
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0 at var(--vt-x, 90%) var(--vt-y, 0));
+  }
+  to {
+    clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 90%) var(--vt-y, 0));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-card,
+  .lp-card-in,
+  .map-card,
+  .btn,
+  .pop-panel,
+  .nav-menu-panel,
+  .cmdk-panel,
+  [data-tip]::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .route-card:hover,
+  .lp-card-in:hover,
+  .map-card:hover {
+    transform: none;
+  }
+}
+
+/* ————————————————————————————————————————————————————————————————
+   Simulator details
+   ———————————————————————————————————————————————————————————————— */
+
+/* Steps track: rounded segments, the past softly filled, the playhead a signal bead with a halo. */
+.dock .transport > .scrub .scrub-seg::before {
+  background: rgb(var(--fg-rgb) / 0.1);
+  border-radius: var(--r-pill);
+}
+
+.dock .transport > .scrub .scrub-seg i {
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--text) 70%, transparent);
+}
+
+.dock .transport > .scrub .scrub-seg.is-on i {
+  background: var(--text);
+}
+
+.dock .transport > .scrub .scrub-head {
+  width: 13px;
+  height: 13px;
+  margin: -6.5px 0 0 -6.5px;
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--signal) 70%, #fff), var(--signal) 70%);
+  box-shadow:
+    0 0 0 3px var(--frame),
+    0 0 0 4px color-mix(in srgb, var(--signal) 35%, transparent),
+    0 2px 6px rgb(var(--shade-rgb) / calc(0.4 * var(--shade-k)));
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.dock .transport > .scrub:hover .scrub-head {
+  transform: scale(1.15);
+}
+
+/* Play: a lit disc. */
+.dock .play,
+.dock .play.is-playing {
+  border: 0;
+  border-radius: var(--r-pill);
+  background: linear-gradient(180deg, rgb(var(--fg-rgb) / 0.07), rgb(var(--fg-rgb) / 0.02)), var(--surface-2);
+  box-shadow: var(--rim-2), var(--highlight), var(--shadow-sm);
+  transition:
+    transform var(--dur-1) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+
+:root[data-theme='light'] .dock .play,
+:root[data-theme='light'] .dock .play.is-playing {
+  background: linear-gradient(180deg, #fff, #f4f1ec);
+}
+
+.dock .play:hover {
+  box-shadow: 0 0 0 1px var(--line-3), var(--highlight), var(--shadow-md);
+}
+
+.dock .play:active {
+  transform: scale(0.94);
+}
+
+.dock .play.is-cue {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--inverse) 86%, #fff), var(--inverse));
+  color: var(--on-inverse);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.28), 0 8px 18px -10px rgb(var(--shade-rgb) / calc(0.6 * var(--shade-k)));
+}
+
+/* The dock's grouped keys (voice, guided) sit in one recessed well. */
+.dock .tp-group {
+  border: 0;
+  background: rgb(var(--fg-rgb) / 0.035);
+  box-shadow: var(--well);
+}
+
+/* Tools over the picture: glass groups with a hairline and a top highlight. */
+.viewport .view-tools,
+.viewport .zoom-controls,
+.viewport .focus-exit {
+  border: 0;
+  background: rgb(var(--surface-rgb) / 0.78);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  backdrop-filter: blur(14px) saturate(1.3);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08), inset 0 1px 0 rgb(255 255 255 / 0.06), 0 10px 28px -14px rgb(0 0 0 / 0.8);
+}
+
+/* 3px padding inside a 14px well: 11px keys. */
+.viewport .view-tools .icon-btn,
+.viewport .zoom-controls .icon-btn,
+.viewport .focus-exit .icon-btn {
+  border-radius: calc(var(--r-lg) - 3px);
+}
+
+/* Compass words: small glass pills. */
+.viewport .orient span {
+  border-radius: var(--r-pill);
+}
+
+/* The frame of the picture: a hairline and a soft top light over the dark. */
+.viewport {
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06), inset 0 1px 0 rgb(255 255 255 / 0.05), var(--shadow-md);
+}
+
+:root[data-theme='light'] .viewport {
+  box-shadow: 0 0 0 1px rgb(40 30 20 / 0.1), 0 2px 6px rgb(60 40 20 / 0.08), 0 24px 48px -24px rgb(60 40 20 / 0.35);
+}

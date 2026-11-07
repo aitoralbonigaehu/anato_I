@@ -1,13 +1,13 @@
 .root { min-width: 0; }
 .toolbar { display: flex;align-items: center;justify-content: space-between;gap: 16px;flex-wrap: wrap;margin: 0 0 20px; }
 .toolbar p,.intro,.meta { color: var(--text-3);font-size: 13px;line-height: 1.6; }
-.switch { display: flex;gap: 4px;border: 1px solid #ffffff24;border-radius: 8px;padding: 4px; }
-.root button,.root select { font: inherit;color: inherit;background: transparent;border: 1px solid #ffffff28;border-radius: 7px;padding: 9px 14px;cursor: pointer; }
+.switch { display: flex;gap: 4px;border: 1px solid #ffffff24;border-radius: var(--r-sm);padding: 4px; }
+.root button,.root select { font: inherit;color: inherit;background: transparent;border: 1px solid #ffffff28;border-radius: var(--r-xs);padding: 9px 14px;cursor: pointer; }
 .switch button { border-color: transparent; }
 .switch button[aria-pressed=true] { background: #ff633123;color: var(--ink-signal); }
 .root button:hover { border-color: #ff875f; }
 .root button:focus-visible,.root select:focus-visible,.root summary:focus-visible { outline: 2px solid #ff875f;outline-offset: 4px; }
-.map { border: 1px solid #ffffff22;border-radius: 14px;margin: 20px 0;overflow: hidden; }
+.map { border: 1px solid #ffffff22;border-radius: var(--r-lg);margin: 20px 0;overflow: hidden; }
 .mapTitle { display: flex;gap: 12px;align-items: baseline;padding: 20px 22px;cursor: pointer;list-style: none; }
 .mapTitle>span { color: var(--ink-signal);font-size: 12px; }
 .mapTitle::after { content: '+';margin-left: auto;color: var(--ink-signal); }
@@ -23,7 +23,7 @@
 .controls { display: flex;gap: 16px;flex-wrap: wrap; }
 .controls label { display: flex;flex-direction: column;gap: 8px;font-size: 12px;color: var(--text-2); }
 .controls select { min-width: 180px;background: var(--surface-2); }
-.question,.empty { padding: 26px;border: 1px solid #ffffff28;border-radius: 14px;margin: 18px 0;overflow-wrap: anywhere; }
+.question,.empty { padding: 26px;border: 1px solid #ffffff28;border-radius: var(--r-lg);margin: 18px 0;overflow-wrap: anywhere; }
 .question h3 { font-size: 20px;line-height: 1.6;white-space: pre-line; }
 .question p { color: var(--text-2);line-height: 1.6;white-space: pre-line; }
 .answer { white-space: pre-line;line-height: 1.8;border-top: 1px solid #ffffff20;padding: 22px 0;margin-top: 24px; }

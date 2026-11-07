@@ -7,7 +7,7 @@
 .tl-top {
   padding: 16px 20px 10px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--r-xl);
   background: var(--surface);
   scroll-margin-top: 76px;
 }
@@ -179,7 +179,7 @@
   right: 0;
   top: -1.5px;
   height: 3px;
-  border-radius: 2px;
+  border-radius: var(--r-2xs);
   background: var(--line-3);
 }
 
@@ -237,7 +237,7 @@
   z-index: 3;
   transform: translateY(-50%);
   padding: 0 3px;
-  border-radius: 4px;
+  border-radius: var(--r-2xs);
   background: var(--surface);
   font-size: 11.5px;
   font-style: normal;
@@ -360,7 +360,7 @@
   margin: 0;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--r-xl);
   background: var(--bg-1);
 }
 
@@ -404,7 +404,7 @@
 .tl-event {
   padding: 18px 20px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--r-xl);
   background: var(--surface);
 }
 
@@ -519,7 +519,7 @@
   min-width: 0;
   padding: 14px 16px 16px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--r-xl);
   background: var(--surface);
 }
 
@@ -647,7 +647,7 @@
 .ln-chip.tl-chip {
   gap: 6px;
   padding: 3px 8px;
-  border-radius: 7px;
+  border-radius: var(--r-xs);
   font-size: 12.5px;
 }
 
@@ -659,7 +659,7 @@
 .tl-more {
   padding: 3px 9px;
   border: 1px dashed var(--line-3);
-  border-radius: 7px;
+  border-radius: var(--r-xs);
   font-size: 12.5px;
   color: var(--text-3);
 }
@@ -693,7 +693,7 @@
   gap: 10px;
   padding: 12px 16px;
   border: 1px dashed var(--line-2);
-  border-radius: 14px;
+  border-radius: var(--r-lg);
   text-align: left;
   transition: border-color 0.15s, background 0.15s;
 }
@@ -788,7 +788,7 @@
 .tl-list-day.is-veiled {
   padding: 1px 10px;
   border: 1px dashed var(--line-3);
-  border-radius: 6px;
+  border-radius: var(--r-xs);
   font-family: var(--font-ui);
   color: var(--text-3);
 }
@@ -855,7 +855,7 @@
   min-height: 74px;
   padding: 14px 16px;
   border: 1px solid var(--line-2);
-  border-radius: 14px;
+  border-radius: var(--r-lg);
   background: var(--surface);
   text-align: left;
   transition: border-color 0.15s, background 0.15s;
@@ -1009,7 +1009,7 @@
   gap: 18px;
   padding: 22px 22px 18px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--r-xl);
   background: var(--surface);
 }
 
@@ -1057,7 +1057,7 @@
   margin-top: 18px;
   padding: 10px 18px 6px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--r-xl);
   background: var(--surface);
 }
 

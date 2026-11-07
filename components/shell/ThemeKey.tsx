@@ -11,7 +11,10 @@ export function ThemeKey({ className = 'icon-btn' }: { className?: string }) {
     <button
       type="button"
       className={`theme-key ${className}`}
-      onClick={() => setThemePref(next)}
+      onClick={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        setThemePref(next, { x: r.left + r.width / 2, y: r.top + r.height / 2 });
+      }}
       aria-label={`Itxura: ${THEME_LABEL[pref]}. Aldatu: ${THEME_LABEL[next]}`}
       data-tip={`Itxura: ${THEME_LABEL[pref].toLowerCase()} → ${THEME_LABEL[next].toLowerCase()}`}
       data-tip-pos="bottom"
@@ -34,7 +37,10 @@ export function ThemeSwitch() {
   return (
     <div className="theme-switch" role="radiogroup" aria-label="Itxura">
       {opts.map((o) => (
-        <button key={o.v} type="button" role="radio" aria-checked={pref === o.v} className={pref === o.v ? 'is-on' : ''} onClick={() => setThemePref(o.v)} title={THEME_LABEL[o.v]}>
+        <button key={o.v} type="button" role="radio" aria-checked={pref === o.v} className={pref === o.v ? 'is-on' : ''} onClick={(e) => {
+            const r = e.currentTarget.getBoundingClientRect();
+            setThemePref(o.v, { x: r.left + r.width / 2, y: r.top + r.height / 2 });
+          }} title={THEME_LABEL[o.v]}>
           {o.icon}
           <span>{THEME_SHORT[o.v]}</span>
         </button>

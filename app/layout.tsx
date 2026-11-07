@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './tokens.css';
 import './globals.css';
 import './ui.css';
+import './finish.css';
 import { Kimu } from '@/components/kimu/Kimu';
 import { KimuCheer } from '@/components/kimu/KimuCheer';
 import { CommandBar } from '@/components/shell/CommandBar';
