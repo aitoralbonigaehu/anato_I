@@ -248,3 +248,10 @@
 .cardFirst em { font-style: normal; font: var(--eyebrow); letter-spacing: var(--eyebrow-track); text-transform: uppercase; color: var(--text-4); margin-right: 4px; }
 .hasDetail .cards { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
 @media (prefers-reduced-motion: reduce) { .card, .mini svg { transition: none; } .card:hover { translate: none; } }
+
+/* The topic picker: a recessed well with a raised current key; on narrow screens it scrolls instead of overflowing. */
+.topics { border: 0; border-radius: var(--r-md); background: rgb(var(--fg-rgb) / .045); box-shadow: var(--well); overflow-x: auto; scrollbar-width: none; }
+.topics::-webkit-scrollbar { display: none; }
+.topics button { border-radius: calc(var(--r-md) - 3px); min-width: 30px; transition: background-color var(--dur-1), color var(--dur-1); }
+.topics button[aria-pressed='true'] { background: var(--thumb); box-shadow: var(--rim-2), var(--highlight), var(--shadow-sm); }
+@media (max-width: 640px) { .topics button { flex: 0 0 auto; min-width: 34px; } }
