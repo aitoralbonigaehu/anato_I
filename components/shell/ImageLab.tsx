@@ -573,20 +573,26 @@ export function ImageLab() {
                   </button>
                 ))}
               </div>
-              <div className="qz-kinds" role="group" aria-label="Gaia">
-                {[null, ...weeks.filter((w) => !isWip(w)).map((w) => w.week)].map((n) => (
-                  <button
-                    key={n ?? 'all'}
-                    className={week === n ? 'is-on' : ''}
-                    onClick={() => {
-                      setWeek(n);
-                      next(mode, n);
-                    }}
-                  >
-                    {n === null ? 'Gai guztiak' : `${n}. gaia`}
-                  </button>
-                ))}
-              </div>
+              <label className="filter-select">
+                <span className="sr-only">Gaia</span>
+                <select
+                  value={week ?? ''}
+                  onChange={(e) => {
+                    const n = e.target.value ? Number(e.target.value) : null;
+                    setWeek(n);
+                    next(mode, n);
+                  }}
+                >
+                  <option value="">Gai guztiak</option>
+                  {weeks
+                    .filter((w) => !isWip(w))
+                    .map((w) => (
+                      <option key={w.week} value={w.week}>
+                        {w.week}. gaia · {w.title}
+                      </option>
+                    ))}
+                </select>
+              </label>
               <span className="lab-score" title="Saio honetan zuzen erantzundakoak / erantzundakoak">
                 {score.ok}/{score.n} <small>zuzen</small>
               </span>

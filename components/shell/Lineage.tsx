@@ -100,9 +100,10 @@ export function Lineage() {
   return (
     <div className="landing ln-page">
       <LandNav current="eratorriak" />
-      <header className="ln-head">
-        <h1>Eratorriak</h1>
-        <p>Gai bakoitzaren funtsezkoa, taula laburretan: jatorria → eratorria.</p>
+      <header className="ln-hero ln-head-hero">
+        <p className="eyebrow">Eratorriak · gai bakoitzaren funtsezkoa</p>
+        <h1>Nondik datoz, zer bihurtzen dira</h1>
+        <p className="hero-lead">Taula laburretan eta eskemetan: jatorria → eratorria. Garrantzitsuenak lehenengo, kolorez markatuta; «Proba modua»-rekin eratorriak ezkutatu eta asmatu.</p>
       </header>
 
       <section className="land-section ln-migrations" id="migrazioak">

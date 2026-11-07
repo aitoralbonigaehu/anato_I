@@ -821,3 +821,254 @@
     display: none;
   }
 }
+
+/* ————————————————————————————————————————————————————————————————
+   Study pages: one header, one filter language
+   ———————————————————————————————————————————————————————————————— */
+
+/* Hero header: eyebrow (what this page is), the promise as the title, one paragraph of how. */
+.landing .ln-hero,
+.landing .lab-hero,
+.landing .lab-hero.plate-hero,
+.landing .tl-hero,
+.landing main > header:first-child {
+  max-width: none;
+  padding: 64px var(--gutter) 28px;
+  margin: 0;
+}
+
+.landing main > header:first-child {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 24px;
+}
+
+.landing .ln-hero h1,
+.landing .lab-hero h1,
+.landing .plate-hero h1,
+.landing .tl-hero h1,
+.landing main > header:first-child h1 {
+  max-width: 24ch;
+  margin: 14px 0 16px;
+  text-wrap: balance;
+  font-size: clamp(36px, 4.2vw, 54px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  color: var(--text);
+}
+
+.landing .ln-hero .eyebrow,
+.landing .lab-hero .eyebrow,
+.landing .tl-hero .eyebrow,
+.landing main > header:first-child .eyebrow {
+  color: var(--signal);
+}
+
+.landing .ln-hero .hero-lead,
+.landing .lab-hero .hero-lead,
+.landing .plate-hero .hero-lead,
+.landing .tl-hero .hero-lead,
+.landing main > header:first-child > p:not(.eyebrow) {
+  max-width: 68ch;
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.landing .hero-lead b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* Compact header of the tool pages (Ikasgelak, Eratorriak): the title, then straight to the topics. */
+.ik-head,
+.ln-head {
+  padding-top: 36px;
+}
+
+.ik-title h1,
+.ln-head h1 {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
+.ln-head p {
+  color: var(--text-3);
+}
+
+/* Topic strip: one quiet well, the current topic raised. */
+.ik-topics {
+  gap: 2px;
+  padding: 3px;
+  border-radius: 12px;
+  background: rgb(var(--fg-rgb) / 0.04);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.ik-topics a {
+  height: 34px;
+  border-radius: 9px;
+}
+
+.ik-topics a.is-on,
+.ik-topics a[aria-current='page'] {
+  background: var(--surface);
+  color: var(--text);
+  border-color: transparent;
+  box-shadow: var(--lift-1), 0 0 0 1px var(--line-2);
+}
+
+:root[data-theme='light'] .ik-topics a.is-on {
+  background: #fff;
+}
+
+.ik-topics a.is-on b {
+  background: var(--signal);
+  color: var(--on-signal);
+}
+
+.ik-links a {
+  color: var(--text-2);
+  font-weight: 550;
+  transition: color var(--dur-1);
+}
+
+.ik-links a:hover {
+  color: var(--text);
+}
+
+/* Filter chips: one recipe everywhere (systems, kinds, topics). Selected = filled, not outlined. */
+.landing .qz-kinds {
+  gap: 4px;
+  padding: 0;
+}
+
+.landing .qz-kinds button {
+  height: 32px;
+  padding: 0 13px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+  transition: background-color var(--dur-1), border-color var(--dur-1), color var(--dur-1);
+}
+
+.landing .qz-kinds button:hover {
+  border-color: var(--line-2);
+  background: rgb(var(--fg-rgb) / 0.04);
+  color: var(--text);
+}
+
+.landing .qz-kinds button.is-on {
+  border-color: var(--inverse);
+  background: var(--inverse);
+  color: var(--on-inverse);
+}
+
+/* A filter with many values: a compact select ("Gaia: 7. gaia ▾") instead of a row of sixteen chips. */
+.filter-select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.filter-select select {
+  appearance: none;
+  max-width: 260px;
+  text-overflow: ellipsis;
+  height: 32px;
+  padding: 0 32px 0 13px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  color: var(--text);
+  font: 500 13px / 1 var(--font-ui);
+  cursor: pointer;
+  transition: border-color var(--dur-1);
+}
+
+.filter-select select:hover {
+  border-color: var(--line-3);
+}
+
+.filter-select::after {
+  content: '';
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -5px;
+  border-right: 1.5px solid var(--text-3);
+  border-bottom: 1.5px solid var(--text-3);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+/* Tabs: text keys over a hairline, the current one underlined in the signal colour. */
+.lab-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.lab-tabs button {
+  position: relative;
+  height: 40px;
+  padding: 0 12px;
+  color: var(--text-3);
+  font-size: var(--t-md);
+  font-weight: 550;
+  transition: color var(--dur-1);
+}
+
+.lab-tabs button:hover {
+  color: var(--text);
+}
+
+.lab-tabs button.is-on {
+  color: var(--text);
+}
+
+.lab-tabs button.is-on::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--signal);
+}
+
+/* Controls row above a figure: chips left, the score or review on the right, one line when it fits. */
+.landing .lab-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin: 18px 0 16px;
+}
+
+.landing .lab-score {
+  margin-left: auto;
+  font: 500 13px / 1 var(--font-mono);
+  color: var(--text-2);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
