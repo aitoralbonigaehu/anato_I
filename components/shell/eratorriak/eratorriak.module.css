@@ -1701,3 +1701,194 @@
     display: none;
   }
 }
+
+/* ——— Flashcards, refined: a real card — centred question, the topic's edge, a calm back ——— */
+.cardTags button {
+  height: 32px;
+  padding: 0 13px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text-2);
+  font-weight: 500;
+  transition: background-color var(--dur-1), color var(--dur-1), border-color var(--dur-1);
+}
+
+.cardTags button:hover {
+  border-color: var(--line-2);
+  color: var(--text);
+}
+
+.cardTags button.on {
+  border-color: var(--inverse);
+  background: var(--inverse);
+  color: var(--on-inverse);
+}
+
+.cardTags button.on small {
+  color: inherit;
+  opacity: 0.7;
+}
+
+.cardFace {
+  align-items: center;
+  text-align: center;
+  padding: 36px 44px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--sheen), var(--surface);
+  box-shadow: var(--rim), var(--highlight), var(--shadow-lg);
+  overflow: hidden;
+}
+
+/* The topic's colour runs along the card's top edge. */
+.cardFace::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--topic, var(--signal)), color-mix(in oklab, var(--topic, var(--signal)) 30%, transparent));
+}
+
+.cardFace small {
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: var(--topic-soft, var(--signal-soft));
+  color: var(--topic-ink, var(--signal));
+  font: 600 10.5px / 1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cardFace b {
+  max-width: 30ch;
+  font-size: clamp(20px, 2.1vw, 26px);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.cardFace em {
+  font-size: 13px;
+  color: var(--text-4);
+}
+
+.cardBack {
+  align-items: stretch;
+  text-align: left;
+}
+
+.cardBack b {
+  max-width: none;
+  font-size: 17px;
+  text-wrap: pretty;
+}
+
+.cardFace,
+.cardBack {
+  transition: transform 0.6s var(--ease-out);
+}
+
+.cardMeta {
+  margin-top: 18px;
+}
+
+.boxes {
+  height: 6px;
+  border-radius: var(--r-pill);
+  box-shadow: inset 0 1px 1px rgb(var(--shade-rgb) / calc(0.2 * var(--shade-k)));
+}
+
+@supports (corner-shape: squircle) {
+  .cardFace {
+    corner-shape: squircle;
+    border-radius: 32px;
+  }
+}
+
+/* ——— The step strip and the room's keys, in the page's topic colour ——— */
+.stageBtn {
+  transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1), box-shadow var(--dur-2);
+}
+
+.stageBtn:hover {
+  background: rgb(var(--fg-rgb) / 0.05);
+}
+
+.stageBtn.past b {
+  background: var(--topic-soft, var(--signal-soft));
+  color: var(--topic-ink, var(--signal));
+}
+
+.stageBtn.on {
+  background: var(--thumb);
+  box-shadow: var(--rim-2), var(--highlight), var(--shadow-sm);
+}
+
+.stageBtn.on b {
+  background: var(--topic, var(--signal));
+  color: #fff;
+}
+
+.btn {
+  border-color: transparent;
+  background: var(--surface);
+  box-shadow: var(--rim-2), var(--highlight), var(--shadow-sm);
+  transition: box-shadow var(--dur-2) var(--ease-out), color var(--dur-1), transform var(--dur-1) var(--ease-out);
+}
+
+.btn:hover {
+  border-color: transparent;
+  box-shadow: 0 0 0 1px var(--line-3), var(--highlight), var(--shadow-md);
+}
+
+.btn:active {
+  transform: scale(var(--press));
+}
+
+.btn.on {
+  border-color: transparent;
+  background: var(--topic-soft, var(--signal-soft));
+  box-shadow: inset 0 0 0 1px var(--topic-line, var(--line-2));
+  color: var(--text);
+}
+
+.btnOk {
+  color: var(--ok);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ok) 45%, transparent), var(--shadow-sm);
+}
+
+.btnBad {
+  color: var(--bad);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--bad) 45%, transparent), var(--shadow-sm);
+}
+
+.btn kbd {
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+
+.card:has(.cardFig) {
+  min-height: 440px;
+}
+
+.stageBtn.on {
+  background: var(--topic-soft, var(--signal-soft));
+  box-shadow: inset 0 0 0 1px var(--topic-line, var(--line-2));
+}
+
+/* Section numbers in the page's topic colour. */
+.h3 > b {
+  border: 0;
+  border-radius: var(--r-sm);
+  background: var(--topic-soft, var(--signal-soft));
+  box-shadow: inset 0 0 0 1px var(--topic-line, rgba(255, 106, 61, 0.45));
+  color: var(--topic-ink, var(--signal));
+}
+
+.h3 {
+  font-size: 22px;
+  letter-spacing: -0.025em;
+}
