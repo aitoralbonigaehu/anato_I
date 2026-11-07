@@ -175,7 +175,8 @@ export function CommandBar() {
     } else if (e.key === 'Tab') e.preventDefault();
   };
 
-  let i = -1;
+  // Each group's first row number in the flat list (for the keyboard selection).
+  const starts = groups.map((_, k) => groups.slice(0, k).reduce((n, g) => n + g.items.length, 0));
   return (
     <div className="cmdk" role="presentation" onPointerDown={(e) => e.target === e.currentTarget && setOpen(false)}>
       <div className="cmdk-panel" role="dialog" aria-modal="true" aria-label="Bilatu eta ekin">
@@ -212,14 +213,13 @@ export function CommandBar() {
               </button>
             </p>
           )}
-          {groups.map((g) => (
+          {groups.map((g, gk) => (
             <div className="cmdk-group" key={g.group} role="presentation">
               <p className="cmdk-head" role="presentation">
                 {GROUP_LABEL[g.group]}
               </p>
-              {g.items.map((c) => {
-                i += 1;
-                const n = i;
+              {g.items.map((c, k) => {
+                const n = starts[gk] + k;
                 const origin = (c as Command & { origin?: CommandGroup }).origin ?? c.group;
                 return (
                   <div

@@ -63,7 +63,7 @@ export function TourHost({ tour, ready = true }: { tour: TourId; ready?: boolean
 }
 
 /** Cards that already hold the eye: the offer waits for them, and steps aside if one opens. */
-const OTHER_CARDS = '.loc-card, .kimu-nudge, .kimu-peek, .kimu-panel, .fs-offer, .pv-card, .bridge, .now-card, .find-bar, .viewport .tour, .menu, [role="dialog"]';
+const OTHER_CARDS = '.kimu-cheer, .loc-card, .kimu-nudge, .kimu-peek, .kimu-panel, .fs-offer, .pv-card, .bridge, .now-card, .find-bar, .viewport .tour, .menu, [role="dialog"]';
 const otherCard = () => [...document.querySelectorAll(OTHER_CARDS)].some((el) => !el.closest('.gida-offer') && el.getClientRects().length > 0);
 
 /**
