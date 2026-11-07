@@ -1081,19 +1081,212 @@
   color: var(--on-signal);
 }
 
-/* The topic switcher: the current topic lit in its own colour. */
-.tsw-item.is-on {
-  background: var(--topic-soft) !important;
-  border-color: var(--topic-line) !important;
-  box-shadow: inset 0 0 0 1px var(--topic-line);
+
+/* ————————————————————————————————————————————————————————————————
+   Topic switcher: an index, not a grid of badges
+   Two chapters (how a body begins, its systems); each topic's number set in its own colour like a
+   chapter number in a printed atlas; progress as a small ring, words only when there is something to say.
+   ———————————————————————————————————————————————————————————————— */
+.tsw-sheet {
+  width: min(760px, calc(100vw - 32px));
+  padding: 18px 14px 12px;
+  border: 0;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px var(--glass-line), var(--highlight), var(--shadow-lg);
+  transform-origin: top left;
+  animation: float-in var(--dur-2) var(--ease-out) both;
 }
 
+@supports (corner-shape: squircle) {
+  .tsw-sheet {
+    corner-shape: squircle;
+    border-radius: 28px;
+  }
+}
+
+.tsw-head {
+  align-items: center;
+  padding: 0 10px 14px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tsw-title {
+  display: block;
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.tsw-sub {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-4);
+  font-size: 12.5px;
+}
+
+.tsw-here {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-3);
+  font-size: 12.5px;
+}
+
+.tsw-here b {
+  color: var(--text);
+}
+
+.tsw-groups {
+  display: grid;
+  gap: 6px;
+}
+
+.tsw-group-h {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 10px 10px 4px;
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tsw-group-h span {
+  color: var(--text-4);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.tsw-grid {
+  gap: 0 10px;
+}
+
+.tsw-item {
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 10px;
+  min-height: 48px;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 12px;
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+
+.tsw-item:hover,
+.tsw-item:focus-visible {
+  background: rgb(var(--fg-rgb) / 0.05);
+}
+
+/* The number: a chapter numeral in the topic's ink, no box. */
+.tsw-item-n,
 .tsw-item.is-on .tsw-item-n {
-  background: var(--topic) !important;
-  color: #fff !important;
+  width: auto;
+  height: auto;
+  background: none !important;
+  box-shadow: none !important;
+  color: var(--topic-ink) !important;
+  font: 600 19px / 1 var(--font-ui) !important;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 
-.tsw-item.is-on small,
-.tsw-item.is-on .tsw-here {
+.tsw-item-body b {
+  font-size: 14px;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+}
+
+.tsw-item-meta {
+  color: var(--text-4);
+  font-size: 12px;
+}
+
+.tsw-item-meta em {
+  font-style: normal;
+}
+
+.tsw-item-meta em.is-here {
+  color: var(--topic-ink);
+  font-weight: 550;
+}
+
+.tsw-item-prog {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.tsw-item-prog small {
+  color: var(--text-4);
+  font: 500 11px / 1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The ring: a hairline circle, filled in the topic's colour as stages are seen. */
+.tsw-ring {
+  flex: none;
+  display: block;
+}
+
+.tsw-ring-track {
+  fill: none;
+  stroke: rgb(var(--fg-rgb) / 0.14);
+  stroke-width: 2;
+}
+
+.tsw-ring-fill {
+  fill: none;
+  stroke: var(--topic);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+span.tsw-ring.is-done {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--topic);
+  color: #fff;
+}
+
+.tsw-here .tsw-ring {
+  --topic: var(--signal);
+}
+
+/* The current topic: a soft wash of its colour and a rule at its edge. */
+.tsw-item.is-on {
+  position: relative;
+  background: var(--topic-soft) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.tsw-item.is-on::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--topic);
+}
+
+.tsw-item.is-wip {
+  opacity: 0.5;
+}
+
+/* The switcher key in the bar: the number in its colour, no box. */
+.tsw-n {
+  min-width: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
   color: var(--topic-ink) !important;
+  font: 650 15px / 1 var(--font-ui) !important;
+  font-variant-numeric: tabular-nums;
 }

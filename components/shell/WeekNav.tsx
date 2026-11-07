@@ -11,7 +11,6 @@ import { IconCheck, IconChevron } from './icons';
 import { hueStyle } from './topicHue';
 
 /** The topic sheet is two columns that read down, then across (1–5 | 6–10; 11 topics: 1–6 | 7–11). */
-const ROWS = Math.ceil(weeks.length / 2);
 
 /**
  * The topic switcher of the top bar: the current topic by number and name (never a bare "03"), and
@@ -53,9 +52,17 @@ export function WeekNav({ current, stageId }: { current: WeekDef; stageId?: stri
     }
     const items = Array.from(sheet.current?.querySelectorAll<HTMLElement>('.tsw-item') ?? []);
     const at = items.indexOf(document.activeElement as HTMLElement);
-    const move: Record<string, number> = { ArrowDown: 1, ArrowUp: -1, ArrowRight: ROWS, ArrowLeft: -ROWS };
     let to = -1;
-    if (e.key in move) to = Math.min(items.length - 1, Math.max(0, (at < 0 ? 0 : at) + move[e.key]));
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') to = Math.min(items.length - 1, Math.max(0, (at < 0 ? 0 : at) + (e.key === 'ArrowDown' ? 1 : -1)));
+    else if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft') && at >= 0) {
+      // Across the columns: the item beside this one (by position, whatever the grouping).
+      const me = items[at].getBoundingClientRect();
+      const side = items
+        .map((el, i) => ({ i, r: el.getBoundingClientRect() }))
+        .filter(({ r }) => (e.key === 'ArrowRight' ? r.left > me.right - 4 : r.right < me.left + 4))
+        .sort((a, b) => Math.abs(a.r.top - me.top) - Math.abs(b.r.top - me.top))[0];
+      if (side) to = side.i;
+    }
     else if (e.key === 'Home') to = 0;
     else if (e.key === 'End') to = items.length - 1;
     if (to >= 0) {
@@ -85,9 +92,15 @@ export function WeekNav({ current, stageId }: { current: WeekDef; stageId?: stri
       {open && (
         <div className="tsw-sheet" ref={sheet} role="dialog" aria-label="Gaiak" onKeyDown={onKey}>
           <div className="tsw-head">
-            <p className="kicker">Gaiak · garapenaren ordenan</p>
+            <div>
+              <b className="tsw-title">Gaiak</b>
+              <span className="tsw-sub">Garapenaren ordenan · {weeks.length} gai</span>
+            </div>
             <span className="tsw-here">
-              Hemen: <b>{current.week}. gaia</b> · {curDone}/{current.stages.length} etapa ikusita
+              <Ring part={current.stages.length ? curDone / current.stages.length : 0} />
+              <span>
+                <b>{current.week}. gaia</b> · {curDone}/{current.stages.length} etapa ikusita
+              </span>
             </span>
           </div>
           <TopicList current={current} stageId={stageId} visited={visited} onPick={() => close(false)} />
@@ -97,57 +110,85 @@ export function WeekNav({ current, stageId }: { current: WeekDef; stageId?: stri
   );
 }
 
-/** Every topic, in order: number, name, span, where the student is and how far they have got. */
+/** How far through a topic: a small ring in the topic's colour; a check when every stage has been seen. */
+function Ring({ part }: { part: number }) {
+  const C = 2 * Math.PI * 7;
+  if (part >= 1)
+    return (
+      <span className="tsw-ring is-done" aria-hidden>
+        <IconCheck size={11} />
+      </span>
+    );
+  return (
+    <svg className="tsw-ring" width="18" height="18" viewBox="0 0 18 18" aria-hidden>
+      <circle cx="9" cy="9" r="7" className="tsw-ring-track" />
+      {part > 0 && <circle cx="9" cy="9" r="7" className="tsw-ring-fill" strokeDasharray={`${Math.max(1.5, part * C)} ${C}`} transform="rotate(-90 9 9)" />}
+    </svg>
+  );
+}
+
+/** The topics in two chapters: how a body begins, then its systems. */
+const GROUPS: { title: string; from: number; to: number }[] = [
+  { title: 'Garapen orokorra', from: 1, to: 6 },
+  { title: 'Organo-sistemak', from: 7, to: 99 },
+];
+
+/** Every topic, in order: its number in its own colour, name, span, where the student is and how far they have got. */
 export function TopicList({ current, stageId, visited, onPick }: { current: WeekDef; stageId?: string; visited: Record<number, string[] | undefined>; onPick?: () => void }) {
   return (
-      <nav aria-label="Gaiak">
-        <ol className="tsw-grid" style={{ '--rows': ROWS } as CSSProperties}>
-          {weeks.map((w) => {
-            const on = w.week === current.week;
-            const wip = isWip(w);
-            const prep = inPrep(w);
-            const seen = new Set(visited[w.week] ?? []);
-            const done = w.stages.filter((s) => seen.has(s.id)).length;
-            const span = spanOf(w);
-            const now = on ? w.stages.find((s) => s.id === stageId) : undefined;
-            return (
-              <li key={w.week}>
-                <Link
-                  href={`/astea/${w.week}`}
-                  style={hueStyle(w.week)}
-                  className={`tsw-item${on ? ' is-on' : ''}${wip ? ' is-wip' : ''}${done === w.stages.length && done > 0 ? ' is-done' : ''}`}
-                  aria-current={on ? 'page' : undefined}
-                  aria-label={`${w.week}. gaia: ${w.title} (${span.long})${prep ? ' · prestatzen' : ''}${wip ? '' : ` · ${done}/${w.stages.length} etapa ikusita`}`}
-                  onClick={onPick}
-                  title={w.subtitle}
-                >
-                  <span className="tsw-item-n">{w.week}</span>
-                  <span className="tsw-item-body">
-                    <b>{w.title}</b>
-                    <span className="tsw-item-meta">
-                      {span.long}
-                      {now ? <em className="is-here">Hemen zaude · {now.title}</em> : prep ? <em className="is-prep">Prestatzen</em> : null}
-                    </span>
-                  </span>
-                  {!wip && (
-                    <span className="tsw-item-prog" aria-hidden>
-                      {done === w.stages.length && done > 0 ? (
-                        <IconCheck size={13} />
-                      ) : (
-                        <>
-                          <span className="tsw-bar" style={{ '--p': w.stages.length ? done / w.stages.length : 0 } as CSSProperties} />
-                          <small>
-                            {done}/{w.stages.length}
-                          </small>
-                        </>
+    <nav aria-label="Gaiak" className="tsw-groups">
+      {GROUPS.map((g) => {
+        const list = weeks.filter((w) => w.week >= g.from && w.week <= g.to);
+        if (!list.length) return null;
+        return (
+          <section key={g.title} className="tsw-group">
+            <p className="tsw-group-h">
+              {g.title}
+              <span>
+                {list[0].week}–{list[list.length - 1].week}
+              </span>
+            </p>
+            <ol className="tsw-grid" style={{ '--rows': Math.ceil(list.length / 2) } as CSSProperties}>
+              {list.map((w) => {
+                const on = w.week === current.week;
+                const wip = isWip(w);
+                const prep = inPrep(w);
+                const seen = new Set(visited[w.week] ?? []);
+                const done = w.stages.filter((s) => seen.has(s.id)).length;
+                const span = spanOf(w);
+                const now = on ? w.stages.find((s) => s.id === stageId) : undefined;
+                return (
+                  <li key={w.week}>
+                    <Link
+                      href={`/astea/${w.week}`}
+                      style={hueStyle(w.week)}
+                      className={`tsw-item${on ? ' is-on' : ''}${wip ? ' is-wip' : ''}${done === w.stages.length && done > 0 ? ' is-done' : ''}`}
+                      aria-current={on ? 'page' : undefined}
+                      aria-label={`${w.week}. gaia: ${w.title} (${span.long})${prep ? ' · prestatzen' : ''}${wip ? '' : ` · ${done}/${w.stages.length} etapa ikusita`}`}
+                      onClick={onPick}
+                      title={w.subtitle}
+                    >
+                      <span className="tsw-item-n">{String(w.week).padStart(2, '0')}</span>
+                      <span className="tsw-item-body">
+                        <b>{w.title}</b>
+                        <span className="tsw-item-meta">
+                          {now ? <em className="is-here">Hemen · {now.title}</em> : prep ? <em className="is-prep">Prestatzen</em> : span.long}
+                        </span>
+                      </span>
+                      {!wip && (
+                        <span className="tsw-item-prog" title={`${done}/${w.stages.length} etapa ikusita`}>
+                          {done > 0 && done < w.stages.length && <small>{done}/{w.stages.length}</small>}
+                          <Ring part={w.stages.length ? done / w.stages.length : 0} />
+                        </span>
                       )}
-                    </span>
-                  )}
-                </Link>
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+        );
+      })}
+    </nav>
   );
 }
