@@ -126,7 +126,11 @@ function Offer({ tour }: { tour: TourId }) {
     // Playback started or another card opened: the offer steps aside (the "?" keeps the guide).
     const watch = window.setInterval(() => (playing() || otherCard()) && hideOffer(), 400);
     const off = window.setTimeout(hideOffer, OFFER_FOR);
+    // Scrolling on is an answer too: the page is being explored, the offer steps aside (the "?" keeps it).
+    const away = () => window.scrollY > 320 && hideOffer();
+    window.addEventListener('scroll', away, { passive: true });
     return () => {
+      window.removeEventListener('scroll', away);
       window.removeEventListener('keydown', onKey, true);
       cancelAnimationFrame(raf);
       window.clearInterval(watch);

@@ -5,7 +5,7 @@ import { BrandMark } from './icons';
 import atlasStyles from './structure-atlas.module.css';
 import { StudyMenu } from './NavMenu';
 import { SearchKey } from './CommandBar';
-import { ThemeKey } from './ThemeKey';
+import { ThemeKey, ThemeSwitch } from './ThemeKey';
 
 /** A week whose only scenes are placeholders is still being prepared. */
 export const isWip = (w: (typeof weeks)[number]) => w.stages.every((s) => s.views.every((v) => v.description === 'Prestatzen'));
@@ -54,10 +54,51 @@ export function LandNav({ current, help }: { current?: Section; help?: ReactNode
 
 export function LandFoot({ children }: { children?: ReactNode }) {
   return (
-    <footer className="land-foot">
-      <Wordmark size={18} />
-      <p>Iturria: Giza Anatomia I ikasgaiko apunteak (1.–{weeks.length}. gaiak) eta haietako irudiak (Langman). Simulagailu honek ez du ordezkatzen irakaslearen irizpidea.</p>
-      {children}
+    <footer className="land-foot site-foot">
+      <div className="foot-top">
+        <div className="foot-brand">
+          <Wordmark size={20} />
+          <p>Giza enbriologia ikasteko simulagailu bisual eta interaktiboa, euskaraz: ernalkuntzatik gorputzaren sistemak eratu arte.</p>
+          <ThemeSwitch />
+        </div>
+        <nav className="foot-col" aria-label="Ikasi">
+          <p>Ikasi</p>
+          <Link href={`/astea/${firstReady.week}`}>Simulagailua</Link>
+          <Link href="/ikasgela">Ikasgelak</Link>
+          <Link href="/kronologia">Kronologia</Link>
+          <Link href="/eratorriak">Eratorriak</Link>
+        </nav>
+        <nav className="foot-col" aria-label="Praktikatu">
+          <p>Praktikatu</p>
+          <Link href="/belortzioak">Belortzioak</Link>
+          <Link href="/irudiak">Irudiak</Link>
+          <Link href="/fitxak">Fitxak</Link>
+          <Link href="/egiturak">Egituren atlasa</Link>
+        </nav>
+        <div className="foot-col foot-keys">
+          <p>Laster-teklak</p>
+          <span>
+            <kbd>Ctrl</kbd>
+            <kbd>K</kbd> bilatu edonondik
+          </span>
+          <span>
+            <kbd>Zuriunea</kbd> erreproduzitu / pausatu
+          </span>
+          <span>
+            <kbd>←</kbd>
+            <kbd>→</kbd> urratsak · <kbd>L</kbd> izenak
+          </span>
+          <span>
+            <kbd>K</kbd> galdetu Kimuri
+          </span>
+        </div>
+      </div>
+      <div className="foot-base">
+        <p>
+          Iturria: Giza Anatomia I ikasgaiko apunteak (1.–{weeks.length}. gaiak) eta haietako irudiak (Langman). Simulagailu honek ez du ordezkatzen irakaslearen irizpidea.
+        </p>
+        {children}
+      </div>
     </footer>
   );
 }

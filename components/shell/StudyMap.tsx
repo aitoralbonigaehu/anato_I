@@ -128,8 +128,33 @@ const questionIds = POOL.map((q) => q.id);
 const competenceKeys = [...KEY_IDS.keys()];
 const stageTotal = weeks.reduce((n, w) => n + w.stages.length, 0);
 
-/** Home: the mental map of the subject, and the study route with the viewer's real progress. */
-export function StudyMap() {
+/** The mental map of the subject: one card per topic, each a chain of steps readable in seconds. */
+export function TopicMap() {
+  const cols = shelfCols(MAP.length);
+  return (
+    <ol className="map-row" style={{ '--cols': cols } as CSSProperties}>
+      {MAP.map((m, k) => (
+        <li key={m.title} className={(k + 1) % cols === 0 ? 'is-row-end' : undefined} style={{ '--d': `${(k % cols) * 60}ms` } as CSSProperties}>
+          <Link href={m.href} className="map-card">
+            <span className="map-n">{String(k + 1).padStart(2, '0')}</span>
+            <span className="map-days">{m.days}</span>
+            <b>{m.title}</b>
+            <span className="map-chain" title={m.idea}>
+              {m.chain.map((x) => (
+                <i key={x}>{x}</i>
+              ))}
+            </span>
+          </Link>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+export type RouteIcon = 'play' | 'clock' | 'tree' | 'image' | 'quiz' | 'check';
+
+/** The study route, with the viewer's real progress on each step. */
+export function useStudyRoute() {
   const visited = useVisitedAll();
   const answers = useAnswers();
   const seen = weeks.reduce((n, w) => n + w.stages.filter((s) => visited[w.week]?.includes(s.id)).length, 0);
@@ -138,64 +163,13 @@ export function StudyMap() {
   // eslint-disable-next-line react-hooks/purity -- a review date is compared with "now" on each render, on purpose
   const now = Date.now();
   const missed = questionIds.filter((id) => isDue(answers[id], now)).length;
-
-  const route: { n: string; title: string; text: string; href: string; state: string }[] = [
-    { n: '1', title: 'Ikusi prozesuak', text: 'Etapa bakoitza ikasteko moduan: aurrebista, urratsak eta egituren bira.', href: '/astea/1', state: `${seen}/${stageTotal} etapa` },
-    { n: '2', title: 'Kokatu denboran', text: 'Kronologian: zer dagoen egun bakoitzean, zer den berria eta zer desagertu den.', href: '/kronologia', state: 'Zer dago orain?' },
-    { n: '3', title: 'Lotu jatorriak', text: 'Eratorrietan: egitura bakoitza nondik datorren eta zer bihurtzen den.', href: '/eratorriak', state: 'Nondik → zertan' },
-    { n: '4', title: 'Irakurri irudiak', text: 'Irudi-laborategian: etiketarik gabe, zuri-beltzean eta biratuta.', href: '/irudiak', state: 'Seinalatu · gezia · orientazioa' },
-    { n: '5', title: 'Praktikatu', text: 'Galderak simulagailuan: noiz, nondik, nola, non, zertan eta zergatik.', href: '/astea/1', state: `${answered}/${questionIds.length} erantzunda` },
-    { n: '6', title: 'Menderatu', text: 'Gaitasun bat menderatuta dago azken 3 saiakerak ondo daudenean, galdera desberdinekin eta egun desberdinetan. Huts egindakoak «Errepasoa» moduan itzultzen dira.', href: '/astea/1', state: `${mastered}/${competenceKeys.length} gaitasun${missed ? ` · ${missed} errepasatzeko` : ''}` },
+  const route: { n: string; icon: RouteIcon; title: string; text: string; href: string; state: string; part?: number }[] = [
+    { n: '1', icon: 'play', title: 'Ikusi prozesuak', text: 'Etapa bakoitza ikasteko moduan: aurrebista, urratsak eta egituren bira.', href: '/astea/1', state: `${seen}/${stageTotal} etapa`, part: seen / stageTotal },
+    { n: '2', icon: 'clock', title: 'Kokatu denboran', text: 'Kronologian: zer dagoen egun bakoitzean, zer den berria eta zer desagertu den.', href: '/kronologia', state: 'Zer dago orain?' },
+    { n: '3', icon: 'tree', title: 'Lotu jatorriak', text: 'Eratorrietan: egitura bakoitza nondik datorren eta zer bihurtzen den.', href: '/eratorriak', state: 'Nondik → zertan' },
+    { n: '4', icon: 'image', title: 'Irakurri irudiak', text: 'Irudi-laborategian: etiketarik gabe, zuri-beltzean eta biratuta.', href: '/irudiak', state: 'Seinalatu · gezia · orientazioa' },
+    { n: '5', icon: 'quiz', title: 'Praktikatu', text: 'Galderak simulagailuan: noiz, nondik, nola, non, zertan eta zergatik.', href: '/astea/1', state: `${answered}/${questionIds.length} erantzunda`, part: answered / questionIds.length },
+    { n: '6', icon: 'check', title: 'Menderatu', text: 'Azken 3 saiakerak ondo, galdera eta egun desberdinetan. Huts egindakoak «Errepasoa» moduan itzultzen dira.', href: '/astea/1', state: `${mastered}/${competenceKeys.length} gaitasun${missed ? ` · ${missed} errepasatzeko` : ''}`, part: mastered / Math.max(1, competenceKeys.length) },
   ];
-
-  const cols = shelfCols(MAP.length);
-  return (
-    <>
-      <section id="mapa" className="land-section map">
-        <header className="section-head" data-rv>
-          <p className="kicker">Mapa · 20 segundotan</p>
-          <h2>Gai osoa, begirada batean</h2>
-          <p>{countWord(MAP.length)} gai, ordenan. Hau buruan izanda, xehetasun bakoitzak badu bere lekua.</p>
-        </header>
-        <ol className="map-row" style={{ '--cols': cols } as CSSProperties}>
-          {MAP.map((m, k) => (
-            <li key={m.title} className={(k + 1) % cols === 0 ? 'is-row-end' : undefined} data-rv style={{ '--d': `${(k % cols) * 80}ms` } as CSSProperties}>
-              <Link href={m.href} className="map-card">
-                <span className="map-n">{String(k + 1).padStart(2, '0')}</span>
-                <span className="map-days">{m.days}</span>
-                <b>{m.title}</b>
-                <span className="map-chain" title={m.idea}>
-                  {m.chain.map((x) => (
-                    <i key={x}>{x}</i>
-                  ))}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section id="ibilbidea" className="land-section route">
-        <header className="section-head" data-rv>
-          <p className="kicker">10/10 ibilbidea</p>
-          <h2>Apunteetatik simulagailura</h2>
-          <p>Ikusteak ez du esan nahi jakitea. Sei pauso, eta bakoitzean zure aurrerapena.</p>
-        </header>
-        <ol className="route-list">
-          {route.map((r, k) => (
-            <li key={r.n} data-rv style={{ '--d': `${k * 70}ms` } as CSSProperties}>
-              <Link href={r.href} className="route-step">
-                <span className="route-n">{r.n}</span>
-                <span className="route-main">
-                  <b>{r.title}</b>
-                  <span>{r.text}</span>
-                </span>
-                <span className="route-state">{r.state}</span>
-              </Link>
-            </li>
-          ))}
-        </ol>
-      </section>
-    </>
-  );
+  return route;
 }

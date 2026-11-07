@@ -1,16 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { useRef, useState, type CSSProperties, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
 import { weeks } from '@/content/registry';
 import { POOL, compKey } from '@/content/pool';
 import { isDue, useAnswers } from './answers';
 import { Chronicle } from './Chronicle';
 import { HeroReel } from './HeroReel';
-import { StudyMap, countWord, shelfCols } from './StudyMap';
+import { TopicMap, countWord, shelfCols, useStudyRoute, type RouteIcon } from './StudyMap';
 import { INTRO_KEY, Intro } from './intro/Intro';
 import { LandFoot, LandNav, firstReady, inPrep, isWip } from './LandNav';
-import { IconPlay } from './icons';
+import { IconCheck, IconClock, IconImage, IconPlay, IconQuiz, IconSearch, IconTree } from './icons';
+import { openCommandBar, useModKey } from './CommandBar';
 import { resumeHref, useLastPlace, usePlace, useVisited } from './progress';
 import { TopicShot } from './TopicShot';
 import { GuideButton, TourHost } from './tour/TourHost';
@@ -24,6 +25,7 @@ const viewCount = weeks.reduce((n, w) => n + w.stages.reduce((m, s) => m + s.vie
 const pad = (n: number) => String(n).padStart(2, '0');
 
 const NEWEST = 7;
+const SHELF_KEY = 'enbrioatlas:home-shelf';
 
 /** Cursor-following light on a card (CSS variables the stylesheet reads). */
 const spot = (e: PointerEvent<HTMLElement>) => {
@@ -146,6 +148,20 @@ export function Home() {
   const [replayed, setReplayed] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const ready = !intro || lifting;
+  // The topics as scenes or as the 20-second map; remembered, and the hero's link opens the map.
+  const [shelfView, setShelfView] = useState<'eszenak' | 'mapa'>('eszenak');
+  useEffect(() => {
+    try {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- read once from this browser
+      if (localStorage.getItem(SHELF_KEY) === 'mapa' || location.hash === '#mapa') setShelfView('mapa');
+    } catch {}
+  }, []);
+  const chooseView = (v: 'eszenak' | 'mapa') => {
+    setShelfView(v);
+    try {
+      localStorage.setItem(SHELF_KEY, v);
+    } catch {}
+  };
   useReveal(root, true);
 
   const replay = () => {
@@ -185,7 +201,7 @@ export function Home() {
           <div className="hero-cta rv">
             <ContinueCta />
             <ReviewCta />
-            <Link className="link-arrow" href="#mapa">
+            <Link className="link-arrow" href="#gaiak" onClick={() => chooseView('mapa')}>
               Gai osoa 20 segundotan <span aria-hidden>↓</span>
             </Link>
           </div>
@@ -213,6 +229,7 @@ export function Home() {
               <dd className="is-word">euskara</dd>
             </div>
           </dl>
+          <HeroSearch />
         </div>
         <div className="hero-visual rv">
           <HeroReel playing={ready} />
@@ -226,34 +243,31 @@ export function Home() {
               Gaiak · aukeratu nondik hasi
             </p>
             <h2>{countWord(weeks.length)} gai, garapenaren ordenan</h2>
+            <p className="shelf-note">{shelfView === 'mapa' ? 'Gai bakoitza urrats-kate labur batean: hau buruan izanda, xehetasun bakoitzak badu bere lekua.' : 'Etapatan banatuta, bakoitza bere eszenarekin. Pasatu sagua gainetik eta ikusiko duzu mugitzen.'}</p>
           </div>
-          <p className="shelf-note">Etapatan banatuta, eta bakoitza bere eszenarekin. Pasatu sagua gainetik eta ikusiko duzu mugitzen. Ikusitako etapak nabigatzaile honetan gordetzen dira.</p>
+          <div className="seg" role="tablist" aria-label="Gaien ikuspegia">
+            <button type="button" role="tab" aria-selected={shelfView === 'eszenak'} className={shelfView === 'eszenak' ? 'is-on' : ''} onClick={() => chooseView('eszenak')}>
+              Eszenak
+            </button>
+            <button type="button" role="tab" aria-selected={shelfView === 'mapa'} className={shelfView === 'mapa' ? 'is-on' : ''} onClick={() => chooseView('mapa')}>
+              Mapa · 20 s
+            </button>
+          </div>
         </header>
-        <ol className="lp-cards" data-tour="gaiak" style={{ '--cols': shelfCols(weeks.length) } as CSSProperties}>
-          {weeks.map((w, i) => (
-            <TopicCard key={w.week} w={w} i={i} />
-          ))}
-        </ol>
-        <div className="keys" aria-label="Laster-teklak" data-rv>
-          <span>
-            <kbd>Zuriunea</kbd> erreproduzitu / pausatu
-          </span>
-          <span>
-            <kbd>←</kbd> <kbd>→</kbd> urratsak
-          </span>
-          <span>
-            <kbd>Shift</kbd> <kbd>→</kbd> hurrengo etapa
-          </span>
-          <span>
-            <kbd>1</kbd>–<kbd>9</kbd> ikuspegiak
-          </span>
-          <span>
-            <kbd>L</kbd> izenak
-          </span>
+        <div id="mapa" className="shelf-body" key={shelfView}>
+          {shelfView === 'mapa' ? (
+            <TopicMap />
+          ) : (
+            <ol className="lp-cards" data-tour="gaiak" style={{ '--cols': shelfCols(weeks.length) } as CSSProperties}>
+              {weeks.map((w, i) => (
+                <TopicCard key={w.week} w={w} i={i} />
+              ))}
+            </ol>
+          )}
         </div>
       </section>
 
-      <StudyMap />
+      <StudyRoute />
 
       <Chronicle />
 
@@ -263,5 +277,66 @@ export function Home() {
         </button>
       </LandFoot>
     </div>
+  );
+}
+
+/** A quiet invitation to the command bar: everything is one search away. */
+function HeroSearch() {
+  const mod = useModKey();
+  return (
+    <button type="button" className="lp-search rv" onClick={openCommandBar}>
+      <IconSearch size={16} />
+      <span>Bilatu egitura, etapa edo gai bat…</span>
+      <span className="lp-search-k" aria-hidden>
+        <kbd>{mod}</kbd>
+        <kbd>K</kbd>
+      </span>
+    </button>
+  );
+}
+
+const ROUTE_ICON: Record<RouteIcon, ReactNode> = {
+  play: <IconPlay size={16} />,
+  clock: <IconClock size={18} />,
+  tree: <IconTree size={18} />,
+  image: <IconImage size={18} />,
+  quiz: <IconQuiz size={18} />,
+  check: <IconCheck size={18} />,
+};
+
+/** How to study here: six steps as cards, each with where you are on it. */
+function StudyRoute() {
+  const route = useStudyRoute();
+  return (
+    <section id="ibilbidea" className="land-section route" aria-labelledby="route-h">
+      <header className="section-head" data-rv>
+        <p className="kicker">Ikasteko ibilbidea</p>
+        <h2 id="route-h">Apunteetatik simulagailura</h2>
+        <p>Ikusteak ez du esan nahi jakitea. Sei pauso, eta bakoitzean zure aurrerapena.</p>
+      </header>
+      <ol className="route-grid">
+        {route.map((r, k) => (
+          <li key={r.n} data-rv style={{ '--d': `${(k % 3) * 70}ms` } as CSSProperties}>
+            <Link href={r.href} className="route-card" onPointerMove={spot}>
+              <span className="route-top">
+                <span className="route-icon" aria-hidden>
+                  {ROUTE_ICON[r.icon]}
+                </span>
+                <span className="route-n">{r.n.padStart(2, '0')}</span>
+              </span>
+              <b>{r.title}</b>
+              <span className="route-text">{r.text}</span>
+              <span className="route-foot">
+                <span className="route-state">{r.state}</span>
+                {/* Every card keeps the meter's row, so the feet of a row line up. */}
+                <span className={`route-meter${r.part === undefined ? ' is-none' : ''}`} aria-hidden>
+                  <i style={{ width: `${r.part === undefined ? 0 : Math.max(r.part > 0 ? 3 : 0, Math.round(r.part * 100))}%` }} />
+                </span>
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ol>
+    </section>
   );
 }

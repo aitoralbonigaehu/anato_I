@@ -2,11 +2,11 @@ import { createElement, type ComponentProps } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { Player } from '@/components/shell/Player';
-import { StudyMap } from '@/components/shell/StudyMap';
+import { TopicMap } from '@/components/shell/StudyMap';
 import { getWeek } from '@/content/registry';
 
 describe('whole-topic cardiovascular study maps', () => {
-  const html = renderToStaticMarkup(createElement(StudyMap));
+  const html = renderToStaticMarkup(createElement(TopicMap));
   const card = (week: number) => html.match(new RegExp(`<a[^>]*href="/astea/${week}"[^>]*>([\\s\\S]*?)</a>`))?.[1] ?? '';
 
   it('covers formation, looping and derivatives instead of stopping at tube formation', () => {

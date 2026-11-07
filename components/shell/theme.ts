@@ -83,3 +83,5 @@ export function useTheme(): { pref: ThemePref; theme: Theme } {
 }
 
 export const THEME_LABEL: Record<ThemePref, string> = { system: 'Gailuaren arabera', light: 'Argia', dark: 'Iluna' };
+/** Short names for the three-way switch. */
+export const THEME_SHORT: Record<ThemePref, string> = { system: 'Gailua', light: 'Argia', dark: 'Iluna' };

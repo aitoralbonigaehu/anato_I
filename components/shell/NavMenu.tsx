@@ -41,6 +41,20 @@ export function StudyMenu({ current }: { current?: string }) {
       </button>
       {open && (
         <div className="nav-menu-panel" role="menu">
+          {/* On a phone the bar keeps only this menu: the site links and the simulator come first here. */}
+          <Link role="menuitem" href="/astea/1" className="nav-menu-phone is-go" onClick={() => setOpen(false)}>
+            <b>Ireki simulagailua</b>
+            <small>etapak, urratsak eta egiturak</small>
+          </Link>
+          <Link role="menuitem" href="/kronologia" className="nav-menu-phone" aria-current={current === 'kronologia' ? 'page' : undefined} onClick={() => setOpen(false)}>
+            <b>Kronologia</b>
+            <small>zer dago egun bakoitzean?</small>
+          </Link>
+          <Link role="menuitem" href="/#gaiak" className="nav-menu-phone" onClick={() => setOpen(false)}>
+            <b>Gaiak</b>
+            <small>gai guztiak, garapenaren ordenan</small>
+          </Link>
+          <hr className="nav-menu-phone" />
           {ITEMS.map((i) => (
             <Link key={i.id} role="menuitem" href={i.href} className={i.sub ? 'is-sub' : undefined} aria-current={i.id === current ? 'page' : undefined} onClick={() => setOpen(false)}>
               <b>{i.sub ? <span aria-hidden>↳ </span> : null}{i.label}</b>

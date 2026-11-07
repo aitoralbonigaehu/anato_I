@@ -1,7 +1,7 @@
 'use client';
 
 import { IconMonitor, IconMoon, IconSun } from './icons';
-import { THEME_LABEL, nextThemePref, setThemePref, useTheme } from './theme';
+import { THEME_LABEL, THEME_SHORT, nextThemePref, setThemePref, useTheme } from './theme';
 
 /** The look, one key: follow the device → light → dark. Its icon says what is set now. */
 export function ThemeKey({ className = 'icon-btn' }: { className?: string }) {
@@ -36,7 +36,7 @@ export function ThemeSwitch() {
       {opts.map((o) => (
         <button key={o.v} type="button" role="radio" aria-checked={pref === o.v} className={pref === o.v ? 'is-on' : ''} onClick={() => setThemePref(o.v)} title={THEME_LABEL[o.v]}>
           {o.icon}
-          <span>{THEME_LABEL[o.v]}</span>
+          <span>{THEME_SHORT[o.v]}</span>
         </button>
       ))}
     </div>
