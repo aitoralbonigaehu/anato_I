@@ -156,7 +156,7 @@ export function TopicList({ current, stageId, visited, onPick }: { current: Week
                       <span className="tsw-item-body">
                         <b>{w.title}</b>
                         <span className="tsw-item-meta">
-                          {now ? <em className="is-here">Hemen · {now.title}</em> : prep ? <em className="is-prep">Prestatzen</em> : span.long}
+                          {now ? <em className="is-here">Hemen zaude · {now.title}</em> : prep ? <em className="is-prep">Prestatzen</em> : span.long}
                         </span>
                       </span>
                       {!wip && (
