@@ -43,7 +43,7 @@ export function useModKey() {
 }
 
 /**
- * ⌘K / Ctrl+K (or "/"): one place to find everything — topics, stages, structures, pages — and to do
+ * ⌘K / Ctrl+K: one place to find everything — topics, stages, structures, pages — and to do
  * anything (ask Kimu, open the notes, change the look), each with its own shortcut shown.
  */
 export function CommandBar() {
@@ -67,7 +67,7 @@ export function CommandBar() {
     setOpen(true);
   }, []);
 
-  // Keys: ⌘K / Ctrl+K anywhere (also while typing: it is the explicit ask), "/" when not typing.
+  // ⌘K / Ctrl+K anywhere, also while typing: it is an explicit ask ("/" stays the pages' own search key).
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null;
@@ -76,9 +76,6 @@ export function CommandBar() {
         e.preventDefault();
         if (open) setOpen(false);
         else show();
-      } else if (e.key === '/' && !typing && !e.metaKey && !e.ctrlKey && !open) {
-        e.preventDefault();
-        show();
       }
     };
     window.addEventListener('keydown', key);
