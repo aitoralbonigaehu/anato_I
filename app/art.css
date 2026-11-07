@@ -1290,3 +1290,55 @@ span.tsw-ring.is-done {
   font: 650 15px / 1 var(--font-ui) !important;
   font-variant-numeric: tabular-nums;
 }
+
+/* ——— One numbering language everywhere: chapter numerals in the topic's ink, no boxes ——— */
+.ik-topics a b,
+.ik-topics a.is-on b,
+.mg-nav button[style*='--th'] b,
+.mg-nav button[style*='--th'].is-on b {
+  min-width: 20px;
+  width: auto;
+  height: auto;
+  padding: 0;
+  background: none !important;
+  box-shadow: none !important;
+  color: var(--topic-ink) !important;
+  font: 650 14px / 1 var(--font-ui) !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.mg-nav button[style*='--th'].is-on {
+  position: relative;
+  border-color: transparent !important;
+  background: var(--topic-soft) !important;
+}
+
+.mg-nav button[style*='--th'].is-on::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--topic);
+}
+
+/* Home topic cards: a ring and a word instead of a row of ticks and a fraction. */
+.lp-card-prog {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lp-card-prog small {
+  color: var(--text-4);
+  font: 500 12px / 1 var(--font-ui);
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-card-in .lp-card-prog small {
+  font-family: var(--font-ui);
+  letter-spacing: 0;
+}

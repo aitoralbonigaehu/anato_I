@@ -1892,3 +1892,248 @@
   font-size: 22px;
   letter-spacing: -0.025em;
 }
+
+/* ————————————————————————————————————————————————————————————————
+   Atlas tables: one sheet, rows read across; the origin's colour runs as a thin rule down the row's edge,
+   the column heads are quiet, numbers are set like page references, the way to the scheme appears
+   where the eye is (on the row under the pointer; always on touch).
+   ———————————————————————————————————————————————————————————————— */
+.table {
+  border: 0;
+  border-radius: var(--r-xl);
+  background: var(--surface);
+  box-shadow: var(--rim), var(--highlight), var(--shadow-md);
+  font-size: 14px;
+}
+
+:root[data-theme='light'] .table {
+  background: #fff;
+}
+
+.table th,
+.table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding-block: 12px 10px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line-2);
+  font: 600 12px / 1.2 var(--font-ui);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-3);
+}
+
+:root[data-theme='light'] .table thead th {
+  background: #fff;
+}
+
+.table tbody th {
+  position: relative;
+  padding-left: 22px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+/* The origin's colour: a thin rule down the row's edge, not a little square. */
+.table tbody th i {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  height: auto;
+  margin: 0;
+  border-radius: 0 3px 3px 0;
+}
+
+.table tbody td {
+  background: transparent;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+.table tbody tr {
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+
+.table tbody tr:hover {
+  background: color-mix(in oklab, var(--topic, var(--signal)) 5%, transparent);
+}
+
+.table td small {
+  margin-top: 6px;
+  padding-left: 10px;
+  border-left: 2px solid var(--line-2);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-3);
+}
+
+/* The way to the scheme: a quiet arrow key, shown on the row the eye is on. */
+.table .linkBtn {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: var(--r-pill);
+  background: var(--topic-soft, var(--signal-soft));
+  color: var(--topic-ink, var(--signal));
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.table .linkBtn::after {
+  content: ' →';
+}
+
+@media (hover: hover) {
+  .table .linkBtn {
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+  }
+  .table tbody tr:hover .linkBtn,
+  .table .linkBtn:focus-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Test mode: the hidden answer is a soft blurred bar to tap, not a dashed box with a question mark. */
+.hiddenCell {
+  position: relative;
+  min-width: 120px;
+  height: 22px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: repeating-linear-gradient(90deg, rgb(var(--fg-rgb) / 0.09) 0 10px, rgb(var(--fg-rgb) / 0.05) 10px 20px);
+  color: transparent;
+  overflow: hidden;
+}
+
+.hiddenCell::after {
+  content: 'Erakutsi';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--text-3);
+  font: 600 11px / 1 var(--font-ui);
+  letter-spacing: 0.02em;
+}
+
+.hiddenCell:hover {
+  background: var(--topic-soft, var(--signal-soft));
+}
+
+.hiddenCell:hover::after {
+  color: var(--topic-ink, var(--signal));
+}
+
+.table td.both small {
+  padding-left: 0;
+  border-left: 0;
+}
+
+/* ——— A class page reads like a book: a contents line, numbered steps, chapter numerals (no boxes) ——— */
+.subnav {
+  gap: 2px 4px;
+  padding: 10px 0 0;
+  margin-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.subnav a {
+  height: 32px;
+  padding: 0 10px 0 6px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--text-2);
+  font-weight: 500;
+  transition: background-color var(--dur-1), color var(--dur-1);
+}
+
+.subnav a:hover {
+  border: 0;
+  color: var(--text);
+  background: rgb(var(--fg-rgb) / 0.05);
+}
+
+.subnav a b {
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  background: none;
+  color: var(--topic-ink, var(--signal));
+  font: 650 13px / 1 var(--font-ui);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Section numbers: the chapter numeral, set large, no box. */
+.h3 > b {
+  width: auto;
+  height: auto;
+  background: none;
+  box-shadow: none;
+  color: var(--topic-ink, var(--signal));
+  font: 650 22px / 1 var(--font-ui);
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.h3 > b::after {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 18px;
+  margin-left: 12px;
+  vertical-align: -3px;
+  background: var(--line-2);
+}
+
+/* How to use the room: four numbered steps on one rule, not four dashed boxes. */
+.howto {
+  gap: 0 24px;
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.howto li {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.howto li::before {
+  content: counter(how);
+  display: block;
+  margin-bottom: 6px;
+  color: var(--topic-ink, var(--signal));
+  font: 650 18px / 1 var(--font-ui);
+  letter-spacing: -0.03em;
+}
+
+.h3 {
+  align-items: baseline;
+  gap: 12px;
+}
+
+.h3 > b {
+  display: inline-flex;
+  align-items: baseline;
+  font-size: 24px;
+}

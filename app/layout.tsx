@@ -8,6 +8,7 @@ import './art.css';
 import { Kimu } from '@/components/kimu/Kimu';
 import { KimuCheer } from '@/components/kimu/KimuCheer';
 import { CommandBar } from '@/components/shell/CommandBar';
+import { ThemeSync } from '@/components/shell/theme';
 import { themeScript } from '@/components/shell/theme-script';
 
 const sans = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Kimu />
         <KimuCheer />
         <CommandBar />
+        <ThemeSync />
       </body>
     </html>
   );

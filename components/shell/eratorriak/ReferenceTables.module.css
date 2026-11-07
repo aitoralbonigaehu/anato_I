@@ -74,3 +74,36 @@
   .table thead th { font-size: 13px; }
   .table tbody th { border-left-width: 3px; }
 }
+
+/* ——— Atlas sheets: no box around every cell; rows on hairlines, the level as a rule and a weight ——— */
+.table { border-collapse: collapse; border-spacing: 0; font-size: 14.5px; }
+.table th, .table td { border-radius: 0; padding: 12px 16px; }
+.table thead th { background: transparent; border: 0; border-bottom: 1px solid var(--line-2); color: var(--text-3); font-size: 12px; font-weight: 600; padding-block: 0 10px; }
+.table tbody th { position: relative; border: 0; border-bottom: 1px solid var(--line); padding-left: 22px; background: transparent; color: var(--text); font-weight: 550; }
+.table tbody th::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--row-accent); }
+.table tbody td { border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--text-2); }
+.table tbody tr:last-child th, .table tbody tr:last-child td { border-bottom: 0; }
+.table tbody tr[data-level='1'] th { font-weight: 650; }
+.table tbody tr[data-level='1'] th::before { width: 4px; }
+.table tbody tr[data-level='1'] td { border-color: var(--line); color: var(--text); }
+.table tbody tr[data-level='3'] th::before { opacity: .45; }
+.table tbody tr { transition: background-color var(--dur-1) var(--ease-out); }
+.table tbody tr:hover { background: color-mix(in oklab, var(--row-accent) 6%, transparent); }
+.table tbody tr:hover td { border-color: var(--line); }
+.table tbody td small { margin-top: 6px; padding-left: 10px; border-left: 2px solid color-mix(in oklab, var(--ink-warm) 60%, transparent); color: var(--text-3); font-size: 12.5px; }
+.table tbody td small::before { content: 'Kontuz  '; color: var(--ink-warm); font-weight: 650; }
+.reveal { border: 0; border-radius: var(--r-pill); background: repeating-linear-gradient(90deg, rgb(var(--fg-rgb) / .08) 0 10px, rgb(var(--fg-rgb) / .045) 10px 20px); color: var(--text-3); justify-content: center; font-weight: 600; font-size: 12px; }
+.reveal:hover { border: 0; background: var(--signal-soft); color: var(--ink-signal); }
+.reveal[aria-expanded='true'] { border: 0; background: transparent; }
+.legend button { height: 34px; border: 1px solid var(--line); background: transparent; color: var(--text-2); font-weight: 500; }
+.legend button:hover { border-color: var(--line-2); background: rgb(var(--fg-rgb) / .04); }
+.legend button[aria-pressed='false'] { opacity: .5; }
+.ask button { border: 0; border-radius: var(--r-pill); padding: 6px 12px; }
+.ask button[aria-pressed='true'] { background: var(--inverse); color: var(--on-inverse); border: 0; }
+.sheetHead > span { color: var(--text-4); font: 600 12px/1.4 var(--font-ui); text-transform: none; letter-spacing: 0; }
+/* Arch grid: tinted cells with a top rule of their arch's colour, no gaps between them. */
+.archTable { border-collapse: separate; border-spacing: 3px; }
+.archTable tbody th { border: 0; border-radius: var(--r-sm); background: rgb(var(--fg-rgb) / .045); padding-left: 14px; }
+.archTable tbody th::before { display: none; }
+.archTable tbody td { border: 0; border-top: 2px solid var(--row-accent); border-radius: 2px 2px var(--r-sm) var(--r-sm); background: color-mix(in oklab, var(--row-accent) 7%, transparent); }
+.archTable tbody td[data-level='1'] { background: color-mix(in oklab, var(--row-accent) 12%, transparent); }

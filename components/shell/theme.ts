@@ -107,3 +107,20 @@ export function useTheme(): { pref: ThemePref; theme: Theme } {
 export const THEME_LABEL: Record<ThemePref, string> = { system: 'Gailuaren arabera', light: 'Argia', dark: 'Iluna' };
 /** Short names for the three-way switch. */
 export const THEME_SHORT: Record<ThemePref, string> = { system: 'Gailua', light: 'Argia', dark: 'Iluna' };
+
+/**
+ * Some responses (a not-found rendered on the client) skip the inline head script; this sets the look
+ * on mount whenever the page has none, so every page follows the reader's choice.
+ */
+export function ThemeSync() {
+  useSyncExternalStore(
+    subscribe,
+    () => {
+      const html = document.documentElement;
+      if (!html.dataset.theme) html.dataset.theme = resolve(readPref());
+      return html.dataset.theme;
+    },
+    () => 'dark',
+  );
+  return null;
+}

@@ -19,6 +19,7 @@ import { CountUp, useReveal } from './landing-fx';
 import './landing.css';
 import { spanOf } from '@/lib/sim/age';
 import { hueStyle } from './topicHue';
+import { Ring } from './Ring';
 
 const stageCount = weeks.reduce((n, w) => n + w.stages.filter((s) => !s.views.every((v) => v.description === 'Prestatzen')).length, 0);
 const viewCount = weeks.reduce((n, w) => n + w.stages.reduce((m, s) => m + s.views.filter((v) => v.description !== 'Prestatzen').length, 0), 0);
@@ -62,14 +63,8 @@ function TopicCard({ w, i }: { w: (typeof weeks)[number]; i: number }) {
         ) : (
           <>
             <span className="lp-card-prog" aria-label={`${done}/${w.stages.length} etapa ikusita`}>
-              <span className="toc-ticks">
-                {w.stages.map((s) => (
-                  <i key={s.id} className={visited.includes(s.id) ? 'is-on' : ''} />
-                ))}
-              </span>
-              <small>
-                {done}/{w.stages.length}
-              </small>
+              <Ring part={w.stages.length ? done / w.stages.length : 0} />
+              <small>{done > 0 ? `${done}/${w.stages.length} etapa` : `${w.stages.length} etapa`}</small>
             </span>
             <span className="lp-card-go">
               {done === 0 && !saved ? 'Hasi' : 'Jarraitu'} <span aria-hidden>→</span>

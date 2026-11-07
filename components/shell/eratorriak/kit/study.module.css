@@ -137,3 +137,8 @@
     transition: none;
   }
 }
+
+/* Page references (the notes' section numbers) set small and tabular. */
+.tableWrap table td:nth-last-child(2):not(:first-child) {
+  font-variant-numeric: tabular-nums;
+}
