@@ -1,0 +1,451 @@
+/* ————————————————————————————————————————————————————————————————
+   EnbrioAtlas — art direction
+   "A lightbox on warm paper." The scenes are jewels: deep, lit tiles that glow with their topic's own
+   colour. Around them, the page is either warm atlas paper (light) or a quiet screening room (dark).
+   Every topic has a hue (components/shell/topicHue.ts → --th); colours are derived here per theme.
+   ———————————————————————————————————————————————————————————————— */
+
+/* The hue is animatable, so a page glides from one topic's colour to the next. */
+@property --th {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 40;
+}
+
+:root,
+.theme-stage,
+.viewport,
+.intro,
+.lp-hero,
+[style*='--th'] {
+  --topic: oklch(0.76 0.12 var(--th));
+  --topic-strong: oklch(0.82 0.13 var(--th));
+  --topic-soft: oklch(0.76 0.12 var(--th) / 0.14);
+  --topic-line: oklch(0.76 0.12 var(--th) / 0.3);
+  --topic-glow: oklch(0.62 0.17 var(--th) / 0.38);
+  --topic-ink: oklch(0.82 0.1 var(--th));
+}
+
+:root[data-theme='light'],
+:root[data-theme='light'] .lp-hero,
+:root[data-theme='light'] [style*='--th']:not(.theme-stage *) {
+  --topic: oklch(0.58 0.14 var(--th));
+  --topic-strong: oklch(0.5 0.15 var(--th));
+  --topic-soft: oklch(0.62 0.14 var(--th) / 0.11);
+  --topic-line: oklch(0.58 0.14 var(--th) / 0.28);
+  --topic-glow: oklch(0.6 0.16 var(--th) / 0.32);
+  --topic-ink: oklch(0.44 0.12 var(--th));
+}
+
+/* ——— Paper and room ——— */
+
+/* A whisper of grain, so large grounds feel like a material, not a fill. */
+.landing::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+:root[data-theme='light'] .landing::after {
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+}
+
+/* Light: warm atlas paper — a soft top light, a hint of vellum toward the edges. */
+:root[data-theme='light'] .landing {
+  background:
+    radial-gradient(1400px 640px at 50% -260px, rgb(255 255 255 / 0.95), transparent 70%),
+    radial-gradient(1200px 900px at 50% 120%, rgb(236 226 210 / 0.55), transparent 70%),
+    linear-gradient(180deg, #f8f6f1, #f4f1ea);
+}
+
+:root[data-theme='light'] body {
+  background: #f6f3ed;
+}
+
+/* ——— Display type: ink with depth ——— */
+.lp-h1 {
+  font-size: clamp(48px, 6.2vw, 84px);
+  line-height: 0.98;
+  letter-spacing: -0.052em;
+}
+
+.lp-h1 .lp-line > span,
+.section-head h2,
+.lp-shelf-head h2,
+.landing .ln-hero h1,
+.landing .lab-hero h1,
+.landing .tl-hero h1,
+.landing main > header:first-child h1 {
+  background: linear-gradient(180deg, var(--text) 40%, color-mix(in oklab, var(--text) 72%, var(--bg)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+:root[data-theme='light'] .lp-h1 .lp-line > span,
+:root[data-theme='light'] .section-head h2,
+:root[data-theme='light'] .lp-shelf-head h2,
+:root[data-theme='light'] .landing .ln-hero h1,
+:root[data-theme='light'] .landing .lab-hero h1,
+:root[data-theme='light'] .landing .tl-hero h1,
+:root[data-theme='light'] .landing main > header:first-child h1 {
+  background: linear-gradient(180deg, #1b1610 30%, #4a3a2c);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-lead {
+  font-size: 17px;
+  line-height: 1.62;
+  color: var(--text-2);
+}
+
+/* ——— The hero: the film is a lit jewel, its light takes the colour of the topic on screen ——— */
+.lp-reel {
+  transition: --th 1.4s var(--ease-in-out);
+}
+
+.lp-reel::before {
+  content: '';
+  position: absolute;
+  inset: 8% 6% -10%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--topic-glow), transparent);
+  filter: blur(40px);
+  opacity: 0.9;
+  pointer-events: none;
+  animation: reel-breathe 9s var(--ease-in-out) infinite alternate;
+}
+
+@keyframes reel-breathe {
+  from {
+    transform: scale(0.94);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+.lp-reel-tilt {
+  border: 0;
+  border-radius: 26px;
+  background:
+    radial-gradient(90% 80% at var(--gx) var(--gy), oklch(0.6 0.1 var(--th) / 0.12), transparent 60%),
+    radial-gradient(120% 100% at 50% 0%, #17151a, #0b0b0d 70%);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.09),
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 2px 4px rgb(0 0 0 / 0.3),
+    0 40px 90px -40px var(--topic-glow),
+    0 30px 60px -30px rgb(0 0 0 / 0.75);
+}
+
+:root[data-theme='light'] .lp-reel-tilt {
+  box-shadow:
+    0 0 0 1px rgb(20 14 8 / 0.9),
+    inset 0 1px 0 rgb(255 255 255 / 0.1),
+    0 2px 4px rgb(40 30 20 / 0.12),
+    0 24px 40px -18px rgb(40 30 20 / 0.28),
+    0 60px 120px -40px var(--topic-glow);
+}
+
+/* The viewfinder corners and HUD take the topic's colour, faintly. */
+.lp-reel-tilt .vf {
+  border-color: var(--topic-line);
+}
+
+.lp-reel-day::before {
+  background: var(--topic) !important;
+}
+
+/* The chapters under the film: thin rules that fill in the topic's colour. */
+.lp-reel-strip button i span {
+  background: var(--topic) !important;
+}
+
+.lp-reel-strip button.is-on small {
+  color: var(--topic-ink);
+}
+
+/* The aurora follows the film's topic. */
+.lp-hero:has(.lp-reel) .lp-aurora {
+  background:
+    radial-gradient(40% 48% at 76% 42%, oklch(0.7 0.14 var(--th) / 0.16), transparent 70%),
+    radial-gradient(30% 40% at 58% 78%, oklch(0.7 0.1 calc(var(--th) + 60) / 0.1), transparent 72%),
+    radial-gradient(30% 40% at 8% 6%, oklch(0.8 0.08 70 / 0.08), transparent 70%);
+}
+
+:root[data-theme='light'] .lp-hero:has(.lp-reel) .lp-aurora {
+  background:
+    radial-gradient(40% 48% at 76% 42%, oklch(0.78 0.1 var(--th) / 0.32), transparent 70%),
+    radial-gradient(30% 40% at 58% 80%, oklch(0.82 0.07 calc(var(--th) + 60) / 0.22), transparent 72%),
+    radial-gradient(30% 40% at 6% 4%, oklch(0.92 0.05 80 / 0.5), transparent 70%);
+}
+
+.lp-hero {
+  --th: 295;
+}
+
+/* ——— Topic cards: each glows in its own colour ——— */
+.lp-card-in {
+  --glow-o: 0.55;
+}
+
+.lp-card-fig {
+  background: radial-gradient(120% 110% at 50% 0%, #17151a, #0b0b0d 75%) !important;
+}
+
+/* Light from below the scene, in the topic's hue. */
+.lp-card-fig::before {
+  content: '';
+  position: absolute;
+  inset: auto -10% -40% -10%;
+  height: 80%;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(closest-side, oklch(0.62 0.17 var(--th) / 0.55), transparent);
+  opacity: var(--glow-o);
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+.lp-card-in:hover {
+  --glow-o: 1;
+}
+
+.lp-card-n {
+  background: color-mix(in oklab, var(--topic) 22%, rgb(15 15 17 / 0.7)) !important;
+  color: var(--topic-strong) !important;
+  box-shadow: inset 0 0 0 1px oklch(0.8 0.1 var(--th) / 0.3);
+}
+
+.lp-card-days {
+  color: var(--topic-ink) !important;
+}
+
+/* The topic's thread: a short coloured rule before the days. */
+.lp-card-days::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 2px;
+  margin-right: 8px;
+  vertical-align: middle;
+  border-radius: 2px;
+  background: var(--topic);
+}
+
+.lp-card-prog .toc-ticks i.is-on {
+  background: var(--topic) !important;
+}
+
+.lp-card-go {
+  color: var(--text);
+}
+
+.lp-card-in:hover .lp-card-go {
+  color: var(--topic-ink);
+}
+
+/* Light: white cards on paper, a coloured shadow pooling under each scene. */
+:root[data-theme='light'] .lp-card-in {
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(40 30 20 / 0.07),
+    0 1px 2px rgb(60 40 20 / 0.05),
+    0 14px 30px -16px rgb(60 40 20 / 0.18);
+}
+
+:root[data-theme='light'] .lp-card-in:hover {
+  box-shadow:
+    0 0 0 1px rgb(40 30 20 / 0.1),
+    0 2px 4px rgb(60 40 20 / 0.06),
+    0 26px 50px -22px var(--topic-glow),
+    0 20px 40px -24px rgb(60 40 20 / 0.25);
+}
+
+/* ——— The 20-second map: each topic's chain in its colour ——— */
+.map-card .map-n {
+  color: var(--topic-ink);
+}
+
+.map-card .map-chain i::before {
+  background: var(--topic) !important;
+  color: var(--topic) !important;
+}
+
+.map-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.map-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--topic), transparent 70%);
+  opacity: 0.7;
+}
+
+/* ——— Topic badges everywhere: the switcher, the command bar, the class pages ——— */
+.tsw-n,
+.tsw-item-n,
+.cmdk-week {
+  background: var(--topic-soft) !important;
+  color: var(--topic-strong) !important;
+  box-shadow: inset 0 0 0 1px var(--topic-line);
+}
+
+:root[data-theme='light'] .tsw-n,
+:root[data-theme='light'] .tsw-item-n,
+:root[data-theme='light'] .cmdk-week {
+  color: var(--topic-strong) !important;
+}
+
+.ik-topics a b {
+  background: var(--topic-soft);
+  color: var(--topic-ink);
+}
+
+.ik-topics a.is-on b {
+  background: var(--topic) !important;
+  color: #fff !important;
+}
+
+/* ——— The simulator takes its topic's light ——— */
+.app .stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.app .stage::before {
+  content: '';
+  position: absolute;
+  inset: 10% 8% 30%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(closest-side, var(--topic-glow), transparent);
+  filter: blur(60px);
+  opacity: 0.35;
+}
+
+:root[data-theme='light'] .app .stage::before {
+  opacity: 0.55;
+}
+
+:root[data-theme='light'] .app {
+  background: linear-gradient(180deg, #f8f6f1, #f3efe8);
+}
+
+:root[data-theme='light'] .app .viewport {
+  box-shadow:
+    0 0 0 1px rgb(20 14 8 / 0.85),
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 2px 4px rgb(40 30 20 / 0.12),
+    0 28px 56px -28px rgb(40 30 20 / 0.4),
+    0 50px 100px -50px var(--topic-glow);
+}
+
+/* The playhead and the current step take the topic's colour. */
+.dock .transport > .scrub .scrub-head {
+  background: radial-gradient(circle at 35% 30%, oklch(0.86 0.1 var(--th)), var(--topic) 70%);
+  box-shadow:
+    0 0 0 3px var(--frame),
+    0 0 0 4px var(--topic-line),
+    0 2px 8px var(--topic-glow);
+}
+
+/* ——— Light mode: ink, paper and a little warmth everywhere ——— */
+:root[data-theme='light'] .kicker,
+:root[data-theme='light'] .eyebrow {
+  color: #8a5a3a;
+}
+
+:root[data-theme='light'] .lp-stats dd:not(.is-word) {
+  background: linear-gradient(180deg, #1b1610, #5a4632);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+:root[data-theme='light'] .route-card,
+:root[data-theme='light'] .map-card,
+:root[data-theme='light'] .tl-col {
+  background: #fff;
+}
+
+:root[data-theme='light'] .site-foot {
+  background: linear-gradient(180deg, rgb(236 228 214 / 0.5), rgb(236 228 214 / 0.15));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-reel::before {
+    animation: none;
+  }
+  .lp-reel {
+    transition: none;
+  }
+}
+
+/* ——— Stronger light under the hero film on paper; the active chapter in the topic's ink ——— */
+:root[data-theme='light'] .lp-reel::before {
+  inset: 2% -2% -16%;
+  background: radial-gradient(closest-side, oklch(0.72 0.15 var(--th) / 0.5), transparent);
+  filter: blur(56px);
+}
+
+.lp-reel-strip button.is-on small {
+  color: var(--topic-ink) !important;
+}
+
+/* ——— Sections come into focus as they arrive: rise, fade and sharpen ——— */
+.landing[data-armed] [data-rv]:not(.is-in) {
+  filter: blur(8px);
+}
+
+[data-rv] {
+  transition:
+    opacity 700ms var(--ease-out) var(--d, 0ms),
+    transform 800ms var(--ease-out) var(--d, 0ms),
+    filter 700ms var(--ease-out) var(--d, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing[data-armed] [data-rv]:not(.is-in) {
+    filter: none;
+  }
+}
+
+/* ——— Topic lists on the study pages: each number in its topic's colour; the current one lit ——— */
+.mg-nav button[style*='--th'] b {
+  background: var(--topic-soft);
+  color: var(--topic-ink);
+}
+
+.mg-nav button[style*='--th'].is-on {
+  border-color: var(--topic-line);
+  background: var(--topic-soft);
+}
+
+.mg-nav button[style*='--th'].is-on b {
+  background: var(--topic);
+  color: #fff;
+}
+
+/* A class page wears its topic: the eyebrow and the section numbers. */
+.ik-page .ik-room .eyebrow,
+.ik-page .ik-room .kicker {
+  color: var(--topic-ink);
+}

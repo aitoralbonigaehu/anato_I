@@ -13,6 +13,7 @@ import { Topic10Study } from './eratorriak/Topic10';
 import { Topic11Study } from './eratorriak/Topic11';
 import { Topic12Study } from './eratorriak/Topic12';
 import { Topic13Study } from './eratorriak/Topic13';
+import { hueStyle } from './topicHue';
 
 const ROOMS: Record<number, () => ReactNode> = {
   7: () => <Topic7Study />,
@@ -34,14 +35,14 @@ export function IkasgelaPage({ week }: { week: number }) {
     if (id) requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }));
   }, []);
   return (
-    <div className="landing ln-page ik-page">
+    <div className="landing ln-page ik-page" style={hueStyle(week)}>
       <LandNav current="ikasgela" />
       <header className="ik-head">
         <div className="ik-title">
           <h1>Ikasgelak</h1>
           <nav className="ik-topics" aria-label="Gaiak">
             {ROOM_WEEKS.map((w) => (
-              <Link key={w} href={`/ikasgela/${w}`} className={w === week ? 'is-on' : undefined} aria-current={w === week ? 'page' : undefined}>
+              <Link key={w} href={`/ikasgela/${w}`} style={hueStyle(w)} className={w === week ? 'is-on' : undefined} aria-current={w === week ? 'page' : undefined}>
                 <b>{w}</b>
                 {nameOf(w)}
               </Link>

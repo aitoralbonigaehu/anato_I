@@ -10,6 +10,7 @@ import { ReferenceTables, TABLE_TOPICS } from './eratorriak/ReferenceTables';
 import { hasRoom } from './eratorriak/roomWeeks';
 import { LearningMaps } from './eratorriak/LearningMaps';
 import { GridSchemes, hasGridSchemes } from './eratorriak/GridSchemes';
+import { hueStyle } from './topicHue';
 
 /** A topic tab (week 0 = the topics 1–6 germ-layer trees), the arch-systems tab, or one origin followed across topics. */
 type Mode = { week: number; part?: Part; source?: undefined; arch?: undefined } | { source: string; week?: undefined; part?: undefined; arch?: undefined } | { arch: true; week?: undefined; part?: undefined; source?: undefined };
@@ -398,7 +399,7 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
             Ernetze orriak
           </button>
           {WEEKS.map((week) => (
-            <button key={week} type="button" className={mode.week === week ? 'is-on' : undefined} aria-current={mode.week === week ? 'page' : undefined} onClick={() => pick({ week })}>
+            <button key={week} type="button" style={hueStyle(week)} className={mode.week === week ? 'is-on' : undefined} aria-current={mode.week === week ? 'page' : undefined} onClick={() => pick({ week })}>
               <b>{week}</b>
               {nameOf(week)}
             </button>

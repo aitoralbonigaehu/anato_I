@@ -18,6 +18,7 @@ import { GuideButton, TourHost } from './tour/TourHost';
 import { CountUp, useReveal } from './landing-fx';
 import './landing.css';
 import { spanOf } from '@/lib/sim/age';
+import { hueStyle } from './topicHue';
 
 const stageCount = weeks.reduce((n, w) => n + w.stages.filter((s) => !s.views.every((v) => v.description === 'Prestatzen')).length, 0);
 const viewCount = weeks.reduce((n, w) => n + w.stages.reduce((m, s) => m + s.views.filter((v) => v.description !== 'Prestatzen').length, 0), 0);
@@ -78,7 +79,7 @@ function TopicCard({ w, i }: { w: (typeof weeks)[number]; i: number }) {
       </span>
     </>
   );
-  const style = { '--d': `${(i % 4) * 80}ms` } as CSSProperties;
+  const style = hueStyle(w.week, { '--d': `${(i % 4) * 80}ms` } as CSSProperties);
   return (
     <li className={`lp-card${wip ? ' is-wip' : ''}`} data-rv style={style}>
       {wip ? (

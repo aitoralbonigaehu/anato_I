@@ -7,6 +7,7 @@ import { SceneContext } from '@/components/kit/context';
 import { getWeek } from '@/content/registry';
 import type { SceneComponent } from '@/lib/sim/types';
 import { QUIET_CTX } from './HeroFold';
+import { hueStyle } from './topicHue';
 
 /**
  * The simulator's own scenes, played back to back as a showreel: what the app does, shown rather than
@@ -153,7 +154,7 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
   const fadeIn = ease(f.fade);
   // Day counter: the span of the stage, as a clock that advances with the scene.
   return (
-    <figure className="lp-reel" ref={box} onPointerMove={tilt} onPointerLeave={untilt}>
+    <figure className="lp-reel" ref={box} onPointerMove={tilt} onPointerLeave={untilt} style={hueStyle(cur.week)}>
       <div className="lp-reel-tilt theme-stage">
         <div className="lp-reel-glow" aria-hidden />
         <svg viewBox="0 0 1000 640" role="img" aria-label={`${cur.topic}: ${cur.title}`} className="lp-reel-svg">
@@ -191,7 +192,7 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
 
       <nav className="lp-reel-strip" aria-label="Simulagailuko eszenak">
         {REEL.map((r, k) => (
-          <button key={r.n + r.title} className={k === f.i ? 'is-on' : ''} onClick={() => go(k)} aria-current={k === f.i ? 'true' : undefined} aria-label={`${r.week}. gaia: ${r.title}`} title={`${r.week}. gaia · ${r.title}`}>
+          <button key={r.n + r.title} style={hueStyle(r.week)} className={k === f.i ? 'is-on' : ''} onClick={() => go(k)} aria-current={k === f.i ? 'true' : undefined} aria-label={`${r.week}. gaia: ${r.title}`} title={`${r.week}. gaia · ${r.title}`}>
             <i aria-hidden>
               <span style={{ transform: `scaleX(${k === f.i ? clamp(f.local / HOLD) : k < f.i ? 1 : 0})` }} />
             </i>

@@ -8,6 +8,7 @@ import type { WeekDef } from '@/lib/sim/types';
 import { inPrep, isWip } from './LandNav';
 import { useVisitedAll } from './progress';
 import { IconCheck, IconChevron } from './icons';
+import { hueStyle } from './topicHue';
 
 /** The topic sheet is two columns that read down, then across (1–5 | 6–10; 11 topics: 1–6 | 7–11). */
 const ROWS = Math.ceil(weeks.length / 2);
@@ -65,7 +66,7 @@ export function WeekNav({ current, stageId }: { current: WeekDef; stageId?: stri
   };
 
   return (
-    <div className={`tsw${open ? ' is-open' : ''}`} ref={root} data-tour="gaiak">
+    <div className={`tsw${open ? ' is-open' : ''}`} ref={root} data-tour="gaiak" style={hueStyle(current.week)}>
       <button
         ref={btn}
         className="tsw-btn"
@@ -113,6 +114,7 @@ export function TopicList({ current, stageId, visited, onPick }: { current: Week
               <li key={w.week}>
                 <Link
                   href={`/astea/${w.week}`}
+                  style={hueStyle(w.week)}
                   className={`tsw-item${on ? ' is-on' : ''}${wip ? ' is-wip' : ''}${done === w.stages.length && done > 0 ? ' is-done' : ''}`}
                   aria-current={on ? 'page' : undefined}
                   aria-label={`${w.week}. gaia: ${w.title} (${span.long})${prep ? ' · prestatzen' : ''}${wip ? '' : ` · ${done}/${w.stages.length} etapa ikusita`}`}

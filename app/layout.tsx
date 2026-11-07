@@ -4,6 +4,7 @@ import './tokens.css';
 import './globals.css';
 import './ui.css';
 import './finish.css';
+import './art.css';
 import { Kimu } from '@/components/kimu/Kimu';
 import { KimuCheer } from '@/components/kimu/KimuCheer';
 import { CommandBar } from '@/components/shell/CommandBar';

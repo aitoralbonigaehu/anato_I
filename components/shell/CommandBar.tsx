@@ -6,6 +6,7 @@ import { openKimu } from '@/components/kimu/store';
 import { ACTIONS, GROUP_LABEL, PAGES, buildIndex, search, type Command, type CommandGroup } from './command-index';
 import { IconCell, IconHistory, IconPage, IconReturn, IconSearch, IconSpark, IconStage } from './icons';
 import { setThemePref, type ThemePref } from './theme';
+import { hueStyle } from './topicHue';
 
 /** Open the bar from anywhere (the bar's search key, a menu item). */
 export const OPEN_COMMAND = 'enbrioatlas:open-command';
@@ -228,7 +229,7 @@ export function CommandBar() {
                     onClick={() => run(c)}
                   >
                     <span className="cmdk-icon" aria-hidden>
-                      {c.week && origin !== 'ekintzak' && origin !== 'orriak' ? <b className="cmdk-week">{c.week}</b> : ICON[origin]}
+                      {c.week && origin !== 'ekintzak' && origin !== 'orriak' ? <b className="cmdk-week" style={hueStyle(c.week)}>{c.week}</b> : ICON[origin]}
                     </span>
                     <span className="cmdk-text">
                       <span className="cmdk-title">{c.title}</span>

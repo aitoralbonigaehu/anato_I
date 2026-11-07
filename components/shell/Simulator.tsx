@@ -62,6 +62,7 @@ import { useKlasea, type ClassDriver, type ClassLink } from '@/components/klasea
 import { hasRoom } from './eratorriak/roomWeeks';
 import { RUN_COMMAND, SearchKey } from './CommandBar';
 import { ThemeKey } from './ThemeKey';
+import { hueStyle } from './topicHue';
 
 interface Pos {
   i: number;
@@ -1778,7 +1779,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
   const sceneT = intro !== null ? easeInOut(Math.min(1, intro)) : pos.t;
 
   return (
-    <div ref={appRef} className={`app${focusMode ? ' is-focus' : ''}${voice ? ' is-narrated' : ''}`}>
+    <div ref={appRef} className={`app${focusMode ? ' is-focus' : ''}${voice ? ' is-narrated' : ''}`} style={hueStyle(week.week)}>
       <header className="topbar">
         <Link href="/" className="tb-brand" title="Hasiera">
           <Wordmark size={20} />

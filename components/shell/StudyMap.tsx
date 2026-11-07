@@ -6,6 +6,7 @@ import { KEY_IDS, POOL } from '@/content/pool';
 import { weeks } from '@/content/registry';
 import { competenceLevel, isDue, useAnswers } from './answers';
 import { useVisitedAll } from './progress';
+import { hueStyle } from './topicHue';
 
 /**
  * The whole subject on one screen: one card per topic, each as a chain of steps that can be read in a
@@ -135,7 +136,7 @@ export function TopicMap() {
     <ol className="map-row" style={{ '--cols': cols } as CSSProperties}>
       {MAP.map((m, k) => (
         <li key={m.title} className={(k + 1) % cols === 0 ? 'is-row-end' : undefined} style={{ '--d': `${(k % cols) * 60}ms` } as CSSProperties}>
-          <Link href={m.href} className="map-card">
+          <Link href={m.href} className="map-card" style={hueStyle(Number(m.href.split('/').pop()) || 1)}>
             <span className="map-n">{String(k + 1).padStart(2, '0')}</span>
             <span className="map-days">{m.days}</span>
             <b>{m.title}</b>
