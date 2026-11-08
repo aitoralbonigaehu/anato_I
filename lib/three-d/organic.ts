@@ -420,6 +420,61 @@ export function wallSlab(sp: SlabSpec): { surface: Parts; cut: Parts } {
   return { surface: { mesh: fine.surface, hit: coarse.surface }, cut: { mesh: fine.cut, hit: coarse.cut } };
 }
 
+/**
+ * A flat plate: a star-shaped outline in the x–y plane (from its centroid) extruded between z0 (its front) and
+ * z1, rounded nowhere (it is a cut). The back face of a section block: the section's own tissues as a solid
+ * ground behind what stands in the block. Built once per key.
+ */
+export function plate(key: string, outline: readonly (readonly [number, number])[], z0: number, z1: number): Parts {
+  let p = plates.get(key);
+  if (!p) {
+    const build = (o: readonly (readonly [number, number])[]) => {
+      const n = o.length;
+      const cx = o.reduce((a, q) => a + q[0], 0) / n;
+      const cy = o.reduce((a, q) => a + q[1], 0) / n;
+      const pos: number[] = [];
+      const uv: number[] = [];
+      const idx: number[] = [];
+      // Front face (towards +z when z0 > z1): a fan from the centre.
+      const face = (z: number, front: boolean) => {
+        const c = pos.length / 3;
+        pos.push(cx, cy, z);
+        uv.push(0.5, 0.5);
+        o.forEach((q) => {
+          pos.push(q[0], q[1], z);
+          uv.push(0, 0);
+        });
+        for (let i = 0; i < n; i++) {
+          const a = c + 1 + i, b = c + 1 + ((i + 1) % n);
+          if (front) idx.push(c, a, b);
+          else idx.push(c, b, a);
+        }
+      };
+      const ccw = o.reduce((acc, q, i) => acc + (q[0] * o[(i + 1) % n][1] - o[(i + 1) % n][0] * q[1]), 0) > 0;
+      const towardsPlus = z0 > z1;
+      face(z0, ccw === towardsPlus);
+      face(z1, ccw !== towardsPlus);
+      // The rim: its own vertices (a sharp edge with each face).
+      const r = pos.length / 3;
+      o.forEach((q, i) => {
+        pos.push(q[0], q[1], z0, q[0], q[1], z1);
+        uv.push(i / n, 0, i / n, 1);
+      });
+      for (let i = 0; i < n; i++) {
+        const a = r + i * 2, b = a + 1, c = r + ((i + 1) % n) * 2, d = c + 1;
+        if (ccw) idx.push(a, b, c, b, d, c);
+        else idx.push(a, c, b, b, c, d);
+      }
+      return meshOf(pos, uv, idx);
+    };
+    const coarse = outline.filter((_, i) => i % 3 === 0);
+    p = { mesh: build(outline), hit: build(coarse.length >= 3 ? coarse : outline) };
+    plates.set(key, p);
+  }
+  return p;
+}
+const plates = new Map<string, Parts>();
+
 const slabs = new Map<string, { surface: Mesh; cut: Mesh }>();
 function cachedSlab(key: string, build: () => { surface: Mesh; cut: Mesh }) {
   let s = slabs.get(key);

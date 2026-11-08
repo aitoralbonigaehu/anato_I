@@ -3,6 +3,7 @@ import { curve3 } from '@/lib/three-d/mesh';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
 import { T } from '@/components/scenes/week10/common';
+import { plate, vessel, type VesselOptions } from '@/lib/three-d/organic';
 import { UC } from './uro-model';
 
 /**
@@ -65,11 +66,13 @@ const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
 const darker = (c: string) => mixHex(c, '#000000', 0.55);
 const L = (kps: readonly V3[], n = 16) => curve3(kps as V3[], n);
 const X = (s: number, p: V3): V3 => [s * p[0], p[1], p[2]];
-const grown = (line: V3[], g: number) => (g >= 0.999 ? line : line.slice(0, Math.max(2, Math.round(line.length * clamp01(g)))));
 const ss = (a: number, b: number, x: number) => {
   const u = clamp01((x - a) / (b - a));
   return u * u * (3 - 2 * u);
 };
+
+/** An ellipse's outline (for the section plate). */
+const ELLIPSE = (cx: number, cy: number, rx: number, ry: number, n = 48): [number, number][] => Array.from({ length: n }, (_, i) => [cx + rx * Math.cos((i / n) * Math.PI * 2), cy + ry * Math.sin((i / n) * Math.PI * 2)]);
 
 /** The three segments' levels (z) in the block, cranial first. */
 export const SEG_Z = [0.7, 0, -0.7] as const;
@@ -93,6 +96,12 @@ export function unitModel(pose: UnitPose, o: UnitOpts = {}) {
     if (op <= 0.01) return;
     items.push({ key, id, ...blobParts({ center: c, radii: r, rings, sides }), color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
   };
+  // An organic duct (lib/three-d/organic): a radius profile, grown by arc length with its tip leading.
+  const vess = (key: string, id: string | undefined, line: V3[], color: string, prof: VesselOptions, g = 1, op = 1, extra: Partial<Item3> = {}) => {
+    if (op <= 0.01) return;
+    const parts = vessel(line, { ref: [0, 1, 0], ...prof }, g);
+    if (parts) items.push({ key, id, ...parts, color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
+  };
   const along = (x: number, y: number): V3[] => [[x, y, ZH], [x, y, 0], [x, y, -ZH]];
   const m = clamp01(pose.mode);
   const unitColor = mixHex(UC.pro, UC.meso, m);
@@ -105,7 +114,10 @@ export function unitModel(pose: UnitPose, o: UnitOpts = {}) {
   });
   // The body wall as a see-through ring (ectoderm outside), extruded along the block.
   for (const z of [ZH, -ZH]) tube(`rim${z}`, undefined, wall.map((p) => [p[0], p[1], z]), T.ecto, 0.022, 0.3, { quiet: true, outline: false }, 6);
-  items.push({ key: 'wall', ...blobParts({ center: [0, 0.1, 0], radii: [2.2, 1.65, ZH], rings: 14, sides: 24 }), color: '#f0c9b4', deep: '#a07060', tissue: 'skin', opacity: 0.08, outline: false, quiet: true });
+  // The block's caudal cut face as a solid plate (the section as the notes draw it: the body's tissue, the coelom
+  // cavities dark in it), so what stands in the block has a ground: every duct and vessel ends on it.
+  items.push({ key: 'wall', ...plate('unit-section-v1', ELLIPSE(0, 0.1, 2.2, 1.65), -ZH, -ZH - 0.2), color: UC.wallCut, deep: UC.wallCutDeep, tissue: 'mesenchyme', opacity: 1, outline: true, quiet: true, ground: true });
+  for (const s of [-1, 1]) items.push({ key: `coelface${s}`, ...plate(`unit-coelom-v1${s}`, ELLIPSE(s * 1.05, -0.62, 0.7, 0.5), -ZH + 0.006, -ZH - 0.01), color: '#1c2233', deep: '#0b0e16', tissue: 'membrane', opacity: 1, outline: false, quiet: true, ground: true });
   tube('neural', 'hodi-neurala', along(0, 1.22), T.neural, 0.3, 0.9, { tissue: 'neural', groups: [] });
   pts['hodi-neurala'] = [0.2, 1.42, ZH];
   tube('noto', undefined, along(0, 0.78), T.noto, 0.07, 0.8, { quiet: true });
@@ -162,7 +174,9 @@ export function unitModel(pose: UnitPose, o: UnitOpts = {}) {
         const mid2 = add(at, X(s, [0.16, 0.2 * tw, -0.14 * tw]));
         const path = L([med, mid1, at, mid2, lat], 20);
         const id = m > 0.5 ? 'hodixka-mesonefrikoak' : 'hodixka-pronefrikoak';
-        tube(`tub${k}${s}`, id, grown(path.slice().reverse(), tu).reverse(), unitColor, 0.07, 1, { deep: unitDeep, groups: m > 0.5 ? [] : ['nefrotomak'] }, 10);
+        // Grown from the vesicle's lateral side towards the middle, its tip leading; once against the glomerulus its
+        // end widens into the cup that wraps it (Bowman's capsule).
+        vess(`tub${k}${s}`, id, path.slice().reverse(), unitColor, { r0: 0.075, r1: 0.066, flare: 0.35, bulb: 0.55 * (1 - ss(0.85, 1, tu)), bulbLen: 0.16, cup: 1.1 * cap, cupLen: 0.16, sides: 12, n: 24 }, tu, 1, { deep: unitDeep, groups: m > 0.5 ? [] : ['nefrotomak'] });
         // Pronephros: the medial end opens into the coelom (a little funnel); its lateral end widens and rounds.
         if (pose.open > 0.01 && m < 0.5) ball(`fun${k}${s}`, 'hodixka-pronefrikoak', add(med, X(s, [-0.04, -0.06, 0])), [0.11 * pose.open, 0.07 * pose.open, 0.11 * pose.open], unitColor, 0.9 * (1 - m), { deep: unitDeep, thin: 0.4 }, 8, 10);
         if (pose.duct < 0.5) ball(`wid${k}${s}`, id, lat, [0.11 * tu, 0.11 * tu, 0.13 * tu], unitColor, 0.95, { deep: unitDeep }, 8, 10);
@@ -181,14 +195,14 @@ export function unitModel(pose: UnitPose, o: UnitOpts = {}) {
       if (pose.glom > 0.01) {
         const g = pose.glom;
         const line = L([X(s, [0.36, 0.42, z]), X(s, [0.58, 0.3, z]), X(s, [GLOM[0] - 0.06, GLOM[1], z])], 10);
-        tube(`gbr${k}${s}`, 'glomeruluak', grown(line, g), UC.aorta, 0.04, 1, { tissue: 'vessel', groups: ['barneko-glomeruluak', 'korpuskulua'] }, 8);
+        vess(`gbr${k}${s}`, 'glomeruluak', line, UC.aorta, { r0: 0.045, r1: 0.036, flare: 0.6, sides: 8, n: 12 }, g, 1, { tissue: 'vessel', groups: ['barneko-glomeruluak', 'korpuskulua'] });
         ball(`glo${k}${s}`, 'barneko-glomeruluak', X(s, [GLOM[0], GLOM[1], z]), [0.12 * ss(0.5, 1, g), 0.12 * ss(0.5, 1, g), 0.11 * ss(0.5, 1, g)], UC.glom, 1, { tissue: 'vessel', groups: ['glomeruluak', 'korpuskulua'] }, 10, 12);
         if (k === 1 && s > 0) pts['barneko-glomeruluak'] = X(s, [GLOM[0] + 0.05, GLOM[1] + 0.05, z + 0.2]);
       }
       if (pose.extGlom > 0.01) {
         const g = pose.extGlom;
         const line = L([X(s, [0.32, 0.36, z - 0.15]), X(s, [0.46, 0.0, z - 0.18]), X(s, [0.6, -0.2, z - 0.18])], 10);
-        tube(`ebr${k}${s}`, 'kanpoko-glomeruluak', grown(line, g), UC.aorta, 0.035, 1, { tissue: 'vessel', groups: ['glomeruluak'] }, 8);
+        vess(`ebr${k}${s}`, 'kanpoko-glomeruluak', line, UC.aorta, { r0: 0.04, r1: 0.032, flare: 0.6, sides: 8, n: 12 }, g, 1, { tissue: 'vessel', groups: ['glomeruluak'] });
         ball(`eglo${k}${s}`, 'kanpoko-glomeruluak', X(s, [0.64, -0.24, z - 0.18]), [0.1 * ss(0.5, 1, g), 0.1 * ss(0.5, 1, g), 0.1 * ss(0.5, 1, g)], UC.glom, 1, { tissue: 'vessel', groups: ['glomeruluak'] }, 10, 12);
         if (k === 1 && s > 0) pts['kanpoko-glomeruluak'] = X(s, [0.7, -0.32, z - 0.05]);
       }
@@ -196,7 +210,7 @@ export function unitModel(pose: UnitPose, o: UnitOpts = {}) {
       if (pose.arterioles > 0.01) {
         const a = pose.arterioles;
         const eff = L([X(s, [GLOM[0] + 0.05, GLOM[1] + 0.12, z + 0.06]), X(s, [1.0, 0.62, z + 0.08]), X(s, [1.22, 0.92, z])], 10);
-        tube(`eff${k}${s}`, 'arteriola-eferentea', grown(eff, a), T.deo2, 0.035, 1, { tissue: 'vessel' }, 8);
+        vess(`eff${k}${s}`, 'arteriola-eferentea', eff, T.deo2, { r0: 0.034, r1: 0.04, sides: 8, n: 12 }, a, 1, { tissue: 'vessel' });
         if (k === 1 && s > 0) {
           pts['arteriola-eferentea'] = eff[5];
           pts['arteriola-aferentea'] = X(s, [0.6, 0.3, z]);
@@ -218,7 +232,7 @@ export function unitModel(pose: UnitPose, o: UnitOpts = {}) {
   if (pose.duct > 0.01)
     for (const s of [-1, 1]) {
       const id = m > 0.5 ? 'hodi-mesonefrikoa' : 'hodi-pronefrikoa';
-      tube(`duct${s}`, id, grown(L(along(s * duct[0], duct[1]), 14), pose.duct), m > 0.5 ? UC.wolff : UC.pro, 0.1, 1, { deep: m > 0.5 ? UC.wolffDeep : UC.proDeep });
+      vess(`duct${s}`, id, L(along(s * duct[0], duct[1]), 14), m > 0.5 ? UC.wolff : UC.pro, { r0: 0.1, bulb: 0.35 * (1 - ss(0.9, 1, pose.duct)), bulbLen: 0.3, sides: 14, n: 20 }, pose.duct, 1, { deep: m > 0.5 ? UC.wolffDeep : UC.proDeep });
       if (s > 0) pts[id] = X(s, [duct[0] + 0.08, duct[1] + 0.12, ZH * 0.75]);
     }
   if (cl > 0.01) {
