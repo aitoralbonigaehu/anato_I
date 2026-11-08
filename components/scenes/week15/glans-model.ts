@@ -1,5 +1,7 @@
 import { add, mix3, type V3 } from '@/lib/three-d/math';
-import { curve3 } from '@/lib/three-d/mesh';
+import { curve3, grid } from '@/lib/three-d/mesh';
+import { cachedMesh } from '@/lib/three-d/mesh-cache';
+import { plate } from '@/lib/three-d/organic';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
 import { T } from '@/components/scenes/week10/common';
@@ -12,8 +14,10 @@ import { T } from '@/components/scenes/week10/common';
  * the urethra is ectodermal, as in almost every endodermal tube. Round the glans, lateral cords grow in from
  * the skin and open (vesicles): the prepuce.
  *
- * Own frame: x along the penis (the tip at +x), y up, z towards the viewer. Cut down the middle (see-through, as
- * the notes' figures show it in section).
+ * Own frame: x along the penis (the tip at +x), y up, z towards the viewer. Cut down the middle, as the notes'
+ * figures show it in section: a solid (docs/quality/3d-quality-bar.md) — the back half whole, the cut face
+ * (shaft and glans tissue, the skin as a band along its edge) facing the viewer, and the urethra, the cord and
+ * the prepuce lying half in the cut.
  */
 
 export interface GlansPose {
@@ -46,6 +50,34 @@ const BODY = '#f0a1b4';
 
 /** The penis's outline along x: its radius (the coronal groove is the waist before the glans). */
 const R = (x: number) => (x < 1.5 ? 0.62 : x < 1.8 ? lerp(0.62, 0.52, (x - 1.5) / 0.3) : x < 3.2 ? 0.52 + 0.2 * Math.sin(((x - 1.8) / 1.4) * Math.PI * 0.62) * (x < 2.6 ? 1 : lerp(1, 0.3, (x - 2.6) / 0.6)) : 0.3);
+/** The outline with a rounded tip: R, then closing over the end (x from X0 to X1). */
+const X0 = -1.6, XT = 3.12, X1 = 3.4, XG = 1.72;
+const RR = (x: number) => (x <= XT ? R(x) : R(XT) * Math.sqrt(Math.max(0, 1 - ((x - XT) / (X1 - XT)) ** 2)));
+/** x along the outline, denser at the rounded tip. */
+const xs = (a: number, b: number, n: number) => Array.from({ length: n + 1 }, (_, i) => {
+  const t = i / n;
+  return b > XT ? a + (b - a) * (1 - (1 - t) ** 1.6) : a + (b - a) * t;
+});
+/** The cut face of one part (shaft or glans): its outline in the plane z = 0. */
+const face = (a: number, b: number): [number, number][] => {
+  const top = xs(a, b, 40).map((x): [number, number] => [x, RR(x)]);
+  const bot = xs(a, b, 40).reverse().map((x): [number, number] => [x, -RR(x)]);
+  return [...top, ...bot];
+};
+const FACE_SHAFT = face(X0, XG);
+const FACE_GLANS = face(XG, X1);
+/** The back half of the surface between a and b (z ≤ 0), facing out. */
+const backHalf = (a: number, b: number, nu: number) =>
+  cachedMesh('glans-back-v1', [a, b, nu], () =>
+    grid(nu, 12, (u, v) => {
+      const x = b > XT ? a + (b - a) * (1 - (1 - u) ** 1.6) : a + (b - a) * u;
+      const f = v * Math.PI;
+      const r = RR(x);
+      return [x, r * Math.cos(f), -r * Math.sin(f)];
+    }, [(a + b) / 2, 0, -10]),
+  );
+/** The skin's edge round the cut. */
+const RIM: V3[] = [...xs(X0, X1, 70).map((x): V3 => [x, RR(x), 0]), ...xs(X0, X1, 70).reverse().slice(1).map((x): V3 => [x, -RR(x), 0])];
 
 export function glansModel(pose: GlansPose, o: GlansOpts = {}) {
   const items: Item3[] = [];
@@ -58,16 +90,16 @@ export function glansModel(pose: GlansPose, o: GlansOpts = {}) {
   };
 
   // ———— the body (mesoderm) with its ectodermal skin, cut in half; the glans at the tip ————
-  const axis = Array.from({ length: 40 }, (_, i): V3 => [-1.6 + (i / 39) * 4.75, 0, 0]);
-  const rad = (u: number) => R(-1.6 + u * 4.75);
-  // The shaft up to the coronal groove (x ≈ 1.72, axis point 27), the glans beyond it: one surface, no caps where they meet.
-  const G = 27;
-  tube('body', 'zakila', axis.slice(0, G + 1), BODY, (u) => rad(u * (G / 39)) - 0.06, 0.5, { tissue: 'mesenchyme', thin: 0.4 }, 16, [true, false]);
-  // The body and the glans are the frame of every step: never faded with the step's lit set.
-  items[items.length - 1].opacity = 0.5;
-  tube('glans', 'glandea', axis.slice(G), mixHex(BODY, '#f7c4d2', 0.35), (u) => rad((G + u * (39 - G)) / 39) - 0.06, 0.55, { tissue: 'mesenchyme', thin: 0.4 }, 16, [false, true]);
-  items[items.length - 1].opacity = 0.55;
-  tube('skin', 'azaleko-ektodermoa', axis, ECTO, (u) => rad(u), 0.18, { thin: 0.6, outline: false, quiet: true });
+  // The shaft up to the coronal groove, the glans beyond it: the back halves and the cut faces. They are the
+  // frame of every step (ground: never faded or greyed with the step's lit set).
+  const GLANS = mixHex(BODY, '#f7c4d2', 0.35);
+  const skinTone = (c: string) => mixHex(c, ECTO, 0.18);
+  const sb = backHalf(X0, XG, 30), gb = backHalf(XG, X1, 26);
+  items.push({ key: 'body', id: 'zakila', mesh: sb, hit: sb, color: skinTone(BODY), deep: darker(BODY), tissue: 'skin', opacity: 1, ground: true });
+  items.push({ key: 'glans', id: 'glandea', mesh: gb, hit: gb, color: skinTone(GLANS), deep: darker(GLANS), tissue: 'skin', opacity: 1, ground: true });
+  items.push({ key: 'bodyCut', id: 'zakila', ...plate('glans-cut-shaft-v1', FACE_SHAFT, 0, -0.04), color: BODY, deep: darker(BODY), tissue: 'mesenchyme', opacity: 1, ground: true, outline: false });
+  items.push({ key: 'glansCut', id: 'glandea', ...plate('glans-cut-glans-v1', FACE_GLANS, 0.004, -0.04), color: GLANS, deep: darker(GLANS), tissue: 'mesenchyme', opacity: 1, ground: true, outline: false });
+  tube('skin', 'azaleko-ektodermoa', RIM, ECTO, 0.035, 1, { quiet: true, ground: true, outline: false }, 8);
   pts['zakila'] = [-0.6, 0.66, -0.1];
   pts['glandea'] = [2.4, 0.6, -0.1];
   pts['azaleko-ektodermoa'] = [-1.1, 0.7, -0.05];
