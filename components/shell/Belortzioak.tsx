@@ -299,10 +299,9 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
             <stop offset="0.62" stopColor="#000" />
             <stop offset="1" stopColor="#fff" />
           </radialGradient>
-          {/* a lit extent's soft edge: the light spills a little past the outline, like the circles' */}
+          {/* a lit extent's edge, only antialiased: the light stops on the outline, so it never spills onto the neighbour */}
           <filter id="bel-soft" x="-10%" y="-10%" width="120%" height="120%">
-            <feMorphology operator="dilate" radius="3" in="SourceGraphic" result="grown" />
-            <feGaussianBlur in="grown" stdDeviation="3" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" />
           </filter>
           <mask id={`bel-mask-${plate.id}`} maskUnits="userSpaceOnUse" x="0" y="0" width={st.tw} height={H}>
             <rect width={st.tw} height={H} fill="#fff" />

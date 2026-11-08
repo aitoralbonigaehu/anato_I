@@ -31,11 +31,61 @@ def load(plate):
 
 
 def region(im, lab, r):
-    """One region of a structure as a binary mask, less any `sub` regions (a neighbour carved out)."""
+    """One region of a structure as a binary mask, kept inside every `and` region (a shared tissue cut
+    into parts by polygons that share their cut lines, so neighbours meet without a gap) and less any
+    `sub` regions (a neighbour carved out)."""
     m = _region(im, lab, r)
+    for s in r.get('and', []):
+        m &= region(im, lab, s)
     for s in r.get('sub', []):
-        m &= cv2.bitwise_not(_region(im, lab, s))
+        m &= cv2.bitwise_not(region(im, lab, s))
     return m
+
+
+def settle(im, lab, masks, nest=()):
+    """Neighbours meet on one line. The few pixels each outline grows over its neighbour (`grow`) go to
+    whichever structure is nearer, so no structure lights a sliver of the next; a hairline slit left
+    between two neighbours (their shared pencil line) goes to the nearer one too, unless it is the white
+    paper between two separate drawings. Pairs in `nest` (a whole and its part) are left alone."""
+    keys = list(masks)
+    nested = {frozenset(map(str, p)) for p in nest}
+    dist = {}
+
+    def dt(m):
+        return cv2.distanceTransform(cv2.bitwise_not(m), cv2.DIST_L2, 5)
+
+    for i, a in enumerate(keys):
+        for b in keys[i + 1:]:
+            if frozenset((a.split(':')[1], b.split(':')[1])) in nested:
+                continue
+            A, B = masks[a], masks[b]
+            both = A & B
+            if not both.any():
+                continue
+            onlyA, onlyB = A & ~B, B & ~A
+            # one wholly inside the other: a part drawn within its whole, not a sliver
+            if not onlyA.any() or not onlyB.any():
+                continue
+            da, db = dt(onlyA), dt(onlyB)
+            toA = (both > 0) & (da <= db)
+            toB = (both > 0) & ~toA
+            masks[a] = np.where(toB, 0, A).astype(np.uint8)
+            masks[b] = np.where(toA, 0, B).astype(np.uint8)
+    paper = colour(lab, 'notwhite') == 0
+    for k in keys:
+        dist[k] = dt(masks[k])
+    for i, a in enumerate(keys):
+        for b in keys[i + 1:]:
+            if frozenset((a.split(':')[1], b.split(':')[1])) in nested:
+                continue
+            slit = (dist[a] <= 2.5) & (dist[b] <= 2.5) & ~paper
+            for k in keys:
+                slit &= masks[k] == 0
+            if not slit.any():
+                continue
+            masks[a] = np.where(slit & (dist[a] <= dist[b]), 255, masks[a]).astype(np.uint8)
+            masks[b] = np.where(slit & (dist[a] > dist[b]), 255, masks[b]).astype(np.uint8)
+    return masks
 
 
 def _region(im, lab, r):
@@ -170,7 +220,7 @@ def outline(mask, w, h):
         if cv2.contourArea(c) < 40:
             continue
         a = cv2.approxPolyDP(c, 1.2, True).reshape(-1, 2)
-        polys.append([[round(float(x) / w, 3), round(float(y) / h, 3)] for x, y in a])
+        polys.append([[round(float(x) / w, 4), round(float(y) / h, 4)] for x, y in a])
     return polys
 
 
@@ -185,11 +235,15 @@ def build(only=None):
         lab = cv2.cvtColor(im, cv2.COLOR_BGR2LAB)
         for key in [k for k in out if k.startswith(plate + ':')]:
             del out[key]
+        mine = {}
         for n, regions in items.items():
+            if str(n).startswith('_'):
+                continue
             m = np.zeros((h, w), np.uint8)
             for r in regions:
                 m |= region(im, lab, r)
-            key = f'{plate}:{n}'
+            mine[f'{plate}:{n}'] = m
+        for key, m in settle(im, lab, mine, items.get('_nest', ())).items():
             out[key] = outline(m, w, h)
             masks[key] = m
     OUT.write_text(json.dumps(dict(sorted(out.items(), key=lambda kv: (kv[0].split(':')[0], kv[0]))), separators=(',', ':')))
