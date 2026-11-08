@@ -442,6 +442,8 @@ export function Stage3D({ scene, children, orbit = true, axes, continuity }: Sta
       view: view.view,
       proj: view.proj,
       light,
+      ao: scene.look?.ao ?? 0,
+      aoRadius: Math.hypot(display.eye[0] - display.target[0], display.eye[1] - display.target[1], display.eye[2] - display.target[2]) * (scene.look?.aoReach ?? 0.04),
       items: drawn.map(({ it }) => ({
         key: it.key,
         mesh: it.mesh,

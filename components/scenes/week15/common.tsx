@@ -2,6 +2,7 @@
 
 import { orbit, poseStage as poseStage14, type PoseModel, type StageSpec as StageSpec14 } from '@/components/scenes/week14/common';
 import type { Camera3, V3 } from '@/lib/three-d/math';
+import { LOOK_V2 } from '@/lib/three-d/scene';
 import { UC } from './uro-model';
 import { MAP_LEFT, UroMap, type UroFocus } from './UroMap';
 
@@ -24,7 +25,7 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
   // of every view (it hides with the names during the fly-in, which shows the whole embryo itself).
   const section = rest.section ?? (map ? () => ({ show: 1, node: <UroMap focus={map} />, left: MAP_LEFT }) : undefined);
   // Names keep above the camera keys (bottom right of the frame; the column also stops above them by itself).
-  return poseStage14({ right: [236, 540], ...rest, section }, build, false, CONT15);
+  return poseStage14({ right: [236, 540], look: LOOK_V2, fit: {}, ...rest, section }, build, false, CONT15);
 }
 
 /** Front view of the posterior wall: yaw 0 = from the front (the embryo's left on the viewer's right). */

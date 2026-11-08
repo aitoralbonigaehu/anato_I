@@ -2,6 +2,7 @@ import { add, mix3, type V3 } from '@/lib/three-d/math';
 import { curve3 } from '@/lib/three-d/mesh';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
+import { wallSlab } from '@/lib/three-d/organic';
 import { T } from '@/components/scenes/week10/common';
 import { C } from '@/lib/sim/palette';
 
@@ -55,6 +56,11 @@ export const UC = {
   neural: '#3a5fd9',
   skin: '#f0c9b4',
   skinDeep: '#a07060',
+  /** The posterior body wall the structures lie on (a dissection's background: quiet, warm, mid-dark) and its cut. */
+  wall: '#7d6660',
+  wallDeep: '#2c1e1f',
+  wallCut: '#a8877c',
+  wallCutDeep: '#4a3430',
 } as const;
 
 export interface UroPose {
@@ -93,6 +99,12 @@ export const UP0: UroPose = { im: 1, pro: 0, proDuct: 0, proGone: 0, meso: 0, wo
 export interface UroOpts {
   /** The body glass, the somites, the neural tube (0..1). */
   body?: number;
+  /**
+   * The posterior body wall as a solid cut-away block the structures lie on (0..1, default 1): the vertebral
+   * column's ridge in the midline, the gutters beside it where the kidneys lie, the somites' segments. It
+   * replaces the see-through body glass (the somites stand out of it; the neural tube is inside it).
+   */
+  wall?: number;
   /** Hindgut, cloaca and allantois (0..1). */
   gut?: number;
   /** Glomeruli and their branches off the aorta (0..1). */
@@ -117,6 +129,21 @@ const ss = (a: number, b: number, x: number) => {
   const u = clamp01((x - a) / (b - a));
   return u * u * (3 - 2 * u);
 };
+
+/**
+ * The posterior wall's front surface (z at x, y): the vertebral column's ridge in the midline (the aorta lies on
+ * it), the paravertebral gutters where the kidneys lie, the lateral wall curving forward.
+ */
+const wallFront = (x: number, y: number) => {
+  const ax = Math.abs(x);
+  const ridge = 0.3 * Math.exp(-((x / 0.6) ** 2));
+  const gutter = -0.26 * Math.exp(-(((ax - 1.55) / 0.55) ** 2));
+  const side = 0.42 * ss(1.95, 2.7, ax);
+  // The ends curve back a little (the block is cut out of a curved embryo).
+  const ends = -0.18 * (ss(3.6, 4.8, y) + ss(-4.2, -5.3, y));
+  return -1.0 + ridge + gutter + side + ends;
+};
+const WALL = () => wallSlab({ key: 'uro-wall-v2', x: [-3.8, 3.8], y: [-5.35, 4.75], back: -1.75, front: wallFront, nx: 70, ny: 80 });
 
 /** Levels (y) of the regions along the posterior wall. */
 export const LV = { neck: 3.0, thorax: 1.0, lumbar: -1.2, sacral: -3.5, cloaca: -4.75 } as const;
@@ -149,17 +176,26 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
     items.push({ key, id, ...blobParts({ center: c, radii: r, rings, sides }), color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
   };
 
-  // ———— context: the body glass, the neural tube and somites, the aorta ————
+  // ———— context: the posterior wall (or the body glass), the neural tube and somites, the aorta ————
   const body = o.body ?? 1;
+  const wall = (o.wall ?? 1) * body;
+  if (wall > 0.01) {
+    const { surface, cut } = WALL();
+    items.push({ key: 'wall', ...surface, color: UC.wall, deep: UC.wallDeep, tissue: 'membrane', opacity: wall, quiet: true, outline: false, ground: true });
+    items.push({ key: 'wallcut', ...cut, color: UC.wallCut, deep: UC.wallCutDeep, tissue: 'mesenchyme', opacity: wall, quiet: true, outline: true, ground: true });
+  }
   if (body > 0.01) {
-    ball('body', undefined, [0, -0.35, -0.25], [2.75, 5.3, 1.45], UC.skin, 0.09 * body, { tissue: 'skin', outline: false, quiet: true, deep: UC.skinDeep }, 16, 22);
-    tube('neural', 'hodi-neurala', L([[0, 4.4, -1.35], [0, 0, -1.4], [0, -4.3, -1.35]], 20), UC.neural, 0.15, 0.45 * body, { quiet: true, outline: false });
+    if (wall < 0.99) {
+      ball('body', undefined, [0, -0.35, -0.25], [2.75, 5.3, 1.45], UC.skin, 0.09 * body * (1 - wall), { tissue: 'skin', outline: false, quiet: true, deep: UC.skinDeep }, 16, 22);
+      tube('neural', 'hodi-neurala', L([[0, 4.4, -1.35], [0, 0, -1.4], [0, -4.3, -1.35]], 20), UC.neural, 0.15, 0.45 * body * (1 - wall), { quiet: true, outline: false });
+    }
     pts['hodi-neurala'] = [0.12, 3.3, -1.35];
+    // In front of the wall the somites stand out of it, solid (through the glass they were see-through).
     for (let i = 0; i < 24; i++) {
       const y = 4.05 - i * 0.37;
-      for (const s of [-1, 1]) ball(`som${i}${s}`, 'somitak', X(s, [0.42, y, -1.05]), [0.19, 0.14, 0.2], UC.somite, 0.42 * body, { quiet: true, outline: false }, 8, 10);
+      for (const s of [-1, 1]) ball(`som${i}${s}`, 'somitak', X(s, [0.42, y, -1.05]), [0.19, 0.14, 0.2], UC.somite, lerp(0.42, 1, wall) * body, { quiet: true, outline: false, tissue: 'mesenchyme' }, 8, 10);
     }
-    pts['somitak'] = [0.5, 3.3, -1.0];
+    pts['somitak'] = [0.5, 3.3, -0.88];
   }
   // The aorta down the midline, in front of the vertebral level; its two common iliac arteries at the sacral level.
   const AO = L([[0, 4.3, -0.62], [0, 1.0, -0.62], [0, -1.8, -0.64], [0, -3.15, -0.62]], 30);

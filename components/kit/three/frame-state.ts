@@ -21,6 +21,7 @@ const clip = (a: Clip3 | undefined, b: Clip3 | undefined) => {
 /** Scenes supply immutable meshes/routes and fresh pose values. A new React object is not a new picture. */
 export function sameGLFrame(a: GLFrame | null, b: GLFrame): boolean {
   if (!a || !numbers(a.view, b.view) || !numbers(a.proj, b.proj) || !numbers(a.light, b.light) || a.items.length !== b.items.length) return false;
+  if ((a.ao ?? 0) !== (b.ao ?? 0) || (a.aoRadius ?? 1) !== (b.aoRadius ?? 1)) return false;
   return a.items.every((x, i) => {
     const y = b.items[i];
     if (x.key !== y.key || x.mesh !== y.mesh || !numbers(x.matrix, y.matrix) || x.color !== y.color || x.deep !== y.deep ||

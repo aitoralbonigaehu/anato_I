@@ -49,6 +49,8 @@ const spec8: StageSpec<KidneyPose, KidneyOpts> = {
       run: [0.06, 0.85],
       cam: KCAM(7.5, 10, 8, [-0.3, 0, 0]),
       glide: 0.05,
+      // Framed with the blastema it opens inside.
+      fit: ['metanefros-hasikina', 'giltzurrun-pelbisa', 'blastema-metanefrikoa'],
       dim: ['metanefros-hasikina', 'giltzurrun-pelbisa'],
       names: [
         { id: 'metanefros-hasikina', sub: 'kimuaren muturra zabalduta' },
@@ -60,6 +62,7 @@ const spec8: StageSpec<KidneyPose, KidneyOpts> = {
       to: { major: 1 },
       run: [0.08, 0.8],
       cam: KCAM(8.5, 8, 8, [-0.1, 0, 0]),
+      fit: ['kaliza-nagusiak', 'giltzurrun-pelbisa', 'blastema-metanefrikoa'],
       dim: ['kaliza-nagusiak', 'giltzurrun-pelbisa'],
       names: [{ id: 'kaliza-nagusiak', sub: 'bi edo hiru, kopa formakoak', from: 0.5 }],
       note: 'Pelbisa adarkatzen da: lehen adar nagusiak, kaliza nagusiak (bi edo hiru, kopa formakoak)',

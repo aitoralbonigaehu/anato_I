@@ -4,14 +4,20 @@ import {
   BufferGeometry,
   Camera,
   Color,
+  DepthTexture,
   FrontSide,
   InstancedBufferAttribute,
   InstancedBufferGeometry,
+  LinearFilter,
   Mesh as TMesh,
+  NearestFilter,
+  PlaneGeometry,
   Scene,
   ShaderMaterial,
+  Vector2,
   Vector3,
   WebGLRenderer,
+  WebGLRenderTarget,
 } from 'three';
 import { perfCount } from '@/lib/perf';
 import type { M4, V3 } from '@/lib/three-d/math';
@@ -54,6 +60,14 @@ export interface GLFrame {
   proj: M4;
   light: V3;
   items: GLItem[];
+  /**
+   * 0–1: ambient occlusion (crevices, contacts and the inner side of a bend darken, as in a photograph of a
+   * specimen). Off (0) by default; the views of topic 15 on ask for it. Costs a half-size depth pass and two
+   * small screen passes, only on the frames that are drawn at all.
+   */
+  ao?: number;
+  /** World units the occlusion reaches (default 1). */
+  aoRadius?: number;
 }
 
 export interface GLApi {
@@ -154,6 +168,14 @@ uniform float uBright;
 uniform float uOpacity;
 uniform float uKind;
 uniform float uThin;
+// The depth pre-pass of the ambient occlusion (1): the surface's normal only. Shared by every material.
+uniform float uPass;
+// The occlusion picture (half size, blurred), how strong it is in this frame, and whether this item takes it
+// (see-through items are not in the depth pass: they would darken by what lies behind them).
+uniform sampler2D tAO;
+uniform float uAOOn;
+uniform float uAOMine;
+uniform vec2 uRes;
 varying vec3 vN;
 varying vec3 vV;
 varying vec3 vObj;
@@ -197,8 +219,11 @@ void main() {
   applyClip(vObj);
   vec3 n = normalize(vN);
   if (!gl_FrontFacing) n = -n;
+  if (uPass > 0.5) { gl_FragColor = vec4(n * 0.5 + 0.5, 1.0); return; }
   vec3 v = normalize(vV);
   vec3 l = normalize(uLight);
+  float occ = uAOOn * uAOMine;
+  float ao = occ > 0.0 ? mix(1.0, texture2D(tAO, gl_FragCoord.xy / uRes).r, occ) : 1.0;
 
   // Tissue texture: a fine variation of the colour, different for each kind of tissue.
   float tex = 0.0;
@@ -258,9 +283,11 @@ void main() {
   if (uKind < 0.5) col += vec3(0.95, 0.38, 0.32) * 0.3 * band * (1.0 - band);
   // Sky/ground fill: the upper side a touch cooler and lighter.
   col += albedo * 0.10 * (n.y * 0.5 + 0.5);
+  // Ambient occlusion: light reaches a fold, a contact or a hollow less (towards the deep tint, never black).
+  col = mix(uDeep * 0.55, col, ao);
   // Living tissue lets light through at its edges: a warm translucent rim.
   float fres = pow(1.0 - max(dot(n, v), 0.0), 2.4);
-  col += mix(albedo, vec3(1.0, 0.92, 0.86), 0.35) * fres * 0.32;
+  col += mix(albedo, vec3(1.0, 0.92, 0.86), 0.35) * fres * 0.32 * mix(0.35, 1.0, ao);
   // A moist sheen.
   vec3 h = normalize(l + v);
   float sheen = uKind > 2.5 && uKind < 4.5 ? 0.10 : 0.16;
@@ -284,6 +311,84 @@ uniform vec3 uColor;
 uniform float uOpacity;
 varying vec3 vObj;
 void main() { applyClip(vObj); gl_FragColor = vec4(uColor, uOpacity); }`;
+
+const FULL_VERT = /* glsl */ `
+varying vec2 vUv;
+void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`;
+
+/**
+ * Ambient occlusion from the depth pre-pass (scalable ambient obscurance): samples on a spiral round each
+ * pixel, within a fixed reach in the world, count how much surface rises above its tangent plane. Rotated
+ * on a 4×4 pattern that the blur averages out exactly (no noise left, no temporal flicker).
+ */
+const AO_FRAG = /* glsl */ `
+uniform sampler2D tDepth;
+uniform sampler2D tNormal;
+uniform mat4 uProj;
+uniform mat4 uProjInv;
+uniform float uRadius;
+varying vec2 vUv;
+const int N = 12;
+vec3 viewAt(vec2 uv, float d) {
+  vec4 p = uProjInv * vec4(uv * 2.0 - 1.0, d * 2.0 - 1.0, 1.0);
+  return p.xyz / p.w;
+}
+void main() {
+  float d = texture2D(tDepth, vUv).x;
+  if (d >= 0.99999) { gl_FragColor = vec4(1.0); return; }
+  vec3 P = viewAt(vUv, d);
+  vec3 Nn = normalize(texture2D(tNormal, vUv).xyz * 2.0 - 1.0);
+  // The reach on screen (uv units) at this depth.
+  vec2 r = vec2(uProj[0][0], uProj[1][1]) * uRadius * 0.5 / max(1e-3, -P.z);
+  float cell = mod(floor(gl_FragCoord.x), 4.0) * 4.0 + mod(floor(gl_FragCoord.y), 4.0);
+  float a0 = cell * 0.39269908 + 0.3;
+  float r2 = uRadius * uRadius;
+  float sum = 0.0;
+  for (int i = 0; i < N; i++) {
+    float t = (float(i) + 0.5) / float(N);
+    float a = a0 + t * 7.0 * 6.2831853;
+    vec2 uv = vUv + vec2(cos(a), sin(a)) * r * t;
+    float dq = texture2D(tDepth, uv).x;
+    if (dq >= 0.99999) continue;
+    vec3 v = viewAt(uv, dq) - P;
+    float vv = dot(v, v);
+    float f = max(r2 - vv, 0.0) / r2;
+    sum += f * f * f * max((dot(v, Nn) - 0.02 * uRadius) / sqrt(vv + 1e-4 * r2), 0.0);
+  }
+  float ao = clamp(1.0 - sum * 5.0 / float(N), 0.0, 1.0);
+  gl_FragColor = vec4(vec3(ao), 1.0);
+}`;
+
+/** 4×4 blur that keeps to one surface (a sample much farther or nearer counts less). */
+const BLUR_FRAG = /* glsl */ `
+uniform sampler2D tAOIn;
+uniform sampler2D tDepth;
+uniform vec2 uTexel;
+uniform mat4 uProjInv;
+varying vec2 vUv;
+float viewZ(vec2 uv) {
+  float d = texture2D(tDepth, uv).x;
+  vec4 p = uProjInv * vec4(uv * 2.0 - 1.0, d * 2.0 - 1.0, 1.0);
+  return p.z / p.w;
+}
+void main() {
+  float z0 = viewZ(vUv);
+  float s = 0.0;
+  float w = 0.0;
+  for (int x = -2; x < 2; x++)
+    for (int y = -2; y < 2; y++) {
+      vec2 uv = vUv + (vec2(float(x), float(y)) + 0.5) * uTexel;
+      float k = 1.0 / (1.0 + abs(viewZ(uv) - z0) * 40.0 / max(1e-3, -z0));
+      s += texture2D(tAOIn, uv).r * k;
+      w += k;
+    }
+  gl_FragColor = vec4(vec3(s / max(w, 1e-4)), 1.0);
+}`;
+
+/** Whether the occlusion may run at all (a viewer can turn it off: localStorage 'enbrioatlas:3d-ao' = '0'). */
+const aoAllowed = () => {
+  try { return typeof window === 'undefined' || window.localStorage.getItem('enbrioatlas:3d-ao') !== '0'; } catch { return true; }
+};
 
 const TARGET: Record<GLState, { sat: number; bright: number; glow: [number, number, number]; amt: number }> = {
   idle: { sat: 1, bright: 1, glow: [1, 0.72, 0.42], amt: 0 },
@@ -368,7 +473,17 @@ const DEEP_TINT = new Color('#2a1420');
 /** The shaded side's colour for a colour that has no `deep` of its own (written into `out`). */
 const deepInto = (out: Color, c: string) => out.set(c).multiplyScalar(0.42).lerp(DEEP_TINT, 0.25);
 
-const bodyMaterial = (light: { value: Vector3 }, stream?: StreamUniforms) =>
+/** Uniform objects every body material shares by reference: set once per frame, not copied per item. */
+const sharedUniforms = () => ({
+  uLight: { value: new Vector3() },
+  uPass: { value: 0 },
+  tAO: { value: null as unknown },
+  uAOOn: { value: 0 },
+  uRes: { value: new Vector2(1, 1) },
+});
+type SharedUniforms = ReturnType<typeof sharedUniforms>;
+
+const bodyMaterial = (shared: SharedUniforms, stream?: StreamUniforms) =>
   new ShaderMaterial({
     defines: stream ? STREAM_DEFINES : {},
     vertexShader: VERT,
@@ -377,8 +492,9 @@ const bodyMaterial = (light: { value: Vector3 }, stream?: StreamUniforms) =>
       uOutline: { value: 0 },
       uColor: { value: new Color() },
       uDeep: { value: new Color() },
-      // One light object shared by every material of the layer: set once per frame, not copied per item.
-      uLight: light,
+      // The light, the depth pass's switch and the occlusion: objects shared by every material of the layer.
+      ...shared,
+      uAOMine: { value: 1 },
       uGlow: { value: new Color() },
       uGlowAmt: { value: 0 },
       uSat: { value: 1 },
@@ -482,8 +598,8 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
   const ro = new ResizeObserver(resize);
   ro.observe(host);
 
-  const lightV = new Vector3();
-  const lightU = { value: lightV };
+  const sharedU = sharedUniforms();
+  const lightV = sharedU.uLight.value;
   // Scratch for the screen projection (no allocation per frame).
   const screenM = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
   const projOut = new Float32Array(16);
@@ -494,9 +610,81 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
   let compiled = false;
   // Kept until the layer goes: a program lives while some material uses it.
   const warmSt = streamUniforms();
-  const warmMats = [bodyMaterial(lightU), edgeMaterial(), bodyMaterial(lightU), edgeMaterial()];
+  const warmMats = [bodyMaterial(sharedU), edgeMaterial(), bodyMaterial(sharedU), edgeMaterial()];
+  // The occlusion's screen passes (compiled with the rest, so its first frame does not stall either).
+  const fsGeo = new PlaneGeometry(2, 2);
+  const aoMat = new ShaderMaterial({
+    vertexShader: FULL_VERT,
+    fragmentShader: AO_FRAG,
+    uniforms: { tDepth: { value: null }, tNormal: { value: null }, uProj: { value: camera.projectionMatrix }, uProjInv: { value: camera.projectionMatrixInverse }, uRadius: { value: 1 } },
+    depthTest: false,
+    depthWrite: false,
+  });
+  const blurMat = new ShaderMaterial({
+    vertexShader: FULL_VERT,
+    fragmentShader: BLUR_FRAG,
+    uniforms: { tAOIn: { value: null }, tDepth: { value: null }, uTexel: { value: new Vector2(1, 1) }, uProjInv: { value: camera.projectionMatrixInverse } },
+    depthTest: false,
+    depthWrite: false,
+  });
+  const fsQuad = new TMesh(fsGeo, aoMat);
+  fsQuad.frustumCulled = false;
+  const fsScene = new Scene();
+  fsScene.add(fsQuad);
+  const aoOk = aoAllowed();
+  let aoT: { n: WebGLRenderTarget; a: WebGLRenderTarget; b: WebGLRenderTarget } | null = null;
+  const dropAO = () => {
+    if (!aoT) return;
+    aoT.n.depthTexture?.dispose();
+    aoT.n.dispose();
+    aoT.a.dispose();
+    aoT.b.dispose();
+    aoT = null;
+    sharedU.tAO.value = null;
+  };
+  /** The occlusion of the current picture into `sharedU.tAO`: depth pre-pass (opaque bodies only), occlusion, blur. */
+  function occlusion(radius: number) {
+    const bw = canvas.width, bh = canvas.height;
+    const w = Math.max(1, bw >> 1), h = Math.max(1, bh >> 1);
+    if (!aoT) {
+      const n = new WebGLRenderTarget(w, h, { depthBuffer: true, minFilter: NearestFilter, magFilter: NearestFilter });
+      n.depthTexture = new DepthTexture(w, h);
+      aoT = { n, a: new WebGLRenderTarget(w, h, { depthBuffer: false, minFilter: NearestFilter, magFilter: NearestFilter }), b: new WebGLRenderTarget(w, h, { depthBuffer: false, minFilter: LinearFilter, magFilter: LinearFilter }) };
+    } else if (aoT.n.width !== w || aoT.n.height !== h) {
+      aoT.n.setSize(w, h);
+      aoT.a.setSize(w, h);
+      aoT.b.setSize(w, h);
+    }
+    const was: [TMesh, boolean][] = [];
+    for (const s of slots.values()) {
+      was.push([s.edge, s.edge.visible], [s.body, s.body.visible]);
+      s.edge.visible = false;
+      if (s.mat.transparent) s.body.visible = false;
+    }
+    sharedU.uPass.value = 1;
+    renderer.setRenderTarget(aoT.n);
+    renderer.render(scene, camera);
+    sharedU.uPass.value = 0;
+    for (const [m, v] of was) m.visible = v;
+    aoMat.uniforms.tDepth.value = aoT.n.depthTexture;
+    aoMat.uniforms.tNormal.value = aoT.n.texture;
+    aoMat.uniforms.uRadius.value = radius;
+    fsQuad.material = aoMat;
+    renderer.setRenderTarget(aoT.a);
+    renderer.render(fsScene, camera);
+    blurMat.uniforms.tAOIn.value = aoT.a.texture;
+    blurMat.uniforms.tDepth.value = aoT.n.depthTexture;
+    (blurMat.uniforms.uTexel.value as Vector2).set(1 / w, 1 / h);
+    fsQuad.material = blurMat;
+    renderer.setRenderTarget(aoT.b);
+    renderer.render(fsScene, camera);
+    renderer.setRenderTarget(null);
+    sharedU.tAO.value = aoT.b.texture;
+    sharedU.uRes.value.set(bw, bh);
+    perfCount('glAO');
+  }
   // The streams' programs too (blood cells), so the first cells do not stall the page either.
-  const warmStreamMats = [bodyMaterial(lightU, warmSt), edgeMaterial(warmSt)];
+  const warmStreamMats = [bodyMaterial(sharedU, warmSt), edgeMaterial(warmSt)];
   const warmTri = new BufferGeometry();
   const warmTris = new InstancedBufferGeometry();
   {
@@ -515,6 +703,11 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
       m.depthWrite = false;
     });
     mats.forEach((m) => warm.add(new TMesh(warmTri, m)));
+    for (const m of [aoMat, blurMat]) {
+      const q = new TMesh(fsGeo, m);
+      q.frustumCulled = false;
+      warm.add(q);
+    }
     warmStreamMats.forEach((m) => warm.add(new TMesh(warmTris, m)));
     const done = () => {
       if (disposed || lost) return;
@@ -554,7 +747,7 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
         perfCount('glUpload');
         const geo = geometryOf(it.mesh, it.stream);
         const su = it.stream && streamUniforms();
-        const mat = bodyMaterial(lightU, su);
+        const mat = bodyMaterial(sharedU, su);
         const edgeMat = edgeMaterial(su);
         const body = new TMesh(geo, mat);
         const edge = new TMesh(geo, edgeMat);
@@ -673,6 +866,7 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
       const see = next.op < 0.995;
       s.mat.transparent = see;
       s.mat.depthWrite = !see;
+      u.uAOMine.value = see ? 0 : 1;
       s.edgeMat.uniforms.uOpacity.value = 0.75 * next.op;
       s.edgeMat.transparent = see;
       s.edge.visible = s.goal.outline && next.op > 0.05;
@@ -707,12 +901,21 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
     camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
     camera.matrixWorldInverse.fromArray(frame.view);
     camera.matrixWorld.copy(camera.matrixWorldInverse).invert();
+    const aoK = aoOk ? Math.max(0, Math.min(1, frame.ao ?? 0)) : 0;
+    sharedU.uAOOn.value = 0;
+    if (aoK > 0) {
+      occlusion(frame.aoRadius ?? 1);
+      sharedU.uAOOn.value = aoK;
+    }
     renderer.render(scene, camera);
     perfCount('glRender');
     // The performance harness times the GPU on the picture last drawn (only when it turned the counters on).
     if ((globalThis as { __perf?: object }).__perf) {
       (globalThis as { __glBench?: typeof bench }).__glBench = bench;
       // And what that picture costs: draw calls, triangles, the drawing buffer's size, what the GPU holds.
+      // And how much of the picture the subject takes (the quality harness): the share of the drawing buffer
+      // the named, non-context items cover, and the box round them (shares of the width and height).
+      (globalThis as { __glCoverage?: () => object | null }).__glCoverage = () => coverage();
       (globalThis as { __glInfo?: () => object }).__glInfo = () => ({
         calls: renderer.info.render.calls,
         triangles: renderer.info.render.triangles,
@@ -733,6 +936,46 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
       onReady();
     }
     return true;
+  }
+
+  /** For the quality harness: what the subject covers (context and ground hidden for one draw). Never called by the app. */
+  function coverage() {
+    if (disposed || lost || !frame || !shown) return null;
+    const hidden: TMesh[] = [];
+    for (const sl of slots.values())
+      if (sl.goal.quiet || sl.goal.opacity < 0.3)
+        for (const m of [sl.body, sl.edge])
+          if (m.visible) {
+            m.visible = false;
+            hidden.push(m);
+          }
+    sharedU.uAOOn.value = 0;
+    renderer.render(scene, camera);
+    const gl = renderer.getContext();
+    const w = gl.drawingBufferWidth, h = gl.drawingBufferHeight;
+    const px = new Uint8Array(w * h * 4);
+    gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px);
+    let n = 0, x0 = w, x1 = 0, y0 = h, y1 = 0;
+    for (let y = 0; y < h; y++)
+      for (let x = 0; x < w; x++)
+        if (px[(y * w + x) * 4 + 3] > 80) {
+          n++;
+          if (x < x0) x0 = x;
+          if (x > x1) x1 = x;
+          if (y < y0) y0 = y;
+          if (y > y1) y1 = y;
+        }
+    for (const m of hidden) m.visible = true;
+    dirty = true;
+    kick();
+    // In the scene's 1000×640 frame (the canvas spans the whole viewport, wider than the frame).
+    const m = ctmNow();
+    if (!m || !n) return { cover: 0, box: null };
+    const r = w / size.w;
+    const fx = (q: number) => (q / r - m.e) / m.a;
+    const fy = (q: number) => ((h - q) / r - m.f) / m.d;
+    const box = [fx(x0), fy(y1), fx(x1) - fx(x0), fy(y0) - fy(y1)];
+    return { cover: n / (r * r) / (1000 * m.a * 640 * m.d), box: [box[0] / 1000, box[1] / 640, box[2] / 1000, box[3] / 640] };
   }
 
   /**
@@ -828,6 +1071,7 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
         if (disposed || !parked) return;
         canvas.style.visibility = 'hidden';
         for (const [key, slot] of slots) drop(key, slot);
+        dropAO();
         renderer.renderLists.dispose();
         renderer.setDrawingBufferSize(1, 1, 1);
         size = { w: 0, h: 0 };
@@ -862,7 +1106,9 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
         s.edgeMat.dispose();
       }
       slots.clear();
-      [...warmMats, ...warmStreamMats].forEach((m) => m.dispose());
+      [...warmMats, ...warmStreamMats, aoMat, blurMat].forEach((m) => m.dispose());
+      dropAO();
+      fsGeo.dispose();
       warmTri.dispose();
       warmTris.dispose();
       renderer.dispose();

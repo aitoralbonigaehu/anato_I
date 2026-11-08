@@ -9,8 +9,9 @@ import { seg } from '@/lib/sim/anim';
 import { EMBRYO5, sectionMatrix } from '@/lib/three-d/embryo5';
 import { flyIn, reveal, type Plane } from '@/lib/three-d/flyin';
 import { useGeoReady } from '@/lib/three-d/offthread';
+import { fitCamera, pointsOf, type FitSpec } from '@/lib/three-d/framing';
 import type { Camera3, V3 } from '@/lib/three-d/math';
-import type { Item3 } from '@/lib/three-d/scene';
+import type { Item3, Look3 } from '@/lib/three-d/scene';
 import { GC, gutModel, type GutOpts, type GutPose } from './gut3d';
 
 export { cameraAt, orbit, type CalloutSpec } from '@/components/scenes/week10/Heart3D';
@@ -70,6 +71,11 @@ export interface Step<P = GutPose, O = GutOpts> {
   /** When in the step the change runs (0..1 of the step; default 0.08–0.7). */
   run?: readonly [number, number];
   cam: Camera3;
+  /**
+   * What the camera frames when the stage fits its views (`StageSpec.fit`): these ids or groups (default: the
+   * step's lit set `dim`, else every named structure), or false to keep `cam` exactly as written.
+   */
+  fit?: string[] | false;
   glide?: number;
   names?: (string | NameSpec)[];
   note?: string;
@@ -110,6 +116,13 @@ export interface StageSpec<P = GutPose, O = GutOpts> {
    * embryo turns to glass and fades while the camera flies in to the first step's view (as topics 7 and 9 do).
    */
   where?: Where;
+  /** The rendering (topics 15 on: ambient occlusion); omitted = topic 14's look. */
+  look?: Look3;
+  /**
+   * Topics 15 on: each step's camera keeps its direction but is brought to frame what the step is about (see
+   * `Step.fit`) in the free middle of the frame, at the step's end pose. Omitted or false: cameras as written.
+   */
+  fit?: FitSpec | false;
 }
 
 /** Where a model sits in the 5-week embryo (lib/three-d/embryo5) for the fly-in that opens a stage. */
@@ -194,12 +207,33 @@ function recede(items: Item3[], dim: { ids: readonly string[]; k: number } | nul
   if (!dim || dim.k <= 0.001) return items;
   const k = 0.6 * dim.k;
   const lit = (it: Item3) => !!it.id && (dim.ids.includes(it.id) || (it.groups ?? []).some((g) => dim.ids.includes(g)));
-  return items.map((it) => (it.stream || lit(it) ? it : { ...it, color: mixHex(it.color, SLATE, k), deep: mixHex(it.deep ?? it.color, SLATE_DEEP, k) }));
+  return items.map((it) => (it.stream || it.ground || lit(it) ? it : { ...it, color: mixHex(it.color, SLATE, k), deep: mixHex(it.deep ?? it.color, SLATE_DEEP, k) }));
 }
 
 /** Topic 14's cameras sit a little closer than their specs say: the gut fills more of the frame. */
 const closer = (cam: Camera3, k: number): Camera3 =>
   k === 1 ? cam : { ...cam, eye: [cam.target[0] + (cam.eye[0] - cam.target[0]) * k, cam.target[1] + (cam.eye[1] - cam.target[1]) * k, cam.target[2] + (cam.eye[2] - cam.target[2]) * k] };
+
+/** A step's camera fitted to what it shows at the end of its change (see `StageSpec.fit`). */
+function fitStep<P, O extends { dim?: { ids: readonly string[]; k: number } | null }>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel, k: number, cam: Camera3): Camera3 {
+  const st = spec.steps[k];
+  if (!spec.fit || st.fit === false) return cam;
+  const a = spec.S[k];
+  const b = spec.S[k + 1] ?? 1;
+  const { pose, opts } = poseAt(spec, a + (st.run?.[1] ?? 0.7) * (b - a) + 0.002);
+  const model = build(pose, { ...opts, dim: null });
+  const items = model.items;
+  const ids = st.fit ?? st.dim ?? null;
+  const seen = (it: Item3) => !!it.id && !it.quiet && (it.opacity ?? 1) * (it.show ?? 1) > 0.2;
+  let pts = pointsOf(items, (it) => seen(it) && (!ids || ids.includes(it.id!) || (it.groups ?? []).some((g) => ids.includes(g))));
+  if (pts.length < 9) pts = pointsOf(items, seen);
+  // Whatever the step names, and every drawn structure's naming point the written camera shows, stays in the
+  // frame: a closer view must not cut off what the step's text or names point at.
+  const drawn = new Set(items.filter(seen).flatMap((it) => [it.id!, ...(it.groups ?? [])]));
+  const named = (st.names ?? []).map((n) => (typeof n === 'string' ? { id: n } : n)).map((n) => (Array.isArray(n.p) ? (n.p as V3) : model.pts[(n.p as string | undefined) ?? n.id]));
+  const keep = [...named, ...Object.entries(model.pts).filter(([id]) => drawn.has(id)).map(([, p]) => p)].filter((p): p is V3 => !!p);
+  return fitCamera(cam, pts, spec.fit, keep);
+}
 
 /** vis with the stage-end case: a name or note of the last step stays to the end. */
 const vis2 = (t: number, a: number, b: number) => Math.min(a <= 0 ? 1 : seg(t, a, a + 0.03), b >= 1.5 ? 1 : 1 - seg(t, b - 0.03, b));
@@ -216,6 +250,9 @@ export function gutStage(spec: StageSpec) {
  */
 export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: number } | null }>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel, embryo = false, continuity = CONT) {
   const { S, steps } = spec;
+  // The steps' cameras, fitted once (on first draw) to what each step shows at its end.
+  let fitted: Camera3[] | null = null;
+  const camsOf = (near: number) => (fitted ??= steps.map((s, k) => fitStep(spec, build, k, closer(s.cam, near))));
   function View({ t, reduced }: SceneProps) {
     const i = stepAt(S, t);
     const st = steps[i];
@@ -228,9 +265,10 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
     const dim = dimK > 0.001 ? { ids: dimIds, k: dimK } : null;
     const built = build(pose, { ...opts, dim });
     const near = continuity === CONT ? (spec.near ?? 0.82) : 1;
+    const cams = camsOf(near);
     const viewCam = cameraAt(
       t,
-      steps.map((s, k) => (s.glide ? ([S[k], closer(s.cam, near), s.glide] as const) : ([S[k], closer(s.cam, near)] as const))),
+      steps.map((s, k) => (s.glide ? ([S[k], cams[k], s.glide] as const) : ([S[k], cams[k]] as const))),
     );
     // The opening fly-in: the embryo from outside, then into the model (which shows as the embryo clears).
     const F = whereAt(spec.where, t, reduced, viewCam);
@@ -268,6 +306,7 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
         axes={spec.axes}
         right={spec.right}
         labels={L}
+        look={spec.look}
         over={(at) => (
           <>
             {F && F.where > 0.01 && (

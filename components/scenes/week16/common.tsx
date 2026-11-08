@@ -2,6 +2,7 @@
 
 import { orbit, poseStage as poseStage14, type PoseModel, type StageSpec } from '@/components/scenes/week14/common';
 import type { Camera3, V3 } from '@/lib/three-d/math';
+import { LOOK_V2 } from '@/lib/three-d/scene';
 import { UC } from '@/components/scenes/week15/uro-model';
 import { GC16 } from './gonad-model';
 
@@ -12,7 +13,7 @@ export { BLOCK_AXES } from '@/components/scenes/week15/unit-model';
 export const CONT16 = 'gonadak-16';
 
 export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: number } | null }>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel) {
-  return poseStage14({ right: [236, 468], ...spec }, build, false, CONT16);
+  return poseStage14({ right: [236, 468], look: LOOK_V2, fit: {}, ...spec }, build, false, CONT16);
 }
 
 /** From the front (the embryo's left on the viewer's right). */

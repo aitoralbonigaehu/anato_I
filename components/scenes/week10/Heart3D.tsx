@@ -214,8 +214,9 @@ export function ModelView({
   left,
   axes = AXES,
   labels = 1,
-}: ViewProps & { model: { items: Scene3['items']; pts: Record<string, V3> }; continuity: string }) {
-  const scene: Scene3 = { camera, items: model.items };
+  look,
+}: ViewProps & { model: { items: Scene3['items']; pts: Record<string, V3> }; continuity: string; look?: Scene3['look'] }) {
+  const scene: Scene3 = { camera, items: model.items, look };
   const { mentioned, partsOf } = useScene();
   return (
     <g>

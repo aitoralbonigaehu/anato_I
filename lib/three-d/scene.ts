@@ -92,6 +92,11 @@ export interface Item3 {
   stream?: Stream3;
   /** 0–1: a thin wall (membrane, valve) that lets light through, glowing warm on the side away from the light. */
   thin?: number;
+  /**
+   * The ground the scene stands on (the posterior wall, a cut block): neutral already, it keeps its own colour
+   * when a step's unlit structures recede to grey, so the lit ones still have a body to lie on.
+   */
+  ground?: boolean;
 }
 
 /** Points in a stream's route. */
@@ -119,7 +124,22 @@ export interface Scene3 {
   items: Item3[];
   /** Key light direction in camera space (x right, y up, z towards the viewer). */
   light?: V3;
+  /** How the picture is lit beyond the key light (topic 15 on); omitted = the earlier topics' look. */
+  look?: Look3;
 }
+
+/**
+ * The rendering of topics 15 on (see docs/quality/3d-quality-bar.md): ambient occlusion so contacts, folds
+ * and hollows read as depth, and its reach as a share of the camera's distance to its target.
+ */
+export interface Look3 {
+  /** 0–1. */
+  ao?: number;
+  /** Reach of the occlusion as a share of the camera distance (default 0.04). */
+  aoReach?: number;
+}
+
+export const LOOK_V2: Look3 = { ao: 1, aoReach: 0.06 };
 
 export const KEY_LIGHT: V3 = norm([-0.5, 0.7, 0.55]);
 
