@@ -2,7 +2,7 @@ import { add, mix3, type V3 } from '@/lib/three-d/math';
 import { curve3 } from '@/lib/three-d/mesh';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
-import { wallSlab } from '@/lib/three-d/organic';
+import { bean, vessel, wallSlab, type VesselOptions } from '@/lib/three-d/organic';
 import { T } from '@/components/scenes/week10/common';
 import { C } from '@/lib/sim/palette';
 
@@ -123,7 +123,6 @@ const L = (kps: readonly V3[], n = 20) => curve3(kps as V3[], n);
 /** The wall is drawn 1.55× wider than it is (as the notes' figures): every sided point goes through X. */
 const XS = 1.55;
 const X = (s: number, p: V3): V3 => [s * p[0] * XS, p[1], p[2]];
-const grown = (line: V3[], g: number) => (g >= 0.999 ? line : line.slice(0, Math.max(2, Math.round(line.length * clamp01(g)))));
 /** 0 → 1 as x goes a → b (smooth). */
 const ss = (a: number, b: number, x: number) => {
   const u = clamp01((x - a) / (b - a));
@@ -174,6 +173,13 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
   const ball = (key: string, id: string | undefined, c: V3, r: V3, color: string, op = 1, extra: Partial<Item3> = {}, rings = 10, sides = 14) => {
     if (op <= 0.01) return;
     items.push({ key, id, ...blobParts({ center: c, radii: r, rings, sides }), color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
+  };
+  // An organic duct (lib/three-d/organic): a radius profile, grown by arc length (g), its growing tip leading.
+  const vess = (key: string, id: string | undefined, line: V3[], color: string, prof: VesselOptions, g = 1, op = 1, extra: Partial<Item3> = {}) => {
+    if (op <= 0.01) return;
+    const parts = vessel(line, prof, g);
+    if (!parts) return;
+    items.push({ key, id, ...parts, color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
   };
 
   // ———— context: the posterior wall (or the body glass), the neural tube and somites, the aorta ————
@@ -234,8 +240,9 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
       const tub = ss(0.35, 0.85, pro);
       for (const s of [-1, 1]) {
         ball(`neph${i}${s}`, 'nefrotomak', X(s, [IM_X, y, -0.5]), [lerp(0.11, 0.07, tub), 0.08, 0.1], UC.pro, op, { groups: ['pronefrosa'] }, 8, 10);
-        if (tub > 0.01) tube(`ptub${i}${s}`, 'hodixka-pronefrikoak', grown(L([X(s, [IM_X, y, -0.5]), X(s, [0.62, y - 0.02, -0.28]), X(s, [0.52, y - 0.04, -0.08])], 8), tub), UC.pro, 0.045, op, { groups: ['pronefrosa'] }, 8);
-        if (tub > 0.01) tube(`plat${i}${s}`, 'hodixka-pronefrikoak', grown(L([X(s, [IM_X, y, -0.5]), X(s, [0.97, y, -0.48])], 6), tub), UC.pro, 0.045, op, { groups: ['pronefrosa'] }, 8);
+        // The medial end opens towards the coelom (a small funnel: the nephrostome), the lateral end runs on to the duct.
+        if (tub > 0.01) vess(`ptub${i}${s}`, 'hodixka-pronefrikoak', L([X(s, [IM_X, y, -0.5]), X(s, [0.62, y - 0.02, -0.28]), X(s, [0.52, y - 0.04, -0.08])], 8), UC.pro, { r0: 0.05, r1: 0.04, flare: 0.4, cup: 0.7 * tub, cupLen: 0.1, bulb: 0.5 * (1 - tub), sides: 8, n: 10 }, tub, op, { groups: ['pronefrosa'] });
+        if (tub > 0.01) vess(`plat${i}${s}`, 'hodixka-pronefrikoak', L([X(s, [IM_X, y, -0.5]), X(s, [0.97, y, -0.48])], 6), UC.pro, { r0: 0.05, r1: 0.042, flare: 0.4, bulb: 0.5 * (1 - tub), sides: 8, n: 8 }, tub, op, { groups: ['pronefrosa'] });
       }
     });
     // The names point at what is left: below the gone front (the cranial units go first), gliding down with it.
@@ -250,7 +257,7 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
     for (const s of [-1, 1]) {
       const line = L([X(s, [0.97, PRO_Y[0], -0.48]), X(s, [0.99, PRO_Y[7], -0.46]), X(s, [WOLFF_X, 2.25, -0.42])], 16);
       const keep = line.slice(Math.floor(line.length * 0.85 * gone));
-      tube(`pduct${s}`, 'hodi-pronefrikoa', grown(keep, pose.proDuct), UC.pro, 0.06, 1 - 0.85 * gone, { groups: ['pronefrosa'] });
+      vess(`pduct${s}`, 'hodi-pronefrikoa', keep, UC.pro, { r0: 0.06, r1: 0.055, bulb: 0.45 * (1 - ss(0.85, 1, pose.proDuct)), sides: 10, n: 18 }, pose.proDuct, 1 - 0.85 * gone, { groups: ['pronefrosa'] });
     }
     pts['hodi-pronefrikoa'] = X(1, [0.99, PRO_Y[5], -0.46]);
   }
@@ -271,8 +278,11 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
         if (op <= 0.01) return;
         const lat = X(s, [WOLFF_X - 0.04, y, -0.4]);
         const cup = X(s, [0.63, y + 0.02, -0.3]);
-        const tub = L([lat, X(s, [0.98, y + 0.1, -0.2]), X(s, [0.86, y - 0.06, -0.16]), X(s, [0.76, y + 0.08, -0.28]), cup], 14);
-        tube(`mtub${j}${s}`, 'hodixka-mesonefrikoak', tub, UC.meso, 0.05, op, { groups: ['mesonefrosa'] }, 8);
+        // An S-shaped tubule, a little different at each level (tissue, not a stamped pattern), its medial end
+        // opening into Bowman's cup round the glomerulus; it grows from the duct medially as the mesonephros forms.
+        const w = Math.sin(j * 2.17 + s) * 0.05, v = Math.cos(j * 1.37) * 0.04;
+        const tub = L([lat, X(s, [1.0 + v, y + 0.11 + w, -0.2]), X(s, [0.87, y - 0.07 - w, -0.12 + v]), X(s, [0.75 - v, y + 0.09, -0.26]), cup], 16);
+        vess(`mtub${j}${s}`, 'hodixka-mesonefrikoak', tub, UC.meso, { r0: 0.052, r1: 0.045, flare: 0.5, flareLen: 0.08, cup: 0.9, cupLen: 0.1, sides: 9, n: 18 }, ss(0, 0.7, show), ss(0, 0.2, show) * (1 - gone), { groups: ['mesonefrosa'] });
         // Bowman's capsule round the glomerulus (a cup), the glomerulus inside it from the aorta.
         ball(`mcap${j}${s}`, 'kapsula-glomerularra', add(cup, X(s, [-0.05, 0, 0])), [0.1, 0.1, 0.1], UC.meso, 0.55 * op, { groups: ['mesonefrosa', 'korpuskulua'], thin: 0.6 }, 8, 10);
         const gl = o.glom ?? 1;
@@ -294,7 +304,8 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
   if (pose.wolff > 0.01)
     for (const s of [-1, 1]) {
       const line = wolffLine(s);
-      tube(`wolff${s}`, 'hodi-mesonefrikoa', grown(line, pose.wolff), UC.wolff, 0.065, 1, { deep: UC.wolffDeep });
+      // Growing caudally to the cloaca: its tip leads, a little swollen, and it widens where it opens into the cloaca.
+      vess(`wolff${s}`, 'hodi-mesonefrikoa', line, UC.wolff, { r0: 0.068, r1: 0.06, bulb: 0.4 * (1 - ss(0.9, 1, pose.wolff)), bulbLen: 0.25, cup: 0.5 * ss(0.95, 1, pose.wolff), cupLen: 0.25, sides: 12, n: 40 }, pose.wolff, 1, { deep: UC.wolffDeep });
       if (s > 0) pts['hodi-mesonefrikoa'] = line[22];
     }
 
@@ -323,9 +334,11 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
       const end = mix3(root, X(s, [0.32, -4.15, 0.32]), bl);
       const budLine = L([root, X(s, [0.9, -3.75, -0.5]), add(kidneyAt(s, 0), X(s, [-0.05, -0.1, 0.05]))], 12);
       const ureter = L([hilum, add(mix3(hilum, end, 0.5), X(s, [0.05, 0, -0.1])), end], 20);
-      const line = kid < 0.5 ? grown(budLine, pose.bud) : ureter;
       const id = kid < 0.5 ? 'ureter-kimua' : 'ureterra';
-      tube(`bud${s}`, id, line, UC.bud, kid < 0.5 ? 0.06 : 0.055, 1, { groups: ['ureter-kimua', 'sistema-biltzailea'], deep: UC.budDeep });
+      // The bud: out of the duct (flared root), its tip the ampulla that pushes into the blastema. The ureter:
+      // widening into the pelvis at the hilum, narrow down to the bladder.
+      if (kid < 0.5) vess(`bud${s}`, id, budLine, UC.bud, { r0: 0.06, r1: 0.065, flare: 0.5, bulb: 0.9, bulbLen: 0.22, sides: 12, n: 16 }, pose.bud, 1, { groups: ['ureter-kimua', 'sistema-biltzailea'], deep: UC.budDeep });
+      else vess(`bud${s}`, id, ureter, UC.bud, { r0: 0.11, r1: 0.05, flare: 0.8, flareLen: 0.25, sides: 12, n: 22 }, 1, 1, { groups: ['ureter-kimua', 'sistema-biltzailea'], deep: UC.budDeep });
       if (s > 0) {
         pts['ureter-kimua'] = budLine[6];
         pts['ureterra'] = ureter[12];
@@ -335,7 +348,12 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
       // The blastema cap, then the bean-shaped kidney (its size grows with the nephrons).
       const r: V3 = [lerp(0.24, 0.32, kid), lerp(0.24, 0.56, kid), lerp(0.22, 0.25, kid)];
       const id = kid > 0.5 ? 'giltzurruna' : 'blastema-metanefrikoa';
-      ball(`kid${s}`, id, K, r.map((v) => v * Math.max(0.3, clamp01(pose.blast + kid))) as unknown as V3, kid > 0.5 ? UC.kidney : UC.blast, 0.92, { groups: ['metanefrosa', 'blastema-metanefrikoa'], deep: kid > 0.5 ? UC.kidneyDeep : UC.blastDeep }, 14, 18);
+      // A bean once it is a kidney: its hilum faces forward at first and turns medially as it climbs (the kidneys
+      // rotate 90° during the ascent).
+      const rr = r.map((v) => v * Math.max(0.3, clamp01(pose.blast + kid))) as unknown as V3;
+      const turn = (Math.PI / 2) * asc;
+      const hil: V3 = [-s * Math.sin(turn), 0, Math.cos(turn)];
+      items.push({ key: `kid${s}`, id, ...bean({ center: K, radii: rr, rings: 16, sides: 22, hilum: hil, dent: 0.3 * ss(0.3, 1, kid), lobes: 0.03 * ss(0.5, 1, kid) }), color: kid > 0.5 ? UC.kidney : UC.blast, deep: kid > 0.5 ? UC.kidneyDeep : UC.blastDeep, tissue: 'epithelium', opacity: 0.92 * fade(id, ['metanefrosa', 'blastema-metanefrikoa']), groups: ['metanefrosa', 'blastema-metanefrikoa'] });
       if (s > 0) {
         pts['blastema-metanefrikoa'] = add(K, [0.22, 0.05, 0.12]);
         pts['giltzurruna'] = add(K, [0.25, 0.15, 0.1]);
@@ -360,7 +378,8 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
   if (mu > 0.01)
     for (const s of [-1, 1]) {
       const line = mullerLine(s, clamp01(pose.mullerJoin ?? 0));
-      tube(`muller${s}`, 'hodi-paramesonefrikoa', grown(line, mu), UC.muller, 0.06, 1, { deep: UC.mullerDeep });
+      // Its cranial end a funnel open to the coelom (the root, flared), its caudal tip leading as it grows down.
+      vess(`muller${s}`, 'hodi-paramesonefrikoa', line, UC.muller, { r0: 0.06, r1: 0.058, flare: 0.9, flareLen: 0.12, bulb: 0.45 * (1 - ss(0.9, 1, mu)), bulbLen: 0.22, sides: 12, n: 40 }, mu, 1, { deep: UC.mullerDeep });
       // Its cranial end opens into the coelom: a small funnel.
       ball(`mfun${s}`, 'hodi-paramesonefrikoa', line[0], [0.11, 0.09, 0.11], UC.muller, ss(0, 0.2, mu), { deep: UC.mullerDeep, thin: 0.4 }, 8, 10);
       if (s > 0) {
