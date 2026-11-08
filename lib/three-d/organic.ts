@@ -423,11 +423,14 @@ export function wallSlab(sp: SlabSpec): { surface: Parts; cut: Parts } {
 /**
  * A flat plate: a star-shaped outline in the x–y plane (from its centroid) extruded between z0 (its front) and
  * z1, rounded nowhere (it is a cut). The back face of a section block: the section's own tissues as a solid
- * ground behind what stands in the block. Built once per key.
+ * ground behind what stands in the block. `frame` stands it in another plane (a sagittal cut face). Built once
+ * per key.
  */
-export function plate(key: string, outline: readonly (readonly [number, number])[], z0: number, z1: number): Parts {
+export function plate(key: string, outline: readonly (readonly [number, number])[], z0: number, z1: number, frame?: { u: V3; v: V3; w: V3 }): Parts {
   let p = plates.get(key);
   if (!p) {
+    // In another plane: the plate's own x, y, z along `frame`'s u, v, w (a right-handed set: u × v = w).
+    const at = frame ? (x: number, y: number, z: number): V3 => add(add(mul(frame.u, x), mul(frame.v, y)), mul(frame.w, z)) : (x: number, y: number, z: number): V3 => [x, y, z];
     const build = (o: readonly (readonly [number, number])[]) => {
       const n = o.length;
       const cx = o.reduce((a, q) => a + q[0], 0) / n;
@@ -438,10 +441,10 @@ export function plate(key: string, outline: readonly (readonly [number, number])
       // Front face (towards +z when z0 > z1): a fan from the centre.
       const face = (z: number, front: boolean) => {
         const c = pos.length / 3;
-        pos.push(cx, cy, z);
+        pos.push(...at(cx, cy, z));
         uv.push(0.5, 0.5);
         o.forEach((q) => {
-          pos.push(q[0], q[1], z);
+          pos.push(...at(q[0], q[1], z));
           uv.push(0, 0);
         });
         for (let i = 0; i < n; i++) {
@@ -457,7 +460,7 @@ export function plate(key: string, outline: readonly (readonly [number, number])
       // The rim: its own vertices (a sharp edge with each face).
       const r = pos.length / 3;
       o.forEach((q, i) => {
-        pos.push(q[0], q[1], z0, q[0], q[1], z1);
+        pos.push(...at(q[0], q[1], z0), ...at(q[0], q[1], z1));
         uv.push(i / n, 0, i / n, 1);
       });
       for (let i = 0; i < n; i++) {

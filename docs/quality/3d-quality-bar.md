@@ -119,6 +119,8 @@ node scripts/quality/stage-sheet.mjs 15 docs/quality/sheets/w15 --base http://lo
 | 15 `mesonefrosa`, `metanefrosa`, `giltzurrun-igoera` | Pronephric and mesonephric tubules, the Wolff and Müller ducts and the ureteric bud are vessels grown by arc length; mesonephric tubules are S-shapes with a cup. Kidneys are beans whose hilum turns from ventral to medial as they rise. |
 | 15 `nefrona` | Lies on a cut face of the cortex. The collecting tubule tapers, its branches flare out of it into ampullae, and the cap is a cup of tissue over the ampulla. The nephron is one vessel whose centre line bends from the vesicle (a ring round its lumen) to the comma, the S-shaped body and the grown nephron. Its near end flares into the ampulla as they fuse; its far end carries a double-walled cup (`cupShell`) round a lobed glomerulus, the mouth turned to the arterioles. The later nephrons go through the same development one after another. |
 | 15 `giltzurrun-gaineko-guruinak` | A solid gland cut open (`cutOpen`): its back half whole, its layers as rings on the cut face. The definitive cortex spreads in as the fetal cortex thins to nothing; the medulla shrinks, then grows. It lies on the posterior wall, with the urogenital ridge below (its cells stream up into the fetal cortex) and, medially, the aorta and the sympathetic trunk. The crest cells leave the ganglion as a chain and settle into a cluster that becomes the medulla. |
+| 15 `sinu-urogenitala`, `gernu-maskuria`, `uretra` (side views) | The body is a solid cut down the middle: an opaque mid-sagittal cut face (`plate` in the sagittal plane) with the skin round it and the vertebral bodies along the back, the organs lying half in it. The urorectal septum grows down as a fold with a rounded leading edge. The rectum, allantois, ducts and urethra are profiled vessels. |
+| 15 `gernu-maskuria` (back view) | A solid bladder against the anterior wall (the ground seen past it); the urethra and urachus flare out of it; the ducts flare into its wall where they open. |
 | 16 `kanpo-genitalak`, `-emeak`, `-arrak` | The perineal skin is ground (keeps its colour), and the framing keeps the whole disc in sight. |
 | 15 `sistema-biltzailea` (pilot) | Rebuilt on the kit. The bud's tip swells into the ampulla, then opens into a flattened funnel (one shape changing). Major calyces → minor calyces → two generations of collecting tubules grow by arc length, each tip an ampulla in a cap of blastema; minor calyces end in cups. The blastema becomes a bean with a hilum. |
 
@@ -126,7 +128,7 @@ node scripts/quality/stage-sheet.mjs 15 docs/quality/sheets/w15 --base http://lo
 
 | Stage(s) | What it needs |
 |---|---|
-| 15 `sinu-urogenitala`, `gernu-maskuria`, `uretra` | A sagittal half-section as a solid with a cut face. The urorectal septum growing down as a fold. The trigone absorbed into the bladder wall. |
+| 15 `sinu-urogenitala`, `gernu-maskuria`, `uretra` (still owed) | Hollow organs shown cut open (lumen and wall) rather than as half-reliefs; the phallus as a solid half with the urethra in it (it is still see-through); the ducts' ends visibly absorbed into the bladder wall. |
 | 15 `zakil-uretra` | A glans section with cut faces; the ectodermal cord canalising. |
 | 16 gonad block stages | A solid block; sex cords as profiled vessels. |
 | 16 ducts | Müller ducts fusing with a dissolving septum (uterus); profiled ducts. |

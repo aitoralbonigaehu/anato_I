@@ -1,6 +1,7 @@
 import { add, mix3, norm, type V3 } from '@/lib/three-d/math';
 import { curve3, grid } from '@/lib/three-d/mesh';
 import { cachedMesh } from '@/lib/three-d/mesh-cache';
+import { plate, vessel, type VesselOptions } from '@/lib/three-d/organic';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
 import { UC } from './uro-model';
@@ -15,6 +16,10 @@ import { UC } from './uro-model';
  *
  * Own frame: x towards the embryo's LEFT, y cranial, z ventral. Seen from behind: the embryo's left on the
  * viewer's left.
+ *
+ * Built to the quality bar (docs/quality/3d-quality-bar.md): a solid bladder lying against the anterior body
+ * wall (the ground, seen past it), the urethra and the urachus flaring out of it, the ducts as tapered vessels
+ * flaring into its wall where they open.
  */
 
 export interface TrigonePose {
@@ -38,6 +43,12 @@ const darker = (c: string) => mixHex(c, '#000000', 0.55);
 const L = (kps: readonly V3[], n = 16) => curve3(kps as V3[], n);
 
 const BR: V3 = [1.0, 1.25, 0.8];
+/** The anterior body wall behind the bladder (seen from behind, it is the ground). */
+const FRONT_WALL = Array.from({ length: 48 }, (_, i): [number, number] => {
+  const a = (i / 48) * Math.PI * 2;
+  const c = Math.cos(a), sn = Math.sin(a);
+  return [3.0 * Math.sign(c) * Math.abs(c) ** 0.4, -0.1 + 2.7 * Math.sign(sn) * Math.abs(sn) ** 0.4];
+});
 /** A point on the bladder's back surface (z < 0) above (x, y), a little out. */
 const onBack = (x: number, y: number, out = 0.03): V3 => {
   const u = x / BR[0];
@@ -57,15 +68,21 @@ export function trigoneModel(pose: TrigonePose, o: TrigoneOpts = {}) {
     if (op <= 0.01 || line.length < 2) return;
     items.push({ key, id, ...tubeParts(line, { radius: () => r, ref: [0, 0, 1], sides: 14, capStart: true, capEnd: true }), color, deep: darker(color), tissue: 'epithelium', opacity: op * fade(id, extra.groups), ...extra });
   };
+  const vess = (key: string, id: string, line: V3[], color: string, prof: VesselOptions, op = 1, extra: Partial<Item3> = {}) => {
+    const parts = op > 0.01 ? vessel(line, { ref: [0, 0, 1], sides: 14, ...prof }) : null;
+    if (parts) items.push({ key, id, ...parts, color, deep: darker(color), tissue: 'epithelium', opacity: op * fade(id, extra.groups), ...extra });
+  };
   const absorb = clamp01(pose.absorb);
   const part = clamp01(pose.part);
 
   // The bladder (endoderm), pear-shaped: wider below the apex; the urethra below; the urachus from its apex.
-  items.push({ key: 'bladder', id: 'gernu-maskuria', ...blobParts({ center: [0, 0, 0], radii: BR, rings: 18, sides: 26 }), color: mixHex(UC.endo, '#fff3c4', 0.3), deep: UC.endoDeep, tissue: 'epithelium', opacity: 0.92 * fade('gernu-maskuria') });
+  items.push({ key: 'wall', ...plate('trigone-front-wall-v1', FRONT_WALL, 1.05, 1.3), color: UC.wall, deep: UC.wallDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
+  items.push({ key: 'bladder', id: 'gernu-maskuria', ...blobParts({ center: [0, 0, 0], radii: BR, rings: 22, sides: 30 }), color: mixHex(UC.endo, '#fff3c4', 0.3), deep: UC.endoDeep, tissue: 'epithelium', opacity: fade('gernu-maskuria') });
   pts['gernu-maskuria'] = [-0.85, 0.65, -0.35];
-  tube('urethra', 'uretra', L([[0, -1.15, -0.05], [0, -1.6, 0], [0, -2.1, 0.05]], 8), UC.endo, 0.18, 0.9);
+  // The urethra and the urachus leave the bladder flared, narrowing away from it (no seam where they join).
+  vess('urethra', 'uretra', L([[0, -0.95, -0.05], [0, -1.6, 0], [0, -2.3, 0.05]], 10), UC.endo, { r0: 0.2, r1: 0.15, flare: 0.9, flareLen: 0.35 });
   pts['uretra'] = [0.2, -1.8, -0.1];
-  tube('urachus', 'urakoa', L([[0, 1.15, 0.15], [0, 1.7, 0.35], [0, 2.3, 0.6]], 8), '#d8c08a', 0.09, 0.85);
+  vess('urachus', 'urakoa', L([[0, 0.95, 0.12], [0, 1.7, 0.35], [0, 2.4, 0.62]], 10), '#d8c08a', { r0: 0.12, r1: 0.07, flare: 0.8, flareLen: 0.3 }, 0.95);
   pts['urakoa'] = [0.15, 1.95, 0.35];
 
   // Openings on the back wall: ureters (upper, lateral) and ducts (lower, medial); one common end at first.
@@ -77,11 +94,11 @@ export function trigoneModel(pose: TrigonePose, o: TrigoneOpts = {}) {
     const join: V3 = add(common, [s * 0.55 * (1 - absorb), 0.25 * (1 - absorb), -0.45 * (1 - absorb)]);
     // The mesonephric duct comes down from above and laterally; after parting it runs on downwards.
     const wo = L([[s * 1.9, 2.0, -0.9], [s * 1.6, 0.8, -1.0], mix3(join, add(woO, [s * 0.4, 0.2, -0.3]), part), woO], 22);
-    tube(`wolff${s}`, 'hodi-mesonefrikoa', wo, UC.wolff, 0.1, 1, { deep: UC.wolffDeep });
+    vess(`wolff${s}`, 'hodi-mesonefrikoa', wo.slice().reverse(), UC.wolff, { r0: 0.1, r1: 0.11, flare: 0.5 * absorb, flareLen: 0.18 }, 1, { deep: UC.wolffDeep });
     // The ureter: the duct's branch; once apart it reaches the bladder by itself, higher.
     const urFrom = mix3(wo[12], [s * 2.0, 0.9, -0.7], part);
     const ur = L([[s * 2.3, 2.1, -0.4], mix3([s * 2.0, 1.6, -0.5], urFrom, 0.5), mix3(urFrom, add(urO, [s * 0.35, 0.15, -0.3]), part), part > 0.05 ? urO : join], 22);
-    tube(`ureter${s}`, 'ureterra', ur, UC.bud, 0.085, 1, { deep: UC.budDeep, groups: ['ureter-kimua'] });
+    vess(`ureter${s}`, 'ureterra', ur.slice().reverse(), UC.bud, { r0: 0.085, r1: 0.075, flare: 0.5 * absorb * Math.min(1, part * 4), flareLen: 0.16 }, 1, { deep: UC.budDeep, groups: ['ureter-kimua'] });
     if (s > 0) {
       pts['hodi-mesonefrikoa'] = add(wo[5], [0.15, 0, -0.1]);
       pts['ureterra'] = add(ur[6], [0.12, 0.05, -0.1]);

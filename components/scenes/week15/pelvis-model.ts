@@ -1,5 +1,6 @@
 import { add, mix3, type V3 } from '@/lib/three-d/math';
 import { curve3 } from '@/lib/three-d/mesh';
+import { plate, vessel, type VesselOptions } from '@/lib/three-d/organic';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
 import { T } from '@/components/scenes/week10/common';
@@ -19,6 +20,11 @@ import { UC } from './uro-model';
  * long in the male (prostatic, membranous and penile parts, the prostate).
  *
  * Axes as every model of the topic: x towards the embryo's LEFT, y cranial, z ventral.
+ *
+ * Built to the quality bar (docs/quality/3d-quality-bar.md): the body is a solid cut down the middle, its cut
+ * face (the mid-sagittal plane, x = 0) an opaque ground of mesenchyme with the vertebral column along the back,
+ * and the organs lie half in it as they do in a section. Ducts are profiled vessels grown by arc length; the
+ * urorectal septum grows down as a fold with a rounded leading edge.
  */
 
 export interface PelvisPose {
@@ -61,6 +67,15 @@ const SEPT_TOP: V3 = [0, -0.15, -0.05];
 const SEPT_BOT: V3 = [0, -1.62, -0.05];
 const UMB: V3 = [0, 2.0, 1.75];
 const LIGAMENT = '#c9c1b2';
+/** The body's outline in the cut (z, y), from the cord round the tail end to the back. */
+const OUTLINE = L([[0, 2.6, 1.7], UMB, [0, 0.6, 1.85], [0, -0.9, 1.65], [0, -1.62, 1.35], [0, -2.0, 0.85], [0, -2.15, 0.1], [0, -2.15, -0.6], [0, -1.75, -1.45], [0, -0.5, -1.9], [0, 1.2, -1.95], [0, 2.6, -1.9]], 60);
+/** The cut face (the plane x = 0, facing the viewer on the embryo's left): its own (−z, y) in the plane. */
+const SAGITTAL = { u: [0, 0, -1] as V3, v: [0, 1, 0] as V3, w: [1, 0, 0] as V3 };
+const SECTION = OUTLINE.map((p): [number, number] => [-p[2], p[1]]);
+/** The cut face's mesenchyme: pale and cool, so the endoderm and the ducts stand out from it lit or not. */
+const CUT = '#9c8f8a';
+const CUT_DEEP = '#3e3532';
+const SPINE = L([[0, 2.35, -1.42], [0, 0.4, -1.5], [0, -1.15, -1.25], [0, -1.72, -0.85]], 11);
 
 export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
   const items: Item3[] = [];
@@ -70,6 +85,11 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
   const tube = (key: string, id: string | undefined, line: V3[], color: string, r: number | ((u: number) => number), op = 1, extra: Partial<Item3> = {}, sides = 14) => {
     if (op <= 0.01 || line.length < 2) return;
     items.push({ key, id, ...tubeParts(line, { radius: typeof r === 'number' ? () => r : r, ref: [1, 0, 0], sides, capStart: true, capEnd: true }), color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
+  };
+  const vess = (key: string, id: string | undefined, line: V3[], color: string, prof: VesselOptions, g = 1, op = 1, extra: Partial<Item3> = {}) => {
+    if (op <= 0.01) return;
+    const parts = vessel(line, { ref: [1, 0, 0], ...prof }, g);
+    if (parts) items.push({ key, id, ...parts, color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
   };
   const ball = (key: string, id: string | undefined, c: V3, r: V3, color: string, op = 1, extra: Partial<Item3> = {}, rings = 12, sides = 16) => {
     if (op <= 0.01) return;
@@ -81,18 +101,21 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
   const female = clamp01(pose.female);
   const male = clamp01(pose.male);
 
-  // ———— the body's caudal end: its outline in the cut (ectoderm), the cord at the navel ————
-  const outline = L([[0, 2.6, 1.7], UMB, [0, 0.6, 1.85], [0, -0.9, 1.65], [0, -1.62, 1.35], [0, -2.0, 0.85], [0, -2.15, 0.1], [0, -2.15, -0.6], [0, -1.75, -1.45], [0, -0.5, -1.9], [0, 1.2, -1.95], [0, 2.6, -1.9]], 60);
-  tube('skin', 'azaleko-ektodermoa', outline, T.ecto, 0.05, 0.8, { quiet: true });
-  ball('body', undefined, [0, 0.2, 0], [1.0, 2.6, 2.0], '#f0c9b4', 0.07, { tissue: 'skin', outline: false, quiet: true, deep: '#a07060' }, 16, 20);
+  // ———— the body's caudal end cut down the middle: the cut face (mesenchyme), the skin round it, the cord ————
+  items.push({ key: 'section', ...plate('pelvis-sagittal-v1', SECTION, 0, -0.35, SAGITTAL), color: CUT, deep: CUT_DEEP, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
+  tube('skin', 'azaleko-ektodermoa', OUTLINE, T.ecto, 0.075, 1, { quiet: true, ground: true });
+  // The vertebral column along the back, cut down its middle (sacrum and coccyx at the tail end).
+  SPINE.forEach((p, k) => {
+    // Vertebral bodies (cartilage at this age): low blocks with discs between, smaller towards the coccyx.
+    const r = lerp(0.2, 0.08, k / (SPINE.length - 1));
+    items.push({ key: `vert${k}`, ...blobParts({ center: p, radii: [r * 0.55, r * 0.62, r * 1.05], rings: 8, sides: 12 }), color: '#cfc6b4', deep: '#6e6656', tissue: 'bone', opacity: 1, quiet: true, ground: true });
+  });
   tube('cord', 'zilborrestea', L([add(UMB, [0, -0.1, -0.1]), add(UMB, [0, 0.35, 0.55]), add(UMB, [0, 0.6, 1.1])], 8), '#d9d2e6', 0.34, 0.25, { outline: false, tissue: 'membrane' });
   pts['zilborrestea'] = add(UMB, [0, 0.55, 1.0]);
-  // A spine-like line of mesoderm behind (sacrum and coccyx, context).
-  tube('back', undefined, L([[0, 2.4, -1.45], [0, 0.4, -1.5], [0, -1.2, -1.25], [0, -1.85, -0.85]], 16), '#e9e1cf', 0.16, 0.18, { quiet: true, outline: false, tissue: 'bone' });
 
   // ———— the hindgut → rectum and anal canal ————
   const hg = L([[0, 2.3, -0.95], [0, 1.0, -0.85], [0, -0.1, -0.62], [0, -0.55, -0.42]], 18);
-  tube('rectum', 'atzeko-hestea', hg, UC.endo, 0.24, 0.9, { deep: UC.endoDeep });
+  vess('rectum', 'atzeko-hestea', hg, UC.endo, { r0: 0.27, r1: 0.23, sides: 16 }, 1, 1, { deep: UC.endoDeep });
   pts['atzeko-hestea'] = add(hg[5], [0.2, 0, -0.1]);
 
   // ———— the cloaca: one cavity; as the septum comes down its front half (the sinus) and its back half (the anal
@@ -159,7 +182,8 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
   // ———— the urorectal septum (mesoderm), growing down to the skin; its end = the perineum ————
   if (sept > 0.01) {
     const tip = mix3(SEPT_TOP, SEPT_BOT, sept);
-    items.push({ key: 'sept', id: 'trenkada-uroerrektala', ...blobParts({ center: mix3(SEPT_TOP, tip, 0.5), radii: [0.4, Math.max(0.05, (SEPT_TOP[1] - tip[1]) / 2 + 0.05), 0.09], rings: 10, sides: 14 }), color: T.lateral, deep: darker(T.lateral), tissue: 'mesenchyme', opacity: fade('trenkada-uroerrektala') });
+    // A fold of mesoderm growing down between the two halves: wide where it starts, its leading edge rounded.
+    vess('sept', 'trenkada-uroerrektala', [[0, 0.05, -0.08], SEPT_TOP, mix3(SEPT_TOP, SEPT_BOT, 0.5), SEPT_BOT], T.lateral, { r0: 0.2, r1: 0.11, bulb: 0.35, bulbLen: 0.25, flat: 0.2, sides: 14, n: 24 }, 0.12 + 0.88 * sept, 1, { tissue: 'mesenchyme' });
     pts['trenkada-uroerrektala'] = add(mix3(SEPT_TOP, tip, 0.55), [0.4, 0, 0]);
     const per = ss(0.85, 1, sept) * split;
     if (per > 0.01) {
@@ -176,9 +200,8 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
     const al = L([base, [0, 0.9, 1.4], [0, 1.6, 1.55], add(UMB, [0, -0.05, -0.12])], 18);
     const id = lig > 0.5 ? 'erdiko-zilbor-lotailua' : ura > 0.5 ? 'urakoa' : 'alantoidea';
     const col = mixHex(mixHex(UC.endo, '#d8c08a', ura), LIGAMENT, lig);
-    tube('allantois', id, al, col, lerp(0.14, 0.07, ura), 1, { groups: ['alantoidea', 'urakoa', 'erdiko-zilbor-lotailua'], deep: darker(col) });
-    // The lumen while it lasts (a dark core seen through the wall).
-    if (ura < 0.99) tube('allumen', undefined, al.slice(1, -1), '#3a2a10', 0.06, 0.6 * (1 - ura), { quiet: true, outline: false }, 8);
+    // Narrowing towards the navel, flared where it leaves the bladder; thinner as it loses its lumen.
+    vess('allantois', id, al, col, { r0: lerp(0.15, 0.08, ura), r1: lerp(0.09, 0.05, ura), flare: 0.6, flareLen: 0.3, sides: 14 }, 1, 1, { groups: ['alantoidea', 'urakoa', 'erdiko-zilbor-lotailua'], deep: darker(col) });
     pts[id] = add(al[10], [0.18, 0, 0.12]);
     pts['alantoidea'] = pts[id];
     pts['urakoa'] = pts[id];
@@ -207,11 +230,11 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
     const urOpen = mix3(common, [0.3, 0.12, 0.38], part);
     const woOpen = mix3(common, [0.18, -1.0, 0.5], part);
     const wolff = L([add(meso, [0, -0.5, 0.05]), [0.62, 0.2, -0.75], [0.5, -0.5, -0.1], woOpen], 20);
-    tube('wolff', 'hodi-mesonefrikoa', wolff, UC.wolff, 0.06, ducts, { deep: UC.wolffDeep });
+    vess('wolff', 'hodi-mesonefrikoa', wolff, UC.wolff, { r0: 0.065, r1: 0.06, flare: 0.5, flareLen: 0.2, sides: 10 }, 1, ducts, { deep: UC.wolffDeep });
     pts['hodi-mesonefrikoa'] = add(wolff[8], [0.12, 0, 0.05]);
     const urBase = mix3(wolff[17], urOpen, part);
     const ureter = L([add(K, [-0.05, -0.3, 0.2]), mix3(add(K, [0, -0.4, 0.25]), urBase, 0.5), urBase], 18);
-    tube('ureter', 'ureterra', ureter, UC.bud, 0.055, ducts, { deep: UC.budDeep, groups: ['ureter-kimua'] });
+    vess('ureter', 'ureterra', ureter, UC.bud, { r0: 0.09, r1: 0.055, flare: 0.4, flareLen: 0.25, sides: 10 }, 1, ducts, { deep: UC.budDeep, groups: ['ureter-kimua'] });
     pts['ureterra'] = add(ureter[9], [0.12, 0, 0.05]);
   }
 
@@ -226,7 +249,7 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
     const base: V3 = [0, -1.55, 1.25];
     const tipP: V3 = [0, -2.35, 2.55];
     const shaft = L([base, mix3(base, tipP, 0.5), tipP], 12);
-    tube('penis', 'zakila', grown(shaft, male), '#f0b39a', 0.3, 0.35, { tissue: 'skin', outline: false });
+    vess('penis', 'zakila', shaft, '#f0b39a', { r0: 0.34, r1: 0.28, flare: 0.25, sides: 18 }, male, 0.35, { tissue: 'skin', outline: false });
     ball('glans', 'glandea', add(tipP, [0, -0.08, 0.12]), [0.34 * male, 0.3 * male, 0.38 * male], '#f0a8bc', 0.55, { tissue: 'skin' }, 10, 12);
     pts['zakila'] = add(shaft[5], [0.3, 0.15, 0]);
     pts['glandea'] = add(tipP, [0.3, 0.1, 0.3]);
@@ -234,9 +257,9 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
     const pros = L([[0, -0.7, 0.66], [0, -1.0, 0.68]], 6);
     const memb = L([[0, -1.0, 0.68], [0, -1.35, 0.85], [0, -1.55, 1.2]], 8);
     const pen = L([[0, -1.55, 1.2], mix3(base, tipP, 0.45), add(tipP, [0, 0.05, -0.18])], 14);
-    tube('upros', 'uretra-prostatikoa', pros, '#ffd34d', 0.075, male, { groups: ['uretra'], deep: UC.endoDeep }, 10);
-    tube('umemb', 'mintzezko-uretra', memb, '#f2b53a', 0.07, male, { groups: ['uretra'], deep: UC.endoDeep }, 10);
-    tube('upen', 'zakil-uretra', grown(pen, male), '#e89a2c', 0.07, male, { groups: ['uretra'], deep: UC.endoDeep }, 10);
+    vess('upros', 'uretra-prostatikoa', pros, '#ffd34d', { r0: 0.1, r1: 0.08, flare: 0.5, flareLen: 0.12, sides: 12 }, 1, male, { groups: ['uretra'], deep: UC.endoDeep });
+    vess('umemb', 'mintzezko-uretra', memb, '#f2b53a', { r0: 0.08, r1: 0.07, sides: 12 }, 1, male, { groups: ['uretra'], deep: UC.endoDeep });
+    vess('upen', 'zakil-uretra', pen, '#e89a2c', { r0: 0.075, r1: 0.06, sides: 12 }, male, male, { groups: ['uretra'], deep: UC.endoDeep });
     pts['uretra-prostatikoa'] = [0.15, -0.82, 0.7];
     pts['mintzezko-uretra'] = [0.15, -1.3, 0.85];
     pts['zakil-uretra'] = add(pen[8], [0.12, 0, 0]);
