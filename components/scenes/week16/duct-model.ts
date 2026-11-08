@@ -60,6 +60,8 @@ export const DP0: DuctPose = { ducts: 1, male: 0, efferent: 0, epididymis: 0, ve
 
 export interface DuctOpts {
   dim?: { ids: readonly string[]; k: number } | null;
+  /** Seen from behind: the wall the ducts lie on moves to the far side (it would hide them). */
+  back?: boolean;
 }
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
@@ -125,7 +127,7 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
     put(key, id, vessel(line, { ref: [0, 0, 1], sides: 12, ...prof }, g), color, op, extra);
   const male = clamp01(pose.male);
   const female = clamp01(pose.female);
-  items.push({ key: 'wall', ...plate('ducts16-wall-v1', WALL, -0.8, -1.05), color: UC.wall, deep: UC.wallDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
+  items.push({ key: 'wall', ...(o.back ? plate('ducts16-wall-back-v1', WALL, 1.05, 1.3) : plate('ducts16-wall-v1', WALL, -0.8, -1.05)), color: UC.wall, deep: UC.wallDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
   const ovd = clamp01(pose.ovDown ?? 0);
   const gon = (s: number): V3 => add(GON(s), X(s, [-0.2 * ovd, -0.65 * ovd, 0.1 * ovd]));
 

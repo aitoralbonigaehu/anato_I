@@ -1,5 +1,7 @@
 import { mix3, type V3 } from '@/lib/three-d/math';
-import { curve3 } from '@/lib/three-d/mesh';
+import { curve3, grid, merge } from '@/lib/three-d/mesh';
+import { cachedMesh } from '@/lib/three-d/mesh-cache';
+import { plate, vessel, type VesselOptions } from '@/lib/three-d/organic';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
 import { T } from '@/components/scenes/week10/common';
@@ -14,6 +16,11 @@ import { UC } from '@/components/scenes/week15/uro-model';
  * behind the rectouterine pouch (between uterus and rectum). The ovaries end behind the broad ligament.
  *
  * Own frame (a block): x = the embryo's LEFT, y = DORSAL, z = CRANIAL; seen from the cranial side, dorsal up.
+ *
+ * Built to the quality bar (docs/quality/3d-quality-bar.md): a solid slab. The body wall is a ring with
+ * thickness (its cut face on top, the inside lined with peritoneum), the cavity has a floor (the next cut), the
+ * folds are sheets with real thickness running through the slab, and the organs are solid. The two pouches stay
+ * see-through on purpose: they are spaces.
  */
 
 export interface BroadPose {
@@ -22,9 +29,11 @@ export interface BroadPose {
   /** The bladder in front (0..1); the two pouches named (0..1). */
   bladder: number;
   pouches: number;
+  /** 0..1: the wall's right half lifts away (the block seen from that side). */
+  open?: number;
 }
 
-export const BR0: BroadPose = { merge: 0, bladder: 0, pouches: 0 };
+export const BR0: BroadPose = { merge: 0, bladder: 0, pouches: 0, open: 0 };
 
 export interface BroadOpts {
   dim?: { ids: readonly string[]; k: number } | null;
@@ -35,8 +44,32 @@ const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
 const darker = (c: string) => mixHex(c, '#000000', 0.55);
 const L = (kps: readonly V3[], n = 16) => curve3(kps as V3[], n);
 const ZH = 0.85;
+const ss01 = (a: number, b: number, x: number) => {
+  const u = clamp01((x - a) / (b - a));
+  return u * u * (3 - 2 * u);
+};
 const PERI = '#f9a8b8';
 const OVARY = '#b8e8e0';
+const RX = 2.25, RY = 1.75, IN = 0.86;
+const ell = (k: number, a: number, z: number): V3 => [RX * k * Math.sin(a), RY * k * Math.cos(a), z];
+/** The body wall: a ring of tissue the slab's height, its top the cut face, its inside the cavity's wall. */
+// Two halves (the embryo's left, x > 0, and right): the right one lifts away when the block is seen from that side.
+const half = (h: 0 | 1, u: number) => (h + u) * Math.PI;
+const WALL_TOP = (h: 0 | 1) => cachedMesh(`broad-wall-top-v2-${h}`, [], () => grid(32, 1, (u, v) => ell(lerp(IN, 1, v), half(h, u), ZH), [0, 0, 10]));
+const WALL_SIDES = (h: 0 | 1) =>
+  cachedMesh(`broad-wall-sides-v2-${h}`, [], () =>
+    merge([
+      grid(32, 2, (u, v) => ell(IN, half(h, u), lerp(ZH, -ZH, v)), [0, 0, 0]),
+      grid(32, 2, (u, v) => ell(1, half(h, u), lerp(ZH, -ZH, v)), [0, -10, 0]),
+      // The two ends of the half: the cut through the wall where the halves meet.
+      grid(1, 2, (u, v) => ell(lerp(IN, 1, u), half(h, 0), lerp(ZH, -ZH, v)), [h ? -10 : 10, 0, 0]),
+      grid(1, 2, (u, v) => ell(lerp(IN, 1, u), half(h, 1), lerp(ZH, -ZH, v)), [h ? -10 : 10, 0, 0]),
+    ]),
+  );
+const FLOOR = Array.from({ length: 48 }, (_, i): [number, number] => {
+  const a = (i / 48) * Math.PI * 2;
+  return [RX * IN * Math.sin(a), RY * IN * Math.cos(a)];
+});
 
 export function broadModel(pose: BroadPose, o: BroadOpts = {}) {
   const items: Item3[] = [];
@@ -53,37 +86,49 @@ export function broadModel(pose: BroadPose, o: BroadOpts = {}) {
     items.push({ key, id, ...blobParts({ center: c, radii: r, rings, sides }), color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
   };
   const m = clamp01(pose.merge);
+  const vess = (key: string, id: string | undefined, line: V3[], color: string, prof: VesselOptions, op = 1, extra: Partial<Item3> = {}) => {
+    const parts = op > 0.01 ? vessel(line, { ref: [0, 1, 0], sides: 16, ...prof }) : null;
+    if (parts) items.push({ key, id, ...parts, color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
+  };
 
-  // ———— the body wall (ring), the sacrum/vertebra behind, the rectum ————
-  const ring = Array.from({ length: 48 }, (_, i): V3 => {
-    const a = (i / 47) * Math.PI * 2;
-    return [2.25 * Math.sin(a), 1.75 * Math.cos(a), 0];
-  });
-  for (const z of [ZH, -ZH]) tube(`rim${z}`, undefined, ring.map((p) => [p[0], p[1], z] as V3), T.ecto, 0.03, 0.4, { quiet: true, outline: false }, 6);
-  ball('wall', undefined, [0, 0, 0], [2.25, 1.75, ZH], '#f0c9b4', 0.07, { outline: false, quiet: true, tissue: 'skin' }, 14, 24);
-  ball('sacrum', undefined, [0, 1.45, 0], [0.55, 0.28, ZH * 0.95], '#e9e1cf', 0.55, { tissue: 'bone', quiet: true }, 10, 14);
-  tube('rectum', 'ondestea', along(0, 0.85), UC.endo, 0.32, 0.85, { deep: UC.endoDeep });
+  // ———— the body wall (a ring with thickness), the cavity's floor, the sacrum behind, the rectum ————
+  const open = clamp01(pose.open ?? 0);
+  for (const h of [0, 1] as const) {
+    // h = 1 is the right half (x < 0), the side the block is turned to: it lifts away.
+    const op = h ? 1 - open : 1;
+    if (op < 0.02) continue;
+    const top = WALL_TOP(h), sides = WALL_SIDES(h);
+    items.push({ key: `wallTop${h}`, mesh: top, hit: top, color: UC.wallCut, deep: UC.wallCutDeep, tissue: 'mesenchyme', opacity: op, quiet: true, ground: true });
+    items.push({ key: `wallSides${h}`, mesh: sides, hit: sides, color: mixHex(UC.wall, PERI, 0.25), deep: UC.wallDeep, tissue: 'mesenchyme', opacity: op, quiet: true, ground: true, outline: false });
+  }
+  items.push({ key: 'floor', ...plate('broad-floor-v1', FLOOR, -ZH, -ZH - 0.1), color: '#2b3247', deep: '#10131c', tissue: 'membrane', opacity: 1, quiet: true, ground: true, outline: false });
+  items.push({ key: 'sacrum', ...blobParts({ center: [0, 1.45, 0], radii: [0.55, 0.28, ZH * 0.98], rings: 10, sides: 14 }), color: '#cfc6b4', deep: '#6e6656', tissue: 'bone', opacity: 1, quiet: true, ground: true });
+  vess('rectum', 'ondestea', along(0, 0.85), UC.endo, { r0: 0.32 }, 1, { deep: UC.endoDeep });
   pts['ondestea'] = [0.32, 1.05, ZH];
 
   // ———— the peritoneum lining the cavity; the folds with their ducts and the gonads ————
-  const inner = ring.map((p): V3 => [p[0] * 0.9, p[1] * 0.88, 0]);
-  for (const z of [ZH * 0.98]) tube('periLine', 'paretako-peritoneoa', inner.map((p) => [p[0], p[1], z] as V3), PERI, 0.03, 0.7, { outline: false }, 6);
+  // The parietal peritoneum: the lining of the cavity's wall (a pink line round the cut).
+  const lining = Array.from({ length: 65 }, (_, i): V3 => ell(IN * 0.995, (i / 64) * Math.PI * 2, ZH));
+  tube('periLine', 'paretako-peritoneoa', lining, PERI, 0.035, 1, { outline: false }, 6);
   pts['paretako-peritoneoa'] = [-1.85, -0.6, ZH];
   for (const s of [-1, 1]) {
     // The duct goes from beside the posterior wall (lateral) to the midline, a little in front of the middle.
     const duct: V3 = [s * lerp(1.25, 0.16, m), lerp(0.35, -0.15, m), 0];
     // The fold: from the posterior wall (its root) to the duct; with the merge it becomes the broad ligament out to the side walls.
-    const root: V3 = [s * lerp(1.25, 1.95, m), lerp(1.05, -0.15, m), 0];
-    const sheet = L([root, mix3(root, duct, 0.5), duct], 10);
-    items.push({ key: `fold${s}`, id: m > 0.6 ? 'lotailu-zabala' : 'mesoa', ...tubeParts(sheet.map((p) => [p[0], p[1], 0] as V3), { radius: () => 0.07, ref: [0, 0, 1], sides: 8, capStart: true, capEnd: true }), color: PERI, deep: darker(PERI), tissue: 'membrane', opacity: 0.9 * fade('lotailu-zabala', ['mesoa']), groups: ['lotailu-zabala', 'mesoa'] });
-    // The fold as a sheet along the block (cranio-caudal) so it reads as a wall.
+    const root: V3 = [s * lerp(1.25, 2.0, m), lerp(1.05, -0.15, m), 0];
+    // The fold: a sheet with real thickness from its root to the duct, running the slab's height (a tube tall
+    // in z, squashed across its own line).
+    const sheet = L([root, mix3(root, duct, 0.5), duct], 12);
+    const d = [duct[0] - root[0], duct[1] - root[1]];
+    const across: V3 = [-d[1], d[0], 0];
+    vess(`fold${s}`, m > 0.6 ? 'lotailu-zabala' : 'mesoa', sheet, PERI, { r0: ZH * 0.92, flat: 0.91, ref: across, sides: 20, capStart: false, capEnd: false }, 1, { tissue: 'membrane', thin: 0.4, groups: ['lotailu-zabala', 'mesoa'] });
     const mid = mix3(root, duct, 0.5);
-    ball(`foldW${s}`, m > 0.6 ? 'lotailu-zabala' : 'mesoa', mid, [Math.max(0.08, Math.abs(root[0] - duct[0]) / 2), Math.max(0.06, Math.abs(root[1] - duct[1]) / 2), ZH * 0.95], PERI, 0.28, { outline: false, thin: 0.6, tissue: 'membrane', groups: ['lotailu-zabala', 'mesoa'] }, 8, 12);
-    tube(`muller${s}`, m > 0.8 ? 'utero-hodia' : 'hodi-paramesonefrikoa', along(duct[0], duct[1]), UC.muller, lerp(0.14, 0.18, m), 1, { deep: UC.mullerDeep, groups: ['hodi-paramesonefrikoa', 'utero-hodia'] });
-    tube(`wolff${s}`, 'hodi-mesonefrikoa', along(duct[0] + s * 0.25, duct[1] + 0.08), UC.wolff, 0.07, 0.6 * (1 - 0.7 * m), { deep: UC.wolffDeep });
+    vess(`muller${s}`, m > 0.8 ? 'utero-hodia' : 'hodi-paramesonefrikoa', along(duct[0], duct[1]), UC.muller, { r0: lerp(0.14, 0.18, m) }, 1, { deep: UC.mullerDeep, groups: ['hodi-paramesonefrikoa', 'utero-hodia'] });
+    // The mesonephric duct thins away (the female), rather than fading to glass.
+    vess(`wolff${s}`, 'hodi-mesonefrikoa', along(duct[0] + s * 0.25, duct[1] + 0.08), UC.wolff, { r0: 0.075 * (1 - 0.6 * m) }, 1 - ss01(0.8, 1, m), { deep: UC.wolffDeep });
     // The gonad (ovary) lateral to the duct; at the end behind the broad ligament.
     const ov: V3 = [s * lerp(1.55, 1.1, m), lerp(-0.05, 0.3, m), 0.35];
-    ball(`ov${s}`, 'obarioa', ov, [0.3, 0.22, 0.38], OVARY, 0.95, { groups: ['gonadak'], deep: '#3f8f84' });
+    ball(`ov${s}`, 'obarioa', ov, [0.3, 0.22, 0.38], OVARY, 1, { groups: ['gonadak'], deep: '#3f8f84' });
     if (s > 0) {
       pts['hodi-paramesonefrikoa'] = [duct[0] + 0.1, duct[1] - 0.2, ZH];
       pts['utero-hodia'] = [duct[0] + 0.05, duct[1] - 0.25, ZH];
@@ -95,13 +140,15 @@ export function broadModel(pose: BroadPose, o: BroadOpts = {}) {
   }
   // The uterus (the fused ducts) once they meet.
   if (m > 0.8) {
-    ball('uterus', 'uteroa', [0, -0.15, 0], [0.42, 0.3, ZH * 0.9], UC.muller, (m - 0.8) / 0.2, { deep: UC.mullerDeep, groups: ['utero-hodia'] });
+    // The fused ducts' walls thicken round them: the uterus grows out of the two.
+    const k = (m - 0.8) / 0.2;
+    ball('uterus', 'uteroa', [0, -0.15, 0], [lerp(0.3, 0.42, k), lerp(0.2, 0.3, k), ZH * 0.9], UC.muller, 1, { deep: UC.mullerDeep, groups: ['utero-hodia'] });
     pts['uteroa'] = [0.35, -0.38, ZH * 0.8];
   }
 
   // ———— the bladder in front; the two pouches ————
   const bl = clamp01(pose.bladder);
-  ball('bladder', 'gernu-maskuria', [0, -1.2, 0], [0.7, 0.35, ZH * 0.9], UC.endo, 0.8 * bl, { deep: UC.endoDeep });
+  if (bl > 0.01) ball('bladder', 'gernu-maskuria', [0, -1.2, 0], [0.7 * (0.5 + 0.5 * bl), 0.35 * (0.5 + 0.5 * bl), ZH * 0.9], UC.endo, 1, { deep: UC.endoDeep });
   pts['gernu-maskuria'] = [0.6, -1.35, ZH * 0.7];
   const po = clamp01(pose.pouches);
   if (po > 0.01) {

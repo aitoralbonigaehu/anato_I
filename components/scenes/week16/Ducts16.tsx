@@ -343,7 +343,7 @@ const BACK = CAM(10, [0.4, -0.4, 0], 180 - 12, 8);
 const spec12d: StageSpec<DuctPose, DuctOpts> = {
   S: S12,
   pose: { ...V_END, ligaments: 1 },
-  opts: {},
+  opts: { back: true },
   caption: 'Hodi genitalak atzetik (3D eredua): enbrioiaren ezkerra zure ezkerrean',
   key: KEY16.female,
   steps: [

@@ -68,6 +68,8 @@ const spec12: StageSpec<BroadPose, BroadOpts> = {
       note: 'Bi zaku-hondo: utero-besikala (aurrean, gernu maskuria eta uteroa artean) eta utero-errektala (atzean, uteroa eta ondestea artean); lotailu zabalak bereizten ditu',
     },
     {
+      to: { open: 1 },
+      run: [0, 0.35],
       cam: orbit(-90, 6, 10.5, [0, -0.1, 0], [20, 0]),
       glide: 0.08,
       dim: ['gernu-maskuria', 'zaku-hondo-uterobesikala', 'uteroa', 'zaku-hondo-uteroerrektala', 'ondestea'],
@@ -81,6 +83,8 @@ const spec12: StageSpec<BroadPose, BroadOpts> = {
       note: 'Aurretik atzera: zokogune uterobesikala, uteroa (gernu maskuriaren gainean, hortik bagina), zokogune uteroerrektala. Beherago bestibulua: uretra aurrean, bagina atzerago',
     },
     {
+      to: { open: 0 },
+      run: [0, 0.4],
       cam: BLOCK16(10, [0, -0.2, 0], 8, 12),
       glide: 0.08,
     },
