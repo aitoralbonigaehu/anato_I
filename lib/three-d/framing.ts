@@ -15,6 +15,8 @@ export interface FitSpec {
   fill?: number;
   /** How far the camera may come closer or go back, as a factor of its authored distance (default [0.45, 1.6]). */
   limits?: [number, number];
+  /** Frame the context it lies on (`Item3.ground`) with the subject, so the whole ground stays in sight. */
+  ground?: boolean;
 }
 
 export const FREE_REGION = { x: [255, 745] as [number, number], y: [78, 566] as [number, number] };

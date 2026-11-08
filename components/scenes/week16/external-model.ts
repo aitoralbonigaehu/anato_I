@@ -72,8 +72,8 @@ export function externalModel(pose: ExternalPose, o: ExternalOpts = {}) {
   const divide = clamp01(pose.divide);
   const groove = clamp01(pose.groove);
 
-  // The perineal skin (the background surface).
-  ball('skin', undefined, [0, -0.1, -0.35], [2.0, 2.0, 0.3], SKIN, 1, { outline: false, quiet: true, deep: '#a07060' }, 14, 22);
+  // The perineal skin (the background surface), keeping its colour when the unlit parts recede.
+  ball('skin', undefined, [0, -0.1, -0.35], [2.0, 2.0, 0.3], SKIN, 1, { outline: false, quiet: true, ground: true, deep: '#a07060' }, 14, 22);
 
   // ———— the genital tubercle → phallus (male) or the clitoris's glans (female) ————
   if (pose.tubercle > 0.01) {

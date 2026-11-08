@@ -84,6 +84,7 @@ With `fit` on the stage (on by default for topics 15–16), each step's camera k
 - **Shift:** centres the subject in that region.
 - **Guarantee:** every point the step names, and every drawn structure's naming point that the authored camera showed, stays inside the frame. The fit backs off towards the authored camera as little as needed. The label and visibility tests (`tests/anchors3d.test.ts`, `tests/visibility.test.tsx`) check this.
 - **Escape hatch:** `fit: false` on a step keeps its camera exactly as written.
+- **Ground in view:** `fit: { ground: true }` frames the ground (`Item3.ground`) with the subject. Use it where the context is the subject's surface and must be seen whole, such as the perineal disc of the external genitalia.
 
 ### QA: the stage sheet (`scripts/quality/stage-sheet.mjs`)
 
@@ -112,14 +113,15 @@ node scripts/quality/stage-sheet.mjs 15 docs/quality/sheets/w15 --base http://lo
 |---|---|
 | All topic 15–16 views | Ambient occlusion and framing. |
 | Wall views: 15 `sarrera`, `pronefrosa`, `mesonefrosa`, `metanefrosa`, `giltzurrun-igoera`; 16 `sarrera`, `hozi-zelulak`, `muller-hodia` | Now lie on a solid cut-away posterior wall (vertebral ridge, paravertebral gutters, somites standing out of it) instead of the glass body. |
+| 15 `nefrotomak`, `glomeruluak`, `mesonefros-hodixkak` (section block) | The glass ellipse became a solid section plate with dark coelom faces. Tubules, aortic branches and arterioles are profiled vessels, the tubule ending in a Bowman cup round the glomerulus. |
+| 15 `mesonefrosa`, `metanefrosa`, `giltzurrun-igoera` | Pronephric and mesonephric tubules, the Wolff and Müller ducts and the ureteric bud are vessels grown by arc length; mesonephric tubules are S-shapes with a cup. Kidneys are beans whose hilum turns from ventral to medial as they rise. |
+| 16 `kanpo-genitalak`, `-emeak`, `-arrak` | The perineal skin is ground (keeps its colour), and the framing keeps the whole disc in sight. |
 | 15 `sistema-biltzailea` (pilot) | Rebuilt on the kit. The bud's tip swells into the ampulla, then opens into a flattened funnel (one shape changing). Major calyces → minor calyces → two generations of collecting tubules grow by arc length, each tip an ampulla in a cap of blastema; minor calyces end in cups. The blastema becomes a bean with a hilum. |
 
 **Owed**, roughly in order of how far each stage is from the bar:
 
 | Stage(s) | What it needs |
 |---|---|
-| 15 `nefrotomak`, `glomeruluak`, `mesonefros-hodixkak` (section block) | A solid section block with cut faces instead of glass ellipses. Tubules as S-shaped vessels with real Bowman cups wrapping the glomerulus. |
-| 15 `mesonefrosa`, `metanefrosa`, `giltzurrun-igoera` | Mesonephric tubules as S-vessels (not identical zigzags). The ureteric bud by arc length with an ampulla. Kidneys as beans that turn as they rise. A tapered ureter. |
 | 15 `nefrona` | Renal vesicle → comma → S-shaped body as one profiled vessel that bends, the glomerular tuft growing into the cup, the distal end fusing with the collecting tubule. |
 | 15 `giltzurrun-gaineko-guruinak` | A cut-open gland with cut faces (fetal cortex, permanent cortex, medulla), and neural-crest cells streaming in. |
 | 15 `sinu-urogenitala`, `gernu-maskuria`, `uretra` | A sagittal half-section as a solid with a cut face. The urorectal septum growing down as a fold. The trigone absorbed into the bladder wall. |

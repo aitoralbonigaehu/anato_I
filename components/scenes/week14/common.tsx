@@ -225,7 +225,7 @@ function fitStep<P, O extends { dim?: { ids: readonly string[]; k: number } | nu
   const items = model.items;
   const ids = st.fit ?? st.dim ?? null;
   const seen = (it: Item3) => !!it.id && !it.quiet && (it.opacity ?? 1) * (it.show ?? 1) > 0.2;
-  let pts = pointsOf(items, (it) => seen(it) && (!ids || ids.includes(it.id!) || (it.groups ?? []).some((g) => ids.includes(g))));
+  let pts = pointsOf(items, (it) => (spec.fit && spec.fit.ground && it.ground) || (seen(it) && (!ids || ids.includes(it.id!) || (it.groups ?? []).some((g) => ids.includes(g)))));
   if (pts.length < 9) pts = pointsOf(items, seen);
   // Whatever the step names, and every drawn structure's naming point the written camera shows, stays in the
   // frame: a closer view must not cut off what the step's text or names point at.
