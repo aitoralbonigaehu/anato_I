@@ -10,7 +10,8 @@ import s from './belortzioak.module.css';
  * Belortzioak: the course's figures where an arrow points at a structure and the name is asked.
  *
  * - Esploratu: every name in two tidy columns, a leader to its structure; hovering a name (or the
- *   structure) lights that structure and dims the rest. Names can be covered and turned one by one,
+ *   structure) lights that structure and dims the rest: the whole structure where the drawing shows its
+ *   extent (the vessel from end to end, the organ's outline), else a circle round the arrow tip. Names can be covered and turned one by one,
  *   or shown as the figure's own numbers with the legend beside it.
  * - Zer da? one arrow, as on paper: pick, recall-and-flip, or type the name.
  * - Non dago? a name: tap where it is.
@@ -144,6 +145,65 @@ const stageOf = (plate: BelPlate): Stage => {
   return { fw, tw: fw + 2 * (COL + GAP), fx, at: ([x, y]) => [fx + x * fw, y * H], rad: (r) => Math.max(34, r * side) };
 };
 
+// ---- a structure's extent: hit tests and outlines ----------------------------------------------------
+
+/** Even-odd: whether a figure point lies inside a shape (its inner rings are holes). */
+const inShape = (shape: Pt[][], [x, y]: Pt) => {
+  let inside = false;
+  for (const ring of shape)
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const [xi, yi] = ring[i];
+      const [xj, yj] = ring[j];
+      if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+    }
+  return inside;
+};
+const inArea = (it: BelItem, p: Pt) => !!it.area?.some((sh) => inShape(sh, p));
+/** Size of an item's extent (figure fractions²), so the smaller of two nested structures is the one under the pointer. */
+const areaSize = (it: BelItem) =>
+  (it.area ?? []).reduce((a, sh) => a + Math.abs(sh.reduce((b, ring) => b + ring.reduce((c, [x, y], i) => c + x * ring[(i + 1) % ring.length][1] - ring[(i + 1) % ring.length][0] * y, 0) / 2, 0)), 0);
+/** Distance (stage units) from a point to a shape's outline. */
+const edgeDist = (st: Stage, shape: Pt[][], p: Pt) => {
+  const [px, py] = st.at(p);
+  let best = Infinity;
+  for (const ring of shape)
+    for (let i = 0; i < ring.length; i++) {
+      const [ax, ay] = st.at(ring[i]);
+      const [bx, by] = st.at(ring[(i + 1) % ring.length]);
+      const dx = bx - ax;
+      const dy = by - ay;
+      const t = dx || dy ? Math.min(1, Math.max(0, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy))) : 0;
+      best = Math.min(best, Math.hypot(px - ax - t * dx, py - ay - t * dy));
+    }
+  return best;
+};
+/** Whether an arrow tip already sits in the lit extent (on it, or touching its edge): then it needs no circle of its own. */
+const covers = (st: Stage, it: BelItem, t: Pt) => !!it.area?.some((sh) => inShape(sh, t) || edgeDist(st, sh, t) < 16);
+const pathOf = (st: Stage, shape: Pt[][]) =>
+  shape.map((ring) => `M${ring.map((p) => st.at(p).map((v) => v.toFixed(1)).join(' ')).join('L')}Z`).join('');
+
+/**
+ * The structure at a figure point: an arrow tip pointed at closely, else the smallest extent the point
+ * is inside, else the nearest tip within its light (`reach`: how much of the light counts).
+ */
+const structureAt = (plate: BelPlate, st: Stage, p: Pt, reach: number, skip?: string): string | null => {
+  const [bx, by] = st.at(p);
+  let tip: { key: string; d: number; k: number } | null = null;
+  for (const it of plate.items) {
+    if (it.key === skip) continue;
+    it.targets.forEach((t, i) => {
+      const [ax, ay] = st.at(t);
+      const d = Math.hypot(ax - bx, ay - by);
+      const k = d / st.rad(it.r[i] ?? 0.05);
+      if (k <= reach && (!tip || d < tip.d)) tip = { key: it.key, d, k };
+    });
+  }
+  const t = tip as { key: string; d: number; k: number } | null;
+  if (t && t.k <= 0.45) return t.key;
+  const inside = plate.items.filter((it) => it.key !== skip && inArea(it, p)).sort((a, b) => areaSize(a) - areaSize(b));
+  return inside[0]?.key ?? t?.key ?? null;
+};
+
 // ---- the figure ------------------------------------------------------------------------------------
 
 interface FigureProps {
@@ -187,18 +247,7 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
     const y = uy / H;
     return x < -0.02 || x > 1.02 || y < -0.02 || y > 1.02 ? null : [x, y];
   };
-  const nearest = (p: Pt): string | null => {
-    let best: { key: string; d: number } | null = null;
-    for (const it of plate.items) {
-      it.targets.forEach((t, i) => {
-        const [ax, ay] = st.at(t);
-        const [bx, by] = st.at(p);
-        const d = Math.hypot(ax - bx, ay - by);
-        if (d <= st.rad(it.r[i] ?? 0.05) * 0.8 && (!best || d < best.d)) best = { key: it.key, d };
-      });
-    }
-    return (best as { key: string } | null)?.key ?? null;
-  };
+  const nearest = (p: Pt): string | null => structureAt(plate, st, p, 0.8);
 
   const isMark = (it: BelItem, t: Pt) => it.marks.some((m) => m.at[0] === t[0] && m.at[1] === t[1]);
   const lineEnd = (pl: Placed): Pt => [pl.side === 'l' ? COL : st.fx + st.fw + GAP, pl.y];
@@ -250,9 +299,16 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
             <stop offset="0.62" stopColor="#000" />
             <stop offset="1" stopColor="#fff" />
           </radialGradient>
+          {/* a lit extent's soft edge: the light spills a little past the outline, like the circles' */}
+          <filter id="bel-soft" x="-10%" y="-10%" width="120%" height="120%">
+            <feMorphology operator="dilate" radius="3" in="SourceGraphic" result="grown" />
+            <feGaussianBlur in="grown" stdDeviation="3" />
+          </filter>
           <mask id={`bel-mask-${plate.id}`} maskUnits="userSpaceOnUse" x="0" y="0" width={st.tw} height={H}>
             <rect width={st.tw} height={H} fill="#fff" />
+            {lit?.area?.map((sh, i) => <path key={`a${i}`} d={pathOf(st, sh)} fill="#000" fillRule="evenodd" filter="url(#bel-soft)" />)}
             {lit?.targets.map((t, i) => {
+              if (covers(st, lit, t)) return null;
               const [cx, cy] = st.at(t);
               const r = st.rad(lit.r[i] ?? 0.05) * 1.35;
               return <circle key={i} className={s.hole} cx={cx} cy={cy} r={r} fill="url(#bel-hole)" />;
@@ -288,6 +344,8 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
 
         {/* the light: everything but the structure dims */}
         <rect className={`${s.dim}${lit ? ` ${s.isOn}` : ''}`} width={st.tw} height={H} rx="18" mask={`url(#bel-mask-${plate.id})`} />
+        {/* and the lit extent's edge, drawn once over the figure so where it ends is plain */}
+        {lit?.area?.map((sh, i) => <path key={`${lit.key}-${i}`} className={s.extent} d={pathOf(st, sh)} fillRule="evenodd" />)}
 
         {explore && !numbers && (
           <g className={s.leaders}>
@@ -664,22 +722,10 @@ export function Belortzioak() {
     if (!quiz || !q || !asked) return;
     const st = stageOf(shown);
     const dist = (t: Pt) => Math.hypot(st.at(t)[0] - st.at(p)[0], st.at(t)[1] - st.at(p)[1]);
-    const right = asked.targets.some((t, i) => dist(t) <= Math.max(st.rad(asked.r[i] ?? 0.05), 46));
+    // Right: near an arrow tip, or anywhere on the structure where its whole extent is known.
+    const right = inArea(asked, p) || asked.targets.some((t, i) => dist(t) <= Math.max(st.rad(asked.r[i] ?? 0.05), 46));
     // A tap on another structure of the figure is named, so the miss teaches something too.
-    let other: string | null = null;
-    if (!right) {
-      let best = Infinity;
-      for (const it of shown.items) {
-        if (it.key === asked.key) continue;
-        it.targets.forEach((t, i) => {
-          const d = dist(t);
-          if (d <= st.rad(it.r[i] ?? 0.05) && d < best) {
-            best = d;
-            other = it.key;
-          }
-        });
-      }
-    }
+    const other = right ? null : structureAt(shown, st, p, 1, asked.key);
     settle(right, { tap: p, picked: other });
   };
 

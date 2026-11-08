@@ -30,6 +30,21 @@ export const KIND: Record<ChangeKind, { label: string; hue: number }> = {
 
 export const CHANGES: Change[] = [
   {
+    id: 'belortzio-egitura-osoa',
+    date: '2026-11-08',
+    kind: 'hobekuntza',
+    title: 'Belortzioak: egitura osoa argitzen da',
+    text: 'Zirkulazio- eta digestio-irudietan, izen baten gainetik pasatzean ez da gezi-puntako zirkulu txiki bat bakarrik argitzen: egitura osoa argitzen da, hasieratik bukaeraraino. Adibidez, eskuineko aurreko zain kardinala burutik bihotzeraino, edo heste-lakioa adar biekin. Ertz fin batek erakusten du non bukatzen den.',
+    points: [
+      'Irudian bertan egituraren edozein lekutan jarrita ere, haren izena argitzen da',
+      '«Non dago?» galderetan, egituraren edozein puntu ukitzea zuzena da',
+      'Marrazkiak bere ertzik erakusten ez duenean, lehengo zirkulua geratzen da',
+    ],
+    href: '/belortzioak?irudia=p11',
+    cta: 'Probatu zainekin',
+    visual: { topic: 13 },
+  },
+  {
     id: 'sarrera-berria',
     date: '2026-11-07',
     kind: 'berria',
