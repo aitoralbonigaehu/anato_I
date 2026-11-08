@@ -1,5 +1,6 @@
 import { add, mix3, type V3 } from '@/lib/three-d/math';
 import { curve3 } from '@/lib/three-d/mesh';
+import { cupShell, plate, vessel, type Parts, type VesselOptions } from '@/lib/three-d/organic';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
 import { UC } from '@/components/scenes/week15/uro-model';
@@ -19,6 +20,12 @@ import { GC16 } from './gonad-model';
  *
  * Axes as every model of the topics: x towards the embryo's LEFT, y cranial, z ventral (front view: the embryo's
  * left on the viewer's right).
+ *
+ * Built to the quality bar (docs/quality/3d-quality-bar.md): everything lies on the posterior wall (opaque
+ * ground); the ducts are profiled vessels (a regressing duct thins away rather than fading to glass), the Müller
+ * duct's cranial end opens as a cup, the uterus is one pear-shaped vessel the two canals converge into, the
+ * seminal vesicle buds off the vas, and the ligaments and the gubernaculum are tapered cords grown by arc length.
+ * The bladder stays see-through on purpose: it lies in front of the uterus and the vagina.
  */
 
 export interface DuctPose {
@@ -65,6 +72,19 @@ const ss = (a: number, b: number, x: number) => {
   const u = clamp01((x - a) / (b - a));
   return u * u * (3 - 2 * u);
 };
+const sub3 = (a: V3, b: V3): V3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+const norm3 = (a: V3): V3 => {
+  const l = Math.hypot(a[0], a[1], a[2]) || 1;
+  return [a[0] / l, a[1] / l, a[2] / l];
+};
+/** The broad ligament's outline (x, y): from one side wall over the tubes and the uterus to the other. */
+const BROAD: [number, number][] = [
+  ...Array.from({ length: 21 }, (_, i): [number, number] => {
+    const x = -2.0 + (i / 20) * 4.0;
+    return [x, -0.12 + 0.28 * (Math.abs(x) / 2) - 0.12 * Math.cos((x / 2) * Math.PI)];
+  }),
+  [2.0, -1.2], [1.4, -1.85], [0.6, -2.0], [-0.6, -2.0], [-1.4, -1.85], [-2.0, -1.2],
+];
 /** Blend two polylines point by point (resampled to the same count). */
 const morph = (a: V3[], b: V3[], k: number): V3[] => (k <= 0.001 ? a : k >= 0.999 ? b : a.map((p, i) => mix3(p, b[Math.round((i / (a.length - 1)) * (b.length - 1))], k)));
 
@@ -73,6 +93,13 @@ const UTERUS = UC.muller;
 const VAG_LOW = UC.endo;
 const PROSTATE = '#d6a33a';
 const LIG = '#c9c1b2';
+
+/** The posterior wall behind everything (the ground). */
+const WALL = Array.from({ length: 56 }, (_, i): [number, number] => {
+  const a = (i / 56) * Math.PI * 2;
+  const c = Math.cos(a), sn = Math.sin(a);
+  return [2.75 * Math.sign(c) * Math.abs(c) ** 0.35, -0.65 + 3.3 * Math.sign(sn) * Math.abs(sn) ** 0.35];
+});
 
 /** The gonad's place (both sexes). */
 const GON = (s: number): V3 => X(s, [1.25, 1.0, 0]);
@@ -90,21 +117,30 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
     if (op <= 0.01) return;
     items.push({ key, id, ...blobParts({ center: c, radii: r, rings, sides }), color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
   };
+  const put = (key: string, id: string | undefined, parts: Parts | null, color: string, op = 1, extra: Partial<Item3> = {}) => {
+    if (!parts || op <= 0.01) return;
+    items.push({ key, id, ...parts, color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
+  };
+  const vess = (key: string, id: string | undefined, line: V3[], color: string, prof: VesselOptions, g = 1, op = 1, extra: Partial<Item3> = {}) =>
+    put(key, id, vessel(line, { ref: [0, 0, 1], sides: 12, ...prof }, g), color, op, extra);
   const male = clamp01(pose.male);
   const female = clamp01(pose.female);
+  items.push({ key: 'wall', ...plate('ducts16-wall-v1', WALL, -0.8, -1.05), color: UC.wall, deep: UC.wallDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
   const ovd = clamp01(pose.ovDown ?? 0);
   const gon = (s: number): V3 => add(GON(s), X(s, [-0.2 * ovd, -0.65 * ovd, 0.1 * ovd]));
 
   // ———— the bladder and the urogenital sinus (endoderm), the mesonephros (context) ————
-  ball('bladder', 'gernu-maskuria', [0, -1.35, 0.85], [0.6, 0.72, 0.45], UC.endo, 0.28, { outline: false, deep: UC.endoDeep }, 14, 18);
+  ball('bladder', 'gernu-maskuria', [0, -1.35, 0.85], [0.6, 0.72, 0.45], UC.endo, 0.28, { outline: false, quiet: true, deep: UC.endoDeep }, 14, 18);
   pts['gernu-maskuria'] = [0.62, -1.0, 1.0];
   const sinusC: V3 = [0, -2.35, 0.25];
   ball('sinus', 'sinu-urogenitala', sinusC, [0.32, 0.4, 0.3], UC.endo, 0.75 * (1 - 0.5 * female), { deep: UC.endoDeep });
   pts['sinu-urogenitala'] = [0.3, -2.55, 0.35];
-  tube('urethra', 'uretra', L([[0, -2.6, 0.3], [0, -3.1, 0.35], [0, -3.6, 0.4]], 8), UC.endo, 0.1, 0.8 * (1 - female * 0.3), { deep: UC.endoDeep });
+  vess('urethra', 'uretra', L([[0, -2.45, 0.28], [0, -3.1, 0.35], [0, -3.6, 0.4]], 10), UC.endo, { r0: 0.13, r1: 0.09, flare: 0.8, flareLen: 0.2 }, 1, 1, { deep: UC.endoDeep });
   pts['uretra'] = [0.14, -3.25, 0.4];
   for (const s of [-1, 1]) {
-    ball(`meso${s}`, 'mesonefrosa', X(s, [1.72, 0.9, -0.2]), [0.3, 1.0, 0.25], UC.ridge, 0.3 * (1 - 0.7 * Math.max(male, female)), { outline: false, deep: UC.ridgeDeep, tissue: 'mesenchyme' });
+    // On the wall; it regresses (shrinks) as the ducts take their ways.
+    const k = 1 - 0.55 * Math.max(male, female);
+    ball(`meso${s}`, 'mesonefrosa', X(s, [1.72, 0.9, -0.55]), [0.32 * k, 1.0 * k, 0.28 * k], UC.ridge, 1, { deep: UC.ridgeDeep, tissue: 'mesenchyme' });
   }
   pts['mesonefrosa'] = X(1, [1.95, 1.55, -0.1]);
 
@@ -128,7 +164,8 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
     const wolffM = L([X(s, [1.62, 0.4, -0.2]), X(s, [1.75, -0.4, -0.25]), X(s, [1.3, -1.35, -0.35]), X(s, [0.5, -2.0, -0.2]), X(s, [0.15, -2.2, 0.05])], 40);
     const wolff = morph(wolff0, wolffM, pose.epididymis);
     const wid = pose.epididymis > 0.5 ? 'hodi-deferentea' : 'hodi-mesonefrikoa';
-    tube(`wolff${s}`, wid, wolff, UC.wolff, 0.07, wolffOp, { deep: UC.wolffDeep, groups: ['hodi-mesonefrikoa', 'hodi-deferentea'] });
+    // In the female it thins away (and is gone at the end) rather than fading to glass.
+    vess(`wolff${s}`, wid, wolff, UC.wolff, { r0: 0.075 * (1 - 0.6 * female), r1: 0.065 * (1 - 0.6 * female), flare: 0.5, flareLen: 0.2 }, 1, pose.ducts * (1 - ss(0.75, 1, female)), { deep: UC.wolffDeep, groups: ['hodi-mesonefrikoa', 'hodi-deferentea'] });
     if (s > 0) {
       pts[wid] = wolff[16];
       pts['hodi-mesonefrikoa'] = wolff[16];
@@ -146,7 +183,7 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
       const line = L([add(X(s, [1.72, y, -0.25]), dn), add(X(s, [1.6, y + 0.05, -0.1]), dn), end], 8);
       // Male: the paragenital ones mostly go (a small remnant); female: both groups stay as small vestiges.
       const op = (epi ? 1 : male > 0.5 ? 0.6 : 1) * pose.ducts;
-      tube(`tub${s}${k}`, id, epi || male < 0.5 ? line : line.slice(0, 5), mixHex(UC.meso, '#a78bfa', Math.max(male, female)), 0.04, op, { groups: ['hodixka-mesonefrikoak'] }, 8);
+      vess(`tub${s}${k}`, id, epi || male < 0.5 ? line : line.slice(0, 5), mixHex(UC.meso, '#a78bfa', Math.max(male, female)), { r0: 0.05, r1: 0.035, flare: 0.6, flareLen: 0.08, sides: 8 }, 1, op, { groups: ['hodixka-mesonefrikoak'] });
       if (s > 0 && k === 1) pts[id] = add(line[5], [0.05, 0.08, 0.15]);
       if (s > 0 && k === 4) pts[id] = add(line[3], [0.05, 0, 0.15]);
     });
@@ -163,14 +200,15 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
         const a = u * Math.PI * 2 * 7;
         return X(s, [1.62 + 0.09 * Math.cos(a), lerp(1.55, 0.4, u), -0.2 + 0.09 * Math.sin(a)]);
       });
-      tube(`epid${s}`, 'epididimoa', grown(coil, ep), UC.wolff, 0.05, 1, { deep: UC.wolffDeep }, 8);
+      vess(`epid${s}`, 'epididimoa', coil, UC.wolff, { r0: 0.055, r1: 0.05, sides: 8, n: 120 }, ep, 1, { deep: UC.wolffDeep });
       if (s > 0) pts['epididimoa'] = X(s, [1.78, 0.95, 0]);
     }
     // The seminal vesicle (a bud of the vas deferens's end) and the ejaculatory duct.
     const ve = clamp01(pose.vesicle);
     if (ve > 0.01) {
-      ball(`sv${s}`, 'semen-xixkua', X(s, [0.62, -1.72, -0.35]), [0.16 * ve, 0.32 * ve, 0.14 * ve], '#9b7bf0', 1, { deep: '#4b2f9e' });
-      tube(`ej${s}`, 'hodi-isurlea', grown(L([X(s, [0.45, -2.0, -0.2]), X(s, [0.25, -2.15, -0.05]), X(s, [0.08, -2.25, 0.12])], 8), ve), '#5b2fc4', 0.05, 1, {}, 8);
+      // The seminal vesicle buds off the vas's end and swells (a sac); the ejaculatory duct runs on into the urethra.
+      vess(`sv${s}`, 'semen-xixkua', L([X(s, [0.52, -1.98, -0.25]), X(s, [0.6, -1.75, -0.35]), X(s, [0.66, -1.4, -0.38])], 12), '#9b7bf0', { r0: 0.07, r1: 0.12, flare: 0.6, flareLen: 0.1, bulb: 0.6, bulbLen: 0.3 }, ve, 1, { deep: '#4b2f9e' });
+      vess(`ej${s}`, 'hodi-isurlea', L([X(s, [0.45, -2.0, -0.2]), X(s, [0.25, -2.15, -0.05]), X(s, [0.08, -2.25, 0.12])], 10), '#5b2fc4', { r0: 0.06, r1: 0.045 }, ve, 1);
       if (s > 0) {
         pts['semen-xixkua'] = X(s, [0.78, -1.55, -0.2]);
         pts['hodi-isurlea'] = X(s, [0.3, -2.12, 0.1]);
@@ -188,9 +226,12 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
     const mF = L([add(X(s, [1.55, 1.55, 0.25]), dw(1)), add(X(s, [1.75, 1.0, 0.25]), dw(1)), add(X(s, [1.3, 0.35, 0.18]), dw(0.6)), add(X(s, [0.7, -0.05, 0.1]), dw(0.2)), X(s, [0.38, -0.25, 0.05])], 40);
     const line = morph(m0, mF, female);
     const id = female > 0.5 ? 'falopioren-tronpak' : 'hodi-paramesonefrikoa';
-    tube(`mul${s}`, id, line, UC.muller, 0.065, mullerOp, { deep: UC.mullerDeep, groups: ['hodi-paramesonefrikoa', 'falopioren-tronpak'] });
-    // Its open cranial end (into the coelom; in the female the tube's open end by the ovary).
-    ball(`mfun${s}`, id, line[0], [0.12 + 0.08 * female, 0.1, 0.12 + 0.05 * female], UC.muller, mullerOp, { deep: UC.mullerDeep, thin: 0.4, groups: ['hodi-paramesonefrikoa', 'falopioren-tronpak'] }, 8, 10);
+    // In the male it thins away (its vestiges stay); its cranial end flares open into the coelom.
+    const mr = 0.07 * (1 - 0.6 * male);
+    vess(`mul${s}`, id, line, UC.muller, { r0: mr * 1.2, r1: mr, flare: 0.8, flareLen: 0.18 }, 1, mullerOp, { deep: UC.mullerDeep, groups: ['hodi-paramesonefrikoa', 'falopioren-tronpak'] });
+    // The open end: a cup turned away from the duct (in the female the tube's ostium by the ovary).
+    const out = norm3(sub3(line[0], line[3]));
+    put(`mfun${s}`, id, cupShell({ center: add(line[0], [out[0] * 0.08, out[1] * 0.08, out[2] * 0.08]), axis: out, radius: 0.15 + 0.07 * female, thick: 0.045, wrap: 0.45 }), UC.muller, mullerOp, { deep: UC.mullerDeep, groups: ['hodi-paramesonefrikoa', 'falopioren-tronpak'] });
     if (s > 0) {
       pts[id] = line[12];
       pts['hodi-paramesonefrikoa'] = line[12];
@@ -218,10 +259,11 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
   if (female > 0.01) {
     const fu = clamp01(pose.fuse);
     // Before fusion: two tubes side by side with a septum; after: one uterine canal, the body and the neck.
-    for (const s of [-1, 1]) tube(`uc${s}`, 'utero-hodia', L([X(s, [0.38, -0.25, 0.05]), X(s, [lerp(0.28, 0.0, fu), -1.0, 0.08]), X(s, [lerp(0.12, 0.0, fu), -1.75, 0.1])], 14), UTERUS, lerp(0.09, 0.14, fu), female * (1 - 0.6 * fu), { deep: UC.mullerDeep, groups: ['uteroa'] });
+    // Before fusion: two canals side by side; they converge (the septum between them lost) into one.
+    for (const s of [-1, 1]) vess(`uc${s}`, 'utero-hodia', L([X(s, [0.38, -0.25, 0.05]), X(s, [lerp(0.28, 0.05, fu), -1.0, 0.08]), X(s, [lerp(0.12, 0.0, fu), -1.75, 0.1])], 16), UTERUS, { r0: 0.1, r1: lerp(0.09, 0.12, fu), flare: 0.4, flareLen: 0.15 }, 1, female, { deep: UC.mullerDeep, groups: ['uteroa'] });
     if (fu > 0.01) {
-      ball('uterus', 'uteroa', [0, -0.75, 0.06], [0.55 * fu, 0.62 * fu, 0.32 * fu], UTERUS, 0.92 * female, { deep: UC.mullerDeep, groups: ['utero-hodia'] });
-      tube('cervix', 'uteroa', L([[0, -1.3, 0.08], [0, -1.85, 0.1]], 6), UTERUS, 0.2 * fu, female, { deep: UC.mullerDeep, groups: ['utero-hodia'] });
+      // The uterus: one pear-shaped body round the joined canals, wide at the fundus, narrowing to the neck.
+      vess('uterus', 'uteroa', L([[0, -0.3, 0.06], [0, -0.9, 0.07], [0, -1.85, 0.1]], 16), UTERUS, { r0: 0.55 * fu, r1: 0.19 * fu, bulb: 0, flat: 0.4, ref: [0, 0, 1], sides: 18 }, 1, female, { deep: UC.mullerDeep, groups: ['utero-hodia'] });
       pts['uteroa'] = [0.38, -0.55, 0.35];
       pts['utero-lepoa'] = [0.18, -1.65, 0.3];
     }
@@ -238,8 +280,8 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
       // The plate: solid; the vagina: the canal once it is hollow (upper third Müller, the rest from the bulbs).
       const upper = L([[0, -1.85, 0.1], [0, -2.25, 0.12]], 6);
       const lower = L([[0, -2.25, 0.12], [0, -2.75, 0.18], [0, -3.2, 0.25]], 10);
-      tube('vagU', lu > 0.5 ? 'bagina' : 'plaka-baginala', upper, UTERUS, 0.16, pl, { deep: UC.mullerDeep, groups: ['bagina', 'plaka-baginala', 'baginaren-fornixa'] });
-      tube('vagL', lu > 0.5 ? 'bagina' : 'plaka-baginala', grown(lower, pl), VAG_LOW, 0.16, pl, { deep: UC.endoDeep, groups: ['bagina', 'plaka-baginala', 'bulbo-sinubaginalak'] });
+      vess('vagU', lu > 0.5 ? 'bagina' : 'plaka-baginala', upper, UTERUS, { r0: 0.2, r1: 0.17, flare: 0.3, flareLen: 0.12 }, 1, pl, { deep: UC.mullerDeep, groups: ['bagina', 'plaka-baginala', 'baginaren-fornixa'] });
+      vess('vagL', lu > 0.5 ? 'bagina' : 'plaka-baginala', lower, VAG_LOW, { r0: 0.17, r1: 0.15 }, pl, 1, { deep: UC.endoDeep, groups: ['bagina', 'plaka-baginala', 'bulbo-sinubaginalak'] });
       if (lu > 0.01) tube('vagLum', undefined, L([[0, -1.9, 0.14], [0, -3.15, 0.3]], 10), '#2a1a08', 0.08 * lu, 0.85, { quiet: true, outline: false }, 8);
       pts['plaka-baginala'] = [0.22, -2.7, 0.3];
       pts['bagina'] = [0.22, -2.8, 0.3];
@@ -254,9 +296,10 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
     if (lg > 0.01)
       for (const s of [-1, 1]) {
         const ov = gon(s);
-        tube(`lsus${s}`, 'obarioaren-euspen-lotailua', grown(L([add(ov, X(s, [0.1, 0.55, 0])), add(ov, X(s, [0.45, 1.2, -0.05])), add(ov, X(s, [0.7, 1.8, -0.1]))], 10), lg), LIG, 0.05, 1, {}, 8);
-        tube(`lov${s}`, 'lotailu-utero-obarikoa', grown(L([add(ov, X(s, [-0.3, -0.35, 0])), X(s, [0.7, 0.05, 0.05]), X(s, [0.42, -0.35, 0.08])], 10), lg), LIG, 0.05, 1, {}, 8);
-        tube(`lround${s}`, 'uteroaren-lotailu-biribila', grown(L([X(s, [0.45, -0.45, 0.12]), X(s, [1.2, -1.0, 0.25]), X(s, [1.75, -1.9, 0.4]), X(s, [1.65, -2.9, 0.6])], 14), lg), LIG, 0.05, 1, {}, 8);
+        const cord: VesselOptions = { r0: 0.065, r1: 0.045, flare: 0.6, flareLen: 0.12, sides: 8 };
+        vess(`lsus${s}`, 'obarioaren-euspen-lotailua', L([add(ov, X(s, [0.1, 0.55, 0])), add(ov, X(s, [0.45, 1.2, -0.05])), add(ov, X(s, [0.7, 1.8, -0.1]))], 12), LIG, cord, lg, 1, { tissue: 'tendon' });
+        vess(`lov${s}`, 'lotailu-utero-obarikoa', L([add(ov, X(s, [-0.3, -0.35, 0])), X(s, [0.7, 0.05, 0.05]), X(s, [0.42, -0.35, 0.08])], 12), LIG, cord, lg, 1, { tissue: 'tendon' });
+        vess(`lround${s}`, 'uteroaren-lotailu-biribila', L([X(s, [0.45, -0.45, 0.12]), X(s, [1.2, -1.0, 0.25]), X(s, [1.75, -1.9, 0.4]), X(s, [1.65, -2.9, 0.6])], 16), LIG, cord, lg, 1, { tissue: 'tendon' });
         if (s > 0) {
           pts['obarioaren-euspen-lotailua'] = add(ov, X(s, [0.28, 0.88, -0.03]));
           pts['lotailu-utero-obarikoa'] = X(s, [0.85, 0.1, 0.12]);
@@ -266,7 +309,8 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
     // The broad ligament: a sheet from the uterus out to the side walls, the tubes in its top edge.
     const br = clamp01(pose.broad);
     if (br > 0.01) {
-      ball('broad', 'lotailu-zabala', [0, -0.55, 0.0], [2.05 * br, 0.75, 0.08], '#f9a8b8', 0.3 * br, { outline: false, thin: 0.6, tissue: 'membrane' }, 10, 18);
+      // A fold of peritoneum with real thickness, the tubes along its top edge (a membrane: light comes through it).
+      put('broad', 'lotailu-zabala', plate('ducts16-broad-v1', BROAD, 0.0, -0.12), '#f9a8b8', 0.7 * br, { thin: 0.5, tissue: 'membrane' });
       pts['lotailu-zabala'] = [-1.5, -0.65, 0.12];
     }
   }
@@ -280,7 +324,7 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
       const lgOn = clamp01(pose.ligaments) > 0.01;
       const gline = L([add(ov, X(s, [-0.2, -0.4, 0.05])), X(s, [0.62, -0.25, 0.12]), X(s, [1.25, -1.0, 0.28]), X(s, [1.7, -1.95, 0.42]), X(s, [1.65, -2.9, 0.6])], 20);
       const gl = lgOn ? gline : grown(gline, gb);
-      tube(`gub${s}`, 'gubernakulua', gl, '#9ca3af', 0.07, lgOn ? gb : ss(0, 0.15, gb), { tissue: 'tendon' }, 10);
+      vess(`gub${s}`, 'gubernakulua', gline, '#9ca3af', { r0: 0.085, r1: 0.06, flare: 0.5, flareLen: 0.15, bulb: 0.4, bulbLen: 0.3, sides: 10 }, lgOn ? 1 : gb, lgOn ? gb : 1, { tissue: 'tendon' });
       // Named along what is drawn (it grows down from the ovary).
       if (s > 0) pts['gubernakulua'] = add(gl[Math.floor((gl.length - 1) * 0.6)], X(s, [0.1, 0, 0.08]));
     }
