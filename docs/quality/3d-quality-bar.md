@@ -72,6 +72,7 @@ The body shader then darkens towards the item's deep tint (never to black). See-
 | `vesselPieces(line, profile, cuts, g)` | The same vessel split into separately named items (the ureter and the pelvis it ends in). The radius runs on across the cuts, so the joins don't show. |
 | `branchTree(spec)` and `treeGeneration(tree, gen, g, look)` | A deterministic branching system: a fan per generation, lengths, radii, spread, jitter, bend, and tilt for depth. Each generation is drawn as **one** merged item (one outline, one draw). Branches root inside their parent with a flare. Growing tips are ampullae that ease into cups or rounded ends once grown. `tipsOf` gives the tips (for names, caps, drops). |
 | `bean({ hilum, dent, lobes })` | An ellipsoid with a hilum dimple and optional fetal lobulation. |
+| `cupShell({ center, axis, radius, thick, wrap })` | A cup with a wall of real thickness and a rounded rim, its mouth open along `axis`: Bowman's capsule, a cap of tissue over a growing tip. A solid from every side, so the inside shows through the mouth. |
 | `wallSlab({ x, y, back, front })` | A cut-away block of body wall: a front surface with relief, plus cut faces and back as a second mesh in a paler section colour. Built **once** per key. |
 
 ### Framing (`lib/three-d/framing.ts`, `StageSpec.fit`, `Step.fit`)
@@ -115,6 +116,7 @@ node scripts/quality/stage-sheet.mjs 15 docs/quality/sheets/w15 --base http://lo
 | Wall views: 15 `sarrera`, `pronefrosa`, `mesonefrosa`, `metanefrosa`, `giltzurrun-igoera`; 16 `sarrera`, `hozi-zelulak`, `muller-hodia` | Now lie on a solid cut-away posterior wall (vertebral ridge, paravertebral gutters, somites standing out of it) instead of the glass body. |
 | 15 `nefrotomak`, `glomeruluak`, `mesonefros-hodixkak` (section block) | The glass ellipse became a solid section plate with dark coelom faces. Tubules, aortic branches and arterioles are profiled vessels, the tubule ending in a Bowman cup round the glomerulus. |
 | 15 `mesonefrosa`, `metanefrosa`, `giltzurrun-igoera` | Pronephric and mesonephric tubules, the Wolff and Müller ducts and the ureteric bud are vessels grown by arc length; mesonephric tubules are S-shapes with a cup. Kidneys are beans whose hilum turns from ventral to medial as they rise. |
+| 15 `nefrona` | Lies on a cut face of the cortex. The collecting tubule tapers, its branches flare out of it into ampullae, and the cap is a cup of tissue over the ampulla. The nephron is one vessel whose centre line bends from the vesicle (a ring round its lumen) to the comma, the S-shaped body and the grown nephron. Its near end flares into the ampulla as they fuse; its far end carries a double-walled cup (`cupShell`) round a lobed glomerulus, the mouth turned to the arterioles. The later nephrons go through the same development one after another. |
 | 16 `kanpo-genitalak`, `-emeak`, `-arrak` | The perineal skin is ground (keeps its colour), and the framing keeps the whole disc in sight. |
 | 15 `sistema-biltzailea` (pilot) | Rebuilt on the kit. The bud's tip swells into the ampulla, then opens into a flattened funnel (one shape changing). Major calyces → minor calyces → two generations of collecting tubules grow by arc length, each tip an ampulla in a cap of blastema; minor calyces end in cups. The blastema becomes a bean with a hilum. |
 
@@ -122,7 +124,6 @@ node scripts/quality/stage-sheet.mjs 15 docs/quality/sheets/w15 --base http://lo
 
 | Stage(s) | What it needs |
 |---|---|
-| 15 `nefrona` | Renal vesicle → comma → S-shaped body as one profiled vessel that bends, the glomerular tuft growing into the cup, the distal end fusing with the collecting tubule. |
 | 15 `giltzurrun-gaineko-guruinak` | A cut-open gland with cut faces (fetal cortex, permanent cortex, medulla), and neural-crest cells streaming in. |
 | 15 `sinu-urogenitala`, `gernu-maskuria`, `uretra` | A sagittal half-section as a solid with a cut face. The urorectal septum growing down as a fold. The trigone absorbed into the bladder wall. |
 | 15 `zakil-uretra` | A glans section with cut faces; the ectodermal cord canalising. |

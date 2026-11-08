@@ -507,5 +507,58 @@ function meshOf(pos: number[], uv: number[], idx: number[]): Mesh {
   return { pos: p, nrm: n, uv: new Float32Array(uv), idx: new Uint32Array(idx) };
 }
 
+/**
+ * A cup with a wall of real thickness: a spherical shell round `center`, its bottom towards −`axis`, its mouth
+ * open towards +`axis`, wrapping `wrap` (0: a shallow dish, 1: almost closed) of the way round, with a rounded
+ * rim. Bowman's capsule round a glomerulus, the optic cup, a cap of tissue over a growing tip. Seen from any side
+ * it is a solid (outer face, rim, inner face), so the inside shows through the mouth.
+ */
+export function cupShell(o: { center: V3; axis: V3; radius: number; thick: number; wrap: number; rings?: number; sides?: number }): Parts {
+  const build = (rings: number, sides: number) =>
+    cachedMesh('cupShell', [...o.center, ...o.axis, o.radius, o.thick, o.wrap, rings, sides], () => {
+      const ax = norm(o.axis);
+      const e1 = norm(cross(ax, Math.abs(ax[1]) < 0.9 ? [0, 1, 0] : [1, 0, 0]));
+      const e2 = cross(ax, e1);
+      const tMax = Math.PI * (0.12 + 0.76 * clamp01(o.wrap));
+      const R = o.radius, r = Math.max(0.05 * R, R - o.thick), mid = (R + r) / 2, half = (R - r) / 2;
+      const rim = 6;
+      // The profile, from the outer pole round the rim to the inner pole: (polar angle, distance from centre).
+      const prof: [number, number][] = [];
+      for (let i = 0; i <= rings; i++) prof.push([(tMax * i) / rings, R]);
+      for (let k = 1; k < rim; k++) {
+        const a = (Math.PI * k) / rim;
+        prof.push([tMax + (half / mid) * Math.sin(a), mid + half * Math.cos(a)]);
+      }
+      for (let i = rings; i >= 0; i--) prof.push([(tMax * i) / rings, r]);
+      const pos: number[] = [];
+      const uv: number[] = [];
+      const idx: number[] = [];
+      prof.forEach(([t, d], j) => {
+        for (let k = 0; k < sides; k++) {
+          const f = (k / sides) * Math.PI * 2;
+          const side = add(mul(e1, Math.cos(f)), mul(e2, Math.sin(f)));
+          const q = add(o.center, mul(add(mul(ax, -Math.cos(t)), mul(side, Math.sin(t))), d));
+          pos.push(q[0], q[1], q[2]);
+          uv.push(k / sides, j / (prof.length - 1));
+        }
+      });
+      for (let j = 0; j < prof.length - 1; j++)
+        for (let k = 0; k < sides; k++) {
+          const a = j * sides + k, b = j * sides + ((k + 1) % sides), c = a + sides, d = b + sides;
+          idx.push(a, c, b, b, c, d);
+        }
+      const m = meshOf(pos, uv, idx);
+      // Wound so the outer face looks outwards (checked on the outer wall half way to the rim).
+      const j = Math.max(1, Math.floor(rings / 2)), v = j * sides;
+      const out = sub([m.pos[v * 3], m.pos[v * 3 + 1], m.pos[v * 3 + 2]], o.center);
+      if (dot(out, [m.nrm[v * 3], m.nrm[v * 3 + 1], m.nrm[v * 3 + 2]]) < 0) {
+        for (let i = 0; i < m.idx.length; i += 3) [m.idx[i + 1], m.idx[i + 2]] = [m.idx[i + 2], m.idx[i + 1]];
+        for (let i = 0; i < m.nrm.length; i++) m.nrm[i] = -m.nrm[i];
+      }
+      return m;
+    });
+  return { mesh: build(o.rings ?? 12, o.sides ?? 20), hit: build(5, 10) };
+}
+
 /** A static mesh built once from fixed numbers (re-exported for models that build their own context). */
 export const staticMesh = cachedMesh;
