@@ -99,6 +99,12 @@ node scripts/quality/stage-sheet.mjs 15 docs/quality/sheets/w15 --base http://lo
 - **Flags:** `void`, `small`, `edge` (cut off).
 - **Output:** one HTML contact sheet. Look at it beside the notes' figure pages before calling a stage done, and keep before/after sheets for any rebuild.
 
+### Pitfalls met so far
+
+- A vessel's `ref` (its reference side) must not run along the vessel: a duct cut across, running along z, needs `ref: [0, 1, 0]`, or its rings degenerate and nothing is drawn.
+- Solid parts (an organ's body and its cut layers) keep `opacity: 1`: they grey out with the unlit parts but never turn see-through, or the section reads as glass again.
+- Context and cut faces are `quiet` (not counted by the stage sheet's coverage) and `ground` (they keep their colour).
+
 ## Workflow for a new or rebuilt stage
 
 1. Put the notes' figure for each step on screen.
@@ -122,6 +128,7 @@ node scripts/quality/stage-sheet.mjs 15 docs/quality/sheets/w15 --base http://lo
 | 15 `sinu-urogenitala`, `gernu-maskuria`, `uretra` (side views) | The body is a solid cut down the middle: an opaque mid-sagittal cut face (`plate` in the sagittal plane) with the skin round it and the vertebral bodies along the back, the organs lying half in it. The urorectal septum grows down as a fold with a rounded leading edge. The rectum, allantois, ducts and urethra are profiled vessels. |
 | 15 `gernu-maskuria` (back view) | A solid bladder against the anterior wall (the ground seen past it); the urethra and urachus flare out of it; the ducts flare into its wall where they open. |
 | 15 `zakil-uretra` | A solid half cut lengthwise: the back half whole, the cut face (shaft and glans tissue, the skin as an ectoderm band along its edge) facing the viewer, a rounded tip. The urethra, the ectodermal cord and the prepuce lie half in the cut. |
+| 16 `desberdindu-gabea`, `barrabila`, `obarioa` (gonad block) | A solid cross-section: the dorsal wall as an opaque cut face with the aorta, the mesonephros and the ducts cut across in it, the coelom dark behind. The gonad hangs into it as a solid cut organ whose layers (epithelium, tunica albuginea, the ovary's medulla) are rings on its cut face and only grey out, never go see-through. The cords are tapered vessels grown by arc length, rooted in the epithelium until they come free and flared into the rete; follicle cells are a ring round each oocyte. |
 | 16 `kanpo-genitalak`, `-emeak`, `-arrak` | The perineal skin is ground (keeps its colour), and the framing keeps the whole disc in sight. |
 | 15 `sistema-biltzailea` (pilot) | Rebuilt on the kit. The bud's tip swells into the ampulla, then opens into a flattened funnel (one shape changing). Major calyces → minor calyces → two generations of collecting tubules grow by arc length, each tip an ampulla in a cap of blastema; minor calyces end in cups. The blastema becomes a bean with a hilum. |
 
@@ -130,7 +137,6 @@ node scripts/quality/stage-sheet.mjs 15 docs/quality/sheets/w15 --base http://lo
 | Stage(s) | What it needs |
 |---|---|
 | 15 `sinu-urogenitala`, `gernu-maskuria`, `uretra` (still owed) | Hollow organs shown cut open (lumen and wall) rather than as half-reliefs; the phallus as a solid half with the urethra in it (it is still see-through); the ducts' ends visibly absorbed into the bladder wall. |
-| 16 gonad block stages | A solid block; sex cords as profiled vessels. |
 | 16 ducts | Müller ducts fusing with a dissolving septum (uterus); profiled ducts. |
 | 16 broad ligament | A folded sheet with real thickness. |
 | 16 descent | A gubernaculum that shortens; a processus vaginalis that pouches. |
