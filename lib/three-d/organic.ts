@@ -1,6 +1,6 @@
 import { add, cross, dot, mul, norm, sub, type V3 } from './math';
 import { cachedBlob, cachedMerge, cachedMesh, cachedTube } from './mesh-cache';
-import type { BlobOptions, Mesh } from './mesh';
+import { grid, type BlobOptions, type Mesh } from './mesh';
 
 /**
  * Organic shapes for the 3D views of topic 15 on (docs/quality/3d-quality-bar.md). The earlier kit drew
@@ -558,6 +558,40 @@ export function cupShell(o: { center: V3; axis: V3; radius: number; thick: numbe
       return m;
     });
   return { mesh: build(o.rings ?? 12, o.sides ?? 20), hit: build(5, 10) };
+}
+
+/**
+ * A solid organ cut open by the plane z = `center`[2] (its front half taken away, the back kept): the back half
+ * of an ellipsoid (`dome`, seen whole when the view turns) and, on the cut, flat elliptical rings for its layers
+ * from the outside in (`faces`: [inner, outer] as shares of the radii). Layers that change thickness change
+ * smoothly; each ring is its own item, so each layer has its own name and colour.
+ */
+export function cutOpen(o: { center: V3; radii: V3; layers: readonly (readonly [number, number])[]; sides?: number }): { dome: Parts; faces: (Parts | null)[] } {
+  const [cx, cy, cz] = o.center;
+  const [rx, ry, rz] = o.radii;
+  const q = (x: number) => Math.round(x * 400) / 400;
+  const sides = o.sides ?? 48;
+  const dome = (nu: number, nv: number) =>
+    cachedMesh('cutDome', [cx, cy, cz, rx, ry, rz, nu, nv], () =>
+      grid(nu, nv, (u, v) => {
+        const a = u * Math.PI * 2, th = v * Math.PI * 0.5;
+        return [cx + rx * Math.sin(th) * Math.cos(a), cy + ry * Math.sin(th) * Math.sin(a), cz - rz * Math.cos(th)];
+      }, [cx - 10 * rx, cy, cz - 10 * rz]),
+    );
+  const ring = (a: number, b: number, k: number, nu: number) =>
+    cachedMesh('cutRing', [cx, cy, cz, rx, ry, a, b, k, nu], () =>
+      grid(nu, 1, (u, v) => {
+        const t = u * Math.PI * 2, r = a + (b - a) * v;
+        return [cx + rx * r * Math.cos(t), cy + ry * r * Math.sin(t), cz + 0.002 * k * Math.max(rx, ry)];
+      }, [cx, cy, cz + 10]),
+    );
+  const faces = o.layers.map(([a, b], k) => {
+    // A disc is a ring with a pin-hole (a ring of zero width at the centre has no normal).
+    const A = q(Math.max(0.004, a)), B = q(Math.max(A, b));
+    if (B - A < 0.004) return null;
+    return { mesh: ring(A, B, k, sides), hit: ring(A, B, k, 16) };
+  });
+  return { dome: { mesh: dome(sides, 14), hit: dome(16, 5) }, faces };
 }
 
 /** A static mesh built once from fixed numbers (re-exported for models that build their own context). */
