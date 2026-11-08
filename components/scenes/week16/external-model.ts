@@ -1,6 +1,7 @@
 import { add, mix3, type V3 } from '@/lib/three-d/math';
 import { curve3 } from '@/lib/three-d/mesh';
 import type { Item3 } from '@/lib/three-d/scene';
+import { vessel } from '@/lib/three-d/organic';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
 
 /**
@@ -17,6 +18,11 @@ import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d
  *
  * Own frame: x towards the embryo's LEFT (on the viewer's right), y towards the tubercle (up in the figure),
  * z towards the viewer (out of the perineum).
+ *
+ * Built to the quality bar (docs/quality/3d-quality-bar.md): everything grows out of the perineal skin. The swellings
+ * are mounds rising from it, the folds ridges that taper into it, the tubercle one shaft flaring from it with an
+ * ovoid glans; unlit parts recede to grey but stay solid (the one see-through part is the fused folds over the
+ * penile urethra, so the urethra shows inside).
  */
 
 export interface ExternalPose {
@@ -58,15 +64,19 @@ export function externalModel(pose: ExternalPose, o: ExternalOpts = {}) {
   const items: Item3[] = [];
   const pts: Record<string, V3> = {};
   const dim = o.dim;
-  const fade = (id: string, groups?: readonly string[]) => (!dim || dim.k <= 0.001 || dim.ids.includes(id) || (groups ?? []).some((g) => dim.ids.includes(g)) ? 1 : 1 - 0.75 * dim.k);
+  // Unlit parts recede to grey (the stage does it) but stay solid: faded, a mound or a ridge reads as glass. Only
+  // the parts already see-through (op < 1) fade further.
+  const fade = (id: string, op: number, groups?: readonly string[]) => (op >= 1 || !dim || dim.k <= 0.001 || dim.ids.includes(id) || (groups ?? []).some((g) => dim.ids.includes(g)) ? 1 : 1 - 0.75 * dim.k);
   const tube = (key: string, id: string | undefined, line: V3[], color: string, r: number | ((u: number) => number), op = 1, extra: Partial<Item3> = {}, sides = 14) => {
     if (op <= 0.01 || line.length < 2) return;
-    items.push({ key, id, ...tubeParts(line, { radius: typeof r === 'number' ? () => r : r, ref: [1, 0, 0], sides, capStart: true, capEnd: true }), color, deep: darker(color), tissue: 'skin', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
+    items.push({ key, id, ...tubeParts(line, { radius: typeof r === 'number' ? () => r : r, ref: [1, 0, 0], sides, capStart: true, capEnd: true }), color, deep: darker(color), tissue: 'skin', opacity: op * (id ? fade(id, op, extra.groups) : 1), ...extra });
   };
   const ball = (key: string, id: string | undefined, c: V3, r: V3, color: string, op = 1, extra: Partial<Item3> = {}, rings = 12, sides = 18) => {
     if (op <= 0.01) return;
-    items.push({ key, id, ...blobParts({ center: c, radii: r, rings, sides }), color, deep: darker(color), tissue: 'skin', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
+    items.push({ key, id, ...blobParts({ center: c, radii: r, rings, sides }), color, deep: darker(color), tissue: 'skin', opacity: op * (id ? fade(id, op, extra.groups) : 1), ...extra });
   };
+  /** A ridge rising from the skin: thickest in its middle, tapering into the skin at both ends. */
+  const ridge = (r: number) => (u: number) => r * (0.4 + 0.6 * Math.sin(Math.PI * Math.min(1, Math.max(0, u))));
   const fem = clamp01(pose.female);
   const male = clamp01(pose.male);
   const divide = clamp01(pose.divide);
@@ -78,12 +88,16 @@ export function externalModel(pose: ExternalPose, o: ExternalOpts = {}) {
   // ———— the genital tubercle → phallus (male) or the clitoris's glans (female) ————
   if (pose.tubercle > 0.01) {
     const g = pose.tubercle;
-    const base: V3 = [0, 1.0, 0.05];
+    const base: V3 = [0, 1.0, -0.06];
     const tip: V3 = [0, lerp(1.25, 1.1, fem) + 0.35 * male, lerp(0.35, 0.22, fem) + 1.35 * male];
     const line = L([base, add(base, [0, 0.12 + 0.2 * male, 0.2 + 0.6 * male]), tip], 12);
     const id = male > 0.5 ? 'faloa' : fem > 0.5 ? 'klitoria' : 'tuberkulu-genitala';
-    tube('tub', id, line, TUB, (u) => lerp(0.32, 0.26, u) * g * (1 - 0.35 * fem), 1, { groups: ['tuberkulu-genitala', 'klitoria', 'faloa'] });
-    ball('glans', male > 0.5 ? 'glandea' : fem > 0.5 ? 'klitoria' : 'tuberkulu-genitala', tip, [0.3 * g * (1 - 0.35 * fem), 0.3 * g * (1 - 0.35 * fem), 0.3 * g * (1 - 0.3 * fem)], mixHex(TUB, '#f7a3c0', 0.5), 1, { groups: ['tuberkulu-genitala', 'klitoria', 'glandea'] });
+    // One shaft flaring out of the skin at its root; the glans an ovoid on its end (longer in the male).
+    const rs = g * (1 - 0.35 * fem);
+    const shaft = vessel(line, { r0: 0.34 * rs, r1: 0.25 * rs, flare: 0.6, flareLen: 0.3, ref: [1, 0, 0], sides: 20, capStart: false, capEnd: false });
+    if (shaft) items.push({ key: 'tub', id, ...shaft, color: TUB, deep: darker(TUB), tissue: 'skin', opacity: 1, groups: ['tuberkulu-genitala', 'klitoria', 'faloa'] });
+    const rg = 0.29 * rs;
+    ball('glans', male > 0.5 ? 'glandea' : fem > 0.5 ? 'klitoria' : 'tuberkulu-genitala', add(tip, [0, 0.02 * male, 0.06 * male]), [rg * 1.02, rg * (1 + 0.1 * male), rg * (1 + 0.45 * male)], mixHex(TUB, '#f7a3c0', 0.5), 1, { groups: ['tuberkulu-genitala', 'klitoria', 'glandea'] });
     pts[id] = add(tip, [0.3, 0.2, 0.1]);
     pts['tuberkulu-genitala'] = pts[id];
     pts['glandea'] = add(tip, [0.32, 0.18, 0.15]);
@@ -148,11 +162,11 @@ export function externalModel(pose: ExternalPose, o: ExternalOpts = {}) {
       const k = Math.round(close * (front.length - 1));
       const id = fem > 0.5 ? 'ezpain-txikiak' : divide > 0.5 ? 'tolespen-urogenitalak' : 'kloaka-tolespenak';
       const extra = { groups: ['kloaka-tolespenak', 'tolespen-urogenitalak', 'ezpain-txikiak'] };
-      if (front.length - k >= 2) tube(`fold${s}`, id, front.slice(k), FOLD, 0.1 * folds, 1, extra, 10);
+      if (front.length - k >= 2) tube(`fold${s}`, id, front.slice(k), FOLD, ridge(0.11 * folds), 1, extra, 12);
       // The fused part is see-through: the urethra shows inside it.
       if (k >= 1) tube(`foldc${s}`, id, front.slice(0, k + 1), FOLD, 0.1 * folds, 0.45, extra, 10);
       // Behind the perineum the cloacal folds go on round the anal membrane (the anal folds).
-      tube(`afold${s}`, 'kloaka-tolespenak', L([X(s, [0.24, -0.25, 0.05]), X(s, [0.28, -0.75, 0.05]), X(s, [0.12, -1.1, 0.04])], 10), FOLD, 0.08 * folds, divide > 0.5 ? 0.6 : 1, { groups: ['kloaka-tolespenak'] }, 8);
+      tube(`afold${s}`, 'kloaka-tolespenak', L([X(s, [0.24, -0.25, 0.0]), X(s, [0.28, -0.75, 0.0]), X(s, [0.12, -1.1, -0.01])], 12), FOLD, ridge(0.085 * folds * (divide > 0.5 ? 0.8 : 1)), 1, { groups: ['kloaka-tolespenak'] }, 10);
       if (s > 0) {
         pts[id] = add(front[Math.max(k, Math.round(front.length * 0.55))], [0.18, 0, 0.1]);
         pts['kloaka-tolespenak'] = id === 'kloaka-tolespenak' ? pts[id] : X(s, [0.4, -0.7, 0.1]);
@@ -166,9 +180,10 @@ export function externalModel(pose: ExternalPose, o: ExternalOpts = {}) {
   if (sw > 0.01) {
     const sc = clamp01(pose.scrotum);
     for (const s of [-1, 1]) {
-      const c: V3 = X(s, [lerp(0.78, 0.5, sc), lerp(0.0, -0.15, sc), 0.05 + 0.2 * sc]);
+      // A mound rising out of the skin (its base sunk in it); the scrotum's halves swell out further.
+      const c: V3 = X(s, [lerp(0.8, 0.5, sc), lerp(0.0, -0.15, sc), -0.08 + 0.26 * sc]);
       const id = sc > 0.5 ? 'eskrotoa' : fem > 0.5 ? 'ezpain-nagusiak' : divide > 0.5 ? 'tolespen-ezpaineskrotalak' : 'goragune-genitalak';
-      ball(`sw${s}`, id, c, [lerp(0.3, 0.55, sc) * sw * (1 - 0.15 * fem), lerp(0.7, 0.6, sc) * sw * (1 + 0.25 * fem), lerp(0.18, 0.45, sc) * sw], mixHex(SWELL, '#e3a483', sc), 0.95, { groups: ['goragune-genitalak', 'tolespen-ezpaineskrotalak', 'ezpain-nagusiak', 'eskrotoa'] });
+      ball(`sw${s}`, id, c, [lerp(0.3, 0.55, sc) * sw * (1 - 0.15 * fem), lerp(0.7, 0.6, sc) * sw * (1 + 0.25 * fem), lerp(0.24, 0.5, sc) * sw], mixHex(SWELL, '#e3a483', sc), 1, { groups: ['goragune-genitalak', 'tolespen-ezpaineskrotalak', 'ezpain-nagusiak', 'eskrotoa'] });
       if (s > 0) {
         pts[id] = add(c, [0.35, 0.3, 0.15]);
         pts['goragune-genitalak'] = pts[id];

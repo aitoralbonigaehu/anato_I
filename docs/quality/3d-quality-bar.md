@@ -104,6 +104,9 @@ node scripts/quality/stage-sheet.mjs 15 docs/quality/sheets/w15 --base http://lo
 - A vessel's `ref` (its reference side) must not run along the vessel: a duct cut across, running along z, needs `ref: [0, 1, 0]`, or its rings degenerate and nothing is drawn.
 - Solid parts (an organ's body and its cut layers) keep `opacity: 1`: they grey out with the unlit parts but never turn see-through, or the section reads as glass again.
 - Context and cut faces are `quiet` (not counted by the stage sheet's coverage) and `ground` (they keep their colour).
+- **Faded solids read as glass.** A step's emphasis dims unlit parts; the stage already greys them, so a solid part must not also lose opacity (keep a `SOLID` set or skip the fade for opaque parts). Only parts that are see-through on purpose fade further.
+- **A view from behind looks through the ground.** A wall plate that is the ground from the front hides everything from behind; give the model a `back` option that moves it to the far side.
+- **A wall that is ground from above blocks the side view.** Split it so the near half can lift away when the camera turns (`open` in the broad-ligament block).
 
 ## Workflow for a new or rebuilt stage
 
@@ -129,7 +132,10 @@ node scripts/quality/stage-sheet.mjs 15 docs/quality/sheets/w15 --base http://lo
 | 15 `gernu-maskuria` (back view) | A solid bladder against the anterior wall (the ground seen past it); the urethra and urachus flare out of it; the ducts flare into its wall where they open. |
 | 15 `zakil-uretra` | A solid half cut lengthwise: the back half whole, the cut face (shaft and glans tissue, the skin as an ectoderm band along its edge) facing the viewer, a rounded tip. The urethra, the ectodermal cord and the prepuce lie half in the cut. |
 | 16 `desberdindu-gabea`, `barrabila`, `obarioa` (gonad block) | A solid cross-section: the dorsal wall as an opaque cut face with the aorta, the mesonephros and the ducts cut across in it, the coelom dark behind. The gonad hangs into it as a solid cut organ whose layers (epithelium, tunica albuginea, the ovary's medulla) are rings on its cut face and only grey out, never go see-through. The cords are tapered vessels grown by arc length, rooted in the epithelium until they come free and flared into the rete; follicle cells are a ring round each oocyte. |
-| 16 `kanpo-genitalak`, `-emeak`, `-arrak` | The perineal skin is ground (keeps its colour), and the framing keeps the whole disc in sight. |
+| 16 duct views (`hiloa`, `hodi-genitalak-arrak`, `semen-bidea`, `hodi-genitalak-emeak`, `bagina`, `baginaren-jatorria`, `jaisketa-emeak`, the female view of `jaisketa`) | Everything lies on an opaque posterior wall plate (moved to the far side for the from-behind view of `lotailu-zabala`). The ducts, tubules, epididymis, ligaments and gubernaculum are profiled vessels; the Wolffian duct thins away in the female and the Müllerian duct in the male instead of fading. The Müllerian ostium is a cup; the two uterine canals converge into a pear-shaped uterus (flattened front to back); the seminal vesicle buds as a vessel with a bulb; the mesonephros shrinks on the wall. |
+| 16 `lotailu-zabala` (block) | A solid pelvic slab: the body wall a ring with thickness (cut face on top, lined with peritoneum) on a dark cavity floor; the folds are sheets with real thickness running the slab's height, from the side wall to the ducts; the ovaries, uterus and bladder are solid (the two pouches stay see-through: they are spaces). When the block turns to its side, the wall's near half lifts away so the row bladder → pouch → uterus → pouch → rectum shows. |
+| 16 `jaisketa`, `jaisketa-arrak` | A solid parasagittal cut through the testis's plane: the trunk's tissue, the peritoneal cavity a dark recess, the anterior wall its own muscle band; the testis sits in the posterior wall behind the peritoneum. The scrotum, the wall layers the processus vaginalis carries, its sac and the tunica vaginalis are half-shells (`cupShell`) cut open towards the viewer, so they read as concentric layers round the testis. The gubernaculum is a thick cord lying along the testis's way, outside the peritoneum; it shortens as the testis follows it, then shrinks away. |
+| 16 `kanpo-genitalak`, `-emeak`, `-arrak` | The perineal skin is ground (keeps its colour), and the framing keeps the whole disc in sight. The swellings are mounds rising out of the skin, the folds ridges tapering into it, the tubercle one shaft flaring from it with an ovoid glans (longer in the male). Unlit parts recede to grey but stay solid; only the fused folds over the penile urethra stay see-through, on purpose. |
 | 15 `sistema-biltzailea` (pilot) | Rebuilt on the kit. The bud's tip swells into the ampulla, then opens into a flattened funnel (one shape changing). Major calyces → minor calyces → two generations of collecting tubules grow by arc length, each tip an ampulla in a cap of blastema; minor calyces end in cups. The blastema becomes a bean with a hilum. |
 
 **Owed**, roughly in order of how far each stage is from the bar:
@@ -137,7 +143,5 @@ node scripts/quality/stage-sheet.mjs 15 docs/quality/sheets/w15 --base http://lo
 | Stage(s) | What it needs |
 |---|---|
 | 15 `sinu-urogenitala`, `gernu-maskuria`, `uretra` (still owed) | Hollow organs shown cut open (lumen and wall) rather than as half-reliefs; the phallus as a solid half with the urethra in it (it is still see-through); the ducts' ends visibly absorbed into the bladder wall. |
-| 16 ducts | Müller ducts fusing with a dissolving septum (uterus); profiled ducts. |
-| 16 broad ligament | A folded sheet with real thickness. |
-| 16 descent | A gubernaculum that shortens; a processus vaginalis that pouches. |
-| 16 external genitalia | Sculpted tubercle, folds and swellings (SDF meshes built once per keyframe in the geometry worker) instead of discs and ellipses. |
+| 16 ducts (uterus) | The fusion is shown as the canals converging into one pear; a septum that dissolves between two lumens would teach the uterine anomalies (septate, bicornuate) better. |
+| 16 external genitalia (finer sculpting) | The parts are still separate primitives grown out of the skin. One continuous surface (an SDF mesh built once per keyframe in the geometry worker) would remove the seams where they meet; the labia majora and the scrotum's raphe would gain the most. |
