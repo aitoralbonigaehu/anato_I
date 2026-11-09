@@ -374,8 +374,7 @@ kbd {
 .landing input[type='text'],
 .landing textarea,
 .filter-select select,
-.search-key,
-.lp-search {
+.search-key {
   border-color: transparent;
   background: rgb(var(--fg-rgb) / 0.035);
   box-shadow: var(--well);
@@ -388,13 +387,11 @@ kbd {
 :root[data-theme='light'] .landing input[type='search'],
 :root[data-theme='light'] .landing input[type='text'],
 :root[data-theme='light'] .filter-select select,
-:root[data-theme='light'] .search-key,
-:root[data-theme='light'] .lp-search {
+:root[data-theme='light'] .search-key {
   background: #fff;
 }
 
 .search-key:hover,
-.lp-search:hover,
 .filter-select select:hover {
   border-color: transparent;
   box-shadow: var(--well), 0 0 0 1px var(--line-2);
@@ -410,13 +407,8 @@ kbd {
     0 0 0 4px color-mix(in srgb, var(--signal) 16%, transparent);
 }
 
-.lp-search {
-  border-radius: var(--r-lg);
-}
-
 /* The keycaps inside a field sit concentric with it. */
-.search-key kbd,
-.lp-search kbd {
+.search-key kbd {
   border-radius: calc(var(--r-md) - 5px);
 }
 
@@ -578,7 +570,6 @@ html[data-scrolled] .land-nav {
   .gida-offer,
   .site-foot .theme-switch,
   .btn:not(.btn-light):not(.primary),
-  .lp-search,
   .search-key,
   .route-icon,
   .cmdk-icon {
@@ -602,9 +593,6 @@ html[data-scrolled] .land-nav {
   }
   .cmdk-panel {
     border-radius: 26px;
-  }
-  .lp-search {
-    border-radius: 18px;
   }
   .route-icon {
     border-radius: 14px;

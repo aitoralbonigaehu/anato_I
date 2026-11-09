@@ -1,0 +1,148 @@
+import type { StageDef } from '@/lib/sim/types';
+import { FifthArch17, Processes17, S_5, S_P, S_V, Trigeminal17 } from '@/components/scenes/week17/Arches17';
+
+const FILE = '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA).pdf';
+const src = (section: string) => ({ file: FILE, section });
+const ORIENT = { top: 'Kraneala', bottom: 'Kaudala' };
+const HEAD = 'Enbrioiaren burua eta lepoa 5. astean, ezkerretik ikusita (3D): aurpegia zure ezkerrean. Arku bakoitzak bere kolorea du: I laranja, II urdina, III horia, IV gorria, VI berdea; nerbioek beren arkuaren kolorea daramate, argiago. Arrastatu biratzeko.';
+const v = (scene: StageDef['views'][number]['scene'], label: string, description: string) => ({ id: '3d', label, plane: 'eskema' as const, description, orientation: ORIENT, scene, travel: false as const });
+
+export const stages17b: StageDef[] = [
+  {
+    id: 'trigeminoa',
+    day: '5. astea',
+    dayRange: [29, 35],
+    title: 'Trigeminoa: I. arkuaren nerbioa',
+    subtitle: 'Gasser gongoila eta hiru adar, goitik behera: V1, V2, V3',
+    intro: 'Arku bakoitzari nerbio bat dagokio, bikote kraneal bat. Lehenengo arkuari V.a: trigeminoa. Buruko eta lepoko sentsibilitate orokor ia guztia hartzen du. Gongoil nagusi batetik hiru adar ateratzen dira.',
+    duration: 44,
+    source: src('2.2.1. Nerbioak'),
+    views: [v(Trigeminal17, 'Enbrioiaren burua 3D', HEAD)],
+    beats: [
+      {
+        at: S_V[0],
+        notes: ['w17/2.2/p2/s1', 'w17/2.2.1/p2/s1', 'w17/2.2.1/p3/s1-s4', 'w17/2.2.1/p4/s1'],
+        idea: 'I. arkua → V. bikote kraneala, trigeminoa; gongoil nagusia: Gasser.',
+        text: 'Arku brankial bakoitzari nerbio bat dagokio, bikote kraneal bat. Lehenengo arkuan (kranealena) V. bikote kraneala agertzen da, trigeminoa: hiru adar dituelako deitzen da "tri". Buruko eta lepoko sentsibilitate orokor ia guztia (ukimena, mina, tenperatura) hartu eta entzefalorantz eramaten du. Gongoil nagusi bat du, Gasser gongoila.',
+        focus: ['gasser-gongoila', 'lehen-arkua'],
+        exam: 'I. arkuaren nerbioa: V. bikote kraneala, trigeminoa.',
+        view: '3d',
+      },
+      {
+        at: S_V[1],
+        notes: ['w17/2.2.1/p5/s1-s2'],
+        idea: 'V1, oftalmikoa: begirantz, baina ez du ikusmena ematen.',
+        text: 'Gongoiletik, goitik behera, lehen adarra V1 da, oftalmikoa. Begirantz doa baina ez dauka ikusmenarekin zerikusirik. Gehien bat sentsitiboa da, baina izatez mistoa.',
+        caution: 'Apunteek V1 "begiaren mugimenduetaz arduratzen dela" diote; orri berean, ordea, III., IV. eta VI. nerbioek mugitzen dute begia, eta V1 batez ere sentsitiboa da.',
+        focus: ['nerbio-oftalmikoa', 'begia'],
+        view: '3d',
+      },
+      {
+        at: S_V[2],
+        notes: ['w17/2.2.1/p6/s1-s2'],
+        idea: 'V2, maxilarra: aurpegiaren behe erdialdea, sentsitiboa.',
+        text: 'Tartekoa adar maxilarra da, V2: hezur maxilarrera doa, aurpegiaren behe erdikalderantz. Sentsitiboa da: aurpegiko larruazalaren sentsazioak entzefalora eramaten ditu.',
+        focus: ['nerbio-maxilarra', 'luzapen-maxilarra'],
+        view: '3d',
+      },
+      {
+        at: S_V[3],
+        notes: ['w17/2.2.1/p7/s1-s3', 'w17/2.2.1/p8/s1-s2', 'w17/2.2.1/p9/s1'],
+        idea: 'V3, barail-nerbioa: mistoa; I. arkuko muskuluak mugitzen ditu.',
+        text: 'Azken adarra V3 da, barail-nerbioa, barail ingururantz luzatzen dena. Sentsitiboa izateaz gain jarduera motorea du: degluzioan eta murtxikazioan parte hartzen duten muskuluak mugitzen ditu. Nerbio batzuk sentsitiboak dira, beste batzuk motoreak eta gehienak mistoak. Trigeminoa gehienbat sentsitiboa da, baina barail-nerbioak axoi motoreak dituenez, izatez mistoa.',
+        focus: ['barail-nerbioa', 'barail-luzapena'],
+        exam: 'V1 eta V2 sentsibilitatea; V3-k osagai motorea du: I. arkuko muskuluak.',
+        ask: { q: 'Trigeminoaren zein adarrek ditu muskuluak?', options: ['V1', 'V2', 'V3'], answer: 2, why: ['V1 batez ere sentsitiboa da.', 'V2 sentsitiboa da.', 'V3 (barail-nerbioa) da osagai motorea duena.'] },
+        view: '3d',
+      },
+      {
+        at: S_V[4],
+        notes: ['w17/2.2.1/p9/s1'],
+        idea: 'Hiru adarrak batera: V1 eta V2 sentsibilitatea, V3 mistoa.',
+        text: 'Hiru adarrak batera, goitik behera. V1 eta V2 gehienbat sentsibilitatearen eramaileak dira. V3-k osagai motorea du, lehenengo arkutik ateratzen diren muskuluak mugitzeko luzatzen da.',
+        focus: ['nerbio-oftalmikoa', 'nerbio-maxilarra', 'barail-nerbioa'],
+        view: '3d',
+      },
+    ],
+    structures: ['gasser-gongoila', 'trigeminoa', 'nerbio-oftalmikoa', 'nerbio-maxilarra', 'barail-nerbioa', 'lehen-arkua', 'luzapen-maxilarra', 'barail-luzapena', 'begia'],
+    keyPoints: [
+      'I. arkua → V. bikote kraneala (trigeminoa); Gasser gongoila.',
+      'V1 oftalmikoa (begirantz, ez ikusmena), V2 maxilarra (sentsitiboa), V3 barail-nerbioa (mistoa).',
+      'V3-k bakarrik mugitzen ditu muskuluak.',
+    ],
+    cautions: ['V1 ez du ikusmena ematen; begia III., IV. eta VI. nerbioek mugitzen dute, apunteetako esaldiak "begiaren mugimenduetaz" dioen arren.'],
+  },
+  {
+    id: 'lehen-arkua-luzapenak',
+    day: '5. astea',
+    dayRange: [29, 35],
+    title: 'I. arkua: bi luzapen estomodeoaren inguruan',
+    subtitle: 'Luzapen maxilarra goian, barail luzapena behean',
+    intro: 'Lehen arkua sudurretik beherantz hasten da eta aurpegian daukagu. Bi luzapen ditu estomodeoaren inguruan: maxilarra (goikaldetik) eta baraila (behekaldetik).',
+    duration: 28,
+    source: src('2.2.1. Nerbioak'),
+    views: [v(Processes17, 'Enbrioiaren burua 3D', HEAD)],
+    beats: [
+      {
+        at: S_P[0],
+        notes: ['w17/2.2.1/p10/s1'],
+        recall: ['lehen-arkua'],
+        idea: 'I. arkuak bi luzapen ditu estomodeoaren inguruan.',
+        text: 'Lehen arkua sudurretik beherantz hasten da eta aurpegian daukagu. Bi luzapen ditu estomodeoaren inguruan: luzapen maxilarra, goikaldetik, eta barail luzapena, behekaldetik.',
+        focus: ['luzapen-maxilarra', 'barail-luzapena', 'estomodeoa'],
+        exam: 'I. arkua: luzapen maxilarra (goian) eta barail luzapena (behean), estomodeoaren inguruan.',
+        view: '3d',
+      },
+      {
+        at: S_P[1],
+        notes: ['w17/2.2.1/p10/s2'],
+        idea: 'V3 barail luzapenera: bertan baraila.',
+        text: 'Lehenengo arku honetan V3, barail-nerbioa, barail luzapenean sartzen da: bertan garatuko da baraila.',
+        focus: ['barail-nerbioa', 'barail-luzapena'],
+        view: '3d',
+      },
+      {
+        at: S_P[2],
+        notes: ['w17/2.2.1/p10/s3'],
+        idea: 'Alde dortsalean atal maxilarra: bertan hezur maxilarra.',
+        text: 'Arku honen alde dortsalean atal maxilarra ikusten da, eta bertan, beste batzuen artean, hezur maxilarra garatzen da.',
+        focus: ['luzapen-maxilarra'],
+        view: '3d',
+      },
+    ],
+    structures: ['lehen-arkua', 'luzapen-maxilarra', 'barail-luzapena', 'estomodeoa', 'barail-nerbioa', 'trigeminoa'],
+    keyPoints: ['I. arkuak bi luzapen ditu: maxilarra (estomodeoaren gainean) eta baraila (azpian).', 'V3 barail luzapenean; hezur maxilarra atal maxilarrean.'],
+  },
+  {
+    id: 'bosgarren-arkua',
+    day: '4.–5. asteak',
+    dayRange: [22, 35],
+    title: 'V. arkua: agertu eta desagertu',
+    subtitle: 'Ez du eratorririk uzten',
+    intro: 'Nahiz eta hasieran agertu, garapenean desagertu edo endekatu egiten da bosgarren arkua.',
+    duration: 16,
+    source: src('2.5. Bosgarren arku faringeoa'),
+    views: [v(FifthArch17, 'Enbrioiaren burua 3D', HEAD)],
+    beats: [
+      {
+        at: S_5[0],
+        notes: ['w17/2.5/p2/s1', 'w17/2.5/p3/s1'],
+        idea: 'V. arkua hasieran agertzen da.',
+        text: 'Nahiz eta hasieran agertu, IV. eta VI. arkuen artean, bosgarren arkua ez da irauten.',
+        focus: ['bosgarren-arkua'],
+        view: '3d',
+      },
+      {
+        at: S_5[1],
+        notes: ['w17/2.5/p3/s1'],
+        idea: 'Endekatu egiten da: ez du ezer uzten.',
+        text: 'Garapenean desagertu edo endekatu egiten da bosgarren arkua. Ez du eratorririk uzten: horregatik IV. arkutik VI.era pasatzen da.',
+        focus: ['laugarren-arkua', 'seigarren-arkua'],
+        exam: 'V. arkua endekatu egiten da: ez du eratorririk uzten.',
+        view: '3d',
+      },
+    ],
+    structures: ['bosgarren-arkua', 'laugarren-arkua', 'seigarren-arkua'],
+    keyPoints: ['V. arkua agertu eta endekatzen da; ez du eratorririk uzten.'],
+  },
+];

@@ -599,7 +599,7 @@ export function ImageLab() {
             </div>
 
             <div className="lab-main">
-              <div className={`lab-fig${color ? '' : ' is-print'}${labels ? ' is-labelled' : ''}${item?.kind === 'seinalatu' && !answered ? ' is-pointing' : ''}`} ref={box} style={{ ['--lab-r' as string]: `${-(item?.rot ?? 0)}deg`, ['--lab-m' as string]: item?.mirror ? -1 : 1 }}>
+              <div className={`lab-fig theme-stage${color ? '' : ' is-print'}${labels ? ' is-labelled' : ''}${item?.kind === 'seinalatu' && !answered ? ' is-pointing' : ''}`} ref={box} style={{ ['--lab-r' as string]: `${-(item?.rot ?? 0)}deg`, ['--lab-m' as string]: item?.mirror ? -1 : 1 }}>
                 {hydrated && item && Scene && (
                   <svg ref={svg} viewBox={vb} preserveAspectRatio="xMidYMid meet" className={`lab-svg${fit?.key === figKey ? '' : ' is-fitting'}`} style={{ ['--lab-ar' as string]: aspectOf(vb) }} role="img" aria-label="Etiketarik gabeko irudia">
                     <Defs />

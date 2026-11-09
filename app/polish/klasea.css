@@ -1,0 +1,8 @@
+/* Interface polish: Kimu's panel on tablets. (The class dock's own targets live in klasea.module.css.) */
+
+@media (pointer: coarse), (max-width: 1100px) {
+  .kimu-chips button,
+  .tp-set-btn {
+    min-height: 40px;
+  }
+}

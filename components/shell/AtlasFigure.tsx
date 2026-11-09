@@ -158,7 +158,7 @@ export function AtlasFigure({ id }: { id: string }) {
           {big ? <IconClose size={16} /> : <IconExpand size={15} />}
         </button>
       )}
-      <Link href={href} aria-label={`${nameOf(id)} simulagailuan ikusi: ${shot.stage.title}`}>
+      <Link href={href} className="theme-stage" aria-label={`${nameOf(id)} simulagailuan ikusi: ${shot.stage.title}`}>
         <svg ref={svg} viewBox={pick ? pick.vb.map((v) => v.toFixed(0)).join(' ') : `0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" role="img" aria-hidden="true">
           <Defs />
           {mounted && (

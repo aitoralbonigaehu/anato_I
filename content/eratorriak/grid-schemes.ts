@@ -13,10 +13,12 @@ import { GRID_11 } from './grid-schemes-11';
 import { GRID_12 } from './grid-schemes-12';
 import { GRID_13 } from './grid-schemes-13';
 import { GRID_14 } from './grid-schemes-14';
+import { GRID_17 } from './grid-schemes-17';
+import { GRID_18 } from './grid-schemes-18';
 
 export type { GridCell, GridColumn, GridRow, GridScheme, Tone } from './grid-kit';
 
 /** In topic order; each topic's grids follow its notes. */
-export const GRID_SCHEMES: GridScheme[] = [...GRID_7, ...GRID_8, ...GRID_9, ...GRID_10, ...GRID_11, ...GRID_12, ...GRID_13, ...GRID_14];
+export const GRID_SCHEMES: GridScheme[] = [...GRID_7, ...GRID_8, ...GRID_9, ...GRID_10, ...GRID_11, ...GRID_12, ...GRID_13, ...GRID_14, ...GRID_17, ...GRID_18];
 
 export const gridSchemesFor = (week: number) => GRID_SCHEMES.filter((s) => s.week === week);

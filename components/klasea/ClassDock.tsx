@@ -90,10 +90,10 @@ export function ClassDock({ k, mode, onMode, holdReason, onAskKimu }: {
         <div className={styles.cardBody}>
           <span className={styles.kicker}>Klasea · Kimu irakasle</span>
           <h2>{lesson.title}</h2>
-          <p>Kimuk funtsezkoa azalduko dizu ahoz, eszenari begira, eta arbelean idatziko du. Bidean {checkCount} galdera labur. Ohar guztiak Simulazioan daude.</p>
+          <p>Kimuk funtsezkoa azalduko dizu ahoz, eszenari begira. Bidean {checkCount} galdera labur. Ohar guztiak Simulazioan daude.</p>
           <p className={styles.note}>{k.learnerPaced
-            ? 'Zure erritmoan: ideia nagusien ondoren, begiratu eszenari eta sakatu Jarraitu. Etengabeko klasea ezarpenetan aukera dezakezu.'
-            : 'Etengabeko klasea: azalpenek automatikoki jarraitzen dute. Zure erritmoan ikasteko aukera ezarpenetan dago.'} Denbora estimatuak ez ditu zure pausak barne hartzen.</p>
+            ? 'Zure erritmoan: ideia nagusien ondoren, sakatu Jarraitu. Ezarpenetan alda dezakezu.'
+            : 'Etengabeko klasea: azalpenek automatikoki jarraitzen dute. Ezarpenetan alda dezakezu.'}</p>
           <div className={styles.cardActions}>
             {!resume && linked !== null && linked > 0 && (
               <button className="btn primary" onClick={() => k.start(linked)} autoFocus>

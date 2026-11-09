@@ -1,0 +1,148 @@
+import type { StageDef } from '@/lib/sim/types';
+import { LarynxCart17, LarynxMuscle17, S_LC, S_LM } from '@/components/scenes/week17/Larynx17';
+
+const FILE = '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA).pdf';
+const src = (section: string) => ({ file: FILE, section });
+const ORIENT = { top: 'Kraneala', bottom: 'Kaudala' };
+const DESC = 'Laringea 3D eredu bakarrean. Arku bakoitzak bere kolorea du: IV gorria, VI berdea. Arrastatu biratzeko.';
+const v = (scene: StageDef['views'][number]['scene'], label: string) => ({ id: '3d', label, plane: 'eskema' as const, description: DESC, orientation: ORIENT, scene, travel: false as const });
+
+export const stages17h: StageDef[] = [
+  {
+    id: 'laringeko-kartilagoak',
+    day: '5. astea',
+    dayRange: [29, 35],
+    title: 'IV. eta VI. arkuak: laringeko kartilagoak',
+    subtitle: 'Hezurrik ez, kartilagoak bakarrik',
+    intro: 'Laugarren eta seigarren arkuek ez dute hezurrik ematen, ezta lotailurik ere: laringeko kartilago guztiak bakarrik. Hiru nagusi eta beste hiru bikote. Tiroidea bi arkuren artean banatuta dago.',
+    duration: 42,
+    source: src('2.6.2. Kartilagoak'),
+    views: [v(LarynxCart17, 'Laringea 3D')],
+    beats: [
+      {
+        at: S_LC[0],
+        notes: ['w17/2.6.2/p2/s1', 'w17/2.6.2/p3/s1-s2'],
+        idea: 'IV. eta VI. arkuek kartilagoak bakarrik: 3 nagusi (tiroidea, krikoidea, epiglotisa) eta gainerakoak.',
+        text: 'Laugarren eta seigarren arkuetan ez dira eratzen hezurrak, ezta lotailurik ere, bakarrik kartilagoak. Arku hauetatik laringeko kartilago guztiak aterako dira: hiru nagusiak, tiroidea, krikoidea eta epiglotisa, eta gainerakoak.',
+        focus: ['tiroide-kartilagoa', 'krikoide-kartilagoa', 'epiglotisa'],
+        exam: 'IV. eta VI. arkuek ez dute hezurrik ematen: laringeko kartilagoak bakarrik.',
+        view: '3d',
+      },
+      {
+        at: S_LC[1],
+        notes: ['w17/2.6.2/p3/s2'],
+        idea: 'Epiglotisa "L" formako egitura da.',
+        text: 'Epiglotisa ere nagusietako bat da, nahiz eta apunteen irudian ez agertu: "L" formako egitura da. Alboz ikusita ulertzen da forma hori.',
+        focus: ['epiglotisa'],
+        view: '3d',
+      },
+      {
+        at: S_LC[2],
+        notes: ['w17/2.6.2/p3/s3'],
+        idea: 'Gero aritenoideak: bikoitzak.',
+        text: 'Atzetik begiratzeko biratzen dugu eredua. Gero aritenoide kartilagoa dator, bikoitza, krikoidearen gainean.',
+        focus: ['aritenoide-kartilagoa'],
+        view: '3d',
+      },
+      {
+        at: S_LC[3],
+        notes: ['w17/2.6.2/p3/s3', 'w17/2.6/p3/s1'],
+        idea: 'Kornikulatuak eta kuneiformeak: beste bi bikote.',
+        text: 'Ondoren beste bi bikote: kornikulatuak eta kuneiformeak. Azkenengo hiru hauek bikoitzak dira.',
+        focus: ['kartilago-kornikulatua', 'kartilago-kuneiformea'],
+        view: '3d',
+      },
+      {
+        at: S_LC[4],
+        notes: ['w17/2.6.2/p3/s4'],
+        idea: 'Tiroidearen goiko aldea IV. arkutik; beheko atala VI.etik.',
+        text: 'Tiroide kartilagoa bitan banatzen da: goiko aldea laugarren arkuaren eratorria da, gorriz; beheko atala seigarrenarena, berdez.',
+        focus: ['tiroide-goiko-atala', 'tiroide-beheko-atala'],
+        exam: 'Tiroidea: goikoa IV, behekoa VI; beste kartilago guztiak VI.',
+        ask: { q: 'Zein arkutatik dator tiroide kartilagoaren goiko aldea?', options: ['IV. arkutik', 'VI. arkutik', 'III. arkutik'], answer: 0, why: ['Bai: goiko aldea IV.etik, beheko atala VI.etik.', 'VI.etik beheko atala dator, ez goikoa.', 'III. arkuak hioidearen zati bat ematen du, ez tiroidea.'] },
+        view: '3d',
+      },
+      {
+        at: S_LC[5],
+        notes: ['w17/2.6.2/p3/s4', 'w17/2.6.3/p8/s3-s4'],
+        idea: 'Tiroidearen behekoa eta beste kartilago guztiak VI.etik; trakea ez da arkuetatik.',
+        text: 'Beraz, tiroidearen beheko atala eta beste kartilago guztiak seigarren arkutik datoz. Hemendik aurrera trakea dago: aurreko hestearen eratorria da, eta ez du zerikusirik arku brakialekin.',
+        focus: ['tiroide-goiko-atala', 'tiroide-beheko-atala', 'krikoide-kartilagoa', 'epiglotisa', 'trakea'],
+        view: '3d',
+      },
+    ],
+    structures: ['tiroide-kartilagoa', 'tiroide-goiko-atala', 'tiroide-beheko-atala', 'krikoide-kartilagoa', 'epiglotisa', 'aritenoide-kartilagoa', 'kartilago-kornikulatua', 'kartilago-kuneiformea', 'hioide-hezurra', 'trakea', 'laugarren-arkua', 'seigarren-arkua'],
+    keyPoints: [
+      'IV. eta VI. arkuak: ez hezurrik, ez lotailurik; laringeko kartilagoak bakarrik.',
+      'Nagusiak: tiroidea, krikoidea, epiglotisa ("L" forma). Bikoitzak: aritenoideak, kornikulatuak, kuneiformeak.',
+      'Tiroidea: goiko aldea IV; beheko atala eta beste guztiak VI.',
+      'Trakea aurreko hestetik dator, ez arkuetatik.',
+    ],
+    cautions: [],
+  },
+  {
+    id: 'laugarren-seigarren-muskuluak',
+    day: '5. astea',
+    dayRange: [29, 35],
+    title: 'IV. eta VI. arkuak: muskuluak',
+    subtitle: 'Ertzatzaileak IV.etik, laringe barnekoak VI.etik',
+    intro: 'Hauek ere muskulu sakonak dira. Laugarren arkutik faringearen ertzatzaile batzuk, seigarrenetik laringearen barnekoak. Nerbio bagoaren bi adarrek inerbatzen dituzte.',
+    duration: 36,
+    source: src('2.6.3. Muskuluak'),
+    views: [v(LarynxMuscle17, 'Laringea eta faringea 3D')],
+    beats: [
+      {
+        at: S_LM[0],
+        notes: ['w17/2.6.3/p2/s1', 'w17/2.6.3/p3/s1'],
+        idea: 'IV. eta VI. arkuetako muskuluak sakonak edo barnekoak dira.',
+        text: 'Muskuluak ere sakonak edo barnekoak izango dira: laringearen atzean faringea dago, eta bere hormako muskuluak dira lehenak.',
+        focus: ['faringea'],
+        view: '3d',
+      },
+      {
+        at: S_LM[1],
+        notes: ['w17/2.6.3/p4/s1-s2'],
+        idea: 'IV. arkutik faringearen tarteko eta beheko ertzatzaileak (goikoak III.etik).',
+        text: 'Laugarren arkutik faringearen tarteko eta beheko muskulu ertzatzaileak aterako dira. Goikoak, horiz, hirugarren arkutik.',
+        focus: ['tarteko-ertzatzailea', 'beheko-ertzatzailea', 'goiko-ertzatzailea'],
+        exam: 'Faringearen ertzatzaileak: goikoa III; tartekoa eta behekoa IV.',
+        ask: { q: 'Zein arkutatik dator faringearen tarteko ertzatzailea?', options: ['III. arkutik', 'IV. arkutik', 'VI. arkutik'], answer: 1, why: ['III.etik goikoa dator.', 'Bai: tartekoa eta behekoa IV.etik.', 'VI.etik laringe barneko muskuluak datoz.'] },
+        view: '3d',
+      },
+      {
+        at: S_LM[2],
+        notes: ['w17/2.6.3/p5/s1-s2'],
+        idea: 'VI. arkutik laringe barneko muskulu intrintsekoak.',
+        text: 'Barrura begiratzeko faringea kendu eta eskuineko ertzatzaileak atzeratu ditugu. Seigarren arkutik hedatuko dira laringe barneko muskulu intrintsekoak.',
+        focus: ['laringe-barneko-muskuluak'],
+        exam: 'VI. arkua: laringe barneko muskulu intrintsekoak.',
+        view: '3d',
+      },
+      {
+        at: S_LM[3],
+        notes: ['w17/2.6.3/p6/s1'],
+        idea: 'Nerbio bagoa: goiko nerbio laringeoa (IV) eta laringe nerbio atzerakaria (VI).',
+        text: 'Nerbio bagoz inerbatuta daude, zehazki bere lepoko adar nagusietatik: goiko nerbio laringeotik eta laringe nerbio atzerakaritik.',
+        focus: ['bagoa', 'goiko-laringe-nerbioa', 'laringe-atzerakaria'],
+        exam: 'IV: goiko nerbio laringeoa. VI: laringe nerbio atzerakaria.',
+        view: '3d',
+      },
+      {
+        at: S_LM[4],
+        notes: ['w17/2.6.3/p7/s1', 'w17/2.6.3/p8/s1-s2', 'w17/2.6.3/p8/s5'],
+        idea: 'Bagoa parasinpatiko nagusiena: horregatik zehazten da zein atalek inerbatzen dituen arku hauek.',
+        text: 'Nerbio bagoa oso handia da eta, eragin motorea izan arren, nerbio parasinpatiko nagusiena da. Toraxeko errai guztiak eta abdomeneko asko inerbatzen ditu, aurreko eta bitarteko hestearen eratorriak. Horregatik zehazten da zein atalek inerbatzen dituzten arku hauetako muskuluak. Laugarren poltsaren atal bentrala batzuetan bosgarren poltsatzat ematen da.',
+        focus: ['bagoa'],
+        view: '3d',
+      },
+    ],
+    structures: ['faringea', 'goiko-ertzatzailea', 'tarteko-ertzatzailea', 'beheko-ertzatzailea', 'laringe-barneko-muskuluak', 'bagoa', 'goiko-laringe-nerbioa', 'laringe-atzerakaria', 'aritenoide-kartilagoa', 'trakea', 'laugarren-arkua', 'seigarren-arkua', 'hirugarren-arkua'],
+    keyPoints: [
+      'IV. arkua: faringearen tarteko eta beheko ertzatzaileak (goikoa III.etik).',
+      'VI. arkua: laringe barneko muskulu intrintsekoak.',
+      'Bagoaren adarrak: goiko nerbio laringeoa eta laringe nerbio atzerakaria.',
+      'Bagoa da nerbio parasinpatiko nagusiena.',
+    ],
+    cautions: [],
+  },
+];

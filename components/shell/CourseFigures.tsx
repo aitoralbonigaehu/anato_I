@@ -5,7 +5,8 @@ import type { BelItem, BelPlate } from '@/content/belortzioak';
 import { Figure, type Marks as BelMarks } from './Belortzioak';
 import styles from './CourseFigures.module.css';
 
-const documents = [
+/** `file` is the image-name prefix when it is not the list position (topic-numbered figures). */
+const documents: { title: string; pages: number; file?: number }[] = [
   { title: 'Hezur-sistema', pages: 4 },
   { title: 'Muskulu-sistema', pages: 3 },
   { title: 'Enbriologia · muskulu-sistema', pages: 2 },
@@ -13,6 +14,8 @@ const documents = [
   { title: 'Enbriologia · gorputz-barrunbeak', pages: 4 },
   { title: 'Enbriologia · liseri-aparatua', pages: 8 },
   { title: 'Enbriologia · zirkulazio-sistema', pages: 13 },
+  { title: 'Enbriologia · burua eta lepoa (I)', pages: 11, file: 17 },
+  { title: 'Enbriologia · burua eta lepoa (II)', pages: 22, file: 18 },
 ];
 type Line = { text: string; x: number; y: number; w: number; h: number };
 type Marks = Record<string, 1 | 2>;
@@ -54,7 +57,7 @@ export function CourseFigures() {
     try { return typeof window === 'undefined' ? {} : JSON.parse(localStorage.getItem(key) || '{}'); } catch { return {}; }
   });
   const [available, setAvailable] = useState(true);
-  const id = `${doc + 1}-${page}`;
+  const id = `${documents[doc].file ?? doc + 1}-${page}`;
   const [size, setSize] = useState<{ id: string; wh: [number, number] } | null>(null);
   const [active, setActive] = useState<string | null>(null);
 

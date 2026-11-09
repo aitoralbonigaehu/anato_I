@@ -97,6 +97,11 @@ export interface Item3 {
    * when a step's unlit structures recede to grey, so the lit ones still have a body to lie on.
    */
   ground?: boolean;
+  /**
+   * 0–1: how much a mesh's per-vertex tint (field-surface.ts, the colour melting across a region's border) counts.
+   * Default 1 when the mesh has one (a mesh without tint is drawn exactly as ever).
+   */
+  soft?: number;
 }
 
 /** Points in a stream's route. */

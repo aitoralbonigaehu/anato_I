@@ -454,45 +454,6 @@
   transform: none;
 }
 
-/* Everything one search away: a field-like key under the hero's numbers. */
-.lp-search {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: min(440px, 100%);
-  height: 44px;
-  margin-top: 30px;
-  padding: 0 8px 0 14px;
-  border-radius: var(--r-lg);
-  border: 1px solid var(--line-2);
-  background: rgb(var(--fg-rgb) / 0.03);
-  color: var(--text-3);
-  font-size: var(--t-md);
-  text-align: left;
-  transition: border-color var(--dur-1), background-color var(--dur-1), color var(--dur-1), box-shadow var(--dur-2);
-}
-
-.lp-search > span:first-of-type {
-  flex: 1;
-}
-
-.lp-search:hover {
-  border-color: var(--line-3);
-  background: rgb(var(--fg-rgb) / 0.05);
-  color: var(--text-2);
-  box-shadow: 0 0 0 4px rgb(var(--fg-rgb) / 0.03);
-}
-
-.lp-search-k {
-  display: inline-flex;
-  gap: 3px;
-}
-
-.lp-search kbd {
-  border-bottom-width: 1px;
-  background: var(--surface);
-}
-
 /* Study route: six cards, three across. */
 .route-grid {
   display: grid;
@@ -620,9 +581,6 @@
   .lp-shelf-head .seg {
     justify-self: start;
   }
-  .lp-search {
-    margin-top: 22px;
-  }
 }
 
 /* ——— Footer: brand and look, the site's map, the keys; the source underneath ——— */
@@ -737,6 +695,26 @@
   visibility: hidden;
 }
 
+/* ——— Tablets: every key of the site bar fits; search becomes its icon (Ctrl K needs a keyboard anyway) ——— */
+@media (max-width: 1000px) {
+  .land-nav .nav-sep {
+    display: none;
+  }
+  .land-nav nav {
+    gap: 2px;
+  }
+  .land-nav .search-key {
+    min-width: 0;
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+  .land-nav .search-key-t,
+  .land-nav .search-key-k {
+    display: none;
+  }
+}
+
 /* ——— Phones: the site bar keeps the brand, search, look and one menu ——— */
 .nav-menu-phone {
   display: none !important;
@@ -785,9 +763,6 @@
   .lp-stats > div:nth-child(odd) {
     padding-left: 0 !important;
     border-left: 0 !important;
-  }
-  .lp-search kbd {
-    display: none;
   }
 }
 
@@ -880,6 +855,42 @@
 .landing .hero-lead b {
   color: var(--text);
   font-weight: 600;
+}
+
+/* The tool pages come back daily for the tool: a short head, so the figure starts on the first screen.
+   (Berriak and the 404 are read once and keep the large title above.) */
+.landing .lab-hero,
+.landing .lab-hero.plate-hero,
+.landing .tl-hero,
+.landing .ln-head-hero {
+  padding: 28px var(--gutter) 4px;
+}
+
+.landing main > header:first-child {
+  margin-bottom: 14px;
+  padding-top: 4px;
+}
+
+.landing .lab-hero h1,
+.landing .lab-hero.plate-hero h1,
+.landing .tl-hero h1,
+.landing .ln-head-hero h1,
+.landing main > header:first-child h1 {
+  max-width: none;
+  margin: 6px 0 6px;
+  font-size: clamp(26px, 2.5vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+.landing .lab-hero .hero-lead,
+.landing .lab-hero.plate-hero .hero-lead,
+.landing .tl-hero .hero-lead,
+.landing .ln-head-hero .hero-lead,
+.landing main > header:first-child > p:not(.eyebrow) {
+  max-width: 104ch;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 /* Compact header of the tool pages (Ikasgelak, Eratorriak): the title, then straight to the topics. */

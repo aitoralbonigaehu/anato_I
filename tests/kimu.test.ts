@@ -663,8 +663,10 @@ describe('Kimu sweep fixes (2026-10-29): headings, names, numbers, typos, other 
   });
 
   it('reads "3." as "third": the arches are told apart', async () => {
-    for (const [q, id] of [['zer da 3. faringe arkua', 'hirugarren-faringe-arkua'], ['hirugarren arku faringeoa', 'hirugarren-faringe-arkua'], ['zer da 1. faringe arkua', 'lehen-faringe-arkua'], ['zer da 4. eta 6. faringe arkuak', 'laugarren-seigarren-arkuak']]) {
-      expect((await ask(q)).targets[0]?.structure, q).toBe(id);
+    for (const [q, id] of [['zer da 3. faringe arkua', 'hirugarren-arkua'], ['hirugarren arku faringeoa', 'hirugarren-arkua'], ['zer da 1. faringe arkua', 'lehen-faringe-arkua'], ['zer da 4. eta 6. faringe arkuak', 'bagoa']]) {
+      // Topic 17 has a section of its own for the third arch and for IV–VI: the answer opens there (a stage, not an atlas card).
+      const first = (await ask(q)).targets[0];
+      expect(first?.structure ?? first?.stage, q).toBe(id);
     }
   });
 

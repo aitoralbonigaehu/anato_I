@@ -15,6 +15,7 @@ import {
 } from '@/content/eratorriak/model';
 import { Flashcards } from './Flashcards';
 import { MomentBar } from './MomentBar';
+import { RoomNav } from './RoomNav';
 import { TestTable } from './TestTable';
 import { TimelineLayout } from './TimelineLayout';
 import styles from '../eratorriak.module.css';
@@ -118,6 +119,7 @@ export function StudyRoom({
     ['nahasketak', 'Nahasketak'],
     ['fitxak', 'Fitxak'],
   ];
+  const navItems = sections.map(([id, label]) => [`a${d.week}-${id}`, label] as const);
   const heading = (n: number) => (
     <h3 className={styles.h3}>
       <b>{n + 1}</b>
@@ -154,15 +156,8 @@ export function StudyRoom({
         <p className={styles.eyebrow}>{d.week}. gaia · Ikasgela</p>
         <h2 id={`a${d.week}-title`}>{d.title}</h2>
         <p className={styles.lead}>{d.lead}</p>
-        <nav className={styles.subnav} aria-label="Ikasgelaren atalak">
-          {sections.map(([id, label], i) => (
-            <a key={id} href={`#a${d.week}-${id}`}>
-              <b>{i + 1}</b>
-              {label}
-            </a>
-          ))}
-        </nav>
       </header>
+      <RoomNav items={navItems} />
       <section id={`a${d.week}-mapa`} className={styles.block}>
         {heading(0)}
         <div className={styles.overview}>

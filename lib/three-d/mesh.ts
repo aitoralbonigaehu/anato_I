@@ -12,6 +12,10 @@ export interface Mesh {
   /** u: along the shape (0..1), v: around it (0..1). Drives the tissue texture direction (fibres). */
   uv: Float32Array;
   idx: Uint32Array;
+  /** Optional (field-surface.ts): per-vertex colour multiplier (rgb), for a colour melting into the next region's. */
+  tint?: Float32Array;
+  /** Optional, with `tint` (field-surface.ts): the point each vertex's fine texture is sampled at, so it stays on the tissue. */
+  rest?: Float32Array;
 }
 
 /** A frame along a curve: tangent t, and two normals n (reference side) and b. */

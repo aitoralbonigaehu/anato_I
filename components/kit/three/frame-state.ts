@@ -26,7 +26,7 @@ export function sameGLFrame(a: GLFrame | null, b: GLFrame): boolean {
     const y = b.items[i];
     if (x.key !== y.key || x.mesh !== y.mesh || !numbers(x.matrix, y.matrix) || x.color !== y.color || x.deep !== y.deep ||
       x.tissue !== y.tissue || x.opacity !== y.opacity || x.outline !== y.outline || x.state !== y.state ||
-      x.quiet !== y.quiet || x.thin !== y.thin || !clip(x.clip, y.clip)) return false;
+      x.quiet !== y.quiet || x.thin !== y.thin || x.soft !== y.soft || !clip(x.clip, y.clip)) return false;
     const xs = x.stream, ys = y.stream;
     return xs === ys || !!xs && !!ys && xs.cells === ys.cells && xs.gates === ys.gates && xs.route === ys.route && xs.phase === ys.phase && xs.grow === ys.grow;
   });

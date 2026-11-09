@@ -458,6 +458,7 @@ export function Stage3D({ scene, children, orbit = true, axes, continuity }: Sta
         clip: it.clip,
         stream: it.stream,
         thin: it.thin ?? 0,
+        soft: it.mesh.tint ? (it.soft ?? 1) : 0,
       })),
     });
   });

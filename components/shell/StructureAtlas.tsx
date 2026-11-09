@@ -161,7 +161,7 @@ export function StructureAtlas() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') ?? '';
   const requestedTopic = Number(searchParams.get('gaia'));
-  const topic = requestedTopic >= 1 && requestedTopic <= 9 && Number.isInteger(requestedTopic) ? requestedTopic : 0;
+  const topic = weeks.some((week) => week.week === requestedTopic) ? requestedTopic : 0;
   const results = matches(query, topic);
   // Two ways to browse: cards (each structure with its drawing) or the development schemes.
   const schemesView = searchParams.get('ikusi') === 'eskemak';
@@ -170,7 +170,19 @@ export function StructureAtlas() {
   const returnTarget = useRef<HTMLElement | null>(null);
   const restoreFocus = useRef(false);
   const searchRef = useRef<HTMLInputElement>(null);
+  const filtersRef = useRef<HTMLElement>(null);
   const answers = useAnswers();
+  // A new topic starts at the top of its list, just under the sticky bar, not somewhere down the old one.
+  const shownTopic = useRef(topic);
+  useEffect(() => {
+    if (shownTopic.current === topic) return;
+    shownTopic.current = topic;
+    const list = document.getElementById('atlas-zerrenda');
+    if (!list) return;
+    const barBottom = filtersRef.current?.getBoundingClientRect().bottom ?? 80;
+    const under = list.getBoundingClientRect().top - barBottom - 12;
+    if (under < 0) window.scrollBy({ top: under, behavior: 'instant' });
+  }, [topic]);
   useEffect(() => {
     if (selected) {
       const detail = document.getElementById('egitura-xehetasuna');
@@ -182,7 +194,8 @@ export function StructureAtlas() {
         const nodes = [...document.querySelectorAll<HTMLElement>('#atlas-zerrenda [data-atlas-node]')].filter((node) => node.dataset.atlasNode === selected.id);
         const node = nodes.find((n) => n.dataset.context === undefined) ?? nodes[0];
         const r = node?.getBoundingClientRect();
-        if (node && r && (r.top < 80 || r.bottom > window.innerHeight)) node.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        const barBottom = filtersRef.current?.getBoundingClientRect().bottom ?? 80;
+        if (node && r && (r.top < barBottom || r.bottom > window.innerHeight)) node.scrollIntoView({ block: 'center', behavior: 'smooth' });
       }
     } else if (restoreFocus.current) {
       restoreFocus.current = false;
@@ -303,16 +316,15 @@ export function StructureAtlas() {
           <p>Gai guztietako egiturak eta haien garapen-loturak, adarrez adar.</p>
           <Link href="/eratorriak" className={styles.related}>Eratorriak orrian ikusi <span aria-hidden="true">↗</span></Link>
         </header>
-          <section className={styles.filters} aria-label="Eskemen iragazkiak">
-            <label className={styles.field}>
-              <span>Bilatu euskaraz edo gaztelaniaz</span>
-              <input ref={searchRef} type="search" aria-label="Bilatu egiturak euskaraz edo gaztelaniaz" value={query} onChange={(event) => filter(event.target.value, topic)} placeholder="Adib. epiblastoa, placenta…"
+          <section ref={filtersRef} className={styles.filters} aria-label="Eskemen iragazkiak">
+            <label className={`${styles.field} ${styles.searchField}`}>
+              <input ref={searchRef} type="search" aria-label="Bilatu egiturak euskaraz edo gaztelaniaz" value={query} onChange={(event) => filter(event.target.value, topic)} placeholder="Bilatu euskaraz edo gaztelaniaz: epiblastoa, placenta…"
                 onKeyDown={(event) => { if (event.key === 'Enter' && results.length) { event.preventDefault(); choose(results[0].id); } }} aria-describedby="atlas-search-hint" />
               <small id="atlas-search-hint" className={styles.hint}>
                 {query && results.length ? <>Enter: <b>{results[0].name}</b> ireki</> : <>Laster-tekla: <kbd>/</kbd></>}
               </small>
             </label>
-            <div className={styles.field}>
+            <div className={`${styles.field} ${styles.topicField}`}>
               <span id="atlas-topic-label">Gaia</span>
               <div className={styles.topics} role="group" aria-labelledby="atlas-topic-label">
                 <button type="button" aria-pressed={topic === 0} onClick={() => filter(query, 0)}>Denak</button>
@@ -329,7 +341,7 @@ export function StructureAtlas() {
               <p role="status">{results.length} / {catalogue.length} egitura</p>
               {(query || topic > 0) && <button type="button" onClick={() => filter('', 0)}>Garbitu</button>}
             </div>
-            <details className={styles.typeHelp}><summary>Lotura motak</summary><p>Geziaren etiketak lotura mota adierazten du; etiketarik gabeko lotura garapena da. Grisez: aurreko gaietako egiturak. Hautatu egitura bat haren azalpena eta garapena ikusteko.</p><dl>{(Object.keys(relationLabels) as AtlasRelation['kind'][]).map((kind) => <div key={kind}><dt>{relationLabels[kind]}</dt><dd>{relationHelp[kind]}</dd></div>)}</dl></details>
+            {schemesView && <details className={styles.typeHelp}><summary>Lotura motak</summary><div className={styles.typeBody}><p>Geziaren etiketak lotura mota adierazten du; etiketarik gabeko lotura garapena da. Grisez: aurreko gaietako egiturak. Hautatu egitura bat haren azalpena eta garapena ikusteko.</p><dl>{(Object.keys(relationLabels) as AtlasRelation['kind'][]).map((kind) => <div key={kind}><dt>{relationLabels[kind]}</dt><dd>{relationHelp[kind]}</dd></div>)}</dl></div></details>}
             </div>
           </section>
         {due.length > 0 && <section className={styles.review} aria-labelledby="atlas-review-title">
@@ -346,7 +358,10 @@ export function StructureAtlas() {
             : results.length ? weeks.filter((week) => !topic || week.week === topic).map((week) => {
               const targets = results.filter((structure) => atlasTopics(structure.id).includes(week.week));
               return targets.length ? <TopicScheme key={week.week} topic={week} targets={targets} selectedId={selected?.id} onChoose={choose} searching={!!query} onPath={onPath} /> : null;
-            }) : <p className={styles.empty}>Ez da egiturarik aurkitu. Saiatu beste izen batekin edo garbitu iragazkiak.</p>}
+            }) : <div className={styles.noResults}>
+              <p className={styles.empty}>Ez da egiturarik aurkitu. Saiatu beste izen batekin edo garbitu iragazkiak.</p>
+              <button type="button" className="btn btn-light small" onClick={() => filter('', 0)}>Garbitu</button>
+            </div>}
           </div>
           {selected && (
             <article className={styles.detail} id="egitura-xehetasuna" aria-labelledby="atlas-structure-title" tabIndex={-1}>

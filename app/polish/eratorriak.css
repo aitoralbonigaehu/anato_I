@@ -1,0 +1,73 @@
+/* Interface polish: eratorriak. Loaded after every other global sheet. */
+
+/* The sidebar speaks one language: "1–6" and "Arku sistemak" use the same numeral and active mark as the topics. */
+.mg-nav button:not([style*='--th']) b,
+.mg-nav button.mg-nav-arch b,
+.mg-nav button.mg-nav-arch.is-on b,
+.mg-nav button.is-on:not([style*='--th']) b {
+  min-width: 20px;
+  width: auto;
+  height: auto;
+  padding: 0;
+  background: none;
+  color: var(--ink-signal);
+  font: 650 14px / 1 var(--font-ui);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.mg-nav button.mg-nav-arch {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-2);
+}
+
+.mg-nav button.mg-nav-arch:hover {
+  color: var(--text);
+  background: var(--surface);
+}
+
+.mg-nav button.is-on:not([style*='--th']),
+.mg-nav button.mg-nav-arch.is-on {
+  position: relative;
+  border-color: transparent;
+  background: var(--signal-soft);
+  color: var(--text);
+}
+
+.mg-nav button.is-on:not([style*='--th'])::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--signal);
+}
+
+/* Tablet topic panel: was fixed near-black, leaving dark text unreadable in the light theme. */
+.mg.is-menu .mg-nav {
+  background: var(--surface);
+}
+
+@media (min-width: 1200px) {
+  .mg.is-menu .mg-nav {
+    background: transparent;
+  }
+}
+
+/* Tablet touch sizes for the page's own controls. */
+.mg-quiz {
+  min-height: 40px;
+}
+
+.mg-quiz-hint button {
+  min-height: 32px;
+}
+
+@media (max-width: 1199px) {
+  .mg-quiz-hint button {
+    min-height: 40px;
+  }
+}

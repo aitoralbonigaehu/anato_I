@@ -1,0 +1,46 @@
+/* Interface polish: site. Loaded after every other global sheet. */
+
+/* Kronologia: dates a student can see and hit. Dots grow around their own centre, so nothing shifts. */
+.tl-chart .tl-ev .tl-ev-dot {
+  width: 9px;
+  height: 9px;
+}
+
+.tl-chart .tl-ev.is-gakoa .tl-ev-dot {
+  width: 11px;
+  height: 11px;
+}
+
+.tl-chart .tl-ev.is-xehetasuna .tl-ev-dot {
+  width: 7px;
+  height: 7px;
+}
+
+.tl-chart .tl-ev.is-now .tl-ev-dot {
+  width: 13px;
+  height: 13px;
+}
+
+/* A larger invisible target around each dot, for the tooltip on a tablet. */
+.tl-chart .tl-ev .tl-ev-dot::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+}
+
+.tl-chart .tl-axis small {
+  font-size: 11.5px;
+}
+
+/* Berriak: the date column only as wide as a date needs. Below 900px it already stacks. */
+@media (min-width: 901px) {
+  .wn-page .wn-timeline .wn-day-group {
+    grid-template-columns: 136px minmax(0, 1fr);
+    column-gap: 22px;
+  }
+
+  .wn-page .wn-timeline .wn-date {
+    text-wrap: balance;
+  }
+}

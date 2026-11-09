@@ -35,6 +35,8 @@ FILES = [
     ('14.GAIA_DIGESTIO APARATUA 1.ATALA (Zuzenduta).pdf', '14.GAIA_DIGESTIO APARATUA 2.Atala (Zuzenduta).docx.pdf'),
     '15._GAIA_SISTEMA_UROGENITALA_Zuzenduta.pdf',
     '16_GAIA_SISTEMA_UROGENITALA_GONADAK_zuzenduta.pdf',
+    '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA).pdf',
+    '18. GAIA_ Burua eta lepoa ll (Zuzenduta).pdf',
 ]
 
 # Week 14 part 2's unnumbered headings open sections of their own.
@@ -230,6 +232,9 @@ def extract(path, week, part=1, counts=None):
             blocks[-1]['parts'].extend([{'text': ' '}, *line['parts']])
         else:
             blocks.append({'kind': kind, 'section': block_section, 'parts': list(line['parts'])})
+        # Week 18's TOC box comes after page 1's first paragraphs and is followed by body text, not a heading.
+        if week == 18 and toc and text.strip() == 'Odontogenesia':
+            toc = False
         previous = line
     # A later part of the same topic numbers its blocks on from the earlier parts' (part 1's TOC already holds sections 4–6).
     counts = counts if counts is not None else collections.Counter()

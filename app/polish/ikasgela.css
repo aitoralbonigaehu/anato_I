@@ -1,0 +1,22 @@
+/* Interface polish: ikasgela. Loaded after every other global sheet. */
+
+/* The room's own title is the headline: "Ikasgelak" only labels the topic strip. */
+.ik-page .ik-title h1 {
+  font: 600 11.5px / 1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.ik-page .ik-head {
+  align-items: center;
+}
+
+@media (max-width: 1100px), (pointer: coarse) {
+  .ik-page .ik-topics a,
+  .ik-page .ik-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+  }
+}

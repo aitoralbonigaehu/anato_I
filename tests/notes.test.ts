@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { blockText, expandNotes, firstAnchorInSection, NOTES_EXCEPTIONS, notesOf, sectionMatches, sentence, sentenceAnchors } from '@/content/notes-text';
 
 describe('original notes and reviewed alignment', () => {
-  const lengths = [17921, 10991, 17577, 23697, 13010, 18297, 16479, 23379, 27720, 20337, 25845, 21028, 25568, 37344, 27155, 26684];
+  const lengths = [17921, 10991, 17577, 23697, 13010, 18297, 16479, 23379, 27720, 20337, 25845, 21028, 25568, 37344, 27155, 26684, 17837, 28922];
   const hashes = [
     'f8abeb46de6a656b112e6b89b9c99802bab9a7af8affd6c63ed4ac2a6e0524db',
     'fd368f4eb7b398bec5c5275cd244233a86f4f5e099f796bbf42328b3ac32994c',
@@ -25,6 +25,8 @@ describe('original notes and reviewed alignment', () => {
     '295fb1d6d0829f412378c727df6813ab8ed6f1023b639fe0f3e9247b7189d376',
     'a678255efb612ccb20b5da3dac678819c93c29853e210d7c2469ad0e10b10617',
     'faf35fc5df5d2db6ca6b04288a0d51ac58130750f5b583eededbb7450b80bc6e',
+    '6ae967e2a46a439bd8c39a1713e21a3dd64eacc583e1484a2c519dab2f6cf85c',
+    '55e022fd165318c695a9b49048f5d305e4fe23e7b758084cc1f4de2ad0bee004',
   ];
 
   it('pins the complete original text of each of the PDFs', () => {
@@ -57,7 +59,7 @@ describe('original notes and reviewed alignment', () => {
       }
       for (const id of refs) expect(sentence(id), `${key}: ${id}`).toBeDefined();
     });
-    expect(count).toBe(1161);
+    expect(count).toBe(1391);
     // The second: topic 10 stage 6's summary step (the flat map of the derivatives).
     expect(unmapped).toBe(2);
   });

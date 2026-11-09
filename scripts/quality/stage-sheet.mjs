@@ -23,14 +23,16 @@ const at = opt('at', '0.12,0.35,0.6,0.92').split(',').map(Number);
 const only = opt('stages', '');
 const base = opt('base', 'http://localhost:3000');
 const gpu = opt('gl', 'swiftshader');
+const vw = Number(opt('vw', '1440'));
+const vh = Number(opt('vh', '900'));
 const [week, outArg] = args;
 if (!week) throw new Error('usage: stage-sheet.mjs <week> [out-dir] [--at ...] [--stages ...] [--base ...]');
 const out = resolve(outArg ?? `docs/quality/sheets/w${week}`);
 mkdirSync(out, { recursive: true });
 
-// The stages, in order, from the topic's content files (weekN.ts, weekNb.ts).
+// The stages, in order, from the topic's content files (weekN.ts, weekNa.ts â€¦ weekNd.ts).
 const stages = [];
-for (const f of [`content/weeks/week${week}.ts`, `content/weeks/week${week}b.ts`]) {
+for (const f of ['', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm'].map((part) => `content/weeks/week${week}${part}.ts`)) {
   let src = '';
   try { src = readFileSync(f, 'utf8'); } catch { continue; }
   for (const m of src.matchAll(/^ {4}id: '([a-z0-9-]+)',$/gm)) stages.push(m[1]);
@@ -40,7 +42,7 @@ if (!list.length) throw new Error(`no stages found for week ${week}`);
 
 const launchArgs = gpu === 'swiftshader' ? ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] : [];
 const browser = await chromium.launch({ args: launchArgs });
-const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+const ctx = await browser.newContext({ viewport: { width: vw, height: vh } });
 await ctx.addInitScript(() => {
   // The renderer's harness hooks (coverage), and no mascot cheer over the first frame.
   window.__perf = {};
@@ -79,12 +81,12 @@ for (const stage of list) {
 await browser.close();
 
 writeFileSync(join(out, 'report.json'), JSON.stringify({ date: new Date().toISOString(), week, at, base, errors, rows }, null, 2));
-const cell = (s) => `<figure><img src="${s.file}" loading="lazy"><figcaption>${s.u} · ${s.cover == null ? '—' : (s.cover * 100).toFixed(1) + '%'} ${s.flags.map((f) => `<b class="${f}">${f}</b>`).join(' ')}</figcaption></figure>`;
+const cell = (s) => `<figure><img src="${s.file}" loading="lazy"><figcaption>${s.u} Â· ${s.cover == null ? 'â€”' : (s.cover * 100).toFixed(1) + '%'} ${s.flags.map((f) => `<b class="${f}">${f}</b>`).join(' ')}</figcaption></figure>`;
 writeFileSync(join(out, 'index.html'), `<!doctype html><meta charset="utf-8"><title>Topic ${week} stage sheet</title>
 <style>body{background:#111;color:#ddd;font:13px system-ui;margin:16px}h2{font-size:14px;margin:18px 0 6px}
 .row{display:grid;grid-template-columns:repeat(${at.length},1fr);gap:8px}img{width:100%;border-radius:6px;display:block}
 figure{margin:0}figcaption{padding:4px 2px}b{padding:1px 6px;border-radius:8px;font-weight:600}
 .void,.no-3d{background:#7f1d1d}.small{background:#854d0e}.edge{background:#1e3a8a}</style>
-<h1>Topic ${week}: ${rows.length} stages × ${at.length} moments</h1>${errors.length ? `<pre>${errors.join('\n')}</pre>` : ''}
+<h1>Topic ${week}: ${rows.length} stages Ã— ${at.length} moments</h1>${errors.length ? `<pre>${errors.join('\n')}</pre>` : ''}
 ${rows.map((r) => `<h2>${r.stage}</h2><div class="row">${r.shots.map(cell).join('')}</div>`).join('\n')}`);
 console.log(`\n${out}/index.html`);

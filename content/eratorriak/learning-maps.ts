@@ -49,6 +49,12 @@ const GROUPS: Group[] = [
   [16, 'gonadak', 'Hozi zelulak eta gonaden desberdintzapena', ['hozi-zelulen-bidaia', 'gonada-bi-bide']],
   [16, 'hodiak', 'Wolff eta Müller hodiak: arren eta emeen hodi genitalak', ['wolff-eratorriak', 'muller-eratorriak', 'baginaren-bi-jatorri']],
   [16, 'kanpoa', 'Jaisketa eta kanpo genitalak', ['gubernakulua-jaisketa', 'kanpo-genitalen-eratorriak']],
+  [17, 'kraneoa', 'Kraneoa: jatorriak eta hezurtze motak', ['kraneoaren-jatorriak-17', 'kraneo-hezurtzeak-17']],
+  [17, 'azalekoak', 'Arkuaren osagaiak eta I.–II. arkuak', ['arkuaren-osagaiak-17', 'lehen-arkua-eratorriak-17', 'bigarren-arkua-eratorriak-17']],
+  [17, 'sakonak', 'III., IV. eta VI. arkuak: hioidea eta laringea', ['hirugarren-arkua-eratorriak-17', 'laugarren-seigarren-eratorriak-17']],
+  [18, 'poltsak', 'Poltsak, arraildurak eta guruinen jaisketa', ['poltsen-eratorriak-18', 'arrailduren-eratorriak-18', 'guruinen-jaisketa-18']],
+  [18, 'mihia', 'Mihia eta tiroidea', ['mihiaren-jatorria-18', 'tiroidearen-bidea-18']],
+  [18, 'aurpegia', 'Aurpegia, aho sabaia eta hortzak', ['aurpegiaren-osagaiak-18', 'aho-sabaiaren-asteak-18', 'hortzaren-jatorriak-18']],
 ];
 
 const clone = (node: MNode): MNode => ({ ...node, ...(node.kids ? { kids: node.kids.map(clone) } : {}) });

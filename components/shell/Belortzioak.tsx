@@ -945,7 +945,12 @@ export function Belortzioak() {
                     </button>
                   )}
                 </div>
-                <p className="lab-keys">Teklak: ← → irudiak · L izenak/zenbakiak · sakatu izen bat: gorria → laranja → kendu</p>
+                <p className={s.markHint}>
+                  <i aria-hidden="true" />
+                  <i aria-hidden="true" />
+                  Sakatu izen bat: gorria → laranja → kendu
+                </p>
+                <p className={`lab-keys ${s.keysHint}`}>Teklak: ← → irudiak · L izenak/zenbakiak</p>
               </>
             )}
 

@@ -41,6 +41,9 @@ export function ReferenceTables({ scope, quiz }: { scope: TableScope; quiz: bool
     .map((table) => ({ ...table, rows: table.rows.filter((row) => levels.has(row.level)).sort((a, b) => a.level - b.level) }))
     .filter((table) => table.rows.length > 0)
     .sort((a, b) => weight(b) - weight(a));
+  // Every answer the self-test hides: the rows in view, plus each cell of the arch grid.
+  const total = tables.reduce((sum, table) => sum + table.rows.length, 0)
+    + (arch ? ARCH_GRID.reduce((sum, column) => sum + ARCH_SYSTEMS.filter((system) => column.cells[system.id]).length, 0) : 0);
   const resetRevealed = () => setRevealed(new Set());
   const toggleRevealed = (key: string) => setRevealed((current) => {
     const next = new Set(current);
@@ -83,6 +86,12 @@ export function ReferenceTables({ scope, quiz }: { scope: TableScope; quiz: bool
             </div>
           )}
         </div>
+        {hidden && (
+          <p className={`mg-quiz-hint ${styles.hint}`} aria-live="polite">
+            Sakatu «Erakutsi» erantzuna ikusteko. {revealed.size} / {total} agerian.
+            {revealed.size > 0 && <button type="button" onClick={resetRevealed}>Berriro ezkutatu</button>}
+          </p>
+        )}
       </header>
 
       <div className={styles.tables}>
@@ -185,7 +194,7 @@ function ArchGrid({ hidden, levels, revealed, onToggle }: {
                           aria-label={`${column.arch}, ${system.label}: ${visible ? 'ezkutatu' : 'erakutsi'}`}
                           aria-expanded={visible}
                           onClick={() => onToggle(key)}
-                        >{visible ? 'Ezkutatu' : '?'} <span aria-hidden="true">{visible ? '−' : '+'}</span></button>
+                        >{visible ? 'Ezkutatu' : 'Erakutsi'} <span aria-hidden="true">{visible ? '−' : '+'}</span></button>
                       )}
                       {visible && <div className={hidden ? styles.answer : undefined}><span>{cell.text}</span>{cell.note && <small>{cell.note}</small>}</div>}
                     </td>

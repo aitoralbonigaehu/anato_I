@@ -25,6 +25,7 @@ import {
   type Seg,
 } from '@/content/eratorriak/arteries';
 import { CARDS12 } from '@/content/eratorriak/cards12';
+import { RoomNav } from './kit/RoomNav';
 import { ArchLadder, colourOf, type ColourMode } from './ArchLadder';
 import { Arch3D } from './Arch3D';
 import { BRANCH_GROUPS, BranchesFigure, NervesFigure, UMB_STEPS, UmbilicalFigure, type BranchGroup } from './figures12';
@@ -164,15 +165,8 @@ export function Topic12Study() {
         <p className={styles.lead}>
           Gako bakarra: <b>pieza bakoitzak bere kolorea gordetzen du</b> 4. astetik heldura arte. Kolore batek jatorria esaten du (zein arku, aorta dortsala, 7. segmentu artekoa…); eskeman eta 3D ereduan pieza berak dira. Izenak aldatzen dira, kolorea ez.
         </p>
-        <nav className={styles.subnav} aria-label="Ikasgelaren atalak">
-          {SECTIONS.map(([id, label], i) => (
-            <a key={id} href={`#${id}`}>
-              <b>{i + 1}</b>
-              {label}
-            </a>
-          ))}
-        </nav>
       </header>
+      <RoomNav items={SECTIONS} />
 
       {/* ——— 1. overview ——— */}
       <section id="a12-mapa" className={styles.block}>

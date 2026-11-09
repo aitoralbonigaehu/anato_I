@@ -43,7 +43,7 @@ const CHAPTERS: Chapter[] = PICKS.flatMap((name) => {
 }).sort((a, b) => a.m.day - b.m.day);
 
 /** Scroll given to each chapter, in viewport heights. */
-const PER = 0.85;
+const PER = 0.6;
 const QUIZ_KEY = 'enbrioatlas:story-asmatu';
 
 const REDUCED = '(prefers-reduced-motion: reduce)';

@@ -220,6 +220,30 @@ export const NOTES: Record<number, NotesSection[]> = {
     { n: '6.1', title: 'Emeetan', depth: 1, stages: ['kanpo-genitalak-emeak'] },
     { n: '6.2', title: 'Arretan', depth: 1, stages: ['kanpo-genitalak-arrak'] },
   ],
+  17: [
+    { n: '1', title: 'Kraneoaren garapena', depth: 0, stages: ['sarrera', 'kraneoaren-bi-atalak', 'hezurtze-motak'] },
+    { n: '1.1', title: 'Neurokraneoa', depth: 1, stages: ['josturak-fontanelak', 'buru-ganga', 'kondrokraneoa'] },
+    { n: '1.2', title: 'Errai kraneoa', depth: 1, stages: ['errai-kraneoa'] },
+    { n: '2', title: 'Faringe-arkuak (4.-5. asteak)', depth: 0, stages: ['faringe-arkuak', 'arkuaren-osagaiak'] },
+    { n: '2.1', title: 'Bikote kranealak', depth: 1, stages: ['bikote-kranealak'] },
+    { n: '2.2', title: 'Lehenengo arku faringeoa', depth: 1, stages: ['trigeminoa', 'lehen-arkua-luzapenak', 'lehen-arkua-kartilagoak', 'lehen-arkua-muskuluak'], covers: '2.2.1 Nerbioak, 2.2.2 Kartilago eta hezurrak, 2.2.3 Muskuluak' },
+    { n: '2.3', title: 'Bigarren arku faringeoa', depth: 1, stages: ['bigarren-arkua', 'bigarren-arkua-muskuluak'], covers: '2.3.1 Nerbioak, 2.3.2 Kartilagoak, 2.3.3 Muskuluak' },
+    { n: '2.4', title: 'Hirugarren arku faringeoa', depth: 1, stages: ['hirugarren-arkua'], covers: '2.4.1 Nerbioak, 2.4.2 Kartilagoak, 2.4.3 Muskuluak' },
+    { n: '2.5', title: 'Bosgarren arku faringeoa', depth: 1, stages: ['bosgarren-arkua'] },
+    { n: '2.6', title: 'Laugarren eta seigarren arku faringeoak', depth: 1, stages: ['bagoa', 'laringeko-kartilagoak', 'laugarren-seigarren-muskuluak', 'arkuen-mapa'], covers: '2.6.1 Nerbioak, 2.6.2 Kartilagoak, 2.6.3 Muskuluak' },
+  ],
+  18: [
+    { n: '1', title: 'Faringe arraildurak eta faringe poltsak', depth: 0, stages: ['sarrera', 'arraildurak-poltsak'] },
+    { n: '1.1', title: 'Poltsetatik eratorritako egiturak', depth: 1, stages: ['lehen-poltsa', 'bigarren-poltsa', 'hirugarren-poltsa', 'laugarren-poltsa'], covers: '1.1.1–1.1.4 Lehenengo, bigarren, hirugarren eta laugarren poltsen eratorriak' },
+    { n: '1.2', title: 'Arrailduretatik eratorritako egiturak', depth: 1, stages: ['lehen-arraildura', 'beste-arraildurak', 'guruinen-jaisketa'] },
+    { n: '2', title: 'Mihia', depth: 0, stages: [] },
+    { n: '2.1', title: 'Mihiaren garapena', depth: 1, stages: ['mihiaren-gorputza', 'mihiaren-sustraia'] },
+    { n: '2.2', title: 'Mihiaren inerbazioa', depth: 1, stages: ['mihiaren-inerbazioa', 'mihiaren-muskuluak'], covers: '2.3 Mihiaren muskuluak (apunteetan inerbazioaren taulan)' },
+    { n: '3', title: 'Tiroide guruinaren garapena', depth: 0, stages: ['tiroidea-sorrera', 'tiroidea-jaisketa', 'tiroidea-heldua'] },
+    { n: '4', title: 'Aurpegiaren garapena', depth: 0, stages: ['aurpegia-hasiera'] },
+    { n: '4.1', title: 'Sudur plakodak eta aho sabaia', depth: 1, stages: ['sudur-plakodak', 'aurpegi-fusioa', 'ildo-nasolagrimala', 'maxilar-arteko-segmentua', 'aho-sabai-gandorrak', 'sudur-trenkada-korneteak', 'aho-sabai-akatsak', 'koanak'] },
+    { n: '4.2', title: 'Odontogenesia: hortzen eraketa', depth: 1, stages: ['hortz-lamina', 'txano-kanpai', 'hortzaren-geruzak', 'esne-behin-betiko'] },
+  ],
 };
 
 /** The notes section a stage belongs to, and its parent heading when it is a sub-heading. */

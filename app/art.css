@@ -1569,8 +1569,8 @@ html:not([data-intro='seen']) .landing.is-intro .lp-hero > .hero-visual {
 
 .nav-news-dot {
   position: absolute;
-  top: 7px;
-  right: 5px;
+  top: 5px;
+  right: 1px;
   width: 7px;
   height: 7px;
   border-radius: 50%;
@@ -2183,4 +2183,142 @@ html:not([data-intro='seen']) .landing.is-intro .lp-hero > .hero-visual {
 
 .wn-day b {
   font-size: calc(16px + var(--i) * 4px);
+}
+
+/* ————————————————————————————————————————————————————————————————
+   Interface review, November 2026
+   ———————————————————————————————————————————————————————————————— */
+
+/* Tablet portrait: the stage heading keeps the stage's dark tokens, so it needs the stage's dark ground
+   (without it the title, the step count and the crumbs were pale text on the pale page). */
+@media (max-width: 820px) {
+  .app:not(.is-focus) .stage > .stage-bar {
+    padding: 12px 14px;
+    border-radius: var(--r-xl);
+    background:
+      radial-gradient(90% 140% at 50% 0%, oklch(0.55 0.12 var(--th) / 0.14), transparent 70%),
+      #101013;
+  }
+
+  .app:not(.is-focus) .stage > .stage-bar .stage-title h2 {
+    color: #f5f2ec;
+  }
+
+  .app .stage-bar .seg > button.is-on {
+    background: var(--surface-3);
+    color: var(--text);
+  }
+}
+
+/* The trail shrinks from its start: earlier steps get an ellipsis, and the place you are stays whole. */
+.lm-crumbs > span {
+  flex: 0 1 auto;
+  overflow: hidden;
+}
+
+.lm-crumbs > span.is-here {
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+
+.lm-crumbs > span > i {
+  flex: none;
+}
+
+.lm-crumbs button {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* With a side panel open the stage is narrower: the title keeps its width, the trail gives way. */
+@media (max-width: 1599px) {
+  .workspace:is(.klasea, .panel-open, :not(.no-info)) .stage-side .lm-text {
+    max-width: 180px;
+  }
+}
+
+/* The stage's date chip keeps its gap from the title; on touch its tap area reaches above and below the pill. */
+.stage-heading .day-chip {
+  position: relative;
+  margin: 0;
+}
+
+@media (pointer: coarse), (max-width: 820px) {
+  .stage-heading .day-chip::after {
+    content: '';
+    position: absolute;
+    inset: -9px 0;
+  }
+}
+
+/* Landscape tablet with a panel open: the thumbnail says where you are, the whole title stays. */
+@media (min-width: 821px) and (max-width: 1180px) {
+  .workspace:is(.klasea, .panel-open, :not(.no-info)) .stage-side .lm-text {
+    display: none;
+  }
+}
+
+/* The numbers on the topic cards sit on a dark glass over the scene, in both themes. */
+.landing .lp-card-n {
+  color: oklch(0.93 0.05 var(--th)) !important;
+}
+
+/* The Fitxak figure is a dark scene in both themes: no paper showing around it. */
+.lab-fig.plate-fig {
+  background: var(--bg-1);
+}
+
+/* A scene's colour key names what the numbers ask: without its words it is only stray squares. */
+.lab-fig:not(.is-labelled):not(.is-named) [data-key] {
+  display: none;
+}
+
+/* "Ask Kimu" shrinks to its face once the page moves, so it stops covering the content's right edge. */
+.kimu-launch > span,
+.kimu-launch kbd {
+  transition: opacity var(--dur-1);
+}
+
+html[data-scrolled] .kimu-launch:not(:hover):not(:focus-visible) {
+  gap: 0;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  justify-content: center;
+}
+
+html[data-scrolled] .kimu-launch:not(:hover):not(:focus-visible) > span,
+html[data-scrolled] .kimu-launch:not(:hover):not(:focus-visible) kbd {
+  display: none;
+}
+
+/* Tablets: everything the finger needs reaches a comfortable size; the layout only grows where it can. */
+@media (pointer: coarse) {
+  .btn.small,
+  .landing .qz-kinds button,
+  .seg > button,
+  .land-nav nav > a:not(.btn),
+  .land-nav .nav-menu-key {
+    min-height: 40px;
+  }
+
+  .icon-btn {
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .link-quiet,
+  .link-arrow,
+  .tl-list-day {
+    padding-block: 10px;
+    margin-block: -10px;
+  }
+
+  .tl-ev-dot::before {
+    content: '';
+    position: absolute;
+    inset: -14px;
+  }
 }

@@ -10,8 +10,7 @@ import { HeroReel } from './HeroReel';
 import { TopicMap, countWord, shelfCols, useStudyRoute, type RouteIcon } from './StudyMap';
 import { INTRO_KEY, Intro } from './intro/Intro';
 import { LandFoot, LandNav, firstReady, inPrep, isWip } from './LandNav';
-import { IconCheck, IconClock, IconImage, IconPlay, IconQuiz, IconSearch, IconTree } from './icons';
-import { openCommandBar, useModKey } from './CommandBar';
+import { IconCheck, IconClock, IconImage, IconPlay, IconQuiz, IconTree } from './icons';
 import { resumeHref, useLastPlace, usePlace, useVisited } from './progress';
 import { TopicShot } from './TopicShot';
 import { GuideButton, TourHost } from './tour/TourHost';
@@ -230,7 +229,6 @@ export function Home() {
               <dd className="is-word">euskara</dd>
             </div>
           </dl>
-          <HeroSearch />
         </div>
         <div className="hero-visual rv">
           <HeroReel playing={ready} />
@@ -278,21 +276,6 @@ export function Home() {
         </button>
       </LandFoot>
     </div>
-  );
-}
-
-/** A quiet invitation to the command bar: everything is one search away. */
-function HeroSearch() {
-  const mod = useModKey();
-  return (
-    <button type="button" className="lp-search rv" onClick={openCommandBar}>
-      <IconSearch size={16} />
-      <span>Bilatu egitura, etapa edo gai bat…</span>
-      <span className="lp-search-k" aria-hidden>
-        <kbd>{mod}</kbd>
-        <kbd>K</kbd>
-      </span>
-    </button>
   );
 }
 

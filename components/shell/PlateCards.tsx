@@ -314,7 +314,7 @@ export function PlateCards() {
         </ol>
 
         <div className="lab-main">
-          <div className={`lab-fig plate-fig${gray ? ' is-print' : ''}${names && !quizOn ? ' is-named' : ''}${quizOn && quiz.kind === 'non' && !answered ? ' is-pointing' : ''}`}>
+          <div className={`lab-fig plate-fig theme-stage${gray ? ' is-print' : ''}${names && !quizOn ? ' is-named' : ''}${quizOn && quiz.kind === 'non' && !answered ? ' is-pointing' : ''}`}>
             {hydrated && Scene && (
               <svg ref={svg} viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet" className={`lab-svg plate-svg${ready ? '' : ' is-fitting'}`} style={{ ['--lab-ar' as string]: '1.5625' }} role="img" aria-label={plate.title}>
                 <Defs />
@@ -347,25 +347,6 @@ export function PlateCards() {
             {mode === 'ikasi' && (
               <>
                 {plate.hint && <p className="muted plate-hint">{plate.hint}</p>}
-                <ol className="plate-legend" onPointerLeave={() => setHovered(null)}>
-                  {(ready ? (found?.items ?? []) : []).map((it, i) => {
-                    const hidden = cover && !revealed.has(it.id);
-                    return (
-                      <li key={it.id} className={`${hovered === it.id ? 'is-on' : ''}${hidden ? ' is-covered' : ''}`} onPointerEnter={() => setHovered(it.id)}>
-                        <button
-                          onClick={() => {
-                            if (hidden) setRevealed((r) => new Set(r).add(it.id));
-                            setHovered(it.id);
-                          }}
-                          aria-label={hidden ? `${i + 1}: estalita, sakatu ikusteko` : `${i + 1}: ${it.name}`}
-                        >
-                          <span className="num-chip">{i + 1}</span>
-                          <span className="plate-legend-name">{hidden ? 'Sakatu ikusteko' : it.name}</span>
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ol>
                 <div className="lab-actions">
                   <button
                     className={`btn small ghost${cover ? ' is-on' : ''}`}
@@ -385,6 +366,25 @@ export function PlateCards() {
                     Zuri-beltza
                   </button>
                 </div>
+                <ol className="plate-legend" onPointerLeave={() => setHovered(null)}>
+                  {(ready ? (found?.items ?? []) : []).map((it, i) => {
+                    const hidden = cover && !revealed.has(it.id);
+                    return (
+                      <li key={it.id} className={`${hovered === it.id ? 'is-on' : ''}${hidden ? ' is-covered' : ''}`} onPointerEnter={() => setHovered(it.id)}>
+                        <button
+                          onClick={() => {
+                            if (hidden) setRevealed((r) => new Set(r).add(it.id));
+                            setHovered(it.id);
+                          }}
+                          aria-label={hidden ? `${i + 1}: estalita, sakatu ikusteko` : `${i + 1}: ${it.name}`}
+                        >
+                          <span className="num-chip">{i + 1}</span>
+                          <span className="plate-legend-name">{hidden ? 'Sakatu ikusteko' : it.name}</span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ol>
               </>
             )}
 

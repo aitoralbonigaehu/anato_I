@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { weeks } from '@/content/registry';
 import { BrandMark } from './icons';
 import atlasStyles from './structure-atlas.module.css';
-import { StudyMenu } from './NavMenu';
+import { SimLink, StudyMenu } from './NavMenu';
 import { SearchKey } from './CommandBar';
 import { ThemeKey, ThemeSwitch } from './ThemeKey';
 import { BarScroll } from './BarScroll';
@@ -48,9 +48,9 @@ export function LandNav({ current, help }: { current?: Section; help?: ReactNode
         <SearchKey />
         <ThemeKey />
         {help}
-        <Link href={`/astea/${firstReady.week}`} className="btn btn-light small" data-tour="simulagailua">
+        <SimLink fallback={`/astea/${firstReady.week}`} className="btn btn-light small" data-tour="simulagailua">
           Ireki simulagailua
-        </Link>
+        </SimLink>
       </nav>
     </header>
   );
@@ -67,7 +67,7 @@ export function LandFoot({ children }: { children?: ReactNode }) {
         </div>
         <nav className="foot-col" aria-label="Ikasi">
           <p>Ikasi</p>
-          <Link href={`/astea/${firstReady.week}`}>Simulagailua</Link>
+          <SimLink fallback={`/astea/${firstReady.week}`}>Simulagailua</SimLink>
           <Link href="/ikasgela">Ikasgelak</Link>
           <Link href="/kronologia">Kronologia</Link>
           <Link href="/eratorriak">Eratorriak</Link>

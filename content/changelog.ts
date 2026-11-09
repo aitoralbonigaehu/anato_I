@@ -30,6 +30,21 @@ export const KIND: Record<ChangeKind, { label: string; hue: number }> = {
 
 export const CHANGES: Change[] = [
   {
+    id: 'burua-lepoa',
+    date: '2026-11-09',
+    kind: 'gaia',
+    title: 'Bi gai berri: burua eta lepoa',
+    text: '17. gaia (kraneoa eta faringe-arkuak: arku bakoitzaren nerbioa, kartilagoa eta muskuluak) eta 18. gaia (poltsak eta arraildurak, mihia, tiroidea, aurpegia, aho sabaia eta hortzak), 3D eredu animatuekin eta apunteetako esaldiekin. Arku bakoitzak kolore bat du enbrioitik heldura: laranja ikusten baduzu, I. arkutik dator.',
+    points: [
+      'Arkuen taula osoa: arkua, nerbioa, kartilago-hezurrak eta muskuluak errenkada bakarrean',
+      'Poltsen eta arrailduren taula, paratiroideen alderantzizko izenarekin argi azalduta',
+      'Galderak, eskemak eta kronologia, bi gaietarako',
+    ],
+    href: '/astea/17',
+    cta: 'Ireki 17. gaia',
+    visual: { topic: 17 },
+  },
+  {
     id: 'belortzio-egitura-osoa',
     date: '2026-11-08',
     kind: 'hobekuntza',

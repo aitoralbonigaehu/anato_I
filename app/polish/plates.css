@@ -1,0 +1,100 @@
+/* Interface polish: plates. Loaded after every other global sheet. */
+
+/* Every plate in reach: the strip wraps instead of hiding plates off to the side. Numbers carry the
+   strip; the open plate shows its whole title (hover or the title attribute gives the others). */
+.lab.plates .plate-strip {
+  flex-wrap: wrap;
+  overflow: visible;
+  gap: 2px;
+}
+
+.lab.plates .plate-strip button {
+  height: 40px;
+  min-width: 40px;
+  max-width: none;
+  justify-content: center;
+}
+
+.lab.plates .plate-strip button:not(.is-on) .plate-strip-t {
+  display: none;
+}
+
+.lab.plates .plate-strip button.is-on .plate-strip-t {
+  max-width: none;
+  overflow: visible;
+  white-space: nowrap;
+  text-overflow: clip;
+  font-size: 13px;
+}
+
+/* A plate already practised keeps its mark without its percentage taking room. */
+.lab.plates .plate-strip button:not(.is-on) .plate-best {
+  display: none;
+}
+
+.lab.plates .plate-strip button:not(.is-on):has(.plate-best) .plate-strip-n {
+  background: color-mix(in oklab, var(--signal) 22%, transparent);
+  color: var(--text);
+}
+
+/* The legend reads with the page, not in a small box of its own; the figure stays beside it. */
+.lab.plates .plate-legend {
+  max-height: none;
+  overflow: visible;
+}
+
+.lab.plates .plate-side {
+  max-height: none;
+  overflow: visible;
+}
+
+.lab.plates .lab-main > .lab-fig {
+  position: sticky;
+  top: 72px;
+}
+
+/* Study and answer controls are real targets, on both pages. */
+.landing .lab .lab-actions .btn.small,
+.landing .lab .plate-foot .btn.small {
+  min-height: 40px;
+}
+
+.landing .lab .plate-foot .plate-nav .btn.small {
+  min-width: 40px;
+}
+
+.landing .lab .lab-tabs button {
+  min-height: 44px;
+}
+
+/* One screen at 1440×900: the lab's figure and its answers without scrolling. */
+@media (min-width: 1100px) and (min-height: 700px) {
+  .landing .lab-hero:not(.plate-hero) + .lab {
+    padding-top: 12px;
+  }
+
+  .landing .lab-hero:not(.plate-hero) + .lab .lab-controls {
+    margin: 10px 0;
+  }
+
+  .landing .lab-hero:not(.plate-hero) + .lab .lab-side {
+    gap: 8px;
+    padding: 14px 16px;
+  }
+
+  .landing .lab-hero:not(.plate-hero) + .lab .quiz-option {
+    min-height: 40px;
+  }
+
+  .landing .lab-hero:not(.plate-hero) + .lab .quiz-expl p.muted {
+    font-size: 12.5px;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 1099px) {
+  .lab.plates .lab-main > .lab-fig {
+    position: relative;
+    top: auto;
+  }
+}

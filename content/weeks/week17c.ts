@@ -1,0 +1,136 @@
+import type { StageDef } from '@/lib/sim/types';
+import { ArchInside17, ArchesV17, S_ARCHES, S_INSIDE } from '@/components/scenes/week18/Clefts18';
+
+const FILE = '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA).pdf';
+const src = (section: string) => ({ file: FILE, section });
+const V_DESC = 'Faringe-hestea atzetik ikusita, sabaia kenduta (apunteetako V-a, 3D): burua goian, enbrioiaren ezkerra zure ezkerrean. Arkuak barra solidoak dira, sabaian ebakita: lehenengo arkuaren koloreak (I laranja, II urdina, III horia, IV gorria, VI berdea), gero geruzak (ektodermoa urdina, endodermoa horia, mesenkima marroia). Arrastatu biratzeko.';
+const v = (scene: StageDef['views'][number]['scene'], label: string, description: string) => ({ id: '3d', label, plane: 'eskema' as const, description, orientation: { top: 'Kraneala', bottom: 'Kaudala' }, scene, travel: false as const });
+
+export const stages17c: StageDef[] = [
+  {
+    id: 'faringe-arkuak',
+    day: '4.–5. asteak',
+    dayRange: [22, 35],
+    title: 'Faringe-arkuak',
+    subtitle: 'Faringearen V-a atzetik: alde bietako goraguneak',
+    intro: 'Faringea atzetik ikusita V forma du, eta alde bietan goraguneak ditu: faringe-arkuak edo arku brankialak. 4. astean hasten dira eta lepo mailan daude.',
+    duration: 36,
+    source: src('2. Faringe-arkuak'),
+    views: [v(ArchesV17, 'Faringearen V-a 3D', V_DESC)],
+    beats: [
+      {
+        at: S_ARCHES[0],
+        notes: ['w17/2/p1/s1', 'w17/2/p2/s1', 'w17/2/p3/s1-s3'],
+        idea: 'Atzetik, V bat: alde bietako goraguneak faringe-arkuak dira (4.-5. asteak).',
+        text: 'Zeharkako mozketa honetan V bat ikusten da atzetik. Alde bietan ikusten diren goraguneak faringe-arkuak edo arku brankialak dira. 4. astean hasten dira eta 5.ean garatzen dira.',
+        focus: ['faringe-arkuak', 'faringe-hestea'],
+        view: '3d',
+      },
+      {
+        at: S_ARCHES[1],
+        notes: ['w17/2/p4/s1'],
+        idea: 'Arku brankialak ere deitzen zaie; lepo mailan daude.',
+        text: 'Arku brankialak ere deitzen zaie, eta lepo mailan, maila zerbikalean, kokatzen dira. Goitik behera: I, II, III eta IV.',
+        focus: ['lehen-arkua', 'bigarren-arkua', 'hirugarren-arkua', 'laugarren-arkua'],
+        view: '3d',
+      },
+      {
+        at: S_ARCHES[2],
+        notes: ['w17/2/p5/s1'],
+        idea: 'Lau marrazten dira: bosgarrena garatu eta endekatzen da.',
+        text: 'Lau irudikatzen dira, bosgarrena garatu eta jarraian endekatzen delako: ez du eratorririk uzten, eta batzuetan ez da existitzen ere.',
+        focus: ['bosgarren-arkua'],
+        exam: '5. arkua garatu eta endekatu egiten da: ez du eratorririk uzten.',
+        view: '3d',
+      },
+      {
+        at: S_ARCHES[3],
+        notes: ['w17/2/p5/s2'],
+        idea: 'IV eta VI batera: VI.a ez da beti marrazten.',
+        text: 'Laugarren eta seigarren arkuak elkarrekin aurkitzen dira. Horregatik argazki batzuetan ez da seigarrena irudikatzen. Beheko aldean, faringearen zoruan, laringe-zuloa dago.',
+        focus: ['laugarren-arkua', 'seigarren-arkua', 'laringe-zuloa'],
+        view: '3d',
+      },
+      {
+        at: S_ARCHES[4],
+        notes: ['w17/2/p5/s5'],
+        idea: 'Arkuak beti bikoteka.',
+        text: 'Arkuak beti bikoteka agertzen dira: ezkerrekoa eta eskuinekoa.',
+        focus: ['faringe-arkuak'],
+        view: '3d',
+      },
+    ],
+    structures: ['faringe-arkuak', 'lehen-arkua', 'bigarren-arkua', 'hirugarren-arkua', 'laugarren-arkua', 'bosgarren-arkua', 'seigarren-arkua', 'faringe-hestea', 'laringe-zuloa'],
+    keyPoints: [
+      'Faringe-arkuak = arku brankialak: 4.-5. asteak, lepo mailan.',
+      'Lau irudikatzen dira: 5.a garatu eta endekatu (eratorririk ez).',
+      '4.a eta 6.a elkarrekin; arkuak beti bikoteka.',
+    ],
+  },
+  {
+    id: 'arkuaren-osagaiak',
+    day: '4.–5. asteak',
+    dayRange: [22, 35],
+    title: 'Arku baten barnean',
+    subtitle: 'Hiru geruza eta lau osagai; arraildurak kanpoan, poltsak barnean',
+    intro: 'Arku bakoitza berdin eginda dago: kanpoan ektodermoa, barnean endodermoa, tartean mesenkima; eta mesenkiman arteria, zaina, nerbioa eta kartilagoa.',
+    duration: 40,
+    source: src('2. Faringe-arkuak'),
+    views: [v(ArchInside17, 'Arkuaren barrua 3D', V_DESC)],
+    beats: [
+      {
+        at: S_INSIDE[0],
+        notes: ['w17/2/p5/s3'],
+        idea: 'Barnean endodermoa, kanpoan ektodermoa, tartean mesenkima.',
+        text: 'Arku bakoitzean, barnealdean endodermozko epitelio bat dago (horia), kanpoaldean ektodermozko estalkia (urdina), eta haien artean mesenkima (marroia).',
+        focus: ['ektodermoa', 'endodermoa', 'mesenkima'],
+        exam: 'Arkua: kanpoan ektodermoa, barnean endodermoa, tartean mesenkima.',
+        view: '3d',
+      },
+      {
+        at: S_INSIDE[1],
+        notes: ['w17/2/p5/s4', 'w17/2/p6/s1'],
+        idea: 'Mesenkiman zelula mesodermikoak eta gandor neuralekoak; gandorrekoek aurpegiko hezurrak.',
+        text: 'Mesenkima mesodermoaren eratorria da. Bertan zelula mesodermikoak eta gandor neuraletik migratutako zelulak daude. Gandor neuraleko zelula horiek emango dituzte aurpegiko hezurrak, hau da, errai kraneoko hezurrak.',
+        focus: ['gandor-neurala', 'mesenkima'],
+        view: '3d',
+      },
+      {
+        at: S_INSIDE[2],
+        notes: ['w17/2/p6/s2'],
+        idea: 'Arku bakoitzean: arteria, zaina, nerbioa eta kartilagoa (batzuetan ez).',
+        key: 'Lau osagai arku bakoitzean: arteria, zaina, nerbioa, kartilagoa.',
+        text: 'Arku bakoitzean, mesenkimaren barnean, arteria bat, zaina bat, nerbio bat eta kartilago bat aurkitzen dira. Kartilagoa batzuetan ez dago.',
+        focus: ['arkuko-arteria', 'arkuko-zaina', 'arkuko-nerbioa', 'arkuko-kartilagoa'],
+        exam: 'Arku bakoitzean arteria, zaina, nerbioa eta kartilagoa.',
+        view: '3d',
+      },
+      {
+        at: S_INSIDE[3],
+        notes: ['w17/2/p6/s3-s4'],
+        idea: 'Mesenkimatik muskuluak; kartilagoa desagertu, hezurrak mintzezko hezurtzapenez.',
+        text: 'Hezurrak eta muskuluak eratzeko behar diren egitura guztiak errepikatzen dira arkuetan: mesenkima horretatik muskuluak garatuko dira. Kartilagoa desagertu egingo da, eta hezurrak mintzezko hezurtzapenez eratuko dira, ez endokondralez.',
+        focus: ['mesenkima', 'arkuko-kartilagoa'],
+        view: '3d',
+      },
+      {
+        at: S_INSIDE[4],
+        notes: ['w17/2/p6/s5-s6'],
+        idea: 'Kanpoan arraildurak (ektodermoa), barnean poltsak (endodermoa); ez dira «poltsa brankialak».',
+        text: 'Kanpotik, arkuen artean, arraildura edo ildo batzuk nabaritzen dira: faringe-arraildurak edo arraildura brankialak, ektodermikoak. Barnealdean, ildo sakonagoak: faringe-poltsak, epitelio endodermikoarekin. Ez dira poltsa brankialak, barnealdean, faringe mailan, ateratzen direlako.',
+        focus: ['faringe-arraildurak', 'faringe-poltsak'],
+        exam: 'Arraildurak kanpoan eta ektodermikoak; poltsak barnean eta endodermikoak.',
+        caution: 'Faringe-poltsak ez dira «poltsa brankialak»: barnealdean, faringe mailan, ateratzen dira.',
+        view: '3d',
+      },
+    ],
+    structures: ['ektodermoa', 'endodermoa', 'mesenkima', 'gandor-neurala', 'arkuko-arteria', 'arkuko-zaina', 'arkuko-nerbioa', 'arkuko-kartilagoa', 'faringe-arraildurak', 'lehen-arraildura', 'faringe-poltsak', 'lehen-poltsa'],
+    keyPoints: [
+      'Arkua: ektodermoa kanpoan, endodermoa barnean, mesenkima tartean.',
+      'Mesenkiman: zelula mesodermikoak eta gandor neuralekoak (→ aurpegiko hezurrak).',
+      'Arku bakoitzean arteria, zaina, nerbioa eta kartilagoa (batzuetan ez).',
+      'Arraildurak kanpoan (ektodermikoak), poltsak barnean (endodermikoak).',
+    ],
+    cautions: ['Faringe-poltsak ez dira «poltsa brankialak».'],
+  },
+];

@@ -53,6 +53,8 @@ export interface GLItem {
   stream?: Stream3;
   /** 0–1: a thin wall (membrane, valve) that lets light through. */
   thin: number;
+  /** 0–1: how much the mesh's per-vertex tint counts (field-surface.ts); 0 for a mesh without one. Optional: other callers draw as ever. */
+  soft?: number;
 }
 
 export interface GLFrame {
@@ -101,6 +103,11 @@ varying vec3 vN;
 varying vec3 vV;
 varying vec3 vObj;
 varying vec2 vUv;
+// Opt-in per-vertex colour melt and material point (field-surface.ts). Off (0) for every other mesh.
+uniform float uSoft;
+attribute vec3 aTint;
+attribute vec3 aRest;
+varying vec3 vTint;
 void main() {
 #ifdef STREAM
   // Each copy grows in as uGrow passes its gate; not there yet, it is not drawn at all (nor its outline).
@@ -115,7 +122,8 @@ void main() {
   if (uOutline > 0.0) mv.xyz += n * uOutline * (-mv.z);
   vN = n;
   vV = -mv.xyz;
-  vObj = position;
+  vObj = uSoft > 0.0 ? aRest : position;
+  vTint = uSoft > 0.0 ? mix(vec3(1.0), aTint, uSoft) : vec3(1.0);
   vUv = uv;
   gl_Position = projectionMatrix * mv;
 }`;
@@ -180,6 +188,7 @@ varying vec3 vN;
 varying vec3 vV;
 varying vec3 vObj;
 varying vec2 vUv;
+varying vec3 vTint;
 
 float hash(vec3 p) {
   p = fract(p * 0.3183099 + 0.1);
@@ -260,7 +269,7 @@ void main() {
   } else {
     tex = (fbm(vObj, 8.0) - 0.5) * 0.5;
   }
-  vec3 albedo = uColor * (1.0 + tex * 0.16);
+  vec3 albedo = uColor * vTint * (1.0 + tex * 0.16);
   // Membrane bone still growing: spicules radiate from the centre, and the young edge is paler osteoid.
   if (uSpic > 0.0 && uGrowCos > -1.5) {
     vec3 q = normalize(vObj - uClipO);
@@ -278,7 +287,7 @@ void main() {
   float nl = dot(n, l);
   float wrap = clamp((nl + 0.45) / 1.45, 0.0, 1.0);
   float band = smoothstep(0.0, 1.0, wrap);
-  vec3 col = mix(uDeep, albedo, band);
+  vec3 col = mix(uDeep * vTint, albedo, band);
   // Skin is translucent: light scattered inside warms the shaded side instead of greying it.
   if (uKind < 0.5) col += vec3(0.95, 0.38, 0.32) * 0.3 * band * (1.0 - band);
   // Sky/ground fill: the upper side a touch cooler and lighter.
@@ -502,6 +511,7 @@ const bodyMaterial = (shared: SharedUniforms, stream?: StreamUniforms) =>
       uOpacity: { value: 1 },
       uKind: { value: 0 },
       uThin: { value: 0 },
+      uSoft: { value: 0 },
       ...clipUniforms(),
       ...stream,
     },
@@ -774,6 +784,7 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
       else deepInto(u.uDeep.value as Color, it.color);
       u.uKind.value = TISSUE_KIND[it.tissue];
       u.uThin.value = it.thin;
+      u.uSoft.value = it.soft ?? 0;
       setClip(u, it.clip);
       setClip(s.edgeMat.uniforms, it.clip);
       const st = it.stream;

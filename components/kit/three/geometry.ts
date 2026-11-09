@@ -8,6 +8,9 @@ export function geometryOf(m: Mesh, stream?: Stream3) {
   g.setAttribute('normal', new BufferAttribute(m.nrm, 3));
   g.setAttribute('uv', new BufferAttribute(m.uv, 2));
   g.setIndex(new BufferAttribute(m.idx, 1));
+  // Opt-in (field-surface.ts): static per-vertex colour melt and material point.
+  if (m.tint) g.setAttribute('aTint', new BufferAttribute(m.tint, 3));
+  if (m.rest) g.setAttribute('aRest', new BufferAttribute(m.rest, 3));
   if (stream && g instanceof InstancedBufferGeometry) {
     g.setAttribute('aCell', new InstancedBufferAttribute(stream.cells, 4));
     g.setAttribute('aGate', new InstancedBufferAttribute(stream.gates, 1));

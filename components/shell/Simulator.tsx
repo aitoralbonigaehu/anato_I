@@ -1977,7 +1977,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
                 stops={cutStops}
                 onStop={gotoCut}
                 viewKey={sceneKey}
-                hold={(drawer && panelOpen) || helpOpen || tourBusy || questionsOpen || glossaryOpen || !!travel || playing || classOn || intro !== null || !!find || nowOpen || kimuOpen || !!formation}
+                hold={(classActive && klasea.status === 'card') || (drawer && panelOpen) || helpOpen || tourBusy || questionsOpen || glossaryOpen || !!travel || playing || classOn || intro !== null || !!find || nowOpen || kimuOpen || !!formation}
                 onOpen={() => setNowOpen(false)}
               />
               {stage.views.length > 1 && <ViewSwitch views={stage.views} current={view.id} onChoose={chooseView} />}

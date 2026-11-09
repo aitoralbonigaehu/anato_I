@@ -1,0 +1,21 @@
+/* Interface polish: sim-dock. Loaded after every other global sheet. */
+
+/* One lead key at a time: while "Erreproduzitu" is cued, the pager's "Hasi" stays a quiet secondary key. */
+.tp-bar:has(.play.is-cue) .tp-pager .cap-next.is-wait,
+.tp-bar:has(.play.is-cue) .tp-pager .cap-next.is-wait:hover:not(:disabled) {
+  border-color: var(--line-2);
+  background: transparent;
+  color: var(--text);
+}
+
+.tp-bar:has(.play.is-cue) .tp-pager .cap-next.is-wait:hover:not(:disabled) {
+  border-color: var(--line-3);
+}
+
+.tp-bar:has(.play.is-cue) .tp-pager .cap-next.is-wait svg {
+  color: currentColor;
+}
+
+.tp-bar:has(.play.is-cue) .tp-pager .cap-next.is-wait .cap-wait-dot {
+  display: none;
+}

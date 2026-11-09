@@ -4,3 +4,5 @@ import '@/components/scenes/week7/DiaphragmDome3D';
 import '@/components/scenes/week8/Calvaria3D';
 import '@/components/scenes/week8/LimbRotation3D';
 import '@/components/scenes/week9/Domains3D';
+import '@/components/scenes/week17/arch-head';
+import '@/components/scenes/week17/skull-model';

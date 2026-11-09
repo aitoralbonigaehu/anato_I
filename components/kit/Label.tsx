@@ -25,7 +25,8 @@ function fitScale({ k, left: pillL, right: pillR }: LabelScale, x: number, y: nu
   const right = y - half < TOOLBAR.y ? TOOLBAR.x : onPills && pillR ? PILLS.right : 996;
   const left = onPills && pillL ? PILLS.left : 4;
   const room = anchor === 'end' ? x - left : anchor === 'start' ? right - x : 2 * Math.min(x - left, right - x);
-  const fit = (room - 3) / (chars * CHAR_W * size); // a little slack for the width estimate
+  // The name's plate counts too (its padding, a lit name's heavier weight), so a grown name stays whole at the frame's edge.
+  const fit = (room - 3) / (size * (chars * CHAR_W * 1.04 + 0.42));
   const tall = (Math.min(y - 4, 636 - y) - 1) / ((size * LINE_H) / 2);
   return Math.max(1, Math.min(k, fit, tall));
 }

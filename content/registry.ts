@@ -15,8 +15,10 @@ import { week13 } from './weeks/week13';
 import { week14 } from './weeks/week14';
 import { week15 } from './weeks/week15';
 import { week16 } from './weeks/week16';
+import { week17 } from './weeks/week17';
+import { week18 } from './weeks/week18';
 
-export const weeks: WeekDef[] = [week1, week2, week3, week4, week5, week6, week7, week8, week9, week10, week11, week12, week13, week14, week15, week16];
+export const weeks: WeekDef[] = [week1, week2, week3, week4, week5, week6, week7, week8, week9, week10, week11, week12, week13, week14, week15, week16, week17, week18];
 
 /** All structures, deduplicated by id. The week that introduces a structure owns its definition. */
 export const structures: Map<string, StructureDef> = (() => {

@@ -32,6 +32,14 @@ const ctx: SceneContextValue = {
  * step), so by the tour and finished frames they are gone or not yet named. `week/stage/step/id` → why.
  */
 const GONE: Record<string, string> = {
+  '17/josturak-fontanelak/4/atzeko-fontanela': 'urrats honetan ixten da (hasieran izendatuta)',
+  '17/josturak-fontanelak/5/aurreko-fontanela': 'urrats honetan ixten da (hasieran izendatuta)',
+  '17/faringe-arkuak/3/bosgarren-arkua': 'agertu eta endekatzen da urrats honetan (bira-irudian izendatuta)',
+  '17/lehen-arkua-kartilagoak/3/meckel-kartilagoa': 'endekatu eta desagertzen da urrats honetan (hasieran izendatuta)',
+  '17/bigarren-arkua/3/reichert-kartilagoa': 'endekatu eta desagertzen da urrats honetan (hasieran izendatuta)',
+  '18/tiroidea-jaisketa/3/hodi-tiroglosoa': 'itxi eta endekatzen da urrats honetan (hasieran izendatuta)',
+  '18/txano-kanpai/4/hortz-lamina': 'txanoa askatzean lamina endekatzen da urrats honetan (hasieran izendatuta)',
+  '18/esne-behin-betiko/5/esne-hortzak': 'urrats honetan ateratzen da (hasieran izendatuta)',
   '1/ibilbidea/2/folikulu-heldua': 'folikulua apurtzen da (obulazioa); gero gorputz luteoa',
   '1/ibilbidea/4/zigotoa': 'zigotoa 2 blastomero bihurtzen da urrats berean',
   '1/blastozistoa/2/mintz-peluzidoa': 'mintz peluzidoa galtzen du urrats honetan',
@@ -63,6 +71,14 @@ const GONE: Record<string, string> = {
 
 /** Names a step's text says without showing them, on purpose: `week/stage/step/id` → why. */
 const MENTION_ONLY: Record<string, string> = {
+  '17/lehen-arkua-kartilagoak/1/baraila': '"barail luzapena" aipatzen da: baraila 2. urratsean eratzen da',
+  '17/laugarren-seigarren-muskuluak/3/faringea': '"faringea kendu": ikuspegi honetan kenduta dago',
+  '18/aho-sabai-gandorrak/3/hasierako-aho-sabaia': 'ebaki koronalaren aurrean geratzen da: hurrengo urratsean behetik izendatuta',
+  '18/guruinen-jaisketa/2/hirugarren-poltsa': 'jatorria aipatzen da: guruina jada jaisten ari da',
+  '18/guruinen-jaisketa/3/laugarren-poltsa': 'jatorria aipatzen da: guruina jada bere tokian',
+  '18/tiroidea-sorrera/1/tiroide-guruina': '"eratzen hasten da": hurrengo urratsetan marraztuta',
+  '18/tiroidea-sorrera/3/tiroide-guruina': '"tiro-": izenaren azalpena; guruina hurrengo eszenan marraztuta',
+  '18/hortz-lamina/3/baraila': 'ebaki bakarra: baraila eta maxilarra 1. urratsean izendatuta',
   '11/enbor-arteriosoa/1/trenkada-aortikopulmonarra': 'sarrera: trenkada hurrengo urratsean hazten da',
   '11/septum-primum/1/aurikula-arteko-trenkada': 'sarrera: "sortuko da"; 2. urratsetik septum primumarekin izendatuta',
   '11/enbor-arteriosoa/1/birika-arteria': 'sarrera: enborra banatzean sortuko da (3. urratsetik)',
@@ -134,7 +150,7 @@ const MENTION_ONLY: Record<string, string> = {
 };
 
 /** Ids drawn only inside a figure part (no part of their own), named by a label on the spot. */
-const LABEL_ONLY = new Set(['blastozistoa', 'bi-orriko-diskoa', 'gantz-metaketa', 'eskumuturra', 'karena']);
+const LABEL_ONLY = new Set(['agenesia', 'blastozistoa', 'bi-orriko-diskoa', 'gantz-metaketa', 'eskumuturra', 'karena']);
 
 interface Seen {
   parts: Map<string, number>;

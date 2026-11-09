@@ -107,3 +107,10 @@
 .archTable tbody th::before { display: none; }
 .archTable tbody td { border: 0; border-top: 2px solid var(--row-accent); border-radius: 2px 2px var(--r-sm) var(--r-sm); background: color-mix(in oklab, var(--row-accent) 7%, transparent); }
 .archTable tbody td[data-level='1'] { background: color-mix(in oklab, var(--row-accent) 12%, transparent); }
+
+/* Self-test: what to do and how far along, right above the tables; the reveal reads as a button. */
+.head .hint { margin-top: 12px; }
+.reveal { min-height: 40px; color: var(--text-2); font-size: 13px; }
+.reveal[aria-expanded='true'] { min-height: 32px; color: var(--text-3); font-size: 12px; }
+.archTable .reveal { padding-inline: 4px; }
+.legend button, .ask button { min-height: 40px; }

@@ -27,6 +27,8 @@ export const PLATE_GROUPS: { week: number; title: string }[] = [
   { week: 11, title: 'Bihotzaren trenkadak' },
   { week: 12, title: 'Aorta arkuak eta arteriak' },
   { week: 13, title: 'Zain-sistema' },
+  { week: 17, title: 'Burua eta lepoa: faringe-arkuak' },
+  { week: 18, title: 'Burua eta lepoa: poltsak, mihia eta aurpegia' },
 ];
 
 export const PLATES: Plate[] = [
@@ -103,6 +105,18 @@ export const PLATES: Plate[] = [
   { id: '13-beheko-kaba-segmentuak', week: 13, stage: 'beheko-kaba', view: '3d', t: 0.06, title: 'Beheko kabaren segmentuak' },
   { id: '13-porta', week: 13, stage: 'porta', view: '3d', t: 0.81, title: 'Porta zaina eta hodi hepatokardiakoak' },
   { id: '13-jaio-aurretik', week: 13, stage: 'jaio-aurretik', view: '3d', t: 0.38, title: 'Jaio aurretik: zulo obala' },
+
+  // ——— 17. Head and neck I: the arch cartilages and the composition of an arch first ———
+  { id: '17-arkuaren-osagaiak', week: 17, stage: 'arkuaren-osagaiak', view: '3d', t: 0.6, title: 'Faringe-arku baten osagaiak', hint: 'Arku bakoitzean: arteria, kartilagoa, nerbioa eta mesenkima (muskulua).' },
+  { id: '17-faringe-arkuak', week: 17, stage: 'faringe-arkuak', view: '3d', t: 0.4, title: 'Faringe-arkuak, arraildurak eta poltsak' },
+  { id: '17-laringeko-kartilagoak', week: 17, stage: 'laringeko-kartilagoak', view: '3d', t: 1, title: 'Laringeko kartilagoak' },
+
+  // ——— 18. Head and neck II: pouch derivatives, tongue and palate first ———
+  { id: '18-arraildurak-poltsak', week: 18, stage: 'arraildurak-poltsak', view: '3d', t: 0.4, title: 'Faringe-poltsen eratorriak', hint: 'Bakoitzetik zer sortzen den: 3. poltsatik timoa eta beheko paratiroidea, 4.etik goiko paratiroidea.' },
+  { id: '18-mihiaren-gorputza', week: 18, stage: 'mihiaren-gorputza', view: '3d', t: 0.2, title: 'Mihiaren garapena', hint: 'Gorputza 1. arkutik; sustraia kupulatik; ildo terminala eta zulo itsua muga dira.' },
+  { id: '18-aho-sabai-gandorrak', week: 18, stage: 'aho-sabai-gandorrak', view: '3d', t: 0.8, title: 'Aho-sabaiaren gandorrak', hint: 'Gandorrak horizontal jartzen dira, mihiaren gainean, eta erdian fusionatzen dira.' },
+  { id: '18-mihiaren-inerbazioa', week: 18, stage: 'mihiaren-inerbazioa', view: '3d', t: 1, title: 'Mihiaren inerbazioa' },
+  { id: '18-tiroidea-jaisketa', week: 18, stage: 'tiroidea-jaisketa', view: '3d', t: 1, title: 'Tiroidearen jaitsiera: hodi tiroglosoa' },
 ];
 
 /** Topic order, the key figures first within each topic. */

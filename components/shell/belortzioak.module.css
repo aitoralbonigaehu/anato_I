@@ -170,7 +170,7 @@
   border-radius: 6px;
   background: #1b1c20;
   color: #f5f2ec;
-  font-size: clamp(10.5px, 1.05cqw, 13.5px);
+  font-size: clamp(11.5px, 1.18cqw, 14px);
   font-weight: 550;
   line-height: 1.2;
   letter-spacing: -0.005em;
@@ -638,5 +638,91 @@
 @media (prefers-reduced-motion: reduce) {
   .extent {
     animation: none;
+  }
+}
+
+/* ---- polish: the figure and its panel share the first screen ---- */
+
+.markHint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.markHint i {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.markHint i:nth-child(1) {
+  background: #d32f2f;
+}
+
+.markHint i:nth-child(2) {
+  margin-right: 2px;
+  background: #f59e0b;
+}
+
+@media (min-width: 1101px) {
+  .hero.hero.hero.hero {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 24px;
+    align-items: center;
+    padding-top: 14px;
+    padding-bottom: 0;
+  }
+  .hero.hero.hero.hero > :global(.eyebrow) {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+  .hero.hero.hero.hero > h1 {
+    margin: 2px 0;
+  }
+  .hero.hero.hero.hero > :global(.hero-lead) {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .side {
+    display: flex;
+    flex-direction: column;
+    max-height: max(560px, 100svh - 232px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+  .side > * {
+    flex: none;
+  }
+  .side > .legend {
+    flex: 0 1 auto;
+    min-height: 96px;
+    max-height: none;
+  }
+}
+
+/* tablets: the list is the comfortable way in; names on the figure get a taller hit area */
+@media (max-width: 1100px), (pointer: coarse) {
+  .legend button,
+  .missed button,
+  .kinds button {
+    min-height: 40px;
+  }
+  .name::after,
+  .num::after {
+    content: '';
+    position: absolute;
+    inset: -6px 0;
+  }
+}
+
+@media (pointer: coarse) {
+  .keysHint {
+    display: none;
   }
 }

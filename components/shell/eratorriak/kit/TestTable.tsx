@@ -5,6 +5,9 @@ import type { RoomData, TableRow } from '@/content/eratorriak/model';
 import styles from '../eratorriak.module.css';
 import roomStyles from './study.module.css';
 
+/** A reference into the notes ("2.1"), not an answer: its column stays narrow so the answers get the width. */
+const REF_COLUMN = 'Apunteak';
+
 export function TestTable({
   data,
   rows = data.table,
@@ -39,7 +42,7 @@ export function TestTable({
           <tr>
             <th scope="col">Jatorria / egitura</th>
             {columns.map((c) => (
-              <th key={c} scope="col">
+              <th key={c} scope="col" className={c === REF_COLUMN ? roomStyles.refCol : undefined}>
                 {c}
               </th>
             ))}
@@ -56,7 +59,7 @@ export function TestTable({
               {r.cells.map((c, i) => {
                 const id = `${r.id}-${i}`;
                 return (
-                  <td key={id}>
+                  <td key={id} className={columns[i] === REF_COLUMN ? roomStyles.refCol : undefined}>
                     {test && !open.has(id) ? (
                       <button
                         type="button"

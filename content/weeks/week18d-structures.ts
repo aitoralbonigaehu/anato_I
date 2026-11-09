@@ -1,0 +1,31 @@
+import type { StructureDef } from '@/lib/sim/types';
+
+/** Structures of topic 18 §4.2 (odontogenesis). Colours as components/scenes/week18/tooth-model.ts. */
+export const structures18d: StructureDef[] = [
+  { id: 'hortz-lamina', name: 'Hortz-lamina', es: 'lámina dental', category: 'ektodermoa', color: '#7cc0ee', definition: 'Epitelioaren lodiunea, C forman, maxilar eta barailaren gainean; mesenkiman ebaginatzen da.', origin: 'Ektodermoa', fate: 'Txanoa eta kanpaia; gero erretiratzen da.' },
+  { id: 'aho-sabaiko-epitelioa', name: 'Aho-sabaiko epitelioa', es: 'epitelio oral', category: 'ektodermoa', color: '#7cc0ee', definition: 'Maxilar eta barailaren gaineko epitelioa, jatorri ektodermikoa; bertan agertzen dira hortz-laminak.' },
+  { id: 'hezur-maxilarra', name: 'Hezur maxilarra', es: 'maxilar', category: 'mesodermoa', color: '#f0883e', definition: 'I. arkuaren luzapen maxilarreko hezurra; goiko hortzak ditu.' },
+  { id: 'baraila', name: 'Baraila', es: 'mandíbula', category: 'mesodermoa', color: '#f0883e', definition: 'I. arkuko hezurra; beheko hortzak ditu.' },
+  { id: 'txanoa', name: 'Txanoa', aka: ['Txano aroa'], es: 'casquete', category: 'ektodermoa', color: '#7cc0ee', definition: '10. astean hortz-laminak hartzen duen forma; kanpoko eta barneko epitelioa ditu.', parts: ['esmalte-organoa', 'kanpoko-epitelioa', 'barneko-epitelioa'] },
+  { id: 'kanpaia', name: 'Kanpaia', aka: ['Kanpai aroa'], es: 'campana', category: 'ektodermoa', color: '#7cc0ee', definition: '3. hilabetean, txanoa laminatik askatuta; gutxi gorabehera behin betiko hortzaren forma.', parts: ['esmalte-organoa', 'kanpoko-epitelioa', 'barneko-epitelioa'] },
+  { id: 'esmalte-organoa', name: 'Txano/kanpaiaren epitelioa', category: 'ektodermoa', color: '#c9e4f7', definition: 'Kanpoko eta barneko epitelioen arteko ehuna, hortz-laminatik datorrena.' },
+  { id: 'kanpoko-epitelioa', name: 'Kanpoko epitelioa', es: 'epitelio externo', category: 'ektodermoa', color: '#2c6c9b', definition: 'Txanoaren kanpoko geruza.' },
+  { id: 'barneko-epitelioa', name: 'Barneko epitelioa', es: 'epitelio interno', category: 'ektodermoa', color: '#2748a8', definition: 'Txanoaren barneko geruza; papilaren aurrean dago eta bertan ameloblastoak daude.' },
+  { id: 'hortz-papila', name: 'Hortz-papila', es: 'papila dental', category: 'mesodermoa', color: '#e8a08f', definition: 'Txanoak inguratutako mesenkimako zelulak.', fate: 'Odontoblastoak eta hortz-pulpa.' },
+  { id: 'ameloblastoak', name: 'Ameloblastoak', es: 'ameloblastos', category: 'ektodermoa', color: '#2748a8', definition: 'Kanpaiaren epiteliotik sortutako zelulak; esmaltea ematen dute.' },
+  { id: 'odontoblastoak', name: 'Odontoblastoak', es: 'odontoblastos', category: 'mesodermoa', color: '#c9574e', definition: 'Hortz-papilatik bereizitako zelulak, kanpaiaren barneko epitelioaren kontra; dentina eratzen dute.' },
+  { id: 'zementoblastoak', name: 'Zementoblastoak', es: 'cementoblastos', category: 'mesodermoa', color: '#7a4d9a', definition: 'Odontoblasto batzuk gehiago bereizita; zementoa eratzen dute.' },
+  { id: 'esmaltea', name: 'Esmaltea', es: 'esmalte', category: 'ektodermoa', color: '#fbfaf3', definition: 'Hortzaren kanpoko geruza gogorra eta zuria, koroan bakarrik; dentinaren gainean, lepoa arte.', origin: 'Ameloblastoak (hortz-lamina)' },
+  { id: 'dentina', name: 'Dentina', es: 'dentina', category: 'mesodermoa', color: '#f1d283', definition: 'Sentsibilitatea ematen duen eremua; koroan eta sustraian.', origin: 'Odontoblastoak (hortz-papila)' },
+  { id: 'zementoa', name: 'Zementoa', es: 'cemento', category: 'mesodermoa', color: '#b9925a', definition: 'Sustraiko dentinaren kanpoko aldean dagoen geruza.', origin: 'Zementoblastoak', caution: 'Apunteen hitzak nahasgarriak dira; haien irudian zementoa sustraiaren kanpoan dago.' },
+  { id: 'hortz-pulpa', name: 'Hortz-pulpa', es: 'pulpa dental', category: 'mesodermoa', color: '#ef8f8f', definition: 'Hortz-papilatik datorren erdiko ehuna; zabala hasieran, estutzen da dentina loditzean. Arteria, zain eta nerbioak pasatzen dira bertatik.' },
+  { id: 'pulpa-hodiak', name: 'Arteria eta zainak', category: 'mesodermoa', color: '#e5484d', definition: 'Hortza odoleztatzen dutenak; pulpatik pasatzen dira.' },
+  { id: 'pulpa-nerbioa', name: 'Nerbioa', category: 'ektodermoa', color: '#ffe36e', definition: 'Hortza inerbatzen duena; pulpatik pasatzen da.' },
+  { id: 'lotailu-periodontalak', name: 'Lotailu periodontalak', es: 'ligamentos periodontales', category: 'mesodermoa', color: '#f0a6b6', definition: 'Zementoaren eta hezurraren albeoloen arteko lotailu finak; sustraia hezurrari eusten diote.' },
+  { id: 'albeoloa', name: 'Albeoloa', aka: ['Hezurraren albeolo-apofisia'], es: 'alveolo', category: 'mesodermoa', color: '#efe5cf', definition: 'Maxilarreko eta barailako hezurrean hortzak kokatzen diren zuloa.' },
+  { id: 'koroa', name: 'Koroa', es: 'corona', category: 'ektodermoa', color: '#fbfaf3', definition: 'Hortzetan kanpoan ikusten den atala.' },
+  { id: 'esne-hortzak', name: 'Behin-behineko hortzak', aka: ['Esne-hortzak'], es: 'dientes de leche', category: 'mesodermoa', color: '#fbfaf3', definition: 'Jaio ostean ateratzen dira, 6. hilabetetik 24.era.', fate: 'Behin betikoek sakatuta jausten dira.' },
+  { id: 'behin-betiko-hortzak', name: 'Behin betiko hortzak', es: 'dientes permanentes', category: 'mesodermoa', color: '#4ed1c4', definition: 'Jaio aurreko 3. hilabetean eratzen dira hezurraren barnean, bigarren ilaran; 6. urtean ateratzen hasten dira.' },
+  { id: 'agenesia', name: 'Agenesia', es: 'agenesia', category: 'mesodermoa', definition: 'Behin betiko hortz bat ez eratzea: behin-behinekoa ez da jausten, eta 14–16 urte bitartean atera egin behar da.' },
+  { id: 'oi-epitelioa', name: 'Oiak', es: 'encía', category: 'ektodermoa', color: '#efc4ae', definition: 'Hortzak inguratzen dituen ahoko epitelioa.' },
+];

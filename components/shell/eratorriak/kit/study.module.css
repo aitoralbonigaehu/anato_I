@@ -9,7 +9,16 @@
 }
 .hasLinks table th:last-child,
 .hasLinks table td:last-child {
-  width: 90px;
+  width: 124px;
+}
+.tableWrap table thead th:first-child {
+  width: 30%;
+}
+.tableWrap table .refCol {
+  width: 92px;
+  color: var(--text-3);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
 }
 .tableWrap table th,
 .tableWrap table td {
@@ -103,7 +112,7 @@
   margin-top: 8px;
 }
 .source {
-  font: 11px/1.4 var(--font-mono);
+  font: 11.5px/1.4 var(--font-mono);
   color: var(--text-4);
 }
 .room input {
