@@ -59,7 +59,7 @@ Work in batches with a clear finish line; after each batch: verify on screen, up
 
 ## 5. Rules
 
-- Do not commit, push, stash, reset or checkout unless the owner asks. Work in this folder's current tree (nothing of topics 16–19's recent work is committed).
+- Do not commit, push, stash, reset or checkout unless the owner asks. Work in this folder's current tree, on branch `claude/festive-maxwell-r8h6an` (all work up to 2026-11-17 is committed there, commit `fcaf71b`, and pushed). The GitHub repository has moved to `https://github.com/aitoralbonigaehu/anato_I.git`; push only when the owner asks.
 - Do not spawn subagents unless the owner asks for them in your session.
 - No regressions in other topics: after shared-kit changes (`components/kit/**`, `lib/three-d/**`, `components/scenes/week14/common.tsx`, `components/shell/**`), re-check a stage from an older topic and run the guard tests. Tests mock `Stage3D` and call children with two arguments: any new child argument needs a default.
 - Inline shell heredocs containing apostrophes break here: write Python or Node edit scripts to your scratchpad (Write tool), assert each replaced string matches exactly once, and keep each file's line endings (CRLF in places).
