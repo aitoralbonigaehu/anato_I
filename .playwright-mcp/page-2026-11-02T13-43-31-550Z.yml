@@ -1,0 +1,80 @@
+- generic [ref=f81e1]:
+  - generic [ref=f81e2]:
+    - banner [ref=f81e3]:
+      - link "EnbrioAtlas — hasiera" [ref=f81e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f81e5]: EnbrioAtlas
+      - navigation [ref=f81e11]:
+        - link "Kronologia" [ref=f81e12] [cursor=pointer]:
+          - /url: /kronologia
+        - link "Gaiak" [ref=f81e13] [cursor=pointer]:
+          - /url: /#gaiak
+        - link "Ikasgelak" [ref=f81e14] [cursor=pointer]:
+          - /url: /ikasgela
+        - link "Fitxak" [ref=f81e15] [cursor=pointer]:
+          - /url: /fitxak
+        - link "Belortzioak" [ref=f81e16] [cursor=pointer]:
+          - /url: /belortzioak
+        - link "Irudiak" [ref=f81e17] [cursor=pointer]:
+          - /url: /irudiak
+        - link "Eratorriak" [ref=f81e18] [cursor=pointer]:
+          - /url: /eratorriak
+        - link "Egiturak" [ref=f81e19] [cursor=pointer]:
+          - /url: /egiturak
+        - link "Ireki simulagailua" [ref=f81e20] [cursor=pointer]:
+          - /url: /astea/1
+    - generic [ref=f81e21]:
+      - paragraph [ref=f81e22]: Irudi-laborategia
+      - heading "Irudiak irakurtzen" [level=1] [ref=f81e23]
+      - paragraph [ref=f81e24]: "Irudi bat etiketarik gabe, zuri-beltzean eta biratuta ere irakurtzen jakin behar da. Hemen gure eszenak horrela ikusten dituzu: seinalatu egitura, esan zer den gezia, aurkitu orientazioa eta ebaki-planoa."
+    - generic [ref=f81e25]:
+      - tablist [ref=f81e26]:
+        - tab "Atlaseko irudiak" [ref=f81e27] [cursor=pointer]
+        - tab "PDFetako irudiak" [selected] [ref=f81e28] [cursor=pointer]
+      - generic [ref=f81e185]:
+        - paragraph [ref=f81e186]:
+          - text: "Irudietako izenak sakatu:"
+          - strong [ref=f81e187]: gorria → laranja → kendu
+          - text: . Markak gailu honetan gordetzen dira.
+        - paragraph [ref=f81e188]: Testua automatikoki detektatu da; baliteke izen batzuk ez antzematea. Irudiak ordenagailu honetan bakarrik daude.
+        - text: Dokumentua
+        - combobox "Dokumentua" [ref=f81e189]:
+          - option "Hezur-sistema" [selected]
+          - option "Muskulu-sistema"
+          - option "Enbriologia · muskulu-sistema"
+          - option "Enbriologia · hezur-sistema"
+          - option "Enbriologia · gorputz-barrunbeak"
+          - option "Enbriologia · liseri-aparatua"
+          - option "Enbriologia · zirkulazio-sistema"
+        - generic [ref=f81e190]:
+          - button "← Aurrekoa" [disabled] [ref=f81e191]
+          - generic [ref=f81e192]: 1 / 4
+          - button "Hurrengoa →" [ref=f81e193] [cursor=pointer]
+        - generic [ref=f81e194]:
+          - img "Hezur-sistema, 1. orria" [ref=f81e195]
+          - 'button "KRANIOAREN MESENKIMA JATORRI DESBERDINA: markatu gabe" [ref=f81e196] [cursor=pointer]'
+          - 'button "Gandor neuraletatik sortutakoa (urdinez) eta mesodermo paraxialetik: markatu gabe" [ref=f81e197] [cursor=pointer]'
+          - 'button "sortutakoa(gorriz): markatu gabe" [ref=f81e198] [cursor=pointer]'
+          - 'button "Sudur.h: markatu gabe" [ref=f81e199] [cursor=pointer]'
+          - 'button "Lakrimala: markatu gabe" [active] [ref=f81e214] [cursor=pointer]'
+          - 'button "Malarra: markatu gabe" [ref=f81e201] [cursor=pointer]'
+          - 'button "Maxilarra: markatu gabe" [ref=f81e202] [cursor=pointer]'
+          - 'button "Ebakortz: markatu gabe" [ref=f81e203] [cursor=pointer]'
+          - 'button "Baraila: markatu gabe" [ref=f81e204] [cursor=pointer]'
+          - 'button "Esfenoidesa: markatu gabe" [ref=f81e205] [cursor=pointer]'
+          - 'button "Tenporalaren: markatu gabe" [ref=f81e206] [cursor=pointer]'
+          - 'button "ezkata: markatu gabe" [ref=f81e207] [cursor=pointer]'
+          - 'button "Tenporalaren: markatu gabe" [ref=f81e208] [cursor=pointer]'
+          - 'button "harkaitza: markatu gabe" [ref=f81e209] [cursor=pointer]'
+          - 'button "Okzipitala: markatu gabe" [ref=f81e210] [cursor=pointer]'
+          - 'button "Hioidesa: markatu gabe" [ref=f81e211] [cursor=pointer]'
+          - 'button "Laringearen: markatu gabe" [ref=f81e212] [cursor=pointer]'
+          - 'button "kartilagoak: markatu gabe" [ref=f81e213] [cursor=pointer]'
+    - contentinfo [ref=f81e153]:
+      - generic [ref=f81e154]: EnbrioAtlas
+      - paragraph [ref=f81e160]: "Iturria: Giza Anatomia I ikasgaiko apunteak (1.–14. gaiak) eta haietako irudiak (Langman). Simulagailu honek ez du ordezkatzen irakaslearen irizpidea."
+      - paragraph [ref=f81e161]: "Irudi hauek atlasaren eszenak dira (geureak). Ikasgaiko irudiak (Langman…) ez dira hemen argitaratzen: zure ordenagailuan bakarrik kargatzen dira, «Ikasgaiko irudiak» fitxan."
+  - button "Galdetu Kimuri (K)" [ref=f81e162] [cursor=pointer]:
+    - generic [ref=f81e182]: Galdetu
+    - generic [aria-hidden] [ref=f81e183]: K
+  - alert [ref=f81e184]

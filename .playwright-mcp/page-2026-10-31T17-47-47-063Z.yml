@@ -1,0 +1,643 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - link "EnbrioAtlas — hasiera" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: EnbrioAtlas
+      - navigation [ref=e11]:
+        - link "Kronologia" [ref=e12] [cursor=pointer]:
+          - /url: /kronologia
+        - link "Gaiak" [ref=e13] [cursor=pointer]:
+          - /url: /#gaiak
+        - link "Ikasgelak" [ref=e14] [cursor=pointer]:
+          - /url: /ikasgela
+        - link "Fitxak" [ref=e15] [cursor=pointer]:
+          - /url: /fitxak
+        - link "Belortzioak" [ref=e16] [cursor=pointer]:
+          - /url: /belortzioak
+        - link "Irudiak" [ref=e17] [cursor=pointer]:
+          - /url: /irudiak
+        - link "Eratorriak" [ref=e18] [cursor=pointer]:
+          - /url: /eratorriak
+        - link "Egiturak" [ref=e19] [cursor=pointer]:
+          - /url: /egiturak
+        - link "Ireki simulagailua" [ref=e20] [cursor=pointer]:
+          - /url: /astea/1
+    - banner [ref=e21]:
+      - heading "Eratorriak" [level=1] [ref=e22]
+      - paragraph [ref=e23]: "Gai bakoitzaren funtsezkoa, taula laburretan: jatorria → eratorria."
+    - generic [ref=e25]:
+      - complementary [ref=e26]:
+        - navigation "Gaiak" [ref=e1088]:
+          - button "Arku sistemak 8., 9. eta 12. gaiak, taula bakarrean" [ref=e1089] [cursor=pointer]:
+            - generic [aria-hidden] [ref=e1090]: ★
+            - generic [ref=e1091]:
+              - text: Arku sistemak
+              - generic [ref=e1092]: 8., 9. eta 12. gaiak, taula bakarrean
+          - paragraph [ref=e1093]: Gaiak
+          - button "1–6 Ernetze orriak" [ref=e1094] [cursor=pointer]:
+            - generic [ref=e1095]: 1–6
+            - text: Ernetze orriak
+          - button "7 Barrunbeak" [ref=e1096] [cursor=pointer]:
+            - generic [ref=e1097]: "7"
+            - text: Barrunbeak
+          - button "8 Hezurrak" [ref=e1098] [cursor=pointer]:
+            - generic [ref=e1099]: "8"
+            - text: Hezurrak
+          - button "9 Muskuluak" [ref=e1100] [cursor=pointer]:
+            - generic [ref=e1101]: "9"
+            - text: Muskuluak
+          - button "10 Bihotz hodia" [ref=e1102] [cursor=pointer]:
+            - generic [ref=e1103]: "10"
+            - text: Bihotz hodia
+          - button "11 Bihotz trenkadak" [ref=e1104] [cursor=pointer]:
+            - generic [ref=e1105]: "11"
+            - text: Bihotz trenkadak
+          - button "12 Arteriak" [ref=e1106] [cursor=pointer]:
+            - generic [ref=e1107]: "12"
+            - text: Arteriak
+          - button "13 Zainak" [ref=e1108] [cursor=pointer]:
+            - generic [ref=e1109]: "13"
+            - text: Zainak
+          - button "14 Digestioa" [ref=e1110] [cursor=pointer]:
+            - generic [ref=e1111]: "14"
+            - text: Digestioa
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - paragraph [ref=e33]: 14. gaia
+            - heading "Digestioa" [level=2] [ref=e194]
+          - button "Proba modua" [active] [pressed] [ref=e35] [cursor=pointer]
+        - tablist "14. gaiaren atalak" [ref=e195]:
+          - tab "Taulak" [ref=e40] [cursor=pointer]
+          - tab "Eskemak" [selected] [ref=e41] [cursor=pointer]
+        - generic [ref=e196]:
+          - generic [ref=e197]:
+            - paragraph [ref=e198]: Eskemak · Digestio aparatua · 10 eskema
+            - combobox "Iturri bat jarraitu gai guztietan" [ref=e199] [cursor=pointer]:
+              - option "Iturri bat gai guztietan jarraitu…" [selected]
+              - option "Gandor neurala (5)"
+              - option "Mesodermo paraxiala (8)"
+              - option "Paretako orria (6)"
+              - option "Errai orria (6)"
+              - option "Septum transversuma (4)"
+              - option "Endokardio kuxinak (3)"
+              - option "Aorta arkuak (4)"
+              - option "Zain sinua (3)"
+            - list "Eskemen irakurketa" [ref=e200]:
+              - listitem [ref=e201]: bihurtzen da
+              - listitem [ref=e204]: migratzen da / lekuz aldatzen da
+              - listitem [ref=e207]: fusionatzen dira
+              - listitem [ref=e209]:
+                - generic [ref=e210]: desagertzen da
+            - paragraph [ref=e1112]: Sakatu lauki ezkutu bakoitza zer bihurtzen den ikusteko. 0 / 76 agerian.
+          - article [ref=e213]:
+            - generic [ref=e214]:
+              - heading "Digestio-egiturak kokapenaren arabera bereiztu" [level=3] [ref=e216]
+              - link "Simulagailuan" [ref=e217] [cursor=pointer]:
+                - /url: /astea/14?etapa=mesenterioa
+                - text: Simulagailuan
+                - generic [aria-hidden] [ref=e218]: →
+            - generic [ref=e220]:
+              - generic [ref=e221]:
+                - generic [ref=e222]: Porta zaina
+                - generic [ref=e226]:
+                  - generic [ref=e227]: ezaugarriak
+                  - button "Erakutsi erantzuna" [ref=e1113]:
+                    - generic [ref=e1115]:
+                      - text: Hesteetatik gibelera doan zaina
+                      - emphasis [ref=e1116]: Gibelaren atarian; lotailu hepatoduodenalean, arteria eta koledokoaren atzean
+              - generic [ref=e234]:
+                - generic [ref=e235]: Koledokoa
+                - generic [ref=e239]:
+                  - generic [ref=e240]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1118]:
+                    - generic [ref=e1120]: Gibel-hodi komuna + hodi zistikoa
+                  - generic [ref=e246]:
+                    - generic [ref=e247]: erlazioa
+                    - button "Erakutsi erantzuna" [ref=e1122]:
+                      - generic [ref=e1124]:
+                        - text: Duodenora eramaten du behazuna
+                        - emphasis [ref=e1125]: Ez nahasi zain urdin batekin; behazun-maskuriarekin eta duodenoarekin jarraitasuna du
+              - generic [ref=e253]:
+                - generic [ref=e254]: Enbor zeliakoa
+                - generic [ref=e258]:
+                  - generic [ref=e259]: ezaugarriak
+                  - button "Erakutsi erantzuna" [ref=e1126]:
+                    - generic [ref=e1128]:
+                      - text: Abdomeneko aortaren aurreko adar laburra
+                      - emphasis [ref=e1129]: Ezkerreko gastrikoa, esplenikoa eta gibel-arteria komuna ematen ditu
+              - generic [ref=e266]:
+                - generic [ref=e267]: Lotailu esplenoerrenala
+                - generic [ref=e271]:
+                  - generic [ref=e272]: lotura
+                  - button "Erakutsi erantzuna" [ref=e1130]:
+                    - generic [ref=e1132]:
+                      - text: Barea ↔ atzeko pareta / ezkerreko giltzurrun-eskualdea
+                      - emphasis [ref=e1133]: Bareko hodiak eta arearen buztana; gastrolienalak, aldiz, barea eta urdaila lotzen ditu
+              - generic [ref=e279]:
+                - generic [ref=e280]: Arearen hastapen dortsala
+                - generic [ref=e284]:
+                  - generic [ref=e285]: kokapena
+                  - button "Erakutsi erantzuna" [ref=e1134]:
+                    - generic [ref=e1136]: Duodenoaren atzeko paretatik mesoduodeno dortsalean
+              - generic [ref=e291]:
+                - generic [ref=e292]: Arearen hastapen bentrala
+                - generic [ref=e296]:
+                  - generic [ref=e297]: kokapena
+                  - button "Erakutsi erantzuna" [ref=e1137]:
+                    - generic [ref=e1139]: Behazun-hodiaren sarreratik hurbil, duodenoaren aurreko aldean
+              - generic [ref=e303]:
+                - generic [ref=e304]: Kloaka
+                - generic [ref=e308]:
+                  - generic [ref=e309]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1141]:
+                    - generic [ref=e1143]: Atzeko hestearen amaierako barrunbea, alantoidearekin lotuta
+                  - generic [ref=e315]:
+                    - generic [ref=e316]: septum urorektalak banatu
+                    - button "Erakutsi erantzuna" [ref=e1144]:
+                      - generic [ref=e1146]: Aurrean sinu urogenitala; atzean kanal anorektala
+              - generic [ref=e322]:
+                - generic [ref=e323]: Poltsa omentala
+                - generic [ref=e327]:
+                  - generic [ref=e328]: kokapena
+                  - button "Erakutsi erantzuna" [ref=e1147]:
+                    - generic [ref=e1149]:
+                      - text: Urdailaren atzean dagoen espazioa
+                      - emphasis [ref=e1150]: Ezkerrean barea eta haren lotailuak; eskuinean Winslow zulotik barrunbe nagusira
+          - article [ref=e335]:
+            - generic [ref=e336]:
+              - generic [ref=e337]:
+                - heading "Tolespenak → heste-hodia eta haren pareta" [level=3] [ref=e338]
+                - paragraph [ref=e339]: Endodermoak epitelioa ematen du; inguruko errai mesodermoak ehun konektiboa eta muskulu leuna. Barea mesodermikoa da.
+              - link "Simulagailuan" [ref=e340] [cursor=pointer]:
+                - /url: /astea/14?etapa=sarrera
+                - text: Simulagailuan
+                - generic [aria-hidden] [ref=e341]: →
+            - generic [ref=e343]:
+              - generic [ref=e344]:
+                - generic [ref=e345]: Endodermoa eta bitelo-zakuaren zati bat
+                - generic [ref=e349]:
+                  - generic [ref=e350]: zeharkako eta zefalokaudal tolespenak
+                  - button "Erakutsi erantzuna" [ref=e1151]:
+                    - generic [ref=e1153]: Heste-hodia
+                  - generic [ref=e357]:
+                    - generic [ref=e358]: erlazioa
+                    - button "Erakutsi erantzuna" [ref=e1155]:
+                      - generic [ref=e1157]: Digestio-hodiko epitelioa eta guruin-parenkima
+              - generic [ref=e363]:
+                - generic [ref=e364]: Errai mesodermoa
+                - generic [ref=e368]:
+                  - generic [ref=e369]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1159]:
+                    - generic [ref=e1161]: Hestearen ehun konektiboa eta muskulu leuna
+              - generic [ref=e374]:
+                - generic [ref=e375]: Mesogastrio dortsaleko mesenkima
+                - generic [ref=e379]:
+                  - generic [ref=e380]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1163]:
+                    - generic [ref=e1165]:
+                      - text: Barea
+                      - emphasis [ref=e1166]: Ez da heste-endodermoaren eratorria
+          - article [ref=e386]:
+            - generic [ref=e387]:
+              - heading "Hiru heste-lurralde → hiru arteria" [level=3] [ref=e389]
+              - link "Simulagailuan" [ref=e390] [cursor=pointer]:
+                - /url: /astea/14?etapa=zirkulazioa
+                - text: Simulagailuan
+                - generic [aria-hidden] [ref=e391]: →
+            - generic [ref=e393]:
+              - generic [ref=e394]:
+                - generic [ref=e395]: Aurreko hestearen abdomeneko eratorriak
+                - generic [ref=e399]:
+                  - generic [ref=e400]: irrigazioa
+                  - button "Erakutsi erantzuna" [ref=e1167]:
+                    - generic [ref=e1169]: Enbor zeliakoa
+              - generic [ref=e406]:
+                - generic [ref=e407]: Bitarteko hestearen eratorriak
+                - generic [ref=e411]:
+                  - generic [ref=e412]: irrigazioa
+                  - button "Erakutsi erantzuna" [ref=e1170]:
+                    - generic [ref=e1172]:
+                      - text: Goiko arteria mesenterikoa
+                      - emphasis [ref=e1173]: Lakioaren biraketa-ardatza ere bada
+              - generic [ref=e419]:
+                - generic [ref=e420]: Atzeko hestearen eratorriak
+                - generic [ref=e424]:
+                  - generic [ref=e425]: irrigazioa
+                  - button "Erakutsi erantzuna" [ref=e1174]:
+                    - generic [ref=e1176]: Beheko arteria mesenterikoa
+          - article [ref=e431]:
+            - generic [ref=e432]:
+              - generic [ref=e433]:
+                - heading "Urdailaren bi biraketak eta mesogastrioak" [level=3] [ref=e434]
+                - paragraph [ref=e435]: Urdailaren hazkundeak eta biraketek kurbadurak, aurpegiak eta poltsa omentala antolatzen dituzte.
+              - link "Simulagailuan" [ref=e436] [cursor=pointer]:
+                - /url: /astea/14?etapa=mesenterioa
+                - text: Simulagailuan
+                - generic [aria-hidden] [ref=e437]: →
+            - generic [ref=e439]:
+              - generic [ref=e440]:
+                - generic [ref=e441]: Aurreko hesteko zabalkuntza
+                - generic [ref=e445]:
+                  - generic [ref=e446]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1178]:
+                    - generic [ref=e1180]: Urdaila
+                  - generic [ref=e451]:
+                    - generic [ref=e452]:
+                      - generic [ref=e453]: 90° luzetarako biraketa
+                      - button "Erakutsi erantzuna" [ref=e1181]:
+                        - generic [ref=e1183]: Ezkerreko pareta → aurreko aurpegia; eskuinekoa → atzeko aurpegia
+                    - generic [ref=e459]:
+                      - generic [ref=e460]: erlazioa
+                      - button "Erakutsi erantzuna" [ref=e1185]:
+                        - generic [ref=e1187]: Hasierako atzeko ertza → ezkerreko kurbadura handia; aurrekoa → eskuineko kurbadura txikia
+                    - generic [ref=e465]:
+                      - generic [ref=e466]: ardatz anteroposteriorreko biraketa
+                      - button "Erakutsi erantzuna" [ref=e1188]:
+                        - generic [ref=e1190]: Piloroa gora eta eskuinera; kardia ezkerrera
+              - generic [ref=e472]:
+                - generic [ref=e473]: Mesogastrio dortsala
+                - generic [ref=e477]:
+                  - generic [ref=e478]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1192]:
+                    - generic [ref=e1194]: Ezkerrera eta beherantz hedatzen da
+                  - generic [ref=e483]:
+                    - generic [ref=e484]:
+                      - generic [ref=e485]: erlazioa
+                      - button "Erakutsi erantzuna" [ref=e1196]:
+                        - generic [ref=e1198]: Urdailaren atzean poltsa omentala
+                    - generic [ref=e490]:
+                      - generic [ref=e491]: erlazioa
+                      - button "Erakutsi erantzuna" [ref=e1200]:
+                        - generic [ref=e1202]: Epiploi handia
+                      - generic [ref=e497]:
+                        - generic [ref=e498]: atzeko geruzak
+                        - button "Erakutsi erantzuna" [ref=e1203]:
+                          - generic [ref=e1205]: Zeharkako kolonaren mesoarekin fusionatu
+              - generic [ref=e504]:
+                - generic [ref=e505]: Mesogastrio bentrala
+                - generic [ref=e509]:
+                  - generic [ref=e510]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1207]:
+                    - generic [ref=e1209]: Epiploi txikia eta lotailu faltziformea
+          - article [ref=e515]:
+            - generic [ref=e516]:
+              - generic [ref=e517]:
+                - 'heading "Heste-lakioa: irten, biratu, itzuli eta finkatu" [level=3] [ref=e518]'
+                - paragraph [ref=e519]: Aurretik ikusita biraketa erloju-orratzen aurkakoa da; adar kaudala ez da atzeko hestearen sinonimoa.
+              - link "Simulagailuan" [ref=e520] [cursor=pointer]:
+                - /url: /astea/14?etapa=heste-atalak
+                - text: Simulagailuan
+                - generic [aria-hidden] [ref=e521]: →
+            - generic [ref=e524]:
+              - generic [ref=e525]: Bitarteko hestea
+              - generic [ref=e529]:
+                - generic [ref=e530]: erlazioa
+                - button "Erakutsi erantzuna" [ref=e1211]:
+                  - generic [ref=e1213]:
+                    - text: Hasierako heste-lakioa
+                    - emphasis [ref=e1214]: Goiko arteria mesenterikoaren inguruan
+                - generic [ref=e536]:
+                  - generic [ref=e537]:
+                    - generic [ref=e538]: erlazioa
+                    - button "Erakutsi erantzuna" [ref=e1216]:
+                      - generic [ref=e1218]: Adar zefalikoa
+                    - generic [ref=e544]:
+                      - generic [ref=e545]: erlazioa
+                      - button "Erakutsi erantzuna" [ref=e1220]:
+                        - generic [ref=e1222]: Duodeno distala, jejunoa eta ileonaren zati handiena
+                  - generic [ref=e550]:
+                    - generic [ref=e551]: erlazioa
+                    - button "Erakutsi erantzuna" [ref=e1224]:
+                      - generic [ref=e1226]: Adar kaudala
+                    - generic [ref=e557]:
+                      - generic [ref=e558]: erlazioa
+                      - button "Erakutsi erantzuna" [ref=e1228]:
+                        - generic [ref=e1230]: Ileon distala, zekua, apendizea, goranzko kolona eta zeharkako kolonaren hurbileko 2/3ak
+                  - generic [ref=e563]:
+                    - generic [ref=e564]: erlazioa
+                    - button "Erakutsi erantzuna" [ref=e1232]:
+                      - generic [ref=e1234]: Hernia fisiologikoa
+                    - generic [ref=e570]:
+                      - generic [ref=e571]: erlazioa
+                      - button "Erakutsi erantzuna" [ref=e1236]:
+                        - generic [ref=e1238]: 90° biraketa
+                      - generic [ref=e577]:
+                        - generic [ref=e578]: erlazioa
+                        - button "Erakutsi erantzuna" [ref=e1240]:
+                          - generic [ref=e1242]: Abdomenera itzulera, 10. aste inguruan
+                        - generic [ref=e583]:
+                          - generic [ref=e584]:
+                            - generic [ref=e585]: erlazioa
+                            - button "Erakutsi erantzuna" [ref=e1244]:
+                              - generic [ref=e1246]: "Beste 180°: guztira 270°"
+                          - generic [ref=e590]:
+                            - generic [ref=e591]: erlazioa
+                            - button "Erakutsi erantzuna" [ref=e1248]:
+                              - generic [ref=e1250]: Jejuno proximala lehena; zekuaren hastapena azkena
+                            - generic [ref=e597]:
+                              - generic [ref=e598]: erlazioa
+                              - button "Erakutsi erantzuna" [ref=e1252]:
+                                - generic [ref=e1254]: Zekua gibel azpitik eskuineko hobi iliakora jaisten da
+          - article [ref=e603]:
+            - generic [ref=e604]:
+              - generic [ref=e605]:
+                - 'heading "Aurreko hestearen kimuak: gibela, behazuna eta area" [level=3] [ref=e606]'
+                - paragraph [ref=e607]: Gibelaren eta arearen parenkima endodermotik dator; inguruko mesenkimak ehun konektiboa ematen du.
+              - link "Simulagailuan" [ref=e608] [cursor=pointer]:
+                - /url: /astea/14?etapa=heste-atalak
+                - text: Simulagailuan
+                - generic [aria-hidden] [ref=e609]: →
+            - generic [ref=e611]:
+              - generic [ref=e612]:
+                - generic [ref=e613]: Aurreko hestearen aurreko pareta
+                - generic [ref=e617]:
+                  - generic [ref=e618]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1256]:
+                    - generic [ref=e1258]: Gibel-dibertikulua
+                  - generic [ref=e623]:
+                    - generic [ref=e624]:
+                      - generic [ref=e625]: erlazioa
+                      - button "Erakutsi erantzuna" [ref=e1260]:
+                        - generic [ref=e1262]: Septum transversumeko mesenkiman hazten da
+                      - generic [ref=e631]:
+                        - generic [ref=e632]: erlazioa
+                        - button "Erakutsi erantzuna" [ref=e1264]:
+                          - generic [ref=e1266]: Gibel-parenkima eta gibel barruko behazun-bideak
+                    - generic [ref=e637]:
+                      - generic [ref=e638]: erlazioa
+                      - button "Erakutsi erantzuna" [ref=e1268]:
+                        - generic [ref=e1270]: Behazun-maskuria eta hodi zistikoa
+              - generic [ref=e643]:
+                - generic [ref=e644]: Duodenoaren endodermoa
+                - generic [ref=e647]:
+                  - generic [ref=e648]:
+                    - generic [ref=e649]: erlazioa
+                    - button "Erakutsi erantzuna" [ref=e1272]:
+                      - generic [ref=e1274]: Arearen hastapen dortsala
+                  - generic [ref=e654]:
+                    - generic [ref=e655]: erlazioa
+                    - button "Erakutsi erantzuna" [ref=e1276]:
+                      - generic [ref=e1278]: Arearen hastapen bentrala
+                    - generic [ref=e661]:
+                      - generic [ref=e662]: erlazioa
+                      - button "Erakutsi erantzuna" [ref=e1280]:
+                        - generic [ref=e1282]: Duodenoarekin atzerantz biratzen da
+                      - generic [ref=e668]:
+                        - generic [ref=e669]: erlazioa
+                        - button "Erakutsi erantzuna" [ref=e1284]:
+                          - generic [ref=e1286]:
+                            - text: Dortsalarekin fusionatu → area
+                            - emphasis [ref=e1287]: "Bentrala: prozesu unzinatua eta buruaren beheko osagaia; dortsala: gainerakoa"
+              - generic [ref=e675]:
+                - generic [ref=e676]: Duodenoaren eta arearen hasierako mesoa
+                - generic [ref=e680]:
+                  - generic [ref=e681]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1289]:
+                    - generic [ref=e1291]: Atzeko paretako peritoneoarekin fusionatu
+                  - generic [ref=e687]:
+                    - generic [ref=e688]: erlazioa
+                    - button "Erakutsi erantzuna" [ref=e1293]:
+                      - generic [ref=e1295]:
+                        - text: Bigarren mailako peritoneo atzeko kokapena
+                        - emphasis [ref=e1296]: Arearen buztana salbuespena izan daiteke
+          - article [ref=e694]:
+            - generic [ref=e695]:
+              - generic [ref=e696]:
+                - heading "Aurreko, bitarteko eta atzeko hestearen eratorriak" [level=3] [ref=e697]
+                - paragraph [ref=e698]: Jatorria → Eratorriak / muga. Geziaren «erlazioa» etiketak lotura anatomikoa adierazten du; ez beti egitura bat beste bihurtzea.
+              - link "Simulagailuan" [ref=e699] [cursor=pointer]:
+                - /url: /astea/14?etapa=heste-atalak
+                - text: Simulagailuan
+                - generic [aria-hidden] [ref=e700]: →
+            - generic [ref=e702]:
+              - generic [ref=e703]:
+                - generic [ref=e704]: Faringe-hestea
+                - generic [ref=e708]:
+                  - generic [ref=e709]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1297]:
+                    - generic [ref=e1299]:
+                      - text: Mintz orofaringeotik arnas aparatuaren hastapeneraino; alboko paretetatik faringe-poltsak sortzen dira.
+                      - emphasis [ref=e1300]: Arnas aparatuaren hastapena da faringe-hestearen eta aurreko hestearen arteko muga.
+              - generic [ref=e716]:
+                - generic [ref=e717]: Aurreko hestearen hasierako atala, arnas hastapenaren atzean
+                - generic [ref=e721]:
+                  - generic [ref=e722]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1301]:
+                    - generic [ref=e1303]:
+                      - text: Hestegorria.
+                      - emphasis [ref=e1304]: Ez da faringe-hestetik sortzen. Goiko 2/3etan muskulu ildaskatua; beheko herenean muskulu lisoa, errai-orritik.
+              - generic [ref=e729]:
+                - generic [ref=e730]: Aurreko hestea
+                - generic [ref=e734]:
+                  - generic [ref=e735]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1305]:
+                    - generic [ref=e1307]: Hestegorria, urdaila eta duodenoaren atal proximala; gibel, behazun-bide eta arearen hastapenak.
+              - generic [ref=e741]:
+                - generic [ref=e742]: Duodenoa
+                - generic [ref=e746]:
+                  - generic [ref=e747]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1308]:
+                    - generic [ref=e1310]: "Jatorri bikoitza: aurreko eta bitarteko hesteak; muga behazun-hodiaren sarreraren mailan."
+              - generic [ref=e753]:
+                - generic [ref=e754]: Bitarteko hestea
+                - generic [ref=e758]:
+                  - generic [ref=e759]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1311]:
+                    - generic [ref=e1313]: Duodeno distala, jejunoa, ileona, kolon itsua, apendizea, goranzko kolona eta zeharkako kolonaren hurbileko 2/3ak.
+              - generic [ref=e765]:
+                - generic [ref=e766]: Atzeko hestea
+                - generic [ref=e770]:
+                  - generic [ref=e771]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1314]:
+                    - generic [ref=e1316]: Zeharkako kolonaren urrutiko 1/3a, beheranzko kolona, sigmoidea, ondestea eta uzki-hodiaren goiko atala.
+              - generic [ref=e777]:
+                - generic [ref=e778]: Proktodeoko ektodermoa
+                - generic [ref=e782]:
+                  - generic [ref=e783]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1317]:
+                    - generic [ref=e1319]:
+                      - text: Uzki-hodiaren beheko atala, lerro pektinatuaren azpitik.
+                      - emphasis [ref=e1320]: Ez da atzeko hesteko endodermoaren eratorria.
+              - generic [ref=e790]:
+                - generic [ref=e791]: Heste-hodiko endodermoa
+                - generic [ref=e795]:
+                  - generic [ref=e796]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1321]:
+                    - generic [ref=e1323]:
+                      - text: Digestio-hodiko epitelioa eta guruin askoren parenkima.
+                      - emphasis [ref=e1324]: Muskulua eta ehun konektiboa inguruko mesodermotik datoz.
+              - generic [ref=e803]:
+                - generic [ref=e804]: Mesogastrio dortsaleko mesenkima
+                - generic [ref=e808]:
+                  - generic [ref=e809]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1325]:
+                    - generic [ref=e1327]:
+                      - text: Barea; jatorri mesodermikoa.
+                      - emphasis [ref=e1328]: Ez da heste-endodermoaren eratorria, nahiz eta enbor zeliakoak irrigatu.
+          - article [ref=e816]:
+            - generic [ref=e817]:
+              - generic [ref=e818]:
+                - heading "Hasierako heste-lakioa eta biraketa" [level=3] [ref=e819]
+                - paragraph [ref=e820]: Atala / prozesua → Eratorria / erlazioa. Geziaren «erlazioa» etiketak lotura anatomikoa adierazten du; ez beti egitura bat beste bihurtzea.
+              - link "Simulagailuan" [ref=e821] [cursor=pointer]:
+                - /url: /astea/14?etapa=heste-atalak
+                - text: Simulagailuan
+                - generic [aria-hidden] [ref=e822]: →
+            - generic [ref=e824]:
+              - generic [ref=e825]:
+                - generic [ref=e826]: Heste-lakioaren adar zefalikoa
+                - generic [ref=e830]:
+                  - generic [ref=e831]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1329]:
+                    - generic [ref=e1331]: Duodeno distala, jejunoa eta ileonaren zati handiena.
+              - generic [ref=e837]:
+                - generic [ref=e838]: Heste-lakioaren adar kaudala
+                - generic [ref=e842]:
+                  - generic [ref=e843]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1332]:
+                    - generic [ref=e1334]:
+                      - text: Ileon distala, kolon itsua, apendizea, goranzko kolona eta zeharkako kolonaren hurbileko 2/3ak.
+                      - emphasis [ref=e1335]: Ez da atzeko hestearen sinonimoa.
+              - generic [ref=e850]:
+                - generic [ref=e851]: Biraketa-ardatza
+                - generic [ref=e855]:
+                  - generic [ref=e856]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1336]:
+                    - generic [ref=e1338]:
+                      - text: Goiko arteria mesenterikoa.
+                      - emphasis [ref=e1339]: Ez enbor zeliakoa, ez abdomeneko aorta osotasunean.
+              - generic [ref=e863]:
+                - generic [ref=e864]: Hernia fisiologikoa
+                - generic [ref=e868]:
+                  - generic [ref=e869]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1340]:
+                    - generic [ref=e1342]: Lakioa aldi baterako zilbor-eremura irteten da, abdomeneko espazioa mugatua delako.
+              - generic [ref=e875]:
+                - generic [ref=e876]: Biraketa osoa, eredu klasikoan
+                - generic [ref=e880]:
+                  - generic [ref=e881]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1343]:
+                    - generic [ref=e1345]: "270° erloju-orratzen aurka, enbrioia aurretik ikusita: 90° + 180°."
+              - generic [ref=e887]:
+                - generic [ref=e888]: Abdomenera itzulera
+                - generic [ref=e892]:
+                  - generic [ref=e893]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1346]:
+                    - generic [ref=e1348]: "10. astearen inguruan (3. hilabetearen amaiera): jejunoaren hurbileko atala lehena, kolon itsuaren hastapena azkena."
+              - generic [ref=e899]:
+                - generic [ref=e900]: Kolon itsuaren hastapena
+                - generic [ref=e904]:
+                  - generic [ref=e905]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1349]:
+                    - generic [ref=e1351]: Hasieran gibel azpian; gero eskuineko hobi iliakorantz jaisten da.
+          - article [ref=e911]:
+            - generic [ref=e912]:
+              - generic [ref=e913]:
+                - heading "Mesogastrio dortsalaren eta bentralaren eratorriak" [level=3] [ref=e914]
+                - paragraph [ref=e915]: Jatorria → Eratorria / lotura. Geziaren «erlazioa» etiketak lotura anatomikoa adierazten du; ez beti egitura bat beste bihurtzea.
+              - link "Simulagailuan" [ref=e916] [cursor=pointer]:
+                - /url: /astea/14?etapa=mesenterioa
+                - text: Simulagailuan
+                - generic [aria-hidden] [ref=e917]: →
+            - generic [ref=e919]:
+              - generic [ref=e920]:
+                - generic [ref=e921]: Mesogastrio dortsala
+                - generic [ref=e925]:
+                  - generic [ref=e926]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1352]:
+                    - generic [ref=e1354]: Epiploi handia / epiploi-amantala.
+              - generic [ref=e932]:
+                - generic [ref=e933]: Mesogastrio dortsala, urdailaren eta barearen artean
+                - generic [ref=e937]:
+                  - generic [ref=e938]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1355]:
+                    - generic [ref=e1357]: Lotailu gastroesplenikoa / gastrolienala.
+              - generic [ref=e944]:
+                - generic [ref=e945]: Mesogastrio dortsala, barearen eta atzeko paretaren artean
+                - generic [ref=e949]:
+                  - generic [ref=e950]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1358]:
+                    - generic [ref=e1360]: Lotailu esplenoerrenala.
+              - generic [ref=e956]:
+                - generic [ref=e957]: Mesogastrio bentrala
+                - generic [ref=e961]:
+                  - generic [ref=e962]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1361]:
+                    - generic [ref=e1363]: "Epiploi txikia: lotailu gastrohepatikoa eta hepatoduodenala."
+              - generic [ref=e968]:
+                - generic [ref=e969]: Mesogastrio bentrala, gibeletik aurreko paretara
+                - generic [ref=e973]:
+                  - generic [ref=e974]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1364]:
+                    - generic [ref=e1366]: Lotailu faltziformea.
+              - generic [ref=e980]:
+                - generic [ref=e981]: Epiploi handiaren atzeko geruzak
+                - generic [ref=e985]:
+                  - generic [ref=e986]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1367]:
+                    - generic [ref=e1369]:
+                      - text: Zeharkako kolonarekin eta haren mesoarekin fusionatzen dira.
+                      - emphasis [ref=e1370]: Ez jejunoaren mesenterioarekin.
+              - generic [ref=e993]:
+                - generic [ref=e994]: Lotailu faltziformearen beheko ertz librea
+                - generic [ref=e998]:
+                  - generic [ref=e999]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1371]:
+                    - generic [ref=e1373]:
+                      - text: Gibelaren lotailu borobila dauka.
+                      - emphasis [ref=e1374]: Lotailu borobila zilbor-zainaren hondarra da; lotailu faltziformea mesenterio-eratorria.
+          - article [ref=e1006]:
+            - generic [ref=e1007]:
+              - generic [ref=e1008]:
+                - heading "Poltsa omentala eta lotura garrantzitsuak" [level=3] [ref=e1009]
+                - paragraph [ref=e1010]: Egitura / kokapena → Erlazioa. Geziaren «erlazioa» etiketak lotura anatomikoa adierazten du; ez beti egitura bat beste bihurtzea.
+              - link "Simulagailuan" [ref=e1011] [cursor=pointer]:
+                - /url: /astea/14?etapa=mesenterioa
+                - text: Simulagailuan
+                - generic [aria-hidden] [ref=e1012]: →
+            - generic [ref=e1014]:
+              - generic [ref=e1015]:
+                - generic [ref=e1016]: Urdailaren biraketa eta mesogastrio dortsalaren ezkerreratzea
+                - generic [ref=e1020]:
+                  - generic [ref=e1021]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1375]:
+                    - generic [ref=e1377]: Urdailaren atzeko poltsa omentala / epiploiaren transkabitatea.
+              - generic [ref=e1027]:
+                - generic [ref=e1028]: Poltsa omentalaren ezkerreko muga
+                - generic [ref=e1032]:
+                  - generic [ref=e1033]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1378]:
+                    - generic [ref=e1380]: Barea eta lotailu gastroespleniko zein esplenoerrenalaren eskualdea.
+              - generic [ref=e1039]:
+                - generic [ref=e1040]: Poltsa omentalaren aurreko erlazioak
+                - generic [ref=e1044]:
+                  - generic [ref=e1045]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1381]:
+                    - generic [ref=e1383]: Urdaila eta epiploi txikia.
+              - generic [ref=e1051]:
+                - generic [ref=e1052]: Winslow zuloa / foramen epiploikoa
+                - generic [ref=e1056]:
+                  - generic [ref=e1057]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1384]:
+                    - generic [ref=e1386]: Poltsa omentala peritoneo-barrunbe nagusiarekin komunikatzen du.
+              - generic [ref=e1063]:
+                - generic [ref=e1064]: Epiploi txikiaren eskuineko ertz librea / lotailu hepatoduodenala
+                - generic [ref=e1068]:
+                  - generic [ref=e1069]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1387]:
+                    - generic [ref=e1389]: Porta zaina, gibel-arteria eta koledokoa; Winslow zuloaren aurrean.
+              - generic [ref=e1075]:
+                - generic [ref=e1076]: Aurreko · bitarteko · atzeko hestea
+                - generic [ref=e1080]:
+                  - generic [ref=e1081]: erlazioa
+                  - button "Erakutsi erantzuna" [ref=e1390]:
+                    - generic [ref=e1392]: Enbor zeliakoa · goiko arteria mesenterikoa · beheko arteria mesenterikoa.
+    - contentinfo [ref=e163]:
+      - generic [ref=e164]: EnbrioAtlas
+      - paragraph [ref=e170]: "Iturria: Giza Anatomia I ikasgaiko apunteak (1.–14. gaiak) eta haietako irudiak (Langman). Simulagailu honek ez du ordezkatzen irakaslearen irizpidea."
+  - button "Galdetu Kimuri (K)" [ref=e171] [cursor=pointer]:
+    - generic [ref=e191]: Galdetu
+    - generic [aria-hidden] [ref=e192]: K
+  - alert [ref=e1087]

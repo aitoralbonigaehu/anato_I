@@ -1,0 +1,86 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - link "EnbrioAtlas — hasiera" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: EnbrioAtlas
+      - navigation [ref=e11]:
+        - link "Egiturak" [ref=e19] [cursor=pointer]:
+          - /url: /egiturak
+        - link "Ireki simulagailua" [ref=e20] [cursor=pointer]:
+          - /url: /astea/1
+    - banner [ref=e21]:
+      - heading "Eratorriak" [level=1] [ref=e22]
+      - paragraph [ref=e23]: "Gai bakoitzaren funtsezkoa, taula laburretan: jatorria → eratorria."
+    - generic [ref=e25]:
+      - complementary [ref=e26]:
+        - button "Hezurrak" [ref=e2333] [cursor=pointer]:
+          - generic [aria-hidden] [ref=e28]: "8"
+          - text: Hezurrak
+          - generic [aria-hidden] [ref=e29]: ▾
+      - generic [ref=e30]:
+        - generic [ref=e32]:
+          - paragraph [ref=e33]: 8. gaia
+          - heading "Hezurrak" [level=2] [ref=e2334]
+        - generic [ref=e38]:
+          - tablist "8. gaiaren atalak" [ref=e2335]:
+            - tab "Taulak" [ref=e40] [cursor=pointer]
+            - tab "Eskemak" [selected] [ref=e41] [cursor=pointer]
+          - 'link "Ikasgela: 3D eredua eta fitxak" [ref=e2336] [cursor=pointer]':
+            - /url: /ikasgela/8
+            - text: "Ikasgela: 3D eredua eta fitxak →"
+        - generic [ref=e2337]:
+          - generic [ref=e2338]:
+            - paragraph [ref=e2339]: Eskemak · Hezur sistema
+            - combobox "Iturri bat jarraitu gai guztietan" [ref=e2340] [cursor=pointer]:
+              - option "Iturri bat gai guztietan jarraitu…" [selected]
+              - option "Gandor neurala (5)"
+              - option "Mesodermo paraxiala (8)"
+              - option "Paretako orria (6)"
+              - option "Errai orria (6)"
+              - option "Septum transversuma (4)"
+              - option "Endokardio kuxinak (3)"
+              - option "Aorta arkuak (4)"
+              - option "Zain sinua (3)"
+            - list "Eskemen irakurketa" [ref=e2341]:
+              - listitem [ref=e2342]: bihurtzen da
+              - listitem [ref=e2345]:
+                - generic [ref=e2346]: erlazioa
+                - text: lotura anatomikoa
+              - listitem [ref=e2349]: migratzen da / lekuz aldatzen da
+              - listitem [ref=e2352]: fusionatzen dira
+              - listitem [ref=e2354]:
+                - generic [ref=e2355]: desagertzen da
+          - region "Ikasteko ibilbidea" [ref=e2559]:
+            - generic [ref=e2560]:
+              - group "Ikasteko modua" [ref=e2561]:
+                - button "Ikasi" [ref=e2562] [cursor=pointer]
+                - button "Landu" [active] [pressed] [ref=e2563] [cursor=pointer]
+              - paragraph [ref=e2564]: 4 mapa nagusi · 13 eskemaren edukia
+            - generic [ref=e3453]:
+              - generic [ref=e3454]:
+                - generic [ref=e3455]:
+                  - text: Noranzkoa
+                  - combobox "Noranzkoa" [ref=e3456] [cursor=pointer]:
+                    - option "Bi noranzkoak" [selected]
+                    - option "Aurrera"
+                    - option "Atzera"
+                - generic [ref=e3457]:
+                  - text: Errepasoa
+                  - combobox "Errepasoa" [ref=e3458] [cursor=pointer]:
+                    - option "Gaurkoak eta berriak"
+                    - option "Huts egindakoak"
+                    - option "Guztiak" [selected]
+              - paragraph [ref=e3481]: 0 landuta · 135 geratzen dira · Aurrera
+              - generic [ref=e3487]:
+                - heading "Zer lotzen da honekin? Azaleko ektodermoa" [level=3] [ref=e3488]
+                - paragraph [ref=e3489]: Gorputz-adarrak, gerrikoak eta esternoia
+                - button "Erakutsi erantzuna" [ref=e3490] [cursor=pointer]
+              - paragraph [ref=e3486]: Erantzun zure hitzekin erakutsi aurretik. «Badakit» aukeratzean, harremana eta haren ñabardurak azaldu behar dituzu.
+    - contentinfo [ref=e163]:
+      - generic [ref=e164]: EnbrioAtlas
+      - paragraph [ref=e170]: "Iturria: Giza Anatomia I ikasgaiko apunteak (1.–14. gaiak) eta haietako irudiak (Langman). Simulagailu honek ez du ordezkatzen irakaslearen irizpidea."
+  - button "Galdetu Kimuri (K)" [ref=e171] [cursor=pointer]:
+    - generic [ref=e191]: Galdetu
+    - generic [aria-hidden] [ref=e192]: K
+  - alert [ref=e1087]

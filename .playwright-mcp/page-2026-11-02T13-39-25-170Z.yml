@@ -1,0 +1,71 @@
+- generic [active] [ref=f26e1]:
+  - generic [ref=f26e2]:
+    - banner [ref=f26e3]:
+      - link "EnbrioAtlas — hasiera" [ref=f26e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f26e5]: EnbrioAtlas
+      - navigation [ref=f26e11]:
+        - link "Kronologia" [ref=f26e12] [cursor=pointer]:
+          - /url: /kronologia
+        - link "Gaiak" [ref=f26e13] [cursor=pointer]:
+          - /url: /#gaiak
+        - link "Ikasgelak" [ref=f26e14] [cursor=pointer]:
+          - /url: /ikasgela
+        - link "Fitxak" [ref=f26e15] [cursor=pointer]:
+          - /url: /fitxak
+        - link "Belortzioak" [ref=f26e16] [cursor=pointer]:
+          - /url: /belortzioak
+        - link "Irudiak" [ref=f26e17] [cursor=pointer]:
+          - /url: /irudiak
+        - link "Eratorriak" [ref=f26e18] [cursor=pointer]:
+          - /url: /eratorriak
+        - link "Egiturak" [ref=f26e19] [cursor=pointer]:
+          - /url: /egiturak
+        - link "Ireki simulagailua" [ref=f26e20] [cursor=pointer]:
+          - /url: /astea/1
+    - generic [ref=f26e21]:
+      - paragraph [ref=f26e22]: Irudi-laborategia
+      - heading "Irudiak irakurtzen" [level=1] [ref=f26e23]
+      - paragraph [ref=f26e24]: "Irudi bat etiketarik gabe, zuri-beltzean eta biratuta ere irakurtzen jakin behar da. Hemen gure eszenak horrela ikusten dituzu: seinalatu egitura, esan zer den gezia, aurkitu orientazioa eta ebaki-planoa."
+    - generic [ref=f26e25]:
+      - tablist [ref=f26e26]:
+        - tab "Atlaseko irudiak" [selected] [ref=f26e27] [cursor=pointer]
+        - tab "PDFetako irudiak" [ref=f26e28] [cursor=pointer]
+      - generic [ref=f26e29]:
+        - group "Ariketa mota" [ref=f26e30]:
+          - button "Nahastu" [ref=f26e31] [cursor=pointer]
+          - button "Seinalatu" [ref=f26e32] [cursor=pointer]
+          - button "Gezia" [ref=f26e33] [cursor=pointer]
+          - button "Orientazioa" [ref=f26e34] [cursor=pointer]
+          - button "Ebaki-planoa" [ref=f26e35] [cursor=pointer]
+        - group "Gaia" [ref=f26e36]:
+          - button "Gai guztiak" [ref=f26e37] [cursor=pointer]
+          - button "1. gaia" [ref=f26e38] [cursor=pointer]
+          - button "2. gaia" [ref=f26e39] [cursor=pointer]
+          - button "3. gaia" [ref=f26e40] [cursor=pointer]
+          - button "4. gaia" [ref=f26e41] [cursor=pointer]
+          - button "5. gaia" [ref=f26e42] [cursor=pointer]
+          - button "6. gaia" [ref=f26e43] [cursor=pointer]
+          - button "7. gaia" [ref=f26e44] [cursor=pointer]
+          - button "8. gaia" [ref=f26e45] [cursor=pointer]
+          - button "9. gaia" [ref=f26e46] [cursor=pointer]
+          - button "10. gaia" [ref=f26e47] [cursor=pointer]
+          - button "11. gaia" [ref=f26e48] [cursor=pointer]
+          - button "12. gaia" [ref=f26e49] [cursor=pointer]
+          - button "13. gaia" [ref=f26e50] [cursor=pointer]
+          - button "14. gaia" [ref=f26e51] [cursor=pointer]
+        - generic "Saio honetan zuzen erantzundakoak / erantzundakoak" [ref=f26e52]: 0/0 zuzen
+      - complementary [ref=f26e55]:
+        - paragraph [ref=f26e56]: Irudia
+        - heading "Irudia prestatzen…" [level=2] [ref=f26e57]
+        - generic [ref=f26e58]:
+          - button "Beste irudi bat" [ref=f26e59] [cursor=pointer]
+          - button "Koloretan" [ref=f26e60] [cursor=pointer]
+        - paragraph [ref=f26e61]: "Teklak: 1–5 erantzun · Enter hurrengoa"
+    - contentinfo [ref=f26e62]:
+      - generic [ref=f26e63]: EnbrioAtlas
+      - paragraph [ref=f26e69]: "Iturria: Giza Anatomia I ikasgaiko apunteak (1.–14. gaiak) eta haietako irudiak (Langman). Simulagailu honek ez du ordezkatzen irakaslearen irizpidea."
+      - paragraph [ref=f26e70]: "Irudi hauek atlasaren eszenak dira (geureak). Ikasgaiko irudiak (Langman…) ez dira hemen argitaratzen: zure ordenagailuan bakarrik kargatzen dira, «Ikasgaiko irudiak» fitxan."
+  - button "Galdetu Kimuri (K)" [ref=f26e71] [cursor=pointer]:
+    - generic [ref=f26e91]: Galdetu
+    - generic [aria-hidden] [ref=f26e92]: K

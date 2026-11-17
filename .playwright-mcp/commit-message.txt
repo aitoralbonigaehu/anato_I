@@ -1,0 +1,7 @@
+Fix 3D name-dot visibility across topics 7-12
+
+Audit settled 3D step frames with projection-preserving Stage3D and Callouts mocks. Keep anchors in frame, add a tight visibility fallback, and reconsider cached anchors after framing changes.
+
+Adjust septal and iliac cameras to expose openings and avoid label crossings. Follow the deformed valve when drawing the patent slit, and place its name dot on that residual opening.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

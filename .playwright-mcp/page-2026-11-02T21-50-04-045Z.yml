@@ -1,0 +1,70 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - link "EnbrioAtlas — hasiera" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: EnbrioAtlas
+      - navigation [ref=e11]:
+        - link "Kronologia" [ref=e12] [cursor=pointer]:
+          - /url: /kronologia
+        - link "Gaiak" [ref=e13] [cursor=pointer]:
+          - /url: /#gaiak
+        - link "Ikasgelak" [ref=e14] [cursor=pointer]:
+          - /url: /ikasgela
+        - link "Fitxak" [ref=e15] [cursor=pointer]:
+          - /url: /fitxak
+        - link "Belortzioak" [ref=e16] [cursor=pointer]:
+          - /url: /belortzioak
+        - link "Irudiak" [ref=e17] [cursor=pointer]:
+          - /url: /irudiak
+        - link "Eratorriak" [ref=e18] [cursor=pointer]:
+          - /url: /eratorriak
+        - link "Egiturak" [ref=e19] [cursor=pointer]:
+          - /url: /egiturak
+        - link "Ireki simulagailua" [ref=e20] [cursor=pointer]:
+          - /url: /astea/1
+    - generic [ref=e21]:
+      - paragraph [ref=e22]: Irudi-laborategia
+      - heading "Irudiak irakurtzen" [level=1] [ref=e23]
+      - paragraph [ref=e24]: "Irudi bat etiketarik gabe, zuri-beltzean eta biratuta ere irakurtzen jakin behar da. Hemen gure eszenak horrela ikusten dituzu: seinalatu egitura, esan zer den gezia, aurkitu orientazioa eta ebaki-planoa."
+    - generic [ref=e25]:
+      - tablist [ref=e26]:
+        - tab "Atlaseko irudiak" [ref=e27] [cursor=pointer]
+        - tab "PDFetako irudiak" [active] [selected] [ref=e28] [cursor=pointer]
+      - generic [ref=e300]:
+        - paragraph [ref=e301]:
+          - text: "Irudietako izenak sakatu:"
+          - strong [ref=e302]: gorria → laranja → kendu
+          - text: . Markak gailu honetan gordetzen dira.
+        - paragraph [ref=e303]: Testua automatikoki detektatu da; baliteke izen batzuk ez antzematea. Irudiak ordenagailu honetan bakarrik daude.
+        - generic [ref=e304]:
+          - paragraph [ref=e305]:
+            - text: Irudiak pribatuak dira eta ez daude webgunean gordeta. Ordenagailu honetan irekitzeko, hautatu
+            - strong [ref=e306]: irudiak
+            - text: "karpeta:"
+          - code [ref=e307]: C:\Users\aitor\Downloads\1 MEDICINA\private-images\irudiak
+          - paragraph [ref=e308]: Fitxategiak zure nabigatzailean bakarrik irakurtzen dira; ez dira zerbitzarira bidaltzen. Berriro hautatu beharko duzu orria kargatzen duzunean.
+          - generic [ref=e309] [cursor=pointer]:
+            - text: Hautatu irudiak karpeta
+            - button "Hautatu irudiak karpeta" [ref=e310]
+        - text: Dokumentua
+        - combobox "Dokumentua" [ref=e311]:
+          - option "Hezur-sistema" [selected]
+          - option "Muskulu-sistema"
+          - option "Enbriologia · muskulu-sistema"
+          - option "Enbriologia · hezur-sistema"
+          - option "Enbriologia · gorputz-barrunbeak"
+          - option "Enbriologia · liseri-aparatua"
+          - option "Enbriologia · zirkulazio-sistema"
+        - generic [ref=e312]:
+          - button "← Aurrekoa" [disabled] [ref=e313]
+          - generic [ref=e314]: 1 / 4
+          - button "Hurrengoa →" [ref=e315] [cursor=pointer]
+    - contentinfo [ref=e268]:
+      - generic [ref=e269]: EnbrioAtlas
+      - paragraph [ref=e275]: "Iturria: Giza Anatomia I ikasgaiko apunteak (1.–14. gaiak) eta haietako irudiak (Langman). Simulagailu honek ez du ordezkatzen irakaslearen irizpidea."
+      - paragraph [ref=e276]: "Irudi hauek atlasaren eszenak dira (geureak). Ikasgaiko irudiak (Langman…) ez dira hemen argitaratzen: zure ordenagailuan bakarrik kargatzen dira, «Ikasgaiko irudiak» fitxan."
+  - button "Galdetu Kimuri (K)" [ref=e277] [cursor=pointer]:
+    - generic [ref=e297]: Galdetu
+    - generic [aria-hidden] [ref=e298]: K
+  - alert [ref=e299]

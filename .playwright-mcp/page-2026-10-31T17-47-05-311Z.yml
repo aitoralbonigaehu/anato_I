@@ -1,0 +1,194 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - link "EnbrioAtlas — hasiera" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: EnbrioAtlas
+      - navigation [ref=e11]:
+        - link "Kronologia" [ref=e12] [cursor=pointer]:
+          - /url: /kronologia
+        - link "Gaiak" [ref=e13] [cursor=pointer]:
+          - /url: /#gaiak
+        - link "Ikasgelak" [ref=e14] [cursor=pointer]:
+          - /url: /ikasgela
+        - link "Fitxak" [ref=e15] [cursor=pointer]:
+          - /url: /fitxak
+        - link "Belortzioak" [ref=e16] [cursor=pointer]:
+          - /url: /belortzioak
+        - link "Irudiak" [ref=e17] [cursor=pointer]:
+          - /url: /irudiak
+        - link "Eratorriak" [ref=e18] [cursor=pointer]:
+          - /url: /eratorriak
+        - link "Egiturak" [ref=e19] [cursor=pointer]:
+          - /url: /egiturak
+        - link "Ireki simulagailua" [ref=e20] [cursor=pointer]:
+          - /url: /astea/1
+    - banner [ref=e21]:
+      - heading "Eratorriak" [level=1] [ref=e22]
+      - paragraph [ref=e23]: "Gai bakoitzaren funtsezkoa, taula laburretan: jatorria → eratorria."
+    - generic [ref=e25]:
+      - complementary [ref=e26]:
+        - button "Barrunbeak" [ref=e27] [cursor=pointer]:
+          - generic [aria-hidden] [ref=e28]: "7"
+          - text: Barrunbeak
+          - generic [aria-hidden] [ref=e29]: ▾
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - paragraph [ref=e33]: 7. gaia
+            - heading "Barrunbeak" [level=2] [ref=e34]
+          - button "Proba modua" [ref=e35] [cursor=pointer]
+        - generic [ref=e38]:
+          - tablist "7. gaiaren atalak" [ref=e39]:
+            - tab "Taulak" [selected] [ref=e40] [cursor=pointer]
+            - tab "Eskemak" [ref=e41] [cursor=pointer]
+          - 'link "Ikasgela: 3D eredua eta fitxak" [ref=e42] [cursor=pointer]':
+            - /url: /ikasgela/7
+            - text: "Ikasgela: 3D eredua eta fitxak →"
+        - region "7. gaiaren taulak" [ref=e44]:
+          - generic [ref=e45]:
+            - paragraph [ref=e46]: Jatorria eta eratorria parez pare. Garrantzitsuenak lehenengo, kolorez markatuta.
+            - group "Garrantzia" [ref=e48]:
+              - button "Funtsezkoa 8" [pressed] [ref=e49] [cursor=pointer]:
+                - text: Funtsezkoa
+                - generic [ref=e51]: "8"
+              - button "Garrantzitsua 9" [pressed] [ref=e52] [cursor=pointer]:
+                - text: Garrantzitsua
+                - generic [ref=e54]: "9"
+              - button "Osagarria 7" [ref=e55] [cursor=pointer]:
+                - text: Osagarria
+                - generic [ref=e57]: "7"
+          - generic [ref=e58]:
+            - article [ref=e59]:
+              - generic [ref=e60]:
+                - heading "Peritoneoarekiko kokapena" [level=3] [ref=e61]
+                - paragraph [ref=e62]: Peritoneo barruko organoa errai-peritoneoz inguratuta dago; ez dago barrunbe birtualaren barruan flotatzen.
+              - table "Peritoneoarekiko kokapena" [ref=e63]:
+                - rowgroup [ref=e64]:
+                  - row [ref=e65]:
+                    - columnheader "Egitura" [ref=e66]
+                    - columnheader "Kokapena" [ref=e67]
+                - rowgroup [ref=e68]:
+                  - row [ref=e69]:
+                    - 'rowheader "Funtsezkoa: Urdaila eta barea" [ref=e70]':
+                      - generic [ref=e71]: "Funtsezkoa:"
+                      - text: Urdaila eta barea
+                    - cell "Peritoneo barrukoak." [ref=e72]
+                  - row [ref=e73]:
+                    - 'rowheader "Funtsezkoa: Jejunoa eta ileona" [ref=e74]':
+                      - generic [ref=e75]: "Funtsezkoa:"
+                      - text: Jejunoa eta ileona
+                    - cell "Peritoneo barrukoak; mesenterioa mantentzen dute." [ref=e76]
+                  - row [ref=e77]:
+                    - 'rowheader "Funtsezkoa: Zeharkako kolona eta kolon sigmoideoa" [ref=e78]':
+                      - generic [ref=e79]: "Funtsezkoa:"
+                      - text: Zeharkako kolona eta kolon sigmoideoa
+                    - cell "Peritoneo barrukoak, beren mesoekin." [ref=e80]
+                  - row [ref=e81]:
+                    - 'rowheader "Funtsezkoa: Duodenoaren gainerako zatirik handiena, bereziki 2.–4. atalak" [ref=e82]':
+                      - generic [ref=e83]: "Funtsezkoa:"
+                      - text: Duodenoaren gainerako zatirik handiena, bereziki 2.–4. atalak
+                    - cell "Bigarren mailako peritoneo atzekoa." [ref=e84]
+                  - row [ref=e85]:
+                    - 'rowheader "Funtsezkoa: Area / pankreasa" [ref=e86]':
+                      - generic [ref=e87]: "Funtsezkoa:"
+                      - text: Area / pankreasa
+                    - cell "Ia osoa bigarren mailako peritoneo atzekoa. Kontuz · Buztana lotailu esplenoerrenalean gera daiteke." [ref=e88]:
+                      - text: Ia osoa bigarren mailako peritoneo atzekoa.
+                      - generic [ref=e89]: Kontuz · Buztana lotailu esplenoerrenalean gera daiteke.
+                  - row [ref=e90]:
+                    - 'rowheader "Funtsezkoa: Giltzurrunak, abdomeneko aorta eta beheko kaba zaina" [ref=e91]':
+                      - generic [ref=e92]: "Funtsezkoa:"
+                      - text: Giltzurrunak, abdomeneko aorta eta beheko kaba zaina
+                    - cell "Hasieratik peritoneo atzeko egiturak." [ref=e93]
+                  - row [ref=e94]:
+                    - 'rowheader "Funtsezkoa: Ondestea" [ref=e95]':
+                      - generic [ref=e96]: "Funtsezkoa:"
+                      - text: Ondestea
+                    - 'cell "Peritoneo kanpokoa: atzeko hestearen urrutiko atala peritoneo barrunbetik kanpo geratzen da. Kontuz · Goiko atalak estaldura peritoneal partziala du; beheko atala peritoneo azpikoa da." [ref=e97]':
+                      - text: "Peritoneo kanpokoa: atzeko hestearen urrutiko atala peritoneo barrunbetik kanpo geratzen da."
+                      - generic [ref=e98]: Kontuz · Goiko atalak estaldura peritoneal partziala du; beheko atala peritoneo azpikoa da.
+                  - row [ref=e99]:
+                    - 'rowheader "Garrantzitsua: Kolon itsua / zekua" [ref=e100]':
+                      - generic [ref=e101]: "Garrantzitsua:"
+                      - text: Kolon itsua / zekua
+                    - cell "Normalean peritoneo barrukoa; maiz ez du meso askerik. Kontuz · Ez nahasi jarraian duen goranzko kolonaren kokapenarekin." [ref=e102]:
+                      - text: Normalean peritoneo barrukoa; maiz ez du meso askerik.
+                      - generic [ref=e103]: Kontuz · Ez nahasi jarraian duen goranzko kolonaren kokapenarekin.
+                  - row [ref=e104]:
+                    - 'rowheader "Garrantzitsua: Duodenoaren hasierako bulboa" [ref=e105]':
+                      - generic [ref=e106]: "Garrantzitsua:"
+                      - text: Duodenoaren hasierako bulboa
+                    - cell "Peritoneo barrukoa. Kontuz · Lehen atalaren hasierako zati mugikorra; ez lehen atal osoa salbuespenik gabe." [ref=e107]:
+                      - text: Peritoneo barrukoa.
+                      - generic [ref=e108]: Kontuz · Lehen atalaren hasierako zati mugikorra; ez lehen atal osoa salbuespenik gabe.
+                  - row [ref=e109]:
+                    - 'rowheader "Garrantzitsua: Goranzko eta beheranzko kolona" [ref=e110]':
+                      - generic [ref=e111]: "Garrantzitsua:"
+                      - text: Goranzko eta beheranzko kolona
+                    - cell "Bigarren mailako peritoneo atzekoak. Kontuz · Hasierako mesoa atzeko paretarekin fusionatzen da." [ref=e112]:
+                      - text: Bigarren mailako peritoneo atzekoak.
+                      - generic [ref=e113]: Kontuz · Hasierako mesoa atzeko paretarekin fusionatzen da.
+                  - row [ref=e114]:
+                    - 'rowheader "Garrantzitsua: Gibela" [ref=e115]':
+                      - generic [ref=e116]: "Garrantzitsua:"
+                      - text: Gibela
+                    - cell "Nagusiki peritoneo barrukoa. Kontuz · Area biluziak ez du estaldura peritonealik." [ref=e117]:
+                      - text: Nagusiki peritoneo barrukoa.
+                      - generic [ref=e118]: Kontuz · Area biluziak ez du estaldura peritonealik.
+            - article [ref=e119]:
+              - heading "Barrunbeen banaketa eta diafragma" [level=3] [ref=e121]
+              - table "Barrunbeen banaketa eta diafragma" [ref=e122]:
+                - rowgroup [ref=e123]:
+                  - row [ref=e124]:
+                    - columnheader "Jatorria / egitura" [ref=e125]
+                    - columnheader "Ekarpena / erlazioa" [ref=e126]
+                - rowgroup [ref=e127]:
+                  - row [ref=e128]:
+                    - 'rowheader "Funtsezkoa: Erreten perikardioperitonealak" [ref=e129]':
+                      - generic [ref=e130]: "Funtsezkoa:"
+                      - text: Erreten perikardioperitonealak
+                    - cell "Goiko eta beheko zeloma-atalak komunikatzen dituzten behin-behineko bi kanal. Kontuz · Septum transversumaren atze-alboetan daude; ez dute aurreko hestea barnean." [ref=e131]:
+                      - text: Goiko eta beheko zeloma-atalak komunikatzen dituzten behin-behineko bi kanal.
+                      - generic [ref=e132]: Kontuz · Septum transversumaren atze-alboetan daude; ez dute aurreko hestea barnean.
+                  - row [ref=e133]:
+                    - 'rowheader "Garrantzitsua: Septum transversuma" [ref=e134]':
+                      - generic [ref=e135]: "Garrantzitsua:"
+                      - text: Septum transversuma
+                    - cell "Hasierako perikardio barrunbea eta peritoneo barrunbea partzialki bereizten ditu." [ref=e136]
+                  - row [ref=e137]:
+                    - 'rowheader "Garrantzitsua: Mintz pleuroperikardikoak" [ref=e138]':
+                      - generic [ref=e139]: "Garrantzitsua:"
+                      - text: Mintz pleuroperikardikoak
+                    - cell "Pleura barrunbeak eta perikardio barrunbea bereizten dituzte." [ref=e140]
+            - article [ref=e141]:
+              - heading "Zeloma eta gorputzaren tolespena" [level=3] [ref=e143]
+              - table "Zeloma eta gorputzaren tolespena" [ref=e144]:
+                - rowgroup [ref=e145]:
+                  - row [ref=e146]:
+                    - columnheader "Egitura / prozesua" [ref=e147]
+                    - columnheader "Kokapena / ondorioa" [ref=e148]
+                - rowgroup [ref=e149]:
+                  - row [ref=e150]:
+                    - 'rowheader "Garrantzitsua: Enbrioi barruko zeloma" [ref=e151]':
+                      - generic [ref=e152]: "Garrantzitsua:"
+                      - text: Enbrioi barruko zeloma
+                    - cell "Alboko mesodermoaren pareta-orriaren eta errai-orriaren arteko espazioa." [ref=e153]
+                  - row [ref=e154]:
+                    - 'rowheader "Garrantzitsua: Enbrioi barruko eta kanpoko zelomak" [ref=e155]':
+                      - generic [ref=e156]: "Garrantzitsua:"
+                      - text: Enbrioi barruko eta kanpoko zelomak
+                    - cell "Hasieran komunikatuta; tolespenarekin bereizten dira. Kontuz · Ez dira haurdunaldi osoan komunikatuta mantentzen." [ref=e157]:
+                      - text: Hasieran komunikatuta; tolespenarekin bereizten dira.
+                      - generic [ref=e158]: Kontuz · Ez dira haurdunaldi osoan komunikatuta mantentzen.
+                  - row [ref=e159]:
+                    - 'rowheader "Garrantzitsua: Tolespen zefalokaudala" [ref=e160]':
+                      - generic [ref=e161]: "Garrantzitsua:"
+                      - text: Tolespen zefalokaudala
+                    - cell "Alde zefalikoa eta kaudala bentralerantz tolesten dira; nerbio-sistema zentralaren hazkunde azkarrak laguntzen du." [ref=e162]
+    - contentinfo [ref=e163]:
+      - generic [ref=e164]: EnbrioAtlas
+      - paragraph [ref=e170]: "Iturria: Giza Anatomia I ikasgaiko apunteak (1.–14. gaiak) eta haietako irudiak (Langman). Simulagailu honek ez du ordezkatzen irakaslearen irizpidea."
+  - button "Galdetu Kimuri (K)" [ref=e171] [cursor=pointer]:
+    - generic [ref=e191]: Galdetu
+    - generic [aria-hidden] [ref=e192]: K

@@ -1,0 +1,230 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - link "EnbrioAtlas" [ref=e4] [cursor=pointer]:
+      - /url: /
+    - 'button "Gaia: 11. Zirkulazio-sistema (II). Gaiak aldatu" [ref=e12] [cursor=pointer]':
+      - generic [ref=e13]: "11"
+      - generic [ref=e14]: Zirkulazio-sistema (II)
+    - generic [ref=e17]:
+      - group "Frogatu" [ref=e18]:
+        - button "Aurkitu" [ref=e19] [cursor=pointer]
+        - button "Galderak" [ref=e25] [cursor=pointer]
+      - button "Galdetu Kimuri" [ref=e30] [cursor=pointer]
+      - group "Eskuineko zutabea" [ref=e56]:
+        - button "Laburpena" [pressed] [ref=e57] [cursor=pointer]
+        - button "Apunteak" [ref=e62] [cursor=pointer]
+      - button "Tresnak" [ref=e68] [cursor=pointer]
+      - button "Laguntza" [ref=e74] [cursor=pointer]
+  - generic [ref=e78]:
+    - complementary "Apunteen aurkibidea" [ref=e79]:
+      - button "Tolestu aurkibidea" [expanded] [ref=e80] [cursor=pointer]
+      - generic [ref=e84]:
+        - paragraph [ref=e85]: 11. gaia · 4.–5. asteak eta jaiotza
+        - heading "Zirkulazio-sistema (II)" [level=1] [ref=e86]
+        - generic "0/12 etapa ikusita" [ref=e87]: 0/12
+      - paragraph [ref=e101]: Apunteen aurkibidea
+      - list [ref=e102]:
+        - listitem [ref=e103]:
+          - button "1 Sarrera Trenkadak sortzeko bi mekanismoak 27.–37. egunak" [ref=e105] [cursor=pointer]:
+            - generic [ref=e106]: "1"
+            - generic [ref=e107]:
+              - generic [ref=e108]: Sarrera
+              - generic [ref=e109]: Trenkadak sortzeko bi mekanismoak
+              - generic [ref=e110]: 27.–37. egunak
+        - listitem [ref=e111]:
+          - paragraph [ref=e112]:
+            - generic [ref=e113]: "2"
+            - generic [ref=e114]: Aurikula komunaren trenkadak
+        - listitem [ref=e115]:
+          - button "2.1 Septum Primum-aren sorrera 4. aste bukaera" [ref=e117] [cursor=pointer]:
+            - generic [ref=e118]: "2.1"
+            - generic [ref=e119]:
+              - generic [ref=e120]: Septum Primum-aren sorrera
+              - generic [ref=e121]: 4. aste bukaera
+        - listitem [ref=e122]:
+          - paragraph [ref=e123]:
+            - generic [ref=e124]: "2.2"
+            - generic [ref=e125]: Septum secundum-aren sorrera
+          - list [ref=e126]:
+            - listitem [ref=e127]:
+              - button "Septum secunduma eta zulo obala 5. astea" [ref=e128] [cursor=pointer]:
+                - generic [ref=e131]:
+                  - generic [ref=e132]: Septum secunduma eta zulo obala
+                  - generic [ref=e133]: 5. astea
+            - listitem [ref=e134]:
+              - 'button "Jaiotza: zulo obala ixten da Jaiotza → 1. urtea" [ref=e135] [cursor=pointer]':
+                - generic [ref=e138]:
+                  - generic [ref=e139]: "Jaiotza: zulo obala ixten da"
+                  - generic [ref=e140]: Jaiotza → 1. urtea
+            - listitem [ref=e141]:
+              - 'button "Aurikulen paretak: bi jatorri Enbrioi aldian" [ref=e142] [cursor=pointer]':
+                - generic [ref=e145]:
+                  - generic [ref=e146]: "Aurikulen paretak: bi jatorri"
+                  - generic [ref=e147]: Enbrioi aldian
+        - listitem [ref=e148]:
+          - paragraph [ref=e149]:
+            - generic [ref=e150]: "3"
+            - generic [ref=e151]: Erreten aurikulubentrikularraren trenkadak
+          - list [ref=e152]:
+            - listitem [ref=e153]:
+              - button "Erreten aurikulubentrikularraren trenkadatzea 4.–5. asteak" [ref=e154] [cursor=pointer]:
+                - generic [ref=e157]:
+                  - generic [ref=e158]: Erreten aurikulubentrikularraren trenkadatzea
+                  - generic [ref=e159]: 4.–5. asteak
+            - listitem [ref=e160]:
+              - button "Balbula aurikulubentrikularrak Enbrioi aldian" [ref=e161] [cursor=pointer]:
+                - generic [ref=e164]:
+                  - generic [ref=e165]: Balbula aurikulubentrikularrak
+                  - generic [ref=e166]: Enbrioi aldian
+        - listitem [ref=e167]:
+          - button "4 Bentrikuluaren trenkadak 4. aste bukaeratik" [ref=e169] [cursor=pointer]:
+            - generic [ref=e170]: "4"
+            - generic [ref=e171]:
+              - generic [ref=e172]: Bentrikuluaren trenkadak
+              - generic [ref=e173]: 4. aste bukaeratik
+        - listitem [ref=e174]:
+          - paragraph [ref=e175]:
+            - generic [ref=e176]: "5"
+            - generic [ref=e177]: Atal bulbarraren trenkadatze prozesua
+        - listitem [ref=e178]:
+          - button "5.1 Arteria Konoaren trenkadak Enbrioi aldian" [ref=e180] [cursor=pointer]:
+            - generic [ref=e181]: "5.1"
+            - generic [ref=e182]:
+              - generic [ref=e183]: Arteria Konoaren trenkadak
+              - generic [ref=e184]: Enbrioi aldian
+        - listitem [ref=e185]:
+          - paragraph [ref=e186]:
+            - generic [ref=e187]: "5.2"
+            - generic [ref=e188]: Enbor arteriosoaren trenkadak
+          - list [ref=e189]:
+            - listitem [ref=e190]:
+              - button "Enbor arteriosoaren trenkadak Enbrioi aldian" [ref=e191] [cursor=pointer]:
+                - generic [ref=e194]:
+                  - generic [ref=e195]: Enbor arteriosoaren trenkadak
+                  - generic [ref=e196]: Enbrioi aldian
+            - listitem [ref=e197]:
+              - button "Balbula semilunarrak eta arteria koronarioak Enbrioi aldian" [ref=e198] [cursor=pointer]:
+                - generic [ref=e201]:
+                  - generic [ref=e202]: Balbula semilunarrak eta arteria koronarioak
+                  - generic [ref=e203]: Enbrioi aldian
+            - listitem [ref=e204]:
+              - 'button "Bihotz hodiatik bihotzera: jatorriak Enbrioi aldian" [ref=e205] [cursor=pointer]':
+                - generic [ref=e208]:
+                  - generic [ref=e209]: "Bihotz hodiatik bihotzera: jatorriak"
+                  - generic [ref=e210]: Enbrioi aldian
+    - main [ref=e211]:
+      - generic [ref=e212]:
+        - generic [ref=e213]:
+          - button "1. Sarrera. Etapa 1/12. Etapen zerrenda ireki" [ref=e216] [cursor=pointer]:
+            - generic [ref=e219]: 1. Sarrera
+            - generic [ref=e220]: Etapa 1/12
+          - generic [ref=e223]:
+            - heading "Trenkadak sortzeko bi mekanismoak" [level=2] [ref=e224]
+            - button "27.–37. egunak" [ref=e225] [cursor=pointer]
+        - generic [ref=e233]:
+          - button "Non nago? Eskema" [ref=e234] [cursor=pointer]
+          - generic [ref=e240]:
+            - navigation "Non nago" [ref=e241]:
+              - generic [ref=e242]: Enbrioia
+              - generic [ref=e244]:
+                - generic [aria-hidden] [ref=e245]: ›
+                - generic "Hasieran 10. gaiko bihotz lakioa; gero hiru barrunbe txiki, aurretik irekita (enbrioiaren eskuina zure ezkerrean), trenkada bakoitza barrunbearen erdian hazten dela. Ezkerreko biak 1. mekanismoa (endokardio kuxinak), eskuinekoa 2.a (pareta muskularrak). Odol zelulek irekita dagoen bidea hartzen dute. Arrastatu biratzeko." [ref=e246]: Mekanismoak 3D
+            - generic [ref=e247]: Eskema
+      - generic [ref=e248]:
+        - generic [aria-hidden]:
+          - generic: ▲ Kraneala
+          - generic: ▼ Kaudala
+        - generic [ref=e250]:
+          - button "Handitu" [ref=e251] [cursor=pointer]
+          - button "Txikitu" [ref=e255] [cursor=pointer]
+          - button "Pantaila osoa" [ref=e259] [cursor=pointer]
+        - generic [ref=e262]:
+          - 'button "Izenak: urratsez urrats" [ref=e263] [cursor=pointer]'
+          - button "Kolore-kodea" [ref=e267] [cursor=pointer]
+      - generic [ref=e271]:
+        - generic [ref=e275]:
+          - generic [ref=e276]:
+            - paragraph [ref=e277]:
+              - button "Bihotz lakioaren" [ref=e278] [cursor=pointer]
+              - text: atal bakoitzetik barrunbe bat sortzen da, eta barrunbeetan trenkadak garatzen dira.
+            - paragraph [ref=e279]:
+              - text: "Hasieran zuzena zen bihotz hodia tolestu egiten da, eta bihotz lakioa eratzen da. Lakioan atal desberdinak bereizten dira:"
+              - button "atal bulbarra" [ref=e280] [cursor=pointer]
+              - text: ","
+              - button "atal bentrikularrarekin" [ref=e281] [cursor=pointer]
+              - text: jarraia; atal bentrikularra, goi-atzealdeko
+              - button "atal aurikularrarekin" [ref=e282] [cursor=pointer]
+              - text: "jarraia; eta atal aurikularra, atzetik zain sinuarekin komunikatuta. Atal horietatik barrunbeen azpiatalak sortuko dira (atal lisoak, atal trabekulatuak…), eta barrunbe horietan trenkadak garatuko dira: behin betiko aurikulak eta bentrikuluak eratzen dira, eta bentrikuluen atal lisoetatik birika enborra eta aorta sortuko dira."
+          - generic [ref=e283]:
+            - paragraph [ref=e284]: "Ulertzeko gakoaTrenkadek bihotz lakioaren barrunbeak banatzen dituzte: behin betiko aurikulak eta bentrikuluak."
+            - paragraph [ref=e285]:
+              - text: Gogoratu
+              - generic [ref=e286]:
+                - button "Bihotz lakioa" [ref=e288] [cursor=pointer]: Bihotz lakioa ↺
+                - generic [ref=e289]:
+                  - text: ·
+                  - button "Atal bulbarra" [ref=e290] [cursor=pointer]: Atal bulbarra ↺
+                - generic [ref=e291]:
+                  - text: ·
+                  - button "Atal bentrikularra" [ref=e292] [cursor=pointer]: Atal bentrikularra ↺
+                - generic [ref=e293]:
+                  - text: ·
+                  - button "Atal aurikularra" [ref=e294] [cursor=pointer]: Atal aurikularra ↺
+                - generic [ref=e295]:
+                  - text: ·
+                  - button "Zain sinua" [ref=e296] [cursor=pointer]: Zain sinua ↺
+        - generic [ref=e297]:
+          - slider "Etaparen denbora-lerroa" [ref=e298] [cursor=pointer]
+          - generic [ref=e306]:
+            - generic [ref=e307]:
+              - button "Aurreko etapa" [disabled] [ref=e308]
+              - button "Erreproduzitu" [ref=e311] [cursor=pointer]
+              - button "Hurrengo etapa" [ref=e315] [cursor=pointer]
+            - paragraph [ref=e318]:
+              - generic "1. urratsa 7etik" [ref=e319]:
+                - text: Urratsa
+                - generic [ref=e320]: "1"
+                - generic [ref=e321]: /7
+              - generic "Garapenaren adina" [ref=e322]: 27. eguna
+            - generic [ref=e323]:
+              - group "Erreprodukzioa" [ref=e324]:
+                - button "Irudia ulertu" [ref=e325] [cursor=pointer]
+                - button "Ahotsarekin ikasi" [ref=e328] [cursor=pointer]:
+                  - generic [ref=e333]: Ahotsa
+                - button [ref=e335] [cursor=pointer]
+              - group "Urratsak" [ref=e338]:
+                - button "Aurreko urratsa" [ref=e339] [cursor=pointer]
+                - button "Hasi" [ref=e342] [cursor=pointer]
+    - complementary "Azalpena" [ref=e347]:
+      - generic [ref=e348]:
+        - tablist [ref=e349]:
+          - tab "Gakoak" [selected] [ref=e350] [cursor=pointer]
+          - tab "Egiturak 12" [ref=e351] [cursor=pointer]
+        - generic [ref=e352]:
+          - generic [ref=e353]:
+            - heading [level=3] [ref=e354]:
+              - button "Gakoak 4" [expanded] [ref=e355] [cursor=pointer]:
+                - generic [ref=e358]: Gakoak
+                - generic [ref=e359]: "4"
+            - list [ref=e363]:
+              - listitem [ref=e364]:
+                - generic [ref=e365]: "01"
+                - paragraph [ref=e366]: Bihotz lakioaren ataletatik barrunbeak sortzen dira; haietan trenkadak garatzen dira (27.–37. egunak, 4.–5. asteak).
+              - listitem [ref=e367]:
+                - generic [ref=e368]: "02"
+                - paragraph [ref=e369]: "Endokardio kuxina: erdian zelula kanpoko matrizea, endokardioz estalia."
+              - listitem [ref=e370]:
+                - generic [ref=e371]: "03"
+                - paragraph [ref=e372]: "1. mekanismoa: aurkako paretetako bi kuxin hazi eta fusionatu, edo kuxin bakarra kontrako paretaraino → trenkada osoa."
+              - listitem [ref=e373]:
+                - generic [ref=e374]: "04"
+                - paragraph [ref=e375]: "2. mekanismoa (bentrikuluak): bi barneko pareta muskular hazi, kontaktuan jarri eta fusionatu → trenkada muskularra, ez osoa."
+          - generic [ref=e376]:
+            - heading [level=3] [ref=e377]:
+              - button "Kontuz 1" [expanded] [ref=e378] [cursor=pointer]:
+                - generic [ref=e381]: Kontuz
+                - generic [ref=e382]: "1"
+            - list [ref=e386]:
+              - listitem [ref=e387]:
+                - paragraph [ref=e388]: Kuxinek trenkada osoa ematen dute; pareta muskularrek trenkada ez osoa.
+          - paragraph [ref=e389]: "Iturria: 11. GAIA. ZIRKULAZIO-SISTEMA (II) (apunteak) · 1. Sarrera"

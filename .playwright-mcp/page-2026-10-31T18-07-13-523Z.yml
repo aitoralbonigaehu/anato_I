@@ -1,0 +1,255 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - link "EnbrioAtlas — hasiera" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: EnbrioAtlas
+      - navigation [ref=e11]:
+        - link "Kronologia" [ref=e12] [cursor=pointer]:
+          - /url: /kronologia
+        - link "Gaiak" [ref=e13] [cursor=pointer]:
+          - /url: /#gaiak
+        - link "Ikasgelak" [ref=e14] [cursor=pointer]:
+          - /url: /ikasgela
+        - link "Fitxak" [ref=e15] [cursor=pointer]:
+          - /url: /fitxak
+        - link "Belortzioak" [ref=e16] [cursor=pointer]:
+          - /url: /belortzioak
+        - link "Irudiak" [ref=e17] [cursor=pointer]:
+          - /url: /irudiak
+        - link "Eratorriak" [ref=e18] [cursor=pointer]:
+          - /url: /eratorriak
+        - link "Egiturak" [ref=e19] [cursor=pointer]:
+          - /url: /egiturak
+        - link "Ireki simulagailua" [ref=e20] [cursor=pointer]:
+          - /url: /astea/1
+    - banner [ref=e21]:
+      - heading "Eratorriak" [level=1] [ref=e22]
+      - paragraph [ref=e23]: "Gai bakoitzaren funtsezkoa, taula laburretan: jatorria → eratorria."
+    - generic [ref=e25]:
+      - complementary [ref=e26]:
+        - navigation "Gaiak" [ref=e1088]:
+          - button "Arku sistemak 8., 9. eta 12. gaiak, taula bakarrean" [ref=e1089] [cursor=pointer]:
+            - generic [aria-hidden] [ref=e1090]: ★
+            - generic [ref=e1091]:
+              - text: Arku sistemak
+              - generic [ref=e1092]: 8., 9. eta 12. gaiak, taula bakarrean
+          - paragraph [ref=e1093]: Gaiak
+          - button "1–6 Ernetze orriak" [ref=e1094] [cursor=pointer]:
+            - generic [ref=e1095]: 1–6
+            - text: Ernetze orriak
+          - button "7 Barrunbeak" [ref=e1096] [cursor=pointer]:
+            - generic [ref=e1097]: "7"
+            - text: Barrunbeak
+          - button "8 Hezurrak" [ref=e1098] [cursor=pointer]:
+            - generic [ref=e1099]: "8"
+            - text: Hezurrak
+          - button "9 Muskuluak" [ref=e1100] [cursor=pointer]:
+            - generic [ref=e1101]: "9"
+            - text: Muskuluak
+          - button "10 Bihotz hodia" [ref=e1102] [cursor=pointer]:
+            - generic [ref=e1103]: "10"
+            - text: Bihotz hodia
+          - button "11 Bihotz trenkadak" [ref=e1104] [cursor=pointer]:
+            - generic [ref=e1105]: "11"
+            - text: Bihotz trenkadak
+          - button "12 Arteriak" [ref=e1106] [cursor=pointer]:
+            - generic [ref=e1107]: "12"
+            - text: Arteriak
+          - button "13 Zainak" [ref=e1108] [cursor=pointer]:
+            - generic [ref=e1109]: "13"
+            - text: Zainak
+          - button "14 Digestioa" [ref=e1110] [cursor=pointer]:
+            - generic [ref=e1111]: "14"
+            - text: Digestioa
+      - generic [ref=e30]:
+        - generic [ref=e32]:
+          - paragraph [ref=e33]: 7. gaia
+          - heading "Barrunbeak" [level=2] [ref=e3928]
+        - generic [ref=e3929]:
+          - tablist "7. gaiaren atalak" [ref=e3930]:
+            - tab "Taulak" [ref=e3931] [cursor=pointer]
+            - tab "Eskemak" [selected] [ref=e3932] [cursor=pointer]
+          - 'link "Ikasgela: 3D eredua eta fitxak" [ref=e3933] [cursor=pointer]':
+            - /url: /ikasgela/7
+            - text: "Ikasgela: 3D eredua eta fitxak →"
+        - generic [ref=e3934]:
+          - generic [ref=e3935]:
+            - paragraph [ref=e3936]: Eskemak · Gorputzaren barrunbeak
+            - combobox "Iturri bat jarraitu gai guztietan" [ref=e3937] [cursor=pointer]:
+              - option "Iturri bat gai guztietan jarraitu…" [selected]
+              - option "Gandor neurala (5)"
+              - option "Mesodermo paraxiala (8)"
+              - option "Paretako orria (6)"
+              - option "Errai orria (6)"
+              - option "Septum transversuma (4)"
+              - option "Endokardio kuxinak (3)"
+              - option "Aorta arkuak (4)"
+              - option "Zain sinua (3)"
+            - list "Eskemen irakurketa" [ref=e3938]:
+              - listitem [ref=e3939]: bihurtzen da
+              - listitem [ref=e3942]:
+                - generic [ref=e3943]: erlazioa
+                - text: lotura anatomikoa
+              - listitem [ref=e3946]: migratzen da / lekuz aldatzen da
+              - listitem [ref=e3949]: fusionatzen dira
+              - listitem [ref=e3951]:
+                - generic [ref=e3952]: desagertzen da
+          - region "Ikasteko ibilbidea" [ref=e3955]:
+            - generic [ref=e3956]:
+              - group "Ikasteko modua" [ref=e3957]:
+                - button "Ikasi" [pressed] [ref=e3958] [cursor=pointer]
+                - button "Landu" [ref=e3959] [cursor=pointer]
+              - paragraph [ref=e3960]: 4 mapa nagusi · 11 eskemaren edukia
+            - paragraph [ref=e3961]: Hasi mapa nagusitik. Zabaldu xehetasunak urratsak eta salbuespenak lotzeko; gero landu bi noranzkoetan.
+            - group [ref=e3962]:
+              - generic "01 Tolespenak, zeloma eta barrunbeen banaketa -" [ref=e3963] [cursor=pointer]:
+                - generic [ref=e3964]: "01"
+                - heading "Tolespenak, zeloma eta barrunbeen banaketa" [level=3] [ref=e3965]
+                - text: "-"
+              - generic [ref=e3967]:
+                - generic [ref=e3968]:
+                  - link "Enbrioi barruko zeloma" [ref=e3969] [cursor=pointer]:
+                    - /url: /astea/7?etapa=septum-transversum&egitura=enbrioi-barruko-zeloma
+                  - generic [ref=e3972]:
+                    - generic [ref=e3973]:
+                      - generic [ref=e3974]: septum transversuma
+                      - link [ref=e3977] [cursor=pointer]:
+                        - /url: /astea/7?etapa=septum-transversum&egitura=hasierako-perikardio-barrunbea
+                        - generic [ref=e3979]:
+                          - text: Hasierako perikardio barrunbea
+                          - emphasis [ref=e3980]: goian
+                      - generic [ref=e3981]:
+                        - generic [ref=e3982]:
+                          - generic [ref=e3983]: birika hastapenak sartu
+                          - link [ref=e3986] [cursor=pointer]:
+                            - /url: /astea/7?etapa=pleura-perikardioa&egitura=pleura-barrunbea
+                            - generic [ref=e3988]:
+                              - text: Pleura barrunbea
+                              - emphasis [ref=e3989]: atze-alboetan, bi
+                        - generic [ref=e3990]:
+                          - generic [ref=e3991]: mintz pleuroperikardikoak
+                          - link [ref=e3994] [cursor=pointer]:
+                            - /url: /astea/7?etapa=pleura-perikardioa&egitura=perikardio-barrunbea
+                            - generic [ref=e3996]:
+                              - text: Perikardio barrunbea
+                              - emphasis [ref=e3997]: aurre erdian
+                    - generic [ref=e3998]:
+                      - generic [ref=e3999]: atze-alboetan
+                      - link "Erreten perikardioperitonealak" [ref=e4002] [cursor=pointer]:
+                        - /url: /astea/7?etapa=septum-transversum&egitura=erreten-perikardioperitonealak
+                      - generic [ref=e4006]:
+                        - generic [ref=e4007]: mintz pleuroperitonealak
+                        - generic [ref=e4012]:
+                          - text: Itxita
+                          - emphasis [ref=e4013]: 7. astea
+                    - generic [ref=e4014]:
+                      - generic [ref=e4015]: septum transversuma
+                      - link [ref=e4018] [cursor=pointer]:
+                        - /url: /astea/7?etapa=septum-transversum&egitura=peritoneo-barrunbea
+                        - generic [ref=e4020]:
+                          - text: Peritoneo barrunbea
+                          - emphasis [ref=e4021]: behean
+                    - generic [ref=e4022]:
+                      - generic [ref=e4023]: erlazioa
+                      - generic [ref=e4028]:
+                        - text: Paretako orria
+                        - emphasis [ref=e4029]: ektodermoaren ondoan
+                    - generic [ref=e4030]:
+                      - generic [ref=e4031]: erlazioa
+                      - generic [ref=e4036]:
+                        - text: Errai orria
+                        - emphasis [ref=e4037]: endodermoaren ondoan
+                    - generic [ref=e4038]:
+                      - generic [ref=e4039]: erlazioa
+                      - generic [ref=e4044]:
+                        - text: Enbrioi kanpoko zelomarekin komunikazioa
+                        - emphasis [ref=e4045]: hasierakoa, behin-behinekoa
+                      - generic [ref=e4047]:
+                        - generic [ref=e4048]: erlazioa
+                        - generic [ref=e4051]: Tolespenek mugatu eta komunikazioa galdu
+                - generic [ref=e4054]:
+                  - generic [ref=e4055]: Septum transversuma
+                  - generic [ref=e4059]:
+                    - generic [ref=e4060]: erlazioa
+                    - generic [ref=e4063]: "Atze-alboetan: bi pasabide"
+                    - generic [ref=e4066]:
+                      - generic [ref=e4067]:
+                        - generic [ref=e4068]: erlazioa
+                        - generic [ref=e4071]: Goiko barrunbea eta beheko peritoneo barrunbea lotu
+                      - generic [ref=e4074]:
+                        - generic [ref=e4075]: erlazioa
+                        - generic [ref=e4078]: "Birika-hastapenak haztean: pleura barrunbeak"
+                      - generic [ref=e4081]:
+                        - generic [ref=e4082]: erlazioa
+                        - generic [ref=e4085]: "Mintz pleuroperitonealak fusionatzean: komunikazioa itxi"
+                - generic [ref=e4088]:
+                  - generic [ref=e4089]: Nerbio-sistema zentralaren luzetarako hazkuntza
+                  - generic [ref=e4093]:
+                    - generic [ref=e4094]: erlazioa
+                    - generic [ref=e4097]: Tolespen zefalokaudala
+                    - generic [ref=e4100]:
+                      - generic [ref=e4101]:
+                        - generic [ref=e4102]: erlazioa
+                        - generic [ref=e4105]: Buru- eta isats-muturrak bentralki tolestu
+                      - generic [ref=e4108]:
+                        - generic [ref=e4109]: erlazioa
+                        - generic [ref=e4112]: Eskualde kardiogenikoa toraxera eraman
+                - generic [ref=e4115]:
+                  - generic [ref=e4116]: Somiten eta alboko ehunen hazkuntza
+                  - generic [ref=e4120]:
+                    - generic [ref=e4121]: erlazioa
+                    - generic [ref=e4124]: Zeharkako tolespena
+                    - generic [ref=e4127]:
+                      - generic [ref=e4128]:
+                        - generic [ref=e4129]: erlazioa
+                        - generic [ref=e4132]: Alboko paretak bentralki hurbildu
+                      - generic [ref=e4135]:
+                        - generic [ref=e4136]: erlazioa
+                        - generic [ref=e4139]: Bi endokardio hodiak erdian elkartu
+                - generic [ref=e4142]:
+                  - link "Septum transversuma" [ref=e4143] [cursor=pointer]:
+                    - /url: /astea/7?etapa=septum-transversum&egitura=septum-transversum
+                  - generic [ref=e4146]:
+                    - generic [ref=e4147]:
+                      - generic [ref=e4148]: erlazioa
+                      - generic [ref=e4151]: "Goian: hasierako perikardio barrunbea"
+                    - generic [ref=e4154]:
+                      - generic [ref=e4155]: erlazioa
+                      - generic [ref=e4158]: "Behean: peritoneo barrunbea"
+                    - generic [ref=e4161]:
+                      - generic [ref=e4162]: erlazioa
+                      - generic [ref=e4165]: "Atze-alboetan: erreten perikardioperitonealak"
+                      - generic [ref=e4168]:
+                        - generic [ref=e4169]:
+                          - generic [ref=e4170]: erlazioa
+                          - generic [ref=e4173]: Goiko eta beheko atalak komunikatu
+                        - generic [ref=e4176]:
+                          - generic [ref=e4177]: erlazioa
+                          - generic [ref=e4182]:
+                            - text: Mintz pleuroperitonealek itxi
+                            - emphasis [ref=e4183]: 7. astean
+              - group [ref=e4184]:
+                - generic "Xehetasunak eta urratsak · 4" [ref=e4185] [cursor=pointer]
+            - group [ref=e4186]:
+              - generic "02 Diafragmaren eraketa eta jaitsiera +" [ref=e4187] [cursor=pointer]:
+                - generic [ref=e4188]: "02"
+                - heading "Diafragmaren eraketa eta jaitsiera" [level=3] [ref=e4189]
+                - text: +
+            - group [ref=e4190]:
+              - generic "03 Serosak eta arnas-hastapena +" [ref=e4191] [cursor=pointer]:
+                - generic [ref=e4192]: "03"
+                - heading "Serosak eta arnas-hastapena" [level=3] [ref=e4193]
+                - text: +
+            - group [ref=e4194]:
+              - generic "04 Peritoneoarekiko kokapena eta finkapena +" [ref=e4195] [cursor=pointer]:
+                - generic [ref=e4196]: "04"
+                - heading "Peritoneoarekiko kokapena eta finkapena" [level=3] [ref=e4197]
+                - text: +
+    - contentinfo [ref=e163]:
+      - generic [ref=e164]: EnbrioAtlas
+      - paragraph [ref=e170]: "Iturria: Giza Anatomia I ikasgaiko apunteak (1.–14. gaiak) eta haietako irudiak (Langman). Simulagailu honek ez du ordezkatzen irakaslearen irizpidea."
+  - button "Galdetu Kimuri (K)" [ref=e171] [cursor=pointer]:
+    - generic [ref=e191]: Galdetu
+    - generic [aria-hidden] [ref=e192]: K
+  - alert [ref=e1087]

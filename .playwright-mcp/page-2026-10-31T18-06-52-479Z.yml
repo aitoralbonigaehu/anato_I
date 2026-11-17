@@ -1,0 +1,325 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - link "EnbrioAtlas — hasiera" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: EnbrioAtlas
+      - navigation [ref=e11]:
+        - link "Kronologia" [ref=e12] [cursor=pointer]:
+          - /url: /kronologia
+        - link "Gaiak" [ref=e13] [cursor=pointer]:
+          - /url: /#gaiak
+        - link "Ikasgelak" [ref=e14] [cursor=pointer]:
+          - /url: /ikasgela
+        - link "Fitxak" [ref=e15] [cursor=pointer]:
+          - /url: /fitxak
+        - link "Belortzioak" [ref=e16] [cursor=pointer]:
+          - /url: /belortzioak
+        - link "Irudiak" [ref=e17] [cursor=pointer]:
+          - /url: /irudiak
+        - link "Eratorriak" [ref=e18] [cursor=pointer]:
+          - /url: /eratorriak
+        - link "Egiturak" [ref=e19] [cursor=pointer]:
+          - /url: /egiturak
+        - link "Ireki simulagailua" [ref=e20] [cursor=pointer]:
+          - /url: /astea/1
+    - banner [ref=e21]:
+      - heading "Eratorriak" [level=1] [ref=e22]
+      - paragraph [ref=e23]: "Gai bakoitzaren funtsezkoa, taula laburretan: jatorria → eratorria."
+    - generic [ref=e25]:
+      - complementary [ref=e26]:
+        - navigation "Gaiak" [ref=e1088]:
+          - button "Arku sistemak 8., 9. eta 12. gaiak, taula bakarrean" [ref=e1089] [cursor=pointer]:
+            - generic [aria-hidden] [ref=e1090]: ★
+            - generic [ref=e1091]:
+              - text: Arku sistemak
+              - generic [ref=e1092]: 8., 9. eta 12. gaiak, taula bakarrean
+          - paragraph [ref=e1093]: Gaiak
+          - button "1–6 Ernetze orriak" [ref=e1094] [cursor=pointer]:
+            - generic [ref=e1095]: 1–6
+            - text: Ernetze orriak
+          - button "7 Barrunbeak" [ref=e1096] [cursor=pointer]:
+            - generic [ref=e1097]: "7"
+            - text: Barrunbeak
+          - button "8 Hezurrak" [ref=e1098] [cursor=pointer]:
+            - generic [ref=e1099]: "8"
+            - text: Hezurrak
+          - button "9 Muskuluak" [ref=e1100] [cursor=pointer]:
+            - generic [ref=e1101]: "9"
+            - text: Muskuluak
+          - button "10 Bihotz hodia" [ref=e1102] [cursor=pointer]:
+            - generic [ref=e1103]: "10"
+            - text: Bihotz hodia
+          - button "11 Bihotz trenkadak" [ref=e1104] [cursor=pointer]:
+            - generic [ref=e1105]: "11"
+            - text: Bihotz trenkadak
+          - button "12 Arteriak" [ref=e1106] [cursor=pointer]:
+            - generic [ref=e1107]: "12"
+            - text: Arteriak
+          - button "13 Zainak" [ref=e1108] [cursor=pointer]:
+            - generic [ref=e1109]: "13"
+            - text: Zainak
+          - button "14 Digestioa" [ref=e1110] [cursor=pointer]:
+            - generic [ref=e1111]: "14"
+            - text: Digestioa
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - paragraph [ref=e33]: Iturri bat gai guztietan
+            - heading "Gandor neurala" [level=2] [ref=e3499]
+          - button "Proba modua" [ref=e3500] [cursor=pointer]
+        - generic [ref=e3503]:
+          - generic [ref=e3504]:
+            - paragraph [ref=e3505]: Eskemak · Gandor neurala · 5 eskema 8., 9. gaietan. Iturritik datozen egiturak argituta.
+            - combobox "Iturri bat jarraitu gai guztietan" [ref=e3506] [cursor=pointer]:
+              - option "Iturri bat gai guztietan jarraitu…"
+              - option "Gandor neurala (5)" [selected]
+              - option "Mesodermo paraxiala (8)"
+              - option "Paretako orria (6)"
+              - option "Errai orria (6)"
+              - option "Septum transversuma (4)"
+              - option "Endokardio kuxinak (3)"
+              - option "Aorta arkuak (4)"
+              - option "Zain sinua (3)"
+            - list "Eskemen irakurketa" [ref=e3507]:
+              - listitem [ref=e3508]: bihurtzen da
+              - listitem [ref=e3511]:
+                - generic [ref=e3512]: erlazioa
+                - text: lotura anatomikoa
+              - listitem [ref=e3515]: migratzen da / lekuz aldatzen da
+              - listitem [ref=e3518]: fusionatzen dira
+              - listitem [ref=e3520]:
+                - generic [ref=e3521]: desagertzen da
+          - article [ref=e3524]:
+            - generic [ref=e3526]:
+              - generic [ref=e3527]: 1.–6. gaiak
+              - heading "Ernetze orrien leinuan" [level=3] [ref=e3528]
+            - generic [ref=e3531]:
+              - link "Gandor neurala" [ref=e3532] [cursor=pointer]:
+                - /url: /astea/4?etapa=neurulazioa&egitura=gandor-neurala
+              - generic [ref=e3535]:
+                - link "Bikote kranialaren gongoilak" [ref=e3539] [cursor=pointer]:
+                  - /url: /astea/4?etapa=gandor-neurala&egitura=nerbio-kranialen-gongoilak
+                - link "Gongoil errakideoak" [ref=e3545] [cursor=pointer]:
+                  - /url: /astea/4?etapa=gandor-neurala&egitura=gongoil-errakideoak
+                - link "Giltzurrun gaineko muina" [ref=e3551] [cursor=pointer]:
+                  - /url: /astea/4?etapa=gandor-neurala&egitura=giltzurrun-gaineko-muina
+                - link "Schwann zelulak" [ref=e3557] [cursor=pointer]:
+                  - /url: /astea/4?etapa=gandor-neurala&egitura=schwann-zelulak
+                - link "Melanozitoak" [ref=e3563] [cursor=pointer]:
+                  - /url: /astea/4?etapa=gandor-neurala&egitura=melanozitoak
+                - link "Buru eta aurpegiko hezurrak" [ref=e3569] [cursor=pointer]:
+                  - /url: /astea/4?etapa=gandor-neurala&egitura=buru-aurpegi-hezurrak
+                - link "Odontoblastoak" [ref=e3575] [cursor=pointer]:
+                  - /url: /astea/4?etapa=gandor-neurala&egitura=odontoblastoak
+          - generic [ref=e3578]:
+            - heading "8. gaia Hezurrak" [level=4] [ref=e3579]:
+              - generic [ref=e3580]: 8. gaia
+              - text: Hezurrak
+            - article [ref=e3581]:
+              - generic [ref=e3582]:
+                - generic [ref=e3583]:
+                  - heading "Mesenkimaren hiru iturriak" [level=3] [ref=e3584]
+                  - paragraph [ref=e3585]: Hezurrak sortzen dituen mesenkima hiru tokitatik dator; hortik ehun konektiboa, kartilagoa eta hezurra.
+                - link "Simulagailuan" [ref=e3586] [cursor=pointer]:
+                  - /url: /astea/8?etapa=jatorriak
+                  - text: Simulagailuan
+                  - generic [aria-hidden] [ref=e3587]: →
+              - generic [ref=e3589]:
+                - generic [ref=e3590]:
+                  - link [ref=e3593] [cursor=pointer]:
+                    - /url: /astea/8?etapa=jatorriak&egitura=esklerotoma
+                    - generic [ref=e3595]:
+                      - text: Esklerotoma
+                      - emphasis [ref=e3596]: mesodermo paraxiala
+                  - link [ref=e3601] [cursor=pointer]:
+                    - /url: /astea/8?etapa=jatorriak&egitura=paretako-orria
+                    - generic [ref=e3603]:
+                      - text: Paretako orria
+                      - emphasis [ref=e3604]: alboko mesodermoa
+                  - link [ref=e3609] [cursor=pointer]:
+                    - /url: /astea/8?etapa=jatorriak&egitura=gandor-neurala
+                    - generic [ref=e3611]:
+                      - text: Gandor neurala
+                      - emphasis [ref=e3612]: zelula ektodermikoak
+                - generic [ref=e3614]:
+                  - link "Mesenkima" [ref=e3617] [cursor=pointer]:
+                    - /url: /astea/8?etapa=jatorriak&egitura=mesenkima
+                  - generic [ref=e3620]:
+                    - link "Fibroblastoak" [ref=e3624] [cursor=pointer]:
+                      - /url: /astea/8?etapa=jatorriak&egitura=fibroblastoak
+                    - generic [ref=e3627]:
+                      - link "Kondroblastoak" [ref=e3630] [cursor=pointer]:
+                        - /url: /astea/8?etapa=jatorriak&egitura=kondroblastoak
+                      - link "Kondrozitoak" [ref=e3637] [cursor=pointer]:
+                        - /url: /astea/8?etapa=hezurtzapena&egitura=kondrozitoak
+                    - link "Osteoblastoak" [ref=e3643] [cursor=pointer]:
+                      - /url: /astea/8?etapa=jatorriak&egitura=osteoblastoak
+            - article [ref=e3646]:
+              - generic [ref=e3647]:
+                - generic [ref=e3648]:
+                  - heading "Gandor neurala → neurokraneoaren aurrealdea" [level=3] [ref=e3649]
+                  - paragraph [ref=e3650]: Neurokraneoaren aurrealdeko hezurrak eta kartilagoak gandor neuraleko mesenkimatik datoz.
+                - link "Simulagailuan" [ref=e3651] [cursor=pointer]:
+                  - /url: /astea/8?etapa=kondrokraneoa
+                  - text: Simulagailuan
+                  - generic [aria-hidden] [ref=e3652]: →
+              - generic [ref=e3655]:
+                - link "Gandor neurala" [ref=e3656] [cursor=pointer]:
+                  - /url: /astea/8?etapa=jatorriak&egitura=gandor-neurala
+                - generic [ref=e3659]:
+                  - generic [ref=e3660]:
+                    - generic [ref=e3661]: mintzezko hezurtzapena
+                    - link "Hezur frontala" [ref=e3664] [cursor=pointer]:
+                      - /url: /astea/8?etapa=buru-ganga&egitura=hezur-frontala
+                  - generic [ref=e3667]:
+                    - link "Hipofisi kartilagoak" [ref=e3670] [cursor=pointer]:
+                      - /url: /astea/8?etapa=kondrokraneoa&egitura=hipofisi-kartilagoak
+                    - link "Esfenoidesaren gorputza" [ref=e3677] [cursor=pointer]:
+                      - /url: /astea/8?etapa=kondrokraneoa&egitura=esfenoidesaren-gorputza
+                  - generic [ref=e3680]:
+                    - link "Trenkadatxo kranialak" [ref=e3683] [cursor=pointer]:
+                      - /url: /astea/8?etapa=kondrokraneoa&egitura=trenkada-kranialak
+                    - link "Etmoides hezurra" [ref=e3690] [cursor=pointer]:
+                      - /url: /astea/8?etapa=kondrokraneoa&egitura=etmoidesa
+                  - generic [ref=e3693]:
+                    - link "Hego tenporala" [ref=e3696] [cursor=pointer]:
+                      - /url: /astea/8?etapa=kondrokraneoa&egitura=hego-tenporala
+                    - link "Esfenoidesaren hego handia" [ref=e3703] [cursor=pointer]:
+                      - /url: /astea/8?etapa=kondrokraneoa&egitura=esfenoidesaren-hego-handia
+                  - generic [ref=e3706]:
+                    - link "Begizulo hegoa" [ref=e3709] [cursor=pointer]:
+                      - /url: /astea/8?etapa=kondrokraneoa&egitura=begizulo-hegoa
+                    - link "Esfenoidesaren hego txikia" [ref=e3716] [cursor=pointer]:
+                      - /url: /astea/8?etapa=kondrokraneoa&egitura=esfenoidesaren-hego-txikia
+            - article [ref=e3719]:
+              - generic [ref=e3720]:
+                - generic [ref=e3721]:
+                  - heading "Gandor neurala → errai kraneoa (faringe arkuak)" [level=3] [ref=e3722]
+                  - paragraph [ref=e3723]: Lehen bi arkuetako mesenkima gandor neuraleko zelulek eratzen dute, ez mesodermoak.
+                - link "Simulagailuan" [ref=e3724] [cursor=pointer]:
+                  - /url: /astea/8?etapa=errai-kraneoa
+                  - text: Simulagailuan
+                  - generic [aria-hidden] [ref=e3725]: →
+              - generic [ref=e3728]:
+                - link "Gandor neurala" [ref=e3729] [cursor=pointer]:
+                  - /url: /astea/8?etapa=errai-kraneoa&egitura=gandor-neurala
+                - generic [ref=e3732]:
+                  - generic [ref=e3733]:
+                    - generic [ref=e3734]: 1. arkua
+                    - link "Prozesu maxilarra" [ref=e3737] [cursor=pointer]:
+                      - /url: /astea/8?etapa=errai-kraneoa&egitura=prozesu-maxilarra
+                    - generic [ref=e3740]:
+                      - generic [ref=e3741]:
+                        - link "Barra pterigopalatino karratua" [ref=e3744] [cursor=pointer]:
+                          - /url: /astea/8?etapa=errai-kraneoa&egitura=barra-pterigopalatino-karratua
+                        - link "Ingudea" [ref=e3751] [cursor=pointer]:
+                          - /url: /astea/8?etapa=errai-kraneoa&egitura=ingudea
+                      - generic [ref=e3754]:
+                        - generic [ref=e3755]: barraren inguruko mesenkima
+                        - link "Goiko maxilarra" [ref=e3758] [cursor=pointer]:
+                          - /url: /astea/8?etapa=errai-kraneoa&egitura=goiko-maxilarra
+                      - generic [ref=e3761]:
+                        - generic [ref=e3762]: barraren inguruko mesenkima
+                        - link "Hezur malarra" [ref=e3765] [cursor=pointer]:
+                          - /url: /astea/8?etapa=errai-kraneoa&egitura=hezur-malarra
+                      - generic [ref=e3768]:
+                        - generic [ref=e3769]: barraren inguruko mesenkima
+                        - link "Tenporalaren ezkata" [ref=e3772] [cursor=pointer]:
+                          - /url: /astea/8?etapa=errai-kraneoa&egitura=tenporalaren-ezkata
+                  - generic [ref=e3775]:
+                    - generic [ref=e3776]: 1. arkua
+                    - link "Barail prozesua" [ref=e3779] [cursor=pointer]:
+                      - /url: /astea/8?etapa=errai-kraneoa&egitura=barail-prozesua
+                    - generic [ref=e3782]:
+                      - generic [ref=e3783]:
+                        - link "Meckel kartilagoa" [ref=e3786] [cursor=pointer]:
+                          - /url: /astea/8?etapa=errai-kraneoa&egitura=meckel-kartilagoa
+                        - link "Mailua" [ref=e3793] [cursor=pointer]:
+                          - /url: /astea/8?etapa=errai-kraneoa&egitura=mailua
+                      - generic [ref=e3796]:
+                        - generic [ref=e3797]: Meckelen inguruko mesenkima
+                        - link "Beheko maxilarra" [ref=e3800] [cursor=pointer]:
+                          - /url: /astea/8?etapa=errai-kraneoa&egitura=beheko-maxilarra
+                  - generic [ref=e3803]:
+                    - generic [ref=e3804]: 2. arkua
+                    - link "Hioide arkua (2. arkua)" [ref=e3807] [cursor=pointer]:
+                      - /url: /astea/8?etapa=errai-kraneoa&egitura=hioide-arkua
+                    - generic [ref=e3811]:
+                      - link "Reichert kartilagoa" [ref=e3814] [cursor=pointer]:
+                        - /url: /astea/8?etapa=errai-kraneoa&egitura=reichert-kartilagoa
+                      - link "Ointokia" [ref=e3821] [cursor=pointer]:
+                        - /url: /astea/8?etapa=errai-kraneoa&egitura=ointokia
+            - article [ref=e3824]:
+              - generic [ref=e3825]:
+                - generic [ref=e3826]:
+                  - heading "Gandor neuralaren eratorriak eta mesodermoarenak" [level=3] [ref=e3827]
+                  - paragraph [ref=e3828]: Gandor neurala jatorri ektodermikokoa da. Giltzurrun gaineko guruinaren muina eta kortexa jatorri desberdinetakoak dira.
+                - link "Simulagailuan" [ref=e3829] [cursor=pointer]:
+                  - /url: /astea/8?etapa=jatorriak
+                  - text: Simulagailuan
+                  - generic [aria-hidden] [ref=e3830]: →
+              - generic [ref=e3832]:
+                - generic [ref=e3833]:
+                  - link "Gandor neurala" [ref=e3834] [cursor=pointer]:
+                    - /url: /astea/8?etapa=jatorriak&egitura=gandor-neurala
+                  - generic [ref=e3837]:
+                    - generic [ref=e3838]:
+                      - generic [ref=e3839]: erlazioa
+                      - generic [ref=e3842]: Aurpegiko mesenkima
+                      - generic [ref=e3846]:
+                        - generic [ref=e3847]: erlazioa
+                        - generic [ref=e3850]: Goiko maxilarra eta baraila
+                    - generic [ref=e3853]:
+                      - generic [ref=e3854]: erlazioa
+                      - generic [ref=e3857]: Melanozitoak
+                    - generic [ref=e3860]:
+                      - generic [ref=e3861]: erlazioa
+                      - generic [ref=e3864]: Gongoil espinaletako neurona sentsitiboak
+                    - generic [ref=e3867]:
+                      - generic [ref=e3868]: erlazioa
+                      - generic [ref=e3871]: Gongoil sinpatikoetako neuronak
+                    - generic [ref=e3874]:
+                      - generic [ref=e3875]: erlazioa
+                      - generic [ref=e3878]: Giltzurrun gaineko guruinaren muina
+                - generic [ref=e3881]:
+                  - generic [ref=e3882]: Mesodermoa
+                  - generic [ref=e3886]:
+                    - generic [ref=e3887]: erlazioa
+                    - generic [ref=e3892]:
+                      - text: Giltzurrun gaineko guruinaren kortexa
+                      - emphasis [ref=e3893]: ez da gandor neuralaren eratorria
+          - generic [ref=e3894]:
+            - heading "9. gaia Muskuluak" [level=4] [ref=e3895]:
+              - generic [ref=e3896]: 9. gaia
+              - text: Muskuluak
+            - article [ref=e3897]:
+              - generic [ref=e3898]:
+                - generic [ref=e3899]:
+                  - 'heading "Ehun konektibozko patroiak: bi iturri" [level=3] [ref=e3900]'
+                  - paragraph [ref=e3901]: "Muskuluen kokapena ehun konektiboak zehazten du: buruan gandor neuralak, gorputzean paretako orriak."
+                - link "Simulagailuan" [ref=e3902] [cursor=pointer]:
+                  - /url: /astea/9?etapa=ehun-konektiboa
+                  - text: Simulagailuan
+                  - generic [aria-hidden] [ref=e3903]: →
+              - generic [ref=e3905]:
+                - generic [ref=e3906]:
+                  - link [ref=e3909] [cursor=pointer]:
+                    - /url: /astea/9?etapa=ehun-konektiboa&egitura=gandor-neurala
+                    - generic [ref=e3911]:
+                      - text: Gandor neurala
+                      - emphasis [ref=e3912]: buruan
+                  - link [ref=e3917] [cursor=pointer]:
+                    - /url: /astea/9?etapa=ehun-konektiboa&egitura=paretako-orria
+                    - generic [ref=e3919]:
+                      - text: Paretako orria
+                      - emphasis [ref=e3920]: gorputz paretak, gorputz-adarrak
+                - link "Ehun konektibozko patroiak" [ref=e3925] [cursor=pointer]:
+                  - /url: /astea/9?etapa=ehun-konektiboa&egitura=ehun-konektibozko-patroiak
+    - contentinfo [ref=e163]:
+      - generic [ref=e164]: EnbrioAtlas
+      - paragraph [ref=e170]: "Iturria: Giza Anatomia I ikasgaiko apunteak (1.–14. gaiak) eta haietako irudiak (Langman). Simulagailu honek ez du ordezkatzen irakaslearen irizpidea."
+  - button "Galdetu Kimuri (K)" [ref=e171] [cursor=pointer]:
+    - generic [ref=e191]: Galdetu
+    - generic [aria-hidden] [ref=e192]: K
+  - alert [ref=e1087]

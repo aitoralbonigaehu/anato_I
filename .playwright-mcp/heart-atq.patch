@@ -1,0 +1,7 @@
+diff --git a/components/scenes/week10/Heart3D.tsx b/components/scenes/week10/Heart3D.tsx
+index 058c720..23db0cb 100644
+--- a/components/scenes/week10/Heart3D.tsx
++++ b/components/scenes/week10/Heart3D.tsx
+@@ -229 +229 @@ export function ModelView({
+-            items.push({ id: n.id, at: { x: q.x, y: q.y }, show: n.show, small: n.small, text: n.text, sub: n.sub, key: n.key });
++            items.push({ id: n.id, at: q, show: n.show, small: n.small, text: n.text, sub: n.sub, key: n.key });

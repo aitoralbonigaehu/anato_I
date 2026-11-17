@@ -1,0 +1,308 @@
+[
+  {
+    "yaw": -14,
+    "elev": -16,
+    "dist": 5.2,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": -16,
+    "dist": 5.8,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": -16,
+    "dist": 6.4,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": -8,
+    "dist": 5.2,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": -8,
+    "dist": 5.8,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": -8,
+    "dist": 6.4,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": 0,
+    "dist": 5.2,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": 0,
+    "dist": 5.8,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": 0,
+    "dist": 6.4,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": 8,
+    "dist": 5.2,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": 8,
+    "dist": 5.8,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": 8,
+    "dist": 6.4,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": 16,
+    "dist": 5.2,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": 16,
+    "dist": 5.8,
+    "moved": true
+  },
+  {
+    "yaw": -14,
+    "elev": 16,
+    "dist": 6.4,
+    "moved": true
+  },
+  {
+    "yaw": -10,
+    "elev": -16,
+    "dist": 5.2,
+    "moved": false
+  },
+  {
+    "yaw": -10,
+    "elev": -16,
+    "dist": 5.8,
+    "moved": false
+  },
+  {
+    "yaw": -10,
+    "elev": -16,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": -10,
+    "elev": -8,
+    "dist": 5.2,
+    "moved": false
+  },
+  {
+    "yaw": -10,
+    "elev": -8,
+    "dist": 5.8,
+    "moved": false
+  },
+  {
+    "yaw": -10,
+    "elev": 0,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": -10,
+    "elev": 8,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": -10,
+    "elev": 16,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": -7,
+    "elev": -16,
+    "dist": 5.2,
+    "moved": false
+  },
+  {
+    "yaw": -7,
+    "elev": -16,
+    "dist": 5.8,
+    "moved": false
+  },
+  {
+    "yaw": -7,
+    "elev": -16,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": -7,
+    "elev": -8,
+    "dist": 5.2,
+    "moved": false
+  },
+  {
+    "yaw": -7,
+    "elev": 0,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": -7,
+    "elev": 8,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": -7,
+    "elev": 16,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": -4,
+    "elev": -16,
+    "dist": 5.2,
+    "moved": false
+  },
+  {
+    "yaw": -4,
+    "elev": -16,
+    "dist": 5.8,
+    "moved": false
+  },
+  {
+    "yaw": -4,
+    "elev": 0,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": -4,
+    "elev": 8,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": -4,
+    "elev": 16,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": 0,
+    "elev": 0,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": 0,
+    "elev": 8,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": 0,
+    "elev": 16,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": 4,
+    "elev": -16,
+    "dist": 5.2,
+    "moved": false
+  },
+  {
+    "yaw": 4,
+    "elev": -16,
+    "dist": 5.8,
+    "moved": false
+  },
+  {
+    "yaw": 4,
+    "elev": -16,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": 4,
+    "elev": 16,
+    "dist": 5.2,
+    "moved": false
+  },
+  {
+    "yaw": 8,
+    "elev": -16,
+    "dist": 5.8,
+    "moved": false
+  },
+  {
+    "yaw": 8,
+    "elev": -16,
+    "dist": 6.4,
+    "moved": false
+  },
+  {
+    "yaw": 8,
+    "elev": -8,
+    "dist": 5.2,
+    "moved": false
+  },
+  {
+    "yaw": 8,
+    "elev": 0,
+    "dist": 5.2,
+    "moved": false
+  },
+  {
+    "yaw": 8,
+    "elev": 8,
+    "dist": 5.2,
+    "moved": false
+  },
+  {
+    "yaw": 8,
+    "elev": 8,
+    "dist": 5.8,
+    "moved": false
+  },
+  {
+    "yaw": 8,
+    "elev": 16,
+    "dist": 5.2,
+    "moved": false
+  },
+  {
+    "yaw": 8,
+    "elev": 16,
+    "dist": 5.8,
+    "moved": false
+  },
+  {
+    "yaw": 8,
+    "elev": 16,
+    "dist": 6.4,
+    "moved": false
+  }
+]
