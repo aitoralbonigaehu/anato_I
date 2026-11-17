@@ -6,7 +6,7 @@ const src = (section: string) => ({ file: FILE, section });
 const ORIENT = { top: 'Kraneala', bottom: 'Kaudala' };
 const v = (scene: StageDef['views'][number]['scene'], label: string, description: string, id = '3d') => ({ id, label, plane: 'eskema' as const, description, orientation: ORIENT, scene, travel: false as const });
 
-const DESCENT = 'Faringea eta lepoa atzetik (3D): burua goian, enbrioiaren ezkerra zure ezkerrean. 3. poltsatik datorrena horia da (timoa eta beheko paratiroidea), 4. poltsatik datorrena gorria (goiko paratiroidea), tiroidea granatea. Arrastatu biratzeko.';
+const DESCENT = 'Faringe hestea eta lepoa atzetik, bi hormak kenduta (3D): burua goian, enbrioiaren ezkerra zure ezkerrean. 3. poltsatik datorrena morea da (timoa eta beheko paratiroidea), 4. poltsatik datorrena berde urdinxka (goiko paratiroidea), tiroidea arrosa-gorrixka. Arrastatu biratzeko.';
 const MATURE = 'Tiroide heldua laringearen inguruan (3D): lehenik aurretik (enbrioiaren ezkerra zure eskuinean), gero atzetik. Tiroidea granatea, kartilagoak berde argiak, paratiroideak horia (behekoa) eta gorria (goikoa), timoa hori argia. Arrastatu biratzeko.';
 
 export const stages18i: StageDef[] = [

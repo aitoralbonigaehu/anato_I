@@ -5,6 +5,10 @@ import { BEL_ITEMS, BEL_KINDS, BEL_MERGED, BEL_MERGED_PLATES, BEL_PLATES, BEL_SY
 import { LandFoot, LandNav } from './LandNav';
 import { arrange, H, type Placed } from '@/lib/belortzioakLayout';
 import s from './belortzioak.module.css';
+import { StudyCard } from './BelStudyCard';
+import { GuideButton, TourHost } from './tour/TourHost';
+import { answerStudy, buildStudyQueue, flipStudy, grade, isFirstTry, KNOWN, readCards, startStudy, STORE, writeCards, type Cards, type StudySession } from '@/lib/belortzioakCards';
+import { noteRecall } from '@/lib/study/activity';
 
 /**
  * Belortzioak: the course's figures where an arrow points at a structure and the name is asked.
@@ -28,14 +32,6 @@ type Scope = BelSystem | 'denak' | 'fusio';
 type KindPick = BelKind | 'denak' | null;
 type Pt = [number, number];
 
-interface Card {
-  /** Leitner box: 0 new … 5 well known. */
-  b: number;
-  due: number;
-  ok: number;
-  bad: number;
-}
-type Cards = Record<string, Card>;
 
 interface Q {
   plate: string;
@@ -61,40 +57,15 @@ interface Quiz {
   total: number;
 }
 
-const STORE = 'enbrioatlas:belortzioak';
 const STYLE_KEY = 'enbrioatlas:belortzioak:style';
 /** Names the student flagged: 1 red (don't know), 2 orange (shaky). Click cycles red → orange → none. */
 const MARKS_KEY = 'enbrioatlas:belortzioak:marks';
 export type Marks = Record<string, 1 | 2>;
 const markClass = (m: 1 | 2 | undefined, red: string, orange: string) => (m === 1 ? ` ${red}` : m === 2 ? ` ${orange}` : '');
-const MIN = 60_000;
-const DAY = 86_400_000;
-const INTERVAL = [0, 10 * MIN, DAY, 3 * DAY, 7 * DAY, 21 * DAY];
-const KNOWN = 2;
 /** Read only from event handlers (grading), never while rendering. */
 const clock = () => Date.now();
 // Figures made by scripts/belortzioak/extract.py, served from public/.
 const imgOf = (id: string) => `/belortzioak-irudiak/${id}.webp`;
-
-const readCards = (): Cards => {
-  try {
-    return JSON.parse(window.localStorage.getItem(STORE) ?? '{}') as Cards;
-  } catch {
-    return {};
-  }
-};
-const writeCards = (c: Cards) => {
-  try {
-    window.localStorage.setItem(STORE, JSON.stringify(c));
-  } catch {
-    // Without storage the progress is only lost; studying still works.
-  }
-};
-const grade = (c: Card | undefined, ok: boolean, now: number): Card => {
-  const prev = c ?? { b: 0, due: 0, ok: 0, bad: 0 };
-  const b = ok ? Math.min(5, prev.b + 1) : 1;
-  return { b, due: now + (ok ? INTERVAL[b] : MIN), ok: prev.ok + (ok ? 1 : 0), bad: prev.bad + (ok ? 0 : 1) };
-};
 
 const shuffle = <T,>(xs: readonly T[]): T[] => {
   const a = [...xs];
@@ -224,9 +195,11 @@ interface FigureProps {
   missing: boolean;
   /** The drawing's URL when it is not one of the Belortzioak figures (the image lab's PDF pages). */
   src?: string;
+  /** The guide's name for the figure (data-tour). */
+  tour?: string;
 }
 
-export function Figure({ plate, mode, numbers, covered, active, onHover, onPick, marks, onMark, asked, answered, tap, onTap, missing, src }: FigureProps) {
+export function Figure({ plate, mode, numbers, covered, active, onHover, onPick, marks, onMark, asked, answered, tap, onTap, missing, src, tour }: FigureProps) {
   const st = stageOf(plate);
   const svg = useRef<SVGSVGElement>(null);
   const explore = mode === 'esploratu';
@@ -269,7 +242,7 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
   };
 
   return (
-    <div className={`${s.stage}${missing ? ` ${s.isMissing}` : ''}${mode === 'non' && !answered ? ` ${s.isPointing}` : ''}`} style={{ aspectRatio: `${st.tw} / ${H}`, ['--ar' as string]: st.tw / H }}>
+    <div data-tour={tour} className={`${s.stage}${missing ? ` ${s.isMissing}` : ''}${mode === 'non' && !answered ? ` ${s.isPointing}` : ''}`} style={{ aspectRatio: `${st.tw} / ${H}`, ['--ar' as string]: st.tw / H }}>
       <svg
         ref={svg}
         className={s.svg}
@@ -549,6 +522,8 @@ export function Belortzioak() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [pinned, setPinned] = useState<string | null>(null);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
+  /** Ikasketa modua: flashcards, one arrow at a time; null when off. */
+  const [study, setStudy] = useState<StudySession | null>(null);
   const [cards, setCards] = useState<Cards>({});
   const [marks, setMarks] = useState<Marks>({});
   const [now, setNow] = useState(0);
@@ -557,8 +532,9 @@ export function Belortzioak() {
   const strip = useRef<HTMLOListElement>(null);
 
   const q = quiz && !quiz.total ? null : quiz?.queue[0] ?? null;
-  const shown = plateOf(q?.plate ?? plateId);
-  const asked = q ? (itemOf(shown, q.key) ?? null) : null;
+  const sq = study?.queue[0] ?? null;
+  const shown = plateOf(sq?.plate ?? q?.plate ?? plateId);
+  const asked = sq ? (itemOf(shown, sq.key) ?? null) : q ? (itemOf(shown, q.key) ?? null) : null;
   const list = scope === 'fusio' ? BEL_MERGED.map((g) => variant(g, kindPick)) : scope === 'denak' ? BEL_PLATES : BEL_PLATES.filter((p) => p.system === scope);
   const merged = mergedOf(shown);
   // A merged figure's numbers come from several copies (two "3"s), so it always shows names.
@@ -566,7 +542,8 @@ export function Belortzioak() {
   const at = list.findIndex((p) => p.id === shown.id);
   const active = hovered ?? pinned;
   const activeItem = active ? itemOf(shown, active) : undefined;
-  const quizMode: Mode = q ? q.kind : mode;
+  const quizMode: Mode = sq ? 'zer' : q ? q.kind : mode;
+  const studying = !!study && !!sq;
 
   // Progress and preferences kept in this browser; whether this computer has the figures.
   useEffect(() => {
@@ -595,6 +572,19 @@ export function Belortzioak() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  // Another tab, or the account sync, rewrote the cards or the marks: show the stored copy.
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === null || e.key === STORE) setCards(readCards());
+      if (e.key === null || e.key === MARKS_KEY)
+        try {
+          setMarks(JSON.parse(window.localStorage.getItem(MARKS_KEY) ?? '{}') as Marks);
+        } catch {}
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
   // The next figure is fetched ahead, so stepping through does not flash.
   useEffect(() => {
     if (missing) return;
@@ -616,6 +606,7 @@ export function Belortzioak() {
   const open = (p: BelPlate, keep?: string) => {
     setPlateId(p.id);
     setQuiz(null);
+    setStudy(null);
     setRevealed(new Set());
     setHovered(null);
     setPinned(keep ?? null);
@@ -648,6 +639,7 @@ export function Belortzioak() {
   };
 
   const startPlate = (kind: 'zer' | 'non', only?: Q[]) => {
+    setStudy(null);
     setMode(kind);
     setHovered(null);
     setPinned(null);
@@ -669,7 +661,33 @@ export function Belortzioak() {
     const queue = shuffle(pick).map((x, i) => ({ plate: x.plate.id, key: x.item.key, kind: (i % 3 === 2 ? 'non' : 'zer') as 'zer' | 'non' }));
     setHovered(null);
     setPinned(null);
+    setStudy(null);
     setQuiz(fresh(queue, true));
+  };
+
+  /** Ikasketa modua: what is due, then what is weak, then new cards, in the systems chosen above. */
+  const startIkasketa = (only?: { plate: string; key: string }[]) => {
+    const t = clock();
+    setNow(t);
+    const items = BEL_ITEMS.filter((x) => inScope(x.plate.system)).map((x) => ({ plate: x.plate.id, key: x.item.key }));
+    setQuiz(null);
+    setHovered(null);
+    setPinned(null);
+    setStudy(startStudy(only ?? buildStudyQueue(items, cards, t)));
+  };
+
+  /** The student's verdict on the turned card: only the first try of a session moves its box. */
+  const answerIkasketa = (knew: boolean) => {
+    if (!study || !sq || !study.flipped) return;
+    if (isFirstTry(study)) {
+      const t = clock();
+      const next = { ...cards, [sq.key]: grade(cards[sq.key], knew, t) };
+      setCards(next);
+      writeCards(next);
+      setNow(t);
+    }
+    noteRecall(knew);
+    setStudy(answerStudy(study, knew));
   };
 
   const settle = (right: boolean, patch: Partial<Quiz> = {}) => {
@@ -679,6 +697,7 @@ export function Belortzioak() {
     setCards(next);
     writeCards(next);
     setNow(t);
+    noteRecall(right);
     const firstTry = !quiz.retried.includes(q.key);
     setQuiz({
       ...quiz,
@@ -742,6 +761,16 @@ export function Belortzioak() {
     const onKey = (e: KeyboardEvent) => {
       const typing = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (study) {
+        if (typing) return;
+        if (e.key === 'Escape') return setStudy(null);
+        if (!sq) return;
+        if (!study.flipped && (e.key === ' ' || e.key === 'Enter')) {
+          e.preventDefault();
+          setStudy(flipStudy(study));
+        } else if (study.flipped && (e.key === '1' || e.key === '2')) answerIkasketa(e.key === '1');
+        return;
+      }
       if (quiz && q) {
         if (quiz.done && e.key === 'Enter') {
           e.preventDefault();
@@ -798,19 +827,20 @@ export function Belortzioak() {
 
   return (
     <div className="landing">
-      <LandNav current="belortzioak" />
+      <LandNav current="belortzioak" help={<GuideButton tour="bel" />} />
+      <TourHost tour="bel" />
       <section className={`ln-hero lab-hero plate-hero ${s.hero}`}>
         <p className="eyebrow">Belortzioak · azaletik digestio-aparatura · {BEL_PLATES.length} irudi, {BEL_ITEMS.length} egitura</p>
         <h1>Gezia → izena</h1>
         <p className="hero-lead">
-          <b>Esploratu</b>: pasatu sagua izen baten gainetik, eta haren egitura argituko da. <b>Zer da?</b> eta <b>Non dago?</b>: galdetu zeure buruari. <b>Errepasoa</b>: irudi guztiak nahasian, ahazten hasten
-          zarenean.
+          <b>Esploratu</b>: pasatu sagua izen baten gainetik, eta haren egitura argituko da. <b>Zer da?</b> eta <b>Non dago?</b>: galdetu zeure buruari irudi batean. <b>Ikasketa modua</b>: txartelak irudi
+          guztietatik; huts egindakoak berriz agertzen dira, eta zure aurrerapenean gordetzen da.
         </p>
       </section>
 
       <section className="lab plates">
         <div className={`lab-controls ${s.controls}`}>
-          <div className="qz-kinds" role="group" aria-label="Sistema">
+          <div className="qz-kinds" role="group" aria-label="Sistema" data-tour="bel-sistemak">
             {(['denak', ...BEL_SYSTEMS.map((x) => x.id), 'fusio'] as Scope[]).map((sc) => (
               <button
                 key={sc}
@@ -827,18 +857,18 @@ export function Belortzioak() {
               </button>
             ))}
           </div>
-          <button className={`btn small ${s.reviewBtn}`} onClick={startReview} title="Irudi guztietako galderak nahasian: lehenik ahazten ari zarenak, gero berriak">
-            Errepasoa
+          <button className={`btn small primary ${s.reviewBtn}${study ? ' is-on' : ''}`} data-tour="ikasketa" onClick={() => startIkasketa()} title="Txartelak: gezi bat argitzen da, izena pentsatu, buelta eman eta esan asmatu duzun. Huts egindakoak berriz agertzen dira.">
+            Ikasketa modua
             {due.length > 0 && <span className={s.due}>{due.length}</span>}
           </button>
         </div>
 
-        <ol className={`plate-strip ${s.strip}`} aria-label="Irudiak" ref={strip}>
+        <ol className={`plate-strip ${s.strip}`} aria-label="Irudiak" ref={strip} data-tour="bel-irudiak">
           {list.map((p, i) => {
             const pc = pctKnown(p);
             return (
               <li key={p.id}>
-                <button className={p.id === shown.id ? 'is-on' : ''} aria-current={p.id === shown.id} onClick={() => open(p)} title={`${p.title} · ${p.items.length} egitura`} disabled={!!quiz?.review && !finished}>
+                <button className={p.id === shown.id ? 'is-on' : ''} aria-current={p.id === shown.id} onClick={() => open(p)} title={`${p.title} · ${p.items.length} egitura`} disabled={(!!quiz?.review && !finished) || studying}>
                   <span className="plate-strip-n">{i + 1}</span>
                   <span className="plate-strip-t">{p.title}</span>
                   {pc > 0 && <span className={`plate-best${pc === 100 ? ' is-full' : ''}`}>{pc}%</span>}
@@ -860,27 +890,29 @@ export function Belortzioak() {
             marks={marks}
             onMark={mark}
             asked={asked}
-            answered={!!quiz?.done || !!quiz?.revealed}
+            answered={!!quiz?.done || !!quiz?.revealed || !!study?.flipped}
             tap={quiz?.tap ?? null}
             onTap={tapAt}
             missing={missing}
+            tour="bel-irudia"
           />
 
           <aside className={`lab-side ${s.side}`}>
             <p className="kicker">
               {merged ? 'Fusionatua' : BEL_SYSTEMS.find((x) => x.id === shown.system)?.short} · {shown.sub}
               {quiz?.review && !finished && <span className={s.reviewTag}>Errepasoa</span>}
+              {study && <span className={s.reviewTag}>Ikasketa modua</span>}
             </p>
             <h2 className="lab-q">{shown.title}</h2>
 
-            <div className={`seg ${s.modes}`} role="group" aria-label="Modua">
-              <button className={!quiz && mode === 'esploratu' ? 'is-on' : ''} onClick={() => (setMode('esploratu'), setQuiz(null))}>
+            <div className={`seg ${s.modes}`} role="group" aria-label="Modua" data-tour="bel-moduak">
+              <button className={!quiz && !study && mode === 'esploratu' ? 'is-on' : ''} onClick={() => (setMode('esploratu'), setQuiz(null), setStudy(null))}>
                 Esploratu
               </button>
-              <button className={(quiz ? q?.kind === 'zer' && !quiz.review : mode === 'zer') ? 'is-on' : ''} onClick={() => startPlate('zer')}>
+              <button className={!study && (quiz ? q?.kind === 'zer' && !quiz.review : mode === 'zer') ? 'is-on' : ''} onClick={() => startPlate('zer')}>
                 Zer da?
               </button>
-              <button className={(quiz ? q?.kind === 'non' && !quiz.review : mode === 'non') ? 'is-on' : ''} onClick={() => startPlate('non')}>
+              <button className={!study && (quiz ? q?.kind === 'non' && !quiz.review : mode === 'non') ? 'is-on' : ''} onClick={() => startPlate('non')}>
                 Non dago?
               </button>
             </div>
@@ -902,7 +934,24 @@ export function Belortzioak() {
               </div>
             )}
 
-            {!quiz && mode === 'esploratu' && (
+            {study && (
+              <StudyCard
+                study={study}
+                item={asked}
+                plate={shown}
+                onFlip={() => setStudy(flipStudy(study))}
+                onAnswer={answerIkasketa}
+                onExit={() => setStudy(null)}
+                onAgain={(only) => startIkasketa(only)}
+                onMixed={startReview}
+                onOpen={(key) => {
+                  const x = findItem(key);
+                  if (x) (setMode('esploratu'), open(x.plate, key));
+                }}
+              />
+            )}
+
+            {!quiz && !study && mode === 'esploratu' && (
               <>
                 <ol className={s.legend} onPointerLeave={() => setHovered(null)}>
                   {shown.items.map((it, i) => {
@@ -954,7 +1003,7 @@ export function Belortzioak() {
               </>
             )}
 
-            {!quiz && mode !== 'esploratu' && (
+            {!quiz && !study && mode !== 'esploratu' && (
               <button className="btn primary" onClick={() => startPlate(mode as 'zer' | 'non')}>
                 Hasi
               </button>
@@ -1126,13 +1175,13 @@ export function Belortzioak() {
 
             <div className="plate-foot">
               <div className="plate-nav">
-                <button className="btn small ghost" disabled={at <= 0 || (!!quiz?.review && !finished)} onClick={() => open(list[at - 1])} aria-label="Aurreko irudia">
+                <button className="btn small ghost" disabled={at <= 0 || (!!quiz?.review && !finished) || studying} onClick={() => open(list[at - 1])} aria-label="Aurreko irudia">
                   ←
                 </button>
                 <span>
                   {at + 1} / {list.length}
                 </span>
-                <button className="btn small ghost" disabled={at >= list.length - 1 || (!!quiz?.review && !finished)} onClick={() => open(list[at + 1])} aria-label="Hurrengo irudia">
+                <button className="btn small ghost" disabled={at >= list.length - 1 || (!!quiz?.review && !finished) || studying} onClick={() => open(list[at + 1])} aria-label="Hurrengo irudia">
                   →
                 </button>
               </div>
@@ -1144,7 +1193,7 @@ export function Belortzioak() {
         </div>
       </section>
       <LandFoot>
-        <p>Irudiak ikasgaikoak dira. Aurrerapena nabigatzaile honetan gordetzen da.</p>
+        <p>Irudiak ikasgaikoak dira. Aurrerapena nabigatzaile honetan gordetzen da (eta zure kontuan, saioa hasita baduzu).</p>
       </LandFoot>
     </div>
   );

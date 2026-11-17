@@ -47,6 +47,10 @@ export interface ArchOpts {
   dim?: { ids: readonly string[]; k: number } | null;
 }
 
+/** The trigeminal's branches that are not an arch's nerve (V1, V2): pale, no arch colour. */
+export const V_OTHER = '#e9e2d0';
+const V_OTHER_DEEP = '#8f8672';
+
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
 const L = (k: readonly V3[], n = 18) => curve3(k as V3[], n);
@@ -131,8 +135,9 @@ export function archModel(pose: ArchPose, _o: ArchOpts = {}) {
     const root = vessel(L([[1.5, 1.72, -1.6], [1.86, 1.72, -1.34], [2.14, 1.66, -1.1]], 8), { r0: 0.2, r1: 0.26, sides: 10, ref: [0, 0, 1] }, s);
     put('v-root', 'trigeminoa', root, VC, ARCH_DEEP.i);
   }
-  put('v1', 'nerbio-oftalmikoa', mergeParts([nerve(V1, 0.13, 0.05, pose.v1), ...twigs(V1, pose.v1, [[-0.1, 0.42, 0.42], [-0.06, -0.3, 0.5]], 0.04)]), VC, ARCH_DEEP.i, { groups: ['trigeminoa'] });
-  put('v2', 'nerbio-maxilarra', mergeParts([nerve(V2, 0.13, 0.055, pose.v2), ...twigs(V2, pose.v2, [[-0.2, 0.08, 0.5], [-0.3, -0.32, 0.36]], 0.04)]), VC, ARCH_DEEP.i, { groups: ['trigeminoa'] });
+  // V1 and V2 belong to the trigeminal but not to arch I (notes 2.2.2: "1. faringe arkuan EZ"): a neutral nerve tone.
+  put('v1', 'nerbio-oftalmikoa', mergeParts([nerve(V1, 0.13, 0.05, pose.v1), ...twigs(V1, pose.v1, [[-0.1, 0.42, 0.42], [-0.06, -0.3, 0.5]], 0.04)]), V_OTHER, V_OTHER_DEEP, { groups: ['trigeminoa'] });
+  put('v2', 'nerbio-maxilarra', mergeParts([nerve(V2, 0.13, 0.055, pose.v2), ...twigs(V2, pose.v2, [[-0.2, 0.08, 0.5], [-0.3, -0.32, 0.36]], 0.04)]), V_OTHER, V_OTHER_DEEP, { groups: ['trigeminoa'] });
   put('v3', 'barail-nerbioa', mergeParts([nerve(V3_, 0.16, 0.06, pose.v3), ...twigs(V3_, pose.v3, [[-0.34, -0.2, 0.3], [-0.5, 0.04, 0.2]], 0.045)]), VC, ARCH_DEEP.i, { groups: ['trigeminoa'] });
   pts['nerbio-oftalmikoa'] = V1[2];
   pts['nerbio-maxilarra'] = V2[2];

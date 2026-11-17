@@ -18,6 +18,7 @@ import { w15 } from './w15';
 import { w16 } from './w16';
 import { w17 } from './w17';
 import { w18 } from './w18';
+import { w19 } from './w19';
 
 export interface NotesPart { text: string; b?: boolean; i?: boolean }
 export interface NotesSentence { id: string; parts: NotesPart[] }
@@ -28,7 +29,7 @@ export interface NotesBlock {
   sentences: NotesSentence[];
 }
 export interface NotesAnchor { week: number; stageId: string; beat: number }
-const documents: Record<number, NotesBlock[]> = { 1: w1, 2: w2, 3: w3, 4: w4, 5: w5, 6: w6, 7: w7, 8: w8, 9: w9, 10: w10, 11: w11, 12: w12, 13: w13, 14: w14, 15: w15, 16: w16, 17: w17, 18: w18 };
+const documents: Record<number, NotesBlock[]> = { 1: w1, 2: w2, 3: w3, 4: w4, 5: w5, 6: w6, 7: w7, 8: w8, 9: w9, 10: w10, 11: w11, 12: w12, 13: w13, 14: w14, 15: w15, 16: w16, 17: w17, 18: w18, 19: w19 };
 export const notesOf = (week: number): NotesBlock[] => documents[week] ?? [];
 export const sentenceText = (s: NotesSentence) => s.parts.map(p => p.text).join('');
 export const blockText = (b: NotesBlock) => b.sentences.map(sentenceText).join('');
@@ -74,7 +75,8 @@ for (const week of weeks) for (const stage of week.stages) stage.beats.forEach((
 
 /** Audited exceptions where a scene teaches detail absent from this ORIGINAL PDF. */
 export const NOTES_EXCEPTIONS: Record<string, { sections?: string[]; reason: string }> = {
-  '17/sarrera': { sections: ['intro'], reason: 'Apunteen sarrera zenbakirik gabea da, 1. atalaren aurretik; gaiaren lehen etapak irakurtzen du.' },
+  '19/bost-xixkuak': { sections: ['5.1'], reason: 'Apunteek tolespenen paragrafoa (5. asteko irudia, alboko ikuspegia) 11. atalaren barruko "5.1" azpiatalean ematen dute; 9. ataleko tolespenen etapan erakusten da.' },
+  '17/sarrera': { sections: ['intro', '2'], reason: 'Apunteen sarrera zenbakirik gabea da, 1. atalaren aurretik; gaiaren lehen etapak irakurtzen du, aurkibideko 2. atalaren izenburuarekin batera (gaiaren bi zatiak aurkezteko).' },
   '17/arkuen-mapa': { sections: ['2', '2.2.1', '2.2.2', '2.2.3', '2.3.1', '2.3.2', '2.3.3', '2.4.1', '2.4.2', '2.4.3', '2.5', '2.6.1', '2.6.2', '2.6.3'], reason: '2. ataleko azken laburpena: arku bakoitzaren nerbioa, kartilagoak eta muskuluak batera, beren ataletatik.' },
   '18/mihiaren-gorputza/0': { sections: ['2'], reason: '2. atalaren sarrerak (mihiaren jatorria) 2.1eko lehen urratsa irekitzen du; 2. atalak ez du bere etaparik.' },
   '18/aurpegi-fusioa/4': { sections: ['4'], reason: '4. atalaren sarrerako esaldia fusioaren urratsean erakusten da.' },

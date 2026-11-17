@@ -39,6 +39,11 @@ export interface TrigoneOpts {
 }
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
+const lerpN = (a: number, b: number, k: number) => a + (b - a) * k;
+const ss = (a: number, b: number, x: number) => {
+  const u = clamp01((x - a) / (b - a));
+  return u * u * (3 - 2 * u);
+};
 const darker = (c: string) => mixHex(c, '#000000', 0.55);
 const L = (kps: readonly V3[], n = 16) => curve3(kps as V3[], n);
 
@@ -86,10 +91,12 @@ export function trigoneModel(pose: TrigonePose, o: TrigoneOpts = {}) {
   pts['urakoa'] = [0.15, 1.95, 0.35];
 
   // Openings on the back wall: ureters (upper, lateral) and ducts (lower, medial); one common end at first.
+  const opens: Record<number, { ur: V3; wo: V3 }> = {};
   for (const s of [-1, 1]) {
     const common = onBack(s * 0.45, -0.55);
     const urO = mix3(common, onBack(s * 0.55, 0.25), part);
     const woO = mix3(common, onBack(s * 0.2, -0.85), part);
+    opens[s] = { ur: urO, wo: woO };
     // The common end, outside the wall at first and taken into it.
     const join: V3 = add(common, [s * 0.55 * (1 - absorb), 0.25 * (1 - absorb), -0.45 * (1 - absorb)]);
     // The mesonephric duct comes down from above and laterally; after parting it runs on downwards.
@@ -116,23 +123,26 @@ export function trigoneModel(pose: TrigonePose, o: TrigoneOpts = {}) {
       }
   }
 
-  // The trigone: the triangle between the openings (ureters above, the urethra's start below), mesodermal.
+  // The trigone: the ducts' own wall, taken into the bladder's back wall with their ends. It is the stretch of
+  // wall between the four openings, so it is drawn there from the start: as the ureters' openings go up and out
+  // and the ducts' come down and in, the mesodermal patch is pulled out into the triangle (the notes: it forms
+  // "because of" the parting). Ureters above, the ducts' openings by the urethra's start below.
   const tri = clamp01(pose.trigone);
-  if (tri > 0.01) {
-    const A = onBack(-0.55 * (0.5 + 0.5 * part), 0.25 * part - 0.55 * (1 - part), 0.04);
-    const B = onBack(0.55 * (0.5 + 0.5 * part), 0.25 * part - 0.55 * (1 - part), 0.04);
-    const Cc = onBack(0, -1.05, 0.04);
-    const key = [A, B, Cc].flat().map((v) => Math.round(v * 1000));
+  const op = Math.max(ss(0.3, 0.8, absorb) * ss(0.02, 0.25, part), tri);
+  if (op > 0.01) {
+    const A = opens[-1].ur, B = opens[1].ur, C = opens[-1].wo, D = opens[1].wo;
+    const key = [A, B, C, D].flat().map((v) => Math.round(v * 1000));
     const mesh = cachedMesh('trigone15', key, () =>
       grid(10, 10, (u, v) => {
-        const top = mix3(A, B, v);
-        const p = mix3(Cc, top, u);
+        const p = mix3(mix3(C, D, v), mix3(A, B, v), u);
         return onBack(p[0], p[1], 0.045);
       }, [0, 0, -5]),
     );
     const col = mixHex(UC.wolff, UC.endo, clamp01(pose.cover) * 0.85);
-    items.push({ key: 'trigone', id: 'trigonoa', mesh, hit: mesh, color: col, deep: darker(col), tissue: 'epithelium', opacity: tri * fade('trigonoa') });
-    pts['trigonoa'] = onBack(0.15, -0.55, 0.1);
+    // Until it is named it is the ducts' wall taken into the bladder: it lights with them.
+    const groups = tri < 0.5 ? ['hodi-mesonefrikoa'] : [];
+    items.push({ key: 'trigone', id: 'trigonoa', groups, mesh, hit: mesh, color: col, deep: darker(col), tissue: 'epithelium', opacity: op * fade('trigonoa', groups) });
+    pts['trigonoa'] = onBack(0.15, lerpN(-0.55, -0.35, part), 0.1);
   }
   return { items, pts };
 }

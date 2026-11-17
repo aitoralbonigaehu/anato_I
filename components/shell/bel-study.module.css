@@ -1,0 +1,291 @@
+/* Ikasketa modua: one flashcard at a time, turned in 3D. */
+
+.root {
+  display: grid;
+  gap: 12px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.tally {
+  display: inline-flex;
+  gap: 8px;
+  margin-right: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ok {
+  color: var(--ok);
+}
+
+.bad {
+  color: var(--bad);
+}
+
+.bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--signal), var(--ok));
+  transition: width var(--dur-2) var(--ease-out);
+}
+
+.card {
+  perspective: 1200px;
+  min-height: 260px;
+}
+
+.inner {
+  position: relative;
+  min-height: 260px;
+  transform-style: preserve-3d;
+  transition: transform 520ms var(--ease-spring, cubic-bezier(0.2, 0.9, 0.3, 1.1));
+}
+
+.isFlipped .inner {
+  transform: rotateY(180deg);
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  padding: 22px 20px;
+  border-radius: var(--r-xl, 18px);
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.face h3 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.face p {
+  margin: 0;
+}
+
+.front {
+  background:
+    radial-gradient(120% 90% at 100% 0%, var(--signal-soft), transparent 60%),
+    var(--surface);
+}
+
+.back {
+  transform: rotateY(180deg);
+  background:
+    radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--ok) 16%, transparent), transparent 60%),
+    var(--surface);
+}
+
+.where {
+  color: var(--text-3);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.name {
+  font-size: 24px !important;
+  color: var(--text);
+}
+
+.againTag {
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--amber) 22%, transparent);
+  color: var(--amber);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.verdict {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.verdict button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  border-radius: 14px;
+  border: 1.5px solid;
+  background: transparent;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
+}
+
+.verdict button:active {
+  transform: scale(0.97);
+}
+
+.verdict kbd,
+.front kbd {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.yes {
+  border-color: color-mix(in srgb, var(--ok) 60%, transparent) !important;
+  color: var(--ok);
+}
+
+.yes:hover {
+  background: color-mix(in srgb, var(--ok) 14%, transparent);
+}
+
+.no {
+  border-color: color-mix(in srgb, var(--bad) 60%, transparent) !important;
+  color: var(--bad);
+}
+
+.no:hover {
+  background: color-mix(in srgb, var(--bad) 14%, transparent);
+}
+
+/* the end of a session */
+.done,
+.empty {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+
+.score {
+  --p: 0%;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  padding-top: 40px;
+  box-sizing: border-box;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, var(--surface) 78%, transparent 79%),
+    conic-gradient(var(--ok) var(--p), var(--surface-3) 0);
+  font-family: var(--font-mono);
+  animation: pop 600ms var(--ease-spring, ease-out);
+}
+
+.score b {
+  font-size: 34px;
+}
+
+.score small {
+  color: var(--text-3);
+}
+
+.doneLead {
+  margin: 0;
+  font-weight: 600;
+}
+
+.missed {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+
+.missed button {
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.missed button:hover {
+  background: var(--surface-2);
+}
+
+.missed small {
+  color: var(--text-3);
+}
+
+.emptyIcon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ok) 18%, transparent);
+  color: var(--ok);
+  font-size: 26px;
+}
+
+.empty h3 {
+  margin: 0;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inner {
+    transition: none;
+  }
+  .score {
+    animation: none;
+  }
+}
+
+/* A narrow side column (tablet): the verdict keys lose their key hints, never their words. */
+@media (max-width: 1240px) {
+  .verdict {
+    gap: 8px;
+  }
+  .verdict button {
+    gap: 6px;
+    padding: 0 8px;
+    font-size: 14px;
+  }
+  .verdict kbd {
+    display: none;
+  }
+}

@@ -270,7 +270,7 @@ export function CommandBar() {
 export function SearchKey({ compact = false }: { compact?: boolean }) {
   const mod = useModKey();
   return (
-    <button type="button" className={`search-key${compact ? ' is-compact' : ''}`} onClick={openCommandBar} aria-label="Bilatu (gaiak, etapak, egiturak, ekintzak)" data-tip={compact ? `Bilatu · ${mod}K` : undefined} data-tip-pos="bottom">
+    <button type="button" className={`search-key${compact ? ' is-compact' : ''}`} data-tour="bilatu" onClick={openCommandBar} aria-label="Bilatu (gaiak, etapak, egiturak, ekintzak)" data-tip={compact ? `Bilatu · ${mod}K` : undefined} data-tip-pos="bottom">
       <IconSearch size={15} />
       {!compact && <span className="search-key-t">Bilatu…</span>}
       {!compact && (

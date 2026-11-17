@@ -2,21 +2,39 @@
 
 import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { mix } from '@/lib/sim/anim';
-import { aimCamera, blendCamera, centreOf, showCamera } from '@/lib/three-d/aim';
-import { len, norm, sub, viewOf, project, type Camera3, type M4, type V3, type View3 } from '@/lib/three-d/math';
+import { aimCamera, blendCamera, centreOf, flyCamera, showCamera } from '@/lib/three-d/aim';
+import { len, mulM, norm, sub, viewOf, project, type Camera3, type M4, type V3, type View3 } from '@/lib/three-d/math';
 import { lookTurn, orbitCamera } from '@/lib/three-d/orbit';
+import { pickAt } from '@/lib/three-d/pick';
+import { frameMesh, planeMesh, type Plane } from '@/lib/three-d/flyin';
+import { between, sameM } from '@/lib/three-d/place';
 import { KEY_LIGHT, projectItem, type Item3, type Projected, type Scene3 } from '@/lib/three-d/scene';
 import { Part } from '../Part';
-import { BridgeLookContext, UnderlayContext, partState, useLabelScale, useScene, type LookSide } from '../context';
-import type { GLApi, GLState } from './gl';
+import { BridgeLookContext, GhostContext, UnderlayContext, partState, useLabelScale, useScene, type LookSide } from '../context';
+import { Note } from '../Label';
+import type { GLApi, GLItem, GLState } from './gl';
 import { registerPublication } from './publication';
 
 export type At3 = (p: V3, m?: M4) => { x: number; y: number; z: number };
 
+/**
+ * A view that takes over from another 3D view of the same continuity by itself, as one camera flight, with
+ * no cross-fade of two pictures: the camera is carried from where the viewer was looking; when the models
+ * differ (another `place`), the one just left stays where it belongs in the shared body and fades inside
+ * this view while this one appears, and the faces of a cut glow where they slice it.
+ */
+export interface Handover {
+  /** This model is a section: its cut faces, in its own space. */
+  cut?: readonly Plane[];
+  /** Said at the foot while the camera travels in from another model. */
+  note?: string;
+}
+
 interface Stage3DProps {
   scene: Scene3;
   /** Names, notes and anything else drawn over the 3D picture, placed with `at` (frame coordinates). */
-  children?: (at: At3, view: View3) => ReactNode;
+  /** `flight`: 1, or 0→1 as a handover's flight ends: names and notes come in with it. */
+  children?: (at: At3, view: View3, flight: number) => ReactNode;
   /** The viewer may turn the picture by dragging it (default on). */
   orbit?: boolean;
   /** Three short axis names for the small orientation cross (up, towards the viewer, side). */
@@ -27,6 +45,13 @@ interface Stage3DProps {
    * on the same model never cuts to another angle.
    */
   continuity?: string;
+  /**
+   * Where this model sits in the shared embryo (the matrix that puts the embryo into the model's space). A
+   * view taking over from another model of the same continuity carries the camera across through it.
+   */
+  place?: M4;
+  /** See `Handover`. Omitted: the shell's cross-fade, with the camera carried under it (topics 10–15). */
+  handover?: Handover;
 }
 
 /**
@@ -113,6 +138,8 @@ const STATE: Record<ReturnType<typeof partState>, GLState> = {
 /** How long the camera takes to turn to a structure put forward, and back. */
 const GLIDE_MS = 1100;
 const ease = (x: number) => x * x * x * (x * (x * 6 - 15) + 10);
+/** A calm part (`Item3.calm`) steps back as context does, never to the dark states. */
+const calmed = (state: GLState, calm: boolean | undefined): GLState => (calm && (state === 'dim' || state === 'shade') ? 'ctx' : state);
 
 /**
  * The WebGL layer a 3D view leaves behind stays parked a few seconds for the next one in the same frame:
@@ -142,9 +169,87 @@ function park(host: HTMLDivElement, api: GLApi) {
   });
 }
 
-/** The camera each frame's 3D view last showed (and its specimen key), for the next view to start from. */
-const lastCam = new WeakMap<HTMLDivElement, { key: string; cam: Camera3; at: number; live: number }>();
+/**
+ * The camera each frame's 3D view last showed (and its specimen key), for the next view to start from; and
+ * what it last drew, for a view that takes over by itself to let it fade in place (see `Handover`).
+ */
+const lastCam = new WeakMap<HTMLDivElement, { key: string; cam: Camera3; at: number; live: number; place?: M4; drew?: GLItem[]; cut?: readonly Plane[] }>();
+
+/** Frames a handover view has just taken over: the picture the shell leaves to fade there stays out. */
+const claims = new WeakMap<HTMLDivElement, number>();
+const claimWatchers = new Set<() => void>();
+const CLAIM_MS = 3000;
+const watchClaims = (cb: () => void) => {
+  claimWatchers.add(cb);
+  return () => void claimWatchers.delete(cb);
+};
+
+/** Whether a view of this specimen is on screen or only just gone: the new view takes over from it. */
+function takesOver(host: HTMLDivElement | null | undefined, continuity: string | undefined) {
+  const l = continuity && host ? lastCam.get(host) : undefined;
+  // Still on screen (the outgoing view fades out over this one) or only just gone.
+  return l && l.key === continuity && (l.live > 0 || performance.now() - l.at < 1500) ? l : null;
+}
+
+/**
+ * Whether the view mounting now continues the one just shown (the same specimen key): a stage played on
+ * from the one before. Asked once, when the view mounts. A topic's linear story then flows on from the
+ * camera the viewer was looking through instead of opening again from outside the embryo.
+ */
+export function useContinuing(continuity: string | undefined) {
+  const ul = useContext(UnderlayContext);
+  const [on] = useState(() => !!takesOver(ul?.host, continuity));
+  return on;
+}
+
+/**
+ * A camera of one model carried into another model of the same embryo: each model's `place` puts the
+ * embryo into it (the wall, a section block cut from it), so the camera keeps looking at the same tissue
+ * from the same side as the view changes from one model to the other.
+ */
+function carry(cam: Camera3, from: M4, to: M4): Camera3 {
+  // from = s·R | t: its inverse is Rᵀ/s | −Rᵀt/s.
+  const s2 = from[0] * from[0] + from[1] * from[1] + from[2] * from[2];
+  const back = (p: V3, w: number): V3 => {
+    const q: V3 = [p[0] - w * from[12], p[1] - w * from[13], p[2] - w * from[14]];
+    return [(from[0] * q[0] + from[1] * q[1] + from[2] * q[2]) / s2, (from[4] * q[0] + from[5] * q[1] + from[6] * q[2]) / s2, (from[8] * q[0] + from[9] * q[1] + from[10] * q[2]) / s2];
+  };
+  const fwd = (p: V3, w: number): V3 => [to[0] * p[0] + to[4] * p[1] + to[8] * p[2] + w * to[12], to[1] * p[0] + to[5] * p[1] + to[9] * p[2] + w * to[13], to[2] * p[0] + to[6] * p[1] + to[10] * p[2] + w * to[14]];
+  const pt = (p: V3) => fwd(back(p, 1), 1);
+  return { ...cam, eye: pt(cam.eye), target: pt(cam.target), up: norm(fwd(back(cam.up ?? [0, 1, 0], 0), 0)) };
+}
 const ENTER_MS = 1100;
+/** A stage that runs on in the same model (a handover without a flight): its camera's glide and its pose's run. */
+export const RUN_ON_MS = 1400;
+/** Harness only: `window.__flightAt = 0..1` holds every stage-change move at that moment (undefined: plays). */
+export const heldFlight = (): number | null => {
+  const v = typeof window !== 'undefined' ? (window as unknown as { __flightAt?: number }).__flightAt : undefined;
+  return typeof v === 'number' ? Math.max(0, Math.min(1, v)) : null;
+};
+/** A flight from one model into another: long enough to see where the camera goes. */
+const FLIGHT_MS = 2300;
+/** A cut plane of a handover as drawn: its bright outline, and a faint sheet that never hides what it cuts. */
+interface CutPart {
+  key: string;
+  mesh: Item3['mesh'];
+  matrix?: M4;
+  k: number;
+}
+const cutParts = (key: string, p: Plane, matrix: M4 | undefined): CutPart[] => [
+  { key: `${key}:edge`, mesh: frameMesh(p), matrix, k: 0.95 },
+  { key: `${key}:sheet`, mesh: planeMesh(p), matrix, k: 0.1 },
+];
+/** The angle between two cameras' lines of sight (radians). */
+const turnOf = (a: Camera3, b: Camera3) => {
+  const u = [a.eye[0] - a.target[0], a.eye[1] - a.target[1], a.eye[2] - a.target[2]];
+  const v = [b.eye[0] - b.target[0], b.eye[1] - b.target[1], b.eye[2] - b.target[2]];
+  const d = (u[0] * v[0] + u[1] * v[1] + u[2] * v[2]) / (Math.hypot(...u) * Math.hypot(...v) || 1);
+  return Math.acos(Math.max(-1, Math.min(1, d)));
+};
+const smooth = (a: number, b: number, x: number) => {
+  const u = Math.max(0, Math.min(1, (x - a) / (b - a)));
+  return u * u * (3 - 2 * u);
+};
 const differs = (a: Camera3, b: Camera3) => {
   const ea = norm(sub(a.eye, a.target));
   const eb = norm(sub(b.eye, b.target));
@@ -161,19 +266,48 @@ const zero = () => 0;
 /** The drag hint is a one-time lesson: once the viewer has turned a 3D view, it no longer takes room. */
 let turnedOnce = false;
 
-export function Stage3D({ scene, children, orbit = true, axes, continuity }: Stage3DProps) {
+export function Stage3D(props: Stage3DProps) {
+  const ghost = useContext(GhostContext);
+  const host = useContext(UnderlayContext)?.host;
+  // The picture a scene change leaves to fade: when the next view hands over by itself, it stays out.
+  const claimed = useSyncExternalStore(watchClaims, () => (ghost && host ? (claims.get(host) ?? 0) : 0), zero);
+  if (claimed && performance.now() - claimed < CLAIM_MS) return null;
+  return <Stage3DView {...props} />;
+}
+
+function Stage3DView({ scene, children, orbit = true, axes, continuity, place, handover }: Stage3DProps) {
   const ctx = useScene();
   const ul = useContext(UnderlayContext);
+  const isGhost = useContext(GhostContext);
   // Taking over from a view of the same specimen: start from its camera (see `continuity`).
-  const [enter] = useState(() => {
-    const l = continuity && ul?.host ? lastCam.get(ul.host) : undefined;
-    // Still on screen (the outgoing view fades out over this one) or only just gone.
-    return l && l.key === continuity && (l.live > 0 || performance.now() - l.at < 1500) ? l.cam : null;
+  const [entry] = useState(() => {
+    const l = takesOver(ul?.host, continuity);
+    if (!l) return null;
+    // Another model of the same embryo: the camera is carried into it (see `place`).
+    const G = l.place && place && !sameM(l.place, place) ? between(l.place, place) : null;
+    const cam = G ? carry(l.cam, l.place!, place!) : l.cam;
+    if (!handover || isGhost || !ul?.host) return { cam, own: false, left: [] as GLItem[], cuts: [] as CutPart[] };
+    // This view takes the frame over by itself: no cross-fade (the shell's fading copy stays out).
+    claims.set(ul.host, performance.now());
+    claimWatchers.forEach((cb) => cb());
+    // The model just left, put where it belongs in this one's space; streams (blood cells) are let go.
+    const left = G ? (l.drew ?? []).filter((it) => !it.stream).map((it) => ({ ...it, key: `left:${it.key}`, matrix: it.matrix ? mulM(G, it.matrix) : G, quiet: true })) : [];
+    const cuts = G
+      ? [
+          ...(handover.cut ?? []).flatMap((p, i) => cutParts(`cut:in${i}`, p, undefined)),
+          // Leaving a section for the model it was cut from: its faces glow where it was.
+          ...(handover.cut ? [] : (l.cut ?? [])).flatMap((p, i) => cutParts(`cut:out${i}`, p, G)),
+        ]
+      : [];
+    return { cam, own: true, left, cuts };
   });
+  const enter = entry?.cam ?? null;
+  // A flight between two models (the old one fading inside this view); else only the camera glides.
+  const flying = !!entry && entry.left.length > 0;
   const [enterP, setEnterP] = useState(enter ? 0 : 1);
   useEffect(() => {
     if (!enter) return;
-    const ms = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 1 : ENTER_MS;
+    const ms = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 1 : flying ? FLIGHT_MS : entry?.own ? RUN_ON_MS : ENTER_MS;
     let raf = 0;
     let last = 0;
     let done = 0;
@@ -182,13 +316,15 @@ export function Stage3D({ scene, children, orbit = true, axes, continuity }: Sta
     const step = (now: number) => {
       done += last ? Math.min(now - last, 40) : 0;
       last = now;
-      const p = Math.min(1, done / ms);
+      // The QA harness holds a flight at a moment to shoot it (scripts/quality/flight-sheet.mjs).
+      const held = heldFlight();
+      const p = held ?? Math.min(1, done / ms);
       setEnterP(p);
-      if (p < 1) raf = requestAnimationFrame(step);
+      if (p < 1 || held !== null) raf = requestAnimationFrame(step);
     };
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, [enter]);
+  }, [enter, flying, entry?.own]);
   const [turn, setTurn] = useState({ yaw: 0, pitch: 0 });
   const [gl, setGl] = useState<GLApi | null>(null);
   const [ready, setReady] = useState(false);
@@ -279,22 +415,25 @@ export function Stage3D({ scene, children, orbit = true, axes, continuity }: Sta
     return () => cancelAnimationFrame(raf);
   }, [gliding, aim.to]);
   const aimed = gliding ? blendCamera(goalFor(aim.from), goalFor(spot), ease(aim.p)) : goalFor(spot);
-  const display = enter && enterP < 1 && differs(enter, aimed) ? blendCamera(enter, aimed, ease(enterP)) : aimed;
+  // A flight first shows where it is going (the cut glows on the model just left), then moves.
+  const camP = flying ? smooth(0.1, 0.94, enterP) : ease(enterP);
+  const display = enter && enterP < 1 && (flying || differs(enter, aimed)) ? (flying ? flyCamera(enter, aimed, camP) : blendCamera(enter, aimed, camP)) : aimed;
   const view = viewOf(display);
+  const drew = useRef<GLItem[]>([]);
   useEffect(() => {
-    if (continuity && ul?.host) lastCam.set(ul.host, { key: continuity, cam: display, at: performance.now(), live: lastCam.get(ul.host)?.live ?? 0 });
+    if (continuity && ul?.host && !isGhost) lastCam.set(ul.host, { key: continuity, cam: display, at: performance.now(), live: lastCam.get(ul.host)?.live ?? 0, place, drew: drew.current, cut: handover?.cut });
   });
   // A paused view stops rendering, so "how recent" counts from when it leaves, not from its last frame.
   useEffect(() => {
     const h = ul?.host;
-    if (!continuity || !h) return;
+    if (!continuity || !h || isGhost) return;
     const mark = (d: number) => {
       const l = lastCam.get(h);
       if (l) lastCam.set(h, { ...l, live: Math.max(0, l.live + d), at: performance.now() });
     };
     mark(1);
     return () => mark(-1);
-  }, [continuity, ul?.host]);
+  }, [continuity, ul?.host, isGhost]);
   const light = scene.light ?? KEY_LIGHT;
 
   // The frame's edge pills follow the camera (the step's turns, the tour's glides and the viewer's drag).
@@ -436,30 +575,48 @@ export function Stage3D({ scene, children, orbit = true, axes, continuity }: Sta
   const sceneEl = ul?.scene ?? null;
   useEffect(() => gl?.follow(root.current ?? sceneEl), [gl, sceneEl]);
 
+  // A flight between models, in three overlapping parts: the cut glows on the model just left; that model
+  // fades where it stands while this one appears in its place; then the names come.
+  const inFlight = flying && enterP < 1;
+  const leftK = inFlight ? 1 - smooth(0.34, 0.74, enterP) : 0;
+  const ownK = inFlight ? smooth(0.26, 0.62, enterP) : 1;
+  const cutK = inFlight ? smooth(0.02, 0.14, enterP) * (1 - smooth(0.46, 0.66, enterP)) : 0;
+  // Running on in the same model with the camera coming a long way round (front ↔ back): the names wait for it.
+  const round = !flying && !!entry?.own && !!enter && enterP < 1 && turnOf(enter, aimed) > 1;
+  const flight = inFlight ? smooth(0.8, 1, enterP) : round ? smooth(0.55, 0.95, enterP) : 1;
   // Every render hands the WebGL layer this frame's meshes, matrices and highlight states.
   useLayoutEffect(() => {
+    const own: GLItem[] = drawn.map(({ it }) => ({
+      key: it.key,
+      mesh: it.mesh,
+      matrix: it.matrix,
+      color: it.color,
+      deep: it.deep,
+      tissue: it.tissue ?? 'skin',
+      opacity: (it.show ?? 1) * (it.opacity ?? 1),
+      outline: it.outline ?? true,
+      state: it.id ? calmed(STATE[partState(ctx, it.id, it.groups)], it.calm) : ctx.hovered || ctx.selected || ctx.spotlight ? 'ctx' : 'idle',
+      quiet: !!it.quiet,
+      clip: it.clip,
+      stream: it.stream,
+      thin: it.thin ?? 0,
+      soft: it.mesh.tint ? (it.soft ?? 1) : 0,
+    }));
+    drew.current = own;
+    const items = !inFlight
+      ? own
+      : [
+          ...(leftK > 0.01 ? entry!.left.map((it) => ({ ...it, opacity: it.opacity * leftK })) : []),
+          ...own.filter((it) => !it.stream || ownK > 0.98).map((it) => ({ ...it, opacity: it.opacity * ownK })),
+          ...(cutK > 0.01 ? entry!.cuts.map((c) => ({ key: c.key, mesh: c.mesh, matrix: c.matrix, color: '#ffd27a', deep: '#c08a2a', tissue: 'membrane' as const, opacity: c.k * cutK, outline: false, state: 'idle' as const, quiet: true, thin: 0 })) : []),
+        ];
     gl?.frame({
       view: view.view,
       proj: view.proj,
       light,
       ao: scene.look?.ao ?? 0,
       aoRadius: Math.hypot(display.eye[0] - display.target[0], display.eye[1] - display.target[1], display.eye[2] - display.target[2]) * (scene.look?.aoReach ?? 0.04),
-      items: drawn.map(({ it }) => ({
-        key: it.key,
-        mesh: it.mesh,
-        matrix: it.matrix,
-        color: it.color,
-        deep: it.deep,
-        tissue: it.tissue ?? 'skin',
-        opacity: (it.show ?? 1) * (it.opacity ?? 1),
-        outline: it.outline ?? true,
-        state: it.id ? STATE[partState(ctx, it.id, it.groups)] : ctx.hovered || ctx.selected || ctx.spotlight ? 'ctx' : 'idle',
-        quiet: !!it.quiet,
-        clip: it.clip,
-        stream: it.stream,
-        thin: it.thin ?? 0,
-        soft: it.mesh.tint ? (it.soft ?? 1) : 0,
-      })),
+      items,
     });
   });
 
@@ -470,10 +627,34 @@ export function Stage3D({ scene, children, orbit = true, axes, continuity }: Sta
   };
 
   const canTurn = orbit && !ul?.zoomed;
+  // With the WebGL picture up, pointing finds what the eye sees at the pixel (lib/three-d/pick.ts) instead
+  // of the outlines painted by mean depth, which let a wrapping or see-through item take the pointer.
+  const pickOn = ready && !flat;
+  const pickState = useRef({ id: null as string | null, raf: 0, x: 0, y: 0, items: [] as Item3[], view });
+  useLayoutEffect(() => {
+    pickState.current.items = drawn.map((d) => d.it);
+    pickState.current.view = view;
+  });
+  const pickRect = useRef<SVGRectElement>(null);
+  const frameAt = (e: { clientX: number; clientY: number }) => {
+    // The frame-sized rectangle's box on screen (CSS zoom included, which getScreenCTM can miss).
+    const r = pickRect.current?.getBoundingClientRect();
+    if (!r || r.width < 1 || r.height < 1) return null;
+    return { x: ((e.clientX - r.left) / r.width) * 1000, y: ((e.clientY - r.top) / r.height) * 640 };
+  };
+  const setPicked = (id: string | null) => {
+    const ps = pickState.current;
+    if (ps.id === id) return;
+    ps.id = id;
+    if (pickRect.current) pickRect.current.style.cursor = id ? 'pointer' : '';
+    ctx.onHover(id);
+  };
+  useEffect(() => () => cancelAnimationFrame(pickState.current.raf), []);
+  const onTheModel = (e: { target: EventTarget }) => e.target === pickRect.current;
   return (
     <g
       ref={root}
-      className={`stage3d${ready ? ' is-gl' : ''}`}
+      className={`stage3d${ready ? ' is-gl' : ''}${entry?.own ? ' is-handover' : ''}`}
       data-orbit={orbit ? '' : undefined}
       onPointerDown={(e) => {
         if (!canTurn || e.button !== 0) return;
@@ -483,12 +664,36 @@ export function Stage3D({ scene, children, orbit = true, axes, continuity }: Sta
       }}
       onPointerMove={(e) => {
         const d = drag.current;
+        if (pickOn && !d?.moved) {
+          const ps = pickState.current;
+          if (onTheModel(e)) {
+            const q = frameAt(e);
+            if (q) {
+              ps.x = q.x;
+              ps.y = q.y;
+              if (!ps.raf)
+                ps.raf = requestAnimationFrame(() => {
+                  ps.raf = 0;
+                  setPicked(pickAt(ps.items, ps.view, ps.x, ps.y));
+                });
+            }
+          } else if (ps.id) {
+            // Onto a name (which lights its own structure) or an overlay: this pointing is over.
+            cancelAnimationFrame(ps.raf);
+            ps.raf = 0;
+            if ((e.target as Element).closest?.('[data-label],[data-part]')) ps.id = null;
+            else setPicked(null);
+          }
+        }
         if (!d) return;
         const dx = e.clientX - d.x;
         const dy = e.clientY - d.y;
         if (!d.moved && Math.hypot(dx, dy) < 5) return;
         if (!d.moved) {
           d.moved = true;
+          cancelAnimationFrame(pickState.current.raf);
+          pickState.current.raf = 0;
+          if (pickState.current.id) setPicked(null);
           turnedOnce = true;
           setTurning(true);
           (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
@@ -511,9 +716,22 @@ export function Stage3D({ scene, children, orbit = true, axes, continuity }: Sta
         // A drag that turned the picture is not a click on what it started on.
         if (drag.current?.moved) e.stopPropagation();
       }}
+      onClick={(e) => {
+        if (!pickOn || !onTheModel(e)) return;
+        const q = frameAt(e);
+        const id = q ? pickAt(pickState.current.items, pickState.current.view, q.x, q.y) : null;
+        if (!id) return;
+        e.stopPropagation();
+        ctx.onSelect(id);
+      }}
+      onPointerLeave={() => {
+        cancelAnimationFrame(pickState.current.raf);
+        pickState.current.raf = 0;
+        if (pickState.current.id) setPicked(null);
+      }}
       onDoubleClick={() => glideTurn({ yaw: 0, pitch: 0 })}
     >
-      {canTurn && <rect className="stage3d-orbit" x={0} y={0} width={1000} height={640} fill="transparent" />}
+      {(canTurn || pickOn) && <rect ref={pickRect} className={canTurn ? 'stage3d-orbit' : 'stage3d-pick'} x={0} y={0} width={1000} height={640} fill="transparent" />}
       {drawn.map(({ it, pr }) => {
         if (!pr.any) return null;
         const deep = it.deep ?? mix(it.color, '#000000', 0.55);
@@ -531,6 +749,8 @@ export function Stage3D({ scene, children, orbit = true, axes, continuity }: Sta
               {flatEl}
             </g>
           );
+        // In a flight this model's parts are not there to point at (or to be marked by the tour) until they show.
+        if (((inFlight && ownK < 0.6) || (round && flight < 0.5)) && !flat) return null;
         return (
           <Part key={it.key} id={it.id} groups={it.groups} quiet={it.quiet} show={it.show ?? 1}>
             {flatEl}
@@ -540,7 +760,12 @@ export function Stage3D({ scene, children, orbit = true, axes, continuity }: Sta
       })}
       {waiting && <Loading3D />}
       {!waiting && axes && <Axes view={view} axes={axes} hint={canTurn && ready && !turnedOnce} />}
-      {!waiting && children?.(at, view)}
+      {!waiting && children?.(at, view, flight)}
+      {inFlight && handover?.note && (
+        <Note x={500} y={612} tone="accent" show={smooth(0.02, 0.14, enterP) * (1 - smooth(0.7, 0.84, enterP))}>
+          {handover.note}
+        </Note>
+      )}
     </g>
   );
 }

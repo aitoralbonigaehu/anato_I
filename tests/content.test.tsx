@@ -1,7 +1,8 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { SceneContext, type SceneContextValue } from '@/components/kit/context';
 import { structures, weeks } from '@/content/registry';
+import { archHead } from '@/components/scenes/week17/arch-head';
 
 const ctx: SceneContextValue = {
   selected: null,
@@ -38,6 +39,7 @@ describe('structure registry', () => {
 
 for (const w of weeks) {
   describe(`${w.week}. astea`, () => {
+    if (w.week === 17) beforeAll(() => void archHead(), 60_000);
     it('stages reference known structures and have ordered beats', () => {
       const missing: string[] = [];
       for (const st of w.stages) {

@@ -4,6 +4,7 @@ import type { V3 } from '@/lib/three-d/math';
 import { ARCH, TISSUE, poseStage17, type StageSpec, endPose } from './common';
 import { LX0, larynxModel, type LarynxOpts, type LarynxPose } from './larynx-model';
 import { orbit } from '@/components/scenes/week14/common';
+import { SITE17C } from './sites-c';
 
 /** Topic 17, 2.6.2 and 2.6.3: the larynx (larynx-model.ts) in the arches' colours. */
 
@@ -33,6 +34,8 @@ const specC: StageSpec<LarynxPose, LarynxOpts> = {
   map: 'arch46',
   caption: CAP,
   key: KEY_C,
+  site: SITE17C.larynx,
+  arrive: 'Bagoaren bi adarrak laringera doaz: laringea gertutik, bere kartilagoekin',
   steps: [
     {
       cam: VIEW(34),
@@ -47,7 +50,7 @@ const specC: StageSpec<LarynxPose, LarynxOpts> = {
       note: 'IV. eta VI. arkuetan ez dago hezurrik ez lotailurik, kartilagoak bakarrik: laringekoak',
     },
     {
-      cam: VIEW(90, 11, [0, 1.3, 0.1]),
+      cam: VIEW(90, 12.5, [0, 1.0, 0.1]),
       glide: 0.07,
       dim: ['epiglotisa'],
       names: [{ id: 'epiglotisa', sub: '"L" formako egitura', from: 0.15 }],
@@ -84,10 +87,10 @@ const specC: StageSpec<LarynxPose, LarynxOpts> = {
       glide: 0.09,
       dim: ['tiroide-goiko-atala', 'tiroide-beheko-atala'],
       names: [
-        { id: 'tiroide-goiko-atala', text: 'Tiroidearen goiko aldea', sub: 'IV. arkua', from: 0.2 },
-        { id: 'tiroide-beheko-atala', text: 'Beheko atala', sub: 'VI. arkua', from: 0.5 },
+        { id: 'tiroide-goiko-atala', text: 'Tiroidearen goiko aldea', sub: 'goranzko adarra · IV. arkua', from: 0.2 },
+        { id: 'tiroide-beheko-atala', text: 'Gorputzaren beheko atala', sub: 'VI. arkua', from: 0.5 },
       ],
-      note: 'Tiroidea bitan banatzen da: goikoa IV. arkutik, behekoa VI.etik',
+      note: 'Tiroidea bitan banatzen da: goiko aldea (goranzko adarra) IV. arkutik, gorputzaren beheko atala VI.etik',
     },
     {
       to: { split: 0 },
@@ -99,10 +102,10 @@ const specC: StageSpec<LarynxPose, LarynxOpts> = {
         { id: 'tiroide-goiko-atala', text: 'Tiroidea (goian)', sub: 'IV', small: true },
         { id: 'tiroide-beheko-atala', text: 'Tiroidea (behean)', sub: 'VI', small: true },
         { id: 'krikoide-kartilagoa', sub: 'VI', small: true },
-        { id: 'epiglotisa', sub: 'VI', small: true },
+        { id: 'epiglotisa', sub: 'IV (18. gaia)', small: true },
         { id: 'trakea', sub: 'aurreko hestea, ez arkuak', from: 0.35 },
       ],
-      note: 'Goiko tiroidea ez beste guztia VI. arkutik. Hemendik behera trakea: aurreko hestetik, ez arkuetatik',
+      note: 'Tiroidearen beheko atala eta beste kartilagoak VI. arkutik (epiglotisa: IV, 18. gaiaren arabera). Hemendik behera trakea: aurreko hestetik, ez arkuetatik',
     },
   ],
 };
@@ -117,6 +120,8 @@ const specM: StageSpec<LarynxPose, LarynxOpts> = {
   map: 'arch46',
   caption: CAP,
   key: KEY_M,
+  site: SITE17C.larynx,
+  arrive: 'Laringe bera: orain atzetik, faringea eta muskuluak gainean',
   steps: [
     {
       to: { pharynx: 1 },
@@ -143,7 +148,7 @@ const specM: StageSpec<LarynxPose, LarynxOpts> = {
     {
       to: { open: 1, intr: 1 },
       run: [0.08, 0.85],
-      cam: VIEW(186, 9.5, [0.1, -0.4, -1.2], 10),
+      cam: VIEW(198, 9.5, [-0.15, -0.5, -1.1], 10),
       glide: 0.08,
       dim: ['laringe-barneko-muskuluak', 'aritenoide-kartilagoa'],
       names: [
@@ -153,11 +158,11 @@ const specM: StageSpec<LarynxPose, LarynxOpts> = {
       note: 'Faringea kendu dugu eta eskuineko ertzatzaileak atzeratu, barrua ikusteko: VI. arkutik laringe barneko muskuluak',
     },
     {
-      to: { nerve: 1 },
+      to: { nerve: 1, open: 0 },
       run: [0.08, 0.8],
-      cam: VIEW(148, 14.5, [0.4, -0.2, -1.2], 10),
+      cam: VIEW(78, 16, [0.4, 0.3, -0.7], 8),
       glide: 0.08,
-      dim: ['bagoa', 'goiko-laringe-nerbioa', 'laringe-atzerakaria', 'tarteko-ertzatzailea', 'beheko-ertzatzailea', 'laringe-barneko-muskuluak'],
+      dim: ['bagoa', 'goiko-laringe-nerbioa', 'laringe-atzerakaria', 'tarteko-ertzatzailea', 'beheko-ertzatzailea', 'laringe-barneko-muskuluak', 'tiroide-kartilagoa', 'krikoide-kartilagoa'],
       names: [
         { id: 'bagoa', sub: 'X. bikotea', from: 0.1 },
         { id: 'goiko-laringe-nerbioa', text: 'Goiko nerbio laringeoa', sub: 'IV. arkura', from: 0.35 },
@@ -166,9 +171,9 @@ const specM: StageSpec<LarynxPose, LarynxOpts> = {
       note: 'Bagoaren lepoko adar nagusiak: goiko laringeoa IV.era, atzerakaria VI.era',
     },
     {
-      cam: VIEW(130, 19, [0.4, 0, -1]),
+      cam: VIEW(96, 20, [0.4, 0.2, -1]),
       glide: 0.08,
-      dim: ['bagoa', 'goiko-laringe-nerbioa', 'laringe-atzerakaria', 'tarteko-ertzatzailea', 'beheko-ertzatzailea', 'laringe-barneko-muskuluak'],
+      dim: ['bagoa', 'goiko-laringe-nerbioa', 'laringe-atzerakaria', 'tarteko-ertzatzailea', 'beheko-ertzatzailea', 'laringe-barneko-muskuluak', 'tiroide-kartilagoa', 'krikoide-kartilagoa'],
       names: [
         { id: 'bagoa', sub: 'nerbio parasinpatiko nagusiena' },
         { id: 'trakea', sub: 'ez arkuak', small: true, from: 0.5 },

@@ -1,9 +1,13 @@
 'use client';
 
 import './HeadMap'; // first: common.tsx and HeadMap.tsx import each other, and HeadMap needs ARCH at load
+import type { SceneProps } from '@/components/kit';
+import { Loading3D } from '@/components/kit/three/Stage3D';
 import type { V3 } from '@/lib/three-d/math';
+import { useGeoReady } from '@/lib/three-d/offthread';
 import { ARCH, BELOW, FRONT, poseStage17, type Step } from './common';
-import { NP0, nerveEnd, nerveModel, PAIRS, type NerveOpts, type NervePose } from './nerves-model';
+import { NERVE_BRAIN, NP0, nerveEnd, nerveModel, PAIRS, type NerveOpts, type NervePose } from './nerves-model';
+import { SITE17C } from './sites-c';
 
 /**
  * The cranial nerves (nerves-model.ts): the twelve pairs at the brain's base as the notes' figure of 2.1, and the
@@ -11,6 +15,15 @@ import { NP0, nerveEnd, nerveModel, PAIRS, type NerveOpts, type NervePose } from
  */
 
 const build = (pose: NervePose) => nerveModel(pose);
+
+/** The brain is sculpted once, off the main thread: the view waits for it instead of freezing the page. */
+function withBrain(View: ReturnType<typeof poseStage17>) {
+  function Scene(props: SceneProps) {
+    return useGeoReady([NERVE_BRAIN]) ? <View {...props} /> : <Loading3D />;
+  }
+  Scene.geo = ['nerve-brain'];
+  return Scene;
+}
 const CAP_BASE = 'Garuna behetik (apunteetako irudia bezala): aurrealdea goian, gorputzaren ezkerra zure eskuinean';
 const CAP_BODY = 'Bagoa aurretik: gorputzaren ezkerra zure eskuinean';
 
@@ -133,9 +146,21 @@ const pairsSteps: Step<NervePose, NerveOpts>[] = [
   },
 ];
 
-export const Pairs17 = poseStage17<NervePose, NerveOpts>(
-  { S: S_PAIRS, pose: NP0, opts: {}, caption: CAP_BASE, map: 'base', near: 1, steps: pairsSteps },
-  build,
+export const Pairs17 = withBrain(
+  poseStage17<NervePose, NerveOpts>(
+    {
+      S: S_PAIRS,
+      pose: NP0,
+      opts: {},
+      caption: CAP_BASE,
+      map: 'base',
+      near: 1,
+      site: SITE17C.nerves,
+      arrive: 'Arkuetako nerbioak garunetik irteten dira: garuna buruaren barruan, behetik ikusita',
+      steps: pairsSteps,
+    },
+    build,
+  ),
 );
 
 export const S_VAGUS = [0, 0.2, 0.42, 0.64, 0.84] as const;
@@ -143,7 +168,7 @@ export const S_VAGUS = [0, 0.2, 0.42, 0.64, 0.84] as const;
 const FULL_BODY = FRONT(46, [0.2, -14, 0], 0, 3);
 const NECK = FRONT(13, [0.2, -7.6, -0.4], 28, 4);
 
-export const Vagus17 = poseStage17<NervePose, NerveOpts>(
+export const Vagus17 = withBrain(poseStage17<NervePose, NerveOpts>(
   {
     S: S_VAGUS,
     pose: NP0,
@@ -151,6 +176,8 @@ export const Vagus17 = poseStage17<NervePose, NerveOpts>(
     caption: CAP_BODY,
     map: 'neck',
     near: 1,
+    site: SITE17C.nerves,
+    arrive: 'IV. eta VI. arkuen nerbioa garunetik dator: bagoa, garuna behetik ikusita',
     steps: [
       {
         cam: BELOW(13.2, [0, -1.4, -0.5], 0, -74),
@@ -213,4 +240,4 @@ export const Vagus17 = poseStage17<NervePose, NerveOpts>(
     ],
   },
   build,
-);
+));

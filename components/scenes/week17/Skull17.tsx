@@ -6,6 +6,7 @@ import { useGeoReady } from '@/lib/three-d/offthread';
 import type { ComponentType } from 'react';
 import { FRONT, KEY_ARCH, SIDE, TISSUE, endPose, poseStage17, type StageSpec } from './common';
 import { SKULL0, SKULL_GEO, skullModel, type SkullOpts, type SkullPose } from './skull-model';
+import { SITE17 } from './sites';
 
 /**
  * Topic 17 §1 on the fetal skull (skull-model.ts). Axes: x the fetus's left, y cranial, z ventral. Seen from above
@@ -28,6 +29,8 @@ const KEY_ORIGIN = [
   { color: TISSUE.crest, text: 'gandor neurala' },
   { color: TISSUE.paraxial, text: 'mesodermo paraxiala' },
 ] as const;
+const KEY_LATERAL = { color: TISSUE.lateral, text: 'alboko mesodermoa' } as const;
+const KEY_PLACODE = { color: TISSUE.placode, text: 'plakodak' } as const;
 const TOP = (yaw = 180, elev = 76) => FRONT(14, [0, 0.4, 0], yaw, elev);
 
 // ———————————————————————————— Sarrera ————————————————————————————
@@ -35,6 +38,8 @@ const TOP = (yaw = 180, elev = 76) => FRONT(14, [0, 0.4, 0], yaw, elev);
 export const SA = [0, 0.5] as const;
 const specA: StageSpec<SkullPose, SkullOpts> = {
   S: SA,
+  site: SITE17.skull,
+  arrive: 'Fetuaren burezurra: hemendik abiatuko gara, kraneotik faringe-arkuetara',
   pose: SKULL0,
   opts: {},
   caption: CAP,
@@ -71,6 +76,8 @@ export const Intro17 = withGeo(poseStage17(specA, build));
 export const SB = [0, 0.3, 0.55, 0.78] as const;
 const specB: StageSpec<SkullPose, SkullOpts> = {
   S: SB,
+  site: SITE17.skull,
+  arrive: 'Burezur bera, alboz: bi atal bereiziko ditugu',
   pose: SKULL0,
   opts: {},
   caption: CAP,
@@ -134,6 +141,8 @@ export const TwoParts17 = withGeo(poseStage17(specB, build));
 export const SC = [0, 0.24, 0.46, 0.68, 0.84] as const;
 const specC: StageSpec<SkullPose, SkullOpts> = {
   S: SC,
+  site: SITE17.skull,
+  arrive: 'Oinaldetik burezur osora: orain goitik, ganga eta haren josturak',
   pose: { ...SKULL0, jaw: 0 },
   opts: {},
   caption: CAP_TOP,
@@ -206,6 +215,8 @@ export const Sutures17 = withGeo(poseStage17(specC, build));
 export const SD = [0, 0.34, 0.66] as const;
 const specD: StageSpec<SkullPose, SkullOpts> = {
   S: SD,
+  site: SITE17.skull,
+  arrive: 'Ehun zatitik burezur osora: ganga mintza da oraindik, eta hezur lauak bakoitza bere zentrotik hedatzen dira',
   pose: { ...SKULL0, vault: 0, jaw: 0 },
   opts: {},
   caption: CAP,
@@ -255,54 +266,79 @@ void endPose;
 
 // ———————————————————————————— Errai kraneoa ————————————————————————————
 
-export const SE = [0, 0.36, 0.68] as const;
+export const SE = [0, 0.26, 0.56, 0.78] as const;
 const specE: StageSpec<SkullPose, SkullOpts> = {
   S: SE,
-  pose: { ...SKULL0, face: 0 },
+  site: SITE17.skull,
+  arrive: 'Burezur bera, aurretik: aurpegiko hezurrak, eta buruko egituren jatorriak',
+  // Runs on from the sutures stage: the fontanelles stay as that stage left them.
+  pose: { ...endPose(specC).pose, face: 0, jaw: 1 },
   opts: {},
   caption: CAP,
   map: 'face-bones',
   steps: [
     {
-      to: { face: 1 },
-      run: [0.1, 0.9],
-      cam: FRONT(13, [0, -1.3, 0.9], 48, 2),
+      // Neural crest: the face's bones form already wearing their origin's colour.
+      to: { face: 1, faceOrigin: 1 },
+      run: [0.1, 0.85],
+      cam: FRONT(13, [0, -1.3, 0.9], 44, 2),
       fit: false,
       dim: ['errai-kraneoa'],
+      key: KEY_ORIGIN.slice(0, 1),
+      keyTitle: 'Kolorea = jatorria',
       names: [
         { id: 'hezur-maxilarra', from: 0.25 },
         { id: 'zigomatikoa', from: 0.4 },
         { id: 'baraila', from: 0.55 },
       ],
-      note: 'Errai kraneoa: aurpegiko hezurrak, mintzezko hezurtzearen ondorioz (kartilagorik gabe)',
+      note: 'Gandor neuraleko zeluletatik: errai kraneoko hezurrak',
     },
     {
-      to: { faceOrigin: 1 },
-      run: [0.08, 0.55],
-      cam: FRONT(13, [0, -1.3, 0.9], 28, 2),
+      // Paraxial mesoderm: the dura over the encephalon (skullcap off) and the somatic muscles. Lateral mesoderm: cricoid, arytenoids.
+      to: { lid: 1, membrane: 0, dura: 1, somatic: 1, larynx: 1 },
+      run: [0.06, 0.6],
+      cam: FRONT(23, [0, -2.2, 0.4], 52, 8),
       fit: false,
-      glide: 0.05,
-      dim: ['errai-kraneoa'],
-      key: KEY_ORIGIN.slice(0, 1),
+      glide: 0.07,
+      dim: ['dura-materra', 'muskulu-somatikoak', 'krikoide-kartilagoa', 'aritenoide-kartilagoa'],
+      key: [...KEY_ORIGIN, KEY_LATERAL],
       keyTitle: 'Kolorea = jatorria',
-      names: [{ id: 'errai-kraneoa', text: 'Errai kraneoa', sub: 'gandor neuraleko zeluletatik', from: 0.2 }],
-      note: 'Hemengo hezurrak gandor neuraleko zeluletatik garatzen dira',
+      names: [
+        { id: 'dura-materra', text: 'Dura materra', sub: 'mesodermo paraxiala', from: 0.3 },
+        { id: 'muskulu-somatikoak', text: 'Muskulu somatikoak', sub: 'borondatezkoak · mesodermo paraxiala', from: 0.45 },
+        { id: 'krikoide-kartilagoa', sub: 'alboko mesodermoa', from: 0.6 },
+        { id: 'aritenoide-kartilagoa', sub: 'alboko mesodermoa', from: 0.7 },
+      ],
+      note: 'Mesodermo paraxialetik: muskulu somatikoak eta dura materra. Alboko mesodermotik: aritenoide eta krikoide kartilagoak',
     },
     {
-      to: { faceOrigin: 0, archTint: 1 },
-      run: [0.08, 0.6],
-      cam: SIDE(15, [0, -1.6, 0.6], 66, 2),
-      glide: 0.05,
+      // A window in the dura, a smaller one in the arachnoid: the two inner meninges are neural crest.
+      to: { lepto: 1 },
+      run: [0.12, 0.7],
+      cam: FRONT(12.5, [0.5, 0.7, 0.1], 62, 30),
       fit: false,
-      dim: ['errai-kraneoa', 'hioide-hezurra', 'estiloide-apofisia', 'tenporalaren-ezkata'],
-      key: KEY_ARCH.slice(0, 3),
-      keyTitle: 'Kolorea = arkua',
+      glide: 0.07,
+      dim: ['aragnoidea-pia', 'dura-materra'],
+      key: KEY_ORIGIN,
+      keyTitle: 'Kolorea = jatorria',
       names: [
-        { id: 'baraila', sub: 'I. arkua', from: 0.2 },
-        { id: 'estiloide-apofisia', sub: 'II. arkua', from: 0.4 },
-        { id: 'hioide-hezurra', text: 'Hioide hezurra', from: 0.6 },
+        { id: 'aragnoidea-pia', text: 'Aragnoidea eta pia materra', sub: 'gandor neurala', from: 0.3 },
+        { id: 'dura-materra', text: 'Dura materra', sub: 'mesodermo paraxiala', small: true },
       ],
-      note: '1. eta 2. arku faringeoen/brankialen eratorriak dira',
+      note: 'Hiru meningeetatik bi gandor neuraletik: aragnoidea eta pia materra. Dura materra, mesodermo paraxialetik',
+    },
+    {
+      // The encephalon away: on the base, the ganglia of V, VII, IX and X, each half placode, half neural crest.
+      to: { dura: 0, lepto: 0, ganglia: 1 },
+      run: [0.06, 0.55],
+      cam: FRONT(8.8, [0.8, -1.05, -0.45], 152, 66),
+      fit: false,
+      glide: 0.08,
+      dim: ['nerbio-kranialen-gongoilak'],
+      key: [KEY_ORIGIN[0], KEY_PLACODE],
+      keyTitle: 'Kolorea = jatorria',
+      names: [{ id: 'nerbio-kranialen-gongoilak', text: 'V, VII, IX eta X nerbioen gongoilak', sub: 'plakodak + gandor neurala', from: 0.3 }],
+      note: 'Garuna kenduta, oinaldean: V, VII, IX eta X nerbioen gongoilak (aurretik atzera). Zelulak plakodetatik eta gandor neuraletik',
     },
   ],
 };

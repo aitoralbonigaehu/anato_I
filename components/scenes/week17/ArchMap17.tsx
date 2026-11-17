@@ -30,8 +30,8 @@ const NERVE_ID: Record<string, string> = { I: 'trigeminoa', II: 'aurpegi-nerbioa
 
 const ROWS: Row[] = [
   {
-    arch: 'I', color: ARCH.i, nerve: 'V', name: 'Trigeminoa', sub: 'V3, barail-nerbioa',
-    car: [{ text: 'Meckel kartilagoa', head: true }, { text: 'Baraila · Mailua' }, { text: 'Maxilarra · Zigomatikoa' }, { text: 'Tenporalaren ezkata' }],
+    arch: 'I', color: ARCH.i, nerve: 'V3', name: 'Barail-nerbioa', sub: 'trigeminoaren 3. adarra',
+    car: [{ text: 'Meckel kartilagoa', head: true }, { text: 'Baraila · Mailua' }, { text: 'Maxilarra · Zigomatikoa' }, { text: 'Loki hezurraren atal bat' }],
     mus: [{ text: 'Murtxikatzaileak', head: true }, { text: 'Maseteroa · Tenporala' }, { text: 'Milohioideoa' }],
   },
   {

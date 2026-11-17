@@ -1,10 +1,10 @@
 import type { StageDef } from '@/lib/sim/types';
 import { Muscles1, Muscles2, SM1, SM2 } from '@/components/scenes/week17/Muscles17';
 
-const FILE = '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA).pdf';
+const FILE = '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA) fitxategiaren kopia.pdf';
 const src = (section: string) => ({ file: FILE, section });
 const ORIENT = { top: 'Kraneala', bottom: 'Kaudala' };
-const HEADV = 'Fetu-burua 3D (apunteetako 6. orriko irudia): muskulu bakoitza bere arkuaren kolorean (I laranja, II urdina, III horia, IV gorria, VI berdea). Ezkerretik ikusita aurpegia zure ezkerrean dago. Arrastatu biratzeko.';
+const HEADV = 'Fetu-burua 3D (apunteetako muskuluen irudia): muskulu bakoitza bere arkuaren kolorean (I laranja, II urdina, III horia, IV gorria, VI berdea). Ezkerretik ikusita aurpegia zure ezkerrean dago. Arrastatu biratzeko.';
 const v = (scene: StageDef['views'][number]['scene'], label: string, description: string) => ({ id: '3d', label, plane: 'eskema' as const, description, orientation: ORIENT, scene, travel: false as const });
 
 export const stages17e: StageDef[] = [
@@ -21,9 +21,9 @@ export const stages17e: StageDef[] = [
     beats: [
       {
         at: SM1[0],
-        notes: ['w17/2.2.3/p1/s1', 'w17/2.2.3/p2/s1', 'w17/2.2.3/p3/s1', 'w17/2.2.3/p7/s1'],
+        notes: ['w17/2.2.3/p2/s1', 'w17/2.2.3/p3/s1', 'w17/2.2.3/p6/s1-s2'],
         idea: 'Muskuluak migratzen dira: jatorria nerbioak esaten du.',
-        text: 'Garapenean muskuluek migratu egiten dute, eta ez da erraza jakitea zein arkutatik datozen. Horregatik begiratzen diogu nerbioari: inerbatzen dituen nerbioaren arabera dakigu muskulu baten jatorria. Lehen arkuarena barail-nerbioa da (V3).',
+        text: 'Enbrioiaren garapenean muskuluek migratu egiten dute, eta ez da erraza jakitea zein arkutakoa den haien jatorria. Horregatik begiratzen diogu nerbioari: inerbatzen dituzten nerbioen arabera jakin dezakegu zein arkutatik datozen muskuluak. Lehen arkuarena barail-nerbioa da (V3).',
         focus: ['barail-nerbioa'],
         exam: 'Muskulu baten jatorria arkua inerbatzen duen nerbioak esaten du.',
         view: '3d',
@@ -32,31 +32,32 @@ export const stages17e: StageDef[] = [
         at: SM1[1],
         notes: ['w17/2.2.3/p3/s2', 'w17/2.2.3/p3/s3'],
         idea: 'Maseteroa eta tenporala: muskulu murtxikatzaileak, I. arkua.',
-        text: 'Lehen arkutik batez ere muskulu murtxikatzaileak ateratzen dira. Pare bat izendatzeko: maseteroa eta tenporala, muskulu indartsuenetarikoak, baraila igotzen dutenak.',
+        text: 'Lehen arkutik batez ere muskulu murtxikatzaileak ateratzen dira. Pare bat izendatzeko: maseteroa eta tenporala, muskulu indartsuenetarikoak, baraila igotzen dutenak, murtxikapenaren eragileak.',
         focus: ['maseteroa', 'muskulu-tenporala'],
+        exam: 'Maseteroa eta tenporala: I. arkua, V3; baraila igotzen dute.',
         view: '3d',
       },
       {
         at: SM1[2],
         notes: ['w17/2.2.3/p4/s1'],
         idea: 'Milohioideoa: ahoaren zoruaren muskulu nagusia.',
-        text: 'Ahoaren zorua eratzen duten muskuluak ere arku honetatik datoz, degluzioan parte hartzen dutenak. Milohioideoa da ahoaren zorua eratzen duen muskulu nagusiena.',
+        text: 'Mihiaren zorua eratzen duten eta haren mugimenduetan parte hartzen duten muskuluak ere arku honetatik datoz, degluzioan parte hartzen dutenak. Milohioideoa da ahoaren zorua eratzen duen muskulu nagusiena.',
         focus: ['milohioideoa'],
         view: '3d',
       },
       {
         at: SM1[3],
-        notes: ['w17/2.2.3/p4/s1', 'w17/2.2.3/p5/s1', 'w17/2.2.3/p5/s2', 'w17/2.2.3/p7/s2'],
-        idea: 'Digastrikoaren aurreko sabela: hioidetik barailera; baraila jaisten du.',
-        text: 'Digastrikoak bi sabel ditu (di = bi, gastriko = sabela) eta V forma du. Belarriaren mailatik atzetik aurrera pasatzen da. Aurreko sabela hioide hezurretik barailera doan atala da, eta muskuluaren funtzioa baraila jaistea da.',
+        notes: ['w17/2.2.3/p4/s1'],
+        idea: 'Digastrikoa: bi sabel, V forma; aurreko sabela I. arkutik; baraila jaisten du.',
+        text: 'Digastrikoak bi sabel ditu (di = bi, gastriko = sabela), aurrekoa eta atzekoa, eta V forma du. Aurreko sabela lehenengo arkuaren eratorria da. Muskuluaren funtzioa baraila jaistea da.',
         focus: ['digastrikoaren-aurreko-sabela'],
         view: '3d',
       },
       {
         at: SM1[4],
-        notes: ['w17/2.2.3/p6/s1', 'w17/2.2.3/p6/s2'],
-        idea: 'Muskulu bat, bi jatorri: aurreko sabela V3, atzeko sabela VII.',
-        text: 'Sabel bakoitzak eratorri desberdina du. Aurreko sabela barail-nerbioak (V. bikote kraneala) inerbatzen du, eta atzeko sabela VII. bikote kranealak, jatorri ezberdina dutelako. Horregatik ageri da muskulu bakarra bi koloretan.',
+        notes: ['w17/2.2.3/p5/s1'],
+        idea: 'Muskulu bat, bi jatorri: aurreko sabela V3, atzeko sabela II. arkuko nerbioa (VII).',
+        text: 'Muskulu digastriko honek bi jatorri ditu. Aurreko sabela, lepotik barailaren behekalderaino doana, lehen arkuaren eratorria da, eta barail-nerbioak mugitzen du. Atzeko sabelak beste jatorri bat du: bigarren arkuko nerbioak inerbatzen du, VII.ak. Horregatik ageri da muskulu bakarra bi koloretan.',
         focus: ['digastrikoaren-aurreko-sabela', 'digastrikoaren-atzeko-sabela'],
         exam: 'Digastrikoa: aurreko sabela V3 (I. arkua), atzeko sabela VII (II. arkua).',
         ask: {
@@ -76,34 +77,34 @@ export const stages17e: StageDef[] = [
     day: '20. astea (fetua)',
     dayRange: [28, 140],
     title: 'Bigarren arkuaren muskuluak',
-    subtitle: 'Aurpegi-nerbioa: muskulu mimikoak, aurikularrak, okzipitala, digastrikoaren atzeko sabela, estilohioideoa eta platisma',
-    intro: 'Bigarren arkuko muskulu guztiak aurpegi-nerbioak inerbatzen ditu. Aurpegiko muskulu txiki guztiak hemendik datoz, eta larruazalean txertatuta daude.',
+    subtitle: 'Muskulu mimikoak eta platisma, aurikularrak, okzipitala, digastrikoaren atzeko sabela eta estilohioideoa: VII',
+    intro: 'Bigarren arkutik ateratzen diren muskuluak muskulu mimikoak dira: aurpegiko borondatezko muskulu somatikoak, aurpegi-nerbioak (VII) mugituak. Gehienak larruazalean txertatuta daude.',
     duration: 42,
     source: src('2.3.3. Muskuluak'),
     views: [v(Muscles2, 'Burua 3D', HEADV)],
     beats: [
       {
         at: SM2[0],
-        notes: ['w17/2.3.3/p1/s1', 'w17/2.3.3/p2/s1', 'w17/2.3.3/p3/s1'],
-        idea: 'II. arkuko muskulu guztiak: aurpegi-nerbioa (VII).',
-        text: 'Arku honetatik ateratzen diren muskuluak aurpegi-nerbioak inerbatzen ditu. Hori da haien arrastoa.',
+        notes: ['w17/2.3.3/p2/s1', 'w17/2.3.3/p3/s1', 'w17/2.3.2/p3/s3'],
+        idea: 'II. arkuko muskuluak: mimikoak, aurpegi-nerbioak (VII) mugituak.',
+        text: 'Arku honetatik ateratzen diren muskuluak muskulu mimikoak deitzen dira: mimikan parte hartzen dute, hau da, aurpegiko borondatezko muskulu somatikoak dira. Aurpegi-nerbioak mugitzen ditu, VII.ak: hori da haien arrastoa.',
         focus: ['aurpegi-nerbioa'],
         view: '3d',
       },
       {
         at: SM2[1],
-        notes: ['w17/2.3.3/p3/s2', 'w17/2.3.3/p3/s3'],
-        idea: 'Muskulu mimikoak: larruazalean txertatuta, keinuak.',
-        text: 'Aurpegiko muskulu txiki guztiak eratzen dira: muskulu mimikoak, aurpegiko keinuak ahalbidetzen dituztenak. Gehienak larruazalean txertatuta daude, larruazala mugitzeko erabiltzen ditugulako.',
+        notes: ['w17/2.3.3/p3/s1', 'w17/2.3.3/p3/s2'],
+        idea: 'Muskulu mimikoak: larruazalean txertatuta.',
+        text: 'Muskulu mimiko gehienak larruazalean txertatuta daude, larruazala mugitzeko erabiltzen ditugulako: aurpegiko keinuak.',
         focus: ['muskulu-mimikoak', 'begietako-orbikularra', 'ahoko-orbikularra'],
-        exam: 'Muskulu mimikoak: II. arkua, aurpegi-nerbioa.',
+        exam: 'Muskulu mimikoak: II. arkua, aurpegi-nerbioa; larruazalean txertatuta.',
         view: '3d',
       },
       {
         at: SM2[2],
         notes: ['w17/2.3.3/p4/s1', 'w17/2.3.3/p4/s2'],
         idea: 'Aurikularrak (funtzio gabeak gizakietan) eta okzipitala.',
-        text: 'Gainera muskulu aurikularrak (belarria mugitzeko, baina gizakietan funtzio gabeak) eta okzipitala eratzen dira.',
+        text: 'Gainera muskulu aurikularrak (belarria mugitzeko, baina gizakietan funtzio gabeak) eta okzipitala eratzen dira hemendik.',
         focus: ['muskulu-aurikularrak', 'okzipitala'],
         view: '3d',
       },
@@ -117,15 +118,15 @@ export const stages17e: StageDef[] = [
       },
       {
         at: SM2[4],
-        notes: ['w17/2.3.3/p5/s1'],
-        idea: 'Platisma: lepoaren larruazala mugitzen du.',
-        text: 'Azkenik, platisma ere eratzen da: lepoaren larruazala mugitzeaz arduratzen den muskulua.',
+        notes: ['w17/2.3.3/p3/s3'],
+        idea: 'Platisma: lepoko azalaren azpian, fina eta zapala; muskulu mimikoen barnean.',
+        text: 'Platisma muskulua ere bigarren arkutik eratzen da: lepoko azalaren azpian dago, fina eta zapala da, eta muskulu mimikoen barnean sar genezake.',
         focus: ['platisma'],
         view: '3d',
       },
     ],
     structures: ['aurpegi-nerbioa', 'muskulu-mimikoak', 'begietako-orbikularra', 'ahoko-orbikularra', 'muskulu-aurikularrak', 'okzipitala', 'digastrikoaren-atzeko-sabela', 'estilohioideoa', 'estiloide-apofisia', 'platisma'],
-    keyPoints: ['II. arkuko muskulu guztiak: aurpegi-nerbioa (VII).', 'Muskulu mimikoak, aurikularrak, okzipitala, digastrikoaren atzeko sabela, estilohioideoa, platisma.'],
+    keyPoints: ['II. arkuko muskuluak: mimikoak, borondatezkoak (somatikoak); aurpegi-nerbioa (VII).', 'Platisma (lepoko azalaren azpian, fina eta zapala) mimikoen barnean; aurikularrak, okzipitala, digastrikoaren atzeko sabela, estilohioideoa.'],
     cautions: ['«Hezur estilohioideoa» idatzita dago apunteetan, baina muskulua da (apunteetako irudiak M. estilohioidea dio).'],
   },
 ];

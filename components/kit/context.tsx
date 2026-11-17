@@ -160,6 +160,13 @@ export const BridgeLookContext = createContext<BridgeLook | null>(null);
 export const UnderlayContext = createContext<Underlay | null>(null);
 
 /**
+ * True inside the picture a scene change leaves behind to fade out (the shell's cross-fade). A 3D view that
+ * hands over to the next one by itself (Stage3D `handover`: one camera flight, the old model fading inside
+ * the new view) reads it to stay out of the way.
+ */
+export const GhostContext = createContext(false);
+
+/**
  * Inside a SceneView every <Label> hands its props to this collector instead of drawing itself; the
  * view's label layer then lays the names out together (so columns follow their points and no two
  * leaders cross) and draws them. Outside a SceneView labels draw themselves, as before.

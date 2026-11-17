@@ -2,6 +2,9 @@ import type { StructureDef } from '@/lib/sim/types';
 
 /** Topic 17 §1. Vault, suture and fontanelle ids are owned by topic 8 and reused as they are. */
 export const structures17a: StructureDef[] = [
+  { id: 'dura-materra', name: 'Dura materra', es: 'Duramadre', category: 'mesodermoa', color: '#e58a8a', definition: 'Hiru meningeetako bat. Mesodermo paraxialetik ateratzen da.', origin: 'Mesodermo paraxiala.', related: ['aragnoidea-pia', 'entzefaloa'] },
+  { id: 'aragnoidea-pia', name: 'Aragnoidea eta pia materra', es: 'Aracnoides y piamadre', category: 'ektodermoa', color: '#b58cf2', definition: 'Hiru meningeetatik bi: gandor neuraleko zeluletatik sortzen dira.', origin: 'Gandor neurala.', related: ['dura-materra', 'entzefaloa'] },
+  { id: 'muskulu-somatikoak', name: 'Muskulu somatikoak', es: 'Músculos somáticos', aka: ['Borondatezko muskuluak'], category: 'mesodermoa', color: '#e58a8a', definition: 'Errai kraneoko muskulu somatikoak (borondatezkoak). Mesodermo paraxialetik ateratzen dira. Irudian, begiaren muskuluak adibide gisa.', origin: 'Mesodermo paraxiala.', related: ['dura-materra'] },
   { id: 'entzefaloa', name: 'Entzefaloa', es: 'Encéfalo', category: 'ektodermoa', color: '#eab7b0', definition: 'Kraneoaren barnean dagoen nerbio-sistema zentralaren atala; neurokraneoak inguratu eta babesten du.', related: ['neurokraneoa'] },
   { id: 'mintza', name: 'Mintza', es: 'Membrana', category: 'mesodermoa', color: '#8fc7ea', definition: 'Entzefaloaren inguruko mesenkimazko mintza: hemen sortzen dira buru gangako hezur lauak, zuzenean.', related: ['buru-ganga', 'mintzezko-hezurtzapena'] },
   { id: 'hezur-nasala', name: 'Sudur-hezurra', es: 'Hueso nasal', category: 'mesodermoa', color: '#efe5cf', definition: 'Sudurraren sustraiko hezur txikia, errai kraneokoa.', related: ['errai-kraneoa'] },

@@ -5,7 +5,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { advance, start, type Nav, type NavAction } from '@/components/shell/tour/nav';
 import { findTargets, overlap, placeCard, type Box, type ElementLike, type RootLike } from '@/components/shell/tour/geometry';
-import { HOME_STOPS, SIM_STOPS, resolveStop, type Stop } from '@/components/shell/tour/steps';
+import { BEL_STOPS, HOME_STOPS, SIM_STOPS, resolveStop, type Stop } from '@/components/shell/tour/steps';
 import { endTour, hideOffer, isTourBusy, resetTourStore, showOffer, startTour, tourState, wasOffered } from '@/components/shell/tour/store';
 import { offerSpot } from '@/components/shell/tour/TourHost';
 import { Help } from '@/components/shell/Help';
@@ -236,10 +236,10 @@ const code = [...sources('components'), ...sources('app')].join('\n');
 const has = (id: string) => code.includes(`data-tour="${id}"`);
 
 describe('guide copy', () => {
-  const all = [...SIM_STOPS, ...HOME_STOPS].flatMap((s) => [s.title, s.text, ...s.targets.flatMap((v) => [v.title ?? '', v.text ?? ''])]);
+  const all = [...SIM_STOPS, ...HOME_STOPS, ...BEL_STOPS].flatMap((s) => [s.title, s.text, ...s.targets.flatMap((v) => [v.title ?? '', v.text ?? ''])]);
 
   it('is short: one sentence, at most two, per stop', () => {
-    for (const s of [...SIM_STOPS, ...HOME_STOPS])
+    for (const s of [...SIM_STOPS, ...HOME_STOPS, ...BEL_STOPS])
       for (const t of [s.text, ...s.targets.map((v) => v.text ?? '')].filter(Boolean)) {
         expect(t.split(/[.!?](?:\s|$)/).filter((x) => x.trim()).length, t).toBeLessThanOrEqual(2);
         expect(t.length, t).toBeLessThanOrEqual(170);

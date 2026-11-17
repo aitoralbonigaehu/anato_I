@@ -35,8 +35,11 @@ FILES = [
     ('14.GAIA_DIGESTIO APARATUA 1.ATALA (Zuzenduta).pdf', '14.GAIA_DIGESTIO APARATUA 2.Atala (Zuzenduta).docx.pdf'),
     '15._GAIA_SISTEMA_UROGENITALA_Zuzenduta.pdf',
     '16_GAIA_SISTEMA_UROGENITALA_GONADAK_zuzenduta.pdf',
-    '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA).pdf',
+    # Topic 17: the corrected notes of 2026-11-16 (Google Docs export, named "... fitxategiaren kopia"); same extraction rules.
+    '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA) fitxategiaren kopia.pdf',
     '18. GAIA_ Burua eta lepoa ll (Zuzenduta).pdf',
+    # Topic 19 came as DOCX only: exported to PDF with Word (same name + .pdf), text unchanged.
+    '19. GAIA. NERBIO SISTEMA (zuzendu gabe).docx.pdf',
 ]
 
 # Week 14 part 2's unnumbered headings open sections of their own.
@@ -58,7 +61,7 @@ def block_text(block):
 def furniture(line, page):
     text = norm(''.join(s['text'] for s in line['spans']))
     y = line['bbox'][1]
-    return (y < 65 and bool(re.search(r'GIZA ANATOMIA|ANATOMIA I|MEDIKUNTZA 1|RAFAEL SARRIA|31 TALDEA', text, re.I)) or (y < 90 and bool(re.fullmatch(r'31\. TALDEA \d{4}/\d\d/\d\d', text)))) or (y > page.rect.height - 65 and bool(re.fullmatch(r'\d+', text)))
+    return (y < 65 and bool(re.search(r'GIZA ANATOMIA|ANATOMIA I|MEDIKUNTZA 1|RAFAEL SARRIA|31 TALDEA', text, re.I)) or (y < 90 and bool(re.fullmatch(r'31\. TALDEA \d{4}/\d\d/\d\d', text))) or (y < 65 and bool(re.fullmatch(r'3\. taldea', text)))) or (y > page.rect.height - 65 and bool(re.fullmatch(r'\d+', text)))
 
 
 def compact(parts):
@@ -81,7 +84,7 @@ def split_sentences(parts, week=0):
         prefix = text[:m.start()]
         token = re.search(r'[\w,]+$', prefix)
         word = token.group() if token else ''
-        if word.isdigit() or re.fullmatch(r'\d+,\d+', word) or len(word) == 1 or word.lower() in {'adib', 'etab', 'etc', 'dr', 'irud', 'vs'} or (week == 12 and word == 'ezk') or (week in {9, 12, 14} and re.fullmatch(r'[IVX]+', word)):
+        if word.isdigit() or re.fullmatch(r'\d+,\d+', word) or len(word) == 1 or word.lower() in {'adib', 'etab', 'etc', 'dr', 'irud', 'vs'} or (week == 12 and word == 'ezk') or (week in {9, 12, 14, 19} and re.fullmatch(r'[IVX]+', word)):
             continue
         ends.append(m.end())
     if not ends or ends[-1] != len(text):
@@ -193,7 +196,8 @@ def extract(path, week, part=1, counts=None):
             kind = 'title'
         elif heading:
             # "28. EGUNETIK AURRERA" and week 8's "5. astea" are headings inside a section.
-            if int(number.group(1).split('.')[0]) <= 9 and not re.match(r'^\d+\.\s*astea', text, re.I):
+            # Topic 19 numbers its sections up to 13.
+            if int(number.group(1).split('.')[0]) <= (13 if week == 19 else 9) and not re.match(r'^\d+\.\s*astea', text, re.I):
                 section = number.group(1)
                 kind = 'h2' if '.' in section else 'h1'
             else:
@@ -201,7 +205,7 @@ def extract(path, week, part=1, counts=None):
         elif re.match(r'^(?:[●•➔\-]|\d+\.\u200b)', text) or (week == 14 and re.match(r'^[a-z]\.​', text)):
             kind = 'li'
         # Weeks 11–14 wrap body text beside their figures (indented lines); week 12's tables have a right column.
-        elif (line['italic'] and line['size'] <= 11.2 and len(text) < 110 and line['box'][0] > 100) or re.match(r'^\d+\.?\s*irudia', text, re.I) or (week not in {11, 12, 13, 14} and line['box'][0] > 150 and len(text) < 100 and not line['bold']):
+        elif (line['italic'] and line['size'] <= 11.2 and len(text) < 110 and line['box'][0] > 100) or re.match(r'^\d+\.?\s*irudia', text, re.I) or (week not in {11, 12, 13, 14, 19} and line['box'][0] > 150 and len(text) < 100 and not line['bold']):
             kind = 'caption'
         elif week == 14 and part == 1 and line['all_italic'] and line['size'] <= 11.2 and len(text) < 110:
             # Week 14's first caption sits left of its figure, at body indent.

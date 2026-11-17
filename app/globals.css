@@ -4993,6 +4993,12 @@ a.mg-chip:hover {
   animation: ghost-out 0.9s ease forwards;
 }
 
+/* A 3D view that takes over by one camera flight (Stage3D handover) is there from its first frame: the
+   model before fades inside it, so the new picture does not fade in over it. */
+.scene-enter:has(.stage3d.is-handover) {
+  animation: none;
+}
+
 /* Camera move: of the old drawing left in place, only its names show (fading). */
 .travel-names * {
   visibility: hidden;
@@ -13264,6 +13270,11 @@ kbd {
 .stage3d-hit {
   fill: transparent;
   transition: fill-opacity 0.35s ease;
+}
+
+/* With the WebGL picture up the view points by what the eye sees (lib/three-d/pick.ts), not by these outlines. */
+.stage3d.is-gl .stage3d-hit {
+  pointer-events: none;
 }
 
 .stage3d.is-gl .stage3d-flat {

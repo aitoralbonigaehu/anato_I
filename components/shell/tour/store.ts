@@ -6,7 +6,7 @@ import { useSyncExternalStore } from 'react';
  * The guide ("Gida"): one short tour per place. The home page teaches where to start; the simulator
  * teaches how to study. Any button can start one; the place's <TourHost> draws it.
  */
-export type TourId = 'sim' | 'home';
+export type TourId = 'sim' | 'home' | 'bel';
 
 type State = { active: TourId | null; offer: TourId | null; run: number };
 
@@ -71,7 +71,8 @@ export function wasOffered(id: TourId): boolean {
   }
 }
 
-function markOffered(id: TourId) {
+/** Remembered as offered (the first-visit welcome offered the guide itself). */
+export function markOffered(id: TourId) {
   try {
     window.localStorage.setItem(key(id), '1');
   } catch {

@@ -324,11 +324,14 @@ export function muscleModel(pose: MusclePose): PoseModel {
   bonePatch('mand', 'baraila', MANDIBLE_AY, MANDIBLE_AY.map(([a, y]): P2 => [a, y + 0.3]), pose.b1, 'i');
   bonePatch('maxi', 'hezur-maxilarra', [[0.14, -0.42], [0.5, -0.4], [0.88, -0.32]], [[0.14, -0.02], [0.42, 0.02], [0.88, 0.0]], pose.b1, 'i');
   bonePatch('zygo', 'zigomatikoa', [[0.92, -0.14], [1.2, -0.12], [1.52, -0.1]], [[0.92, 0.04], [1.2, 0.03], [1.52, 0.02]], pose.b1, 'i');
-  bonePatch('squa', 'tenporalaren-ezkata', [[1.3, 0.05], [1.65, 0.05], [2.0, 0.05]], [[1.3, 0.72], [1.65, 0.86], [2.0, 0.72]], pose.b1, 'i');
+  // The squama stays neutral (the notes do not give it to arch I); arch I's share of the temporal is the small part by the ear.
+  bonePatch('squa', 'tenporalaren-ezkata', [[1.3, 0.05], [1.65, 0.05], [2.0, 0.05]], [[1.3, 0.72], [1.65, 0.86], [2.0, 0.72]], 0, 'i');
+  bonePatch('tymp', 'loki-hezurraren-atal-tinpanikoa', [[1.54, -0.42], [1.63, -0.45], [1.72, -0.42]], [[1.54, -0.16], [1.63, -0.13], [1.72, -0.16]], pose.b1, 'i');
   pts['baraila'] = HEAD(0.95, -1.05);
   pts['hezur-maxilarra'] = HEAD(0.45, -0.2);
   pts['zigomatikoa'] = HEAD(1.2, -0.05);
   pts['tenporalaren-ezkata'] = HEAD(1.66, 0.45);
+  pts['loki-hezurraren-atal-tinpanikoa'] = HEAD(1.61, -0.3);
   const hb = (key: string, id: string, line: V3[], r: number, k: number, arch: keyof typeof ARCH_DEEP) => items.push({ key, id, ...vessel(line, { r0: r, r1: r * 0.8, sides: 14, n: 14, capStart: true, capEnd: true })!, color: bone(k, arch), deep: boneDeep(k, arch), tissue: 'bone' });
   hb('styL', 'estiloide-apofisia', STYLOID, 0.06, pose.b2, 'ii');
   hb('styR', 'estiloide-apofisia', STYLOID.map((p) => X(-1, p)), 0.06, pose.b2, 'ii');
@@ -410,9 +413,12 @@ export function muscleModel(pose: MusclePose): PoseModel {
   }
   // The platysma: a sheet under the neck's skin, drawn on the embryo's right only (as the notes' figure), so the left stays open.
   if (pose.platysma > 0.01) {
-    const NECK: SF = (a, y) => [1.22 * Math.sin(a), y, -0.2 + 1.38 * Math.cos(a)];
-    mus('platysma', 'platisma', patch('platysma', { sf: NECK, A: [[0.12, -1.42], [0.16, -2.4], [0.2, -3.6]], B: [[1.45, -1.3], [1.75, -2.4], [2.0, -3.6]], t: 0.05, fib: 14, mirror: true, from: (p) => [0, p[1], -0.2] }, pose.platysma), 'ii');
-    pts['platisma'] = [-1.02, -2.5, 0.35];
+    // It lies on the neck itself (the head's own surface, a hair above it), from the jaw's border down to the
+    // clavicle: thin and flat, so the fibres and the neck under it both read.
+    const p = patch('platysma3', { sf: HEAD, A: [[0.1, -1.28], [0.12, -2.3], [0.14, -3.62]], B: [[1.3, -1.12], [1.5, -2.3], [1.62, -3.62]], t: 0.035, lift: 0.075, fib: 26, mirror: true, from: (q) => [0, q[1], q[1] < -1.6 ? -0.84 : -0.3] }, pose.platysma);
+    items.push({ key: 'platysma', id: 'platisma', ...p, color: mixHex(ARCH.ii, '#ffffff', 0.18), deep: ARCH_DEEP.ii, tissue: 'muscle', opacity: 0.78 });
+    const pm = HEAD(0.85, -2.5);
+    pts['platisma'] = [-pm[0] * 1.04, pm[1], pm[2] * 1.04];
   }
 
   // Arch III

@@ -114,6 +114,8 @@ export interface UroOpts {
   /** The yolk sac and its stalk (0..1, topic 16's germ cells). */
   yolk?: number;
   dim?: { ids: readonly string[]; k: number } | null;
+  /** The wall's own colours (topic 16 draws all its grounds in one lighter tone); default `UC`'s. */
+  tone?: { wall: string; wallDeep: string; cut: string; cutDeep: string };
 }
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
@@ -153,6 +155,8 @@ const WOLFF_X = 1.1;
 
 /** The mesonephric duct of one side: down the ridge's lateral edge, then medially into the cloaca. */
 export const wolffLine = (s: number) => L([X(s, [WOLFF_X, 2.25, -0.42]), X(s, [WOLFF_X, 0.0, -0.4]), X(s, [WOLFF_X, -2.8, -0.38]), X(s, [0.92, -3.85, -0.12]), X(s, [0.42, -4.55, 0.15])], 40);
+/** The ascent's stages at which the kidney takes a new artery (the first from the common iliac). */
+const RENAL_LEVELS = [0, 0.45, 1];
 /** The kidney's centre during the ascent. */
 export const kidneyAt = (s: number, a: number): V3 => mix3(X(s, [0.95, -3.4, -0.82]), X(s, [1.08, -0.7, -0.95]), a);
 
@@ -187,8 +191,8 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
   const wall = (o.wall ?? 1) * body;
   if (wall > 0.01) {
     const { surface, cut } = WALL();
-    items.push({ key: 'wall', ...surface, color: UC.wall, deep: UC.wallDeep, tissue: 'membrane', opacity: wall, quiet: true, outline: false, ground: true });
-    items.push({ key: 'wallcut', ...cut, color: UC.wallCut, deep: UC.wallCutDeep, tissue: 'mesenchyme', opacity: wall, quiet: true, outline: true, ground: true });
+    items.push({ key: 'wall', ...surface, color: o.tone?.wall ?? UC.wall, deep: o.tone?.wallDeep ?? UC.wallDeep, tissue: 'membrane', opacity: wall, quiet: true, outline: false, ground: true });
+    items.push({ key: 'wallcut', ...cut, color: o.tone?.cut ?? UC.wallCut, deep: o.tone?.cutDeep ?? UC.wallCutDeep, tissue: 'mesenchyme', opacity: wall, quiet: true, outline: true, ground: true });
   }
   if (body > 0.01) {
     if (wall < 0.99) {
@@ -359,11 +363,36 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
         pts['giltzurruna'] = add(K, [0.25, 0.15, 0.1]);
         pts['metanefrosa'] = pts['blastema-metanefrikoa'];
       }
-      // Its artery from the aorta at the kidney's level of the moment (new ones as it climbs).
+      // Its arteries (notes: "on the way they take new renal arteries"): the first from the common iliac, below
+      // the bifurcation; as the kidney climbs, a new one sprouts from the aorta at each level it reaches and the
+      // one below withers, left behind. Each reaches the kidney while it serves it.
       if (kid > 0.5) {
-        const ay = K[1] + 0.05;
-        tube(`renal${s}`, 'giltzurrun-arteriak', L([[0, ay, -0.62], X(s, [0.45, ay, -0.75]), add(K, X(s, [-0.24, 0.05, 0.02]))], 10), UC.aorta, 0.035, ss(0.5, 0.8, kid), { tissue: 'vessel' }, 8);
-        if (s > 0) pts['giltzurrun-arteriak'] = X(s, [0.48, ay, -0.72]);
+        const il = o.iliac ?? 0;
+        const hilumAt = (a: number) => add(kidneyAt(s, a), X(s, [-0.24, 0.05, 0.02]));
+        let named: V3 | null = null;
+        RENAL_LEVELS.forEach((la, i) => {
+          const last = i === RENAL_LEVELS.length - 1;
+          const on = i === 0 ? 1 : ss(la - 0.3, la - 0.08, asc);
+          const off = last ? 0 : ss(la + 0.12, la + 0.42, asc);
+          const vis = on * (1 - off) * ss(0.5, 0.8, kid);
+          if (vis <= 0.01) return;
+          const ay = kidneyAt(s, la)[1] + 0.05;
+          const from: V3 = i === 0 ? mix3([0, -3.1, -0.62], X(s, [0.5, -3.6, -0.6]), il) : [0, ay, -0.62];
+          // Attached to the kidney while it serves it; withering, it stays where the kidney was.
+          const to = mix3(add(K, X(s, [-0.24, 0.05, 0.02])), hilumAt(la), off);
+          const mid = mix3(from, to, 0.5);
+          tube(`renal${s}${i}`, 'giltzurrun-arteriak', L([from, add(mid, X(s, [0, 0, -0.1])), to], 10), UC.aorta, 0.045 * (1 - 0.6 * off), vis, { tissue: 'vessel' }, 8);
+          if (on > 0.5 && off < 0.5) named = add(mid, X(s, [0, 0, -0.08]));
+        });
+        if (s > 0 && named) pts['giltzurrun-arteriak'] = named;
+        // Where it has been: faint ghosts of the kidney at the levels it has left (gone once the climb is told).
+        const ghostK = ss(0.05, 0.25, asc) * (1 - ss(0, 0.6, pose.gonadDown));
+        if (ghostK > 0.01)
+          for (const g of [0, 0.5]) {
+            const gk = ghostK * ss(g + 0.12, g + 0.3, asc);
+            if (gk <= 0.01) continue;
+            items.push({ key: `kidghost${s}${g}`, ...bean({ center: kidneyAt(s, g), radii: r, rings: 12, sides: 16, hilum: X(s, [-1, 0, 0.6]), dent: 0.3, lobes: 0 }), color: mixHex(UC.kidney, '#ffffff', 0.35), deep: UC.kidneyDeep, tissue: 'epithelium', opacity: 0.2 * gk, outline: false, quiet: true });
+          }
       }
     }
     // The suprarenal gland: where it forms (it does not move), the kidney climbs up under it.

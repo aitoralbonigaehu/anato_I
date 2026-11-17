@@ -2,6 +2,10 @@
 
 import { ARCH, BELOW, FRONT, SIDE, TISSUE, poseStage18, type StageSpec } from '@/components/scenes/week17/common';
 import { CH0, PAL0, choanaModel, palateModel, type ChoanaPose, type PalateOpts, type PalatePose } from './palate-model';
+import { SITE18C, whereC } from './sites-c';
+
+const WHERE_PAL = whereC(SITE18C.palate, 'Enbrioiaren burua: aho sabaia sudurraren azpian, goiko ezpainaren atzean');
+const WHERE_CH = whereC(SITE18C.choana, 'Enbrioiaren burua, sudur-zuloan zehar moztuta: sudurra eta ahoa');
 
 /** Topic 18, notes 4.1 (the palate, the septum, the conchae, the choanae). Model: palate-model.ts. */
 
@@ -22,6 +26,9 @@ const UNDER = (dist = 10.5, z = 0.1, yaw = 0, elev = -68) => BELOW(dist, [0, -0.
 
 export const S_SEG = [0, 0.3, 0.55, 0.78] as const;
 const specSeg: StageSpec<PalatePose, PalateOpts> = {
+  site: SITE18C.palate,
+  arrive: 'Goiko ezpainaren atzean sartu gara: aho sabaia behetik ikusiko dugu, ebakortzak goian',
+  where: WHERE_PAL,
   map: 'palate',
   S: S_SEG,
   pose: { ...PAL0, whole: 1, jaw: 1, swing: 1, grow: 0, seg: 0, sept: 0, fuse: 0 },
@@ -82,6 +89,9 @@ export const IntermaxSeg18 = poseStage18(specSeg, palateModel);
 
 export const S_SH = [0, 0.2, 0.42, 0.62, 0.82] as const;
 const specSh: StageSpec<PalatePose, PalateOpts> = {
+  site: SITE18C.palate,
+  arrive: '6. astera itzuli gara: aho sabai bera, zeharka moztuta, aurretik',
+  where: WHERE_PAL,
   map: 'palate',
   S: S_SH,
   pose: PAL0,
@@ -154,6 +164,9 @@ export const Shelves18 = poseStage18(specSh, palateModel);
 
 export const S_SP = [0, 0.4, 0.72] as const;
 const specSp: StageSpec<PalatePose, PalateOpts> = {
+  site: SITE18C.palate,
+  arrive: 'Ebaki bera, 10. astean: sabaiaren gainean sudur barrunbeak',
+  where: WHERE_PAL,
   map: 'palate',
   S: S_SP,
   pose: { ...PAL0, swing: 1, drop: 1, fuse: 1, sept: 0.55 },
@@ -212,6 +225,9 @@ export const Septum18 = poseStage18(specSp, palateModel);
 export const S_DEF = [0, 0.3, 0.58, 0.8] as const;
 const P_DEF: PalatePose = { ...PAL0, whole: 1, jaw: 1, swing: 1, fuse: 1, sept: 1, foramen: 1, raphe: 1, teeth: 1 };
 const specDef: StageSpec<PalatePose, PalateOpts> = {
+  site: SITE18C.palate,
+  arrive: 'Aho sabai osoa berriro, behetik: hemen huts egin dezake',
+  where: WHERE_PAL,
   map: 'palate',
   S: S_DEF,
   pose: P_DEF,
@@ -278,6 +294,9 @@ export const Defects18 = poseStage18(specDef, palateModel);
 export const S_CH = [0, 0.22, 0.45, 0.62, 0.82] as const;
 const SAGC = (dist = 11, u = 0.3, v = 0.3, yaw = 90, elev = 4) => SIDE(dist, [0, v, -u], yaw, elev);
 const specCh: StageSpec<ChoanaPose, PalateOpts> = {
+  site: SITE18C.choana,
+  arrive: 'Burua sudur-zuloan zehar moztu dugu, hemen: ezkerretik ikusiko dugu',
+  where: WHERE_CH,
   map: 'palate',
   S: S_CH,
   pose: CH0,

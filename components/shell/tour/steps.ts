@@ -69,6 +69,12 @@ export const SIM_STOPS: Stop[] = [
     targets: [{ ids: ['erreprodukzioa-mugikorra'], text: 'Etapa martxan jarri edo pausatu, eta urratsez urrats aurrera edo atzera egin.' }, { ids: ['erreprodukzioa'] }],
   },
   {
+    id: 'modua',
+    title: 'Hiru modu',
+    text: '«Gidatua» urratsez urrats doa, galdera txikiekin (gai batzuetan Kimuk klasea ematen du); «Arrunta», jarraian; «Azkarra», minutu batean errepasatzeko (G).',
+    targets: [{ ids: ['modua'] }],
+  },
+  {
     id: 'apunteak',
     title: 'Apunteak',
     text: 'Zure apunteak, simulazioarekin batera argituta (N tekla). Esaldi edo irudi bat klikatuta, hara joaten da simulazioa.',
@@ -98,6 +104,12 @@ export const SIM_STOPS: Stop[] = [
     targets: [{ ids: ['kimu'], max: 1 }, { ids: ['tresnak'], title: 'Kimu eta tresnak', text: 'Kimu, glosarioa, kronologia eta irudiak hemen daude. Galdetu Kimuri edozer: azalpenaren urratsera eramango zaitu.' }],
   },
   {
+    id: 'aurrerapena',
+    title: 'Zure aurrerapena',
+    text: 'Ireki duzun etapa bakoitza eta hor emandako denbora gordetzen dira: «Tresnak» menuko «Aurrerapena» orrian ikusiko dituzu, gaika, zure bolada eta lorpenekin.',
+    targets: [{ ids: ['tresnak'] }],
+  },
+  {
     id: 'laguntza',
     title: 'Teklak eta laguntza',
     text: 'Teklatuarekin azkarrago ikasten da. Gida hau eta botoi guztien azalpena «?» botoian dituzu beti.',
@@ -113,7 +125,7 @@ export const SIM_STOPS: Stop[] = [
   },
 ];
 
-/** Home: where to start. The simulator has its own guide, offered the first time it opens. */
+/** Home: where to start, and where everything lives. The simulator has its own guide, offered the first time it opens. */
 export const HOME_STOPS: Stop[] = [
   {
     id: 'hasi',
@@ -128,32 +140,90 @@ export const HOME_STOPS: Stop[] = [
     targets: [{ ids: ['gaiak'], children: true, row: true, max: 4 }],
   },
   {
+    id: 'simulagailua',
+    title: 'Simulagailua',
+    text: 'Han ikasten da benetan: urratsez urrats, 2D eta 3D, zure apunteekin batera. Beti goiko barra honetan.',
+    targets: [{ ids: ['simulagailua'] }],
+  },
+  {
+    id: 'ikasgela',
+    title: 'Ikasgela menua',
+    text: 'Ikasteko orri guztiak: gai bakoitzaren gela (mapa, taulak, fitxak), Eratorriak, Belortzioak (Ikasketa moduarekin), Irudiak, Egiturak eta Fitxak.',
+    targets: [{ ids: ['ikasgela'] }],
+  },
+  {
     id: 'kronologia',
     title: 'Kronologia',
     text: 'Garapen osoa egunez egun, gai guztiak denbora-lerro bakarrean. Aukeratu egun bat, eta zer dagoen ikusiko duzu.',
     targets: [{ ids: ['kronologia'] }],
   },
   {
-    id: 'kimu',
-    title: 'Galdetu Kimuri',
-    text: 'Kimu zure enbriologia-laguna da: galdetu edozer, eta azalpena dagoen lekura eramango zaitu.',
-    targets: [{ ids: ['kimu'], max: 1 }],
+    id: 'bilatu',
+    title: 'Bilatu edozer',
+    text: 'Gai, etapa, egitura edo ekintza bat: idatzi eta joan zuzenean (Ctrl + K, edonondik).',
+    targets: [{ ids: ['bilatu'], max: 1 }],
   },
   {
-    id: 'simulagailua',
-    title: 'Simulagailua',
-    text: 'Han ikasten da benetan: urratsez urrats, zure apunteekin batera.',
-    targets: [{ ids: ['simulagailua'] }],
+    id: 'aurrerapena',
+    title: 'Zure aurrerapena',
+    text: 'Sugarrak zure bolada erakusten du: zenbat egun jarraian ikasi duzun. Klikatuta: zure maila, gaika zer ikusi duzun eta zenbat aldiz, txartelak eta lorpenak.',
+    targets: [{ ids: ['aurrerapena'] }],
+  },
+  {
+    id: 'kimu',
+    title: 'Galdetu Kimuri',
+    text: 'Kimu zure enbriologia-laguna da: galdetu edozer, eta azalpena dagoen lekura eramango zaitu (K tekla).',
+    targets: [{ ids: ['kimu'], max: 1 }],
   },
   {
     id: 'laguntza',
     title: 'Gida, beti eskura',
-    text: 'Gida hau «?» botoian duzu beti. Simulagailuak berea du, toki berean.',
+    text: 'Gida hau «?» botoian duzu beti. Simulagailuak eta Belortzioak berea dute, toki berean.',
     targets: [{ ids: ['laguntza'] }],
   },
 ];
 
-export const STOPS: Record<TourId, Stop[]> = { sim: SIM_STOPS, home: HOME_STOPS };
+/** Belortzioak: the figures, the three ways to use them, and the study mode. */
+export const BEL_STOPS: Stop[] = [
+  {
+    id: 'sistemak',
+    title: 'Aukeratu sistema',
+    text: 'Irudiak sistemaka daude. «Fusionatuak»: irudi bera, kopia guztietako izenak batera.',
+    targets: [{ ids: ['bel-sistemak'] }],
+  },
+  {
+    id: 'irudiak',
+    title: 'Irudiak',
+    text: 'Sistemaren irudi guztiak, ehunekoarekin: zenbat egitura dakizkizun. ← → teklekin ere mugitzen zara.',
+    targets: [{ ids: ['bel-irudiak'] }],
+  },
+  {
+    id: 'irudia',
+    title: 'Esploratu',
+    text: 'Pasatu sagua izen baten gainetik: haren egitura argitzen da. Klikatu izena gorriz edo laranjaz markatzeko (ez dakit / zalantza).',
+    targets: [{ ids: ['bel-irudia'] }],
+  },
+  {
+    id: 'moduak',
+    title: 'Zer da? Non dago?',
+    text: '«Zer da?»: gezi batek egitura seinalatzen du, eta zuk izena esan (aukerak, buruz edo idatziz). «Non dago?»: izena ematen da, eta zuk irudian sakatu.',
+    targets: [{ ids: ['bel-moduak'] }],
+  },
+  {
+    id: 'ikasketa',
+    title: 'Ikasketa modua',
+    text: 'Gezi bat argitzen da: pentsatu izena, eman buelta txartelari eta esan asmatu duzun. Huts egindakoak berriz agertzen dira.',
+    targets: [{ ids: ['ikasketa'] }],
+  },
+  {
+    id: 'aurrerapena',
+    title: 'Zure aurrerapenean gordeta',
+    text: 'Txartel bakoitza bere kutxan doa (berria → ikasten → badakizu → menderatuta). Aurrerapena orrian ikusiko duzu, sistemaka.',
+    targets: [{ ids: ['aurrerapena'] }],
+  },
+];
+
+export const STOPS: Record<TourId, Stop[]> = { sim: SIM_STOPS, home: HOME_STOPS, bel: BEL_STOPS };
 
 /** What a stop says when lit by a given variant (a variant can reword it for its layout). */
 export const copyOf = (s: Stop, v?: Variant) => ({ title: v?.title ?? s.title, text: v?.text ?? s.text });

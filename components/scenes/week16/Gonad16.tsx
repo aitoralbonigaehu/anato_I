@@ -3,6 +3,7 @@
 import { BLOCK16, BLOCK_AXES, KEY16, endPose, poseStage, type StageSpec } from './common';
 import type { V3 } from '@/lib/three-d/math';
 import { GN0, gonadModel, type GonadOpts, type GonadPose } from './gonad-model';
+import { SITE16 } from './sites';
 
 /**
  * Topic 16's gonad cut across (gonad-model.ts): the indifferent gonad (stage 3), the testis (stage 5) and the
@@ -18,6 +19,8 @@ const CAM = (dist = 9.5, target: [number, number, number] = [0.2, -0.3, 0], yaw 
 export const S3 = [0, 0.34, 0.67] as const;
 
 const spec3: StageSpec<GonadPose, GonadOpts> = {
+  site: SITE16.gonad,
+  arrive: 'Gonada gandorra zeharka ebaki dugu, hemen: blokea goitik (kranealetik) ikusiko dugu',
   where: { th: -0.2, at: [0, 0.1, 0], frame: 'block', scale: 1.8, planes: [-1, 1].map((s) => ({ center: [0, 0.1, s * 0.9] as V3, a: [2.3, 0, 0] as V3, b: [0, 1.75, 0] as V3 })), note: 'Gerriko mailako zeharkako ebakia: gonada mesonefrosaren ondoan; blokea goitik ikusiko dugu' },
   S: S3,
   pose: { ...GN0, germ: 1 },
@@ -67,6 +70,8 @@ export const Indifferent16 = poseStage(spec3, build);
 export const S5 = [0, 0.17, 0.34, 0.5, 0.67, 0.83] as const;
 
 const spec5: StageSpec<GonadPose, GonadOpts> = {
+  site: SITE16.gonad,
+  arrive: 'Gonada zeharka ebaki dugu berriro, hemen: barrabilaren barrua ikusteko',
   S: S5,
   pose: endPose(spec3).pose,
   opts: {},
@@ -144,6 +149,8 @@ export const Testis16 = poseStage(spec5, build);
 export const S9 = [0, 0.25, 0.5, 0.75] as const;
 
 const spec9: StageSpec<GonadPose, GonadOpts> = {
+  site: SITE16.gonad,
+  arrive: 'Gonada zeharka ebaki dugu berriro, hemen: obarioaren barrua ikusteko',
   S: S9,
   pose: { ...GN0, germ: 1, cords: 1 },
   opts: {},
@@ -200,6 +207,8 @@ export const Ovary16 = poseStage(spec9, build);
 
 /** The ovary's end state, as a recap view (stage 10, notes 3.4 p4). */
 const spec10g: StageSpec<GonadPose, GonadOpts> = {
+  site: SITE16.gonad,
+  arrive: 'Obarioa zeharka ebakita, hemen: barrua goitik',
   S: [0],
   pose: endPose(spec9).pose,
   opts: {},

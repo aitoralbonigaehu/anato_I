@@ -12,10 +12,10 @@ export const quiz17: QuizQuestion[] = [
   },
   {
     id: 'w17-q-fontanelak',
-    question: 'Noiz ixten dira fontanela handienak, apunteen testuaren arabera?',
-    options: ['Aurrekoa 2. urtean; atzekoa 2. hilabetean', 'Aurrekoa 2. hilabetean; atzekoa 2. urtean', 'Biak jaiotzean', 'Biak 2. urtean'],
+    question: 'Noiz ixten dira bi fontanela nagusiak, apunteen testuaren arabera?',
+    options: ['Aurrekoa jaio ondoko 18. hilabetean; atzekoa lehen hilabetean', 'Aurrekoa lehen hilabetean; atzekoa 18. hilabetean', 'Biak jaiotzean', 'Biak 18. hilabetean'],
     answer: 0,
-    explanation: 'Aurrekoa 2. urtean eta atzekoa 2. hilabetean. Erditzean parietalak hurbil daitezke, oraindik josita ez daudelako.',
+    explanation: 'Aurreko fontanela jaio ondoko 18. hilabetean ixten da (hezurtu egiten da); atzekoa txikiagoa da eta arinago hezurtzen da, lehen hilabetean. Erditzean ezinbestekoak dira, buruaren neurria gutxitzeko.',
     stageId: 'josturak-fontanelak',
   },
   {
@@ -23,7 +23,7 @@ export const quiz17: QuizQuestion[] = [
     question: 'Zein da arku → nerbio lotura zuzena?',
     options: ['I: V · II: VII · III: IX · IV eta VI: X', 'I: VII · II: V · III: X · IV eta VI: IX', 'I: V · II: IX · III: VII · IV eta VI: XII', 'I: III · II: IV · III: VI · IV eta VI: X'],
     answer: 0,
-    explanation: 'Arku bakoitzari nerbio bat dagokio: trigeminoa (V), aurpegi-nerbioa (VII), glosofaringeoa (IX) eta bagoa (X), azken honen adar bana IV. eta VI. arkuetarako.',
+    explanation: 'Arku bakoitzari nerbio bat dagokio: trigeminoa (V; zehazki V3, barail-nerbioa), aurpegi-nerbioa (VII), glosofaringeoa (IX) eta bagoa (X), azken honen adar bana IV. eta VI. arkuetarako.',
     stageId: 'arkuen-mapa',
   },
   {
@@ -52,10 +52,10 @@ export const quiz17: QuizQuestion[] = [
   },
   {
     id: 'w17-q-luzapen-maxilarra',
-    question: 'Zer ateratzen da luzapen maxilarretik?',
-    options: ['Hezur maxilarra, zigomatikoa eta tenporalaren ezkata', 'Baraila eta ointokia', 'Hezur maxilarra eta tenporalaren harkaitza', 'Estiloide apofisia eta zigomatikoa'],
+    question: 'Barailaz eta hezurtxoez gain, errai kraneoko zein hezur garatzen dira lehenengo arkutik?',
+    options: ['Hezur maxilarra, zigomatikoa eta loki hezurraren atal bat (kutxa tinpanikoarekin erlazionatua)', 'Baraila eta ointokia', 'Hezur maxilarra eta loki hezurraren harkaitza', 'Estiloide apofisia eta zigomatikoa'],
     answer: 0,
-    explanation: 'Tenporalaren ezkata bai, baina harkaitz zatia oinaldeko mesenkimatik dator. Goiko muturrean mailua eta ingudea ere badaude.',
+    explanation: 'Hezur maxilarra, zigomatikoa eta loki hezurraren atal bat: kutxa tinpanikoarekin eta hezurtxoekin erlazionatuta dagoena. Mailua eta ingudea Meckel kartilagoaren goiko muturretik sortzen dira; ointokia eta estiloide apofisia II. arkukoak dira.',
     stageId: 'lehen-arkua-kartilagoak',
   },
   {

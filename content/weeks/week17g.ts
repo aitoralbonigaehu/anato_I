@@ -1,7 +1,7 @@
 import type { StageDef } from '@/lib/sim/types';
 import { Pairs17, S_PAIRS, S_VAGUS, Vagus17 } from '@/components/scenes/week17/Nerves17';
 
-const FILE = '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA).pdf';
+const FILE = '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA) fitxategiaren kopia.pdf';
 const BASE_O = { top: 'Aurrealdea', bottom: 'Atzealdea' };
 const BODY_O = { top: 'Kraneala', bottom: 'Kaudala' };
 
@@ -29,7 +29,7 @@ export const stages17g: StageDef[] = [
     beats: [
       {
         at: S_PAIRS[0],
-        notes: ['w17/2.1/p3/s1', 'w17/2.1/p4/s1-s3', 'w17/2.1/p4/s4'],
+        notes: ['w17/2.1/p2/s1', 'w17/2.1/p3/s1', 'w17/2.1/p4/s1-s4'],
         idea: 'Bikote kranealak: 12 bikote, binaka, garunetik.',
         text: 'Bikote kranealak binaka agertzen diren garuneko nerbioak dira: eskuinekoa eta ezkerrekoa. Hamabi bikote dira, eta garunetik (entzefalotik) ateratzen dira. Nerbioak axoien multzoak dira; nerbio sistema zentralean, ordea, bala edo kordoi deitzen zaie: kokapena da aldea. Hemen garuna behetik ikusten duzu, apunteetako irudian bezala.',
         focus: [],
@@ -37,7 +37,7 @@ export const stages17g: StageDef[] = [
       },
       {
         at: S_PAIRS[1],
-        notes: ['w17/2.1/p4/s5', 'w17/2.1/p5/s1', 'w17/2.1/p5/s2'],
+        notes: ['w17/2.1/p4/s5', 'w17/2.1/p5/s1-s2'],
         idea: 'Aurretik atzera: I usaimena, II ikusmena, III okulomotorea, IV patetikoa, V trigeminoa, VI kanpoko okulomotorea.',
         text: 'Aurretik atzera izendatzen dira, zenbaki erromatarrekin. I. usaimen-nerbioak, II. ikusmen-nerbioak, III. okulomotorea, IV. patetiko-troklearra, V. trigeminoa eta VI. kanpoko nerbio okulomotorea.',
         focus: ['usaimen-nerbioa', 'ikusmen-nerbioa', 'okulomotorea', 'patetikoa', 'trigeminoa', 'kanpoko-okulomotorea'],
@@ -45,7 +45,7 @@ export const stages17g: StageDef[] = [
       },
       {
         at: S_PAIRS[2],
-        notes: ['w17/2.1/p5/s3', 'w17/2.1/p5/s4', 'w17/2.1/p5/s5', 'w17/2.1/p5/s6', 'w17/2.1/p5/s7'],
+        notes: ['w17/2.1/p5/s2-s7'],
         idea: 'VII aurpegia, VIII belarria, IX glosofaringeoa, X bagoa, XI laguntzailea, XII hipoglosoa.',
         text: 'Jarraian: VII. aurpegi-nerbioa, VIII. belarriko nerbioa (bestibulokoklearra), IX. glosofaringeoa, X. nerbio bagoa, XI. laguntzailea eta XII. hipoglosoa.',
         focus: ['aurpegi-nerbioa', 'belarriko-nerbioa', 'glosofaringeoa', 'bagoa', 'laguntzailea', 'hipoglosoa'],
@@ -53,16 +53,16 @@ export const stages17g: StageDef[] = [
       },
       {
         at: S_PAIRS[3],
-        notes: ['w17/2.1/p3/s2', 'w17/2.1/p6/s1'],
+        notes: ['w17/2.1/p3/s2', 'w17/2.1/p7/s1'],
         idea: 'Arku bakoitzak nerbio kraneal bat: I→V, II→VII, III→IX, IV eta VI→X.',
-        text: 'Arku brankial bakoitzari nerbio bat dagokio, nerbio kraneal bat: lehen arkuari V.a, bigarrenari VII.a, hirugarrenari IX.a, eta laugarrenari eta seigarrenari X.a. Markatuta ez dauden beste nerbioak ez daude arku faringeoekin erlazionatuta.',
+        text: 'Arku brankial bakoitzari nerbio bat dagokio, nerbio kraneal bat: lehen arkuari V.a (zehazki, bere hirugarren adarra), bigarrenari VII.a, hirugarrenari IX.a, eta laugarrenari eta seigarrenari X.a. Markatuta ez dauden beste nerbioak ez daude arku faringeoekin erlazionatuta.',
         focus: ['trigeminoa', 'aurpegi-nerbioa', 'glosofaringeoa', 'bagoa'],
         exam: 'Arku bakoitzaren nerbioa: I–V, II–VII, III–IX, IV eta VI–X.',
         view: '3d',
       },
       {
         at: S_PAIRS[4],
-        notes: ['w17/2.1/p5/s7', 'w17/2.1/p5/s8'],
+        notes: ['w17/2.1/p6/s1-s2'],
         idea: 'III, IV eta VI: begiaren mugimendua.',
         text: 'III., IV. eta VI. nerbioek begien mugimenduan parte hartzen dute. Nerbio hauek kraneoko zuloetatik irteten dira.',
         focus: ['okulomotorea', 'patetikoa', 'kanpoko-okulomotorea'],
@@ -70,7 +70,7 @@ export const stages17g: StageDef[] = [
       },
       {
         at: S_PAIRS[5],
-        notes: ['w17/2.1/p6/s2', 'w17/2.1/p7/s1', 'w17/2.1/p8/s1', 'w17/2.1/p9/s1'],
+        notes: ['w17/2.1/p7/s2', 'w17/2.1/p8/s1', 'w17/2.1/p9/s1', 'w17/2.1/p10/s1'],
         idea: 'Hiru mota: motorrak, sentsitiboak, mistoak.',
         text: 'Hiru bikote kraneal mota daude: motorrak, sentsitiboak eta mistoak (axoi batzuk motorrak dira eta beste batzuk sentsitiboak).',
         focus: [],
@@ -108,7 +108,7 @@ export const stages17g: StageDef[] = [
     beats: [
       {
         at: S_VAGUS[0],
-        notes: ['w17/2.6.1/p3/s1', 'w17/2.6.1/p3/s2', 'w17/2.6.1/p3/s3'],
+        notes: ['w17/2.6/p2/s1', 'w17/2.6.1/p2/s1', 'w17/2.6.1/p3/s1-s3'],
         idea: 'X. bikotea, mistoa, IV. eta VI. arkuetara; bakoitzari adar bat.',
         text: 'Nerbio bagoa (X. bikote kraneala, mistoa) IV. eta VI. arkuetara luzatzen da, baina bakoitzari nerbio horren adar bat helduko zaio. Burmuinetik ateratzen da.',
         focus: ['bagoa'],
@@ -125,8 +125,9 @@ export const stages17g: StageDef[] = [
       {
         at: S_VAGUS[2],
         notes: ['w17/2.6.1/p4/s1', 'w17/2.6.1/p4/s2'],
-        idea: 'Goiko laringe nerbioa: IV. arkua, tarteko eta beheko muskulu ertzatzaileak.',
-        text: 'IV. arku faringeoaren muskuluetara goiko laringe nerbioa heltzen da: tarteko eta beheko muskulu ertzatzaileak inerbatzen ditu.',
+        idea: 'Goiko laringe nerbioa: IV. arkua, muskulu ertzatzaileak.',
+        text: 'IV. arku faringeoaren muskuluetara goiko laringe nerbioa heltzen da, muskulu ertzatzaileak inerbatzeko: arku honetakoak tartekoa eta behekoa dira.',
+        caution: 'Apunteek hemen «goiko, tarteko eta beheko» ertzatzaileak zerrendatzen dituzte. Muskuluen ataletan, ordea, goikoak III. arkukoak dira eta nerbio glosofaringeoak (IX) mugitzen ditu; IV. arkutik tartekoak eta behekoak ateratzen dira.',
         focus: ['goiko-laringe-nerbioa', 'tarteko-ertzatzailea', 'beheko-ertzatzailea'],
         exam: 'IV. arkua: goiko laringe nerbioa → tarteko eta beheko ertzatzaileak.',
         view: '3d',

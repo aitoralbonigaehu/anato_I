@@ -98,6 +98,12 @@ export interface Item3 {
    */
   ground?: boolean;
   /**
+   * Part of one continuous living surface (the swellings, folds and tubercle of the perineal skin): when a step
+   * lights others it steps back by losing a little colour, and never goes dark or grey: a dark lump on the skin
+   * reads as a bruise, not as "not now".
+   */
+  calm?: boolean;
+  /**
    * 0–1: how much a mesh's per-vertex tint (field-surface.ts, the colour melting across a region's border) counts.
    * Default 1 when the mesh has one (a mesh without tint is drawn exactly as ever).
    */

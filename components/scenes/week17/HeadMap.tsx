@@ -45,7 +45,7 @@ const TEXT: Record<HeadFocus, [string, string]> = {
   base: ['Burezurraren oinaldea', 'goitik ikusita'],
   'face-bones': ['Errai kraneoa', 'aurpegiko hezurrak'],
   arches: ['Faringe-arkuak', 'lepoa · 4.–5. asteak'],
-  arch1: ['I. arkua', 'V · barailaren aldea'],
+  arch1: ['I. arkua', 'V3 · barailaren aldea'],
   arch2: ['II. arkua', 'VII · aurpegiko muskuluak'],
   arch3: ['III. arkua', 'IX · sakonagoa'],
   arch5: ['V. arkua', 'agertu eta endekatu'],

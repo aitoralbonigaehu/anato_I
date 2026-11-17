@@ -1,6 +1,6 @@
 'use client';
 
-import { orbit, poseStage as poseStage14, type PoseModel, type StageSpec as StageSpec14 } from '@/components/scenes/week14/common';
+import { orbit, poseStage as poseStage14, type PoseModel, type StageSpec as StageSpec14, type Where as Where14 } from '@/components/scenes/week14/common';
 import type { Camera3, V3 } from '@/lib/three-d/math';
 import { LOOK_V2 } from '@/lib/three-d/scene';
 import { HeadMap, MAP_LEFT, type HeadFocus } from './HeadMap';
@@ -34,6 +34,11 @@ export const TISSUE = {
   crestDeep: '#5c3a99',
   paraxial: '#e58a8a',
   paraxialDeep: '#8d3c3c',
+  /** Lateral plate mesoderm, and the ectodermal placodes (notes 1.2: the origins). */
+  lateral: '#e8b04a',
+  lateralDeep: '#8a6017',
+  placode: '#3fc6e6',
+  placodeDeep: '#16708a',
   cartilage: '#a7dbd2',
   cartilageDeep: '#487f76',
   bone: '#efe5cf',
@@ -58,8 +63,22 @@ export const CONT18 = 'burua-18';
 
 type Dim = { dim?: { ids: readonly string[]; k: number } | null };
 
+/**
+ * Topic 17: where each model lies in the whole embryo, by site key (components/scenes/week17/sites.ts). A stage
+ * opened cold (a link, the menu) flies in from outside the embryo to its model; reached from the stage before, the
+ * camera flies or glides from that one instead (`site`), and this is not played. Models that are not embryonic
+ * (the fetal skull, its base, the tissue blocks) have none: a five-week embryo turning into a fetal skull does not
+ * read. Another file's sites may add their keys here before building their stages, or pass `where` on the spec.
+ */
+export const WHERE17: Record<string, Where14> = {
+  arch: { th: 1.6, at: [0, 0, 0], scale: 2, note: 'Enbrioia 5. astean: burua eta lepoa, faringe-arkuekin' },
+  bones: { th: 1.6, at: [0.4, 1.5, 0], scale: 2.6, note: 'Enbrioiaren burua erdiko planoan ebakita: arkuen kartilagoak ezkerretik' },
+};
+
 function stageWith<P, O extends Dim>(continuity: string, spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel) {
   const { map, ...rest } = spec;
+  // Topic 17's sited stages take their cold-entry fly-in from WHERE17 unless they give their own.
+  if (continuity === CONT17 && rest.site && !rest.where && WHERE17[rest.site.key]) rest.where = WHERE17[rest.site.key];
   // "Non gaude?" in the corner of every view (it hides with the names during the fly-in).
   const section = rest.section ?? (map ? () => ({ show: 1, node: <HeadMap focus={map} />, left: MAP_LEFT }) : undefined);
   return poseStage14({ right: [236, 540], look: LOOK_V2, fit: {}, ...rest, section }, build, false, continuity);

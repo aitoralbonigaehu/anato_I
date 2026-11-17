@@ -934,7 +934,7 @@ export function pharynxModel(pose: PharynxPose, o: PharynxOpts = {}) {
         const t = -Math.PI * 0.5 + (i / 21) * Math.PI;
         return [r * Math.sin(t), y, 0.1 + 0.62 * Math.cos(t)];
       });
-      vess(`ring${id}`, id, line, col, { r0: 0.09, r1: 0.09, sides: 10, ref: [0, 1, 0] }, ca, 1, { deep, tissue: 'cartilage' });
+      vess(`ring${id}`, id, line, col, { r0: 0.13, r1: 0.13, sides: 12, ref: [0, 1, 0] }, ca, 1, { deep, tissue: 'cartilage' });
       pts[id] = [r, y, 0.12];
     };
     ring(-3.42, 0.56, ARCH.iv, ARCH_DEEP.iv, 'tiroide-kartilagoa');

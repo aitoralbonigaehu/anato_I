@@ -2,11 +2,13 @@
 
 import { ARCH, SIDE, KEY_ARCH, endPose, poseStage17, type StageSpec } from './common';
 import { BONES0, bonesModel, type BonesOpts, type BonesPose } from './bones-model';
+import { SITE17 } from './sites';
 
 /**
  * Topic 17, the arches' cartilages and bones (bones-model.ts): the notes' figure of p.4 right, turned into one model
  * whose bars degenerate and whose parts go to their adult places. Each stage ends on the adult arrangement; the next
- * one starts again from the embryo's layout with everything earlier kept.
+ * one starts again from the embryo's layout with everything earlier kept. The steps follow the corrected notes' order:
+ * cartilages and bones first, each arch's nerve last (2.3.1 → 2.3.2, 2.4.1 → 2.4.2).
  */
 
 const build = (pose: BonesPose, opts: BonesOpts) => bonesModel(pose, opts);
@@ -19,6 +21,8 @@ export const SB1 = [0, 0.13, 0.27, 0.42, 0.58, 0.72, 0.87] as const;
 
 const spec1: StageSpec<BonesPose, BonesOpts> = {
   S: SB1,
+  site: SITE17.bones,
+  arrive: 'Burua erdiko planoan ebaki dugu: barruan, arkuen kartilagoak',
   pose: BONES0,
   opts: {},
   caption: CAP,
@@ -29,8 +33,8 @@ const spec1: StageSpec<BonesPose, BonesOpts> = {
       cam: SIDE(11.5, [0.5, 2.1, 0.7], 80, 4),
       glide: 0.06,
       dim: ['meckel-kartilagoa'],
-      names: [{ id: 'meckel-kartilagoa', sub: 'barail luzapenaren kartilagoa: gida' }],
-      note: 'Barail luzapenaren kartilagoa Meckel kartilagoa da: hasieran gida funtzioa dauka',
+      names: [{ id: 'meckel-kartilagoa', sub: 'lehenengo arkuko kartilagoa' }],
+      note: 'Lehenengo arkuko kartilagoa Meckel kartilagoa da: garapenean endekatu egingo da',
     },
     {
       to: { bone: 1 },
@@ -39,10 +43,10 @@ const spec1: StageSpec<BonesPose, BonesOpts> = {
       glide: 0.05,
       dim: ['meckel-kartilagoa', 'baraila'],
       names: [
-        { id: 'baraila', sub: 'kartilagoaren inguruan hazten', from: 0.3 },
-        { id: 'meckel-kartilagoa', small: true },
+        { id: 'baraila', sub: 'inguruko mesenkima hezurtzen', from: 0.3 },
+        { id: 'meckel-kartilagoa', sub: 'gida', small: true },
       ],
-      note: 'Barail hezurra Meckel kartilagoaren inguruan eratzen da, kokotsetik atzera',
+      note: 'Meckel gida da: barail hezurra inguruko mesenkima hezurtuta eratzen da, kartilagoa zegoen tokian',
     },
     {
       to: { deg: 1 },
@@ -54,7 +58,7 @@ const spec1: StageSpec<BonesPose, BonesOpts> = {
         { id: 'meckel-kartilagoa', sub: 'endekatzen' },
         { id: 'baraila', sub: 'bera geratzen da', from: 0.55 },
       ],
-      note: 'KONTUZ: Meckel endekatu egiten da, gida da. Baraila ez da kartilago hori hezurtuta: «bertatik» = haren inguruan',
+      note: 'KONTUZ: baraila EZ da kartilagotik ateratzen, kartilagoaren inguruan egon diren mesenkimako zeluletatik baizik. Meckel endekatu egiten da',
       warn: true,
     },
     {
@@ -69,15 +73,15 @@ const spec1: StageSpec<BonesPose, BonesOpts> = {
     {
       to: { maxBones: 1 },
       run: [0.06, 0.75],
-      cam: SIDE(12, [0.5, 2.8, 0.6], 74, 6),
+      cam: SIDE(12, [0.5, 2.8, 0.2], 74, 6),
       glide: 0.05,
-      dim: ['hezur-maxilarra', 'zigomatikoa', 'tenporalaren-ezkata'],
+      dim: ['hezur-maxilarra', 'zigomatikoa', 'loki-hezurraren-atal-tinpanikoa'],
       names: [
         { id: 'hezur-maxilarra', from: 0.2 },
         { id: 'zigomatikoa', from: 0.4 },
-        { id: 'tenporalaren-ezkata', sub: 'harkaitz zatia ez: oinaldeko mesenkimatik', from: 0.6 },
+        { id: 'loki-hezurraren-atal-tinpanikoa', text: 'Loki hezurraren atal bat', sub: 'kutxa tinpanikoa + hezurtxoekin erlazionatua', from: 0.6 },
       ],
-      note: 'Luzapen maxilarretik: hezur maxilarra, zigomatikoa eta tenporalaren ezkata (harkaitz zatia oinaldeko mesenkimatik)',
+      note: '1. arkutik errai kraneoko beste hezur batzuk: hezur maxilarra, zigomatikoa eta loki hezurraren atal bat (kutxa tinpanikoa + hezurtxoekin erlazionatutako atala)',
     },
     {
       cam: SIDE(6.5, [0.6, 3.2, -1.7], 72, 8),
@@ -87,14 +91,14 @@ const spec1: StageSpec<BonesPose, BonesOpts> = {
         { id: 'mailua', sub: 'I. arkua' },
         { id: 'ingudea', sub: 'I. arkua', from: 0.35 },
       ],
-      note: 'Luzapen maxilarraren goiko muturrean tarteko belarriaren bi hezurtxo: mailua eta ingudea',
+      note: 'Meckel kartilagoaren goiko muturretik belarriaren bi hezurtxo: mailua eta ingudea',
     },
     {
       cam: SIDE(5.5, [0.6, 3.25, -1.95], 58, 10),
       glide: 0.05,
       dim: ['ingudea'],
-      names: [{ id: 'ingudea', sub: 'gorputza + adar txikia: I · adar luzea: II?' }],
-      note: 'KONTUZ: beste liburu batzuetan ingudearen gorputza eta adar txikia I. arkutik, adar luzea II.etik. Apunteek: ingudea I. arkutik',
+      names: [{ id: 'ingudea', sub: 'apunteetan: osorik I. arkutik' }],
+      note: 'Beste liburu batzuetan ingudearen adar luzea II. arkutik dator. Apunteetan horri ez zaio kasurik egiten: ingudea I. arkutik',
       warn: true,
     },
   ],
@@ -109,6 +113,8 @@ const start2: BonesPose = { ...endPose(spec1).pose, adult: 0 };
 
 const spec2: StageSpec<BonesPose, BonesOpts> = {
   S: SB2,
+  site: SITE17.bones,
+  arrive: 'Ebakira itzuli gara: orain II. arkua, Reichert kartilagoa eta bere nerbioa',
   pose: start2,
   opts: {},
   caption: CAP,
@@ -116,18 +122,8 @@ const spec2: StageSpec<BonesPose, BonesOpts> = {
   map: 'arch2',
   steps: [
     {
-      to: { n7: 1 },
-      run: [0.06, 0.8],
-      cam: SIDE(11.5, [0.6, 2.4, -0.6], 78, 4),
-      glide: 0.06,
-      dim: ['aurpegi-nerbioa', 'reichert-kartilagoa'],
-      names: [{ id: 'aurpegi-nerbioa', text: 'Aurpegi-nerbioa / nerbio faziala (VII)', sub: 'muskulu mimiko guztiak · mistoa', from: 0.25 }],
-      note: 'KONTUZ: VII.a berez mistoa da eta apunteek alde sentsitiboa aipatzen dute, baina hemen bere lana motorra da: aurpegiko muskulu mimikoak',
-      warn: true,
-    },
-    {
       cam: SIDE(11, [0.5, 1.6, -1.0], 84, 4),
-      glide: 0.05,
+      glide: 0.06,
       dim: ['reichert-kartilagoa'],
       names: [{ id: 'reichert-kartilagoa', sub: 'II. arkua' }],
       note: 'Bigarren arkuak ere kartilago bat dauka hasieran: Reichert kartilagoa',
@@ -154,18 +150,19 @@ const spec2: StageSpec<BonesPose, BonesOpts> = {
         { id: 'ingudea', small: true },
         { id: 'mailua', small: true },
       ],
-      note: 'Goiko muturrean: tarteko belarriaren hirugarren hezurtxoa, ointokia (urdina, beste biak laranjak)',
+      note: 'Goiko muturrean: tarteko belarriaren hirugarren hezurtxoa, ointokia (ez osoki horrela, baina horrela balitz bezala hartzen da)',
     },
     {
       cam: SIDE(9.5, [0.6, 1.1, -0.7], 66, 6),
       glide: 0.05,
-      dim: ['estiloide-apofisia', 'hioide-adar-txikia', 'hioide-gorputz-goia'],
+      dim: ['estiloide-apofisia', 'lotailu-estilohioideoa', 'hioide-adar-txikia', 'hioide-gorputz-goia'],
       names: [
-        { id: 'estiloide-apofisia', text: 'Tenporalaren estiloide apofisia', sub: 'muskulu asko hemen txertatzen dira' },
-        { id: 'hioide-adar-txikia', text: 'Hioidearen adar txikia', from: 0.3 },
-        { id: 'hioide-gorputz-goia', text: 'Hioide-gorputzaren goiko erdia', sub: 'beheko erdia: III. arkua', from: 0.55 },
+        { id: 'estiloide-apofisia', text: 'Loki hezurraren estiloide apofisia', sub: 'muskulu asko hemen txertatzen dira' },
+        { id: 'lotailu-estilohioideoa', sub: 'estiloidetik hioidera', from: 0.2 },
+        { id: 'hioide-adar-txikia', text: 'Hioidearen adar txikia', from: 0.4 },
+        { id: 'hioide-gorputz-goia', text: 'Hioide-gorputzaren goiko erdia', sub: 'beheko erdia: III. arkua', from: 0.6 },
       ],
-      note: 'Beheko muturrean: estiloide apofisia, hioide hezurraren adar txikia eta gorputzaren goiko erdia',
+      note: 'Beheko muturrean: estiloide apofisia eta lotailu estilohioideoa. Lepoan: hioidearen adar txikiak eta gorputzaren goiko erdia',
     },
     {
       to: { adult: 1, petrous: 1 },
@@ -174,11 +171,20 @@ const spec2: StageSpec<BonesPose, BonesOpts> = {
       glide: 0.05,
       dim: ['estiloide-apofisia', 'arkaitza', 'tenporalaren-ezkata', 'ointokia'],
       names: [
-        { id: 'tenporalaren-ezkata', sub: 'atal mehea' },
-        { id: 'arkaitza', sub: 'atal lodia: tarteko eta barneko belarria', from: 0.3 },
-        { id: 'estiloide-apofisia', sub: 'lotailuak barailerantz eta faringerantz', from: 0.55 },
+        { id: 'tenporalaren-ezkata', text: 'Loki hezurraren ezkata', sub: 'atal mehea', from: 0.3 },
+        { id: 'arkaitza', sub: 'atal lodia: tarteko eta barneko belarria', from: 0.45 },
+        { id: 'estiloide-apofisia', sub: 'lotailuak barailerantz eta faringerantz', from: 0.6 },
       ],
-      note: 'Estiloide apofisitik lotailuak barailerantz eta faringerantz. Tenporalak ezkata (mehea) eta arkaitza (lodia, belarriak barruan) ditu',
+      note: 'Estiloide apofisitik lotailuak barailerantz eta faringerantz. Loki hezurrak ezkata (mehea) eta arkaitza (lodia, belarriak barruan) ditu',
+    },
+    {
+      to: { n7: 1 },
+      run: [0.06, 0.8],
+      cam: SIDE(11.5, [0.6, 2.4, -0.6], 78, 4),
+      glide: 0.05,
+      dim: ['aurpegi-nerbioa'],
+      names: [{ id: 'aurpegi-nerbioa', text: 'Aurpegi-nerbioa / nerbio faziala (VII)', sub: 'bereziki motorea: muskulu mimikoak', from: 0.25 }],
+      note: 'II. arkuaren nerbioa VII.a da. Berez mistoa, baina bereziki motorea: aurpegiko muskulu mimikoak eta digastrikoaren atzeko sabela',
     },
   ],
 };
@@ -192,6 +198,8 @@ const start3: BonesPose = { ...endPose(spec2).pose, adult: 0 };
 
 const spec3: StageSpec<BonesPose, BonesOpts> = {
   S: SB3,
+  site: SITE17.bones,
+  arrive: 'Ebakira berriro: III. arkua, hioidearen beheko erdia eta bere nerbioa',
   pose: start3,
   opts: {},
   caption: CAP,
@@ -199,19 +207,10 @@ const spec3: StageSpec<BonesPose, BonesOpts> = {
   map: 'arch3',
   steps: [
     {
-      to: { n9: 1 },
-      run: [0.06, 0.8],
-      cam: SIDE(11, [0.6, 1.9, -1.0], 78, 4),
-      glide: 0.06,
-      dim: ['glosofaringeoa'],
-      names: [{ id: 'glosofaringeoa', text: 'Nerbio glosofaringeoa (IX)', sub: 'mistoa · mihia eta faringea', from: 0.25 }],
-      note: 'III. arkuaren nerbioa IX.a da, glosofaringeoa (gloso = mihia): luzatu egiten da mihira eta faringeko muskuluetara',
-    },
-    {
       to: { h3: 1 },
       run: [0.1, 0.8],
       cam: SIDE(7, [0.6, 0.35, 0.3], 70, 8),
-      glide: 0.05,
+      glide: 0.06,
       dim: ['hioide-gorputz-behea', 'hioide-adar-nagusia', 'hioide-gorputz-goia', 'hioide-adar-txikia'],
       names: [
         { id: 'hioide-gorputz-behea', text: 'Hioide-gorputzaren beheko erdia', sub: 'III. arkua', from: 0.2 },
@@ -220,6 +219,15 @@ const spec3: StageSpec<BonesPose, BonesOpts> = {
         { id: 'hioide-adar-txikia', text: 'Adar txikia', sub: 'II. arkua', small: true, from: 0.7 },
       ],
       note: 'Ez dago aurreko bi arkuen bezalako kartilagorik; hala ere, hioidearen gorputzaren beheko erdia eta adar nagusiak hemendik',
+    },
+    {
+      to: { n9: 1 },
+      run: [0.06, 0.8],
+      cam: SIDE(11, [0.6, 1.9, -1.0], 78, 4),
+      glide: 0.05,
+      dim: ['glosofaringeoa'],
+      names: [{ id: 'glosofaringeoa', text: 'Nerbio glosofaringeoa (IX)', sub: 'mistoa · mihia eta faringea', from: 0.25 }],
+      note: 'III. arkuaren nerbioa IX.a da, glosofaringeoa (gloso = mihia): luzatu egiten da mihira eta faringeko muskuluetara (estilofaringeoak)',
     },
     {
       to: { stylo: 1 },

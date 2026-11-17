@@ -1,4 +1,4 @@
-import { add, mix3, type V3 } from '@/lib/three-d/math';
+import { add, mix3, norm, type V3 } from '@/lib/three-d/math';
 import { curve3 } from '@/lib/three-d/mesh';
 import type { Item3 } from '@/lib/three-d/scene';
 import { vessel } from '@/lib/three-d/organic';
@@ -163,8 +163,19 @@ export function externalModel(pose: ExternalPose, o: ExternalOpts = {}) {
       const id = fem > 0.5 ? 'ezpain-txikiak' : divide > 0.5 ? 'tolespen-urogenitalak' : 'kloaka-tolespenak';
       const extra = { groups: ['kloaka-tolespenak', 'tolespen-urogenitalak', 'ezpain-txikiak'] };
       if (front.length - k >= 2) tube(`fold${s}`, id, front.slice(k), FOLD, ridge(0.11 * folds), 1, extra, 12);
-      // The fused part is see-through: the urethra shows inside it.
-      if (k >= 1) tube(`foldc${s}`, id, front.slice(0, k + 1), FOLD, 0.1 * folds, 0.45, extra, 10);
+      // The fused part: one ridge in the midline, see-through so the urethra shows inside it, its seam (the raphe)
+      // a line on its surface that grows from behind forwards with the closing.
+      if (k >= 1 && s > 0) {
+        const shutLine = front.slice(0, k + 1).map((p): V3 => [0, p[1], p[2]]);
+        tube('foldc', id, shutLine, FOLD, 0.13 * folds, 0.45, extra, 12);
+        const seam = shutLine.map((p): V3 => {
+          // Out of the surface: towards the viewer on the perineum, downwards (−y) under the phallus.
+          const u = clamp01((p[2] - 0.1) / 0.5);
+          const n = norm([0, -u, 1 - 0.85 * u]);
+          return add(p, [0, n[1] * 0.125, n[2] * 0.125]);
+        });
+        tube('raphe', id, seam, '#b34d66', 0.022, 1, extra, 6);
+      }
       // Behind the perineum the cloacal folds go on round the anal membrane (the anal folds).
       tube(`afold${s}`, 'kloaka-tolespenak', L([X(s, [0.24, -0.25, 0.0]), X(s, [0.28, -0.75, 0.0]), X(s, [0.12, -1.1, -0.01])], 12), FOLD, ridge(0.085 * folds * (divide > 0.5 ? 0.8 : 1)), 1, { groups: ['kloaka-tolespenak'] }, 10);
       if (s > 0) {
@@ -197,6 +208,8 @@ export function externalModel(pose: ExternalPose, o: ExternalOpts = {}) {
       pts['eskroto-errafea'] = [0.1, -0.35, 0.55];
     }
   }
+  // One skin: a part that is not lit steps back without going dark (`Item3.calm`).
+  for (const it of items) if (it.id && (it.tissue ?? 'skin') === 'skin') it.calm = true;
   return { items, pts };
 }
 

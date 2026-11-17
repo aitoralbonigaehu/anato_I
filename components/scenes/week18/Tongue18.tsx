@@ -4,11 +4,15 @@ import '@/components/scenes/week17/HeadMap'; // first: common.tsx and HeadMap.ts
 import { ARCH, BACK, KEY_ARCH, TISSUE, endPose, poseStage18, type StageSpec } from '@/components/scenes/week17/common';
 import type { V3 } from '@/lib/three-d/math';
 import { TP0, tongueModel, type TongueOpts, type TonguePose } from './tongue-model';
+import { SITE18B, WHERE18B } from './sites-b';
 
 /**
  * Topic 18, section 2: the tongue on the floor of the pharynx (tongue-model.ts), one surface through four stages:
  * the body (arch I), the root (II, III and part of IV), the nerves region by region, and the occipital myoblasts.
+ * The floor is tied to the root model's (sites-b.ts): the stage before (the glands' descent, on the pharyngeal gut
+ * from behind) flies down onto it, and the four stages run on, one into the next.
  */
+const SITE = { site: SITE18B.tongue, where: WHERE18B.tongue };
 
 const build = (pose: TonguePose, opts: TongueOpts) => tongueModel(pose, opts);
 const CAP = 'Faringearen zorua atzetik eta goitik (3D eredua): mihi-punta goian, enbrioiaren ezkerra zure ezkerrean';
@@ -19,6 +23,8 @@ const CAM = (dist = 10.5, target: V3 = [0, -0.25, 0], yaw = 180, elev = 12) => B
 export const SB = [0, 0.25, 0.5, 0.75] as const;
 
 const specBody: StageSpec<TonguePose, TongueOpts> = {
+  ...SITE,
+  arrive: 'Faringearen zorura begira, barrutik: arkuen artean, hemen hasten da mihia',
   S: SB,
   pose: TP0,
   opts: {},
@@ -74,6 +80,8 @@ export const TongueBody18 = poseStage18(specBody, build);
 export const SR = [0, 0.2, 0.4, 0.6, 0.8] as const;
 
 const specRoot: StageSpec<TonguePose, TongueOpts> = {
+  ...SITE,
+  arrive: 'Zoru berean, beherago: mihiaren atzeko aldea II., III. eta IV. arkuetatik',
   S: SR,
   pose: endPose(specBody).pose,
   opts: {},
@@ -158,6 +166,8 @@ const KEY_NERVE = [
 ] as const;
 
 const specNerve: StageSpec<TonguePose, TongueOpts> = {
+  ...SITE,
+  arrive: 'Mihi bera, atzetik: orain atal bakoitzaren nerbioak',
   S: SN,
   pose: { ...endPose(specRoot).pose },
   opts: {},
@@ -245,6 +255,8 @@ const KEY_MUSCLE = [
 const SIDE_CAM = (dist = 11.5, target: V3 = [0.2, -1.0, 0.2], yaw = 118, elev = 8) => BACK(dist, target, yaw, elev);
 
 const specMuscle: StageSpec<TonguePose, TongueOpts> = {
+  ...SITE,
+  arrive: 'Mihi bera: orain barruko muskuluak, eta nondik datozen',
   S: SM,
   pose: { ...endPose(specNerve).pose, nerve: 0.0, n5: 0, n7: 0, n9: 0, n10: 0, taste: 0 },
   opts: {},

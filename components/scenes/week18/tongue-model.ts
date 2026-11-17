@@ -5,6 +5,7 @@ import { vessel, type Parts, type VesselOptions } from '@/lib/three-d/organic';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex } from '@/components/scenes/week10/model3d';
 import { ARCH, TISSUE } from '@/components/scenes/week17/common';
+import { G18 } from './tones';
 
 /**
  * Topic 18, section 2: the floor of the pharynx seen from behind and above (the notes' figures A → B of 2.1), as one
@@ -96,7 +97,8 @@ const band = (i: number, a: number, b: number) => (i === 0 ? b - cur(0, a) : Mat
 
 const tongueW = (i: number, a: number, b: number, extra = Infinity) => Math.min(band(i, a, b), W(b) - Math.abs(a), inside(a, b), rFc(a, b), extra);
 const wallW = (i: number, a: number, b: number) => Math.min(band(i, a, b), Math.abs(a) - W(b), inside(a, b));
-const epiT = (a: number) => 0.82 - Math.abs(a);
+/** The epiglottis: a rounded swelling across the midline, not a strip from wall to wall. */
+const epiT = (a: number, b: number) => 0.24 * (1 - Math.hypot(a / 0.8, (b + 1.37) / 0.21));
 const caud = (a: number, b: number) => Math.min(cur(4, a) - b, inside(a, b));
 
 const REGIONS: FieldRegion[] = [
@@ -106,13 +108,13 @@ const REGIONS: FieldRegion[] = [
   { name: 'ii', weight: (a, b) => tongueW(1, a, b) },
   { name: 'iii', weight: (a, b) => tongueW(2, a, b) },
   { name: 'iv', weight: (a, b) => tongueW(3, a, b) },
-  { name: 'epi', weight: (a, b) => Math.min(band(4, a, b), epiT(a), inside(a, b)) },
+  { name: 'epi', weight: (a, b) => Math.min(band(4, a, b), epiT(a, b), inside(a, b)) },
   { name: 'fc', weight: (a, b) => -rFc(a, b) },
   { name: 'wall1', weight: (a, b) => wallW(0, a, b) },
   { name: 'wall2', weight: (a, b) => wallW(1, a, b) },
   { name: 'wall3', weight: (a, b) => wallW(2, a, b) },
   { name: 'wall4', weight: (a, b) => wallW(3, a, b) },
-  { name: 'wall5', weight: (a, b) => Math.min(band(4, a, b), -epiT(a), inside(a, b)) },
+  { name: 'wall5', weight: (a, b) => Math.min(band(4, a, b), -epiT(a, b), inside(a, b)) },
   { name: 'lar', weight: (a, b) => Math.min(caud(a, b), eLar(a, b)) },
   { name: 'aryL', weight: (a, b) => Math.min(caud(a, b), eAry(a, b), a) },
   { name: 'aryR', weight: (a, b) => Math.min(caud(a, b), eAry(a, b), -a) },
@@ -120,9 +122,10 @@ const REGIONS: FieldRegion[] = [
   { name: 'base', weight: (a, b) => -inside(a, b) },
 ];
 
-const NEUTRAL = '#d9c6b6';
-const NEUTRAL_DEEP = '#7d6a5b';
-const wallTint = (c: string) => mixHex(c, NEUTRAL, 0.58);
+/** The topic's ground (tones.ts): the floor round the tongue is the pharynx's wall, the slab's sides cut tissue. */
+const NEUTRAL = '#e2d6ce';
+const NEUTRAL_DEEP = G18.wall;
+const wallTint = (c: string) => mixHex(c, NEUTRAL, 0.6);
 const COLORS: Record<string, string> = {
   latL: ARCH.i,
   latR: ARCH.i,
@@ -131,17 +134,17 @@ const COLORS: Record<string, string> = {
   iii: ARCH.iii,
   iv: ARCH.iv,
   epi: ARCH.iv,
-  fc: '#4a2410',
+  fc: G18.cavityDeep,
   wall1: wallTint(ARCH.i),
   wall2: wallTint(ARCH.ii),
   wall3: wallTint(ARCH.iii),
   wall4: wallTint(ARCH.iv),
   wall5: NEUTRAL,
-  lar: '#2b1512',
+  lar: G18.cavity,
   aryL: '#e3b39a',
   aryR: '#e3b39a',
   caud: NEUTRAL,
-  base: NEUTRAL,
+  base: G18.cut,
 };
 
 let surf: ReturnType<typeof fieldSurface> | null = null;
@@ -300,7 +303,7 @@ export function tongueModel(pose: TonguePose, o: TongueOpts = {}) {
   /** Lit keeps its colour; the rest greys and stays solid (never glass). */
   const cc = (color: string, id: string | undefined, groups: readonly string[] = []) => {
     if (!dim || dim.k <= 0.001 || (id && dim.ids.includes(id)) || groups.some((g) => dim.ids.includes(g))) return color;
-    return mixHex(color, '#bdb6ad', 0.78 * dim.k);
+    return mixHex(color, NEUTRAL, 0.5 * dim.k);
   };
   const put = (key: string, id: string | undefined, parts: Parts | null, color: string, extra: Partial<Item3> = {}) => {
     if (!parts) return;
@@ -324,7 +327,8 @@ export function tongueModel(pose: TonguePose, o: TongueOpts = {}) {
   const fused = P.fuse > 0.5;
   const rootId = P.root > 0.5 ? 'mihiaren-sustraia' : 'kupula';
   const BODYG = ['mihiaren-gorputza', 'lehen-arkua', 'barail-nerbioa', 'aurpegi-nerbioa'];
-  const region = (name: string, id: string | undefined, color: string, groups: string[], extra: Partial<Item3> = {}) => put(`f-${name}`, id, parts[name], color, { groups, soft: 1, ...extra });
+  // The tongue's parts are one living surface: unlit, they step back without going dark (calm).
+  const region = (name: string, id: string | undefined, color: string, groups: string[], extra: Partial<Item3> = {}) => put(`f-${name}`, id, parts[name], color, { groups, soft: 1, calm: true, deep: mixHex(color, NEUTRAL_DEEP, 0.45), ...extra });
   region('latL', fused ? 'mihiaren-gorputza' : 'alboko-goraguneak', ARCH.i, [...BODYG, 'alboko-goraguneak']);
   region('latR', fused ? 'mihiaren-gorputza' : 'alboko-goraguneak', ARCH.i, [...BODYG, 'alboko-goraguneak']);
   region('impar', fused ? 'mihiaren-gorputza' : 'tuberkulu-bakoitia', ARCH.i, [...BODYG, 'tuberkulu-bakoitia']);
@@ -334,18 +338,21 @@ export function tongueModel(pose: TonguePose, o: TongueOpts = {}) {
   region('epi', 'epiglotisa', ARCH.iv, ['laugarren-arkua']);
   region('fc', 'zulo-itsua', COLORS.fc, []);
   const w = (c: string) => mixHex(c, NEUTRAL, 0.6 * n);
-  region('wall1', 'lehen-arkua', w(COLORS.wall1), [], { tissue: 'mesenchyme' });
-  region('wall2', 'bigarren-arkua', w(COLORS.wall2), [], { tissue: 'mesenchyme' });
-  region('wall3', 'hirugarren-arkua', w(COLORS.wall3), [], { tissue: 'mesenchyme' });
-  region('wall4', 'laugarren-arkua', w(COLORS.wall4), [], { tissue: 'mesenchyme' });
-  region('wall5', undefined, COLORS.wall5, [], { tissue: 'mesenchyme', quiet: true });
-  region('lar', 'laringe-zuloa', COLORS.lar, [], { outline: false });
+  // The floor round the tongue: the pharynx's wall, each arch's stretch faintly in its colour; ground (it keeps
+  // its tone while the step's subject is lit, light enough for an unlit part to stand out of it).
+  const floor = { tissue: 'mesenchyme' as const, ground: true, deep: NEUTRAL_DEEP };
+  region('wall1', 'lehen-arkua', w(COLORS.wall1), [], floor);
+  region('wall2', 'bigarren-arkua', w(COLORS.wall2), [], floor);
+  region('wall3', 'hirugarren-arkua', w(COLORS.wall3), [], floor);
+  region('wall4', 'laugarren-arkua', w(COLORS.wall4), [], floor);
+  region('wall5', undefined, COLORS.wall5, [], { ...floor, quiet: true });
+  region('lar', 'laringe-zuloa', COLORS.lar, [], { outline: false, deep: G18.cavityDeep });
   region('aryL', 'aritenoide-goraguneak', COLORS.aryL, []);
   region('aryR', 'aritenoide-goraguneak', COLORS.aryR, []);
-  region('caud', undefined, COLORS.caud, [], { tissue: 'mesenchyme', quiet: true });
-  region('base', undefined, COLORS.base, [], { tissue: 'mesenchyme', quiet: true, deep: NEUTRAL_DEEP, ground: true });
+  region('caud', undefined, COLORS.caud, [], { ...floor, quiet: true });
+  region('base', undefined, COLORS.base, [], { tissue: 'mesenchyme', quiet: true, deep: G18.cutDeep, ground: true });
 
-  if (P.cut > 0.01) put('cutface', undefined, cutFace(P), TISSUE.mes, { tissue: 'mesenchyme', quiet: true, deep: TISSUE.mesDeep });
+  if (P.cut > 0.01) put('cutface', undefined, cutFace(P), G18.cut, { tissue: 'mesenchyme', quiet: true, ground: true, deep: G18.cutDeep });
 
   // ———— naming points (well inside each part, on the surface) ————
   const at = (a: number, b: number): V3 => add(placeXYZ(P, a, b, true), [0, 0, -0.02]);

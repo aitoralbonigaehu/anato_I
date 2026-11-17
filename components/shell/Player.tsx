@@ -609,7 +609,7 @@ export function Player(p: PlayerProps) {
               up
               className="tp-set"
               trigger={({ open, toggle }) => (
-                <button className={`tp-set-btn${open ? ' is-on' : ''}`} onClick={toggle} aria-expanded={open} aria-haspopup="dialog" data-tip="Erreprodukzio modua, abiadura eta ahotsa · G" data-tip-pos="top-end">
+                <button data-tour="modua" className={`tp-set-btn${open ? ' is-on' : ''}`} onClick={toggle} aria-expanded={open} aria-haspopup="dialog" data-tip="Erreprodukzio modua, abiadura eta ahotsa · G" data-tip-pos="top-end">
                   <ModeIcon mode={p.mode} />
                   <span>{MODES.find((m) => m.id === p.mode)?.label}</span>
                   {p.speed !== 1 && <em>{p.speed}×</em>}

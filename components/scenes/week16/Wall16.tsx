@@ -1,6 +1,8 @@
 'use client';
 
 import { FRONT16, KEY16, endPose, poseStage, type StageSpec } from './common';
+import { SITE16 } from './sites';
+import { WALL_TONE16 } from './tones';
 import { WALL_WHERE } from '@/components/scenes/week15/Wall3D';
 import { UP0, uroModel, type UroOpts, type UroPose } from '@/components/scenes/week15/uro-model';
 
@@ -9,7 +11,7 @@ import { UP0, uroModel, type UroOpts, type UroPose } from '@/components/scenes/w
  * primordial germ cells' way from the yolk sac (stage 2), the paramesonephric duct (stage 4).
  */
 
-const build = (pose: UroPose, opts: UroOpts) => uroModel(pose, opts);
+const build = (pose: UroPose, opts: UroOpts) => uroModel(pose, { tone: WALL_TONE16, ...opts });
 const CAP = 'Atzeko pareta aurretik (3D eredua): enbrioiaren ezkerra zure eskuinean';
 const BASE: UroPose = { ...UP0, meso: 1, wolff: 1, mesoGone: 0.35, gonadal: 1, bud: 1, blast: 1 };
 
@@ -18,6 +20,8 @@ const BASE: UroPose = { ...UP0, meso: 1, wolff: 1, mesoGone: 0.35, gonadal: 1, b
 export const S1 = [0, 0.33, 0.66] as const;
 
 const spec1: StageSpec<UroPose, UroOpts> = {
+  site: SITE16.wall,
+  arrive: 'Atzeko pareta osora itzuli gara: gonadak hemen garatzen dira',
   where: WALL_WHERE,
   S: S1,
   pose: { ...BASE, gonadal: 0 },
@@ -68,6 +72,8 @@ export const Intro16 = poseStage(spec1, build);
 export const S2 = [0, 0.3, 0.62] as const;
 
 const spec2: StageSpec<UroPose, UroOpts> = {
+  site: SITE16.wall,
+  arrive: 'Atzeko pareta osora itzuli gara: hozi zelulen bidea ikusteko',
   S: S2,
   pose: { ...BASE, germ: 0 },
   opts: { glom: 0, gut: 1, yolk: 1 },
@@ -119,6 +125,8 @@ export const Germ16 = poseStage(spec2, build);
 export const S4 = [0, 0.25, 0.5, 0.75] as const;
 
 const spec4: StageSpec<UroPose, UroOpts> = {
+  site: SITE16.wall,
+  arrive: 'Ebakia hemen zegoen. Orain atzeko pareta osoa, aurretik: hodi paramesonefrikoa',
   S: S4,
   pose: { ...BASE },
   opts: { glom: 0, gut: 1 },

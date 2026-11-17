@@ -1,6 +1,12 @@
 'use client';
 
-import { ARCH, BACK, FRONT, TISSUE, endPose, poseStage18, type StageSpec } from '@/components/scenes/week17/common';
+import { ARCH, BACK, FRONT, TISSUE, poseStage18, type StageSpec } from '@/components/scenes/week17/common';
+import { END_SINUS } from './Clefts18';
+import type { PharynxBOpts } from './pharynx-b';
+import { pharynxD } from './pharynx-d';
+import { POUCH, type PharynxPose } from './pharynx-model';
+import { SITE18 } from './sites';
+import { SITE18B, WHERE18B } from './sites-b';
 import { NP0, neckModel, type NeckOpts, type NeckPose } from './neck-model';
 
 /**
@@ -15,37 +21,53 @@ const KEY = [
   { color: '#b23c56', text: 'tiroidea' },
   { color: TISSUE.cartilage, text: 'kartilagoak' },
 ];
-const CAP_BACK = 'Lepoa atzetik (3D eredua): enbrioiaren ezkerra zure ezkerrean';
+const CAP_BACK = 'Faringe hestea eta lepoa atzetik, hormak kenduta (3D eredua): enbrioiaren ezkerra zure ezkerrean';
 const CAP_FRONT = 'Lepoa aurretik eta atzetik (3D eredua)';
 
 // ———————————————————————————— Guruinen jaisketa (1.2) ————————————————————————————
+// Told on the topic's one pharyngeal gut (pharynx-d.ts): both walls peeled to the endoderm, the buds of the third and
+// fourth pouches (seen budding two stages ago) go down, the neck growing longer under them.
 
 export const SD = [0, 0.26, 0.6, 0.8] as const;
-const cam1 = (dist: number, y: number, yaw = 180, elev = 6) => BACK(dist, [0, y, 0], yaw, elev);
+const down = (dist: number, y: number, yaw = 182, elev = 8, x = 0) => BACK(dist, [x, y, 0.35], yaw, elev);
+const KEY_DOWN = [
+  { color: POUCH.p3, text: '3. poltsatik' },
+  { color: POUCH.p4, text: '4. poltsatik' },
+  { color: '#d98068', text: 'tiroidea' },
+  { color: TISSUE.endo, text: 'endodermoa' },
+];
 
-const specDown: StageSpec<NeckPose, NeckOpts> = {
+const specDown: StageSpec<PharynxPose, PharynxBOpts> = {
+  where: WHERE18B.pharynx,
+  site: SITE18.pharynx,
+  arrive: 'Faringe bera, bi hormak kenduta: 3. eta 4. poltsetako kimuak, jaisteko prest',
   S: SD,
-  pose: NP0,
-  opts: { back: true },
+  pose: END_SINUS.pose,
+  opts: END_SINUS.opts,
   caption: CAP_BACK,
-  key: KEY,
+  key: KEY_DOWN,
   map: 'neck',
   steps: [
     {
-      cam: cam1(9.5, 0.9, 188),
+      to: { persist: 0, fluid: 0, needle: 0, peelL: 1, peelR: 1 },
+      run: [0.04, 0.55],
+      cam: down(10.5, -1.5),
+      fit: false,
       glide: 0.06,
       dim: ['hirugarren-poltsa', 'laugarren-poltsa', 'timoa', 'beheko-paratiroidea', 'goiko-paratiroidea'],
       names: [
-        { id: 'timoa', sub: '3. poltsa' },
-        { id: 'beheko-paratiroidea', sub: '3. poltsa: goian hasten da', from: 0.2 },
-        { id: 'goiko-paratiroidea', sub: '4. poltsa: behean hasten da', from: 0.4 },
+        { id: 'faringea', small: true, from: 0.2 },
+        { id: 'timoa', sub: '3. poltsa', from: 0.35 },
+        { id: 'beheko-paratiroidea', sub: '3. poltsa: goian hasten da', from: 0.45 },
+        { id: 'goiko-paratiroidea', sub: '4. poltsa: behean hasten da', from: 0.55 },
       ],
       note: 'Hasieran 3. poltsakoa GORAGO dago: timoa eta beheko paratiroidea. 4. poltsakoa, goiko paratiroidea, beherago',
     },
     {
-      to: { down: 0.72, sup: 0.6 },
+      to: { neck: 1, descend: 0.72, thyroid: 1 },
       run: [0.06, 0.94],
-      cam: cam1(11, -0.3, 184),
+      cam: down(14, -2.9),
+      fit: false,
       glide: 0.08,
       dim: ['timoa', 'beheko-paratiroidea', 'goiko-paratiroidea'],
       names: [
@@ -56,9 +78,10 @@ const specDown: StageSpec<NeckPose, NeckOpts> = {
       note: 'Timoa bi aldeetan eratzen da eta erdialdera jaisten da: 3. poltsako paratiroidea berekin darama, 4. poltsakoaren ondotik pasatuz',
     },
     {
-      to: { down: 1, sup: 1 },
+      to: { descend: 1, meet: 1 },
       run: [0.05, 0.75],
-      cam: cam1(8.5, -0.45, 186),
+      cam: down(9.5, -3.9, 186),
+      fit: false,
       glide: 0.06,
       dim: ['beheko-paratiroidea', 'goiko-paratiroidea', 'tiroide-guruina', 'tiroide-lobuluak'],
       names: [
@@ -69,9 +92,10 @@ const specDown: StageSpec<NeckPose, NeckOpts> = {
       warn: true,
     },
     {
-      to: { adult: 1 },
+      to: { cartil: 1, ubIn: 1 },
       run: [0.05, 0.75],
-      cam: cam1(8, -0.2, 208, 12),
+      cam: down(8.4, -3.7, 230, 24),
+      fit: false,
       glide: 0.06,
       dim: ['tiroide-lobuluak', 'laringeko-kartilagoak', 'beheko-paratiroidea', 'goiko-paratiroidea'],
       names: [
@@ -82,16 +106,20 @@ const specDown: StageSpec<NeckPose, NeckOpts> = {
     },
   ],
 };
-export const GlandDescent18 = poseStage18(specDown, build);
+export const GlandDescent18 = poseStage18(specDown, (pose, opts) => pharynxD(pose, opts));
 
 // ———————————————————————————— Tiroide heldua (3) ————————————————————————————
 
 export const SM = [0, 0.18, 0.38, 0.6, 0.8] as const;
 const front = (dist: number, y: number, yaw = 0, elev = 5) => FRONT(dist, [0, y, 0], yaw, elev);
+/** The neck model with everything down and grown (the descent itself is told on the pharynx, above). */
+const MATURE0: NeckPose = { ...NP0, down: 1, sup: 1, adult: 1 };
 
 const specMature: StageSpec<NeckPose, NeckOpts> = {
+  site: SITE18B.neck,
+  arrive: 'Ebaki sagitaletik lepo osora: guruina iritsi den lekua, aurretik',
   S: SM,
-  pose: endPose(specDown).pose,
+  pose: MATURE0,
   opts: {},
   caption: CAP_FRONT,
   key: KEY,

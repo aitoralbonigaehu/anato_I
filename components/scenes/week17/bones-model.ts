@@ -1,9 +1,12 @@
-import { add, mix3, type V3 } from '@/lib/three-d/math';
-import { curve3 } from '@/lib/three-d/mesh';
+import { add, mix3, norm, type V3 } from '@/lib/three-d/math';
+import { curve3, grid } from '@/lib/three-d/mesh';
+import { cachedMesh } from '@/lib/three-d/mesh-cache';
+import { capsule, deform, deformBy, ellipsoid, smin, surfaceMesh, type SDF } from '@/lib/three-d/sdf';
 import { vessel, type Parts, type VesselOptions } from '@/lib/three-d/organic';
-import type { Item3 } from '@/lib/three-d/scene';
+import type { Clip3, Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
 import { ARCH, TISSUE } from './common';
+import { maxillaF, zygomaticF } from './skull-model';
 
 /**
  * Topic 17, 2.2.2–2.6.2: the arches' cartilage bars from the embryo's left, the notes' figure of p.4 right, as a
@@ -22,7 +25,7 @@ export interface BonesPose {
   bone: number;
   /** Meckel degenerated (0..1); the plates close over where it was. */
   deg: number;
-  /** Maxilla, zygomatic and temporal squama (0..1). */
+  /** Maxilla, zygomatic and the temporal's tympanic part (0..1). */
   maxBones: number;
   /** Reichert degenerated, its ends left as bones (0..1). */
   rdeg: number;
@@ -68,6 +71,7 @@ const REICHERT_E: V3[] = [[0.45, 3.02, -2.3], [0.5, 2.4, -1.95], [0.55, 1.6, -1.
 const REICHERT_A: V3[] = [[0.42, 2.9, -2.4], [0.5, 2.45, -2.15], [0.55, 1.7, -1.9], [0.6, 0.9, -1.2], [0.6, -0.1, -0.1], [0.46, -0.32, 0.62]];
 const NERVE7: V3[] = [[0.2, 4.4, -2.85], [0.62, 3.35, -2.95], [0.88, 2.25, -2.5], [0.98, 1.72, -1.25], [0.98, 2.05, 0.3], [0.92, 2.55, 1.7]];
 const NERVE9: V3[] = [[0.2, 3.9, -3.05], [0.76, 2.6, -2.85], [0.78, 1.2, -2.15], [0.72, 0.45, -1.3], [0.62, 0.62, 0.0], [0.42, 0.8, 1.0]];
+const PHARYNX_R = 0.56;
 const PHARYNX: V3[] = [[0, 2.4, -1.55], [0, 0.8, -1.4], [0, -1.0, -1.08], [0, -2.5, -0.72]];
 const HEAD_LINE_E: V3[] = [[-0.35, -5.4, -0.75], [-0.35, -1, -0.35], [-0.35, 2.2, 0.15], [-0.35, 6.4, -0.3]];
 const HEAD_LINE_A: V3[] = [[-0.35, -5.4, -0.85], [-0.35, -1, -0.65], [-0.35, 2.2, 0.0], [-0.35, 6.4, -0.55]];
@@ -83,6 +87,125 @@ function offsetYZ(line: V3[], d: number): V3[] {
   });
 }
 const at = (line: V3[], u: number) => line[Math.min(line.length - 1, Math.round(clamp01(u) * (line.length - 1)))];
+
+// ———— the head: the right half of a fetal head, cut in the midline (built once) ————
+/** The profile, [y, z], from the base of the neck up the face, over the vertex and down the nape. */
+const PROFILE: [number, number][] = [
+  [-5.4, 1.05], [-3.6, 1.1], [-2.2, 1.26], [-1.2, 1.36], [-0.35, 1.75], [0.12, 2.5], [0.5, 3.2], [1.1, 3.44], [1.6, 3.3], [1.95, 3.56], [2.2, 3.42],
+  [2.5, 3.7], [2.95, 3.62], [3.2, 4.3], [3.75, 3.95], [4.35, 3.66], [5.0, 3.78], [5.9, 3.3], [6.6, 2.0], [6.95, 0.2], [6.7, -1.8], [5.9, -3.4],
+  [4.6, -4.3], [3.2, -4.3], [2.0, -3.7], [0.8, -3.0], [-0.8, -2.7], [-3.0, -2.65], [-5.4, -2.7],
+];
+const SPINE: [number, number][] = [[-5.4, -0.8], [-2, -0.7], [1, -0.35], [3.6, -0.3], [5.0, -0.45]];
+const OUTLINE: [number, number][] = (() => {
+  const c = curve3(PROFILE.map(([y, z]): V3 => [0, y, z]), 150).map((p): [number, number] => [p[1], p[2]]);
+  const a = c[c.length - 1], b = c[0];
+  for (let i = 1; i < 14; i++) c.push([a[0] + ((b[0] - a[0]) * i) / 14, a[1] + ((b[1] - a[1]) * i) / 14]);
+  return c;
+})();
+/** Each outline point's nearest point on the head's inner line: the surface swells from the one to the other. */
+const INNER: [number, number][] = OUTLINE.map(([y, z]) => {
+  let best: [number, number] = SPINE[0], bd = Infinity;
+  for (let i = 0; i < SPINE.length - 1; i++) {
+    const [ay, az] = SPINE[i], [by, bz] = SPINE[i + 1];
+    const dy = by - ay, dz = bz - az;
+    const u = clamp01(((y - ay) * dy + (z - az) * dz) / (dy * dy + dz * dz));
+    const q: [number, number] = [ay + dy * u, az + dz * u];
+    const d = Math.hypot(y - q[0], z - q[1]);
+    if (d < bd) { bd = d; best = q; }
+  }
+  return best;
+});
+const ring = (v: number) => Math.round(v * OUTLINE.length) % OUTLINE.length;
+const headSkin = (nu: number, nv: number) => grid(nu, nv, (u, v) => {
+  const j = ring(v), o = OUTLINE[j], s = INNER[j];
+  const w = lerp(1.25, 2.45, ss(-0.5, 3.6, s[0]));
+  const k = 1 - Math.cos((u * Math.PI) / 2);
+  return [-w * Math.sin((u * Math.PI) / 2), o[0] + (s[0] - o[0]) * k, o[1] + (s[1] - o[1]) * k];
+}, [-80, 2, 0]);
+/** The flat cut face from the outline in to `to` (1 = all of it; a small `to` = the skin's cut edge). */
+const headCut = (nu: number, nv: number, x: number, to: number) => grid(nu, nv, (u, v) => {
+  const j = ring(v), o = OUTLINE[j], s = INNER[j];
+  return [x, o[0] + (s[0] - o[0]) * u * to, o[1] + (s[1] - o[1]) * u * to];
+}, [80, 2, 0]);
+const disc = (x: number, c: [number, number], r: [number, number]) => grid(5, 44, (u, v) => [x, c[0] + r[0] * u * Math.sin(v * Math.PI * 2), c[1] + r[1] * u * Math.cos(v * Math.PI * 2)], [80, c[0], c[1]]);
+const N_OUT = OUTLINE.length;
+const HEAD = {
+  skin: (): Parts => ({ mesh: cachedMesh('b17-head-skin', [1], () => headSkin(16, N_OUT)), hit: cachedMesh('b17-head-skin-h', [1], () => headSkin(4, 40)) }),
+  cut: (): Parts => ({ mesh: cachedMesh('b17-head-cut', [1], () => headCut(6, N_OUT, 0, 1)), hit: cachedMesh('b17-head-cut-h', [1], () => headCut(2, 40, 0, 1)) }),
+  rim: (): Parts => ({ mesh: cachedMesh('b17-head-rim', [1], () => headCut(1, N_OUT, 0.012, 0.055)), hit: cachedMesh('b17-head-rim-h', [1], () => headCut(1, 40, 0.012, 0.055)) }),
+  brain: (): Parts => ({ mesh: cachedMesh('b17-head-brain', [1], () => disc(0.008, [4.55, -0.5], [1.9, 3.05])), hit: cachedMesh('b17-head-brain-h', [1], () => disc(0.008, [4.55, -0.5], [1.9, 3.05])) }),
+  mouth: (): Parts => ({ mesh: cachedMesh('b17-head-mouth', [2], () => disc(0.008, [2.22, 2.0], [0.13, 1.3])), hit: cachedMesh('b17-head-mouth-h', [2], () => disc(0.008, [2.22, 2.0], [0.13, 1.3])) }),
+};
+
+// ———— the face bones, sculpted (the fetal skull's own shapes, built once) ————
+/** The fetal skull's frame (skull-model) → this model's: narrower across, so every part stays near the cut. */
+const FROM_SKULL = (p: V3): V3 => [p[0] * 0.85 + 0.08, p[1] * 1.654 + 5.595, p[2] * 1.7 - 1.67];
+const DIR_FROM_SKULL = (d: V3): V3 => norm([d[0] * 0.85, d[1] * 1.654, d[2] * 1.7]);
+const sculpt = (kind: string, f: SDF, lo: V3, hi: V3, step: number): Parts => ({
+  mesh: cachedMesh(`b17-${kind}`, [step], () => deform(surfaceMesh(f, lo, hi, step), FROM_SKULL)),
+  hit: cachedMesh(`b17-${kind}-h`, [step], () => deform(surfaceMesh(f, lo, hi, step * 3), FROM_SKULL)),
+});
+/**
+ * The left half of the mandible (fetal skull's frame), cut at the chin: a smooth body along the dental arch, a broad
+ * ramus, the coronoid process and the condyle, a chin. Smooth segments, so the body is one bar and not a row of beads.
+ */
+const hemiMandibleF: SDF = (() => {
+  const B: V3[] = [[0, -3.02, 2.62], [0.46, -3.0, 2.48], [0.96, -2.94, 2.08], [1.38, -2.84, 1.58], [1.72, -2.7, 1.12]];
+  const R = [0.2, 0.19, 0.18, 0.17, 0.17];
+  const body = B.slice(1).map((b, i) => capsule(B[i], b, R[i], R[i + 1]));
+  const chin = ellipsoid([0.08, -3.1, 2.66], [0.3, 0.17, 0.17]);
+  const ramus = ellipsoid([1.9, -2.3, 0.76], [0.1, 0.5, 0.27]);
+  const angle = ellipsoid([1.8, -2.66, 0.86], [0.11, 0.22, 0.3]);
+  const coronoid = capsule([1.84, -2.2, 0.98], [1.86, -1.62, 1.2], 0.1, 0.03);
+  const neck = capsule([1.96, -2.1, 0.6], [2.02, -1.76, 0.5], 0.1, 0.1);
+  const condyle = ellipsoid([2.03, -1.72, 0.5], [0.19, 0.11, 0.13]);
+  return (x, y, z) => {
+    let d = body[0](x, y, z);
+    for (let i = 1; i < body.length; i++) d = smin(d, body[i](x, y, z), 0.06);
+    d = smin(d, chin(x, y, z), 0.1);
+    d = smin(d, angle(x, y, z), 0.14);
+    d = smin(d, ramus(x, y, z), 0.16);
+    d = smin(d, coronoid(x, y, z), 0.07);
+    d = smin(d, neck(x, y, z), 0.07);
+    d = smin(d, condyle(x, y, z), 0.05);
+    return Math.max(d, 0.012 - x);
+  };
+})();
+const MANDIBLE = () => sculpt('mandible3', hemiMandibleF, [0, -3.45, 0.2], [2.35, -1.5, 2.98], 0.03);
+/** The temporal bone, sculpted in this model's own frame round `c` (the squama's centre) and `p` (the petrous part's). */
+const SQUAMA_C: V3 = [0.55, 3.95, -0.95];
+const PETROUS_C: V3 = [0.08, 3.2, -2.1];
+const squamaF: SDF = (() => {
+  const c = SQUAMA_C;
+  // A thin scale, round above and cut straight below, with its zygomatic process running forwards.
+  const fan = ellipsoid(c, [0.12, 1.0, 1.1]);
+  const zp = capsule([c[0] + 0.1, c[1] - 0.42, c[2] + 0.55], [c[0] + 0.5, c[1] - 0.5, c[2] + 1.55], 0.11, 0.06);
+  return (x, y, z) => smin(Math.max(fan(x, y, z), c[1] - 0.52 - y), zp(x, y, z), 0.12);
+})();
+const petrousF: SDF = (() => {
+  const p = PETROUS_C;
+  // The thick part that houses the ear, with the mastoid process below and behind.
+  const mass = ellipsoid(p, [0.34, 0.5, 0.86]);
+  const mastoid = ellipsoid([p[0] + 0.3, p[1] - 0.52, p[2] - 0.62], [0.24, 0.4, 0.3]);
+  const pit = ellipsoid([p[0] + 0.5, p[1] + 0.06, p[2] + 0.12], [0.3, 0.3, 0.34]);
+  return (x, y, z) => Math.max(smin(mass(x, y, z), mastoid(x, y, z), 0.2), -pit(x, y, z));
+})();
+const here = (kind: string, f: SDF, lo: V3, hi: V3, step: number): Parts => ({
+  mesh: cachedMesh(`b17-${kind}`, [step], () => surfaceMesh(f, lo, hi, step)),
+  hit: cachedMesh(`b17-${kind}-h`, [step], () => surfaceMesh(f, lo, hi, step * 3)),
+});
+const SQUAMA = () => here('squama2', squamaF, [0.3, 3.3, -2.2], [1.25, 5.1, 0.8], 0.03);
+const PETROUS = () => here('petrous', petrousF, [-0.35, 2.2, -3.15], [0.75, 3.8, -1.15], 0.045);
+/** A sculpted part grown from its centre (0..1) and carried by `d`. */
+const grown = (p: Parts, c: V3, k: number, d: V3, slot: string): Parts => {
+  const f = (q: V3): V3 => [c[0] + (q[0] - c[0]) * k + d[0], c[1] + (q[1] - c[1]) * k + d[1], c[2] + (q[2] - c[2]) * k + d[2]];
+  return k > 0.999 && Math.abs(d[0]) + Math.abs(d[1]) + Math.abs(d[2]) < 1e-4 ? p : { mesh: deformBy(p.mesh, [k, ...d], f, slot), hit: deformBy(p.hit, [k, ...d], f, slot + 'h') };
+};
+const MAXILLA = () => sculpt('maxilla', maxillaF, [0, -2.45, 1.3], [1.75, -0.45, 3.2], 0.034);
+const ZYGOMA = () => sculpt('zygoma', zygomaticF, [1.1, -1.9, 0.7], [2.3, -0.3, 2.2], 0.032);
+/** A sculpted part carried to where the pose has it. */
+const moved = (p: Parts, d: V3, slot: string): Parts =>
+  Math.abs(d[0]) + Math.abs(d[1]) + Math.abs(d[2]) < 1e-4 ? p : { mesh: deformBy(p.mesh, d, (q) => add(q, d), slot), hit: deformBy(p.hit, d, (q) => add(q, d), slot + 'h') };
 
 export function bonesModel(pose: BonesPose, o: BonesOpts = {}) {
   const items: Item3[] = [];
@@ -107,17 +230,16 @@ export function bonesModel(pose: BonesPose, o: BonesOpts = {}) {
   const rdeg = clamp01(pose.rdeg);
 
   // ———— the head cut in the midline: the ground everything lies on ————
-  const headR = lerp(3.9, 3.7, a);
-  const headLine = curve3(mixLine(HEAD_LINE_E, HEAD_LINE_A, a), 34);
-  const headRadius = (u: number) => {
-    const r = 1.85 + (headR - 1.85) * ss(0.34, 0.62, u);
-    return u > 0.8 ? r * Math.sqrt(Math.max(0.0025, 1 - ((u - 0.8) / 0.2) ** 2)) : r;
-  };
-  items.push({ key: 'head', ...tubeParts(headLine.map((p): V3 => [p[0] - 0.95, p[1], p[2]]), { radius: headRadius, around: (ang) => 1 - 0.92 * Math.cos(ang) ** 2, ref: [1, 0, 0], sides: 40, capStart: true, capEnd: true }), color: TISSUE.ground, deep: TISSUE.groundDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
+  const ground = { tissue: 'mesenchyme' as const, opacity: 1, quiet: true, ground: true };
+  items.push({ key: 'head', ...HEAD.skin(), color: TISSUE.skin, deep: TISSUE.skinDeep, ...ground, tissue: 'skin' });
+  items.push({ key: 'head-cut', ...HEAD.cut(), color: TISSUE.ground, deep: TISSUE.groundDeep, ...ground });
+  items.push({ key: 'head-rim', ...HEAD.rim(), color: TISSUE.skin, deep: TISSUE.skinDeep, ...ground, tissue: 'skin', outline: false });
+  items.push({ key: 'head-brain', ...HEAD.brain(), color: mixHex(TISSUE.ground, '#cdbfc4', 0.7), deep: mixHex(TISSUE.groundDeep, '#6b5b66', 0.7), ...ground, tissue: 'neural', outline: false });
+  items.push({ key: 'head-mouth', ...HEAD.mouth(), color: mixHex(TISSUE.ground, '#6b3a3c', 0.5), deep: mixHex(TISSUE.groundDeep, '#3d2224', 0.5), ...ground, outline: false });
 
   // The pharynx, deep: only context (what the third arch's muscles act on).
   const phar = curve3(PHARYNX.map((p) => add(p, [0, -0.3 * a, -0.15 * a])), 20);
-  put('pharynx', undefined, vessel(phar, { r0: 0.68, r1: 0.55, ref: [1, 0, 0], sides: 18, n: 20 }), '#d8a48f', 1, { quiet: true, tissue: 'mesenchyme' });
+  put('pharynx', undefined, vessel(phar, { r0: PHARYNX_R, r1: PHARYNX_R * 0.82, ref: [1, 0, 0], sides: 22, n: 24 }), '#e6b9a8', 1, { quiet: true, ground: true, tissue: 'mesenchyme' });
 
   // ———— arch I ————
   const mLine = curve3(mixLine(MECKEL_E, MECKEL_A, a), 30);
@@ -131,39 +253,52 @@ export function bonesModel(pose: BonesPose, o: BonesOpts = {}) {
     const shown = deg < 0.02 ? mLine : mLine.slice(0, Math.max(3, Math.round(mLine.length * (1 - 0.5 * ss(0.5, 1, deg)))));
     items.push({ key: 'meckel', id: 'meckel-kartilagoa', ...tubeParts(shown, { radius: rm, ref: [1, 0, 0], sides: 16, capStart: true, capEnd: true }), color: ARCH.i, deep: darker(ARCH.i), tissue: 'epithelium', opacity: fade('meckel-kartilagoa') });
   }
-  pts['meckel-kartilagoa'] = at(mLine, deg < 0.5 ? 0.55 : 0.25);
+  pts['meckel-kartilagoa'] = at(mLine, deg < 0.5 ? 0.55 : 0.04);
 
+  // The mandible: membranous bone that forms beside Meckel from the chin backwards (spicules at its growing edge),
+  // see-through while the cartilage is still there, then carried to its adult place.
   const bone = clamp01(pose.bone);
   const mand = boneOf(ARCH.i);
+  const lift: V3 = [0, 0.6 * (1 - a), 0.3 * (1 - a)];
   if (bone > 0.01) {
-    const rev = [...mLine].reverse();
-    const d = lerp(0.42, 0.14, deg);
-    const r = lerp(0.2, 0.34, deg);
-    const prof: VesselOptions = { r0: r, r1: r * 0.9, flat: 0.42, sides: 16, n: 30 };
-    vess('mand-up', 'baraila', offsetYZ(rev, d), mand, prof, bone);
-    vess('mand-lo', 'baraila', offsetYZ(rev, -d), mand, prof, bone);
-    // The core fills the groove only as Meckel leaves it, so the two plates end as one bone.
-    if (deg > 0.02) vess('mand-core', 'baraila', rev, mand, { r0: lerp(0.05, 0.42, deg), r1: lerp(0.05, 0.38, deg), flat: 0.42, sides: 16, n: 30, bulb: 0.25 * a }, bone);
-    pts['baraila'] = add(at(rev, Math.min(0.5, bone * 0.5)), [0.2, -d, 0]);
+    const clip: Clip3 | undefined = bone < 0.999 ? { o: add(FROM_SKULL([0.75, -2.98, 2.3]), lift), grow: { dir: [0, 0, 1], cos: Math.cos(bone * Math.PI * 0.98), spicules: 1 } } : undefined;
+    put('mandible', 'baraila', moved(MANDIBLE(), lift, 'mand'), mand, lerp(0.42, 1, ss(0.15, 0.95, deg)), { tissue: 'bone', clip, outline: !clip });
   }
+  pts['baraila'] = add(add(FROM_SKULL([1.02, -2.94, 2.0]), [0.14, 0, 0]), lift);
 
   // The maxillary process's bones (membranous, each grows in place).
   const mx = ss(0, 1, pose.maxBones);
-  const maxC = mix3([0.55, 2.55, 2.2], [0.75, 2.0, 2.15], a);
-  const zygC = mix3([0.75, 3.05, 1.1], [0.95, 2.7, 1.0], a);
   const squC = mix3([0.55, 3.95, -0.95], [0.5, 4.05, -1.2], a);
   const mxBone = boneOf(ARCH.i);
-  ball('maxilla', 'hezur-maxilarra', maxC, [0.34, 0.62, 0.75], mxBone, mx, { groups: ['luzapen-maxilarra'] });
-  ball('zygoma', 'zigomatikoa', zygC, [0.22, 0.34, 0.62], mxBone, mx, { groups: ['luzapen-maxilarra'] });
-  ball('squama', 'tenporalaren-ezkata', squC, [0.18, 0.85, 0.95], mxBone, mx, { groups: ['luzapen-maxilarra'] });
-  pts['hezur-maxilarra'] = add(maxC, [0.2, 0, 0]);
-  pts['zigomatikoa'] = add(zygC, [0.15, 0, 0]);
+  const lift2: V3 = [0, 0.45 * (1 - a), 0.05 * (1 - a)];
+  const growing = (c: V3, off: V3, ang: number): Clip3 | undefined => (mx < 0.999 ? { o: add(FROM_SKULL([c[0] - off[0], c[1] - off[1], c[2] - off[2]]), lift2), grow: { dir: DIR_FROM_SKULL(off), cos: Math.cos(mx * ang), spicules: 1 } } : undefined);
+  if (mx > 0.01) {
+    const cm = growing([0.62, -1.7, 2.3], [0, 0, 1.4], 1.1);
+    put('maxilla', 'hezur-maxilarra', moved(MAXILLA(), lift2, 'max'), mxBone, 1, { groups: ['luzapen-maxilarra'], tissue: 'bone', clip: cm, outline: !cm });
+    const cz = growing([1.55, -1.3, 1.6], [1.2, 0, 0.3], 1.3);
+    put('zygoma', 'zigomatikoa', moved(ZYGOMA(), lift2, 'zyg'), mxBone, 1, { groups: ['luzapen-maxilarra'], tissue: 'bone', clip: cz, outline: !cz });
+  }
+  pts['hezur-maxilarra'] = add(add(FROM_SKULL([0.95, -1.78, 2.6]), [0.1, 0, 0]), lift2);
+  pts['zigomatikoa'] = add(add(FROM_SKULL([1.72, -1.42, 1.72]), [0.12, 0, 0]), lift2);
   pts['tenporalaren-ezkata'] = add(squC, [0.1, 0.1, 0]);
+  // The part of the temporal round the tympanic cavity and the ossicles (notes 2.2.1: arch I): a ring that frames
+  // the three ossicles from the side, open above, growing round them.
+  const tyC: V3 = add([0.98, 3.02, -1.9], ear);
+  const tyRing: V3[] = Array.from({ length: 31 }, (_, i): V3 => {
+    const t = (115 + (i / 30) * 310) * (Math.PI / 180);
+    return [tyC[0], tyC[1] + Math.sin(t) * 0.56, tyC[2] + Math.cos(t) * 0.6];
+  });
+  vess('tympanic', 'loki-hezurraren-atal-tinpanikoa', tyRing, mxBone, { r0: 0.07, r1: 0.06, flat: 0.5, sides: 12, n: 40 }, mx);
+  pts['loki-hezurraren-atal-tinpanikoa'] = tyRing[22];
 
   // The temporal's petrous part: grey, it comes from the base's mesenchyme, not from an arch.
   const pet = ss(0, 1, pose.petrous);
   const petC = mix3([0.08, 3.2, -2.1], [0.08, 3.05, -2.3], a);
-  ball('petrous', 'arkaitza', petC, [0.3, 0.55, 0.95], '#b9b2a4', pet, { tissue: 'mesenchyme' });
+  if (pet > 0.01) {
+    put('petrous', 'arkaitza', grown(PETROUS(), PETROUS_C, pet, [petC[0] - PETROUS_C[0], petC[1] - PETROUS_C[1], petC[2] - PETROUS_C[2]], 'pet'), '#cdc5b4', 1, { tissue: 'bone' });
+    // The squama: neutral too (the notes no longer give it to arch I), the thin scale above the petrous part.
+    put('squama', 'tenporalaren-ezkata', grown(SQUAMA(), SQUAMA_C, pet, [squC[0] - SQUAMA_C[0], squC[1] - SQUAMA_C[1], squC[2] - SQUAMA_C[2]], 'squ'), '#e2dac8', 1, { tissue: 'bone' });
+  }
   pts['arkaitza'] = add(petC, [0.1, -0.32, -0.55]);
 
   // The ossicles: drawn large enough to read (the notes' figure does the same).
@@ -220,25 +355,38 @@ export function bonesModel(pose: BonesPose, o: BonesOpts = {}) {
   // ———— nerves ————
   const n7 = curve3(NERVE7, 36);
   const n9 = curve3(NERVE9, 36);
-  vess('n7', 'aurpegi-nerbioa', n7, TISSUE.nerve, { r0: 0.075, r1: 0.05, sides: 10, n: 36 }, pose.n7);
-  vess('n9', 'glosofaringeoa', n9, TISSUE.nerve, { r0: 0.075, r1: 0.05, sides: 10, n: 36 }, pose.n9);
-  vess('n9b', 'glosofaringeoa', [at(n9, 0.5), add(at(n9, 0.5), [-0.1, -0.3, 0.25]), [0.56, 0.8, -1.25]], TISSUE.nerve, { r0: 0.04, r1: 0.03, sides: 8, n: 10 }, ss(0.55, 1, pose.n9));
+  const C7 = mixHex(ARCH.ii, '#ffffff', 0.34), C9 = mixHex(ARCH.iii, '#ffffff', 0.2);
+  vess('n7', 'aurpegi-nerbioa', n7, C7, { r0: 0.075, r1: 0.05, sides: 10, n: 36 }, pose.n7);
+  vess('n9', 'glosofaringeoa', n9, C9, { r0: 0.075, r1: 0.05, sides: 10, n: 36 }, pose.n9);
+  vess('n9b', 'glosofaringeoa', [at(n9, 0.5), add(at(n9, 0.5), [-0.1, -0.3, 0.25]), [0.56, 0.8, -1.25]], C9, { r0: 0.04, r1: 0.03, sides: 8, n: 10 }, ss(0.55, 1, pose.n9));
   pts['aurpegi-nerbioa'] = at(n7, 0.32);
   pts['glosofaringeoa'] = at(n9, 0.35);
 
   // ———— the third arch's deep muscles (yellow) ————
   const styTip = at(sty, 1);
-  const styTo: V3 = add(at(phar, 0.42), [0.58, 0, 0.05]);
-  vess('stylopharyngeus', 'muskulu-estilofaringeoa', [styTip, mix3(styTip, styTo, 0.5), styTo], ARCH.iii, { r0: 0.06, r1: 0.1, sides: 10, n: 14 }, pose.stylo);
-  pts['muskulu-estilofaringeoa'] = mix3(styTip, styTo, 0.45);
-  const cP = at(phar, 0.3);
-  const crc = Array.from({ length: 19 }, (_, i): V3 => {
-    const t = -Math.PI / 2 + (i / 18) * Math.PI;
-    return [Math.cos(t) * 0.72, cP[1], cP[2] + Math.sin(t) * 0.72];
-  });
+  // The stylopharyngeus: a slender spindle from the styloid down to the pharynx's side wall, below the constrictor.
+  const styTo: V3 = add(at(phar, 0.36), [PHARYNX_R * 0.92, 0, 0.12]);
+  const sg = clamp01(pose.stylo);
+  if (sg > 0.01) {
+    const whole = curve3([styTip, add(mix3(styTip, styTo, 0.5), [0.16, 0.04, 0.1]), styTo], 24);
+    const shown = whole.slice(0, Math.max(3, Math.round(whole.length * sg)));
+    put('stylopharyngeus', 'muskulu-estilofaringeoa', tubeParts(shown, { radius: (u) => 0.035 + 0.085 * Math.sin(Math.PI * Math.min(1, u * (shown.length / whole.length))) ** 0.8, ref: [1, 0, 0], sides: 12, capStart: true, capEnd: true }), ARCH.iii, 1, { tissue: 'muscle' });
+  }
+  pts['muskulu-estilofaringeoa'] = add(mix3(styTip, styTo, 0.55), [0.2, 0, 0.08]);
+  // The superior constrictor: a sheet of muscle wrapped round the top of the pharynx, from the dorsal seam forwards.
   const cs = clamp01(pose.constr);
-  if (cs > 0.01) put('constrictor', 'goiko-muskulu-ertzatzaileak', vessel(crc, { r0: 0.46, ref: [0, 0, 1], flat: 0.82, sides: 16, n: 22 }, cs), ARCH.iii, 1);
-  pts['goiko-muskulu-ertzatzaileak'] = [0.68, cP[1], cP[2] + 0.05];
+  const [cU0, cU1] = [0.05, 0.27];
+  const cAt = (h: number) => phar[Math.round(lerp(cU0, cU1, h) * (phar.length - 1))];
+  if (cs > 0.01) {
+    const sheet = (nu: number, nv: number) => grid(nv, nu, (v, h) => {
+      const c = cAt(h);
+      const th = -Math.PI / 2 + v * Math.PI * (0.06 + 0.94 * cs);
+      const r = PHARYNX_R * lerp(1, 0.9, h) + 0.02 + 0.1 * Math.sin(Math.PI * h) ** 0.55 * Math.sin(Math.PI * Math.min(1, v * 1.15)) ** 0.4;
+      return [Math.cos(th) * r, c[1], c[2] + Math.sin(th) * r];
+    }, [60, cAt(0.5)[1], cAt(0.5)[2]]);
+    put('constrictor', 'goiko-muskulu-ertzatzaileak', { mesh: cachedMesh('b17-constrictor2', [cs, a], () => sheet(14, 30)), hit: cachedMesh('b17-constrictor2-h', [cs, a], () => sheet(4, 10)) }, ARCH.iii, 1, { tissue: 'muscle' });
+  }
+  pts['goiko-muskulu-ertzatzaileak'] = [PHARYNX_R + 0.1, cAt(0.5)[1], cAt(0.5)[2] + 0.05];
 
   // ———— the larynx: every part IV (red) or VI (green), then the tracheal rings ————
   const dy = -0.4 * a;
@@ -266,7 +414,7 @@ export function bonesModel(pose: BonesPose, o: BonesOpts = {}) {
 
   const ep = clamp01(pose.epi);
   const epL: V3[] = curve3([[0.1, yT + 0.2, 0.52], [0.12, yT + 0.6, 0.62], [0.12, yT + 1.0, 0.5], [0.12, yT + 1.32, 0.15]], 18);
-  vess('epiglottis', 'epiglotisa', epL, ARCH.vi, { r0: 0.1, r1: 0.26, flat: 0.68, sides: 14, n: 18 }, ep);
+  vess('epiglottis', 'epiglotisa', epL, ARCH.iv, { r0: 0.1, r1: 0.26, flat: 0.68, sides: 14, n: 18 }, ep);
   pts['epiglotisa'] = at(epL, 0.82);
 
   const ar = ss(0, 1, pose.aryt);

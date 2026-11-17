@@ -1,4 +1,5 @@
 import { add, mix3, type V3 } from '@/lib/three-d/math';
+import { G16 } from './tones';
 import { curve3 } from '@/lib/three-d/mesh';
 import type { Item3 } from '@/lib/three-d/scene';
 import { cupShell, plate, vessel, type Parts, type VesselOptions } from '@/lib/three-d/organic';
@@ -57,8 +58,8 @@ const ss = (a: number, b: number, x: number) => {
 const PERI = '#f7a8b8';
 const GUB = '#9ca3af';
 const MUSCLE = '#c98272';
-const CUT = '#9c8f8a';
-const CUT_DEEP = '#3e3532';
+const CUT = G16.cut;
+const CUT_DEEP = G16.cutDeep;
 const BONE = '#cfc6b4';
 const X0 = 0.9;
 
@@ -102,7 +103,7 @@ export function descentModel(pose: DescentPose, o: DescentOpts = {}) {
 
   // ———— the cut: the trunk's tissue, the cavity a dark recess, the anterior wall its own band ————
   items.push({ key: 'trunk', ...plate('descent-trunk-v1', TRUNK, X0 - 0.03, X0 - 0.4, SAGITTAL), color: CUT, deep: CUT_DEEP, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
-  items.push({ key: 'cavity', ...plate('descent-cavity-v1', CAVITY, X0 - 0.02, X0 - 0.03, SAGITTAL), color: '#2b3247', deep: '#10131c', tissue: 'membrane', opacity: 1, quiet: true, ground: true, outline: false });
+  items.push({ key: 'cavity', ...plate('descent-cavity-v1', CAVITY, X0 - 0.02, X0 - 0.03, SAGITTAL), color: G16.cavity, deep: G16.cavityDeep, tissue: 'membrane', opacity: 1, quiet: true, ground: true, outline: false });
   put('wall', 'horma-abdominala', plate('descent-wall-v1', FRONT_WALL, X0 - 0.01, X0 - 0.03, SAGITTAL), MUSCLE, 1, { tissue: 'muscle', quiet: true, ground: true, deep: '#6e3a30' });
   pts['horma-abdominala'] = ly > 0.5 ? add(SCROTUM, [0, 0.62, 0.62]) : [X0, 0.6, 1.4];
   // The parietal peritoneum lining the cavity (the testis lies behind it, retroperitoneal).

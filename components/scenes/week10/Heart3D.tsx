@@ -1,9 +1,9 @@
 'use client';
 
 import { Callouts, Note, lerp, useScene, type Callout, type SceneProps } from '@/components/kit';
-import { Stage3D, type At3 } from '@/components/kit/three/Stage3D';
+import { Stage3D, type At3, type Handover } from '@/components/kit/three/Stage3D';
 import { blendCamera } from '@/lib/three-d/aim';
-import { add, deg, norm, sub, type Camera3, type V3, type View3 } from '@/lib/three-d/math';
+import { add, deg, norm, sub, type Camera3, type M4, type V3, type View3 } from '@/lib/three-d/math';
 import type { Scene3 } from '@/lib/three-d/scene';
 import { ownCentre, visibleAnchor } from '@/lib/three-d/occlusion';
 import { seg } from '@/lib/sim/anim';
@@ -185,7 +185,8 @@ type ViewProps = {
   camera: Camera3;
   names: CalloutSpec[];
   /** `asked`: 1 while the picture is seen as the step shows it, fading to 0 as the viewer turns it away. */
-  over?: (at: At3, asked: number) => React.ReactNode;
+  /** `flight`: 1, or 0→1 as a flight in from another model ends (see Stage3D `Handover`). */
+  over?: (at: At3, asked: number, flight: number) => React.ReactNode;
   caption?: string;
   /** The right column's span (top, bottom); a view can keep it above the camera keys (bottom right). */
   right?: [number, number];
@@ -215,14 +216,18 @@ export function ModelView({
   axes = AXES,
   labels = 1,
   look,
-}: ViewProps & { model: { items: Scene3['items']; pts: Record<string, V3> }; continuity: string; look?: Scene3['look'] }) {
+  place,
+  handover,
+}: ViewProps & { model: { items: Scene3['items']; pts: Record<string, V3> }; continuity: string; look?: Scene3['look']; place?: M4; handover?: Handover }) {
   const scene: Scene3 = { camera, items: model.items, look };
   const { mentioned, partsOf } = useScene();
   return (
     <g>
       <rect x={0} y={0} width={1000} height={640} fill="none" />
-      <Stage3D scene={scene} axes={axes} continuity={continuity}>
-        {(at, view) => {
+      <Stage3D scene={scene} axes={axes} continuity={continuity} place={place} handover={handover}>
+        {(at, view, flight = 1) => {
+          // While a flight from another model ends, the names and notes come in with it.
+          const said = labels * flight;
           // Directional captions describe the step's reference camera. After a turn, label that
           // reference explicitly; the frame edges and camera keys describe the current view.
           const asked = askedView(camera, view);
@@ -232,16 +237,16 @@ export function ModelView({
             return s.x > 30 && s.x < 970 && s.y > 30 && s.y < 610;
           };
           for (const n of names) {
-            if (n.show * labels <= 0.01) continue;
+            if (n.show * said <= 0.01) continue;
             const p = typeof n.p === 'string' ? model.pts[n.p] : n.p;
             if (!p) continue;
             // A dot behind another structure would sit on that one: it moves to the part of its own the eye sees.
             const q = at(typeof n.p === 'string' ? visibleAnchor(model.items, view.eye, p, n.id, inFrame) : p);
-            items.push({ id: n.id, at: q, show: n.show * labels, small: n.small, text: n.text, sub: n.sub, key: n.key });
+            items.push({ id: n.id, at: q, show: n.show * said, small: n.small, text: n.text, sub: n.sub, key: n.key });
           }
           // What the step's text says is named too, when the model draws it in the frame, even where the
           // scene's own callouts leave it out at this moment.
-          for (const id of labels > 0.6 ? (mentioned ?? []) : []) {
+          for (const id of said > 0.6 ? (mentioned ?? []) : []) {
             if (items.some((c) => c.id === id && c.show > 0.3)) continue;
             // Drawn (as itself, as a group of parts, or as the members of a whole), named where the model says
             // or else at its biggest piece.
@@ -249,14 +254,14 @@ export function ModelView({
             if (!own) continue;
             const q = visibleAnchor(model.items, view.eye, model.pts[id] ?? model.pts[own] ?? ownCentre(model.items, own)!, own, inFrame);
             if (!inFrame(q)) continue;
-            items.push({ id, key: `${id}-said`, at: at(q), show: labels, small: true });
+            items.push({ id, key: `${id}-said`, at: at(q), show: said, small: true });
           }
           return (
             <>
-              {over?.(at, asked)}
+              {over?.(at, asked, flight)}
               <Callouts items={items} left={left ?? [120, 580]} right={right ?? [240, 580]} />
               {caption && (
-                <Note x={24} y={24} size={12.5} align="start" show={labels}>
+                <Note x={24} y={24} size={12.5} align="start" show={said}>
                   {asked < 0.5 ? `Hasierako ikuspegia: ${caption}` : caption}
                 </Note>
               )}

@@ -1,8 +1,9 @@
 'use client';
 
-import { BACK, KEY_ARCH, KEY_LAYERS, TISSUE, endPose, poseStage18, type StageSpec } from '@/components/scenes/week17/common';
+import { BACK, KEY_ARCH, KEY_LAYERS, TISSUE, endPose, poseStage18, type StageSpec, type Where } from '@/components/scenes/week17/common';
 import type { V3 } from '@/lib/three-d/math';
 import { PH0, POUCH, pharynxModel, type PharynxOpts, type PharynxPose } from './pharynx-model';
+import { SITE18 } from './sites';
 
 /**
  * Topic 18 §1 on one hollow pharyngeal gut seen from behind with its roof taken away (pharynx-model.ts): the
@@ -22,12 +23,17 @@ const CAM = (dist = 11, target: V3 = [0, 0.2, 0.3], yaw = 180, elev = 6) => BACK
 /** From behind and the embryo's left: the bare endoderm of the peeled side. */
 const CAST = (dist = 8.5, target: V3 = [1.1, -0.9, 0.2], yaw = 132, elev = 12) => BACK(dist, target, yaw, elev);
 
+/** Opened cold (a link, the menu): the fly-in from outside the embryo to the neck, whichever stage it is. */
+const WHERE: Where = { th: 1.15, at: [0, -0.6, 0.6], scale: 3, planes: [{ center: [0, -0.2, 0], a: [3.8, 0, 0], b: [0, 4, 0] }], note: 'Lepo mailan, faringe hestearen alboetan: arkuak. Sabaia kendu eta atzetik begiratuko dugu' };
+
 // ———————————————————————————— 1. Sarrera ————————————————————————————
 
 export const S1 = [0, 0.36, 0.68] as const;
 
 const spec1: StageSpec<PharynxPose, PharynxOpts> = {
-  where: { th: 1.15, at: [0, -0.6, 0.6], scale: 3, planes: [{ center: [0, -0.2, 0], a: [3.8, 0, 0], b: [0, 4, 0] }], note: 'Lepo mailan, faringe hestearen alboetan: arkuak. Sabaia kendu eta atzetik begiratuko dugu' },
+  where: WHERE,
+  site: SITE18.pharynx,
+  arrive: 'Faringe hestea atzetik, sabaia kenduta: arkuak alde bietan',
   map: 'arches',
   S: S1,
   pose: PH0,
@@ -85,6 +91,9 @@ export const Intro18 = poseStage18(spec1, build);
 export const S2 = [0, 0.22, 0.44, 0.72] as const;
 
 const spec2: StageSpec<PharynxPose, PharynxOpts> = {
+  where: WHERE,
+  site: SITE18.pharynx,
+  arrive: 'Faringe berean: orain arraildurak kanpotik eta poltsak barrutik',
   map: 'clefts',
   S: S2,
   pose: endPose(spec1).pose,
@@ -146,9 +155,13 @@ export const Clefts18 = poseStage18(spec2, build);
 // ———————————————————————————— 5. Hirugarren poltsa ————————————————————————————
 
 export const S3 = [0, 0.18, 0.44, 0.7] as const;
-const P_CAST: PharynxPose = { ...PH0, tissue: 1, peelL: 1 };
+// The two ear-pouch stages before this one leave the tube, the tympanic cavity, the ossicles and the tonsil formed.
+const P_CAST: PharynxPose = { ...PH0, tissue: 1, peelL: 1, p1: 1, cav: 1, ossicles: 1, tonsil: 1, lymph: 1 };
 
 const spec3: StageSpec<PharynxPose, PharynxOpts> = {
+  where: WHERE,
+  site: SITE18.pharynx,
+  arrive: 'Faringe berean, lehen bi poltsen azpira: 3. poltsa, ezker horma kenduta',
   map: 'pouch3',
   S: S3,
   pose: P_CAST,
@@ -207,13 +220,16 @@ export const Pouch3 = poseStage18(spec3, build);
 // ———————————————————————————— 6. Laugarren poltsa ————————————————————————————
 
 export const S4 = [0, 0.2, 0.46, 0.72] as const;
-const P4_START: PharynxPose = { ...P_CAST, p3d: 1, p3v: 1 };
+
 const LOOK4 = CAST(6.8, [1.35, -1.55, 0.1], 132, 14);
 
 const spec4: StageSpec<PharynxPose, PharynxOpts> = {
+  where: WHERE,
+  site: SITE18.pharynx,
+  arrive: 'Poltsa bat beherago: 4. poltsa, 3.aren azpian',
   map: 'pouch4',
   S: S4,
-  pose: P4_START,
+  pose: endPose(spec3).pose,
   opts: {},
   caption: CAP,
   key: KEY_POUCH,
@@ -269,3 +285,5 @@ const spec4: StageSpec<PharynxPose, PharynxOpts> = {
   ],
 };
 export const Pouch4 = poseStage18(spec4, build);
+/** Where the pouch stages leave the gut (the clefts, Clefts18, run on from here). */
+export const END_POUCH4 = endPose(spec4).pose;

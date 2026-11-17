@@ -1,8 +1,9 @@
 'use client';
 
-import { FRONT, SIDE, poseStage18, type StageSpec } from '@/components/scenes/week17/common';
+import { FRONT, SIDE, poseStage18, type StageSpec, type Where } from '@/components/scenes/week17/common';
 import type { V3 } from '@/lib/three-d/math';
 import { FACE_COLOR, FP0, faceModel, type FaceOpts, type FacePose } from './face-model';
+import { SITE18 } from './sites';
 
 /** Topic 18 §4–4.1: the face as one continuous skin, week 4 to week 12 (face-model.ts). */
 
@@ -16,6 +17,9 @@ const KEY = [
   { color: FACE_COLOR.front, text: 'goragune frontonasala' },
 ] as const;
 
+/** Opened cold: the fly-in from outside the embryo to its face. */
+const WHERE: Where = { th: 2.42, at: [0, 0, 0], scale: 1.9, span: 0.06, note: 'Enbrioiaren aurpegia, 4. astearen bukaeran: buruaren behealdea, bihotz goragunearen gainean' };
+
 // ———————— Aurpegia 4. astean ————————
 export const SF1 = [0, 0.3, 0.55, 0.78] as const;
 const spec1: StageSpec<FacePose, FaceOpts> = {
@@ -25,7 +29,9 @@ const spec1: StageSpec<FacePose, FaceOpts> = {
   caption: CAP,
   key: KEY,
   map: 'face',
-  where: { th: 2.42, at: [0, 0, 0], scale: 1.9, span: 0.06, note: 'Enbrioiaren aurpegia, 4. astearen bukaeran: buruaren behealdea, bihotz goragunearen gainean' },
+  where: WHERE,
+  site: SITE18.face,
+  arrive: 'Faringearen goiko muturrean, estomodeoa: haren inguruan eratzen da aurpegia',
   steps: [
     {
       cam: FRONT(10, T),
@@ -76,6 +82,9 @@ export const SF2 = [0, 0.3, 0.58, 0.8] as const;
 const spec2: StageSpec<FacePose, FaceOpts> = {
   S: SF2,
   pose: { ...FP0, age: 4.4 },
+  where: WHERE,
+  site: SITE18.face,
+  arrive: 'Aurpegi berean, astebete geroago: goragune frontonasalean sudur plakodak',
   opts: {},
   caption: CAP,
   key: KEY,
@@ -138,6 +147,9 @@ export const SF3 = [0, 0.26, 0.5, 0.74, 0.88] as const;
 const spec3: StageSpec<FacePose, FaceOpts> = {
   S: SF3,
   pose: { ...FP0, age: 5.9 },
+  where: WHERE,
+  site: SITE18.face,
+  arrive: 'Aurpegi berean: 6. astetik 12.era, dena erdirantz',
   opts: {},
   caption: CAP,
   key: KEY,
@@ -209,6 +221,9 @@ export const SF4 = [0, 0.3, 0.6, 0.82] as const;
 const spec4: StageSpec<FacePose, FaceOpts> = {
   S: SF4,
   pose: { ...FP0, age: 7 },
+  where: WHERE,
+  site: SITE18.face,
+  arrive: '7. astera itzuli gara, ezkerreko aldera: begitik sudur-hegalera ildo bat',
   opts: {},
   caption: 'Aurpegia ezkerretik eta aurretik (3D): sudur-hegala eta begia, ildoaren bi muturrak',
   key: KEY,

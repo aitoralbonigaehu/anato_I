@@ -36,7 +36,8 @@ const spec1: StageSpec<UroPose, UroOpts> = {
   where: WALL_WHERE,
   steps: [
     {
-      cam: FRONT(21, [0, -0.1, -0.4]),
+      // From above the neck, looking down the wall: the two cords of intermediate mesoderm run neck to sacrum.
+      cam: FRONT(21, [0, -0.1, -0.4], -24, 30),
       dim: ['bitarteko-mesodermoa'],
       names: [
         { id: 'bitarteko-mesodermoa', sub: 'aortaren alde bietan: gernu sistemaren jatorria' },
@@ -49,7 +50,9 @@ const spec1: StageSpec<UroPose, UroOpts> = {
     {
       to: { pro: 1, proDuct: 1, meso: 1, wolff: 1, bud: 1, blast: 1 },
       run: [0.05, 0.75],
-      cam: FRONT(21, [0, -0.1, -0.4]),
+      // The camera walks down with the three systems as they appear, head to tail.
+      cam: FRONT(21, [0, -0.1, -0.4], 18, 14),
+      glide: 0.08,
       names: [
         { id: 'pronefrosa', sub: 'alde zefalikoa (lepoa)', from: 0.1 },
         { id: 'mesonefrosa', sub: 'alde toraxikoa', from: 0.35 },
@@ -61,8 +64,9 @@ const spec1: StageSpec<UroPose, UroOpts> = {
     {
       to: { proGone: 0.8, mesoGone: 0.75 },
       run: [0.08, 0.85],
-      cam: FRONT(21, [0, -0.1, -0.4], 18, 8),
-      glide: 0.05,
+      // Low along the wall: the wave of degeneration runs away from the eye, cranial first.
+      cam: FRONT(21, [0, -0.1, -0.4], 40, -8),
+      glide: 0.06,
       names: [
         { id: 'pronefrosa', sub: 'endekatzen (lehena)' },
         { id: 'mesonefrosa', sub: 'endekatzen (bigarrena)', from: 0.4 },
@@ -73,8 +77,9 @@ const spec1: StageSpec<UroPose, UroOpts> = {
     {
       to: { kidney: 1 },
       run: [0.1, 0.7],
-      cam: FRONT(21, [0, -0.4, -0.5], 10, 6),
-      glide: 0.05,
+      // Back to the notes' straight view for the summary.
+      cam: FRONT(21, [0, -0.4, -0.5], 4, 6),
+      glide: 0.07,
       dim: ['giltzurruna', 'metanefrosa'],
       names: [
         { id: 'giltzurruna', text: 'Behin betiko giltzurruna', sub: 'metanefrosatik: funtzionala den bakarra' },
@@ -104,7 +109,7 @@ const spec2: StageSpec<UroPose, UroOpts> = {
     {
       to: { pro: 0.3 },
       run: [0.1, 0.8],
-      cam: NECK(),
+      cam: NECK(8.5, -16, 16),
       glide: 0.06,
       dim: ['pronefrosa', 'nefrotomak', 'somitak', 'bitarteko-mesodermoa'],
       names: [
@@ -116,7 +121,10 @@ const spec2: StageSpec<UroPose, UroOpts> = {
     },
     {
       to: { pro: 0.45 },
-      cam: NECK(7.5, 22, 10),
+      // From above: the units in pairs, one each side of the aorta.
+      cam: NECK(7.5, 4, 34),
+      fit: ['nefrotomak', 'pronefrosa'],
+      glide: 0.06,
       dim: ['nefrotomak', 'bitarteko-mesodermoa'],
       names: [{ id: 'nefrotomak', sub: 'zelula metaketak · bikoitzak · 7–10 bikote', from: 0.1 }],
       note: 'Unitateak nefrotomak dira: zelula metaketa bikoitzak (eskuinean eta ezkerrean), 7–10 bikote',
@@ -125,8 +133,9 @@ const spec2: StageSpec<UroPose, UroOpts> = {
     {
       to: { pro: 1, proDuct: 1, proGone: 0.55 },
       run: [0.06, 0.85],
-      cam: NECK(9, 8, 8),
-      glide: 0.05,
+      // Down the side: the lower units grow as the upper ones go, and the duct runs on caudally.
+      cam: NECK(9, 46, 8),
+      glide: 0.06,
       dim: ['nefrotomak', 'pronefrosa', 'hodixka-pronefrikoak', 'hodi-pronefrikoa'],
       names: [
         { id: 'nefrotomak', sub: 'goikoak endekatzen' },
@@ -156,7 +165,7 @@ const spec5: StageSpec<UroPose, UroOpts> = {
     {
       to: { meso: 0.65, proGone: 0.82 },
       run: [0.05, 0.85],
-      cam: TRUNK(14, 0, 8, [0, 0.8, -0.4]),
+      cam: TRUNK(14, -18, 18, [0, 0.8, -0.4]),
       glide: 0.06,
       dim: ['mesonefrosa', 'pronefrosa'],
       names: [
@@ -168,8 +177,9 @@ const spec5: StageSpec<UroPose, UroOpts> = {
     {
       to: { meso: 1, wolff: 1 },
       run: [0.05, 0.8],
-      cam: TRUNK(12, 26, 10),
-      glide: 0.06,
+      // From the side: the two cords bulge out of the wall into the coelom, the duct inside each.
+      cam: TRUNK(12, 62, 10),
+      glide: 0.08,
       dim: ['mesonefrosa', 'kordoi-nefrogenoa', 'hodi-mesonefrikoa'],
       names: [
         { id: 'kordoi-nefrogenoa', sub: 'bi gandor trinko, toraxetik sakrora' },
@@ -178,7 +188,8 @@ const spec5: StageSpec<UroPose, UroOpts> = {
       note: 'Bi gandor trinko (eskuinean eta ezkerrean), alde torazikotik sakrora: kordoi nefrogenoak. Bakoitzaren barruan, hodi mesonefrikoa (Wolff hodia)',
     },
     {
-      cam: TRUNK(10, 30, 12, [0, -0.3, -0.35]),
+      cam: TRUNK(10, 72, 20, [0, -0.3, -0.35]),
+      glide: 0.05,
       dim: ['mesonefrosa', 'hodixka-mesonefrikoak', 'gandor-urogenitala'],
       names: [
         { id: 'gandor-urogenitala', sub: 'gernu osagaia + osagai genitala' },
@@ -189,8 +200,9 @@ const spec5: StageSpec<UroPose, UroOpts> = {
     {
       to: { gonadal: 1 },
       run: [0.08, 0.7],
-      cam: TRUNK(9.5, 34, 14, [0, -0.4, -0.3]),
-      glide: 0.05,
+      // From the front and above again: lateral (urinary) and medial (gonadal) ridge side by side.
+      cam: TRUNK(9.5, 16, 30, [0, -0.4, -0.3]),
+      glide: 0.08,
       dim: ['gernu-gandorra', 'gonada-gandorra', 'mesonefrosa'],
       names: [
         { id: 'gernu-gandorra', text: 'Gernu gandorra', sub: 'alboan: gernu sistema (mesonefrosa)' },
@@ -219,7 +231,7 @@ const spec7: StageSpec<UroPose, UroOpts> = {
     {
       to: { mesoGone: 0.5 },
       run: [0.1, 0.9],
-      cam: FRONT(16.5, [0, -1.15, -0.4], 10, 8),
+      cam: FRONT(16.5, [0, -1.15, -0.4], -14, 20),
       glide: 0.06,
       dim: ['mesonefrosa', 'hodi-mesonefrikoa', 'kloaka'],
       names: [
@@ -232,8 +244,9 @@ const spec7: StageSpec<UroPose, UroOpts> = {
     {
       to: { bud: 1 },
       run: [0.08, 0.8],
-      cam: SACRAL(),
-      glide: 0.06,
+      // From the side, low: the bud leaves the duct and pushes back into the wall.
+      cam: SACRAL(8.5, 64, 2),
+      glide: 0.08,
       dim: ['ureter-kimua', 'hodi-mesonefrikoa', 'kloaka'],
       names: [
         { id: 'ureter-kimua', sub: 'hodi mesonefrikoaren adar bat, kloakatik hurbil', from: 0.2 },
@@ -244,13 +257,15 @@ const spec7: StageSpec<UroPose, UroOpts> = {
     {
       to: { blast: 1 },
       run: [0.08, 0.7],
-      cam: SACRAL(7.5, 34, 12),
+      cam: SACRAL(7.5, 44, 22),
+      glide: 0.05,
       dim: ['blastema-metanefrikoa', 'ureter-kimua'],
       names: [{ id: 'blastema-metanefrikoa', sub: 'metaketa trinkoa, ureter kimuaren mailan', from: 0.15 }],
       note: 'Maila berean, mesenkimako zelulak desberdindu eta multzokatzen dira: blastema metanefrikoa (metaketa trinkoa)',
     },
     {
-      cam: SACRAL(7.8, 24, 10),
+      cam: SACRAL(7.8, 14, 8),
+      glide: 0.06,
       dim: ['blastema-metanefrikoa', 'ureter-kimua'],
       names: [
         { id: 'ureter-kimua', text: 'Ureter kimua → sistema biltzailea', sub: 'hodiak: gernua bildu eta eraman' },
@@ -276,7 +291,7 @@ const spec10: StageSpec<UroPose, UroOpts> = {
   key: KEY15.ascent,
   steps: [
     {
-      cam: FRONT(11, [0, -3.55, -0.4], 6, 8, [-75, 0]),
+      cam: FRONT(11, [0, -3.55, -0.4], 10, 22, [-75, 0]),
       glide: 0.06,
       dim: ['giltzurruna', 'ureterra'],
       names: [
@@ -286,7 +301,8 @@ const spec10: StageSpec<UroPose, UroOpts> = {
       note: 'Giltzurruna: piramideetan hodi biltzaileak eta nefronak; kalizak eta pelbisa enbutuak. Ureterrak gernua gernu maskurira darama',
     },
     {
-      cam: FRONT(11, [0, -3.55, -0.4], -4, 6, [-75, 0]),
+      cam: FRONT(11, [0, -3.55, -0.4], -26, 4, [-75, 0]),
+      glide: 0.05,
       dim: ['giltzurruna', 'gernu-maskuria'],
       names: [
         { id: 'giltzurruna', sub: '14. astetik gernua egiten du' },
@@ -297,8 +313,10 @@ const spec10: StageSpec<UroPose, UroOpts> = {
     {
       to: { ascend: 1, mesoGone: 0.88 },
       run: [0.08, 0.85],
-      cam: FRONT(15, [0, -1.8, -0.4], 12, 6),
-      glide: 0.06,
+      // From the side and a little below: the kidney climbs the wall, sacral to lumbar, past the iliac arteries;
+      // turned enough to see each new renal artery cross from the aorta.
+      cam: FRONT(14, [0, -1.8, -0.4], 32, -4),
+      glide: 0.09,
       dim: ['giltzurruna', 'ureterra', 'mesonefrosa', 'arteria-iliako-primitiboak', 'giltzurrun-arteriak'],
       names: [
         { id: 'giltzurruna', sub: 'sakrotik → lunbarrera (igoera)' },
@@ -311,8 +329,9 @@ const spec10: StageSpec<UroPose, UroOpts> = {
     {
       to: { gonadDown: 1, mesoGone: 0.95 },
       run: [0.08, 0.85],
-      cam: FRONT(15, [0, -1.8, -0.4], -14, 6),
-      glide: 0.06,
+      // The other side, from above: the gonads go the other way, down.
+      cam: FRONT(15, [0, -1.8, -0.4], -40, 18),
+      glide: 0.09,
       dim: ['gonadak', 'ureterra', 'hodi-mesonefrikoa', 'giltzurruna'],
       names: [
         { id: 'gonadak', sub: 'mesonefrosaren parean eratu → behera' },
@@ -340,7 +359,7 @@ export const spec11wall: StageSpec<UroPose, UroOpts> = {
     {
       to: { adrenal: 1 },
       run: [0.08, 0.19],
-      cam: FRONT(10.5, [0, -0.35, -0.6], 4, 10, [-45, 0]),
+      cam: FRONT(10.5, [0, -0.35, -0.6], 24, 24, [-45, 0]),
       glide: 0.06,
       dim: ['giltzurrun-gaineko-guruinak', 'giltzurruna'],
       names: [

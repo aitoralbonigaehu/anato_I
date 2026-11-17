@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react';
+import { noteRecall } from '@/lib/study/activity';
 
 /**
  * Answer history per question, kept in this browser. Each question keeps its streak, a spaced review
@@ -60,6 +61,7 @@ export function recordAnswer(id: string, ok: boolean, picked?: string, opts?: { 
     errors: !ok && picked ? [...(prev.errors ?? []), picked].slice(-5) : prev.errors,
   };
   cache = { ...read(), [id]: next };
+  noteRecall(ok);
   try {
     window.localStorage.setItem(KEY, JSON.stringify(cache));
   } catch {
@@ -68,10 +70,18 @@ export function recordAnswer(id: string, ok: boolean, picked?: string, opts?: { 
   listeners.forEach((l) => l());
 }
 
+// Another tab, or the account sync, rewrote the stored copy: read it again.
+const storageChanged = (e: StorageEvent) => {
+  if (e.key !== null && e.key !== KEY) return;
+  cache = null;
+  listeners.forEach((l) => l());
+};
 const subscribe = (cb: () => void) => {
+  if (!listeners.size) window.addEventListener('storage', storageChanged);
   listeners.add(cb);
   return () => {
     listeners.delete(cb);
+    if (!listeners.size) window.removeEventListener('storage', storageChanged);
   };
 };
 

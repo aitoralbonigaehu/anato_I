@@ -42,6 +42,7 @@ export const FACE_COLOR = {
   back: '#e6c5b1',
 };
 const SKIN = '#eebda3';
+const SKIN_DEEP = '#9a6450';
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
 const ss = (a: number, b: number, x: number) => {
@@ -68,7 +69,6 @@ const LM: Record<string, Key> = {
   midHigh: [[0, -0.3], [0, -0.3], [0, -0.32], [0, -0.34], [0, -0.36], [0, -0.38], [0, -0.4]],
 };
 const NAMES = Object.keys(LM);
-const H0 = NAMES.map((n) => LM[n][1]);
 
 function lmAt(n: string, age: number): [number, number] {
   const k = LM[n];
@@ -79,17 +79,60 @@ function lmAt(n: string, age: number): [number, number] {
 }
 
 const SIG2 = 0.42 * 0.42;
-/** The share of each handle at a material point (|a|, b): near handles lead; far from all, tissue stays. */
-function handleWeights(a: number, b: number, out: Float32Array, at: number) {
-  let sum = 0.0006;
-  for (let k = 0; k < H0.length; k++) {
-    const dx = a - H0[k][0], dy = b - H0[k][1];
-    const w = Math.exp(-(dx * dx + dy * dy) / SIG2) + 1e-7;
-    out[at + k] = w;
-    sum += w;
+/**
+ * How fast a handle's hold fades with distance: a point moves by (sum of w * move) / sqrt(HOLD^2 + (sum of w)^2). At
+ * a handle that is the handle's own move; well away from all of them the tissue stays. The fall is as gentle as the
+ * bell itself: a plain share (sum of w * move / sum of w) is a Voronoi map far from the handles, with a sharp edge
+ * half way between two of them, and the skin sheared into pleats along that edge.
+ */
+const HOLD = 0.06;
+/**
+ * The handles carry the chart as a FLOW, in steps of DT weeks: at each step a material point moves with the handles
+ * near it (their share is taken where the point is NOW, round where the handles are NOW). Every step is a small,
+ * smooth move, so the skin is squeezed ahead of a handle and stretched behind it but never folds over itself. One
+ * jump from week 5 to week 12 did fold (the eye crosses half the face), and a folded skin shows as dark creases,
+ * stripes and colours smeared over their neighbours. The flow runs on the half face a >= 0; tissue squeezed past the
+ * midline is pressed thin against it (`press`), so the two medial rims meet there.
+ */
+const DT = 0.125;
+const AGE0 = AGES[0];
+const NJ = Math.round((AGES[AGES.length - 1] - AGE0) / DT);
+/** The step the chart is drawn at (week 5). */
+const J5 = Math.round((5 - AGE0) / DT);
+type Lm = Float64Array;
+let LS: Lm[] | null = null;
+const steps = () => (LS ??= Array.from({ length: NJ + 1 }, (_, j) => landmarks(AGE0 + j * DT)));
+
+/** One step for `n` points (|a|, b pairs): from the handles at L0 to the handles at L1. */
+function carry(from: Float32Array | Float64Array, to: Float32Array | Float64Array, n: number, L0: Lm, L1: Lm) {
+  const K = NAMES.length;
+  for (let v = 0; v < n; v++) {
+    const a = from[v * 2], b = from[v * 2 + 1];
+    let sum = 0, dx = 0, dy = 0;
+    for (let k = 0; k < K; k++) {
+      const ex = a - L0[k * 2], ey = b - L0[k * 2 + 1];
+      const q = (ex * ex + ey * ey) / SIG2;
+      if (q > 16) continue;
+      const w = Math.exp(-q);
+      sum += w;
+      dx += w * (L1[k * 2] - L0[k * 2]);
+      dy += w * (L1[k * 2 + 1] - L0[k * 2 + 1]);
+    }
+    const k = 1 / Math.sqrt(HOLD * HOLD + sum * sum);
+    to[v * 2] = a + dx * k;
+    to[v * 2 + 1] = b + dy * k;
   }
-  for (let k = 0; k < H0.length; k++) out[at + k] /= sum;
 }
+
+/** Tissue pushed past the midline is pressed thin against it: monotonic, so the two halves never cross. */
+const PRESS2 = 0.02 * 0.02;
+const press = (A: number) => 0.5 * (A + Math.sqrt(A * A + PRESS2));
+/** Where a step lies between two steps of the flow. */
+const stepOf = (age: number) => {
+  const f = Math.min(NJ, Math.max(0, (age - AGE0) / DT));
+  const j = Math.min(NJ - 1, Math.floor(f));
+  return { j, u: f - j };
+};
 
 const seg = (px: number, py: number, ax: number, ay: number, bx: number, by: number) => {
   const dx = bx - ax, dy = by - ay;
@@ -120,7 +163,17 @@ const REGIONS: FieldRegion[] = [
 const NU = 220;
 const NV = 170;
 let surf: ReturnType<typeof fieldSurface> | null = null;
-let W: Float32Array | null = null;
+/** The chart of every grid vertex (|a|, b) at each step of the flow: a step is worked out the first time an age needs it. */
+const FLOW: (Float32Array | undefined)[] = [];
+function flowAt(j: number): Float32Array {
+  const n = surf!.n;
+  const L = steps();
+  const dir = j > J5 ? 1 : -1;
+  let i = j;
+  while (!FLOW[i]) i -= dir;
+  for (; i !== j; i += dir) carry(FLOW[i]!, (FLOW[i + dir] = new Float32Array(n * 2)), n, L[i], L[i + dir]);
+  return FLOW[j]!;
+}
 const face = () => {
   if (!surf) {
     surf = fieldSurface({
@@ -138,14 +191,17 @@ const face = () => {
       colors: FACE_COLOR,
       soft: 0.05,
     });
-    const K = H0.length;
-    W = new Float32Array(surf.n * K);
-    for (let v = 0; v < surf.n; v++) handleWeights(Math.abs(surf.material[v * 2]), surf.material[v * 2 + 1], W, v * K);
+    const n = surf.n;
+    const start = new Float32Array(n * 2);
+    for (let v = 0; v < n; v++) {
+      start[v * 2] = Math.abs(surf.material[v * 2]);
+      start[v * 2 + 1] = surf.material[v * 2 + 1];
+    }
+    FLOW[J5] = start;
   }
-  return { s: surf, w: W! };
+  return surf;
 };
 
-type Lm = Float64Array;
 function landmarks(age: number): Lm {
   const out = new Float64Array(NAMES.length * 2);
   NAMES.forEach((n, k) => {
@@ -257,39 +313,54 @@ function base(d: V3, age: number) {
   return 1 / Math.sqrt((d[0] / wide) ** 2 + (d[1] / by) ** 2 + (d[2] / 2.0) ** 2);
 }
 
-function point(a: number, b: number, age: number, L: Lm, wAt?: (k: number) => number): V3 {
-  const sgn = a < 0 ? -1 : 1;
-  const A = Math.abs(a);
-  let dx = 0, dy = 0;
-  if (wAt)
-    for (let k = 0; k < H0.length; k++) {
-      const w = wAt(k);
-      dx += w * (L[k * 2] - H0[k][0]);
-      dy += w * (L[k * 2 + 1] - H0[k][1]);
-    }
-  const x = sgn * Math.max(0, A + dx);
-  const y = b + dy;
+/** The skin at a carried chart point: its side (-1, 0 on the midline, 1), and |a| and b as carried to this age. */
+function place(side: number, A: number, y: number, age: number, L: Lm): V3 {
+  const x = side * press(A);
   const d = dirFrom(x, y);
   const r = base(d, age) + relief(x, y, age, L);
   return [d[0] * r, d[1] * r + 0.25, d[2] * r];
 }
+const sideOf = (a: number) => (a === 0 ? 0 : a < 0 ? -1 : 1);
 
-const scratch = new Float32Array(H0.length);
-/** A material point at this age (names, anchors). */
+/** A material point at this age (names, anchors): carried through the same steps as the skin. */
 function pointOf(a: number, b: number, age: number, L: Lm): V3 {
-  handleWeights(Math.abs(a), b, scratch, 0);
-  return point(a, b, age, L, (k) => scratch[k]);
+  const S = steps();
+  const { j, u } = stepOf(age);
+  let p = new Float64Array([Math.abs(a), b]);
+  let q = new Float64Array(2);
+  const walk = (from: number, to: number) => {
+    carry(p, q, 1, S[from], S[to]);
+    const s = p;
+    p = q;
+    q = s;
+  };
+  let lo: [number, number], hi: [number, number];
+  if (j >= J5) {
+    for (let i = J5; i < j; i++) walk(i, i + 1);
+    lo = [p[0], p[1]];
+    walk(j, j + 1);
+    hi = [p[0], p[1]];
+  } else {
+    for (let i = J5; i > j + 1; i--) walk(i, i - 1);
+    hi = [p[0], p[1]];
+    walk(j + 1, j);
+    lo = [p[0], p[1]];
+  }
+  return place(sideOf(a), lo[0] + (hi[0] - lo[0]) * u, lo[1] + (hi[1] - lo[1]) * u, age, L);
 }
 
 const OK = (id: string, dim: FaceOpts['dim'], groups?: readonly string[]) => !dim || dim.ids.includes(id) || (groups ?? []).some((g) => dim.ids.includes(g));
 
 export function faceModel(pose: FacePose, o: FaceOpts = {}): PoseModel {
   const age = Math.round(pose.age * 200) / 200;
-  const { s, w } = face();
+  const s = face();
   const L = landmarks(age);
-  const K = H0.length;
-  const parts = s.build([age], (a, b, out, at, v) => {
-    const p = point(a, b, age, L, (k) => w[v * K + k]);
+  const { j, u } = stepOf(age);
+  const f0 = flowAt(j), f1 = flowAt(j + 1);
+  const parts = s.build([age], (a, _b, out, at, v) => {
+    const A = f0[v * 2] + (f1[v * 2] - f0[v * 2]) * u;
+    const y = f0[v * 2 + 1] + (f1[v * 2 + 1] - f0[v * 2 + 1]) * u;
+    const p = place(sideOf(a), A, y, age, L);
     out[at] = p[0];
     out[at + 1] = p[1];
     out[at + 2] = p[2];
@@ -298,7 +369,9 @@ export function faceModel(pose: FacePose, o: FaceOpts = {}): PoseModel {
   const eyeC = mixHex(FACE_COLOR.eye, SKIN, ss(9.2, 11.2, age));
   const mem = 1 - ss(4.1, 4.6, age);
   const reg = (name: string, id: string | undefined, color: string, extra: Partial<Item3> = {}, deep?: string) => {
-    items.push({ key: `face-${name}`, id, ...parts[name], color, deep: deep ?? mixHex(color, '#3a1a18', 0.55), tissue: 'skin', soft: pose.color, ...extra });
+    // As the notes' colours go, every region's shade goes to the one skin's too: no patch keeps its own darker tint.
+    const d = deep ?? mixHex(color, '#3a1a18', 0.55);
+    items.push({ key: `face-${name}`, id, ...parts[name], color, deep: mixHex(SKIN_DEEP, d, pose.color), tissue: 'skin', soft: pose.color, ...extra });
   };
   const items: Item3[] = [];
   reg('front', 'goragune-frontonasala', tone(FACE_COLOR.front));

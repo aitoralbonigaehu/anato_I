@@ -6,6 +6,8 @@ import { adoptGeo, buildIdle, geoReady, setGeoRequester } from './offthread';
  */
 let worker: Worker | null | undefined;
 const asked = new Set<string>();
+/** How long a slot may stay unanswered before it is built on the main thread. */
+const LATE_MS = 30000;
 const pending = new Set<string>();
 
 function getWorker(): Worker | null {
@@ -44,8 +46,15 @@ export function warmGeo(keys: string[]) {
     if (asked.has(key) || geoReady(key)) continue;
     asked.add(key);
     const w = getWorker();
-    if (w) { pending.add(key); w.postMessage({ key }); }
-    else buildIdle(key);
+    if (w) {
+      pending.add(key);
+      w.postMessage({ key });
+      // A worker that never answers (its script still loading on a busy machine) must not leave the view on
+      // "3D eredua prestatzen" for ever: after a while the slot is built here instead (a late answer is ignored).
+      window.setTimeout(() => {
+        if (!geoReady(key)) buildIdle(key);
+      }, LATE_MS);
+    } else buildIdle(key);
   }
 }
 

@@ -49,7 +49,7 @@ export function StudyMenu({ current }: { current?: string }) {
   }, [open]);
   return (
     <div className="nav-menu" ref={box}>
-      <button type="button" className="nav-menu-key" aria-expanded={open} aria-haspopup="menu" aria-current={here ? 'page' : undefined} onClick={() => setOpen((v) => !v)}>
+      <button type="button" className="nav-menu-key" data-tour="ikasgela" aria-expanded={open} aria-haspopup="menu" aria-current={here ? 'page' : undefined} onClick={() => setOpen((v) => !v)}>
         Ikasgela <span aria-hidden>{open ? '▴' : '▾'}</span>
       </button>
       {open && (
@@ -79,6 +79,10 @@ export function StudyMenu({ current }: { current?: string }) {
             </Link>
           ))}
           <hr />
+          <Link role="menuitem" href="/aurrerapena" aria-current={current === 'aurrerapena' ? 'page' : undefined} onClick={() => setOpen(false)}>
+            <b>Aurrerapena</b>
+            <small>zure maila, bolada eta lorpenak</small>
+          </Link>
           <button
             type="button"
             role="menuitem"

@@ -6,6 +6,7 @@ import { BLOCK16, BLOCK_AXES, LEFT16, orbit, poseStage, type StageSpec } from '.
 import { BR0, broadModel, type BroadOpts, type BroadPose } from './broad-model';
 import { DS0, descentModel, type DescentOpts, type DescentPose } from './descent-model';
 import { EX0, externalModel, type ExternalOpts, type ExternalPose } from './external-model';
+import { SITE16 } from './sites';
 
 /**
  * Topic 16: the pelvis cut across (broad-model.ts, stage 12), the testis's descent (descent-model.ts, stages 14
@@ -17,6 +18,8 @@ import { EX0, externalModel, type ExternalOpts, type ExternalPose } from './exte
 export const S12 = [0, 0.2, 0.4, 0.6, 0.8] as const;
 
 const spec12: StageSpec<BroadPose, BroadOpts> = {
+  site: SITE16.broad,
+  arrive: 'Pelbisa zeharka ebaki dugu hemen, uteroaren mailan: blokea goitik ikusiko dugu',
   where: { th: -1.1, at: [0, 0, 0], frame: 'block', scale: 1.8, planes: [-1, 1].map((s) => ({ center: [0, 0, s * 0.85] as V3, a: [2.3, 0, 0] as V3, b: [0, 1.8, 0] as V3 })), note: 'Pelbisaren mailako zeharkako ebakia (emea): blokea goitik ikusiko dugu' },
   S: S12,
   pose: BR0,
@@ -106,6 +109,8 @@ const DCAM = (dist = 9, target: [number, number, number] = [0.9, -0.6, 0.3], yaw
 export const S14 = [0, 0.25, 0.5, 0.75] as const;
 
 const spec14: StageSpec<DescentPose, DescentOpts> = {
+  site: SITE16.descent,
+  arrive: 'Orain arra: enborra barrabilaren ondotik ebaki dugu, eta ezkerretik ikusiko dugu',
   where: { th: -1.0, at: [0, -0.4, 0.2], scale: 1.5, planes: [{ center: [0.9, -0.6, 0.2], a: [0, 0, 1.8], b: [0, 2.4, 0] }], note: 'Enborraren behealdea, barrabilaren ondotik moztuta (sagitala), ezkerretik ikusita' },
   S: S14,
   pose: DS0,
@@ -150,6 +155,8 @@ export const Descent16 = poseStage(spec14, (p, o) => descentModel(p, o));
 export const S15 = [0, 0.2, 0.4, 0.6, 0.8] as const;
 
 const spec15: StageSpec<DescentPose, DescentOpts> = {
+  site: SITE16.descent,
+  arrive: 'Enborra barrabilaren ondotik ebakita, ezkerretik ikusita',
   S: S15,
   pose: { ...DS0, down: 0.5 },
   opts: {},
@@ -236,6 +243,8 @@ const ECAM = (dist = 6.5, target: [number, number, number] = [0, 0.1, 0], yaw = 
 export const S17 = [0, 0.25, 0.5, 0.75] as const;
 
 const spec17: StageSpec<ExternalPose, ExternalOpts> = {
+  site: SITE16.external,
+  arrive: 'Enborraren azpira jaitsi gara: kanpo genitalak, behetik eta aurretik',
   where: { th: -1.75, at: [0, -2.6, 0.6], frame: 'perineum', scale: 3, planes: [{ center: [0, 0, 0.2], a: [2.2, 0, 0], b: [0, 2.2, 0] }], note: 'Kanpo genitalak: enbrioiaren behealdea, behetik eta aurretik ikusita' },
   S: S17,
   pose: EX0,
@@ -305,6 +314,8 @@ const EX_END: ExternalPose = { ...EX0, tubercle: 1, folds: 1, swellings: 1, divi
 export const S18 = [0, 0.33, 0.66] as const;
 
 const spec18: StageSpec<ExternalPose, ExternalOpts> = {
+  site: SITE16.external,
+  arrive: 'Enborraren azpian: kanpo genitalak, behetik eta aurretik',
   S: S18,
   pose: EX_END,
   opts: {},
@@ -351,6 +362,8 @@ export const ExternalFemale16 = poseStage(spec18, (p, o) => externalModel(p, o))
 export const S19 = [0, 0.25, 0.5, 0.75] as const;
 
 const spec19: StageSpec<ExternalPose, ExternalOpts> = {
+  site: SITE16.external,
+  arrive: 'Enborraren azpian: kanpo genitalak, behetik eta aurretik',
   S: S19,
   pose: EX_END,
   opts: {},
@@ -372,7 +385,8 @@ const spec19: StageSpec<ExternalPose, ExternalOpts> = {
     {
       to: { closeGroove: 1 },
       run: [0.06, 0.9],
-      cam: ECAM(7, [0, 0.4, 0.5], 60, 4),
+      // From below: the groove lies on the phallus's underside, and the folds close over it from behind forwards.
+      cam: ECAM(7, [0, 0.5, 0.6], 38, -30),
       glide: 0.06,
       dim: ['ildo-urogenitala', 'zakil-uretra', 'tolespen-urogenitalak'],
       names: [

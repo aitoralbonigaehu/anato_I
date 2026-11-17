@@ -1,8 +1,9 @@
 'use client';
 
-import { ARCH, SIDE, TISSUE, endPose, poseStage18, type StageSpec } from '@/components/scenes/week17/common';
+import { ARCH, SIDE, TISSUE, endPose, poseStage18, type StageSpec, type Where } from '@/components/scenes/week17/common';
 import type { V3 } from '@/lib/three-d/math';
 import { TP0, thyroidModel, type ThyroidOpts, type ThyroidPose } from './thyroid-model';
+import { SITE18 } from './sites';
 
 /**
  * Topic 18, notes 3: the thyroid on one sagittal section (thyroid-model.ts), seen from the embryo's left as the
@@ -20,12 +21,16 @@ const KEY = [
   { color: ARCH.iii, text: 'II.–IV. arkuak' },
 ] as const;
 const FC: V3 = [0, -0.1, 0.2];
+/** Opened cold: the fly-in from outside the embryo to the head, cut down the middle. */
+const WHERE: Where = { th: 1.5, at: [0, -0.2, -0.3], scale: 2.6, planes: [{ center: [0, 0, 0.2], a: [0, 0, 2.9], b: [0, 3.2, 0] }], note: 'Burua: erditik moztuta (ebakidura sagitala), ezkerretik ikusita' };
 
 export const S_SORRERA = [0, 0.26, 0.5, 0.75] as const;
 
 const specA: StageSpec<ThyroidPose, ThyroidOpts> = {
   map: 'thyroid',
-  where: { th: 1.5, at: [0, -0.2, -0.3], scale: 2.6, planes: [{ center: [0, 0, 0.2], a: [0, 0, 2.9], b: [0, 3.2, 0] }], note: 'Burua: erditik moztuta (ebakidura sagitala), ezkerretik ikusita' },
+  where: WHERE,
+  site: SITE18.thyroid,
+  arrive: 'Faringearen zorua erditik moztu dugu, zulo itsuaren mailan: ezkerretik ikusiko dugu',
   S: S_SORRERA,
   pose: TP0,
   opts: {},
@@ -90,6 +95,9 @@ export const S_JAISKETA = [0, 0.3, 0.56, 0.78] as const;
 
 const specB: StageSpec<ThyroidPose, ThyroidOpts> = {
   map: 'thyroid',
+  where: WHERE,
+  site: SITE18.thyroid,
+  arrive: 'Ebaki berean: guruina zorutik lepora jaitsiko da',
   S: S_JAISKETA,
   pose: { ...endPose(specA).pose, membrane: 0 },
   opts: {},

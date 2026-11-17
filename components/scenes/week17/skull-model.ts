@@ -1,12 +1,13 @@
 import { mixHex } from '@/components/scenes/week10/model3d';
-import { add, cross, dot, mix3, mul, norm, sub, type M4, type V3 } from '@/lib/three-d/math';
+import { add, cross, dot, mix3, mul, norm, perp, sub, type M4, type V3 } from '@/lib/three-d/math';
 import { curve3, grid, merge, type Mesh } from '@/lib/three-d/mesh';
 import { cachedMesh } from '@/lib/three-d/mesh-cache';
 import { cupShell, vessel, type Parts } from '@/lib/three-d/organic';
 import { geoOf, geoSlot } from '@/lib/three-d/offthread';
 import type { Clip3, Item3 } from '@/lib/three-d/scene';
-import { capsule, ellipsoid, mirrorX, smin, ssub, surfaceMesh, type SDF } from '@/lib/three-d/sdf';
+import { capsule, deformBy, ellipsoid, mirrorX, smin, ssub, surfaceMesh, type SDF } from '@/lib/three-d/sdf';
 import { ARCH, ARCH_DEEP, TISSUE } from './common';
+import { larynxOrigins } from './larynx-model';
 
 /**
  * Topic 17 §1: the fetal skull. One model, one continuous pose, for every stage of the section and for the
@@ -62,10 +63,20 @@ export interface SkullPose {
   rest: number;
   /** The mandible and the hyoid (0 hides them: the base from below, the vault alone). */
   jaw: number;
+  /** Notes 1.2, the origins. The dura mater over the encephalon, paraxial mesoderm (0..1). */
+  dura: number;
+  /** A window in the dura, a smaller one in the arachnoid: arachnoid and pia, neural crest (0..1). */
+  lepto: number;
+  /** The eyes and their muscles: somatic muscles, paraxial mesoderm (0..1). */
+  somatic: number;
+  /** Cricoid and arytenoids under the hyoid: lateral mesoderm (0..1). */
+  larynx: number;
+  /** The ganglia of V, VII, IX and X on the base: placodes and neural crest (0..1). */
+  ganglia: number;
 }
 
 /** The finished fetal skull: every bone in place and ivory, no tints. */
-export const SKULL0: SkullPose = { membrane: 1, vault: 1, afClose: 0, pfClose: 0, sideClose: 0, sutureClose: 0, mould: 0, lid: 0, brain: 0, carti: 1, boneL: 1, boneR: 1, face: 1, origin: 0, faceOrigin: 0, archTint: 0, rest: 1, jaw: 1 };
+export const SKULL0: SkullPose = { membrane: 1, vault: 1, afClose: 0, pfClose: 0, sideClose: 0, sutureClose: 0, mould: 0, lid: 0, brain: 0, carti: 1, boneL: 1, boneR: 1, face: 1, origin: 0, faceOrigin: 0, archTint: 0, rest: 1, jaw: 1, dura: 0, lepto: 0, somatic: 0, larynx: 0, ganglia: 0 };
 
 export interface SkullOpts {
   dim?: { ids: readonly string[]; k: number } | null;
@@ -745,7 +756,7 @@ function chain(pts: readonly V3[], rad: readonly number[], scale: V3 = [1, 1, 1]
 const ORBIT = ellipsoid([0.93, -0.86, 2.42], [0.68, 0.64, 0.95]);
 const APERTURE = ellipsoid([0, -1.42, 3.05], [0.4, 0.58, 0.95]);
 
-const maxillaF: SDF = (() => {
+export const maxillaF: SDF = (() => {
   const body = ellipsoid([0.62, -1.7, 2.22], [0.68, 0.5, 0.74]);
   const alv = ellipsoid([0.56, -2.14, 2.22], [0.64, 0.2, 0.68]);
   const fp = capsule([0.44, -1.42, 2.55], [0.22, -0.62, 2.78], 0.19, 0.1);
@@ -761,7 +772,7 @@ const maxillaF: SDF = (() => {
   };
 })();
 
-const zygomaticF: SDF = (() => {
+export const zygomaticF: SDF = (() => {
   const body = ellipsoid([1.54, -1.42, 1.72], [0.36, 0.33, 0.36]);
   const fr = capsule([1.6, -1.2, 1.76], [1.6, -0.48, 1.74], 0.15, 0.09);
   const tp = chain([[1.72, -1.45, 1.46], [2.02, -1.34, 0.86]], [0.13, 0.09], [1.6, 1, 1], 0.05);
@@ -777,7 +788,7 @@ const nasalF: SDF = (x, y, z) => {
   return Math.max(c, 0.012 - x);
 };
 
-const mandibleF: SDF = (() => {
+export const mandibleF: SDF = (() => {
   const body = chain(
     [[0, -3.02, 2.6], [0.46, -3.0, 2.46], [0.96, -2.94, 2.06], [1.38, -2.82, 1.56], [1.74, -2.66, 1.08]],
     [0.17, 0.17, 0.165, 0.15, 0.14],
@@ -1121,12 +1132,13 @@ export function skullModel(pose: SkullPose, opts: SkullOpts = {}): { items: Item
       faceItem(`nas${side}`, 'hezur-nasala', mir(G.nasal), null, X(s, [0.16, -0.8, 3]), [0, 0, 1.2], 1.0, rest < 1 ? { show: rest } : {});
       if (pose.jaw > 0.01) faceItem(`man${side}`, 'baraila', mir(G.mandible), 'i', X(s, [1.2, -2.8, 1.6]), [0, -0.2, 1.6], 1.5, { show: pose.jaw });
       // The rest of the side of the skull that belongs with them.
-      faceItem(`tpr${side}`, 'tenporalaren-ezkata', mir(G.tProcess), 'i', X(s, [2.15, -1.3, 0.5]), [s * 1.2, 0, 0], 1.3, { groups: [] });
+      faceItem(`tpr${side}`, 'tenporalaren-ezkata', mir(G.tProcess), null, X(s, [2.15, -1.3, 0.5]), [s * 1.2, 0, 0], 1.3, { groups: [] });
       if (rest > 0.01) {
         put(`pty${side}`, undefined, mir(G.pterygoid), mixHex(SKULL_C.bone, '#8c7b63', 0.55), SKULL_C.floorDeep, { quiet: true, show: rest * fg, outline: false });
         put(`mas${side}`, 'harkaitza', mir(G.mastoid), SKULL_C.bone, SKULL_C.boneDeep, { groups: ['neurokraneoa'], show: rest * fg });
         put(`orb${side}`, undefined, ORBIT_CUP(s), SKULL_C.hollow, SKULL_C.hollowDeep, { quiet: true, ground: true, outline: false, show: rest });
-        put(`tyr${side}`, undefined, ring(s), SKULL_C.bone, SKULL_C.boneDeep, { quiet: true, show: rest * fg });
+        // The tympanic ring: the part of the temporal that arch I gives (notes 2.2.1).
+        put(`tyr${side}`, 'loki-hezurraren-atal-tinpanikoa', ring(s), ...shade('i'), { quiet: true, show: rest * fg });
         put(`mea${side}`, undefined, meatus(s), SKULL_C.hollow, SKULL_C.hollowDeep, { quiet: true, ground: true, outline: false, show: rest * fg });
       }
       const [stC, stD] = shade('ii');
@@ -1147,9 +1159,79 @@ export function skullModel(pose: SkullPose, opts: SkullOpts = {}): { items: Item
     }
   }
 
+  // ———— the origins (notes 1.2): meninges, somatic muscles, the larynx's small cartilages, ganglia ————
+  const onBase = (x: number, z: number, up = 0.2): V3 => [x, baseY(x, z) + up, z];
+  const dura = clamp01(pose.dura);
+  const lepto = clamp01(pose.lepto);
+  if (dura > 0.01 && rest > 0.01) {
+    // Three shells over the encephalon: pia on it, the arachnoid, the dura outside. A window in each outer one shows the next.
+    const shell = (k: number, slot: string): Pair => ({ m: deformBy(G.brain.m, [k], (p) => mul(p, k), slot), h: deformBy(G.brain.h, [k], (p) => mul(p, k), slot + 'h') });
+    const win = (size: number): Clip3 | undefined => (lepto > 0.01 ? { o: [0, 0, 0], holes: [{ c: WIN_C, u: WIN_U, v: WIN_V, front: size * lepto, back: size * lepto, side: size * 0.82 * lepto }] } : undefined);
+    if (lepto > 0.01) {
+      put('pia', 'aragnoidea-pia', shell(1.008, 'pia'), mixHex(SKULL_C.crest, SKULL_C.crestDeep, 0.3), SKULL_C.crestDeep, { tissue: 'epithelium', show: dura * rest, outline: false });
+      put('arachnoid', 'aragnoidea-pia', shell(1.024, 'ara'), mixHex(SKULL_C.crest, '#ffffff', 0.34), SKULL_C.crestDeep, { tissue: 'membrane', show: dura * rest, clip: win(0.3), outline: false });
+    }
+    put('dura', 'dura-materra', shell(1.042, 'dura'), SKULL_C.paraxial, SKULL_C.paraxialDeep, { tissue: 'tendon', show: dura * rest, clip: win(0.56) });
+  }
+  const som = clamp01(pose.somatic);
+  if (som > 0.01 && rest > 0.01)
+    for (const s of [1, -1]) {
+      const side = s > 0 ? 'L' : 'R';
+      const ax = D(s * 0.32, 0, 0.95);
+      const c = X(s, EYE_C);
+      const up: V3 = [0, 1, 0];
+      const out = norm(cross(up, ax));
+      put(`eye${side}`, undefined, { m: globe(`eye${side}`, c, [EYE_R, EYE_R, EYE_R]), h: globe(`eye${side}h`, c, [EYE_R, EYE_R, EYE_R], 8) }, '#f2ece6', '#a59a90', { tissue: 'epithelium', quiet: true, ground: true, show: som * rest });
+      const iris = add(c, mul(ax, EYE_R * 0.86));
+      put(`iris${side}`, undefined, { m: globe(`iris${side}`, iris, [0.21, 0.21, 0.12]), h: globe(`iris${side}h`, iris, [0.21, 0.21, 0.12], 6) }, '#3c2f2b', '#17100e', { tissue: 'epithelium', quiet: true, ground: true, show: som * rest, outline: false });
+      // The four straight muscles: from the back of the orbit, round the eye, to their insertions in front of its equator.
+      [up, mul(up, -1), out, mul(out, -1)].forEach((d, i) => {
+        const from = add(add(c, mul(ax, -1.0)), mul(d, 0.08));
+        const belly = add(add(c, mul(d, EYE_R * 1.12)), mul(ax, -EYE_R * 0.3));
+        const to = add(add(c, mul(d, EYE_R * 0.88)), mul(ax, EYE_R * 0.56));
+        put(`som${side}${i}`, 'muskulu-somatikoak', tubeOf([from, belly, to], 0.105, 0.075, 10, 14), SKULL_C.paraxial, SKULL_C.paraxialDeep, { tissue: 'muscle', show: som * rest });
+      });
+    }
+  const lx = clamp01(pose.larynx);
+  if (lx > 0.01) {
+    const P = larynxOrigins();
+    const place = (q: Parts, slot: string): Pair => ({ m: deformBy(q.mesh, [LX_K], LX_AT, slot), h: deformBy(q.hit ?? q.mesh, [LX_K], LX_AT, slot + 'h') });
+    put('lx-thy', undefined, place(P.thyroid, 'lxt'), '#e9dfd2', '#8d8272', { tissue: 'cartilage', quiet: true, ground: true, opacity: 0.32, show: lx, outline: false });
+    put('lx-cri', 'krikoide-kartilagoa', place(P.cricoid, 'lxc'), TISSUE.lateral, TISSUE.lateralDeep, { tissue: 'cartilage', show: lx });
+    const ary = place(P.arytenoid, 'lxa');
+    put('lx-aryL', 'aritenoide-kartilagoa', ary, TISSUE.lateral, TISSUE.lateralDeep, { tissue: 'cartilage', show: lx });
+    put('lx-aryR', 'aritenoide-kartilagoa', { m: mirrorCached(ary.m), h: mirrorCached(ary.h) }, TISSUE.lateral, TISSUE.lateralDeep, { tissue: 'cartilage', show: lx });
+  }
+  const gg = clamp01(pose.ganglia);
+  if (gg > 0.01 && rest > 0.01)
+    GANGLIA.forEach(([x, z, r], i) => {
+      for (const s of [1, -1]) {
+        const side = s > 0 ? 'L' : 'R';
+        const c = onBase(s * x, z, r * 0.85 + 0.04);
+        // Two lobes: the one towards the brain from the neural crest, the outer one from the placode.
+        const inner: V3 = [c[0] - s * r * 0.5, c[1] + r * 0.12, c[2]];
+        const outer: V3 = [c[0] + s * r * 0.5, c[1], c[2]];
+        const rr: V3 = [r * 0.82, r * 0.78, r * 0.9];
+        const look = { tissue: 'neural' as const, show: gg * rest };
+        put(`gcr${side}${i}`, 'nerbio-kranialen-gongoilak', { m: globe(`gcr${side}${i}`, inner, rr), h: globe(`gcr${side}${i}h`, inner, rr, 6) }, SKULL_C.crest, SKULL_C.crestDeep, look);
+        put(`gpl${side}${i}`, 'nerbio-kranialen-gongoilak', { m: globe(`gpl${side}${i}`, outer, rr), h: globe(`gpl${side}${i}h`, outer, rr, 6) }, TISSUE.placode, TISSUE.placodeDeep, look);
+        // Its root, cut where the brain was.
+        put(`grt${side}${i}`, undefined, tubeOf([inner, [inner[0] - s * 0.16, inner[1] + 0.26, inner[2] - 0.04], [inner[0] - s * 0.26, inner[1] + 0.52, inner[2] - 0.1]], r * 0.34, r * 0.28, 10, 10), TISSUE.nerve, TISSUE.nerveDeep, { tissue: 'nerve', quiet: true, ground: true, show: gg * rest });
+      }
+    });
+
   // ———— names ————
   const pts: Record<string, V3> = { ...skullPoints(mould) };
-  const onBase = (x: number, z: number, up = 0.2): V3 => [x, baseY(x, z) + up, z];
+  const duraQ = D(0.7, 0.45, -0.5);
+  const leptoQ = norm(add(mul(WIN_C, Math.cos(0.42)), mul(WIN_U, Math.sin(0.42))));
+  Object.assign(pts, {
+    'dura-materra': mul(duraQ, (headR(duraQ) - 0.17) * 1.042),
+    'aragnoidea-pia': mul(leptoQ, (headR(leptoQ) - 0.17) * 1.024),
+    'muskulu-somatikoak': add(add(EYE_C, [0, EYE_R * 0.9, 0]), mul(D(0.32, 0, 0.95), EYE_R * 0.5)),
+    'krikoide-kartilagoa': LX_AT([0.68, -1.55, 0.52]),
+    'aritenoide-kartilagoa': LX_AT([0.36, -0.14, -1.14]),
+    'nerbio-kranialen-gongoilak': onBase(GANGLIA[0][0], GANGLIA[0][1], GANGLIA[0][2] * 1.6),
+  });
   Object.assign(pts, {
     neurokraneoa: pts['hezur-parietala'],
     'buru-ganga': pts['hezur-parietala'],
@@ -1185,6 +1267,33 @@ export function skullModel(pose: SkullPose, opts: SkullOpts = {}): { items: Item
 }
 
 const bonesSeen = (p: SkullPose) => p.lid > 0.5;
+
+/** The window in the meninges: up on the left side of the encephalon, towards the camera of the stage. */
+const WIN_C = D(0.62, 0.72, 0.2);
+const WIN_U = perp([0, 0, 1], WIN_C);
+const WIN_V = cross(WIN_C, WIN_U);
+/** The left eye in its orbit. */
+const EYE_C: V3 = [0.95, -0.86, 2.14];
+const EYE_R = 0.47;
+/** The larynx model's frame carried under this skull's hyoid. */
+const LX_K = 0.62;
+const LX_AT = (p: V3): V3 => [LX_K * p[0], -4.06 + LX_K * (p[1] - 2.72), 1.74 + LX_K * (p[2] - 1.03)];
+/** The ganglia on the left of the base, from front to back: V, VII, IX, X (x, z, radius). */
+const GANGLIA: [number, number, number][] = [
+  [0.9, 0.12, 0.3],
+  [1.14, -0.5, 0.19],
+  [0.94, -1.0, 0.17],
+  [0.64, -1.26, 0.2],
+];
+/** A small ellipsoid body (an eye, a ganglion's lobe). */
+const globe = (kind: string, c: V3, r: V3, n = 14): Mesh =>
+  cachedMesh(`skull-globe-${kind}`, [...c, ...r, n], () =>
+    grid(n, n * 2, (u, v) => {
+      const th = u * Math.PI;
+      const a = v * Math.PI * 2;
+      return [c[0] + r[0] * Math.sin(th) * Math.sin(a), c[1] + r[1] * Math.cos(th), c[2] + r[2] * Math.sin(th) * Math.cos(a)];
+    }),
+  );
 
 const mirrored = new WeakMap<Mesh, Mesh>();
 function mirrorCached(m: Mesh): Mesh {

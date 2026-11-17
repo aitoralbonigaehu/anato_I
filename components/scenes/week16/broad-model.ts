@@ -1,4 +1,5 @@
 import { mix3, type V3 } from '@/lib/three-d/math';
+import { G16 } from './tones';
 import { curve3, grid, merge } from '@/lib/three-d/mesh';
 import { cachedMesh } from '@/lib/three-d/mesh-cache';
 import { plate, vessel, type VesselOptions } from '@/lib/three-d/organic';
@@ -98,10 +99,10 @@ export function broadModel(pose: BroadPose, o: BroadOpts = {}) {
     const op = h ? 1 - open : 1;
     if (op < 0.02) continue;
     const top = WALL_TOP(h), sides = WALL_SIDES(h);
-    items.push({ key: `wallTop${h}`, mesh: top, hit: top, color: UC.wallCut, deep: UC.wallCutDeep, tissue: 'mesenchyme', opacity: op, quiet: true, ground: true });
-    items.push({ key: `wallSides${h}`, mesh: sides, hit: sides, color: mixHex(UC.wall, PERI, 0.25), deep: UC.wallDeep, tissue: 'mesenchyme', opacity: op, quiet: true, ground: true, outline: false });
+    items.push({ key: `wallTop${h}`, mesh: top, hit: top, color: G16.cut, deep: G16.cutDeep, tissue: 'mesenchyme', opacity: op, quiet: true, ground: true });
+    items.push({ key: `wallSides${h}`, mesh: sides, hit: sides, color: mixHex(G16.wall, PERI, 0.25), deep: G16.wallDeep, tissue: 'mesenchyme', opacity: op, quiet: true, ground: true, outline: false });
   }
-  items.push({ key: 'floor', ...plate('broad-floor-v1', FLOOR, -ZH, -ZH - 0.1), color: '#2b3247', deep: '#10131c', tissue: 'membrane', opacity: 1, quiet: true, ground: true, outline: false });
+  items.push({ key: 'floor', ...plate('broad-floor-v1', FLOOR, -ZH, -ZH - 0.1), color: G16.cavity, deep: G16.cavityDeep, tissue: 'membrane', opacity: 1, quiet: true, ground: true, outline: false });
   items.push({ key: 'sacrum', ...blobParts({ center: [0, 1.45, 0], radii: [0.55, 0.28, ZH * 0.98], rings: 10, sides: 14 }), color: '#cfc6b4', deep: '#6e6656', tissue: 'bone', opacity: 1, quiet: true, ground: true });
   vess('rectum', 'ondestea', along(0, 0.85), UC.endo, { r0: 0.32 }, 1, { deep: UC.endoDeep });
   pts['ondestea'] = [0.32, 1.05, ZH];

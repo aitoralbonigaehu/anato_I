@@ -145,3 +145,69 @@ export function showCamera(cam: Camera3, items: Item3[], id: string, partsOf?: (
   shown.set(key, out);
   return out;
 }
+
+type Quat = [number, number, number, number];
+
+/** The camera's attitude (its right, up and back axes) as a quaternion. */
+function attitude(c: Camera3): Quat {
+  const z = norm(sub(c.eye, c.target));
+  const x = norm(cross(c.up ?? [0, 1, 0], z));
+  const y = cross(z, x);
+  const tr = x[0] + y[1] + z[2];
+  if (tr > 0) {
+    const s = Math.sqrt(tr + 1) * 2;
+    return [(y[2] - z[1]) / s, (z[0] - x[2]) / s, (x[1] - y[0]) / s, s / 4];
+  }
+  if (x[0] > y[1] && x[0] > z[2]) {
+    const s = Math.sqrt(1 + x[0] - y[1] - z[2]) * 2;
+    return [s / 4, (y[0] + x[1]) / s, (z[0] + x[2]) / s, (y[2] - z[1]) / s];
+  }
+  if (y[1] > z[2]) {
+    const s = Math.sqrt(1 + y[1] - x[0] - z[2]) * 2;
+    return [(y[0] + x[1]) / s, s / 4, (z[1] + y[2]) / s, (z[0] - x[2]) / s];
+  }
+  const s = Math.sqrt(1 + z[2] - x[0] - y[1]) * 2;
+  return [(z[0] + x[2]) / s, (z[1] + y[2]) / s, s / 4, (x[1] - y[0]) / s];
+}
+
+const spin = (q: Quat, v: V3): V3 => {
+  const u: V3 = [q[0], q[1], q[2]];
+  const t = mul(cross(u, v), 2);
+  return add(add(v, mul(t, q[3])), cross(u, t));
+};
+
+/**
+ * A flight from one view to another (a stage change between two models): the whole camera turns once, the
+ * short way, so the picture never rolls on the way and what was up comes round to the new up in one move; the
+ * distance closes evenly on a log scale (a zoom reads as steady), and the aim moves over as the distance does.
+ * Only a long way across draws back in the middle (both ends in one picture); a near move never goes out and in.
+ */
+export function flyCamera(a: Camera3, b: Camera3, e: number): Camera3 {
+  if (e <= 0) return a;
+  if (e >= 1) return b;
+  const qa = attitude(a);
+  let qb = attitude(b);
+  let d = qa[0] * qb[0] + qa[1] * qb[1] + qa[2] * qb[2] + qa[3] * qb[3];
+  if (d < 0) {
+    qb = [-qb[0], -qb[1], -qb[2], -qb[3]];
+    d = -d;
+  }
+  const th = Math.acos(Math.min(1, d));
+  const sn = Math.sin(th);
+  const wa = sn > 1e-4 ? Math.sin((1 - e) * th) / sn : 1 - e;
+  const wb = sn > 1e-4 ? Math.sin(e * th) / sn : e;
+  const q: Quat = [qa[0] * wa + qb[0] * wb, qa[1] * wa + qb[1] * wb, qa[2] * wa + qb[2] * wb, qa[3] * wa + qb[3] * wb];
+  const ra = len(sub(a.eye, a.target));
+  const rb = len(sub(b.eye, b.target));
+  const r = Math.exp(Math.log(ra) + (Math.log(rb) - Math.log(ra)) * e);
+  // The aim goes over with the distance closed (a zoom in centres its goal first), or evenly when there is no zoom.
+  const w = Math.abs(ra - rb) > 0.08 * Math.max(ra, rb) ? 0.5 * e + 0.5 * ((ra - r) / (ra - rb)) : e;
+  const target = mix3(a.target, b.target, w);
+  // A long way across (the two aims farther apart than either view shows): the camera draws back on the way,
+  // so both ends are seen together at mid-flight; a short way stays as close as it is.
+  const far = len(sub(b.target, a.target)) / Math.sqrt(ra * rb);
+  const back = 1 + (Math.min(1.9, Math.max(1, 1.5 * far)) - 1) * Math.sin(Math.PI * e) ** 2;
+  const shift: [number, number] | undefined =
+    a.shift || b.shift ? [(a.shift?.[0] ?? 0) + ((b.shift?.[0] ?? 0) - (a.shift?.[0] ?? 0)) * e, (a.shift?.[1] ?? 0) + ((b.shift?.[1] ?? 0) - (a.shift?.[1] ?? 0)) * e] : undefined;
+  return { ...b, target, eye: add(target, mul(spin(q, [0, 0, 1]), r * back)), up: spin(q, [0, 1, 0]), fov: a.fov + (b.fov - a.fov) * e, shift };
+}

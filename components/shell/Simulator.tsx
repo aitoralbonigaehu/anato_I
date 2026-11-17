@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useEffectEvent, useRef, useState, useSyncExternalStore } from 'react';
-import { SceneContext, type QuizFlash, type SceneContextValue } from '@/components/kit/context';
+import { GhostContext, SceneContext, type QuizFlash, type SceneContextValue } from '@/components/kit/context';
 import { getWeek, isSpace, partsOf, nameOf, structures, weeks } from '@/content/registry';
 import { firstSeenOf, periodOf, weekOfDay } from '@/content/chronology';
 import { clockLabel, spanOf } from '@/lib/sim/age';
@@ -12,7 +12,7 @@ import { mentionedIn } from '@/lib/sim/mentions';
 import { categoryColor, categoryLabel } from '@/lib/sim/palette';
 import type { PlaneKind, StageDef, StructureCategory, StructureDef, WeekDef } from '@/lib/sim/types';
 import { Glossary } from './Glossary';
-import { IconBook, IconCalendar, IconChevron, IconNotes, IconClock, IconExpand, IconHelp, IconImage, IconLayers, IconMore, IconQuiz, IconShrink, IconTag, IconTarget, IconTree } from './icons';
+import { IconBook, IconCalendar, IconChevron, IconNotes, IconClock, IconExpand, IconHelp, IconImage, IconLayers, IconMore, IconQuiz, IconShrink, IconSpark, IconTag, IconTarget, IconTree } from './icons';
 import { Popover } from './Popover';
 import { Wordmark, isWip } from './LandNav';
 import { AskCard, Player, TourCard, ideaOf } from './Player';
@@ -28,7 +28,7 @@ import { NowCard } from './NowCard';
 import { Locator, type CutStop, type Crumb } from './Locator';
 import { shapeFor } from './Specimen';
 // Register the worker requester; meshes are built only when a 3D view actually asks for them.
-import '@/lib/three-d/geo-client';
+import { warmGeo } from '@/lib/three-d/geo-client';
 import { nextRenderDeadline, renderTiming } from '@/lib/three-d/render-policy';
 import { perfCount } from '@/lib/perf';
 import type { ViewSnap } from './ViewBridge';
@@ -45,6 +45,7 @@ import { NarrationTransport, type AudioSnapshot } from './narrate';
 import { getNarrationSegments, narratedFrame, needsStageRestart, type NarrationKind } from '@/lib/sim/narration';
 import { getPref, setPlayMode, setPref, usePref, type PlayMode } from './prefs';
 import { markVisited, useStudyPosition, useVisited } from './progress';
+import { useStageStudy } from '@/components/study/useActivity';
 import { recordAnswer } from './answers';
 import { imageId } from '@/content/pool';
 import { sectionLabel, sectionOf } from '@/content/notes';
@@ -511,6 +512,15 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
   const stage = week.stages[pos.i];
   const view = stage.views.find((v) => v.id === viewByStage[stage.id]) ?? stage.views[0];
   const Scene = view.scene;
+  // The neighbouring stages' heavy geometry is built off the main thread while this stage plays, so crossing into
+  // them is the camera flight and never a "3D eredua prestatzen" screen (the next stage first).
+  useEffect(() => {
+    const geoOfStage = (s: StageDef | undefined) => (s ? s.views.flatMap((v) => (v.scene as { geo?: string[] }).geo ?? []) : []);
+    const keys = [...geoOfStage(week.stages[pos.i + 1]), ...geoOfStage(week.stages[pos.i - 1])];
+    if (!keys.length) return;
+    const id = window.setTimeout(() => warmGeo([...new Set(keys)]), 1200);
+    return () => window.clearTimeout(id);
+  }, [week, pos.i]);
   // Heart views use `3d`; the other 3D views declare their off-thread geometry.
   const { frameMs, preserveCadence } = renderTiming();
   const modelFrameMs = view.id === '3d' || (view.scene as { geo?: string[] }).geo?.length ? frameMs : 0;
@@ -1203,6 +1213,8 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
     week: week.week, stage: stage.id, view: view.id, t: pos.t,
     ...(classChunk ? { chunk: classChunk } : {}),
   } : null, playing || (classOn && !klasea.paused));
+  // The progress page: times each stage was opened and time studied on it (only while in use).
+  useStageStudy(week.week, stage.id, linkedWeek === week.week, playing || (classOn && !klasea.paused));
   useEffect(() => {
     if (linkedWeek !== week.week) return;
     const url = new URL(window.location.href);
@@ -1862,6 +1874,9 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
                 <Link role="menuitem" href={`/kronologia?eguna=${Math.round(day)}`} onClick={close}>
                   <IconClock size={16} /> Kronologia <small>zer dago egun honetan?</small>
                 </Link>
+                <Link role="menuitem" href="/aurrerapena" onClick={close}>
+                  <IconSpark size={16} /> Aurrerapena <small>zer ikusi duzun, bolada, lorpenak</small>
+                </Link>
                 {/* The study pages, grouped as in the site bar's «Ikasgela» menu (the structures' atlas under the images). */}
                 <span className="menu-head" aria-hidden>Ikasgela</span>
                 <Link role="menuitem" href={hasRoom(weekNumber) ? `/ikasgela/${weekNumber}` : '/ikasgela'} onClick={close}>
@@ -2223,7 +2238,10 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
                   </g>
                   {ghost && GhostScene && (
                     <g key={`ghost-${ghost.key}`} className="scene-ghost" pointerEvents="none" aria-hidden>
-                      <SceneView Scene={GhostScene} t={ghost.t} reduced={reduced} />
+                      {/* A 3D view that hands over to the next by one camera flight leaves nothing to fade here. */}
+                      <GhostContext.Provider value>
+                        <SceneView Scene={GhostScene} t={ghost.t} reduced={reduced} />
+                      </GhostContext.Provider>
                     </g>
                   )}
                 </>

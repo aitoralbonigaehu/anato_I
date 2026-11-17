@@ -15,6 +15,18 @@ export const structures17d: StructureDef[] = [
     fate: 'Belarriak gordetzen ditu.',
   },
   {
+    id: 'loki-hezurraren-atal-tinpanikoa',
+    name: 'Loki hezurraren atal tinpanikoa',
+    es: 'Porción timpánica del temporal',
+    aka: ['Loki hezurraren atal bat'],
+    category: 'anatomia',
+    color: '#f08a3c',
+    definition: 'Loki hezurraren atal txiki bat: kutxa tinpanikoarekin eta hezurtxoekin erlazionatuta dagoena.',
+    location: 'Tarteko belarriaren inguruan.',
+    origin: 'Lehenengo arkua.',
+    fate: 'Loki hezurra.',
+  },
+  {
     id: 'hioide-gorputz-goia',
     name: 'Hioide-gorputzaren goiko erdia',
     es: 'Mitad superior del cuerpo del hioides',

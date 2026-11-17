@@ -64,6 +64,9 @@ const ss = (a: number, b: number, x: number) => {
 };
 
 const SEPT_TOP: V3 = [0, -0.15, -0.05];
+/** The cloaca's top and bottom (its membrane just below). */
+const CL_TOP = -0.35;
+const CL_BOT = -1.55;
 const SEPT_BOT: V3 = [0, -1.62, -0.05];
 const UMB: V3 = [0, 2.0, 1.75];
 const LIGAMENT = '#c9c1b2';
@@ -97,6 +100,14 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
   };
   const sept = clamp01(pose.sept);
   const split = clamp01(pose.split);
+  // How far down the septum has divided the cloaca (0..1): its leading edge's level in the cavity.
+  // The septum comes down over the first 72% of its run; the membranes split and the halves reshape after.
+  const grow = clamp01(sept / 0.72);
+  const divided = clamp01((CL_TOP - (0.05 - 1.67 * (0.12 + 0.88 * grow))) / (CL_TOP - CL_BOT));
+  // The septum reaches the cloacal membrane: it splits into the urogenital (front) and anal (back) membranes.
+  const met = ss(0.86, 1, divided) * ss(0, 0.2, split);
+  // Then the halves take their own shapes (the step runs septum and split together: the shaping comes last).
+  const shape = ss(0.75, 1, split) * met;
   const parts = clamp01(pose.parts);
   const female = clamp01(pose.female);
   const male = clamp01(pose.male);
@@ -123,27 +134,35 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
   const bladderC: V3 = [0, lerp(-0.6, -0.05, parts), lerp(0.62, 0.82, parts)];
   const bladderR: V3 = [lerp(0.38, 0.45, parts), lerp(0.55, 0.62, parts), lerp(0.42, 0.52, parts)];
   {
-    const k = ss(0, 1, split);
-    // The undivided cavity, handing over to its two halves (in its place) as the septum starts down.
-    const whole = 1 - ss(0, 0.3, split);
-    if (whole > 0.01) ball('cloaca', 'kloaka', [0, -0.95, 0.12], [0.42, 0.62, 0.8], UC.endo, 0.88 * whole, { deep: UC.endoDeep });
-    const halves = ss(0, 0.3, split);
-    const sinusId = split < 0.5 ? 'kloaka' : parts > 0.5 ? 'gernu-maskuria' : 'sinu-urogenitala';
-    const fc = mix3([0, -0.95, 0.4], bladderC, k);
-    const fr = mix3([0.42, 0.62, 0.52], bladderR, k);
+    // The division follows the septum's leading edge down: above it two cavities (the sinus in front, the
+    // anorectal canal behind), below it what is left of the one cloaca, shrinking as the edge comes down. Only
+    // once the edge has reached the membrane do the two halves take their own shapes (the bladder rises, the
+    // back half narrows into the anal canal).
+    const k = shape;
+    const d = divided;
+    const yDiv = lerp(CL_TOP, CL_BOT, d);
+    const halfC = (CL_TOP + yDiv) / 2;
+    const halfR = (CL_TOP - yDiv) / 2 + 0.1;
+    const halves = ss(0.02, 0.12, d);
+    // What is still one cavity below the edge (gone once the septum reaches the membrane).
+    const rest = 1 - ss(0.86, 1, d);
+    if (rest > 0.01) ball('cloaca', 'kloaka', [0, (yDiv + CL_BOT) / 2, 0.12], [0.42, Math.max(0.12, (yDiv - CL_BOT) / 2 + 0.1), 0.8], UC.endo, 0.88 * rest, { deep: UC.endoDeep });
+    const sinusId = d < 0.5 ? 'kloaka' : parts > 0.5 ? 'gernu-maskuria' : 'sinu-urogenitala';
+    const fc = mix3([0, halfC, 0.43], bladderC, k);
+    const fr = mix3([0.42, halfR, 0.47], bladderR, k);
     ball('sinus', sinusId, fc, fr, mixHex(UC.endo, '#ffe08a', 0.2 * k), lerp(0.88, 0.9, k) * halves, { groups: ['kloaka', 'sinu-urogenitala'], deep: UC.endoDeep });
-    if (split > 0.01) {
+    if (d > 0.5) {
       pts[sinusId] = add(bladderC, [0.42, 0.25, 0.15]);
       pts['sinu-urogenitala'] = add(fc, [0.4, 0.1, 0.1]);
     }
-    // The back half shrinks into the anal canal (which takes over as it narrows).
-    const back = 0.88 * halves * (1 - ss(0.55, 1, split));
-    ball('cloacaBack', 'kloaka', mix3([0, -0.95, -0.2], [0, -1.05, -0.46], k), mix3([0.42, 0.62, 0.5], [0.2, 0.5, 0.2], k), UC.endo, back, { groups: ['uzki-hodia'], deep: UC.endoDeep });
-    if (split < 0.99) pts['kloaka'] = [0.4, -0.95, 0.15];
+    // The back half: the anorectal canal, narrowing into the anal canal (which takes over as it narrows).
+    const back = 0.88 * halves * (1 - ss(0.55, 1, k));
+    ball('cloacaBack', d < 0.5 ? 'kloaka' : 'uzki-hodia', mix3([0, halfC, -0.37], [0, -1.05, -0.46], k), mix3([0.4, halfR, 0.31], [0.2, 0.5, 0.2], k), UC.endo, back, { groups: ['kloaka', 'uzki-hodia'], deep: UC.endoDeep });
+    if (d < 0.99) pts['kloaka'] = [0.4, (yDiv + CL_BOT) / 2, 0.15];
   }
 
   // ———— the sinus in front, the anal canal behind ————
-  if (split > 0.01) {
+  if (met > 0.01) {
     // The sinus → bladder (top, widest) + pelvic part (narrow) + definitive urogenital sinus (flat).
     if (parts > 0.01) {
       // The pelvic part: narrow, below the bladder; with sex, the urethra.
@@ -161,31 +180,31 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
       pts['behin-betiko-sinu-urogenitala'] = [0.32, -1.42, 0.7];
     }
     // The urogenital membrane (in front) closing the sinus at the surface, until it opens.
-    const ugm = split * (1 - Math.max(female, male));
+    const ugm = met * (1 - Math.max(female, male));
     if (ugm > 0.01) {
       ball('ugm', 'mintz-urogenitala', [0, -1.6, 0.68], [0.3, 0.035, 0.38], '#f4efe2', ugm, { groups: ['kloaka-mintza'], thin: 0.7, tissue: 'membrane' }, 8, 12);
       pts['mintz-urogenitala'] = [0.3, -1.62, 0.78];
     }
     // The anal canal and its membrane.
     const an = L([[0, -0.55, -0.42], [0, -1.1, -0.48], [0, -1.55, -0.5]], 10);
-    tube('anal', 'uzki-hodia', an, UC.endo, lerp(0.22, 0.16, split), ss(0.3, 1, split), { deep: UC.endoDeep, groups: ['hodi-anoerrektala'] });
+    tube('anal', 'uzki-hodia', an, UC.endo, lerp(0.22, 0.16, shape), ss(0.3, 1, shape), { deep: UC.endoDeep, groups: ['hodi-anoerrektala'] });
     pts['uzki-hodia'] = add(an[5], [0.2, 0, -0.12]);
-    ball('am', 'uzki-mintza', [0, -1.62, -0.5], [0.24, 0.035, 0.24], '#f4efe2', split, { groups: ['kloaka-mintza'], thin: 0.7, tissue: 'membrane' }, 8, 12);
+    ball('am', 'uzki-mintza', [0, -1.62, -0.5], [0.24, 0.035, 0.24], '#f4efe2', met, { groups: ['kloaka-mintza'], thin: 0.7, tissue: 'membrane' }, 8, 12);
     pts['uzki-mintza'] = [0.28, -1.64, -0.5];
   }
   // The cloacal membrane (one, before the division).
-  if (split < 0.99) {
-    ball('cm', 'kloaka-mintza', [0, -1.6, 0.12], [0.32, 0.04, 0.8], '#f4efe2', 1 - split, { thin: 0.7, tissue: 'membrane' }, 8, 14);
+  if (met < 0.99) {
+    ball('cm', 'kloaka-mintza', [0, -1.6, 0.12], [0.32, 0.04, 0.8], '#f4efe2', 1 - met, { thin: 0.7, tissue: 'membrane' }, 8, 14);
     pts['kloaka-mintza'] = [0.3, -1.64, 0.3];
   }
 
   // ———— the urorectal septum (mesoderm), growing down to the skin; its end = the perineum ————
   if (sept > 0.01) {
-    const tip = mix3(SEPT_TOP, SEPT_BOT, sept);
+    const tip = mix3(SEPT_TOP, SEPT_BOT, grow);
     // A fold of mesoderm growing down between the two halves: wide where it starts, its leading edge rounded.
-    vess('sept', 'trenkada-uroerrektala', [[0, 0.05, -0.08], SEPT_TOP, mix3(SEPT_TOP, SEPT_BOT, 0.5), SEPT_BOT], T.lateral, { r0: 0.2, r1: 0.11, bulb: 0.35, bulbLen: 0.25, flat: 0.2, sides: 14, n: 24 }, 0.12 + 0.88 * sept, 1, { tissue: 'mesenchyme' });
+    vess('sept', 'trenkada-uroerrektala', [[0, 0.05, -0.08], SEPT_TOP, mix3(SEPT_TOP, SEPT_BOT, 0.5), SEPT_BOT], T.lateral, { r0: 0.2, r1: 0.11, bulb: 0.35, bulbLen: 0.25, flat: 0.2, sides: 14, n: 24 }, 0.12 + 0.88 * grow, 1, { tissue: 'mesenchyme' });
     pts['trenkada-uroerrektala'] = add(mix3(SEPT_TOP, tip, 0.55), [0.4, 0, 0]);
-    const per = ss(0.85, 1, sept) * split;
+    const per = met;
     if (per > 0.01) {
       ball('per', 'perineoa', [0, -1.78, 0.08], [0.38, 0.18, 0.32], mixHex(T.lateral, '#ffffff', 0.15), per, { tissue: 'mesenchyme' });
       pts['perineoa'] = [0.36, -1.85, 0.1];
@@ -196,7 +215,7 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
   {
     const ura = clamp01(pose.urachus);
     const lig = clamp01(pose.ligament);
-    const base: V3 = mix3([0, -0.5, 0.7], [0, lerp(-0.1, 0.5, parts), lerp(0.85, 1.05, parts)], ss(0, 1, split));
+    const base: V3 = mix3([0, -0.5, 0.7], [0, lerp(-0.1, 0.5, parts), lerp(0.85, 1.05, parts)], shape);
     const al = L([base, [0, 0.9, 1.4], [0, 1.6, 1.55], add(UMB, [0, -0.05, -0.12])], 18);
     const id = lig > 0.5 ? 'erdiko-zilbor-lotailua' : ura > 0.5 ? 'urakoa' : 'alantoidea';
     const col = mixHex(mixHex(UC.endo, '#d8c08a', ura), LIGAMENT, lig);

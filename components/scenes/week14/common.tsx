@@ -1,7 +1,9 @@
 'use client';
 
+import { useContext, useEffect, useState } from 'react';
 import { Note, type SceneProps } from '@/components/kit';
-import { Loading3D, type At3 } from '@/components/kit/three/Stage3D';
+import { GhostContext } from '@/components/kit/context';
+import { Loading3D, heldFlight, RUN_ON_MS, useContinuing, type At3 } from '@/components/kit/three/Stage3D';
 import { ModelView, cameraAt, type CalloutSpec } from '@/components/scenes/week10/Heart3D';
 import { ColourKey } from '@/components/scenes/week12/common';
 import { mixHex } from '@/components/scenes/week10/model3d';
@@ -11,6 +13,7 @@ import { flyIn, reveal, type Plane } from '@/lib/three-d/flyin';
 import { useGeoReady } from '@/lib/three-d/offthread';
 import { fitCamera, pointsOf, type FitSpec } from '@/lib/three-d/framing';
 import type { Camera3, V3 } from '@/lib/three-d/math';
+import type { Site } from '@/lib/three-d/place';
 import type { Item3, Look3 } from '@/lib/three-d/scene';
 import { GC, gutModel, type GutOpts, type GutPose } from './gut3d';
 
@@ -76,6 +79,11 @@ export interface Step<P = GutPose, O = GutOpts> {
    * step's lit set `dim`, else every named structure), or false to keep `cam` exactly as written.
    */
   fit?: string[] | false;
+  /**
+   * A paired model (two gonads, two ducts): frame only the embryo's left (1) or right (−1) copy of what the step
+   * is about, with the midline. The detail is the same on both sides; framed together it is too small to see.
+   */
+  half?: 1 | -1;
   glide?: number;
   names?: (string | NameSpec)[];
   note?: string;
@@ -123,6 +131,15 @@ export interface StageSpec<P = GutPose, O = GutOpts> {
    * `Step.fit`) in the free middle of the frame, at the step's end pose. Omitted or false: cameras as written.
    */
   fit?: FitSpec | false;
+  /**
+   * Topic 16 on: where this stage's model sits in the topic's shared body (lib/three-d/place.ts). Reached from
+   * another 3D stage of the topic, the view takes over by one camera flight (Stage3D `Handover`): the model
+   * just left fades where it belongs while this one appears, no cross-fade of two pictures; and on the same
+   * model the pose runs on from where the stage before left it.
+   */
+  site?: Site;
+  /** Said at the foot while the camera flies in from another model ("we cut the ridge across here"). */
+  arrive?: string;
 }
 
 /** Where a model sits in the 5-week embryo (lib/three-d/embryo5) for the fly-in that opens a stage. */
@@ -152,17 +169,41 @@ const FRAMES = {
   perineum: { lateral: [1, 0, 0] as V3, dorsal: [0, -1, 0] as V3, cranial: [0, 0, -1] as V3 },
 };
 
+/** The matrix that puts the 5-week embryo into a model's space (see `Where`). */
+const placeOf = (W: Where) => {
+  const f = FRAMES[W.frame ?? 'trunk'];
+  return sectionMatrix(W.th, W.at, f.lateral, f.dorsal, W.scale ?? 1);
+};
+
 /** The fly-in at stage time t, onto the view's own camera (null when the stage has none). */
 function whereAt(W: Where | undefined, t: number, reduced: boolean, end: Camera3) {
   if (!W) return null;
   const f = FRAMES[W.frame ?? 'trunk'];
   const s = W.scale ?? 1;
-  const M = sectionMatrix(W.th, W.at, f.lateral, f.dorsal, s);
+  const M = placeOf(W);
   const u = reduced ? 1 : seg(t, 0, W.span ?? 0.07, (q) => q);
   return flyIn(u, M, end, W.planes ?? [], { dist: 17 * s, cranial: f.cranial, dorsal: f.dorsal });
 }
 
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
+
+/** What each topic's posed view last showed (by continuity): the next stage on the same model runs on from it. */
+const lastPosed = new Map<string, { site: string; pose: object; opts: object }>();
+const easeInOut = (x: number) => x * x * x * (x * (x * 6 - 15) + 10);
+/** `to`, with its numbers on the way from `from`'s. */
+function runOn<T extends object>(from: object, to: T, k: number): T {
+  if (k >= 1) return to;
+  const out = { ...to } as Record<string, unknown>;
+  for (const [key, v] of Object.entries(to)) {
+    const a = (from as Record<string, unknown>)[key];
+    if (typeof v === 'number' && typeof a === 'number') out[key] = lerp(a, v, k);
+    // A switch (which side the wall is on, …) turns over at mid-run, when the camera coming round is edge-on to it.
+    else if (k < 0.5 && (typeof v === 'boolean' || typeof v === 'string') && typeof a === typeof v) out[key] = a;
+  }
+  // … and one the new stage does not set at all (it was on, now it is off) stays on as long.
+  if (k < 0.5) for (const [key, a] of Object.entries(from)) if (a === true && !(key in out)) out[key] = a;
+  return out as T;
+}
 
 /** The step that holds stage time t. */
 export const stepAt = (S: readonly number[], t: number) => {
@@ -207,7 +248,7 @@ function recede(items: Item3[], dim: { ids: readonly string[]; k: number } | nul
   if (!dim || dim.k <= 0.001) return items;
   const k = 0.6 * dim.k;
   const lit = (it: Item3) => !!it.id && (dim.ids.includes(it.id) || (it.groups ?? []).some((g) => dim.ids.includes(g)));
-  return items.map((it) => (it.stream || it.ground || lit(it) ? it : { ...it, color: mixHex(it.color, SLATE, k), deep: mixHex(it.deep ?? it.color, SLATE_DEEP, k) }));
+  return items.map((it) => (it.stream || it.ground || it.calm || lit(it) ? it : { ...it, color: mixHex(it.color, SLATE, k), deep: mixHex(it.deep ?? it.color, SLATE_DEEP, k) }));
 }
 
 /** Topic 14's cameras sit a little closer than their specs say: the gut fills more of the frame. */
@@ -227,6 +268,11 @@ function fitStep<P, O extends { dim?: { ids: readonly string[]; k: number } | nu
   const seen = (it: Item3) => !!it.id && !it.quiet && (it.opacity ?? 1) * (it.show ?? 1) > 0.2;
   let pts = pointsOf(items, (it) => (spec.fit && spec.fit.ground && it.ground) || (seen(it) && (!ids || ids.includes(it.id!) || (it.groups ?? []).some((g) => ids.includes(g)))));
   if (pts.length < 9) pts = pointsOf(items, seen);
+  if (st.half) {
+    const side: number[] = [];
+    for (let i = 0; i < pts.length; i += 3) if (pts[i] * st.half > -0.12) side.push(pts[i], pts[i + 1], pts[i + 2]);
+    if (side.length >= 27) pts = new Float32Array(side);
+  }
   // Whatever the step names, and every drawn structure's naming point the written camera shows, stays in the
   // frame: a closer view must not cut off what the step's text or names point at.
   const drawn = new Set(items.filter(seen).flatMap((it) => [it.id!, ...(it.groups ?? [])]));
@@ -252,11 +298,44 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
   const { S, steps } = spec;
   // The steps' cameras, fitted once (on first draw) to what each step shows at its end.
   let fitted: Camera3[] | null = null;
+  const site = spec.site;
+  const place = site?.place ?? (spec.where ? placeOf(spec.where) : undefined);
+  const handover = site ? { cut: site.cut, note: spec.arrive } : undefined;
   const camsOf = (near: number) => (fitted ??= steps.map((s, k) => fitStep(spec, build, k, closer(s.cam, near))));
   function View({ t, reduced }: SceneProps) {
+    const continuing = useContinuing(continuity);
+    const ghost = useContext(GhostContext);
     const i = stepAt(S, t);
     const st = steps[i];
-    const { pose, opts } = poseAt(spec, t);
+    const now = poseAt(spec, t);
+    // Played on from another stage on the same model: the pose runs on from where that one left it.
+    const [from] = useState(() => {
+      const l = site && continuing && !reduced ? lastPosed.get(continuity) : undefined;
+      return l && l.site === site!.key ? l : null;
+    });
+    const [ran, setRan] = useState(from ? 0 : 1);
+    useEffect(() => {
+      if (!from) return;
+      let raf = 0;
+      let last = 0;
+      let done = 0;
+      // As the camera's glide (Stage3D): a slow first frame does not eat the start of the move.
+      const tick = (at: number) => {
+        done += last ? Math.min(at - last, 40) : 0;
+        last = at;
+        const held = heldFlight();
+        const p = held ?? Math.min(1, done / RUN_ON_MS);
+        setRan(p);
+        if (p < 1 || held !== null) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(raf);
+    }, [from]);
+    const pose = from && ran < 1 ? runOn(from.pose, now.pose as object, easeInOut(ran)) as P : now.pose;
+    const opts = from && ran < 1 ? runOn(from.opts, now.opts as object, easeInOut(ran)) as O : now.opts;
+    useEffect(() => {
+      if (site && !ghost) lastPosed.set(continuity, { site: site.key, pose: pose as object, opts: opts as object });
+    });
     const span = (k: number) => (S[k + 1] ?? 1) - S[k];
     // The lit set fades in at the step's start (no flicker when the step before was lit too).
     const prevDim = i > 0 && !!steps[i - 1].dim;
@@ -271,7 +350,10 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
       steps.map((s, k) => (s.glide ? ([S[k], cams[k], s.glide] as const) : ([S[k], cams[k]] as const))),
     );
     // The opening fly-in: the embryo from outside, then into the model (which shows as the embryo clears).
-    const F = whereAt(spec.where, t, reduced, viewCam);
+    // Only when the stage is entered on its own (the topic's start, a jump from the menu): played on from
+    // the stage before, the story flows on from the camera the viewer was looking through, carried into
+    // this model when it is another one (Stage3D `place`), instead of going out of the embryo and back.
+    const F = continuing ? null : whereAt(spec.where, t, reduced, viewCam);
     const own = recede(built.items, dim);
     let m = { ...built, items: own };
     if (F && (F.block < 0.999 || F.labels < 0.999 || F.items.length)) {
@@ -307,7 +389,9 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
         right={spec.right}
         labels={L}
         look={spec.look}
-        over={(at) => (
+        place={place}
+        handover={handover}
+        over={(at, _asked, flight) => (
           <>
             {F && F.where > 0.01 && (
               <>
@@ -322,10 +406,10 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
                 </Note>
               </>
             )}
-            {key && <ColourKey items={[...key]} show={L} title={st.keyTitle ?? spec.keyTitle ?? 'Kolorea'} y={46} />}
+            {key && <ColourKey items={[...key]} show={L * flight} title={st.keyTitle ?? spec.keyTitle ?? 'Kolorea'} y={46} />}
             {steps.map((s, k) =>
               s.note ? (
-                <Note key={`n${k}`} x={500} y={612} tone={s.warn ? 'warn' : 'accent'} show={vis2(t, S[k], S[k + 1] ?? 2) * L}>
+                <Note key={`n${k}`} x={500} y={612} tone={s.warn ? 'warn' : 'accent'} show={vis2(t, S[k], S[k + 1] ?? 2) * L * flight}>
                   {s.note}
                 </Note>
               ) : null,
@@ -335,7 +419,7 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
                 const p = typeof mk.p === 'string' ? m.pts[mk.p] : mk.p;
                 if (!p) return null;
                 const q = at(p);
-                const show = vis2(t, S[k] + 0.2 * span(k), S[k + 1] ?? 2) * L;
+                const show = vis2(t, S[k] + 0.2 * span(k), S[k + 1] ?? 2) * L * flight;
                 if (show <= 0.02) return null;
                 return (
                   <text key={`m${k}-${j}`} x={q.x + (mk.dx ?? 0)} y={q.y + (mk.dy ?? -10)} textAnchor="middle" className="note note-accent" opacity={show} style={{ fontSize: 12.5, fontWeight: 600 }} pointerEvents="none">
@@ -344,8 +428,8 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
                 );
               }),
             )}
-            {L > 0.01 && <g opacity={L}>{spec.over?.(t, at, pose)}</g>}
-            {secOn && L > 0.01 && <g opacity={L}>{sec.node}</g>}
+            {L * flight > 0.01 && <g opacity={L * flight}>{spec.over?.(t, at, pose)}</g>}
+            {secOn && L * flight > 0.01 && <g opacity={L * flight}>{sec.node}</g>}
           </>
         )}
       />

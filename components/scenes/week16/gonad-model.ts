@@ -1,4 +1,5 @@
 import { add, mix3, type V3 } from '@/lib/three-d/math';
+import { G16 } from './tones';
 import { curve3 } from '@/lib/three-d/mesh';
 import { cutOpen, plate, vessel, type Parts, type VesselOptions } from '@/lib/three-d/organic';
 import type { Item3 } from '@/lib/three-d/scene';
@@ -122,8 +123,8 @@ export function gonadModel(pose: GonadPose, o: GonadOpts = {}) {
   const female = Math.max(pose.primGone, pose.cortex, pose.follicles) > 0.01;
 
   // ———— context: the dorsal wall cut across (ground), the coelom behind; the aorta, mesonephros and ducts in it ————
-  items.push({ key: 'dorsal', ...plate('gonad-dorsal-v1', DORSAL, -0.012, -0.9), color: UC.wallCut, deep: UC.wallCutDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
-  items.push({ key: 'coelom', ...plate('gonad-coelom-v1', COELOM, -1.15, -1.3), color: '#2b3247', deep: '#10131c', tissue: 'membrane', opacity: 1, quiet: true, ground: true, outline: false });
+  items.push({ key: 'dorsal', ...plate('gonad-dorsal-v1', DORSAL, -0.012, -0.9), color: G16.cut, deep: G16.cutDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
+  items.push({ key: 'coelom', ...plate('gonad-coelom-v1', COELOM, -1.15, -1.3), color: G16.cavity, deep: G16.cavityDeep, tissue: 'membrane', opacity: 1, quiet: true, ground: true, outline: false });
   crossCut('aorta', 'aorta-dortsalak', -1.75, 1.45, 0.3, UC.aorta, 1, { tissue: 'vessel', quiet: true, ground: true });
   pts['aorta-dortsalak'] = [-1.55, 1.75, 0.3];
   const mc = cutOpen({ center: MESO, radii: MR, layers: [[0, 1]] });

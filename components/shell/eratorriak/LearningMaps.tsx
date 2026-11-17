@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { LEARNING_MAPS } from '@/content/eratorriak/learning-maps';
 import type { Flow } from '@/content/migrations';
 import { buildReviewCards, gradeReview, parseReviewProgress, selectReviewCards, STORAGE_KEY, type ReviewProgress } from '@/lib/learning/scheme-review';
+import { noteRecall } from '@/lib/study/activity';
 import styles from './LearningMaps.module.css';
 
 interface Props {
@@ -35,7 +36,13 @@ export function LearningMaps({ week, renderScheme, renderDetail, resolveName }: 
       setReady(true);
     }, 0);
     const timer = window.setInterval(() => setNow(Date.now()), 60000);
-    return () => { window.clearTimeout(hydrate); window.clearInterval(timer); };
+    // Another tab, or the account sync, rewrote the stored cards: show them.
+    const onStorage = (e: StorageEvent) => {
+      if (e.key !== null && e.key !== STORAGE_KEY) return;
+      try { setProgress(parseReviewProgress(localStorage.getItem(STORAGE_KEY))); } catch {}
+    };
+    window.addEventListener('storage', onStorage);
+    return () => { window.clearTimeout(hydrate); window.clearInterval(timer); window.removeEventListener('storage', onStorage); };
   }, []);
 
 
@@ -48,6 +55,7 @@ export function LearningMaps({ week, renderScheme, renderDetail, resolveName }: 
   const grade = (known: boolean) => {
     if (!card || !revealed) return;
     const next = gradeReview(progress, card.id, known, Date.now());
+    noteRecall(known);
     setProgress(next);
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); }
     catch { setStorageOk(false); }

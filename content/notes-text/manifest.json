@@ -1276,14 +1276,14 @@
     ]
   },
   "17": {
-    "file": "17. GAIA. BURUA ETA LEPOA (ZUZENDUTA).pdf",
+    "file": "17. GAIA. BURUA ETA LEPOA (ZUZENDUTA) fitxategiaren kopia.pdf",
     "pages": 10,
-    "characters": 17837,
-    "sha256": "6ae967e2a46a439bd8c39a1713e21a3dd64eacc583e1484a2c519dab2f6cf85c",
+    "characters": 17875,
+    "sha256": "e0b06d0f9726950505e536a7ddd1537f304e09f6b85a62945f8aa66838091bca",
     "removed": [
       {
         "page": 1,
-        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 27 TALDEA"
+        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 26 TALDEA"
       },
       {
         "page": 1,
@@ -1291,7 +1291,7 @@
       },
       {
         "page": 2,
-        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 27 TALDEA"
+        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 26 TALDEA"
       },
       {
         "page": 2,
@@ -1299,7 +1299,7 @@
       },
       {
         "page": 3,
-        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 27 TALDEA"
+        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 26 TALDEA"
       },
       {
         "page": 3,
@@ -1307,7 +1307,7 @@
       },
       {
         "page": 4,
-        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 27 TALDEA"
+        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 26 TALDEA"
       },
       {
         "page": 4,
@@ -1315,7 +1315,7 @@
       },
       {
         "page": 5,
-        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 27 TALDEA"
+        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 26 TALDEA"
       },
       {
         "page": 5,
@@ -1323,7 +1323,7 @@
       },
       {
         "page": 6,
-        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 27 TALDEA"
+        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 26 TALDEA"
       },
       {
         "page": 6,
@@ -1331,7 +1331,7 @@
       },
       {
         "page": 7,
-        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 27 TALDEA"
+        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 26 TALDEA"
       },
       {
         "page": 7,
@@ -1339,7 +1339,7 @@
       },
       {
         "page": 8,
-        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 27 TALDEA"
+        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 26 TALDEA"
       },
       {
         "page": 8,
@@ -1347,7 +1347,7 @@
       },
       {
         "page": 9,
-        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 27 TALDEA"
+        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 26 TALDEA"
       },
       {
         "page": 9,
@@ -1355,7 +1355,7 @@
       },
       {
         "page": 10,
-        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 27 TALDEA"
+        "text": "1. MAILA MEDIKUNTZA GIZA ANATOMIA I 26 TALDEA"
       },
       {
         "page": 10,
@@ -1488,6 +1488,302 @@
       {
         "page": 15,
         "text": "15"
+      }
+    ]
+  },
+  "19": {
+    "file": "19. GAIA. NERBIO SISTEMA (zuzendu gabe).docx.pdf",
+    "pages": 18,
+    "characters": 32301,
+    "sha256": "c3c233749c0cd391c1e01851302a61414f9814d9cc430d53fcf2a773273d16eb",
+    "removed": [
+      {
+        "page": 1,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 1,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 1,
+        "text": "3. taldea"
+      },
+      {
+        "page": 1,
+        "text": "1"
+      },
+      {
+        "page": 2,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 2,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 2,
+        "text": "3. taldea"
+      },
+      {
+        "page": 2,
+        "text": "2"
+      },
+      {
+        "page": 3,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 3,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 3,
+        "text": "3. taldea"
+      },
+      {
+        "page": 3,
+        "text": "3"
+      },
+      {
+        "page": 4,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 4,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 4,
+        "text": "3. taldea"
+      },
+      {
+        "page": 4,
+        "text": "4"
+      },
+      {
+        "page": 5,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 5,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 5,
+        "text": "3. taldea"
+      },
+      {
+        "page": 5,
+        "text": "5"
+      },
+      {
+        "page": 6,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 6,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 6,
+        "text": "3. taldea"
+      },
+      {
+        "page": 6,
+        "text": "6"
+      },
+      {
+        "page": 7,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 7,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 7,
+        "text": "3. taldea"
+      },
+      {
+        "page": 7,
+        "text": "7"
+      },
+      {
+        "page": 8,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 8,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 8,
+        "text": "3. taldea"
+      },
+      {
+        "page": 8,
+        "text": "8"
+      },
+      {
+        "page": 9,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 9,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 9,
+        "text": "3. taldea"
+      },
+      {
+        "page": 9,
+        "text": "9"
+      },
+      {
+        "page": 10,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 10,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 10,
+        "text": "3. taldea"
+      },
+      {
+        "page": 10,
+        "text": "10"
+      },
+      {
+        "page": 11,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 11,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 11,
+        "text": "3. taldea"
+      },
+      {
+        "page": 11,
+        "text": "11"
+      },
+      {
+        "page": 12,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 12,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 12,
+        "text": "3. taldea"
+      },
+      {
+        "page": 12,
+        "text": "12"
+      },
+      {
+        "page": 13,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 13,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 13,
+        "text": "3. taldea"
+      },
+      {
+        "page": 13,
+        "text": "13"
+      },
+      {
+        "page": 14,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 14,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 14,
+        "text": "3. taldea"
+      },
+      {
+        "page": 14,
+        "text": "14"
+      },
+      {
+        "page": 15,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 15,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 15,
+        "text": "3. taldea"
+      },
+      {
+        "page": 15,
+        "text": "15"
+      },
+      {
+        "page": 16,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 16,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 16,
+        "text": "3. taldea"
+      },
+      {
+        "page": 16,
+        "text": "16"
+      },
+      {
+        "page": 17,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 17,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 17,
+        "text": "3. taldea"
+      },
+      {
+        "page": 17,
+        "text": "17"
+      },
+      {
+        "page": 18,
+        "text": "Medikuntza 1.maila"
+      },
+      {
+        "page": 18,
+        "text": "Giza Anatomia I"
+      },
+      {
+        "page": 18,
+        "text": "3. taldea"
+      },
+      {
+        "page": 18,
+        "text": "18"
       }
     ]
   }

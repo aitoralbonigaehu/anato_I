@@ -240,7 +240,7 @@ export function ClassDock({ k, mode, onMode, holdReason, onAskKimu }: {
           up
           align="end"
           trigger={({ open, toggle }) => (
-            <button className={`tp-set-btn${open ? ' is-on' : ''}`} onClick={toggle} aria-expanded={open} aria-haspopup="dialog" data-tip="Modua, abiadura eta ahotsa · G" data-tip-pos="top-end">
+            <button data-tour="modua" className={`tp-set-btn${open ? ' is-on' : ''}`} onClick={toggle} aria-expanded={open} aria-haspopup="dialog" data-tip="Modua, abiadura eta ahotsa · G" data-tip-pos="top-end">
               <ModeIcon mode={mode} />
               <span>Klasea</span>
               {k.rate !== 1 && <em>{rateText(k.rate)}</em>}

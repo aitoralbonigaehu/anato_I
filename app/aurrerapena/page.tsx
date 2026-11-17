@@ -1,20 +1,23 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { ProgressPanel } from '@/components/progress/ProgressPanel';
-import { isProgressEnabled } from '@/lib/progress';
+import { Aurrerapena } from '@/components/progress/Aurrerapena';
+import { LandFoot, LandNav } from '@/components/shell/LandNav';
 
 export const metadata: Metadata = {
   title: 'Aurrerapena — EnbrioAtlas',
   robots: { index: false, follow: false },
 };
 
-/** Hidden study-progress page: 404 unless NEXT_PUBLIC_PROGRESS_ENABLED=1 and Supabase is configured. */
+/** The student's progress: level, streak, what was seen per topic and how often, flashcards, badges. */
 export default function ProgressPage() {
-  if (!isProgressEnabled()) notFound();
   return (
-    <main style={{ maxWidth: 760, margin: '0 auto', padding: '48px 16px' }}>
-      <h1>Aurrerapena</h1>
-      <ProgressPanel />
-    </main>
+    <div className="landing">
+      <LandNav current="aurrerapena" />
+      <main>
+        <Aurrerapena />
+      </main>
+      <LandFoot>
+        <p>Aurrerapena nabigatzaile honetan gordetzen da; saioa hasita, zure kontuan ere bai.</p>
+      </LandFoot>
+    </div>
   );
 }

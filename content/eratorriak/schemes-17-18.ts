@@ -48,34 +48,30 @@ export const SCHEMES_17: MigrationTopic = {
         n('faringe-arkuak', [
           l('Ektodermoa', [n('faringe-arraildurak', undefined, { note: 'kanpoan, arkuen artean' })], { note: 'kanpoko estalkia' }),
           l('Endodermoa', [n('faringe-poltsak', undefined, { note: 'barruan, arkuen artean' })], { note: 'barneko epitelioa' }),
-          l('Mesenkima', [l('Arteria'), l('Zaina'), l('Nerbioa', undefined, { note: 'bikote kraneal bat' }), l('Kartilagoa', undefined, { note: 'batzuetan ez · gero desagertu' }), l('Muskuluak'), l('Aurpegiko hezurrak', undefined, { note: 'gandor neuraletik' })], { note: 'mesodermoa + gandor neurala' }),
+          l('Mesenkima', [l('Arteria'), l('Zaina'), l('Nerbioa', undefined, { note: 'bikote kraneal bat' }), l('Kartilagoa'), l('Muskuluak'), l('Aurpegiko hezurrak', undefined, { note: 'gandor neuraletik' })], { note: 'mesodermo paraxiala + gandor neurala + alboko mesodermoa' }),
         ], { note: '4.–5. asteak · bikoteka' }),
         n('bosgarren-arkua', [l('Endekatu', undefined, { gone: true, note: 'ez du eratorririk uzten' })]),
       ],
     },
     {
       id: 'lehen-arkua-eratorriak-17',
-      title: 'I. arkua: V nerbioa, bi luzapen, muskulu murtxikatzaileak',
+      title: 'I. arkua: V3 nerbioa, bi luzapen, muskulu murtxikatzaileak',
       lead: 'Muskulu bat zein arkutakoa den, bere nerbioari begiratuta jakiten da.',
       stage: 'lehen-arkua-kartilagoak',
       roots: [
         n('lehen-arkua', [
-          n('trigeminoa', [
-            n('nerbio-oftalmikoa', undefined, { note: 'V1 · batez ere sentsitiboa' }),
-            n('nerbio-maxilarra', undefined, { note: 'V2 · sentsitiboa' }),
-            n('barail-nerbioa', undefined, { note: 'V3 · mistoa: muskuluak' }),
-          ], { note: 'V · Gasser gongoila' }),
+          n('barail-nerbioa', undefined, { note: 'V3 · trigeminoaren hirugarren adarra · mistoa: muskuluak (V1 eta V2 ez daude arkuan)' }),
           n('luzapen-maxilarra', [
             n('hezur-maxilarra'),
             n('zigomatikoa'),
-            n('tenporalaren-ezkata', undefined, { note: 'harkaitza oinaldeko mesenkimatik' }),
-            n('mailua', undefined, { note: 'goiko muturra' }),
-            n('ingudea', undefined, { note: 'adar luzea II.etik, beste liburuetan' }),
+            n('loki-hezurraren-atal-tinpanikoa', undefined, { note: 'kutxa tinpanikoa + hezurtxoekin erlazionatua' }),
           ]),
           n('barail-luzapena', [
             n('meckel-kartilagoa', [
+              n('mailua', undefined, { note: 'goiko muturretik' }),
+              n('ingudea', undefined, { note: 'goiko muturretik' }),
               l('Endekatu', undefined, { gone: true, note: 'gida da' }),
-              n('baraila', undefined, { via: 'bere inguruan mintzezko hezurtzea' }),
+              n('baraila', undefined, { via: 'inguruko mesenkima hezurtuta, ez kartilagotik' }),
             ]),
           ]),
           l('Muskuluak (V3)', [

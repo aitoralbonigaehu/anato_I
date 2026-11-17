@@ -1,9 +1,10 @@
 import { createElement, type ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { LabelScaleContext, SceneContext, type SceneContextValue } from '@/components/kit/context';
 import { SceneView } from '@/components/kit/columns';
 import { structures, weeks } from '@/content/registry';
+import { archHead } from '@/components/scenes/week17/arch-head';
 import { project, viewOf, type V3, type View3 } from '@/lib/three-d/math';
 import { coverOf, visibleAnchor } from '@/lib/three-d/occlusion';
 import { Birth3D, Secundum3D } from '@/components/scenes/week11/Septa3D';
@@ -84,6 +85,8 @@ function named(Scene: SceneComponent, t: number) {
 for (const [w, week] of weeks.entries()) {
   if (w + 1 < 7) continue;
   describe(`${w + 1}. gaia: izenen puntuak beren egituraren gainean, ez aurrean dagoen beste baten gainean`, () => {
+    // The embryo head mesh takes several seconds to build here (in the app a worker builds it): warm it once.
+    if (w + 1 === 17) beforeAll(() => void archHead(), 60_000);
     for (const stage of week.stages) {
       it(stage.id, () => {
         const problems: string[] = [];

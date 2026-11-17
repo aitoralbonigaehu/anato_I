@@ -2,6 +2,7 @@
 
 import { orbit, poseStage17, TISSUE, type StageSpec } from './common';
 import type { V3 } from '@/lib/three-d/math';
+import { SITE17 } from './sites';
 import { BA0, OC, OS0, baseModel, ossModel, type BaseOpts, type BasePose, type OssPose } from './base-model';
 
 /**
@@ -32,6 +33,8 @@ export const S_OSS = [0, 0.18, 0.4, 0.62, 0.84] as const;
 
 const specOss: StageSpec<OssPose, BaseOpts> = {
   S: S_OSS,
+  site: SITE17.oss,
+  arrive: 'Buruaren alboko ehun zati bat handitu dugu: goian ganga (hezur laua), behean oinaldea',
   pose: OS0,
   opts: {},
   map: 'skull',
@@ -148,6 +151,8 @@ export const S_BASE = [0, 0.2, 0.4, 0.6, 0.8] as const;
 
 const specBase: StageSpec<BasePose, BaseOpts> = {
   S: S_BASE,
+  site: SITE17.base,
+  arrive: 'Ganga kendu dugu: kraneoaren oinaldea goitik ikusiko dugu, aurrealdea goian',
   pose: BA0,
   opts: {},
   map: 'base',

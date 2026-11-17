@@ -3,7 +3,7 @@ import { FirstCleft18, S_EAR, S_SINUS, Sinus18 } from '@/components/scenes/week1
 
 const FILE = '18. GAIA_ Burua eta lepoa ll (Zuzenduta).pdf';
 const src = (section: string) => ({ file: FILE, section });
-const SEC = 'Ebaketa frontala (3D blokea, aurretik begiratuta): burua goian, kanpoaldea zure eskuinean, faringea zure ezkerrean. Ektodermoa urdina, endodermoa horia, mesenkima marroia, arkuaren kolorearekin tindatuta (I laranja, II urdina, III horia, IV gorria). Arrastatu biratzeko.';
+const SEC = 'Faringe hestea atzetik, sabaia kenduta (3D): burua goian, enbrioiaren ezkerra zure ezkerrean; ezkerreko hormari begiratzen diogu, kanpoaldea ezkerrean eta faringearen barrua eskuinean. Ektodermoa urdina, endodermoa horia, mesenkima marroia. Arrastatu biratzeko.';
 const v = (scene: StageDef['views'][number]['scene'], label: string, description: string) => ({ id: '3d', label, plane: 'eskema' as const, description, orientation: { top: 'Kraneala', bottom: 'Kaudala' }, scene, travel: false as const });
 
 export const stages18g: StageDef[] = [

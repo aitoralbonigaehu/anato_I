@@ -6,9 +6,10 @@ import { boxOf, overlap, type Box } from './geometry';
 import { STOPS } from './steps';
 import { Tour } from './Tour';
 import { endTour, hideOffer, showOffer, startTour, useTourState, type TourId } from './store';
+import { welcomeSeen } from '@/components/onboarding/Welcome';
 
 /** What the guide must not cover for long: the specimen. */
-const AVOID: Record<TourId, string[]> = { sim: ['eszena'], home: [] };
+const AVOID: Record<TourId, string[]> = { sim: ['eszena'], home: [], bel: [] };
 /** Time for the page to settle (the first frame, the opening on the home page) before the offer. */
 const OFFER_AFTER = 1600;
 /** Left alone, the offer steps aside (the "?" keeps the guide). */
@@ -32,6 +33,11 @@ export function TourHost({ tour, ready = true }: { tour: TourId; ready?: boolean
     const tryOffer = () => {
       // Never over an explanation already running.
       if (playing()) return;
+      // The first-visit welcome comes first (and offers this guide itself at its end).
+      if (!welcomeSeen()) {
+        retry = window.setTimeout(tryOffer, 1500);
+        return;
+      }
       // Another first-time card is up: try again once it has gone (one card at a time).
       if (otherCard()) {
         retry = window.setTimeout(tryOffer, 1000);
@@ -57,13 +63,19 @@ export function TourHost({ tour, ready = true }: { tour: TourId; ready?: boolean
   return (
     <>
       {s.offer === tour && <Offer tour={tour} />}
-      {s.active === tour && <Tour key={s.run} stops={STOPS[tour]} scrolls={tour === 'home'} avoid={AVOID[tour]} onClose={endTour} />}
+      {s.active === tour && <Tour key={s.run} stops={STOPS[tour]} scrolls={tour !== 'sim'} avoid={AVOID[tour]} onClose={endTour} />}
     </>
   );
 }
 
+const OFFER_COPY: Record<TourId, [string, string]> = {
+  sim: ['Nola ikasi hemen?', 'Gida labur bat, minutu batean.'],
+  home: ['Lehen aldia hemen?', 'Gida labur bat: nondik hasi.'],
+  bel: ['Nola dabil hau?', 'Gida laburra: moduak eta Ikasketa modua.'],
+};
+
 /** Cards that already hold the eye: the offer waits for them, and steps aside if one opens. */
-const OTHER_CARDS = '.kimu-cheer, .loc-card, .kimu-nudge, .kimu-peek, .kimu-panel, .fs-offer, .pv-card, .bridge, .now-card, .find-bar, .viewport .tour, .menu, [role="dialog"]';
+const OTHER_CARDS = '.welcome, .acc-dialog[open], .kimu-cheer, .loc-card, .kimu-nudge, .kimu-peek, .kimu-panel, .fs-offer, .pv-card, .bridge, .now-card, .find-bar, .viewport .tour, .menu, [role="dialog"]';
 const otherCard = () => [...document.querySelectorAll(OTHER_CARDS)].some((el) => !el.closest('.gida-offer') && el.getClientRects().length > 0);
 
 /**
@@ -144,8 +156,8 @@ function Offer({ tour }: { tour: TourId }) {
         <IconHelp size={16} />
       </span>
       <span className="gida-offer-text">
-        <b>{tour === 'sim' ? 'Nola ikasi hemen?' : 'Lehen aldia hemen?'}</b>
-        <small>{tour === 'sim' ? 'Gida labur bat, minutu batean.' : 'Gida labur bat: nondik hasi.'}</small>
+        <b>{OFFER_COPY[tour][0]}</b>
+        <small>{OFFER_COPY[tour][1]}</small>
       </span>
       <button className="btn small btn-light" onClick={() => startTour(tour)}>
         Hasi gida

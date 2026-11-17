@@ -54,6 +54,53 @@ function quad(p: Plane): Mesh {
 
 const planeCache = new Map<string, Mesh>();
 
+/** A cut face as a two-sided sheet (one mesh per plane, kept). */
+export function planeMesh(p: Plane): Mesh {
+  const key = `${p.center.join()}|${p.a.join()}|${p.b.join()}`;
+  let m = planeCache.get(key);
+  if (!m) planeCache.set(key, (m = quad(p)));
+  return m;
+}
+
+const frameCache = new Map<string, Mesh>();
+
+/** A cut face's outline: a flat band round its edge (a share `t` of its smaller half-side), two-sided, kept. */
+export function frameMesh(p: Plane, t = 0.034): Mesh {
+  const key = `${p.center.join()}|${p.a.join()}|${p.b.join()}|${t}`;
+  const kept = frameCache.get(key);
+  if (kept) return kept;
+  const la = Math.hypot(...p.a);
+  const lb = Math.hypot(...p.b);
+  const w = t * Math.min(la, lb);
+  const n = norm(cross(p.a, p.b));
+  const corners = (ka: number, kb: number): V3[] => {
+    const a: V3 = [p.a[0] * ka, p.a[1] * ka, p.a[2] * ka];
+    const b: V3 = [p.b[0] * kb, p.b[1] * kb, p.b[2] * kb];
+    return [sub(sub(p.center, a), b), add(sub(p.center, b), a), add(add(p.center, a), b), sub(add(p.center, b), a)];
+  };
+  const ring = [...corners(1, 1), ...corners(1 - w / la, 1 - w / lb)];
+  const pos = new Float32Array(48);
+  const nrm = new Float32Array(48);
+  const uv = new Float32Array(32);
+  for (let side = 0; side < 2; side++)
+    ring.forEach((q, i) => {
+      const j = side * 8 + i;
+      pos.set([q[0], q[1], q[2]], j * 3);
+      nrm.set(side ? [-n[0], -n[1], -n[2]] : [n[0], n[1], n[2]], j * 3);
+    });
+  const idx: number[] = [];
+  for (let k = 0; k < 4; k++) {
+    const o0 = k;
+    const o1 = (k + 1) % 4;
+    const i0 = 4 + k;
+    const i1 = 4 + ((k + 1) % 4);
+    idx.push(o0, o1, i1, o0, i1, i0, 8 + o0, 8 + i1, 8 + o1, 8 + o0, 8 + i0, 8 + i1);
+  }
+  const m: Mesh = { pos, nrm, uv, idx: new Uint32Array(idx) };
+  frameCache.set(key, m);
+  return m;
+}
+
 /**
  * `matrix` puts the embryo into the scene (see sectionMatrix); `end` is the view's own camera;
  * `planes` are the faces of the block, in scene space.
@@ -94,10 +141,7 @@ export function flyIn(
   }
   if (glow > 0.01)
     planes.forEach((p, i) => {
-      const key = `${p.center.join()}|${p.a.join()}|${p.b.join()}`;
-      let m = planeCache.get(key);
-      if (!m) planeCache.set(key, (m = quad(p)));
-      items.push({ key: `e5-plane${i}`, mesh: m, color: '#ffd27a', deep: '#c08a2a', tissue: 'membrane', opacity: 0.55 * glow, outline: false });
+      items.push({ key: `e5-plane${i}`, mesh: planeMesh(p), color: '#ffd27a', deep: '#c08a2a', tissue: 'membrane', opacity: 0.55 * glow, outline: false });
     });
   return {
     items,

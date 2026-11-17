@@ -8,6 +8,8 @@ import { SearchKey } from './CommandBar';
 import { ThemeKey, ThemeSwitch } from './ThemeKey';
 import { BarScroll } from './BarScroll';
 import { NewsLink } from './NewsLink';
+import { ProgressKey } from '@/components/progress/ProgressKey';
+import { WelcomeLink } from '@/components/onboarding/Welcome';
 
 /** A week whose only scenes are placeholders is still being prepared. */
 export const isWip = (w: (typeof weeks)[number]) => w.stages.every((s) => s.views.every((v) => v.description === 'Prestatzen'));
@@ -26,7 +28,7 @@ export function Wordmark({ size = 22 }: { size?: number }) {
   );
 }
 
-type Section = 'kronologia' | 'ikasgela' | 'fitxak' | 'belortzioak' | 'irudiak' | 'eratorriak' | 'egiturak' | 'berriak';
+type Section = 'kronologia' | 'ikasgela' | 'fitxak' | 'belortzioak' | 'irudiak' | 'eratorriak' | 'egiturak' | 'berriak' | 'aurrerapena';
 
 /** The site bar; `current` marks the page you are on (aria-current), so the bar also says where you are. */
 export function LandNav({ current, help }: { current?: Section; help?: ReactNode }) {
@@ -48,6 +50,7 @@ export function LandNav({ current, help }: { current?: Section; help?: ReactNode
         <SearchKey />
         <ThemeKey />
         {help}
+        <ProgressKey current={current === 'aurrerapena'} />
         <SimLink fallback={`/astea/${firstReady.week}`} className="btn btn-light small" data-tour="simulagailua">
           Ireki simulagailua
         </SimLink>
@@ -72,6 +75,8 @@ export function LandFoot({ children }: { children?: ReactNode }) {
           <Link href="/kronologia">Kronologia</Link>
           <Link href="/eratorriak">Eratorriak</Link>
           <Link href="/berriak">Berriak</Link>
+          <Link href="/aurrerapena">Aurrerapena</Link>
+          <WelcomeLink />
         </nav>
         <nav className="foot-col" aria-label="Praktikatu">
           <p>Praktikatu</p>

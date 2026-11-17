@@ -14,6 +14,20 @@ import { join, resolve } from 'node:path';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 
+// A busy dev server (several sessions compiling at once) can take long to settle or never go idle: wait for the
+// page's load, give the network a moment, and try again once before giving up.
+async function open(page, url) {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      await page.goto(url, { waitUntil: 'load', timeout: 120000 });
+      await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+      return;
+    } catch (e) {
+      if (attempt >= 1) throw e;
+    }
+  }
+}
+
 const args = process.argv.slice(2);
 const opt = (name, def) => {
   const i = args.indexOf(`--${name}`);
@@ -37,16 +51,22 @@ for (const f of ['', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
   try { src = readFileSync(f, 'utf8'); } catch { continue; }
   for (const m of src.matchAll(/^ {4}id: '([a-z0-9-]+)',$/gm)) stages.push(m[1]);
 }
+// The topic's own play order, where its index file gives one (topics 17 on sort their stages by ORDER).
+try {
+  const order = [...(readFileSync(`content/weeks/week${week}.ts`, 'utf8').match(/const ORDER = \[([^\]]*)\]/)?.[1] ?? '').matchAll(/'([a-z0-9-]+)'/g)].map((m) => m[1]);
+  if (order.length) stages.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+} catch { /* no index file: file order */ }
 const list = only ? stages.filter((s) => only.split(',').includes(s)) : stages;
 if (!list.length) throw new Error(`no stages found for week ${week}`);
 
 const launchArgs = gpu === 'swiftshader' ? ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] : [];
-const browser = await chromium.launch({ args: launchArgs });
+// CHROME: another browser binary than the one this Playwright build expects (e.g. the system Chrome).
+const browser = await chromium.launch({ args: launchArgs, executablePath: process.env.CHROME || undefined });
 const ctx = await browser.newContext({ viewport: { width: vw, height: vh } });
 await ctx.addInitScript(() => {
   // The renderer's harness hooks (coverage), and no mascot cheer over the first frame.
   window.__perf = {};
-  try { sessionStorage.setItem('enbrioatlas:kimu-animo', '1'); } catch { /* storage may be off */ }
+  try { sessionStorage.setItem('enbrioatlas:kimu-animo', '1'); localStorage.setItem('enbrioatlas:ongietorri:v1', '1'); } catch { /* storage may be off */ }
 });
 const page = await ctx.newPage();
 const errors = [];
@@ -56,7 +76,7 @@ for (const stage of list) {
   const row = { stage, shots: [] };
   for (const u of at) {
     const file = `${stage}_${u}.png`;
-    await page.goto(`${base}/astea/${week}?etapa=${stage}&une=${u}`, { waitUntil: 'networkidle' });
+    await open(page, `${base}/astea/${week}?etapa=${stage}&une=${u}`);
     await page.waitForFunction(() => !document.body.innerText.includes('3D eredua prestatzen'), null, { timeout: 120000 }).catch(() => {});
     await page.waitForTimeout(2200);
     // The hook belongs to the renderer that drew last; a view still handing over can answer null for a moment.

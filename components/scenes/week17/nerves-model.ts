@@ -4,7 +4,11 @@ import { geoOf, geoSlot } from '@/lib/three-d/offthread';
 import { vessel, type Parts } from '@/lib/three-d/organic';
 import { capsule, ellipsoid, partition, smin, surfaceMesh, type SDF } from '@/lib/three-d/sdf';
 import type { Item3 } from '@/lib/three-d/scene';
-import { ARCH, ARCH_DEEP, TISSUE, type PoseModel } from './common';
+import type { PoseModel } from '@/components/scenes/week14/common';
+import { ARCH, ARCH_DEEP } from './arch-colors';
+
+/** The tissue colours this model uses (common.tsx's TISSUE): kept here so the geometry worker can load this file. */
+const TISSUE = { cartilage: '#a7dbd2', cartilageDeep: '#487f76', artery: '#e5484d', arteryDeep: '#7f1d20' } as const;
 
 /**
  * Topic 17, the cranial nerves: the adult brain's base (the notes' figure of 2.1, p. 4) with the twelve pairs leaving

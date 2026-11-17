@@ -1,7 +1,7 @@
 import type { StageDef } from '@/lib/sim/types';
 import { LarynxCart17, LarynxMuscle17, S_LC, S_LM } from '@/components/scenes/week17/Larynx17';
 
-const FILE = '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA).pdf';
+const FILE = '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA) fitxategiaren kopia.pdf';
 const src = (section: string) => ({ file: FILE, section });
 const ORIENT = { top: 'Kraneala', bottom: 'Kaudala' };
 const DESC = 'Laringea 3D eredu bakarrean. Arku bakoitzak bere kolorea du: IV gorria, VI berdea. Arrastatu biratzeko.';
@@ -56,17 +56,18 @@ export const stages17h: StageDef[] = [
         at: S_LC[4],
         notes: ['w17/2.6.2/p3/s4'],
         idea: 'Tiroidearen goiko aldea IV. arkutik; beheko atala VI.etik.',
-        text: 'Tiroide kartilagoa bitan banatzen da: goiko aldea laugarren arkuaren eratorria da, gorriz; beheko atala seigarrenarena, berdez.',
+        text: 'Tiroide kartilagoa bitan banatzen da: goiko aldea, goranzko adarra, laugarren arkuaren eratorria da, gorriz; gorputzaren beheko atala seigarrenarena, berdez.',
         focus: ['tiroide-goiko-atala', 'tiroide-beheko-atala'],
-        exam: 'Tiroidea: goikoa IV, behekoa VI; beste kartilago guztiak VI.',
+        exam: 'Tiroidea: goiko aldea (goranzko adarra) IV; gorputzaren beheko atala eta beste kartilagoak VI.',
         ask: { q: 'Zein arkutatik dator tiroide kartilagoaren goiko aldea?', options: ['IV. arkutik', 'VI. arkutik', 'III. arkutik'], answer: 0, why: ['Bai: goiko aldea IV.etik, beheko atala VI.etik.', 'VI.etik beheko atala dator, ez goikoa.', 'III. arkuak hioidearen zati bat ematen du, ez tiroidea.'] },
         view: '3d',
       },
       {
         at: S_LC[5],
         notes: ['w17/2.6.2/p3/s4', 'w17/2.6.3/p8/s3-s4'],
-        idea: 'Tiroidearen behekoa eta beste kartilago guztiak VI.etik; trakea ez da arkuetatik.',
-        text: 'Beraz, tiroidearen beheko atala eta beste kartilago guztiak seigarren arkutik datoz. Hemendik aurrera trakea dago: aurreko hestearen eratorria da, eta ez du zerikusirik arku brakialekin.',
+        idea: 'Tiroidearen behekoa eta beste kartilagoak VI.etik; trakea ez da arkuetatik.',
+        text: 'Beraz, tiroidearen beheko atala eta beste kartilagoak seigarren arkuaren eratorriak dira. Hemendik aurrera trakea dago: aurreko hestearen eratorria da, eta ez du zerikusirik arku brankialekin.',
+        caution: 'Bi ñabardura. Epiglotisa: gai honek «4. eta 6. arkuetatik» besterik ez du esaten, eta 18. gaiak zehazten du 4. arkuaren alde dortsaletik datorrela: horregatik gorria da hemen. Aritenoidea eta krikoidea: gai honen 1.2 atalak alboko mesodermotik ateratzen ditu, eta atal honek 4. eta 6. arkuetatik.',
         focus: ['tiroide-goiko-atala', 'tiroide-beheko-atala', 'krikoide-kartilagoa', 'epiglotisa', 'trakea'],
         view: '3d',
       },
@@ -75,10 +76,10 @@ export const stages17h: StageDef[] = [
     keyPoints: [
       'IV. eta VI. arkuak: ez hezurrik, ez lotailurik; laringeko kartilagoak bakarrik.',
       'Nagusiak: tiroidea, krikoidea, epiglotisa ("L" forma). Bikoitzak: aritenoideak, kornikulatuak, kuneiformeak.',
-      'Tiroidea: goiko aldea IV; beheko atala eta beste guztiak VI.',
+      'Tiroidea: goiko aldea (goranzko adarra) IV; gorputzaren beheko atala eta beste kartilagoak VI.',
       'Trakea aurreko hestetik dator, ez arkuetatik.',
     ],
-    cautions: [],
+    cautions: ['Epiglotisa: 18. gaiaren arabera 4. arkuaren alde dortsaletik dator.', 'Aritenoidea eta krikoidea: 1.2 atalean alboko mesodermotik; hemen 4. eta 6. arkuetatik.'],
   },
   {
     id: 'laugarren-seigarren-muskuluak',

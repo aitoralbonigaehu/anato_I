@@ -75,7 +75,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/1.2/p1/s1",
         "parts": [
           {
-            "text": "1.2. Errai kraneoa",
+            "text": "1.2. Jatorri ezberdinak",
             "i": true
           }
         ]
@@ -433,12 +433,59 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": ": garuna inguratu eta babesten duten hezurrek osatzen dute eta somita okzipitaletako mesodermo paraxialetik (neurokraneoko hezur leunak, mintzezko hezurtzapenengatik) eta gandor neuraleko zeluletatik garatzen dira. "
+            "text": ": garuna inguratu eta babesten duten hezurrek osatzen dute. "
           }
         ]
       },
       {
         "id": "w17/1/p4/s2",
+        "parts": [
+          {
+            "text": "Hezurtze mota ezberdinak badira. "
+          }
+        ]
+      },
+      {
+        "id": "w17/1/p4/s3",
+        "parts": [
+          {
+            "text": "Neurokraneoaren atal batzuk mintzezko hezurtzapenetik sortzen dira (mesenkimatik zuzenean hezurrak sortzen dira, orokorrean hezur lauak (parietalak, okzipitalaren ezkata eta aurpegiarekin erlazionatutako hezurrak). "
+          }
+        ]
+      },
+      {
+        "id": "w17/1/p4/s4",
+        "parts": [
+          {
+            "text": "Gainera, hezurtze endokondrala baino azkarrago gertatzen da mesenkimatik zuzenean hezurra ateratzen delako. "
+          }
+        ]
+      },
+      {
+        "id": "w17/1/p4/s5",
+        "parts": [
+          {
+            "text": "Oinaldeko hezurrak aldiz hezurtzapen endokondralaren bidez sortzen dira gehienak."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "1",
+    "id": "w17/1/p5",
+    "sentences": [
+      {
+        "id": "w17/1/p5/s1",
+        "parts": [
+          {
+            "text": "somita okzipitaletako mesodermo paraxialetik (neurokraneoko hezur leunak, mintzezko hezurtzapenengatik) eta gandor neuraleko zeluletatik garatzen dira. "
+          }
+        ]
+      },
+      {
+        "id": "w17/1/p5/s2",
         "parts": [
           {
             "text": "Entzefaloa dago barnean."
@@ -450,10 +497,10 @@ export const w17: NotesBlock[] = [
   {
     "kind": "li",
     "section": "1",
-    "id": "w17/1/p5",
+    "id": "w17/1/p6",
     "sentences": [
       {
-        "id": "w17/1/p5/s1",
+        "id": "w17/1/p6/s1",
         "parts": [
           {
             "text": "-​ "
@@ -463,7 +510,30 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": ": aurpegian dauden hezurrek osatzen dute eta gandor neuraleko zeluletatik garatzen dira."
+            "text": ": aurpegian dauden hezurrek osatzen dute. "
+          }
+        ]
+      },
+      {
+        "id": "w17/1/p6/s2",
+        "parts": [
+          {
+            "text": "Bertako ia hezur guztiak gandor neuraleko zeluletatik sortzen dira (mesenkimatik lehenago "
+          },
+          {
+            "text": "kartilagoa",
+            "b": true
+          },
+          {
+            "text": " eratuko da eta ondoren, kartilago hau hezurtuko da (kondrozitoak osteoblastoak bihurtu). "
+          }
+        ]
+      },
+      {
+        "id": "w17/1/p6/s3",
+        "parts": [
+          {
+            "text": "Horregatik, prozesu luze eta geldoa da)."
           }
         ]
       }
@@ -472,43 +542,13 @@ export const w17: NotesBlock[] = [
   {
     "kind": "p",
     "section": "1",
-    "id": "w17/1/p6",
-    "sentences": [
-      {
-        "id": "w17/1/p6/s1",
-        "parts": [
-          {
-            "text": "Horretaz gain, bi herzurtze mota daude:"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "1",
     "id": "w17/1/p7",
     "sentences": [
       {
         "id": "w17/1/p7/s1",
         "parts": [
           {
-            "text": "-​ "
-          },
-          {
-            "text": "Mintzezko hezurtzea",
-            "b": true
-          },
-          {
-            "text": "; mesenkimatik zuzenean hezurrak sortzen dira, orokorrean hezur lauak (parietalak, okzipitalaren ezkata eta aurpegiarekin erlazionatutako hezurrak). "
-          }
-        ]
-      },
-      {
-        "id": "w17/1/p7/s2",
-        "parts": [
-          {
-            "text": "Gainera, hezurtze endokondrala baino azkarrago gertatzen da mesenkimatik zuzenean hezurra ateratzen delako."
+            "text": "Bi atal bereizten dira:"
           }
         ]
       }
@@ -523,21 +563,25 @@ export const w17: NotesBlock[] = [
         "id": "w17/1/p8/s1",
         "parts": [
           {
-            "text": "-​ "
-          },
-          {
-            "text": "Hezurtze endokondrala*",
+            "text": "-​",
             "b": true
           },
           {
-            "text": ": mesenkimatik lehenago "
+            "text": " "
           },
           {
-            "text": "kartilagoa ",
+            "text": "Buru ganga / Mintzezko neurokraneoa",
             "b": true
           },
           {
-            "text": "eratuko da eta ondoren, kartilago hau hezurtuko da (kondrozitoak osteoblastoak bihurtu). "
+            "text": " "
+          },
+          {
+            "text": "Hezur frontalak",
+            "i": true
+          },
+          {
+            "text": ", gandor neuraleko zeluletatik garatu eta mintzezko hezurtzez eratzen dira. "
           }
         ]
       },
@@ -545,22 +589,18 @@ export const w17: NotesBlock[] = [
         "id": "w17/1/p8/s2",
         "parts": [
           {
-            "text": "Kraneoaren oinaldeko hezur gehienak modu honetan sortzen dira. "
-          }
-        ]
-      },
-      {
-        "id": "w17/1/p8/s3",
-        "parts": [
+            "text": "Parietalak eta okzipitalaren ezkata ",
+            "i": true
+          },
           {
-            "text": "Horregatik, prozesu luze eta geldoa da."
+            "text": "mesodermo paraxialaren eratorriak dira eta mintzezko hezurtzez eratuko dira."
           }
         ]
       }
     ]
   },
   {
-    "kind": "p",
+    "kind": "li",
     "section": "1",
     "id": "w17/1/p9",
     "sentences": [
@@ -568,8 +608,22 @@ export const w17: NotesBlock[] = [
         "id": "w17/1/p9/s1",
         "parts": [
           {
-            "text": "* kondro = kartilago.",
-            "i": true
+            "text": "-​ "
+          },
+          {
+            "text": "Burezurraren oinaldea / kartilagozko neurokraneoa/ kondrokraneoa ​",
+            "b": true
+          },
+          {
+            "text": " Hezurtze endokondralez eratuko da. "
+          }
+        ]
+      },
+      {
+        "id": "w17/1/p9/s2",
+        "parts": [
+          {
+            "text": "Hasieran kartilagozko lamina bat egongo da, eta hemengo atal desberdinetatik hezurren atal ezberdinak aterako dira."
           }
         ]
       }
@@ -601,7 +655,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/1.1/p3/s1",
         "parts": [
           {
-            "text": "Hemengo hezurrak somita okzipitaletako mesodermo paraxialetik eta gandor neuraleko zeluletatik garatzen dira. "
+            "text": "Neurokraneoko mobedako hezurrak bi hezur baino gehiago lotzen diren tokian fontanelak agertzen dira. "
           }
         ]
       },
@@ -609,158 +663,23 @@ export const w17: NotesBlock[] = [
         "id": "w17/1.1/p3/s2",
         "parts": [
           {
-            "text": "Neurokraneoko hezur guztiak ez dute mintzezko hezurtzapena, oinaldean hezurtzapen endokondrala da."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "1.1",
-    "id": "w17/1.1/p4",
-    "sentences": [
-      {
-        "id": "w17/1.1/p4/s1",
-        "parts": [
-          {
-            "text": "Neurokraneoan jostura ezberdinak agertzen dira: hezur lauen artean ematen diren giltzapenak/artikulazioak. "
+            "text": "Hezur bien artean gertatzen lotura aldiz jostura deitzen da. "
           }
         ]
       },
       {
-        "id": "w17/1.1/p4/s2",
+        "id": "w17/1.1/p3/s3",
         "parts": [
           {
-            "text": "Hasiera batean, hezurren artean josturak eratu baino lehenago, mintz batzuk luzatzen dira hezurrak lotuz, "
-          },
-          {
-            "text": "fontanelak ",
-            "b": true
-          },
-          {
-            "text": "deiturikoak. "
+            "text": "Bi nagusienak hauek dira: Aurreko fontanela (jaiota 18. hilabetean itxi, hezurtu egiten da) eta atzeko fontanela (txikiago da eta arinago hezurtzen da, jaiota lehen hilabetean). "
           }
         ]
       },
       {
-        "id": "w17/1.1/p4/s3",
+        "id": "w17/1.1/p3/s4",
         "parts": [
           {
-            "text": "Mintzez lotuta gelditzen dira eta oso garrantzitsuak dira fontanela handienak, aurrekoa (2. urtean itxi) eta atzekoa (2. hilabetean itxi); izan ere erditzerakoan, hau errazagoa izateko, parietalak hulbilduko dira neurokraneoa txikitzeko eta prozesua errazagoa izateko."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "1.1",
-    "id": "w17/1.1/p5",
-    "sentences": [
-      {
-        "id": "w17/1.1/p5/s1",
-        "parts": [
-          {
-            "text": "Neurokraneoko hezurrak ezin dira giltzatuta egon erditzerakoan; izan ere, burua oso egitura trinkoa izango litzateke eta arazo larriak emango litzake. "
-          }
-        ]
-      },
-      {
-        "id": "w17/1.1/p5/s2",
-        "parts": [
-          {
-            "text": "Orduan fontanelen funtzioa neurokraneoko hezurrak mugitzea da; hurbildu egiten dira, oraindik josita ez daudenez, erditzerakoan errazago ateratzeko jaioberriaren burua."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "1.1",
-    "id": "w17/1.1/p6",
-    "sentences": [
-      {
-        "id": "w17/1.1/p6/s1",
-        "parts": [
-          {
-            "text": "Bi atal bereizten dira:"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "1.1",
-    "id": "w17/1.1/p7",
-    "sentences": [
-      {
-        "id": "w17/1.1/p7/s1",
-        "parts": [
-          {
-            "text": "-​",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Buru ganga / Mintzezko neurokraneoa",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Hezur frontalak",
-            "i": true
-          },
-          {
-            "text": ", gandor neuraleko zeluletatik garatu eta mintzezko hezurtzez eratzen dira. "
-          }
-        ]
-      },
-      {
-        "id": "w17/1.1/p7/s2",
-        "parts": [
-          {
-            "text": "Parietalak eta okzipitalaren ezkata",
-            "i": true
-          },
-          {
-            "text": " mesodermo paraxialaren eratorriak dira eta mintzezko hezurtzez eratuko dira."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "1.1",
-    "id": "w17/1.1/p8",
-    "sentences": [
-      {
-        "id": "w17/1.1/p8/s1",
-        "parts": [
-          {
-            "text": "-​ "
-          },
-          {
-            "text": "Burezurraren oinaldea / kartilagozko neurokraneoa/ kondrokraneoa ​",
-            "b": true
-          },
-          {
-            "text": " Hezurtze endokondralez eratuko da. "
-          }
-        ]
-      },
-      {
-        "id": "w17/1.1/p8/s2",
-        "parts": [
-          {
-            "text": "Hasieran kartilagozko lamina bat egongo da, eta hemengo atal desberdinetatik hezurren atal ezberdinak aterako dira."
+            "text": "Fontanelak erditzerakoan ezinbestekoak dira, buruaren neurria gutxitzeko."
           }
         ]
       }
@@ -775,7 +694,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/1.2/p2/s1",
         "parts": [
           {
-            "text": "1.2. Errai kraneoa",
+            "text": "1.2 Jatorri ezberdinak",
             "b": true,
             "i": true
           }
@@ -784,7 +703,7 @@ export const w17: NotesBlock[] = [
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "1.2",
     "id": "w17/1.2/p3",
     "sentences": [
@@ -792,37 +711,127 @@ export const w17: NotesBlock[] = [
         "id": "w17/1.2/p3/s1",
         "parts": [
           {
-            "text": "-​ Hemengo hezurrak gandor neuraleko zeluletatik garatzen dira."
+            "text": "Alde batetik mesodermo paraxialik sortutako egitura batzuen izen batzuk ez ditugu ezagutzen baina nerbio sistema ematean landuko ditugu. "
           }
         ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "1.2",
-    "id": "w17/1.2/p4",
-    "sentences": [
+      },
       {
-        "id": "w17/1.2/p4/s1",
+        "id": "w17/1.2/p3/s2",
         "parts": [
           {
-            "text": "-​ Mintzezko hezurtzearen ondorioz ateratzen dira ."
+            "text": "Hala ere "
+          },
+          {
+            "text": "mesodermo",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "paraxialetik",
+            "b": true
+          },
+          {
+            "text": " aterako dira errai kraneoko "
+          },
+          {
+            "text": "muskulu",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "somatikoak",
+            "b": true
+          },
+          {
+            "text": " (borondadezko muskuluak) eta "
+          },
+          {
+            "text": "dura materra",
+            "b": true
+          },
+          {
+            "text": " (beste batean ikusiko dugu bere egitura baina meninge bat da). "
           }
         ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "1.2",
-    "id": "w17/1.2/p5",
-    "sentences": [
+      },
       {
-        "id": "w17/1.2/p5/s1",
+        "id": "w17/1.2/p3/s3",
         "parts": [
           {
-            "text": "-​ 1. eta 2. arku faringeoen/brankialen eratorriak dira."
+            "text": "Alboko mesodermotik",
+            "b": true
+          },
+          {
+            "text": " edo plakatik aterako dira kartilago txikiak: "
+          },
+          {
+            "text": "aritenoide eta trikoide kartilagoak",
+            "b": true
+          },
+          {
+            "text": " (laringeko kartilagoak). "
+          }
+        ]
+      },
+      {
+        "id": "w17/1.2/p3/s4",
+        "parts": [
+          {
+            "text": "Gandor neuraleko zeluletatik",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "errai kraneoko hezurrak",
+            "b": true
+          },
+          {
+            "text": " eta gainera beste hezur batzuk aterako dira. "
+          }
+        ]
+      },
+      {
+        "id": "w17/1.2/p3/s5",
+        "parts": [
+          {
+            "text": "Zelotoki hezurra, Loki hezurra ia osoa eta esfenoidea ez dira errai kraneoa. "
+          }
+        ]
+      },
+      {
+        "id": "w17/1.2/p3/s6",
+        "parts": [
+          {
+            "text": "Bestalde hiru meninge (nerbio sistemako mintzezko estakiak) daude eta bi gandor neuraleko zeluletatik sortuko dira: "
+          },
+          {
+            "text": "aragnoidea eta pia materra.",
+            "b": true
+          },
+          {
+            "text": " "
+          }
+        ]
+      },
+      {
+        "id": "w17/1.2/p3/s7",
+        "parts": [
+          {
+            "text": "Azkenik buruan agertzen diren ektodermo plakodetatik ( ektodermoan bertan, kanpoan bertan agertzen diren zelula metaketak dira eta kanpoko aldean goragune batzuk bezala ikusten dira: sudur plakoda, plakoda optikoa… adb) 5, 7, 9 eta 10 gara nerbioetako gongoiletako zelulak eratuko dira. "
+          }
+        ]
+      },
+      {
+        "id": "w17/1.2/p3/s8",
+        "parts": [
+          {
+            "text": "Gongoiletako zelula horiek ez datoz soilik ektodermoko plakodetatik, baita gandor neuraletik ere."
           }
         ]
       }
@@ -853,40 +862,11 @@ export const w17: NotesBlock[] = [
         "id": "w17/2/p3/s1",
         "parts": [
           {
-            "text": "Zeharkako mozketa honetan V hau ikusten da atzetik (ikuspegi dortsala). ",
-            "i": true
-          }
-        ]
-      },
-      {
-        "id": "w17/2/p3/s2",
-        "parts": [
-          {
-            "text": "Hemen ikusten diren",
-            "i": true
+            "text": "Arku brankialak ",
+            "b": true
           },
           {
-            "text": " "
-          },
-          {
-            "text": "metaketak edo goraguneak alde bietan arku brankial/faringeoak dira, 4.-5. astean garatzen",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "direnak (4. astean hasi). ",
-            "i": true
-          }
-        ]
-      },
-      {
-        "id": "w17/2/p3/s3",
-        "parts": [
-          {
-            "text": "Argazki urdinean ikusten den “V”, beste argazkian ikusten den “V”-a da.",
-            "i": true
+            "text": "deitzen zaie ere eta lepo mailan (maila zerbikalean) kokatzen dira."
           }
         ]
       }
@@ -901,23 +881,20 @@ export const w17: NotesBlock[] = [
         "id": "w17/2/p4/s1",
         "parts": [
           {
-            "text": "Arku brankialak ",
-            "b": true
-          },
-          {
-            "text": "deitzen zaie ere eta lepo mailan (maila zerbikalean) kokatzen dira."
+            "text": "Hasteko, mesenkima lodiguneak dira, mesenkima loditu egiten da eta hori faringea izango den tokiaren alboetan gertazen da gutxi gora behera (enbrioiaren alde zefalikoan), estomodeoaren atzetik aurreko hestearen ormetan. "
           }
         ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2",
-    "id": "w17/2/p5",
-    "sentences": [
+      },
       {
-        "id": "w17/2/p5/s1",
+        "id": "w17/2/p4/s2",
+        "parts": [
+          {
+            "text": "Lau goragune agertzen dira. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2/p4/s3",
         "parts": [
           {
             "text": "4 irudikatzen dituzte, 5.a garatu eta jarraian endekatzen delako (ez du eratorririk uzten), batzuetan ez da existitzen. "
@@ -925,7 +902,7 @@ export const w17: NotesBlock[] = [
         ]
       },
       {
-        "id": "w17/2/p5/s2",
+        "id": "w17/2/p4/s4",
         "parts": [
           {
             "text": "4. arkua eta 6.a elkarrekin aurkitzen dira, horregatik argazki batzuetan ez da seigarrena irudikatzen. "
@@ -933,113 +910,84 @@ export const w17: NotesBlock[] = [
         ]
       },
       {
-        "id": "w17/2/p5/s3",
+        "id": "w17/2/p4/s5",
         "parts": [
           {
-            "text": "Arku bakoitzean, barnealdean endodermozko epitelio bat aurkitzen da (horiz), kanpoaldean ektodermozko estalkia edo "
+            "text": "Arku bakoitzak barnetik endoteliozko estalkia dauka (horiz) eta kanpoaldetik ektodermozko estalkia edo "
           },
           {
             "text": "epitelioa ",
             "b": true
           },
           {
-            "text": "(geruza urdina), eta haien artean, barnealdean, mesenkima (marroia). "
+            "text": "(geruza urdina). "
           }
         ]
       },
       {
-        "id": "w17/2/p5/s4",
+        "id": "w17/2/p4/s6",
         "parts": [
           {
-            "text": "Mesenkima (mesodermoaren eratorria) horretan, zelula mesodermikoak eta gandor neuraletik migratutako zelulak aurkitzen dira. "
+            "text": "Haien artean, barnealdean, mesenkima (marroia). "
           }
         ]
       },
       {
-        "id": "w17/2/p5/s5",
+        "id": "w17/2/p4/s7",
         "parts": [
           {
-            "text": "Arkuak beti bikoteka agertu egiten dira."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2",
-    "id": "w17/2/p6",
-    "sentences": [
-      {
-        "id": "w17/2/p6/s1",
-        "parts": [
-          {
-            "text": "Gandor neuraleko zelula horiek emango dituzte aurpegiko hezurrak (errai kraneoko hezurrak). "
+            "text": "Mesenkima honetan bereziki mesodermo paraxialeko zelulak aurkituko ditugu, berantago muskuluak garatzeko, gandor neuraleko zelulak eta alboko mesodermoko zelulak. "
           }
         ]
       },
       {
-        "id": "w17/2/p6/s2",
+        "id": "w17/2/p4/s8",
         "parts": [
           {
-            "text": "Horrez gain, arku bakoitzean, mesenkimaren barnean; arteria bat, zaina bat, nerbio bat eta kartilago bat (batzuetan ez) aurkituko dugu. "
+            "text": "Zelula horiek bereizi egingo dira egitura ezberdinak emateko. "
           }
         ]
       },
       {
-        "id": "w17/2/p6/s3",
+        "id": "w17/2/p4/s9",
         "parts": [
           {
-            "text": "Hau da, hezurrak eta muskuluak eratzeko behar ditugun egitura guztiak errepikatuko dira arkuetan (mesenkima horretatik muskuluak garatuko dira). "
+            "text": "Arkuetan osagai ezberdinak badira: orokorrean, zaina, arteria, nerbioa eta kartilagoa. "
           }
         ]
       },
       {
-        "id": "w17/2/p6/s4",
+        "id": "w17/2/p4/s10",
         "parts": [
           {
-            "text": "Kartilagoa desagertu egingo da, eta hezurrak mintzezko hezurtzapenez eratuko dira (ez da hezurtzapen endokondrala). "
+            "text": "Arkuak beti bikoteka agertu egiten dira. "
           }
         ]
       },
       {
-        "id": "w17/2/p6/s5",
+        "id": "w17/2/p4/s11",
         "parts": [
           {
             "text": "Kanpotik estutu egiten da, arkuen artean (goraguneen artean) , arraildura/ildo batzuk nabaritzen dira: "
           },
           {
-            "text": "faringe",
+            "text": "faringe arraildurak ",
             "b": true
           },
           {
-            "text": " "
+            "text": "edo "
           },
           {
-            "text": "arraildurak",
+            "text": "arraildura brankialak ",
             "b": true
           },
           {
-            "text": " edo "
-          },
-          {
-            "text": "arraildura",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "brankialak",
-            "b": true
-          },
-          {
-            "text": " ikusiko dira (ektodermikoak). "
+            "text": "ikusiko dira. "
           }
         ]
       },
       {
-        "id": "w17/2/p6/s6",
+        "id": "w17/2/p4/s12",
         "parts": [
           {
             "text": "Barnekaldean, ebaginazio/estugune (sakonagoak diren ildoak) batzuk bereizten dira: "
@@ -1049,22 +997,15 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "(ez dira poltsa brankialak, barnealdean ateratzen direlako, faringe mailan, eta endodermozko epitelioa dute)."
+            "text": "(ez dira poltsa brankialak, barnealdean ateratzen direlako, faringe mailan, eta endodermozko epitelioa dute). "
           }
         ]
-      }
-    ]
-  },
-  {
-    "kind": "caption",
-    "section": "2",
-    "id": "w17/2/p7",
-    "sentences": [
+      },
       {
-        "id": "w17/2/p7/s1",
+        "id": "w17/2/p4/s13",
         "parts": [
           {
-            "text": "​ ​ ​ ​ ​ *faringe arku bakoitzetik sortzen diren kartilagoak"
+            "text": "Gainetik mihia garatuko da eta azpitik laringea."
           }
         ]
       }
@@ -1247,15 +1188,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.1/p5/s7",
         "parts": [
           {
-            "text": "→ hipoglosoa *III, IV eta VI. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.1/p5/s8",
-        "parts": [
-          {
-            "text": "nerbioak begien mugimenduan parte hartzen dute Nerbio hauek kraneoko zuloetatik irteten dira."
+            "text": "→ hipoglosoa"
           }
         ]
       }
@@ -1270,7 +1203,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.1/p6/s1",
         "parts": [
           {
-            "text": "Markatuta ez dauden nerbioak ez daude erlazioantuta arku faringeoekin. "
+            "text": "*III, IV eta VI. "
           }
         ]
       },
@@ -1278,14 +1211,14 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.1/p6/s2",
         "parts": [
           {
-            "text": "3 bikote kraneal mota daude:"
+            "text": "nerbioak begien mugimenduan parte hartzen dute Nerbio hauek kraneoko zuloetatik irteten dira."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "2.1",
     "id": "w17/2.1/p7",
     "sentences": [
@@ -1293,7 +1226,15 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.1/p7/s1",
         "parts": [
           {
-            "text": "● Motorrak"
+            "text": "Markatuta ez dauden nerbioak ez daude erlazioantuta arku faringeoekin. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.1/p7/s2",
+        "parts": [
+          {
+            "text": "3 bikote kraneal mota daude:"
           }
         ]
       }
@@ -1308,7 +1249,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.1/p8/s1",
         "parts": [
           {
-            "text": "● Sentsitiboak"
+            "text": "● Motorrak"
           }
         ]
       }
@@ -1321,6 +1262,21 @@ export const w17: NotesBlock[] = [
     "sentences": [
       {
         "id": "w17/2.1/p9/s1",
+        "parts": [
+          {
+            "text": "● Sentsitiboak"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "2.1",
+    "id": "w17/2.1/p10",
+    "sentences": [
+      {
+        "id": "w17/2.1/p10/s1",
         "parts": [
           {
             "text": "● Mistoak (axoi batzuk motorrak dira eta beste batzuk sentsitiboak)"
@@ -1355,7 +1311,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.1/p2/s1",
         "parts": [
           {
-            "text": "2.2.1. Nerbioak",
+            "text": "2.2.1. Kartilago eta hezurrak",
             "b": true,
             "i": true
           }
@@ -1372,7 +1328,14 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.1/p3/s1",
         "parts": [
           {
-            "text": "Arku brankial bakoitzari nerbio bat dagokio eta nerbio hori bikote kraneal bat da. "
+            "text": "Lehenengo arkuko kartilagoa "
+          },
+          {
+            "text": "Meckel kartilagoa ",
+            "b": true
+          },
+          {
+            "text": "da, garapenean endekatu egingo dena. "
           }
         ]
       },
@@ -1380,21 +1343,21 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.1/p3/s2",
         "parts": [
           {
-            "text": "Lehenengo arku faringeoan (kranealena) "
+            "text": "Hala ere, kartilagoaren goiko muturretik "
           },
           {
-            "text": "V. bikote kraneal",
+            "text": "mailua ",
             "b": true
           },
           {
-            "text": "etik datorren nerbioa agertzen da, "
+            "text": " eta "
           },
           {
-            "text": "trigeminoa",
+            "text": "ingudea",
             "b": true
           },
           {
-            "text": ". "
+            "text": " (belarriaren 2 hezurtxo) sortuko dira, eta nahiz eta kartilagoaren gainerako zatia desagertzen den, bertako zelula batzuk gida funtzioa daukate, bertan barail hezurra eratuko delako (inguruko mesenkima hezurtzen baita kartilagoa zegoen tokian). "
           }
         ]
       },
@@ -1402,15 +1365,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.1/p3/s3",
         "parts": [
           {
-            "text": "(Tri deitzen da 3 adar dituelako). "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.2.1/p3/s4",
-        "parts": [
-          {
-            "text": "Buruko eta lepoko sentsibilitate orokor ia guztia hartzen du(ukimena, mina, tenperatura…) eta entzefalorantz bideratuko da."
+            "text": "Beraz, baraila EZ atera kartilagotik, kartilago inguruan egon diren mesenkimako zeluletatik baizik!"
           }
         ]
       }
@@ -1425,7 +1380,162 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.1/p4/s1",
         "parts": [
           {
-            "text": "Gongoil nagusi bat du (Gasser gongoila), eta hortik hiru adar emango ditu(goitik behera):"
+            "text": "Lehenengo arku brankialaren alde dortsalean luzapen maxilarra dago eta lehenengo arkuarekin estuki erlazionatuta dago. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.2.1/p4/s2",
+        "parts": [
+          {
+            "text": "Luzakin maxilarra eta Barail-luzakina desberdintzen dira:"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2.2.1",
+    "id": "w17/2.2.1/p5",
+    "sentences": [
+      {
+        "id": "w17/2.2.1/p5/s1",
+        "parts": [
+          {
+            "text": "Gainera, 1. arkutik beste errai kraneoko hezur batzuk garatu: "
+          },
+          {
+            "text": "hezur maxilarra",
+            "b": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "zigomatikoa ",
+            "b": true
+          },
+          {
+            "text": "eta "
+          },
+          {
+            "text": "loki hezurraren",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "atal bat ",
+            "b": true
+          },
+          {
+            "text": "(kutxa tinpaniko + hezurtxoekin erlazionatuta dagoen atala)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2.2.1",
+    "id": "w17/2.2.1/p6",
+    "sentences": [
+      {
+        "id": "w17/2.2.1/p6/s1",
+        "parts": [
+          {
+            "text": "Liburu ezberdinetan begiratuz gero, barail prozesutik mailua, ingudearen gorputza eta adar txikia ateratzen dira, ingudearen adar luzea bigarrena arku faringeotik ateratzen dela esaten dutelako. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.2.1/p6/s2",
+        "parts": [
+          {
+            "text": "Guk horri kasurik ez."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "2.2.2",
+    "id": "w17/2.2.2/p2",
+    "sentences": [
+      {
+        "id": "w17/2.2.2/p2/s1",
+        "parts": [
+          {
+            "text": "2.2.2. Nerbioak",
+            "b": true,
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2.2.2",
+    "id": "w17/2.2.2/p3",
+    "sentences": [
+      {
+        "id": "w17/2.2.2/p3/s1",
+        "parts": [
+          {
+            "text": "Faringe arku bakoitzari nerbio bat dagokio. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.2.2/p3/s2",
+        "parts": [
+          {
+            "text": "Lehenengo arku faringeoan"
+          },
+          {
+            "text": " barail nerbioak",
+            "b": true
+          },
+          {
+            "text": " inerbatu, "
+          },
+          {
+            "text": "nerbio trigeminoaren (V) ",
+            "b": true
+          },
+          {
+            "text": "hirugarren adarra → "
+          },
+          {
+            "text": "V3. ",
+            "b": true
+          }
+        ]
+      },
+      {
+        "id": "w17/2.2.2/p3/s3",
+        "parts": [
+          {
+            "text": "Nerbio trigeminoak buruko eta lepoko sentsibilitate orokor ia guztia hartzen du (ukimena, mina, tenperatura…) eta entzefalorantz bideratuko da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2.2.2",
+    "id": "w17/2.2.2/p4",
+    "sentences": [
+      {
+        "id": "w17/2.2.2/p4/s1",
+        "parts": [
+          {
+            "text": "Gongoil nagusi bat du (Gasser gongoila), eta hortik hiru adar emango ditu (goitik behera):"
           }
         ]
       }
@@ -1433,11 +1543,11 @@ export const w17: NotesBlock[] = [
   },
   {
     "kind": "li",
-    "section": "2.2.1",
-    "id": "w17/2.2.1/p5",
+    "section": "2.2.2",
+    "id": "w17/2.2.2/p5",
     "sentences": [
       {
-        "id": "w17/2.2.1/p5/s1",
+        "id": "w17/2.2.2/p5/s1",
         "parts": [
           {
             "text": "-​ Aurreko adarra, "
@@ -1459,7 +1569,7 @@ export const w17: NotesBlock[] = [
         ]
       },
       {
-        "id": "w17/2.2.1/p5/s2",
+        "id": "w17/2.2.2/p5/s2",
         "parts": [
           {
             "text": "Gehien bat "
@@ -1469,7 +1579,15 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": " da, baina izanez mistoa."
+            "text": " da, baina izanez mistoa. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.2.2/p5/s3",
+        "parts": [
+          {
+            "text": "1. faringe arkuan EZ"
           }
         ]
       }
@@ -1477,11 +1595,11 @@ export const w17: NotesBlock[] = [
   },
   {
     "kind": "li",
-    "section": "2.2.1",
-    "id": "w17/2.2.1/p6",
+    "section": "2.2.2",
+    "id": "w17/2.2.2/p6",
     "sentences": [
       {
-        "id": "w17/2.2.1/p6/s1",
+        "id": "w17/2.2.2/p6/s1",
         "parts": [
           {
             "text": "-​ Tartekoa, "
@@ -1494,7 +1612,7 @@ export const w17: NotesBlock[] = [
             "text": ", "
           },
           {
-            "text": "V2",
+            "text": "V2 ",
             "b": true
           },
           {
@@ -1503,10 +1621,18 @@ export const w17: NotesBlock[] = [
         ]
       },
       {
-        "id": "w17/2.2.1/p6/s2",
+        "id": "w17/2.2.2/p6/s2",
         "parts": [
           {
-            "text": "Sentsitiboa da, aurpegiko larruazalaren sentsazioak eramaten ditu entzefalora."
+            "text": "Sentsitiboa da, aurpegiko larruazalaren sentsazioak eramaten ditu entzefalora. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.2.2/p6/s3",
+        "parts": [
+          {
+            "text": "1. faringe arkuan EZ"
           }
         ]
       }
@@ -1514,14 +1640,14 @@ export const w17: NotesBlock[] = [
   },
   {
     "kind": "li",
-    "section": "2.2.1",
-    "id": "w17/2.2.1/p7",
+    "section": "2.2.2",
+    "id": "w17/2.2.2/p7",
     "sentences": [
       {
-        "id": "w17/2.2.1/p7/s1",
+        "id": "w17/2.2.2/p7/s1",
         "parts": [
           {
-            "text": "-​ Azkenego adarra, "
+            "text": "-​ Azkeneko adarra, "
           },
           {
             "text": "V3",
@@ -1540,41 +1666,26 @@ export const w17: NotesBlock[] = [
         ]
       },
       {
-        "id": "w17/2.2.1/p7/s2",
+        "id": "w17/2.2.2/p7/s2",
         "parts": [
           {
-            "text": "Sentsitiboa izateaz gain, jarduera motorea ere badauka, muskulu batzuk mugitzen dituelako, luzatuz (degluzioan eta murtxikazioan parte hartzen duten muskuluak, geroago aipatu). "
+            "text": "Sentsitiboa izateaz gain, motorra ere da (nerbio mistoa), eta nerbio trigeminoan osagai motorra duen nerbio bakarra da (V1 eta V2-k motorra ez). "
           }
         ]
       },
       {
-        "id": "w17/2.2.1/p7/s3",
+        "id": "w17/2.2.2/p7/s3",
         "parts": [
           {
-            "text": "Nerbio mistoa da."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2.2.1",
-    "id": "w17/2.2.1/p8",
-    "sentences": [
-      {
-        "id": "w17/2.2.1/p8/s1",
-        "parts": [
-          {
-            "text": "Nerbio batzuk sentsitiboak dira bakarrik, beste batzuk motoreak, eta beste batzuk, gehienak, mixtoak (axoi batzuk sentitsiboak eta beste batzuk motoreak). "
+            "text": "Aurpegiko muskulu murtxikatzaileak mugitzeko balio du: maseteroa eta tenporala → baraila igotzeko erabili. "
           }
         ]
       },
       {
-        "id": "w17/2.2.1/p8/s2",
+        "id": "w17/2.2.2/p7/s4",
         "parts": [
           {
-            "text": "Nerbio trigeminoa gehienbat sentsitiboa da, baina barail nerbioa axoi motoreak dituenez, izatez nerbio mistoa izango da."
+            "text": "Muskulu digastrikoak (beste bat, oso fina dena) baraila jaisteko balio du (hau gero agertu)."
           }
         ]
       }
@@ -1582,26 +1693,11 @@ export const w17: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "2.2.1",
-    "id": "w17/2.2.1/p9",
+    "section": "2.2.2",
+    "id": "w17/2.2.2/p8",
     "sentences": [
       {
-        "id": "w17/2.2.1/p9/s1",
-        "parts": [
-          {
-            "text": "V1 eta V2 gehienbat sentsibilitatearen eramaileak dira baina V3 osagai motorea duenez, lehenengo arkutik ateratzen diren muskuluak mugitzeko luzatuko da."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2.2.1",
-    "id": "w17/2.2.1/p10",
-    "sentences": [
-      {
-        "id": "w17/2.2.1/p10/s1",
+        "id": "w17/2.2.2/p8/s1",
         "parts": [
           {
             "text": "Lehengo arkua, sudurretik beherantz hasten da eta aurpegian daukagu, bi osagai (luzapen) ditu lehen arkuak estomodeaoren inguruan: luzapen maxilarra (estomodeaoren goikaldetik) eta barail luzapena (estomodeoaren behekaldetik) (irudian ikusten den bezala). "
@@ -1609,7 +1705,7 @@ export const w17: NotesBlock[] = [
         ]
       },
       {
-        "id": "w17/2.2.1/p10/s2",
+        "id": "w17/2.2.2/p8/s2",
         "parts": [
           {
             "text": "Lehenengo arku faringeo honetan V3(barail-nerbioa) "
@@ -1624,7 +1720,7 @@ export const w17: NotesBlock[] = [
         ]
       },
       {
-        "id": "w17/2.2.1/p10/s3",
+        "id": "w17/2.2.2/p8/s3",
         "parts": [
           {
             "text": "Arku honen alde dortsalean "
@@ -1642,156 +1738,6 @@ export const w17: NotesBlock[] = [
           },
           {
             "text": "garatzen da."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "h2",
-    "section": "2.2.2",
-    "id": "w17/2.2.2/p2",
-    "sentences": [
-      {
-        "id": "w17/2.2.2/p2/s1",
-        "parts": [
-          {
-            "text": "2.2.2. Kartilago eta hezurrak",
-            "b": true,
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2.2.2",
-    "id": "w17/2.2.2/p3",
-    "sentences": [
-      {
-        "id": "w17/2.2.2/p3/s1",
-        "parts": [
-          {
-            "text": "Barail luzapenaren kartilagoa Meckel kartilagoa da: gero endekatu egingo da (hasieran kartilagoek gida funtzioa daukate), eta bertatik barail hezurra eratuko da."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2.2.2",
-    "id": "w17/2.2.2/p4",
-    "sentences": [
-      {
-        "id": "w17/2.2.2/p4/s1",
-        "parts": [
-          {
-            "text": "Lehenengo arku brankialaren alde dortsalean luzapen maxilarra dago eta lehenengo arkuarekin estuki erlazionatuta dago. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.2.2/p4/s2",
-        "parts": [
-          {
-            "text": "Luzakin maxilarra eta Barail-luzakina desberdintzen dira:"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2.2.2",
-    "id": "w17/2.2.2/p5",
-    "sentences": [
-      {
-        "id": "w17/2.2.2/p5/s1",
-        "parts": [
-          {
-            "text": "Luzapen maxilarretik, "
-          },
-          {
-            "text": "hezur maxilarra",
-            "b": true
-          },
-          {
-            "text": ", "
-          },
-          {
-            "text": "zigomatikoa ",
-            "b": true
-          },
-          {
-            "text": "eta "
-          },
-          {
-            "text": "tenporalaren",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "ezkata",
-            "b": true
-          },
-          {
-            "text": " (harkaitz zatia oinaldeko mesenkimatik atera) aterako dira, beste batzuen artean. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.2.2/p5/s2",
-        "parts": [
-          {
-            "text": "Lehenengo arkutik, barail luzapenetik hezur bezala "
-          },
-          {
-            "text": "baraila ",
-            "b": true
-          },
-          {
-            "text": "bera (aipatu dugun bezala, kartilagotik) eta luzapen maxilarraren goiko muturrean tarteko belarriaren bi hezurtxo, "
-          },
-          {
-            "text": "mailua ",
-            "b": true
-          },
-          {
-            "text": "eta "
-          },
-          {
-            "text": "ingudea",
-            "b": true
-          },
-          {
-            "text": ", aterako dira. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.2.2/p5/s3",
-        "parts": [
-          {
-            "text": "Baita ere lotailu ezberdinak ateratzen dira baina ez ditugu emango."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2.2.2",
-    "id": "w17/2.2.2/p6",
-    "sentences": [
-      {
-        "id": "w17/2.2.2/p6/s1",
-        "parts": [
-          {
-            "text": "Liburu ezberdinetan begiratuz gero, barail prozesutik mailua, ingudearen gorputza eta adar txikia ateratzen dira, ingudearen adar luzea bigarrena arku faringeotik ateratzen delako."
           }
         ]
       }
@@ -1834,7 +1780,14 @@ export const w17: NotesBlock[] = [
             "text": "Lehenengo arkutik, batez ere "
           },
           {
-            "text": "muskulu murtxikatzaileak ",
+            "text": "muskulu",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "murtxikatzaileak ",
             "b": true
           },
           {
@@ -1856,11 +1809,11 @@ export const w17: NotesBlock[] = [
             "text": "eta "
           },
           {
-            "text": "tenporala",
+            "text": "tenporala ",
             "b": true
           },
           {
-            "text": " (muskulu indartsuenetarikoak, baraila mugitzen (igotzen) laguntzen digutenak, murtxikapenaren eragileak.)"
+            "text": "(muskulu indartsuenetarikoak, baraila mugitzen (igotzen) laguntzen digutenak, murtxikapenaren eragileak.)"
           }
         ]
       }
@@ -1875,7 +1828,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.3/p4/s1",
         "parts": [
           {
-            "text": "Gainera, mihiaren zorua eratzen duten eta honen mugimenduetan parte hartzen duten muskuluak ere eratzen dira arku hauetatik, (degluzioan parte hartzen dutenak) : "
+            "text": "Gainera, mihiaren zorua eratzen duten eta honen mugimenduetan parte hartzen duten muskuluak ere eratzen dira arku hauetatik, (degluzioan parte hartzen dutenak): "
           },
           {
             "text": "milohioideoa ",
@@ -1885,11 +1838,11 @@ export const w17: NotesBlock[] = [
             "text": "(ahoaren zorua eratzen duen muskulu nagusiena) eta "
           },
           {
-            "text": "digastrikoaren ",
+            "text": "digastrikoa ",
             "b": true
           },
           {
-            "text": "(di = bi, gastriko = sabela, bi sabelen: aurreko eta atzeko) aurreko sabela lehenengo arkuaren eratorria da (muskulu digastrikoa V forma duena da), haren funtzioa baraila jeistea da"
+            "text": "(di = bi, gastriko = sabela → bi sabel: aurrekoa eta atzekoa) aurreko sabela lehenengo arkuaren eratorria da (muskulu digastrikoa V forma duena da), haren funtzioa baraila jaistea da"
           },
           {
             "text": ".",
@@ -1908,15 +1861,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.3/p5/s1",
         "parts": [
           {
-            "text": "Azken gihar hau, belarriaren mailatik gutxi gora behera kokatuta dago eta atzetik aurrera pasatzen da mihiraino heldu arte. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.2.3/p5/s2",
-        "parts": [
-          {
-            "text": "Aurreko sabela hioide hezurretik barailera doan atala izango da."
+            "text": "Muskulu digastriko honek 2 jatorri ditu: aurreko sabela (lepotik barailaren behekalderaino) 1. arkuaren eratorria da (barail nerbioak mugitu), eta atzeko sabelak beste jatorri bat du, bigarren arkuko nerbioak inerbatuko du."
           }
         ]
       }
@@ -1931,35 +1876,12 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.3/p6/s1",
         "parts": [
           {
-            "text": "Giharraren sabel bakoitzak eratorri desberdin bat izango du, aurreko sabela barail nerbioak (V. bikote kraneala) inerbatuko du, baina atzeko sabela VII. "
+            "text": "*Enbrioiaren garapenean muskuluek migratzen dute eta ez da erraza jakitea bere jatorria zein arkutakoa den, horregatik bere inerbazioa ematen duen nerbioa jakiteak errazten du. "
           }
         ]
       },
       {
         "id": "w17/2.2.3/p6/s2",
-        "parts": [
-          {
-            "text": "bikote kranealak inerbatuko du, jatorri ezberdina dutelako."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2.2.3",
-    "id": "w17/2.2.3/p7",
-    "sentences": [
-      {
-        "id": "w17/2.2.3/p7/s1",
-        "parts": [
-          {
-            "text": "*Enbrioiaren garapenean muskuluek migratzen dute eta ez da erraza jakitea bere jatorria zein arku den, horregatik bere inerbazioa ematen duen nerbioa jakiteak errezten du. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.2.3/p7/s2",
         "parts": [
           {
             "text": "*Apofisiak: hezurren luzapen txikiak, orratz formakoak"
@@ -1994,7 +1916,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.3.1/p2/s1",
         "parts": [
           {
-            "text": "2.3.1. Nerbioak",
+            "text": "2.3.1. Kartilagoak (Reichert kartilagoa)",
             "b": true,
             "i": true
           }
@@ -2011,6 +1933,185 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.3.1/p3/s1",
         "parts": [
           {
+            "text": "Hasieran, kartilago bat dauka eta hau endekatuko da, eta azkenean muturretan bakarrik eratuko dira hezurrak. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.3.1/p3/s2",
+        "parts": [
+          {
+            "text": "Goiko muturrean, tarteko belarriaren hirugarren hezurtxoa, "
+          },
+          {
+            "text": "ointokia ",
+            "b": true
+          },
+          {
+            "text": "eratuko da (ez osoki egiazki baina guk horrela balitz bezala egingo dugu). "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.3.1/p3/s3",
+        "parts": [
+          {
+            "text": "Beste muturrean, "
+          },
+          {
+            "text": "tenporalaren/loki",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "hezurraren estiloide apofisia ",
+            "b": true
+          },
+          {
+            "text": "(muskulu asko hemen txertatzen direnez, oso garrantzitsua) eratuko da, eta estiloidetik hioide hezurrera doan "
+          },
+          {
+            "text": "lotailu estilohioideoa",
+            "b": true
+          },
+          {
+            "text": " ere. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.3.1/p3/s4",
+        "parts": [
+          {
+            "text": "Lepo atalean, "
+          },
+          {
+            "text": "hioide hezurraren ",
+            "b": true
+          },
+          {
+            "text": "atal batzuk ere eratuko dira. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.3.1/p3/s5",
+        "parts": [
+          {
+            "text": "Hioideak U forma du, eta honen bi adar txikiak (argazkian horiak) eta gorputzaren goiko erdia ere 2. arkutik sortuko dira."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "caption",
+    "section": "2.3.1",
+    "id": "w17/2.3.1/p4",
+    "sentences": [
+      {
+        "id": "w17/2.3.1/p4/s1",
+        "parts": [
+          {
+            "text": "Hioide hezurraren 2 adarrak eta",
+            "i": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "gorputza ikusteko argazkia",
+            "i": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "(googletik hartua, soilik hioidea",
+            "i": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "non dagoen ulertzeko)",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2.3.1",
+    "id": "w17/2.3.1/p5",
+    "sentences": [
+      {
+        "id": "w17/2.3.1/p5/s1",
+        "parts": [
+          {
+            "text": "Tenporalaren estiloide apofisia ",
+            "b": true
+          },
+          {
+            "text": "garrantzitsua da, hemendik barailerantz eta faringerantz lotailuak joango direlako. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.3.1/p5/s2",
+        "parts": [
+          {
+            "text": "Giltzaduran, lotailuak eusteko laguntzen du. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.3.1/p5/s3",
+        "parts": [
+          {
+            "text": "Hezur tenporalak ezkata aldea du ( atal meheagoa) eta behealdean atal lodiago bat du, arkaitza izenekoa. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.3.1/p5/s4",
+        "parts": [
+          {
+            "text": "Arkaitzaren barnean tarteko belarria eta barneko belarria egongo dira"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "2.3.2",
+    "id": "w17/2.3.2/p2",
+    "sentences": [
+      {
+        "id": "w17/2.3.2/p2/s1",
+        "parts": [
+          {
+            "text": "2.3.2. Nerbioak",
+            "b": true,
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2.3.2",
+    "id": "w17/2.3.2/p3",
+    "sentences": [
+      {
+        "id": "w17/2.3.2/p3/s1",
+        "parts": [
+          {
             "text": "Bigarren arkuko nerbioa "
           },
           {
@@ -2020,7 +2121,7 @@ export const w17: NotesBlock[] = [
         ]
       },
       {
-        "id": "w17/2.3.1/p3/s2",
+        "id": "w17/2.3.2/p3/s2",
         "parts": [
           {
             "text": "bikote kraneala) ",
@@ -2039,7 +2140,7 @@ export const w17: NotesBlock[] = [
         ]
       },
       {
-        "id": "w17/2.3.1/p3/s3",
+        "id": "w17/2.3.2/p3/s3",
         "parts": [
           {
             "text": "Aurpegiko "
@@ -2049,146 +2150,31 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": " guztiak mugituko dira (eragin motorra). "
+            "text": " guztiak mugituko dira (eragin motorra), borondatezko muskuluak (somatikoak). "
           }
         ]
       },
       {
-        "id": "w17/2.3.1/p3/s4",
+        "id": "w17/2.3.2/p3/s4",
         "parts": [
           {
-            "text": "Berez mistoa, sentsitiboa ere delako. "
+            "text": "Berez nerbio mistoa da, sentsitiboa ere delako. "
           }
         ]
       },
       {
-        "id": "w17/2.3.1/p3/s5",
+        "id": "w17/2.3.2/p3/s5",
         "parts": [
           {
-            "text": "Hala ere alde sentsitiboarekin gehien bat geratuko gara."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "h2",
-    "section": "2.3.2",
-    "id": "w17/2.3.2/p2",
-    "sentences": [
-      {
-        "id": "w17/2.3.2/p2/s1",
-        "parts": [
-          {
-            "text": "2.3.2. Kartilagoak (Reichert kartilagoa)",
-            "b": true,
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2.3.2",
-    "id": "w17/2.3.2/p3",
-    "sentences": [
-      {
-        "id": "w17/2.3.2/p3/s1",
-        "parts": [
-          {
-            "text": "Hasieran, kartilago bat dauka eta hau endekatuko da, eta azkenean muturretan bakarrik eratuko dira hezurrak. "
+            "text": "Hala ere, bereziki motorea da. "
           }
         ]
       },
       {
-        "id": "w17/2.3.2/p3/s2",
+        "id": "w17/2.3.2/p3/s6",
         "parts": [
           {
-            "text": "Goiko muturrean, tarteko belarriaren hirugarren hezurtzoa, "
-          },
-          {
-            "text": "ointokia ",
-            "b": true
-          },
-          {
-            "text": "eratuko da. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.3.2/p3/s3",
-        "parts": [
-          {
-            "text": "Beste muturrean, "
-          },
-          {
-            "text": "tenporalaren estiloide apofisia ",
-            "b": true
-          },
-          {
-            "text": "(muskulu asko hemen txertatzen direnez, oso garrantzitsua), "
-          },
-          {
-            "text": "hioide hezurraren adar txikia ",
-            "b": true
-          },
-          {
-            "text": "eta hioide hezurraren "
-          },
-          {
-            "text": "gorputzaren goiko",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "atalaren erdia.",
-            "b": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2.3.2",
-    "id": "w17/2.3.2/p4",
-    "sentences": [
-      {
-        "id": "w17/2.3.2/p4/s1",
-        "parts": [
-          {
-            "text": "Tenporalaren estiloide apofisia ",
-            "b": true
-          },
-          {
-            "text": "garrantzitsua da, hemendik barailerantz eta faringerantz lotailuak joango direlako. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.3.2/p4/s2",
-        "parts": [
-          {
-            "text": "Giltzaduran, lotailuak eusteko laguntzen du. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.3.2/p4/s3",
-        "parts": [
-          {
-            "text": "Hezur tenporalak ezkata aldea du ( atal meheagoa) eta behealdean atal lodiago bat du, arkaitza izenekoa. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.3.2/p4/s4",
-        "parts": [
-          {
-            "text": "Arkaitzaren barnean tarteko belarria eta barneko belarria egongo dira"
+            "text": "Muskulu digastrikoaren atzeko sabela nerbio honek inerbatuko du, 2. arkuko nerbioak."
           }
         ]
       }
@@ -2220,7 +2206,14 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.3.3/p3/s1",
         "parts": [
           {
-            "text": "Arku honetatik ateratzen diren muskuluak aurpegi nerbioak inerbaturikoak dira. "
+            "text": "Arku honetatik ateratzen diren muskuluak "
+          },
+          {
+            "text": "muskulu mimikoak ",
+            "b": true
+          },
+          {
+            "text": "deitzen dira (mimikan parte hartzen dute, hau da, aurpegiko borondatezko muskulo somatikoak dira). "
           }
         ]
       },
@@ -2228,14 +2221,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.3.3/p3/s2",
         "parts": [
           {
-            "text": "Ondorioz, aurpegiko muskulu txiki guztiak eratuko dira, "
-          },
-          {
-            "text": "muskulu mimikoak ",
-            "b": true
-          },
-          {
-            "text": "deitzen dira (mimikan parte hartzen dute, hau da, aurpegiko keinuak ahalbidetzen dituzte). "
+            "text": "Muskulu gehienak larruazalean txertatuta egongo dira, larruazala mugitzeko erabiltzen ditugulako. "
           }
         ]
       },
@@ -2243,7 +2229,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.3.3/p3/s3",
         "parts": [
           {
-            "text": "Muskulu gehienak larruazalean txertatuta egongo dira, larruazala mugitzeko erabiltzen dugulako."
+            "text": "Platisma muskulua ere eratuko da 2. arkutik (lepoko azalaren azpian dagoena, fina eta zapala), muskulo mimikoen barnean sar genezake."
           }
         ]
       }
@@ -2308,28 +2294,6 @@ export const w17: NotesBlock[] = [
     ]
   },
   {
-    "kind": "p",
-    "section": "2.3.3",
-    "id": "w17/2.3.3/p5",
-    "sentences": [
-      {
-        "id": "w17/2.3.3/p5/s1",
-        "parts": [
-          {
-            "text": "Platisma "
-          },
-          {
-            "text": "ere eratzen da, ",
-            "b": true
-          },
-          {
-            "text": "lepoaren larruazala mugitzeaz arduratzen dena."
-          }
-        ]
-      }
-    ]
-  },
-  {
     "kind": "h2",
     "section": "2.4",
     "id": "w17/2.4/p2",
@@ -2338,7 +2302,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.4/p2/s1",
         "parts": [
           {
-            "text": "2.4. Hirugarren arku faringeoa",
+            "text": "2.4. Hirugarren faringe arkua",
             "b": true,
             "i": true
           }
@@ -2355,7 +2319,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.4.1/p2/s1",
         "parts": [
           {
-            "text": "2.4.1. Nerbioak",
+            "text": "2.4.1. Hezurrak",
             "b": true,
             "i": true
           }
@@ -2372,6 +2336,71 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.4.1/p3/s1",
         "parts": [
           {
+            "text": "Ez ",
+            "b": true
+          },
+          {
+            "text": "dago beste aurreko bi arkuen bezalako kartilagorik. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.4.1/p3/s2",
+        "parts": [
+          {
+            "text": "Hala ere, "
+          },
+          {
+            "text": "hezur hioidearen",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "gorputzaren beheko erdia ",
+            "b": true
+          },
+          {
+            "text": "(hau da, hioidearen gelditzen den beste atala [lehenengo erdia 2.arkutik]) eta "
+          },
+          {
+            "text": "hioidearen adar nagusiak ",
+            "b": true
+          },
+          {
+            "text": "eratuko dira arku honetatik."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "2.4.2",
+    "id": "w17/2.4.2/p2",
+    "sentences": [
+      {
+        "id": "w17/2.4.2/p2/s1",
+        "parts": [
+          {
+            "text": "2.4.2. Nerbioak",
+            "b": true,
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2.4.2",
+    "id": "w17/2.4.2/p3",
+    "sentences": [
+      {
+        "id": "w17/2.4.2/p3/s1",
+        "parts": [
+          {
             "text": "Hirugarren arku honetan "
           },
           {
@@ -2381,10 +2410,10 @@ export const w17: NotesBlock[] = [
         ]
       },
       {
-        "id": "w17/2.4.1/p3/s2",
+        "id": "w17/2.4.2/p3/s2",
         "parts": [
           {
-            "text": "bikote kraneala (nerbio glosofaringeoa*) ",
+            "text": "gara nerbioa (nerbio glosofaringeoa*) ",
             "b": true
           },
           {
@@ -2393,7 +2422,7 @@ export const w17: NotesBlock[] = [
         ]
       },
       {
-        "id": "w17/2.4.1/p3/s3",
+        "id": "w17/2.4.2/p3/s3",
         "parts": [
           {
             "text": "Nerbio hau "
@@ -2413,99 +2442,48 @@ export const w17: NotesBlock[] = [
             "text": "arekin erlazionatutako eta "
           },
           {
-            "text": "faringeko muskuluak inerbatzera",
+            "text": "faringeko muskuluak",
             "b": true
           },
           {
-            "text": " helduko da. "
+            "text": " "
+          },
+          {
+            "text": "(estilofaringeoak) inerbatzera ",
+            "b": true
+          },
+          {
+            "text": "helduko da. "
           }
         ]
       },
       {
-        "id": "w17/2.4.1/p3/s4",
+        "id": "w17/2.4.2/p3/s4",
         "parts": [
           {
-            "text": "Nerbio hau mistoa da, *"
+            "text": "Nerbio hau mistoa da. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.4.2/p3/s5",
+        "parts": [
+          {
+            "text": "*"
           },
           {
             "text": "Gloso ",
             "b": true
           },
           {
-            "text": "etimologikoki "
+            "text": "= "
           },
           {
             "text": "mihia ",
             "b": true
           },
           {
-            "text": "esan nahi du"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "h2",
-    "section": "2.4.2",
-    "id": "w17/2.4.2/p2",
-    "sentences": [
-      {
-        "id": "w17/2.4.2/p2/s1",
-        "parts": [
-          {
-            "text": "2.4.2. Kartilagoak",
-            "b": true,
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2.4.2",
-    "id": "w17/2.4.2/p3",
-    "sentences": [
-      {
-        "id": "w17/2.4.2/p3/s1",
-        "parts": [
-          {
-            "text": "Ez ",
-            "b": true
-          },
-          {
-            "text": "dago beste aurreko bi arkuen bezalako kartilagorik. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.4.2/p3/s2",
-        "parts": [
-          {
-            "text": "Hala ere, "
-          },
-          {
-            "text": "hezur hioidearen gorputzaren beheko erdia ",
-            "b": true
-          },
-          {
-            "text": "(hau da, hioidearen gelditzen den beste atala [lehenengo erdia 2.arkutik]) eta "
-          },
-          {
-            "text": "hioidearen adar nagusiak ",
-            "b": true
-          },
-          {
-            "text": "(ezkerrean bat eta bestea eskuinean) eratuko dira arku honetatik. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.4.2/p3/s3",
-        "parts": [
-          {
-            "text": "Lotailuak ere agertuko dira (1. eta 2. arkuetan bezala) baina ez ditugu aipatuko."
+            "text": "(etimologikoki)"
           }
         ]
       }
@@ -2584,7 +2562,7 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "(faringea estutu) eratzen dira; faringea estutzeko 3 talde muskulu ertzatzaile ditu: goikoak, tartekoak eta behekoak): Goikoak, goiko faringea estutzeko, hirugarren arkutik aterako dira eta nerbio glosofaringeoak mugituko ditu."
+            "text": "(faringea estutu) eratzen dira; faringea estutzeko 3 talde muskulu ertzatzaile ditu: goikoak, tartekoak eta behekoak):"
           }
         ]
       }
@@ -2597,6 +2575,14 @@ export const w17: NotesBlock[] = [
     "sentences": [
       {
         "id": "w17/2.4.3/p4/s1",
+        "parts": [
+          {
+            "text": "Goikoak, goiko faringea estutzeko, hirugarren arkutik aterako dira eta nerbio glosofaringeoak mugituko ditu. "
+          }
+        ]
+      },
+      {
+        "id": "w17/2.4.3/p4/s2",
         "parts": [
           {
             "text": "Goikoak hirugarren arkutik, "
@@ -2745,7 +2731,7 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "baina bakoitzari helduko zaio nerbio/bikote kraneal horren adar bat:"
+            "text": "baina bakoitzari helduko zaio nerbio/bikote kraneal horren adar bat."
           }
         ]
       }
@@ -2775,7 +2761,7 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "helduko zaie → tarteko eta beheko muskulu ertzatzaileak inerbatzeko"
+            "text": "helduko zaie → goiko, tarteko eta beheko muskulu ertzatzaileak inerbatzeko"
           }
         ]
       }
@@ -2808,7 +2794,7 @@ export const w17: NotesBlock[] = [
             "text": " "
           },
           {
-            "text": "muskulua ",
+            "text": "muskuluak ",
             "b": true
           },
           {
@@ -3147,7 +3133,7 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "kartilagoak (nagusiak, epiglotisa irudian ez da agertzen, “L” formako egitura da). "
+            "text": "kartilagoak (epiglotisa irudian ez da agertzen, “L” formako egitura da). "
           }
         ]
       },
@@ -3184,7 +3170,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.2/p3/s4",
         "parts": [
           {
-            "text": "Tiroide kartilagoa bitan banatzen da, goiko aldea 4. arkuko eratorria da eta beheko atala eta beste kartilagoak 6. arkuaren eratorria."
+            "text": "Tiroide kartilagoa bitan banatzen da, goiko aldea 4. arkuko eratorria (goranzko adarra) da eta beheko atala eta beste kartilagoak 6. arkuaren eratorria (gorputzaren beheko atala)."
           }
         ]
       }

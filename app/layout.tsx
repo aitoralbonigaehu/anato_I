@@ -15,10 +15,14 @@ import './polish/belortzioak.css';
 import './polish/plates.css';
 import './polish/egiturak.css';
 import './polish/site.css';
+import './polish/onboarding.css';
 import { Kimu } from '@/components/kimu/Kimu';
 import { KimuCheer } from '@/components/kimu/KimuCheer';
 import { CommandBar } from '@/components/shell/CommandBar';
 import { ThemeSync } from '@/components/shell/theme';
+import { AccountRoot } from '@/components/account/AccountRoot';
+import { Welcome } from '@/components/onboarding/Welcome';
+import { VisitBeacon } from '@/components/visits/VisitBeacon';
 import { themeScript } from '@/components/shell/theme-script';
 
 const sans = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
@@ -51,6 +55,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <KimuCheer />
         <CommandBar />
         <ThemeSync />
+        <AccountRoot />
+        <Welcome />
+        <VisitBeacon />
       </body>
     </html>
   );

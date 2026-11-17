@@ -3,6 +3,7 @@
 import { TISSUE, orbit, poseStage18, type StageSpec } from '@/components/scenes/week17/common';
 import type { Camera3, V3 } from '@/lib/three-d/math';
 import { JP0, TC, TP0, jawModel, toothModel, type JawPose, type ToothOpts, type ToothPose } from './tooth-model';
+import { SITE18C } from './sites-c';
 
 /**
  * Topic 18, notes 4.2: one cut tooth germ (tooth-model.ts). The block is the notes' section: mouth up, the
@@ -38,7 +39,8 @@ const KEY_L = [
 export const S_LAM = [0, 0.32, 0.62] as const;
 const specLam: StageSpec<ToothPose, ToothOpts> = {
   map: 'tooth',
-  where: { th: 1.5, at: [0, -0.5, 0], scale: 2.6, planes: [{ center: [0, -0.5, 0], a: [3.3, 0, 0], b: [0, 3, 0] }], note: 'Ahoaren inguruko epitelioa: maxilar eta barailaren gainean' },
+  site: SITE18C.tooth,
+  arrive: 'Masailetara: hortzak bi masailen ertzean eratzen dira',
   S: S_LAM,
   pose: { ...TP0, arch: 1 },
   opts: {},
@@ -97,6 +99,8 @@ const P_A: ToothPose = { ...TP0, thick: 1, lam: 1 };
 export const S_CAP = [0, 0.25, 0.5, 0.75] as const;
 const specCap: StageSpec<ToothPose, ToothOpts> = {
   map: 'tooth',
+  site: SITE18C.tooth,
+  arrive: 'Hortz-mugurri bera, 10. astean: laminaren muturra',
   S: S_CAP,
   pose: P_A,
   opts: {},
@@ -164,6 +168,8 @@ const P_B: ToothPose = { ...P_A, cap: 1, pap: 1, bell: 1, free: 1 };
 export const S_LAY = [0, 0.13, 0.27, 0.41, 0.55, 0.71, 0.86] as const;
 const specLay: StageSpec<ToothPose, ToothOpts> = {
   map: 'tooth',
+  site: SITE18C.tooth,
+  arrive: 'Kanpai bera: orain bere geruzak eta sustraia',
   S: S_LAY,
   pose: P_B,
   opts: {},
@@ -275,6 +281,8 @@ export const S_JAW = [0, 0.2, 0.42, 0.66, 0.84] as const;
 const JC = (dist = 13, target: V3 = [0, -1.5, 0], yaw = 10, elev = 6) => orbit(yaw, elev, dist, target, SH);
 const specJaw: StageSpec<JawPose, ToothOpts> = {
   map: 'tooth',
+  site: SITE18C.jaw,
+  arrive: 'Hortz hori ilara bateko bat da: baraila ebakita, hortz guztiak',
   S: S_JAW,
   pose: JP0,
   opts: {},

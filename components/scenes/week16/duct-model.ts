@@ -1,4 +1,5 @@
 import { add, mix3, type V3 } from '@/lib/three-d/math';
+import { G16 } from './tones';
 import { curve3 } from '@/lib/three-d/mesh';
 import { cupShell, plate, vessel, type Parts, type VesselOptions } from '@/lib/three-d/organic';
 import type { Item3 } from '@/lib/three-d/scene';
@@ -127,7 +128,7 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
     put(key, id, vessel(line, { ref: [0, 0, 1], sides: 12, ...prof }, g), color, op, extra);
   const male = clamp01(pose.male);
   const female = clamp01(pose.female);
-  items.push({ key: 'wall', ...(o.back ? plate('ducts16-wall-back-v1', WALL, 1.05, 1.3) : plate('ducts16-wall-v1', WALL, -0.8, -1.05)), color: UC.wall, deep: UC.wallDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
+  items.push({ key: 'wall', ...(o.back ? plate('ducts16-wall-back-v1', WALL, 1.05, 1.3) : plate('ducts16-wall-v1', WALL, -0.8, -1.05)), color: G16.wall, deep: G16.wallDeep, tissue: 'membrane', opacity: 1, quiet: true, ground: true });
   const ovd = clamp01(pose.ovDown ?? 0);
   const gon = (s: number): V3 => add(GON(s), X(s, [-0.2 * ovd, -0.65 * ovd, 0.1 * ovd]));
 
@@ -260,32 +261,43 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
   // ———— female: the uterus (fused Müller ducts), the vagina, the hymen ————
   if (female > 0.01) {
     const fu = clamp01(pose.fuse);
-    // Before fusion: two tubes side by side with a septum; after: one uterine canal, the body and the neck.
-    // Before fusion: two canals side by side; they converge (the septum between them lost) into one.
-    for (const s of [-1, 1]) vess(`uc${s}`, 'utero-hodia', L([X(s, [0.38, -0.25, 0.05]), X(s, [lerp(0.28, 0.05, fu), -1.0, 0.08]), X(s, [lerp(0.12, 0.0, fu), -1.75, 0.1])], 16), UTERUS, { r0: 0.1, r1: lerp(0.09, 0.12, fu), flare: 0.4, flareLen: 0.15 }, 1, female, { deep: UC.mullerDeep, groups: ['uteroa'] });
-    if (fu > 0.01) {
-      // The uterus: one pear-shaped body round the joined canals, wide at the fundus, narrowing to the neck.
-      vess('uterus', 'uteroa', L([[0, -0.3, 0.06], [0, -0.9, 0.07], [0, -1.85, 0.1]], 16), UTERUS, { r0: 0.55 * fu, r1: 0.19 * fu, bulb: 0, flat: 0.4, ref: [0, 0, 1], sides: 18 }, 1, female, { deep: UC.mullerDeep, groups: ['utero-hodia'] });
-      pts['uteroa'] = [0.38, -0.55, 0.35];
-      pts['utero-lepoa'] = [0.18, -1.65, 0.3];
-    }
-    pts['utero-hodia'] = [0.25, -1.15, 0.3];
-    // The sinovaginal bulbs on the sinus's back wall, the vaginal plate growing between, the lumen.
     const bu = clamp01(pose.bulbs);
     const pl = clamp01(pose.plate);
     const lu = clamp01(pose.lumen);
+    // The utero canal comes down into contact with the sinus's back wall (the bulbs); the vaginal plate growing
+    // between them then pushes it back up, away from the sinus (the notes: "uteroa sinutik urruntzen da").
+    const d = 0.24 * ss(0, 1, bu) * (1 - ss(0, 0.7, pl));
+    const cervixY = -1.85 - d;
+    // Before fusion: two canals side by side; they converge (the septum between them lost) into one.
+    for (const s of [-1, 1]) vess(`uc${s}`, 'utero-hodia', L([X(s, [0.38, -0.25, 0.05]), X(s, [lerp(0.28, 0.05, fu), -1.0 - 0.5 * d, 0.08]), X(s, [lerp(0.12, 0.0, fu), -1.75 - d, 0.1])], 16), UTERUS, { r0: 0.1, r1: lerp(0.09, 0.12, fu), flare: 0.4, flareLen: 0.15 }, 1, female, { deep: UC.mullerDeep, groups: ['uteroa'] });
+    if (fu > 0.01) {
+      // The uterus: one pear-shaped body round the joined canals, wide at the fundus, narrowing to the neck. The
+      // fusion goes from below upwards: the body grows from the neck towards the fundus as the septum is lost.
+      vess('uterus', 'uteroa', L([[0, cervixY, 0.1], [0, -0.9 - 0.4 * d, 0.07], [0, -0.3, 0.06]], 16), UTERUS, { r0: 0.19 * lerp(0.7, 1, fu), r1: 0.55 * lerp(0.7, 1, fu), bulb: 0, flat: 0.4, ref: [0, 0, 1], sides: 18 }, ss(0, 0.9, fu), female, { deep: UC.mullerDeep, groups: ['utero-hodia'] });
+      pts['uteroa'] = [0.38, -0.55, 0.35];
+      pts['utero-lepoa'] = [0.18, cervixY + 0.2, 0.3];
+    }
+    pts['utero-hodia'] = [0.25, -1.15, 0.3];
+    // The sinovaginal bulbs on the sinus's back wall, the vaginal plate growing from them, then its lumen.
     if (bu > 0.01) {
-      for (const s of [-1, 1]) ball(`bulb${s}`, 'bulbo-sinubaginalak', X(s, [0.14, -2.25, 0.05]), [0.14 * bu, 0.14 * bu, 0.12 * bu], VAG_LOW, 1 - pl, { deep: UC.endoDeep, groups: ['plaka-baginala'] });
+      for (const s of [-1, 1]) ball(`bulb${s}`, 'bulbo-sinubaginalak', X(s, [0.14, -2.25, 0.05]), [0.14 * bu, 0.14 * bu, 0.12 * bu], VAG_LOW, 1 - ss(0.1, 0.5, pl), { deep: UC.endoDeep, groups: ['plaka-baginala'] });
       pts['bulbo-sinubaginalak'] = [0.22, -2.3, 0.2];
     }
     if (pl > 0.01) {
-      // The plate: solid; the vagina: the canal once it is hollow (upper third Müller, the rest from the bulbs).
-      const upper = L([[0, -1.85, 0.1], [0, -2.25, 0.12]], 6);
-      const lower = L([[0, -2.25, 0.12], [0, -2.75, 0.18], [0, -3.2, 0.25]], 10);
-      vess('vagU', lu > 0.5 ? 'bagina' : 'plaka-baginala', upper, UTERUS, { r0: 0.2, r1: 0.17, flare: 0.3, flareLen: 0.12 }, 1, pl, { deep: UC.mullerDeep, groups: ['bagina', 'plaka-baginala', 'baginaren-fornixa'] });
-      vess('vagL', lu > 0.5 ? 'bagina' : 'plaka-baginala', lower, VAG_LOW, { r0: 0.17, r1: 0.15 }, pl, 1, { deep: UC.endoDeep, groups: ['bagina', 'plaka-baginala', 'bulbo-sinubaginalak'] });
-      if (lu > 0.01) tube('vagLum', undefined, L([[0, -1.9, 0.14], [0, -3.15, 0.3]], 10), '#2a1a08', 0.08 * lu, 0.85, { quiet: true, outline: false }, 8);
-      pts['plaka-baginala'] = [0.22, -2.7, 0.3];
+      // The plate: a solid cord growing caudally from the bulbs (and up to the neck, which it pushes away). It
+      // hollows from below upwards: the vagina (upper third Müller, the rest from the bulbs).
+      const grow = ss(0, 0.65, pl);
+      const hol = ss(0.35, 0.95, lu);
+      const wall = lerp(1, 0.72, ss(0, 0.25, hol));
+      const upper = L([[0, cervixY, 0.1], [0, -2.25, 0.12]], 6);
+      const low = lerp(-2.42, -3.2, grow);
+      const lower = L([[0, -2.25, 0.12], [0, lerp(-2.3, -2.75, grow), lerp(0.13, 0.18, grow)], [0, low, lerp(0.14, 0.25, grow)]], 10);
+      const id = lu > 0.5 ? 'bagina' : 'plaka-baginala';
+      vess('vagU', id, upper, UTERUS, { r0: 0.2, r1: 0.17, flare: 0.3, flareLen: 0.12 }, 1, ss(0, 0.3, pl) * wall, { deep: UC.mullerDeep, groups: ['bagina', 'plaka-baginala', 'baginaren-fornixa'] });
+      vess('vagL', id, lower, VAG_LOW, { r0: 0.17, r1: 0.15 }, 1, wall, { deep: UC.endoDeep, groups: ['bagina', 'plaka-baginala', 'bulbo-sinubaginalak'] });
+      // The lumen opens from the bottom up, reaching the uterus's cavity last.
+      if (hol > 0.01) tube('vagLum', undefined, L([[0, -3.15, 0.3], [0, lerp(-3.15, cervixY - 0.05, hol), lerp(0.3, 0.14, hol)]], 10), '#5a2a14', 0.08, 0.9, { quiet: true, outline: false }, 8);
+      pts['plaka-baginala'] = [0.22, lerp(-2.45, -2.7, grow), 0.3];
       pts['bagina'] = [0.22, -2.8, 0.3];
       pts['baginaren-fornixa'] = [0.22, -2.0, 0.3];
     }
