@@ -25,16 +25,17 @@ export const TONGUE_CAECUM: V3 = [0, 0.135, -0.026];
 export const TONGUE_LARYNX: V3 = [0, -2.02, 0.7];
 export const TONGUE_SCALE = 0.6;
 /** The middle of the thyroid's two lobes: in the neck model, and on the root once the gland is down. */
-export const NECK_LOBES: V3 = [0, -0.3, 0.2];
+export const NECK_LOBES: V3 = [0, -0.85, 0.3];
 export const ROOT_LOBES: V3 = [0, -3.72, 0.86];
-export const NECK_SCALE = 1.35;
+export const NECK_SCALE = 1.6;
 
 export const SITE18B = {
   /** The floor of the pharynx seen from behind and above (tongue-model). */
   tongue: { key: 'tongue', place: tie({ at: TONGUE_CAECUM, atRoot: ROOT18.caecum, scale: TONGUE_SCALE, turn: [-30, 0, 0] }) } as Site,
   /**
    * The grown neck (neck-model: the mature thyroid, front and back): its lobes sit on the root's lobes, where the
-   * glands' descent left them (pharynx-model LOBE_X, LOBE_Y), 1.35 neck units per root unit.
+   * glands' descent left them (pharynx-model LOBE_X, LOBE_Y), 1.6 neck units per root unit (the neck is topic 17's
+   * larynx frame: its lobes' middle is neck-model `LOBES_MID`, their centres 1.2 to the side against the root's 0.78).
    */
   neck: { key: 'neck', place: tie({ at: NECK_LOBES, atRoot: ROOT_LOBES, scale: NECK_SCALE }) } as Site,
 };

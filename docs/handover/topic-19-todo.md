@@ -17,6 +17,48 @@ Read first, in this order:
 5. `docs/handover/topic-19-prep-b.md` (stages 11–19) and `docs/handover/topic-19-prep-c.md` (stages 20–23) — section-by-section facts with sentence ids, figures, model designs, crossings, step lists, `ask` ideas.
 6. How topic 16 does it: `components/scenes/week16/sites.ts`, `tones.ts`, `common.tsx` (`WHERE16`, `poseStage` wrapper), `Gonad16.tsx`, `Ducts16.tsx`, `tests/sites16.test.ts`.
 
+
+## State on 2026-11-17, second session — READ THIS FIRST (supersedes the build plan below where they disagree)
+
+**Topic 19 is built and registered**: all 23 stages exist in the notes' order, `/astea/19` answers 200, `inPreparation: true` is still set (remove it only when the finish line below is met for every stage). Six models instead of the plan's eight ("one body, as few models as possible"):
+
+| Model (file) | Site | Stages |
+|---|---|---|
+| `body-model.ts` (root): adult body cut coronally through the cord, back half as ground; brain in the skull's back half, cord with its enlargements, 31 pairs of spinal nerves through their foramina with ganglia, plexuses (arm nerves, intercostals, femoral, sciatic), cauda equina, cranial nerves, vagus; autonomic layer (chain T1–L2, splanchnic branches, pelvic S2–S4, organs); the brain's three planes; the axes; the voluntary path as a growing signal | `SITE19.body` | 1–4, 9 |
+| `cord-model.ts`: block of the cord at T6, grey H on the cut face (horns tinted by function, lateral horns), white with tracts, ependyma, rootlets → roots, ganglion, spinal nerve and its branches; dura / arachnoid / pia as stepped sleeves, subarachnoid fluid, epidural fat, vertebral canal; reflex arc on the cranial face | `SITE19.cord` | 5, 6, 8, 10 |
+| `section-model.ts`: the embryo's back cut across, at the cord block's size and place; the plate curls into the tube (ribbon), crest plate → two lumps → spinal ganglia; derivatives (chain, pre-aortic, chromaffin in the adrenal medulla, melanocytes, Schwann cells); then polar bands round the canal morph 4th week → 5th week (neuroepithelium, mantle, marginal, limiting membranes, diamond lumen, alar/basal/roof/floor, sulcus limitans) → 3rd month (H, white, canal, fissures, lateral horns) | `SITE19B.section` (on the cord canal) | 11–14 |
+| `spine-model.ts`: lower spine from behind, arches removed; the column lengthens while the cord stays, conus left at L1–L2, roots to their own foramina, cauda equina, filum, dural sac, epidural fat; puncture and epidural needles | `SITE19B.spine` (conus) | 15–16 |
+| `neural-model.ts`: one surface whose sections curl by the section model's rule; zips from the middle (caudal neuropore first), 3 then 5 vesicles (isthmus band), cephalic / cervical / pontine flexures, vesicle colours | `SITE19B.neural` (diencephalon on the thalamus) | 17–19 |
+| `brain-model.ts` (geometry slot `brain19`, registered in `geo-registry.ts`): head cut down the middle, right half from the left; skull, dura, arachnoid, subarachnoid fluid, pia as shells round the brain; hemisphere, thalamus (wall of the 3rd ventricle), hypothalamus, epithalamus, midbrain, pons, cerebellum, medulla, cord; ventricles as five casts (lateral + Monro, 3rd, aqueduct, 4th with the apertures, canal); choroid plexuses; CSF flow as streamed drops; sensory / motor / smell paths | `SITE19.head` (thalamus) | 7, 20–23 |
+
+Content: `week19a.ts` (1–4, 9), `week19d.ts` (5, 6, 8, 10), `week19b.ts` (11–19), `week19c.ts` (7, 20–23); structures in `week19a/b/c-structures.ts` (ids shared with earlier topics reused); 13 `ask` checks. Every beat cites the notes; KONTUZ lines where the notes and textbooks differ (neuropores 25/28, the dural sac "between dura and arachnoid", "kaudala ez deitu", "ez esan I. eta II. bentrikuluak", epithalamus not in the figure, 4th week tube not cord, 3rd month no plates).
+
+**Teacher's remarks removed from the app's notes text**: `w19.ts` carried three ("HOBETO AZALDUKO DU HURRENGO URTEAN", "berak ez erabili", "berak ez galdetu" ×2). They are stripped in `w19.ts` and by `REMARKS` in `scripts/notes/extract.py` (a re-extraction keeps them out); `tests/notes.test.ts` and `manifest.json` pins updated (length 32187).
+
+**Tests**: `tests/sites19.test.ts` (6 cases: each landmark on its parent's, similarity, sides kept, conus between L1 and L2); topic 19's cases of `visibility`, `anchors3d`, `labels`, `content`, `notes` pass (115 + content); the beat-count pin is 1506.
+
+### Seen on screen
+
+- **Every stage** at 1440 (0.3 / 0.65 / 0.95), and at 1024×768 and 768×1024 (0.6): all 23 render, names and keys fit at both tablet sizes.
+- **All 22 forward crossings** (`flight-sheet`, `--dwell 8000`): glides on one model, flights between models, no cut, no spinner. The adult cord's section gives way to the embryo's in place (10 → 11); the neural tube flies into the brain at the thalamus (19 → 20).
+- **Load**: the brain geometry is ≈ 264 000 triangles (shells thickened and coarsened; the thin casts keep a 0.012 grid). In the software renderer the first frame after crossing into the brain takes ≈ 18 s (GPU upload); `flight-sheet.mjs` screenshots now wait up to 120 s. A cold link straight into `meningeak` crossed within ~8 s shows the spinner for ≈ 3 s (the prewarm starts ≈ 6 s after the page loads); a student watching the stage never sees it.
+
+### Changed but NOT yet seen on screen
+
+- The aqueduct / canal casts' finer grid (guard-tested, not re-shot).
+
+### Owed for topic 19 (highest value first)
+
+1. **Figures**: the 17 DOCX figures were not available in this session (the notes' DOCX/PDF live on the owner's computer). Check every step against its figure (`topic-19-plan.md` table) and add the figure names the notes use.
+2. **`--back` flight sheets** (none shot).
+3. **Brain model polish**: midbrain, pons, cerebellum and medulla read as dark blocky lumps on the cut (`brain-model.ts` PARTS): sculpt them (folia on the cerebellum's cut, the pons' bulge) and give them lighter tones; the hemisphere's medial face is plain.
+4. **Neural tube look**: thin and dark-blue on the dark ground in the dorsal views (`plaka-neurala`); closer cameras or a lighter tube tone; the crest edge stripes; the vesicles' shapes (telencephalon's paired bulges) are schematic.
+5. **Run-on hygiene**: `ornomuin-geruzak` step 1 fades the crest derivatives over `[0, 0.8]` (it also thickens the wall); split the step or fade the derivatives in the model by `mature`.
+6. At 1024×768 a second orientation box shows briefly at the bottom left on `gandor-neurala` and `kortexa` (seen at 0.6): check whether it is the cold-entry overlay.
+7. **Body model**: small in the whole-body frames; organs are plain blobs; the cortex areas on the body's brain are markers.
+8. **Section model**: context (somites, notochord, aorta, adrenal) is plain; the crest lumps are blobs.
+9. Plates for `/fitxak`, Kimu class: later. Remove `inPreparation: true` from `week19.ts` once 1–3 are done.
+
 ## What exists (19-A)
 
 - **Notes:** the DOCX was exported with Word to `C:\Users\aitor\Downloads\19. GAIA. NERBIO SISTEMA (zuzendu gabe).docx.pdf` (next to the original) and extracted by `scripts/notes/extract.py` into `content/notes-text/w19.ts` (135 blocks, 321 sentences, 0 differences from the PDF). Pins in `tests/notes.test.ts`. Two quirks kept as written: "1.2.1" has no 1.2 above it; the heading "5.1 Mugimendu erreflexuak" sits inside section 11 (`w19/5.1/…`). The notes are marked "zuzendu gabe" (uncorrected): when the corrected file arrives, re-extract and diff, as 17-B did for topic 17 (`topic-17-notes-diff.md`).

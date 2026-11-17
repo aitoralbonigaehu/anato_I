@@ -91,14 +91,15 @@ for (const stage of crossings) {
   const box = await page.locator('.stage').first().boundingBox();
   const clip = box ? { x: box.x, y: box.y, width: box.width, height: Math.min(box.height, 640) } : undefined;
   const shots = [];
-  shots.push({ label: `${stage} (before)`, png: await page.screenshot({ clip }) });
+  // Software GL (swiftshader) can take many seconds for the first frame that uploads a heavy model: wait for it.
+  shots.push({ label: `${stage} (before)`, png: await page.screenshot({ clip, timeout: 120000 }) });
   await page.evaluate((p) => { window.__flightAt = p; }, at[0]);
   await page.keyboard.press(back ? 'Shift+ArrowLeft' : 'Shift+ArrowRight');
   await page.waitForTimeout(1600);
   for (const p of at) {
     await page.evaluate((v) => { window.__flightAt = v; }, p);
     await page.waitForTimeout(p === at[0] ? 900 : 650);
-    shots.push({ label: `→ ${to} · ${p}`, png: await page.screenshot({ clip }) });
+    shots.push({ label: `→ ${to} · ${p}`, png: await page.screenshot({ clip, timeout: 120000 }) });
   }
   await page.evaluate(() => { window.__flightAt = undefined; });
   // The strip: the frames side by side, shrunk, shot as one picture.

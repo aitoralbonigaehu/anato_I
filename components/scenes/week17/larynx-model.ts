@@ -369,6 +369,20 @@ export const larynxOrigins = () => ({
   thyroid: sculpt('thy-whole', thyroidF, [-1.48, -1.34, -0.98], [1.48, 2.66, 1.3], 0.05, 0.1),
 });
 
+/**
+ * The laryngeal skeleton and the airway, for topic 18's grown neck (neck-model.ts: the thyroid gland hugs these
+ * cartilages). The distance functions let that gland be carved round them; `dims` are this model's measures.
+ */
+export const larynxSkeleton = () => ({
+  hyoid: HYOID(),
+  thyroid: larynxOrigins().thyroid,
+  cricoid: CRICOID(),
+  trachea: TRACHEA(),
+  rings: RINGS(),
+});
+export const LARYNX_SDF = { thyroid: thyroidF, cricoid: cricoidF, airway: (x: number, z: number) => trOuter(x, z) };
+export const LARYNX_DIM = { CR_C, CR_RX, CR_RZ, TR_R, TR_TOP, TR_END, RING_Y0, RING_DY };
+
 /** Parts in neutral tones already: they never step back. */
 const NEUTRAL = new Set(['trakea', 'faringea', 'hioide-hezurra']);
 

@@ -923,22 +923,25 @@ export function pharynxModel(pose: PharynxPose, o: PharynxOpts = {}) {
     for (const s of [1, -1]) {
       ball(`lobe${s}`, 'tiroide-guruina', [s * LOBE_X, y, 0.86], [0.29 * k, 0.78 * k, 0.38 * k], '#d98068', { deep: '#70301f', tissue: 'mesenchyme' }, 1, 16, 20);
     }
-    vess('isth', 'tiroide-guruina', L([[-LOBE_X * 0.9, y - 0.12, 1.02], [0, y - 0.18, 1.2], [LOBE_X * 0.9, y - 0.12, 1.02]], 14), '#d98068', { r0: 0.15 * k, r1: 0.15 * k, sides: 12, ref: [0, 1, 0] }, 1, 1, { deep: '#70301f', tissue: 'mesenchyme' });
+    vess('isth', 'tiroide-guruina', L([[-LOBE_X * 0.9, y - 0.12, 1.06], [0, y - 0.18, 1.26], [LOBE_X * 0.9, y - 0.12, 1.06]], 14), '#d98068', { r0: 0.15 * k, r1: 0.15 * k, sides: 12, ref: [0, 1, 0] }, 1, 1, { deep: '#70301f', tissue: 'mesenchyme' });
     pts['tiroide-guruina'] = [LOBE_X + 0.05, y - 0.05, 0.5];
   }
   const ca = clamp01(pose.cartil);
   if (ca > 0.01) {
-    // The larynx's cartilages, which the U hugs from the front.
+    // The larynx's cartilages, in front of the gut, between the thyroid's lobes: C-shaped, open behind, so the U
+    // visibly hugs them from the front and the sides (its lobes rest against their sides, the isthmus before them).
+    const ZC = 0.56, RZ = 0.4;
     const ring = (y: number, r: number, col: string, deep: string, id: string) => {
-      const line: V3[] = Array.from({ length: 22 }, (_, i) => {
-        const t = -Math.PI * 0.5 + (i / 21) * Math.PI;
-        return [r * Math.sin(t), y, 0.1 + 0.62 * Math.cos(t)];
+      const line: V3[] = Array.from({ length: 26 }, (_, i) => {
+        const t = -Math.PI * 0.66 + (i / 25) * Math.PI * 1.32;
+        return [r * Math.sin(t), y, ZC + RZ * Math.cos(t)];
       });
-      vess(`ring${id}`, id, line, col, { r0: 0.13, r1: 0.13, sides: 12, ref: [0, 1, 0] }, ca, 1, { deep, tissue: 'cartilage' });
-      pts[id] = [r, y, 0.12];
+      vess(`ring${id}`, id, line, col, { r0: 0.14, r1: 0.14, sides: 12, ref: [0, 1, 0] }, ca, 1, { deep, tissue: 'cartilage' });
+      pts[id] = [r * Math.sin(0.12 * Math.PI), y, ZC + RZ * Math.cos(0.12 * Math.PI)];
     };
-    ring(-3.42, 0.56, ARCH.iv, ARCH_DEEP.iv, 'tiroide-kartilagoa');
-    ring(-3.98, 0.52, ARCH.vi, ARCH_DEEP.vi, 'krikoide-kartilagoa');
+    // Cartilage's own tone (not the arches' red and violet): beside the thyroid's orange it must read as another tissue.
+    ring(-3.42, 0.5, TISSUE.cartilage, TISSUE.cartilageDeep, 'tiroide-kartilagoa');
+    ring(-4.08, 0.46, TISSUE.cartilage, TISSUE.cartilageDeep, 'krikoide-kartilagoa');
   }
 
   // Foregut below: a name on the lumen.

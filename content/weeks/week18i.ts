@@ -42,6 +42,12 @@ export const stages18i: StageDef[] = [
         idea: 'Gurutzaketa: izena amaierako lekutik dator.',
         text: 'Goiko paratiroide guruinak ez dira horrenbeste jaisten: 4. poltsan eratu arren, timoaren gorago gelditzen dira, eta horregatik deitzen dira goiko paratiroide guruinak. Goiko eta beheko izenak behin betiko kokapenetik datoz, ez jatorritik.',
         focus: ['goiko-paratiroidea', 'beheko-paratiroidea'],
+        ask: {
+          q: 'Beheko paratiroide guruina: zein poltsatik dator?',
+          options: ['3. poltsatik', '4. poltsatik', '2. poltsatik', 'Tiroide guruinetik'],
+          answer: 0,
+          why: ['Hori da: 3. poltsan goian hasten da, eta timoak arrastatuta beherago gelditzen da.', 'Ez: 4. poltsatik goiko paratiroidea dator.', 'Ez: 2. poltsatik aho sabaiko amigdala.', 'Ez: tiroidea faringe hestearen zorutik dator.'],
+        },
         view: '3d',
       },
       {

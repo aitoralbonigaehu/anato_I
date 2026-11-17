@@ -305,14 +305,15 @@ const specCh: StageSpec<ChoanaPose, PalateOpts> = {
   key: [
     { color: '#f6d95a', text: 'hasierako aho sabaia' },
     { color: ARCH.i, text: 'aho sabaiaren plakak' },
-    { color: '#3b3346', text: 'sudur barrunbea' },
+    { color: '#6c7690', text: 'sudur barrunbea' },
   ],
   keyTitle: 'Koloreak',
   steps: [
     {
       to: { pit: 0.55 },
       run: [0.1, 0.85],
-      cam: SAGC(10, -0.6, 0.4),
+      cam: SAGC(12.5, -0.2, 0.1),
+      fit: false,
       glide: 0.06,
       dim: ['sudur-hobitxoa', 'sudur-barrunbea'],
       names: [
@@ -324,7 +325,8 @@ const specCh: StageSpec<ChoanaPose, PalateOpts> = {
     {
       to: { pit: 1, memb: 1 },
       run: [0.05, 0.75],
-      cam: SAGC(10, -0.6, 0.3),
+      cam: SAGC(11.5, -0.5, 0.1),
+      fit: false,
       glide: 0.05,
       dim: ['mintz-bukonasala', 'sudur-barrunbea', 'hasierako-aho-sabaia'],
       names: [
@@ -337,14 +339,16 @@ const specCh: StageSpec<ChoanaPose, PalateOpts> = {
     {
       to: { breakUp: 1 },
       run: [0.1, 0.7],
-      cam: SAGC(9.5, -0.5, 0.2),
+      cam: SAGC(11, -0.5, 0.1),
+      fit: false,
       glide: 0.05,
       dim: ['koana', 'mintz-bukonasala'],
       names: [{ id: 'koana', text: 'Hasierako koana', sub: '7. astea: mintza desagertu da', from: 0.35 }],
       note: '7. astea: mintza apurtu eta desagertu: sudurraren eta ahoaren arteko komunikabidea, hasierako koana',
     },
     {
-      cam: SAGC(9, -0.8, 0.3),
+      cam: SAGC(12, -0.4, 0.2),
+      fit: false,
       dim: ['narina', 'koana', 'sudur-barrunbea'],
       names: [
         { id: 'narina', sub: '2 kanpoan' },
@@ -355,7 +359,7 @@ const specCh: StageSpec<ChoanaPose, PalateOpts> = {
     {
       to: { back: 1 },
       run: [0.06, 0.85],
-      cam: SAGC(11, 0.7, 0.3),
+      cam: SAGC(14, 0.6, 0.1),
       glide: 0.05,
       dim: ['koana', 'aho-sabai-gandorrak', 'sudur-barrunbea'],
       names: [

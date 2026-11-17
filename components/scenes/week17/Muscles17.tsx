@@ -161,68 +161,6 @@ const spec2: StageSpec<MusclePose, MuscleOpts> = {
 };
 export const Muscles2 = poseStage17(spec2, build);
 
-// ———————————————————————————— 2.6.3 Laugarren eta seigarren arkuen muskuluak ————————————————————————————
-
-export const SM4 = [0, 0.3, 0.55, 0.78] as const;
-const P4: MusclePose = { ...MP0, m1: 1, m1b: 1, m2: 1, m2b: 1, m2c: 1, m3: 1 };
-
-const spec4: StageSpec<MusclePose, MuscleOpts> = {
-  S: SM4,
-  pose: P4,
-  opts: {},
-  caption: 'Lepoa alboan eta atzealdetik (3D): faringea, laringea eta muskulu sakonak',
-  key: KEY_ARCH,
-  map: 'neck',
-  steps: [
-    {
-      to: { m4: 1 },
-      run: [0.06, 0.8],
-      cam: cam(128, 6, 10, -2.2, 0, -0.1),
-      glide: 0.06,
-      dim: ['tarteko-ertzatzailea', 'beheko-ertzatzailea', 'goiko-ertzatzailea'],
-      names: [
-        { id: 'goiko-ertzatzailea', text: 'Goiko ertzatzailea', sub: 'III. arkua' },
-        { id: 'tarteko-ertzatzailea', text: 'Tarteko ertzatzailea', sub: 'IV. arkua', from: 0.2 },
-        { id: 'beheko-ertzatzailea', text: 'Beheko ertzatzailea', sub: 'IV. arkua', from: 0.4 },
-      ],
-      note: 'Muskulu sakonak: faringearen tarteko eta beheko ertzatzaileak IV. arkutik (goikoak III.etik)',
-    },
-    {
-      to: { open: 1, m6: 1 },
-      run: [0.08, 0.7],
-      cam: cam(52, 8, 7.5, -2.45, 0.1, 0.5),
-      glide: 0.05,
-      dim: ['laringe-barneko-muskuluak', 'tiroide-kartilagoa', 'krikoide-kartilagoa'],
-      names: [
-        { id: 'laringe-barneko-muskuluak', text: 'Laringe barneko muskulu intrintsekoak', sub: 'VI. arkua' },
-        { id: 'tiroide-kartilagoa', small: true, from: 0.4 },
-      ],
-      note: 'Tiroide kartilagoa zabalduta: barruan VI. arkuko muskulu intrintsekoak',
-    },
-    {
-      to: { n4: 1, n6: 1, open: 0 },
-      run: [0.06, 0.8],
-      cam: cam(72, 4, 9.5, -2.4, 0.2, 0.2),
-      glide: 0.05,
-      dim: ['bagoa', 'goiko-laringe-nerbioa', 'laringe-atzerakaria', 'krikotiroidea'],
-      names: [
-        { id: 'bagoa', text: 'Nerbio bagoa (X)' },
-        { id: 'goiko-laringe-nerbioa', text: 'Goiko laringe-nerbioa', sub: 'IV. arkua', from: 0.2 },
-        { id: 'laringe-atzerakaria', text: 'Laringe-nerbio atzerakaria', sub: 'VI. arkua', from: 0.4 },
-      ],
-      note: 'Bagoaren bi adar: goiko laringekoa IV.ari eta atzerakaria VI.ari',
-    },
-    {
-      cam: cam(38, 2, 11.5, -2.3),
-      glide: 0.05,
-      dim: ['bagoa'],
-      names: [{ id: 'bagoa', text: 'Nerbio bagoa', sub: 'parasinpatiko nagusia: torax eta abdomeneko errai asko' }],
-      note: 'Zein arkutakoa den, bagoaren zein adarrek inerbatzen duen esaten digu; trakea ez dator arkuetatik',
-    },
-  ],
-};
-export const Muscles4 = poseStage17(spec4, build);
-
 // ———————————————————————————— 2 (laburpena) Arkuen mapa ————————————————————————————
 // The closing picture: the fetal head on the left, each arch's nerve, bones and muscles lighting in its colour as
 // its row of the table on the right fills. Rows I, II, III, IV, VI, then everything together (week17i's six beats).

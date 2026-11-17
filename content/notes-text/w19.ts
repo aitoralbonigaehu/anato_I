@@ -1379,7 +1379,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p17/s8",
         "parts": [
           {
-            "text": "→ HOBETO AZALDUKO DU HURRENGO URTEAN Ondorioz, bi sistema hauek NSZ-an osagarriak direla esaten da parasinpatikoa bi muturretan eta sinpatikoa tartean kokatzen delako (irudian ikus daiteke). "
+            "text": "Ondorioz, bi sistema hauek NSZ-an osagarriak direla esaten da parasinpatikoa bi muturretan eta sinpatikoa tartean kokatzen delako (irudian ikus daiteke). "
           }
         ]
       },
@@ -4464,7 +4464,7 @@ export const w19: NotesBlock[] = [
             "b": true
           },
           {
-            "text": " (Silvioren akueduktoa, berak ez erabili) hain zuzen ere."
+            "text": " hain zuzen ere."
           }
         ]
       }
@@ -4637,7 +4637,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/13/p4/s2",
         "parts": [
           {
-            "text": "4.bentrikuluan, sistematik (barneko eremuetatik) kanporatzeko 3 zulo aurkitzen dira: 2 alboko zulo/lateralak (Luschka zuloak, berak ez galdetu) eta erdiko bat (Magendie zuloa, berak ez galdetu). "
+            "text": "4.bentrikuluan, sistematik (barneko eremuetatik) kanporatzeko 3 zulo aurkitzen dira: 2 alboko zulo/lateralak (Luschka zuloak) eta erdiko bat (Magendie zuloa). "
           }
         ]
       },

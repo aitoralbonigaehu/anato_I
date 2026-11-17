@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { blockText, expandNotes, firstAnchorInSection, NOTES_EXCEPTIONS, notesOf, sectionMatches, sentence, sentenceAnchors } from '@/content/notes-text';
 
 describe('original notes and reviewed alignment', () => {
-  const lengths = [17921, 10991, 17577, 23697, 13010, 18297, 16479, 23379, 27720, 20337, 25845, 21028, 25568, 37344, 27155, 26684, 17875, 28922, 32301];
+  const lengths = [17921, 10991, 17577, 23697, 13010, 18297, 16479, 23379, 27720, 20337, 25845, 21028, 25568, 37344, 27155, 26684, 17875, 28922, 32187];
   const hashes = [
     'f8abeb46de6a656b112e6b89b9c99802bab9a7af8affd6c63ed4ac2a6e0524db',
     'fd368f4eb7b398bec5c5275cd244233a86f4f5e099f796bbf42328b3ac32994c',
@@ -27,8 +27,8 @@ describe('original notes and reviewed alignment', () => {
     'faf35fc5df5d2db6ca6b04288a0d51ac58130750f5b583eededbb7450b80bc6e',
     'e0b06d0f9726950505e536a7ddd1537f304e09f6b85a62945f8aa66838091bca',
     '55e022fd165318c695a9b49048f5d305e4fe23e7b758084cc1f4de2ad0bee004',
-    // Topic 19 (DOCX exported to PDF with Word).
-    'c3c233749c0cd391c1e01851302a61414f9814d9cc430d53fcf2a773273d16eb',
+    // Topic 19 (DOCX exported to PDF with Word), without the teacher's remarks (extract.py REMARKS).
+    'b593a538e1de770a15dd79394d6171a88eb64d24402ea26f3bad4b8e90a93157',
   ];
 
   it('pins the complete original text of each of the PDFs', () => {
@@ -61,7 +61,7 @@ describe('original notes and reviewed alignment', () => {
       }
       for (const id of refs) expect(sentence(id), `${key}: ${id}`).toBeDefined();
     });
-    expect(count).toBe(1392);
+    expect(count).toBe(1506);
     // The second: topic 10 stage 6's summary step (the flat map of the derivatives).
     expect(unmapped).toBe(2);
   });

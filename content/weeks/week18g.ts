@@ -53,6 +53,12 @@ export const stages18g: StageDef[] = [
         text: 'Tinpano mintza oso egitura fina da, ia gardena. Hala ere, hiru jatorri ditu: kanpoko epitelioa ektodermikoa, barneko epitelioa endodermikoa, eta tartean dauden zelulak mesodermikoak, geruza oso fina.',
         focus: ['tinpano-kanpoko-epitelioa', 'tinpano-tarteko-geruza', 'tinpano-barneko-epitelioa'],
         exam: 'Tinpano mintzaren hiru jatorriak: ektodermoa, mesodermoa, endodermoa.',
+        ask: {
+          q: 'Tinpano mintzaren zein geruza da endodermikoa?',
+          options: ['Barneko epitelioa', 'Kanpoko epitelioa', 'Tarteko geruza', 'Hirurak'],
+          answer: 0,
+          why: ['Hori da: barnekoa, tinpano-kutxaren aldekoa, endodermikoa.', 'Ez: kanpoko epitelioa ektodermikoa da.', 'Ez: tarteko zelulak mesodermikoak dira.', 'Ez: hiru jatorri ditu, geruza bakoitzak berea.'],
+        },
         view: '3d',
       },
     ],

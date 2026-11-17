@@ -71,6 +71,8 @@ const GONE: Record<string, string> = {
 
 /** Names a step's text says without showing them, on purpose: `week/stage/step/id` → why. */
 const MENTION_ONLY: Record<string, string> = {
+  '19/garuneko-meningeak/2/ornomuina': 'garuna eta ornomuina alderatzen dira: ornomuineko meningeak 6. etapan ikusi dira',
+  '19/garuneko-meningeak/4/ornomuina': '"bai garunean bai ornomuinean": ornomuina 6. etapan ikusi da',
   '17/lehen-arkua-kartilagoak/1/baraila': '"barail luzapena" aipatzen da: baraila 2. urratsean eratzen da',
   '17/lehen-arkua-kartilagoak/7/baraila': '"barail prozesutik": luzapena da (beste liburuen bertsioa), ez hezurra; hemen hezurtxoak dira gaia',
   '17/lehen-arkua-kartilagoak/6/meckel-kartilagoa': 'jada endekatuta (3. urratsa): haren goiko muturra dira mailua eta ingudea, marraztuta',

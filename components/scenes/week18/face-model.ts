@@ -78,7 +78,13 @@ function lmAt(n: string, age: number): [number, number] {
   return [k[i][0] + (k[i + 1][0] - k[i][0]) * u, k[i][1] + (k[i + 1][1] - k[i][1]) * u];
 }
 
-const SIG2 = 0.42 * 0.42;
+/**
+ * Each handle's reach (its bell's width, in chart units). A handle that travels far carries a broad patch of skin with
+ * it: the ear climbs from the neck to the eyes' level and the cheek with it, and a narrow bell round it sheared the
+ * skin behind the cheek into dark pleats.
+ */
+const REACH: Record<string, number> = { ear: 0.9, max: 0.6, corner: 0.5, mand: 0.6, eye: 0.85, brow: 0.6 };
+const SIG2K = Float64Array.from(Object.keys(LM).map((n) => (REACH[n] ?? 0.42) ** 2));
 /**
  * How fast a handle's hold fades with distance: a point moves by (sum of w * move) / sqrt(HOLD^2 + (sum of w)^2). At
  * a handle that is the handle's own move; well away from all of them the tissue stays. The fall is as gentle as the
@@ -103,30 +109,39 @@ type Lm = Float64Array;
 let LS: Lm[] | null = null;
 const steps = () => (LS ??= Array.from({ length: NJ + 1 }, (_, j) => landmarks(AGE0 + j * DT)));
 
-/** One step for `n` points (|a|, b pairs): from the handles at L0 to the handles at L1. */
+/**
+ * One step for `n` points (|a|, b pairs): from the handles at L0 to the handles at L1. Every handle also acts as its
+ * mirror image across the midline (at −a, moving with −da), so the field is symmetric: on the midline it has no
+ * sideways part, tissue near it is narrowed smoothly, and no point is ever pushed across it (pushing tissue over the
+ * midline and pressing it back folded the skin into the dark crease down the nose, lip and chin).
+ */
 function carry(from: Float32Array | Float64Array, to: Float32Array | Float64Array, n: number, L0: Lm, L1: Lm) {
   const K = NAMES.length;
   for (let v = 0; v < n; v++) {
     const a = from[v * 2], b = from[v * 2 + 1];
     let sum = 0, dx = 0, dy = 0;
     for (let k = 0; k < K; k++) {
-      const ex = a - L0[k * 2], ey = b - L0[k * 2 + 1];
-      const q = (ex * ex + ey * ey) / SIG2;
-      if (q > 16) continue;
-      const w = Math.exp(-q);
-      sum += w;
-      dx += w * (L1[k * 2] - L0[k * 2]);
-      dy += w * (L1[k * 2 + 1] - L0[k * 2 + 1]);
+      const hx = L0[k * 2], ey = b - L0[k * 2 + 1];
+      const mx = L1[k * 2] - hx, my = L1[k * 2 + 1] - L0[k * 2 + 1];
+      const s2 = SIG2K[k];
+      for (let m = 0; m < (hx > 1e-6 ? 2 : 1); m++) {
+        const ex = m ? a + hx : a - hx;
+        const q = (ex * ex + ey * ey) / s2;
+        if (q > 16) continue;
+        const w = Math.exp(-q);
+        sum += w;
+        dx += w * (m ? -mx : mx);
+        dy += w * my;
+      }
     }
     const k = 1 / Math.sqrt(HOLD * HOLD + sum * sum);
-    to[v * 2] = a + dx * k;
+    to[v * 2] = Math.max(0, a + dx * k);
     to[v * 2 + 1] = b + dy * k;
   }
 }
 
-/** Tissue pushed past the midline is pressed thin against it: monotonic, so the two halves never cross. */
-const PRESS2 = 0.02 * 0.02;
-const press = (A: number) => 0.5 * (A + Math.sqrt(A * A + PRESS2));
+/** The flow is symmetric about the midline, so a carried |a| stays ≥ 0 by itself (`carry` only guards rounding). */
+const press = (A: number) => (A > 0 ? A : 0);
 /** Where a step lies between two steps of the flow. */
 const stepOf = (age: number) => {
   const f = Math.min(NJ, Math.max(0, (age - AGE0) / DT));
@@ -270,7 +285,7 @@ function relief(x: number, y: number, age: number, L: Lm): number {
     const c = I.corner;
     const hw = L[c * 2], yc = L[c * 2 + 1] - (1 - fin) * 0.02;
     const edge = clamp01(1 - A / hw);
-    const open = 0.13 * (1 - fin) + 0.022;
+    const open = 0.13 * (1 - fin) + 0.04;
     const dy = (y - yc) / open;
     if (dy * dy < 9 && edge > 0) h -= (0.62 * (1 - 0.72 * fin) + 0.04) * Math.exp(-dy * dy) * ss(0, 0.24, edge);
   }
@@ -366,7 +381,8 @@ export function faceModel(pose: FacePose, o: FaceOpts = {}): PoseModel {
     out[at + 2] = p[2];
   });
   const tone = (c: string) => mixHex(SKIN, c, pose.color);
-  const eyeC = mixHex(FACE_COLOR.eye, SKIN, ss(9.2, 11.2, age));
+  // The eyelids close over the eye (weeks 9–11): the eye ends in the same tone as the skin round it, not lighter.
+  const eyeC = mixHex(FACE_COLOR.eye, tone(FACE_COLOR.front), ss(9.2, 11.2, age));
   const mem = 1 - ss(4.1, 4.6, age);
   const reg = (name: string, id: string | undefined, color: string, extra: Partial<Item3> = {}, deep?: string) => {
     // As the notes' colours go, every region's shade goes to the one skin's too: no patch keeps its own darker tint.
@@ -382,10 +398,14 @@ export function faceModel(pose: FacePose, o: FaceOpts = {}): PoseModel {
   reg('pit', 'sudur-hobitxoa', mixHex(FACE_COLOR.pit, SKIN, 0.15 * (1 - pose.color)), { groups: ['sudur-plakoda'] });
   reg('max', 'luzapen-maxilarra', tone(FACE_COLOR.max), {}, mixHex(tone(FACE_COLOR.max), ARCH_DEEP.i, 0.8));
   reg('mand', 'barail-luzapena', tone(FACE_COLOR.mand), {}, mixHex(tone(FACE_COLOR.mand), ARCH_DEEP.i, 0.8));
-  reg('arch2', 'bigarren-arkua', tone(ARCH.ii), {}, mixHex(tone(ARCH.ii), ARCH_DEEP.ii, 0.8));
+  // Arch II is not one of the face's prominences: its colour goes once the neck forms (its skin rises with the ear).
+  const ii = mixHex(SKIN, ARCH.ii, pose.color * (1 - ss(7.5, 10, age)));
+  reg('arch2', 'bigarren-arkua', ii, {}, mixHex(ii, ARCH_DEEP.ii, 0.8 * (1 - ss(7.5, 10, age))));
   reg('mouth', 'estomodeoa', FACE_COLOR.mouth);
   reg('membrane', 'mintz-bukofaringeoa', mixHex('#2a1216', FACE_COLOR.membrane, mem));
-  reg('eye', 'begia', eyeC);
+  // The colour melt (`Mesh.tint`) is relative to the eye's authored dark colour: once the lids close and the eye takes
+  // the skin's tone, that melt would brighten it into a pale disc, so it goes with the dark colour.
+  reg('eye', 'begia', eyeC, { soft: pose.color * (1 - ss(9.2, 11.2, age)) });
   reg('groove', 'ildo-nasolagrimala', tone(FACE_COLOR.groove));
   const pts: Record<string, V3> = {};
   const P = (a: number, b: number) => pointOf(a, b, age, L);

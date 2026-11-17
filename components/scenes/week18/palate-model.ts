@@ -4,6 +4,7 @@ import type { Mesh } from '@/lib/three-d/mesh';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
 import { ARCH, TISSUE } from '@/components/scenes/week17/common';
+import { G18 } from './tones';
 
 /**
  * Topic 18, notes 4.1: the palate as one continuous model. Axes: x towards the embryo's LEFT, y cranial, z ventral.
@@ -191,10 +192,13 @@ const PRIMARY = '#f6d95a';
 const TONGUE = '#d96a6a';
 const SOFT = '#e9a7a0';
 const BONE = TISSUE.bone;
-const CUT = '#b89a86';
-const CUT_DEEP = '#54402f';
-const HOLE = '#3b3346';
-const HOLE_ORAL = '#4a3540';
+// The topic's ground (tones.ts): a cut face is warm light stone, a space a blue-grey recess, never a black hole.
+const CUT = G18.cut;
+const CUT_DEEP = G18.cutDeep;
+const HOLE = G18.cavity;
+const HOLE_ORAL = mixHex(G18.cavity, '#8a6470', 0.3);
+/** The choana: the same space, lit, so the nasal cavity and the mouth read as one way through it. */
+const OPEN_WAY = mixHex(G18.cavity, '#b9c6e8', 0.4);
 
 /** Half width of the palate's vault at z: straight behind the cut, closing round at the front. */
 const hw = (z: number) => (z <= Z_CUT ? X_ROOT : X_ROOT * Math.sqrt(Math.max(0, 1 - ((z - Z_CUT) / (Z_END - Z_CUT)) ** 2)));
@@ -613,7 +617,7 @@ export function choanaModel(pose: ChoanaPose, o: PalateOpts = {}) {
     const h = 0.26 * ss(0, 1, brk);
     const top = lerp(0.3, 0.42, back);
     const ring: P2[] = [[u - h, top], [u, top + 0.06], [u + h, top], [u + h, -0.42], [u, -0.46], [u - h, -0.42]];
-    add('choana', 'koana', cachedMesh('choana-way', [r3(u), r3(h)], () => loft([ring, ring], [-0.5, 0.016], SAG, { capEnd: true })), '#5a4b78', { outline: false });
+    add('choana', 'koana', cachedMesh('choana-way', [r3(u), r3(h)], () => loft([ring, ring], [-0.5, 0.016], SAG, { capEnd: true })), OPEN_WAY, { outline: false, deep: G18.cavityDeep });
     pts['koana'] = P(u, -0.16, 0.02);
   }
   pts['faringea'] = P(3.0, -0.75, -0.48);

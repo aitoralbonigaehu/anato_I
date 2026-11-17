@@ -1,4 +1,4 @@
-NOT YET PHASE 1 DONE (stopped at 20:00 by the owner's instruction). Written: notes text, plan, three-way split, `tones.ts`, `sites.ts`, content stubs. Missing before 19-B / 19-C start: `components/scenes/week19/common.tsx` (`poseStage19`, `WHERE19`, cameras, keys) and `tests/sites19.test.ts`; topic 19 is NOT in `content/registry.ts` yet (an empty week answers 500), add `week19` there once the first stage renders.
+PHASE 1 DONE and all 23 stages built (2026-11-17, second session): see the top of `topic-19-todo.md` for the models actually used (six, not eight) and what is owed. The plan below is history.
 
 # Topic 19 "Nerbio sistema": plan and three-way split (19-A, 2026-11-16, revised 19:55 for 19-C)
 

@@ -1,27 +1,31 @@
-import { mix3, type V3 } from '@/lib/three-d/math';
-import { curve3 } from '@/lib/three-d/mesh';
-import { vessel, type Parts, type VesselOptions } from '@/lib/three-d/organic';
+import type { V3 } from '@/lib/three-d/math';
+import { cachedMesh } from '@/lib/three-d/mesh-cache';
+import type { Parts } from '@/lib/three-d/organic';
+import { capsule, deformBy, ellipsoid, partition, smin, surfaceMesh, type SDF } from '@/lib/three-d/sdf';
 import type { Item3 } from '@/lib/three-d/scene';
-import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
-import { ARCH, ARCH_DEEP, TISSUE } from '@/components/scenes/week17/common';
+import { blobParts, mixHex } from '@/components/scenes/week10/model3d';
+import { TISSUE } from '@/components/scenes/week17/common';
+import { LARYNX_DIM, LARYNX_SDF, larynxSkeleton } from '@/components/scenes/week17/larynx-model';
+import { POUCH } from './pharynx-model';
 
 /**
- * Topic 18: the neck glands, one model for two stages (notes 1.2 "Nola jaisten dira egiturak?" and 3).
- * The pharynx with its 3rd and 4th pouches; the thymus (3rd pouch) grows down and towards the midline dragging the
- * inferior parathyroid (3rd pouch) past the superior parathyroid (4th pouch), which barely moves. A gland keeps its
- * pouch's colour for good, so the yellow gland ending BELOW the red one is the point of the stage.
- * Then the adult: two long thyroid lobes hugging the laryngeal cartilages, the isthmus in front, the four
- * parathyroids behind, the pyramidal lobe, the thymus below.
+ * Topic 18, notes 3 (w18/3/p10–p12): the grown neck. The thyroid gland is one sculpted surface: two long lobes,
+ * pointed above and full below, whose inner faces are carved round the larynx's cartilages and the trachea they
+ * "hug", joined in front by the isthmus over the upper tracheal rings; behind, the lobes are not joined and the four
+ * parathyroids sit on their backs (figure 18-12, front and back views). The pyramidal lobe grows up from the isthmus
+ * on the left; the thymus lies below the thyroid, in front of the trachea, large, then shrinking.
+ *
+ * The cartilages are topic 17's laryngeal skeleton (larynx-model.ts), so the student meets the same larynx, in its
+ * frame and units. The colours are those of the glands' descent on the pharynx (pharynx-model.ts): the thyroid
+ * salmon, the third pouch's glands violet, the fourth pouch's teal, cartilage pale.
  *
  * Axes as every model of the topics: x towards the embryo's LEFT, y cranial, z ventral.
  */
 
 export interface NeckPose {
-  /** The thymus and the inferior parathyroid going down (0..1). */
+  /** Kept for the stage's pose shape (the descent itself is told on the root pharynx): unused. */
   down: number;
-  /** The superior parathyroid's short way (0..1). */
   sup: number;
-  /** The adult: the pharynx's upper part and the pouches gone, the cartilages grown (0..1). */
   adult: number;
   /** The pyramidal lobe (0..1). */
   pyramid: number;
@@ -37,127 +41,170 @@ export interface NeckOpts {
   back?: boolean;
 }
 
+/** The middle of the two lobes (the site's landmark: `NECK_LOBES` in sites-b.ts). */
+export const LOBES_MID: V3 = [0, -0.85, 0.3];
+
+export const NECK_COLOR = {
+  thyroid: '#d98068',
+  thyroidDeep: '#70301f',
+  inferior: mixHex(POUCH.p3, '#ffffff', 0.32),
+  superior: mixHex(POUCH.p4, '#ffffff', 0.2),
+  thymus: POUCH.p3,
+} as const;
+
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
-const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
-const ss = (a: number, b: number, x: number) => {
-  const u = clamp01((x - a) / (b - a));
-  return u * u * (3 - 2 * u);
-};
-const darker = (c: string) => mixHex(c, '#000000', 0.55);
-const L = (kps: readonly V3[], n = 24) => curve3(kps as V3[], n);
-const X = (s: number, p: V3): V3 => [s * p[0], p[1], p[2]];
-const at = (line: readonly V3[], u: number): V3 => {
-  const x = clamp01(u) * (line.length - 1);
-  const i = Math.min(line.length - 2, Math.floor(x));
-  return mix3(line[i], line[i + 1], x - i);
-};
-const span = (line: readonly V3[], a: number, b: number, n = 24): V3[] => Array.from({ length: n }, (_, i) => at(line, lerp(a, b, i / (n - 1))));
+const smax = (a: number, b: number, k: number) => -smin(-a, -b, k);
+const { CR_C, TR_TOP } = LARYNX_DIM;
 
-const THYROID = '#b23c56';
-const THYROID_DEEP = '#551626';
-/** The thymus: the third pouch's colour, a little paler than the parathyroid it drags. */
-const THYMUS = mixHex(ARCH.iii, '#ffffff', 0.18);
+// ———————————————————————— the gland ————————————————————————
 
-/** An arc round the airway, by the angle from the front (radians). */
-const arc = (a0: number, a1: number, y: number, rx: number, rz: number, n = 28): V3[] =>
-  Array.from({ length: n }, (_, i): V3 => {
-    const a = lerp(a0, a1, i / (n - 1));
-    return [rx * Math.sin(a), y, rz * Math.cos(a)];
-  });
+/** One lobe (left; the right is its mirror): a pear along a slightly curved axis, pointed above, full below. */
+const LOBE_TOP: V3 = [1.04, 0.78, 0.4];
+const LOBE_MID: V3 = [1.2, -0.7, 0.33];
+const LOBE_LOW: V3 = [1.16, -1.75, 0.36];
+const lobeA = capsule(LOBE_MID, LOBE_TOP, 0.46, 0.09);
+const lobeB = ellipsoid(LOBE_LOW, [0.47, 0.66, 0.54]);
+const lobeC = ellipsoid(LOBE_MID, [0.45, 0.8, 0.5]);
+const isthmus = ellipsoid([0, -2.28, 0.98], [1.02, 0.3, 0.19]);
+/** What the gland lies against: the thyroid cartilage, the cricoid, the trachea with its rings. */
+const cartilage: SDF = (x, y, z) => {
+  let d = Math.min(LARYNX_SDF.thyroid(x, y, z), LARYNX_SDF.cricoid(x, y, z));
+  if (y < TR_TOP + 0.1) d = Math.min(d, LARYNX_SDF.airway(x, z) - 0.09);
+  return d;
+};
+const glandF: SDF = (x, y, z) => {
+  const ax = Math.abs(x);
+  const lobe = smin(smin(lobeA(ax, y, z), lobeC(ax, y, z), 0.3), lobeB(ax, y, z), 0.32);
+  const d = smin(lobe, isthmus(x, y, z), 0.32);
+  // Carving only matters near the surface: far from it the plain distance is good enough (and much cheaper).
+  if (d > 0.25) return d;
+  return smax(d, -(cartilage(x, y, z) - 0.05), 0.1);
+};
+const BOX_LO: V3 = [-1.85, -2.62, -0.36];
+const BOX_HI: V3 = [1.85, 1.0, 1.32];
+/** The gland, split in lobes and isthmus (one surface: they share their border). */
+const GLAND = () => {
+  const whole = cachedMesh('neck18-gland', [0.035], () => surfaceMesh(glandF, BOX_LO, BOX_HI, 0.035));
+  const hit = cachedMesh('neck18-gland-h', [0.09], () => surfaceMesh(glandF, BOX_LO, BOX_HI, 0.09));
+  const isthmusSide = (c: V3) => Math.abs(c[0]) < 0.6 && c[1] < -1.9;
+  const [isth, lob] = splitCache(whole, isthmusSide);
+  const [hIsth, hLob] = splitCache(hit, isthmusSide, 'h');
+  return { lobes: { mesh: lob, hit: hLob } as Parts, isthmus: { mesh: isth, hit: hIsth } as Parts };
+};
+const splits = new Map<string, ReturnType<typeof partition>>();
+const splitCache = (m: Parameters<typeof partition>[0], side: (c: V3) => boolean, tag = '') => {
+  const key = `${tag}:${m.idx.length}`;
+  let s = splits.get(key);
+  if (!s) splits.set(key, (s = partition(m, side)));
+  return s;
+};
+
+/** The pyramidal lobe: a tapering finger from the isthmus up the front of the larynx, on the embryo's left. */
+const PY_BASE: V3 = [0.26, -2.12, 1.1];
+const pyramidF = capsule(PY_BASE, [0.36, 0.35, 1.24], 0.24, 0.1);
+const PYRAMID = (): Parts => ({
+  mesh: cachedMesh('neck18-pyr', [0.03], () => surfaceMesh(pyramidF, [-0.06, -2.45, 0.8], [0.68, 0.52, 1.5], 0.03)),
+  hit: cachedMesh('neck18-pyr-h', [0.08], () => surfaceMesh(pyramidF, [-0.06, -2.45, 0.8], [0.68, 0.52, 1.5], 0.08)),
+});
+
+/** The thymus: two lobes side by side below the thyroid, in front of the trachea, lobulated. */
+const thymusF: SDF = (() => {
+  const parts = [
+    ellipsoid([0.44, -4.35, 1.14], [0.5, 1.35, 0.3]),
+    ellipsoid([-0.4, -4.5, 1.12], [0.52, 1.45, 0.3]),
+    ellipsoid([0.5, -3.45, 1.12], [0.32, 0.45, 0.24]),
+    ellipsoid([-0.46, -3.55, 1.1], [0.33, 0.48, 0.24]),
+    ellipsoid([0.62, -5.2, 1.12], [0.36, 0.52, 0.26]),
+    ellipsoid([-0.58, -5.4, 1.1], [0.38, 0.55, 0.26]),
+  ];
+  return (x, y, z) => {
+    let d = parts[0](x, y, z);
+    for (let i = 1; i < parts.length; i++) d = smin(d, parts[i](x, y, z), 0.18);
+    return d;
+  };
+})();
+const THYMUS = (): Parts => ({
+  mesh: cachedMesh('neck18-thymus', [0.045], () => surfaceMesh(thymusF, [-1.1, -6.1, 0.72], [1.1, -2.9, 1.5], 0.045)),
+  hit: cachedMesh('neck18-thymus-h', [0.1], () => surfaceMesh(thymusF, [-1.1, -6.1, 0.72], [1.1, -2.9, 1.5], 0.1)),
+});
+const THYMUS_TOP: V3 = [0, -3.2, 1.12];
+
+/** A part scaled about `c` by k (growth, shrinking). */
+const scaled = (p: Parts, c: V3, k: number, slot: string): Parts => {
+  if (k > 0.999) return p;
+  const f = (q: V3): V3 => [c[0] + (q[0] - c[0]) * k, c[1] + (q[1] - c[1]) * k, c[2] + (q[2] - c[2]) * k];
+  return { mesh: deformBy(p.mesh, [k], f, slot), hit: deformBy(p.hit ?? p.mesh, [k], f, slot + 'h') };
+};
+
+/** The parathyroids on the lobes' backs: superior (4th pouch) high, inferior (3rd pouch) low. */
+const PARA_SUP: V3 = [1.34, -0.78, -0.18];
+const PARA_INF: V3 = [1.16, -1.82, -0.17];
 
 export function neckModel(pose: NeckPose, o: NeckOpts = {}) {
   const items: Item3[] = [];
   const pts: Record<string, V3> = {};
-  const dim = o.dim;
-  const named = o.back ? -1 : 1;
-  const fade = (id: string, groups?: readonly string[]) => (!dim || dim.k <= 0.001 || dim.ids.includes(id) || (groups ?? []).some((g) => dim.ids.includes(g)) ? 1 : 1 - 0.75 * dim.k);
-  const tube = (key: string, id: string | undefined, line: V3[], color: string, r: (u: number) => number, deep: string, extra: Partial<Item3> = {}, sides = 16) => {
-    if (line.length < 2) return;
-    items.push({ key, id, ...tubeParts(line, { radius: r, ref: [0, 0, 1], sides, capStart: true, capEnd: true }), color, deep, tissue: 'epithelium', opacity: id ? fade(id, extra.groups) : 1, ...extra });
+  const dim = o.dim && o.dim.k > 0.001 ? o.dim : null;
+  const k = dim ? dim.k : 0;
+  const lit = (id: string, groups?: readonly string[]) => !dim || dim.ids.includes(id) || (groups ?? []).some((g) => dim.ids.includes(g));
+  /** An unlit part steps back by losing colour towards a pale grey, never by going dark or see-through. */
+  const put = (key: string, id: string | undefined, parts: Parts | null, color: string, deep: string, extra: Partial<Item3> = {}) => {
+    if (!parts) return;
+    const off = !!dim && !!id && !lit(id, extra.groups);
+    items.push({
+      key,
+      id,
+      ...parts,
+      color: off ? mixHex(color, '#c4bcbb', 0.5 * k) : color,
+      deep: off ? mixHex(deep, '#8a8081', 0.5 * k) : deep,
+      tissue: 'epithelium',
+      calm: true,
+      ...extra,
+    });
   };
-  const ball = (key: string, id: string, c: V3, r: number, color: string, deep: string, extra: Partial<Item3> = {}) =>
-    items.push({ key, id, ...blobParts({ center: c, radii: [r, r * 1.1, r * 0.9], rings: 12, sides: 16 }), color, deep, tissue: 'epithelium', opacity: fade(id, extra.groups), ...extra });
-  const put = (key: string, id: string, parts: Parts | null, color: string, deep: string, extra: Partial<Item3> = {}) => {
-    if (parts) items.push({ key, id, ...parts, color, deep, tissue: 'epithelium', opacity: fade(id, extra.groups), ...extra });
-  };
-  const band = (line: V3[], o2: VesselOptions) => vessel(line, { sides: 14, n: 28, ...o2 }, 1);
 
-  const adult = clamp01(pose.adult);
-  const down = clamp01(pose.down);
+  // ———— the larynx and the trachea (topic 17's skeleton) ————
+  const sk = larynxSkeleton();
+  const cartTone = { tissue: 'cartilage' as const };
+  put('hyoid', 'hioide-hezurra', sk.hyoid, TISSUE.bone, TISSUE.boneDeep, { tissue: 'bone', quiet: true });
+  put('thy-cart', 'laringeko-kartilagoak', sk.thyroid, TISSUE.cartilage, TISSUE.cartilageDeep, { ...cartTone, groups: ['tiroide-kartilagoa'] });
+  put('cricoid', 'laringeko-kartilagoak', sk.cricoid, TISSUE.cartilage, TISSUE.cartilageDeep, { ...cartTone, groups: ['krikoide-kartilagoa'] });
+  put('trachea', 'trakea', sk.trachea, mixHex(TISSUE.ground, '#e3a898', 0.35), mixHex(TISSUE.groundDeep, '#7a4a40', 0.35), { tissue: 'membrane' });
+  put('tr-rings', 'trakea', sk.rings, mixHex(TISSUE.cartilage, '#ffffff', 0.2), TISSUE.cartilageDeep, cartTone);
+  pts['laringeko-kartilagoak'] = [0.42, 0.55, 0.86];
+  pts['hioide-hezurra'] = [0.45, 2.74, 1.1];
+  pts['trakea'] = [0.3, -3.3, CR_C + 0.9];
 
-  // ———— the airway (always) and the pharynx above it (goes in the adult) ————
-  tube('airway', 'trakea', L([[0, 0.3, -0.02], [0, -1.5, 0], [0, -3.5, 0]], 20), TISSUE.endo, () => 0.3, TISSUE.endoDeep);
-  pts['trakea'] = [named * 0.14, -2.0, o.back ? -0.26 : 0.26];
-  const phK = 1 - ss(0, 0.8, adult);
-  if (phK > 0.02) {
-    tube('pharynx', 'faringea', L([[0, 2.85, -0.25], [0, 1.6, -0.25], [0, 0.65, -0.2], [0, -0.1, -0.05]], 24), TISSUE.endo, (u) => lerp(0.72, 0.31, ss(0, 1, u)) * lerp(0.4, 1, phK), TISSUE.endoDeep);
-    pts['faringea'] = [named * 0.3, 2.3, -0.5];
-  }
-  // The pouches: stubs out of the pharynx that thin away once their glands have left.
-  const pouchK = 1 - ss(0.15, 0.7, down);
-  if (pouchK > 0.02)
-    for (const s of [-1, 1]) {
-      tube(`p3${s}`, 'hirugarren-poltsa', L([X(s, [0.5, 1.6, -0.25]), X(s, [1.0, 1.62, -0.22]), X(s, [1.42, 1.56, -0.12])], 12), TISSUE.endo, () => 0.2 * pouchK, TISSUE.endoDeep);
-      tube(`p4${s}`, 'laugarren-poltsa', L([X(s, [0.36, 0.64, -0.2]), X(s, [0.8, 0.66, -0.2]), X(s, [1.08, 0.62, -0.18])], 12), TISSUE.endo, () => 0.16 * pouchK, TISSUE.endoDeep);
-    }
-  pts['hirugarren-poltsa'] = X(named, [0.95, 1.62, -0.3]);
-  pts['laugarren-poltsa'] = X(named, [0.72, 0.66, -0.3]);
+  // ———— the thyroid gland ————
+  const g = GLAND();
+  put('lobes', 'tiroide-lobuluak', g.lobes, NECK_COLOR.thyroid, NECK_COLOR.thyroidDeep, { groups: ['tiroide-guruina'], tissue: 'mesenchyme' });
+  put('isthmus', 'tiroide-istmoa', g.isthmus, NECK_COLOR.thyroid, NECK_COLOR.thyroidDeep, { groups: ['tiroide-guruina'], tissue: 'mesenchyme' });
+  const side = o.back ? -1 : 1;
+  pts['tiroide-lobuluak'] = [side * 1.5, -0.85, 0.12];
+  pts['tiroide-guruina'] = pts['tiroide-lobuluak'];
+  pts['tiroide-istmoa'] = [0.18, -2.3, 1.12];
 
-  // ———— the laryngeal cartilages and the tracheal rings (grown in the adult; open behind) ————
-  if (adult > 0.02) {
-    const g = ss(0, 1, adult);
-    const open = 2.0;
-    put('shield', 'laringeko-kartilagoak', band(arc(-open, open, 0.52, 0.62, 0.78), { r0: 0.66 * g, r1: 0.66 * g, flat: 0.84, ref: [Math.sin(-open), 0, Math.cos(-open)] }), TISSUE.cartilage, TISSUE.cartilageDeep);
-    put('cricoid', 'laringeko-kartilagoak', band(arc(-Math.PI, Math.PI, -0.42, 0.56, 0.56, 40), { r0: 0.17 * g, r1: 0.17 * g, flat: 0.55, ref: [0, 0, -1] }), TISSUE.cartilage, TISSUE.cartilageDeep);
-    for (let i = 0; i < 6; i++) {
-      const a = 2.15;
-      put(`ring${i}`, 'trakea', band(arc(-a, a, -0.86 - i * 0.44, 0.46, 0.46), { r0: 0.13 * g, r1: 0.13 * g, flat: 0.55, ref: [Math.sin(-a), 0, Math.cos(-a)], sides: 10 }), TISSUE.cartilage, TISSUE.cartilageDeep);
-    }
-    pts['laringeko-kartilagoak'] = [named * 0.3, 0.72, 0.72];
-  }
-
-  // ———— the thyroid: two long lobes, open behind, joined in front by the isthmus ————
-  for (const s of [-1, 1]) {
-    const lobe = L([X(s, [0.82, 0.68, -0.22]), X(s, [0.97, 0.12, -0.04]), X(s, [0.95, -0.62, 0.14]), X(s, [0.68, -1.36, 0.14])], 28);
-    tube(`lobe${s}`, 'tiroide-lobuluak', lobe, THYROID, (u) => 0.06 + 0.22 * Math.sin(Math.PI * u) ** 0.65, THYROID_DEEP, { groups: ['tiroide-guruina'] }, 18);
-  }
-  pts['tiroide-lobuluak'] = X(named, [1.05, -0.3, 0.2]);
-  pts['tiroide-guruina'] = X(named, [1.05, -0.3, 0.2]);
-  tube('isthmus', 'tiroide-istmoa', L([X(-1, [0.78, -0.92, 0.32]), [0, -0.86, 0.68], X(1, [0.78, -0.92, 0.32])], 20), THYROID, () => 0.17, THYROID_DEEP, { groups: ['tiroide-guruina'] });
-  pts['tiroide-istmoa'] = [0.2, -0.86, 0.82];
-
-  // ———— the pyramidal lobe: a finger up from the isthmus, on the embryo's left ————
+  // ———— the pyramidal lobe ————
   const py = clamp01(pose.pyramid);
   if (py > 0.01) {
-    const line = span(L([[0.22, -0.82, 0.72], [0.24, -0.25, 0.92], [0.17, 0.5, 1.02]], 24), 0, py, 18);
-    tube('pyramid', 'piramide-lobulua', line, THYROID, (u) => lerp(0.15, 0.06, u), THYROID_DEEP, { groups: ['tiroide-guruina'] });
-    pts['piramide-lobulua'] = at(line, 0.6);
+    put('pyramid', 'piramide-lobulua', scaled(PYRAMID(), PY_BASE, 0.15 + 0.85 * py, 'pyr'), NECK_COLOR.thyroid, NECK_COLOR.thyroidDeep, { groups: ['tiroide-guruina'], tissue: 'mesenchyme' });
+    pts['piramide-lobulua'] = [0.3 + 0.04 * py, -2.12 + 1.6 * py, 1.2];
   }
 
-  // ———— the thymus: down and towards the midline, its tail lost once it has arrived ————
+  // ———— the thymus: large, then shrinking towards its top ————
   const inv = clamp01(pose.involute);
-  const tail = ss(0.5, 1, down) * 0.66;
-  const head = lerp(0.13 + 0.87 * ss(0, 0.92, down), 0.84, inv);
-  const big = lerp(0.3, 0.44, down) * (1 - 0.62 * inv);
-  for (const s of [-1, 1]) {
-    const path = L([X(s, [1.52, 1.62, 0.02]), X(s, [1.58, 0.6, 0.42]), X(s, [1.32, -0.8, 0.5]), X(s, [0.78, -2.0, 0.58]), X(s, [0.47, -3.3, 0.6])], 64);
-    const line = span(path, tail, Math.max(tail + 0.06, head), 28);
-    tube(`thymus${s}`, 'timoa', line, THYMUS, (v) => big * (0.26 + 0.74 * ss(0.05, 0.72, v)) * Math.sin(Math.PI * (0.04 + 0.92 * v)) ** 0.5, ARCH_DEEP.iii, {}, 18);
-    if (s === named) pts['timoa'] = at(line, 0.68);
-  }
+  put('thymus', 'timoa', scaled(THYMUS(), THYMUS_TOP, 1 - 0.62 * inv, 'thymus'), NECK_COLOR.thymus, POUCH.p3Deep, { tissue: 'mesenchyme' });
+  pts['timoa'] = [0.5, -4.1 + 0.9 * inv * 0.62, 1.4 - 0.1 * inv];
 
-  // ———— the parathyroids: the inferior one rides with the thymus past the superior one ————
-  const infK = ss(0.06, 0.66, down);
-  const supK = clamp01(pose.sup);
-  for (const s of [-1, 1]) {
-    const inf = at(L([X(s, [1.34, 1.6, -0.26]), X(s, [1.46, 0.55, -0.1]), X(s, [1.24, -0.5, -0.1]), X(s, [0.88, -1.08, -0.2])], 40), infK);
-    const sup = at(L([X(s, [1.08, 0.64, -0.3]), X(s, [0.98, 0.5, -0.42]), X(s, [0.86, 0.3, -0.48])], 16), supK);
-    ball(`inf${s}`, 'beheko-paratiroidea', inf, 0.17, ARCH.iii, darker(ARCH.iii));
-    ball(`sup${s}`, 'goiko-paratiroidea', sup, 0.16, ARCH.iv, darker(ARCH.iv));
-    // Named on the side the labels live on (always seen from behind).
+  // ———— the parathyroids, behind ————
+  for (const s of [1, -1]) {
+    const sup: V3 = [s * PARA_SUP[0], PARA_SUP[1], PARA_SUP[2]];
+    const inf: V3 = [s * PARA_INF[0], PARA_INF[1], PARA_INF[2]];
+    put(`sup${s}`, 'goiko-paratiroidea', blobParts({ center: sup, radii: [0.15, 0.19, 0.12], rings: 12, sides: 16 }), NECK_COLOR.superior, POUCH.p4Deep);
+    put(`inf${s}`, 'beheko-paratiroidea', blobParts({ center: inf, radii: [0.15, 0.19, 0.12], rings: 12, sides: 16 }), NECK_COLOR.inferior, POUCH.p3Deep);
+    // Named on the embryo's right: the viewer's right when the neck is seen from behind.
     if (s === -1) {
-      pts['beheko-paratiroidea'] = [inf[0], inf[1], inf[2] - 0.1];
       pts['goiko-paratiroidea'] = [sup[0], sup[1], sup[2] - 0.1];
+      pts['beheko-paratiroidea'] = [inf[0], inf[1], inf[2] - 0.1];
     }
   }
   return { items, pts };

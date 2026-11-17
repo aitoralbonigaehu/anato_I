@@ -1,24 +1,26 @@
 'use client';
 
-import { ARCH, BACK, FRONT, TISSUE, poseStage18, type StageSpec } from '@/components/scenes/week17/common';
+import { BACK, FRONT, TISSUE, poseStage18, type StageSpec } from '@/components/scenes/week17/common';
 import { END_SINUS } from './Clefts18';
 import type { PharynxBOpts } from './pharynx-b';
 import { pharynxD } from './pharynx-d';
 import { POUCH, type PharynxPose } from './pharynx-model';
 import { SITE18 } from './sites';
 import { SITE18B, WHERE18B } from './sites-b';
-import { NP0, neckModel, type NeckOpts, type NeckPose } from './neck-model';
+import { NECK_COLOR, NP0, neckModel, type NeckOpts, type NeckPose } from './neck-model';
 
 /**
- * Topic 18's neck glands (neck-model.ts): the thymus and the parathyroids going down (notes 1.2) and the mature
- * thyroid (notes 3). From behind the embryo's left is on the viewer's left.
+ * Topic 18's neck glands: their way down on the root pharynx (pharynx-d.ts, notes 1.2) and the grown neck
+ * (neck-model.ts: the mature thyroid round topic 17's larynx, notes 3). From behind the embryo's left is on the
+ * viewer's left.
  */
 
 const build = (pose: NeckPose, opts: NeckOpts) => neckModel(pose, opts);
+// The same colours as the descent on the pharynx (above): a gland keeps its pouch's colour into the grown neck.
 const KEY = [
-  { color: ARCH.iii, text: '3. poltsatik' },
-  { color: ARCH.iv, text: '4. poltsatik' },
-  { color: '#b23c56', text: 'tiroidea' },
+  { color: NECK_COLOR.thyroid, text: 'tiroidea' },
+  { color: NECK_COLOR.thymus, text: '3. poltsatik' },
+  { color: POUCH.p4, text: '4. poltsatik' },
   { color: TISSUE.cartilage, text: 'kartilagoak' },
 ];
 const CAP_BACK = 'Faringe hestea eta lepoa atzetik, hormak kenduta (3D eredua): enbrioiaren ezkerra zure ezkerrean';
@@ -49,8 +51,9 @@ const specDown: StageSpec<PharynxPose, PharynxBOpts> = {
   map: 'neck',
   steps: [
     {
+      // Run on from the persistent sinus: its needle and fluid go at once (first quarter), with the walls.
       to: { persist: 0, fluid: 0, needle: 0, peelL: 1, peelR: 1 },
-      run: [0.04, 0.55],
+      run: [0, 0.25],
       cam: down(10.5, -1.5),
       fit: false,
       glide: 0.06,
@@ -94,7 +97,15 @@ const specDown: StageSpec<PharynxPose, PharynxBOpts> = {
     {
       to: { cartil: 1, ubIn: 1 },
       run: [0.05, 0.75],
-      cam: down(8.4, -3.7, 230, 24),
+      // From in front and above: the isthmus before the cartilages, a lobe at each side, the U open behind.
+      cam: BACK(7.6, [0, -3.75, 0.7], 332, 34),
+      caption: 'Lepoa aurretik eta goitik (3D eredua): tiroidearen U-a laringeko kartilagoen inguruan',
+      key: [
+        { color: '#d98068', text: 'tiroidea' },
+        { color: TISSUE.cartilage, text: 'laringeko kartilagoak' },
+        { color: POUCH.p3, text: '3. poltsatik' },
+        { color: POUCH.p4, text: '4. poltsatik' },
+      ],
       fit: false,
       glide: 0.06,
       dim: ['tiroide-lobuluak', 'laringeko-kartilagoak', 'beheko-paratiroidea', 'goiko-paratiroidea'],
@@ -111,7 +122,7 @@ export const GlandDescent18 = poseStage18(specDown, (pose, opts) => pharynxD(pos
 // ———————————————————————————— Tiroide heldua (3) ————————————————————————————
 
 export const SM = [0, 0.18, 0.38, 0.6, 0.8] as const;
-const front = (dist: number, y: number, yaw = 0, elev = 5) => FRONT(dist, [0, y, 0], yaw, elev);
+const front = (dist: number, y: number, yaw = 0, elev = 5) => FRONT(dist, [0, y, 0.4], yaw, elev);
 /** The neck model with everything down and grown (the descent itself is told on the pharynx, above). */
 const MATURE0: NeckPose = { ...NP0, down: 1, sup: 1, adult: 1 };
 
@@ -126,7 +137,7 @@ const specMature: StageSpec<NeckPose, NeckOpts> = {
   map: 'thyroid',
   steps: [
     {
-      cam: front(8.5, -0.2, 18),
+      cam: front(10, -0.6, 22, 6),
       glide: 0.06,
       dim: ['tiroide-lobuluak', 'laringeko-kartilagoak'],
       names: [
@@ -136,14 +147,14 @@ const specMature: StageSpec<NeckPose, NeckOpts> = {
       note: 'Tiroideak bi lobulu ditu, eskuinekoa eta ezkerrekoa: luzangak, laringeko kartilagoak besarkatzen dituzte',
     },
     {
-      cam: front(7, -0.55, 0, 3),
+      cam: front(8.4, -1.6, 0, 4),
       glide: 0.05,
       dim: ['tiroide-istmoa', 'tiroide-lobuluak'],
       names: [{ id: 'tiroide-istmoa', sub: 'lobuluak aurretik lotzen ditu' }],
       note: 'Aurretik eremu estu batek lotzen ditu: istmoa',
     },
     {
-      cam: BACK(7.5, [0, -0.35, 0], 180, 6),
+      cam: BACK(9.4, [0, -0.9, 0], 180, 6),
       glide: 0.12,
       dim: ['goiko-paratiroidea', 'beheko-paratiroidea', 'tiroide-lobuluak'],
       names: [
@@ -155,7 +166,7 @@ const specMature: StageSpec<NeckPose, NeckOpts> = {
     {
       to: { pyramid: 1 },
       run: [0.3, 0.85],
-      cam: front(7, -0.2, -12, 4),
+      cam: front(9, -0.8, -16, 4),
       glide: 0.1,
       dim: ['piramide-lobulua', 'tiroide-istmoa'],
       names: [{ id: 'piramide-lobulua', sub: 'hodi tiroglosoaren azken atala · arazorik gabe', from: 0.55 }],
@@ -164,7 +175,7 @@ const specMature: StageSpec<NeckPose, NeckOpts> = {
     {
       to: { involute: 1 },
       run: [0.4, 0.92],
-      cam: front(10, -1.5, 10, 6),
+      cam: front(13, -2.4, 12, 6),
       glide: 0.06,
       dim: ['timoa', 'tiroide-lobuluak'],
       names: [{ id: 'timoa', sub: 'handia enbrioian · pubertarotik endekatu' }],

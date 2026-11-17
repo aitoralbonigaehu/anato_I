@@ -2,13 +2,41 @@
 
 Written for whoever picks topic 18 up next, from the final reports of the four agents (18-A root/pharynx/thyroid/face, 18-B ear pouches/tongue, 18-C palate/teeth, 18-D clefts/neck), who all stopped at 20:00, and from the lead's checks after the stop. **Nothing in this topic's new work has been seen on screen**: the dev server was overloaded and for a while every page returned 500 (a registry import of a then-missing `week19`), so no flight or stage sheet of the new work came out. Nothing is committed.
 
+## State on 2026-11-17, second session — READ THIS FIRST (supersedes everything below where they disagree)
+
+### Done and looked at (1440, plus 1024×768 and 768×1024 for every stage)
+
+- **Face skin without folds** (`face-model.ts`). The flow's field is now mirrored at the midline (each handle also acts at −a moving −da), so no tissue is pushed across the midline and pressed back; handles that travel far carry a wider patch (`REACH`: ear 0.9, eye 0.85, max/mand 0.6, brow 0.6, corner 0.5). Fold probe (triangles whose face normal opposes their vertex normals): week 12 went from 1 203 to 40, all inside the mouth slit (steep central-difference normals, not a fold), weeks 6–10 ≤ 2. The dark crease down nose/lip/chin and the cheek/forehead pleats are gone. The eyes no longer glow as pale discs (their colour melt goes with the dark colour; they end in the skin's tone); arch II's colour fades once the neck forms; the mouth slit is wider; `aurpegi-fusioa` ends at `color: 0.15` (was 0.3: region borders read as seams against the step's "ez da josturarik geratzen").
+- **`beste-arraildurak`** cameras (+1.4) checked: sinus, fluid and needle in frame.
+- **`guruinen-jaisketa` last step** shows the relation: the larynx's cartilages are C-rings open behind, in cartilage tone, between the thyroid lobes and behind the isthmus (`pharynx-model.ts`), and the step looks from in front and above (`BACK(7.6, [0,-3.75,0.7], 332, 34)`) with its own caption and key. Step 1 now fades the needle and fluid in `run: [0, 0.25]`.
+- **`tiroidea-heldua` rebuilt** (`neck-model.ts`, adult only): topic 17's laryngeal skeleton (`larynxSkeleton()`, `LARYNX_SDF`, `LARYNX_DIM` exported from `week17/larynx-model.ts`: hyoid, thyroid cartilage, cricoid, trachea and rings), the gland as one SDF surface (pear lobes carved round the cartilages, the isthmus over the upper rings; split into lobes / isthmus items), four parathyroids on the lobes' backs (superior at the cricoid's level so the laminae do not hide them), the pyramidal lobe growing from the isthmus on the left, a lobulated bilobed thymus that shrinks. Colours = the descent's (`NECK_COLOR`: thyroid `#d98068`, 3rd pouch violet, 4th teal, cartilage pale); `week18i-structures.ts` colours follow. `SITE18B.neck` re-measured (`NECK_LOBES [0,-0.85,0.3]`, scale 1.6); `tests/sites18b.test.ts` passes. Flights in (from the sagittal head) and out (to the face) read as one camera move.
+- **Palate tones**: `palate-model.ts` uses `G18.cut` / `G18.cavity` (cavities blue-grey, never black); the choana is the same space lit (`OPEN_WAY`); structure colours in `week18e-structures.ts` and the koanak key follow.
+- **`koanak`**: steps 1–4 keep authored, wider cameras (`fit: false`): the whole sagittal head (nose, mouth, tongue) shows round the pit, the membrane and the choana. The flight in from `aho-sabai-akatsak` now ends on the whole head (was a brown close-up).
+- **`ask` checks** added: `lehen-poltsa` (stapes from arch II), `lehen-arraildura` (the eardrum's endodermal layer), `guruinen-jaisketa` (inferior parathyroid from the 3rd pouch).
+- **Dead code deleted**: `ear-model.ts`, `earModel`/`sinusModel` (+ slab helpers) in `cleft-model.ts`, topic 17's `ArchMap17.tsx` and `Muscles4`/`SM4`.
+- **Flight sheets of all 28 crossings, forwards and `--back`** (`--dwell 5000`): every crossing is a camera flight or a run-on; no cut, no spinner. Caveat for the tool: in a `--back` strip the "before" frame catches the stage's cold-entry fly-in (the embryo), because the shooter opens the stage cold; use a longer `--dwell` (≈ 9000) to see the backward crossing from the stage's own model.
+- **Tablet sizes**: every stage at 0.5 / 0.95, 1024×768 and 768×1024: names, keys and side panels fit; nothing cut off.
+- **Tests**: `tsc` clean; guard set 1 673 passed, 6 failed = the six old topic 7–9 failures.
+
+### Changed but NOT yet seen on screen
+
+- Nothing in topic 18.
+
+### Owed for topic 18 (highest value first)
+
+1. **Teeth (26–29)**: acceptable section blocks, but plain: give the enamel organ thickness and the cap/bell real 3D curvature (`tooth-model.ts`); the milk/permanent jaw (`esne-behin-betiko`) is a row of paddles.
+2. **`koanak` model**: the pit and the nasal cavity are decals on the cut face (`palate-model.ts` `choanaModel`); a true recess (hole in the head-up loft) and a membrane that visibly tears would read better.
+3. **Face D-level polish** (optional): a softer little human face at week 12 (`relief()` "little human face" block), lids with a fold line.
+4. **Tones `G18` measured on screen**; `thyroid-model.ts` still uses its own `CUT_HEAD`.
+5. Figure parity and the Kimu class: as in section E below.
+
 ## Production standard 2026-11: what topic 18 still misses
 
 Rules in `docs/quality/3d-quality-bar.md`, section "Production standard 2026-11" (most of them were learnt on this topic). Met: one root model for stages 1–9, sites measured and tested (including the new `SITE18B.neck`), every forward crossing a flight or run-on, whole-topic triage done. Still missing:
 
-- [ ] Face skin with no folds on the visible side (fold probe at weeks 6, 8, 10, 12), then seen on screen.
-- [ ] Run-on hygiene in `guruinen-jaisketa` step 1 (needle and fluid).
-- [ ] `--back` flight sheets and tablet sizes.
+- [x] Face skin with no folds on the visible side (fold probe at weeks 6, 8, 10, 12), then seen on screen.
+- [x] Run-on hygiene in `guruinen-jaisketa` step 1 (needle and fluid).
+- [x] `--back` flight sheets and tablet sizes.
 - [ ] Tones `G18` measured on screen.
 
 ## State on 2026-11-17 (lead; seen on screen at 1440) — READ THIS FIRST, it supersedes sections A–F below where they disagree

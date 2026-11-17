@@ -59,3 +59,11 @@ Log: session scratchpad `vitest2.log` (may be gone).
 - **Topic 18:** all 29 stages shot, all 28 forward crossings are flights or run-ons. The clefts and the glands' descent now run on the root pharynx model (`pharynx-d.ts`); `tiroidea-heldua` has a site (`SITE18B.neck`); the face skin is being rebuilt as a flow (second pass not yet seen). What is owed is at the top of `topic-18-todo.md` ("State on 2026-11-17").
 - **Topic 19:** not started; Phase 1 in `topic-19-todo.md` is next.
 - **Order for the next session:** (1) shoot the three unseen topic-18 changes and finish the face; (2) the rest of topic 18's owed list; (3) topic 17's owed list (`--back`, tablet, muscle head polish); (4) topic 19 Phase 1. The prompt to start that session is `docs/handover/next-agent-prompt.md`.
+
+## Session of 2026-11-17, second session
+
+- **Topic 18: finish line reached** (details at the top of `topic-18-todo.md`). Face skin without folds (mirrored flow), `tiroidea-heldua` rebuilt on topic 17's larynx, the U round the cartilages, palate tones, `koanak` framing, three `ask` checks, dead code removed; all 28 crossings shot forwards and `--back`, every stage at 1024×768 and 768×1024. Left: plain teeth, the choana's recess, face polish, `G18` measured.
+- **Topic 19: built and registered** (all 23 stages, six models; details at the top of `topic-19-todo.md`). Teacher's remarks stripped from the notes text (`extract.py` `REMARKS`). Left: figure parity (the DOCX figures were not reachable from this session), flight sheets, tablet sizes, neural-tube and body polish, then removing `inPreparation`.
+- **Topic 17**: untouched in this session except dead code (`ArchMap17.tsx`, `Muscles4`) and an additive export in `larynx-model.ts` (`larynxSkeleton`, `LARYNX_SDF`, `LARYNX_DIM`) used by topic 18's neck. Its owed list (`--back`, tablet, muscle head) stands.
+- **Tests**: `tsc` clean; guard set = only the six old topic 7–9 failures; beat-count pin 1506; `tests/sites19.test.ts` new.
+- **Dev server note**: in this container `next dev` sometimes exits after its upgrade notice on the first start; start it again (it continues the second time).

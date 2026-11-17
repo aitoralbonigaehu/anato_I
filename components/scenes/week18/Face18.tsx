@@ -204,7 +204,7 @@ const spec3: StageSpec<FacePose, FaceOpts> = {
       note: 'Goiko ezpainak bi jatorri ditu: alde medialerantz mugitutako luzapen maxilarrak eta sudur hastapenen ertz mediala',
     },
     {
-      to: { age: 12, color: 0.3 },
+      to: { age: 12, color: 0.15 },
       run: [0.04, 0.85],
       cam: FRONT(8.2, [0, -0.45, 0], -24, 4),
       fit: false,

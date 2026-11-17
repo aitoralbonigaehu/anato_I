@@ -64,6 +64,25 @@ def furniture(line, page):
     return (y < 65 and bool(re.search(r'GIZA ANATOMIA|ANATOMIA I|MEDIKUNTZA 1|RAFAEL SARRIA|31 TALDEA', text, re.I)) or (y < 90 and bool(re.fullmatch(r'31\. TALDEA \d{4}/\d\d/\d\d', text))) or (y < 65 and bool(re.fullmatch(r'3\. taldea', text)))) or (y > page.rect.height - 65 and bool(re.fullmatch(r'\d+', text)))
 
 
+# The teacher's remarks about what will or will not be asked, or about names not to use, never reach the app
+# (topic 19's uncorrected notes carry a few). Removed from the text before it is split into sentences.
+REMARKS = [
+    (re.compile(r'\s*→\s*HOBETO AZALDUKO DU HURRENGO URTEAN\s*'), ''),
+    (re.compile(r'\s*\(Silvioren akueduktoa, berak ez erabili\)'), ''),
+    (re.compile(r',\s*berak ez galdetu\)'), ')'),
+]
+
+
+def strip_remarks(parts):
+    out = []
+    for p in parts:
+        t = p['text']
+        for rx, rep in REMARKS:
+            t = rx.sub(rep, t)
+        out.append({**p, 'text': t})
+    return out
+
+
 def compact(parts):
     out = []
     for p in parts:
@@ -247,7 +266,7 @@ def extract(path, week, part=1, counts=None):
         # Week prefix avoids collisions between sections shared by different topics.
         bid = f"w{week}/{b['section']}/p{counts[b['section']]}"
         b['id'] = bid
-        b['sentences'] = [{'id': f'{bid}/s{i}', 'parts': p} for i, p in enumerate(split_sentences(compact(b.pop('parts')), week), 1)]
+        b['sentences'] = [{'id': f'{bid}/s{i}', 'parts': p} for i, p in enumerate(split_sentences(compact(strip_remarks(b.pop('parts'))), week), 1)]
     generated = norm(' '.join(block_text(b) for b in blocks))
     if generated != reference:
         print('\n'.join(difflib.unified_diff(reference.split(), generated.split(), fromfile='PDF', tofile='extracted', n=3)))
