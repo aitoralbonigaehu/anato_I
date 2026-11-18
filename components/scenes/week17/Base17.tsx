@@ -34,7 +34,7 @@ export const S_OSS = [0, 0.18, 0.4, 0.62, 0.84] as const;
 const specOss: StageSpec<OssPose, BaseOpts> = {
   S: S_OSS,
   site: SITE17.oss,
-  arrive: 'Buruaren alboko ehun zati bat handitu dugu: goian ganga (hezur laua), behean oinaldea',
+  arrive: 'Bi ehun-lagin handitu ditugu. Ezkerrean gangako hezur lau baten garapena ikusiko dugu, eta eskuinean oinaldeko hezur batena',
   pose: OS0,
   opts: {},
   map: 'skull',
@@ -43,7 +43,7 @@ const specOss: StageSpec<OssPose, BaseOpts> = {
   axes: AXES_TABLE,
   steps: [
     {
-      cam: TABLE(0, -36, 15),
+      cam: TABLE(0, -32, 15.8),
       fit: false,
       glide: 0.06,
       names: [BLOCK_L, BLOCK_R, { id: 'mesenkima', p: 'mesenkima-l', key: 'mes-l', sub: 'hasieran bietan berdin', from: 0.35 }],
@@ -52,14 +52,15 @@ const specOss: StageSpec<OssPose, BaseOpts> = {
     {
       to: { gather: 1, spic: 1, flat: 0.25, cart: 1 },
       run: [0.06, 0.92],
-      cam: TABLE(-5, -38, 14),
+      cam: TABLE(-4, -31, 15.8),
       fit: false,
       glide: 0.05,
       dim: ['osteoblastoak', 'hezur-espikulak', 'kartilago-eredua', 'kondrozitoak'],
       names: [
         BLOCK_L,
         BLOCK_R,
-        { id: 'osteoblastoak', sub: 'zuzenean, kartilagorik gabe', from: 0.15 },
+        { id: 'mesenkima', from: 0.35 },
+        { id: 'osteoblastoak', sub: 'zuzenean, kartilagorik gabe', from: 0.56 },
         { id: 'hezur-espikulak', from: 0.45 },
         { id: 'kartilago-eredua', text: 'Kartilagoa', sub: 'hezurraren eredua', from: 0.3 },
         { id: 'kondrozitoak', from: 0.6 },
@@ -69,13 +70,14 @@ const specOss: StageSpec<OssPose, BaseOpts> = {
     {
       to: { flat: 1, hyper: 1 },
       run: [0.05, 0.75],
-      cam: TABLE(-16, -40, 12.5, [-1.4, 0, 0]),
+      cam: TABLE(-6, -32, 15.7, [-0.17, 0, 0]),
       fit: false,
       glide: 0.05,
       dim: ['hezur-lauak', 'osteoblastoak'],
       names: [
         BLOCK_L,
         BLOCK_R,
+        { id: 'mesenkima', from: 0.35 },
         { id: 'hezur-lauak', text: 'Hezur laua', sub: 'azkar: dagoeneko bukatuta', from: 0.3 },
         { id: 'kartilago-eredua', text: 'Kartilagoa', sub: 'oraindik ez da hezurtu', from: 0.5 },
       ],
@@ -84,7 +86,7 @@ const specOss: StageSpec<OssPose, BaseOpts> = {
     {
       to: { bone: 0.62 },
       run: [0.05, 0.92],
-      cam: TABLE(14, -40, 12.5, [1.5, 0, 0]),
+      cam: TABLE(6, -32, 15.7, [0.17, 0, 0]),
       fit: false,
       glide: 0.05,
       dim: ['hezur-endokondrala', 'kondrozitoak', 'osteoblastoak'],
@@ -99,7 +101,7 @@ const specOss: StageSpec<OssPose, BaseOpts> = {
     {
       to: { bone: 1 },
       run: [0.04, 0.6],
-      cam: TABLE(0, -36, 15),
+      cam: TABLE(0, -32, 15.8),
       fit: false,
       glide: 0.05,
       dim: ['hezur-lauak', 'hezur-endokondrala'],
@@ -163,7 +165,7 @@ const specBase: StageSpec<BasePose, BaseOpts> = {
     {
       to: { mid: 1 },
       run: [0.06, 0.9],
-      cam: ABOVE(0, -22, 12),
+      cam: ABOVE(0, -24, 15.8),
       fit: false,
       glide: 0.06,
       dim: [...CARTS_MID],
@@ -179,7 +181,7 @@ const specBase: StageSpec<BasePose, BaseOpts> = {
     {
       to: { side: 1 },
       run: [0.06, 0.9],
-      cam: ABOVE(10, -20, 12),
+      cam: ABOVE(9, -23, 15.7),
       fit: false,
       glide: 0.05,
       dim: [...CARTS_SIDE],
@@ -189,7 +191,7 @@ const specBase: StageSpec<BasePose, BaseOpts> = {
     {
       to: { oMid: 1 },
       run: [0.06, 0.92],
-      cam: ABOVE(-8, -16, 11.5, [-0.4, 0, 0]),
+      cam: ABOVE(-7, -18, 15.5, [-0.15, 0, 0]),
       fit: false,
       glide: 0.05,
       dim: ['esklerotoma-okzipitalak', 'kartilago-parakordalak', 'okzipitalaren-oinaldea', 'hipofisi-kartilagoak', 'esfenoidesaren-gorputza', 'trenkada-kranialak', 'etmoidesa'],
@@ -199,7 +201,7 @@ const specBase: StageSpec<BasePose, BaseOpts> = {
     {
       to: { oSide: 1 },
       run: [0.06, 0.92],
-      cam: ABOVE(-14, -18, 11.5, [-0.8, 0, 0]),
+      cam: ABOVE(-10, -20, 15.6, [-0.2, 0, 0]),
       fit: false,
       glide: 0.05,
       dim: ['kapsula-periotikoa', 'harkaitza', 'hego-tenporala', 'esfenoidesaren-hego-handia', 'begizulo-hegoa', 'esfenoidesaren-hego-txikia'],
@@ -209,7 +211,7 @@ const specBase: StageSpec<BasePose, BaseOpts> = {
     {
       to: { squama: 1 },
       run: [0.05, 0.6],
-      cam: ABOVE(0, -12, 12.5),
+      cam: ABOVE(0, -14, 16.4),
       fit: false,
       glide: 0.05,
       warn: true,

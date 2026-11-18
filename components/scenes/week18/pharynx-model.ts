@@ -1,5 +1,6 @@
 import { add, mix3, type V3 } from '@/lib/three-d/math';
 import { curve3, grid, type Mesh } from '@/lib/three-d/mesh';
+import { partition } from '@/lib/three-d/sdf';
 import { cachedMesh } from '@/lib/three-d/mesh-cache';
 import { bean, mergeParts, vessel, type Parts, type VesselOptions } from '@/lib/three-d/organic';
 import type { Item3 } from '@/lib/three-d/scene';
@@ -106,6 +107,10 @@ export const PH0: PharynxPose = {
 };
 
 export interface PharynxOpts {
+  /** Limit a dissection to one arch, with the wall above and below it intact. */
+  peelBand?: readonly [level: number, halfHeight: number];
+  /** Show the lumen and its lips within the floor of the early pharyngeal section. */
+  inletY?: number;
   dim?: { ids: readonly string[]; k: number } | null;
 }
 
@@ -453,6 +458,33 @@ function capOf(cx: number, ry: number, facing: V3, dIn: number, dOut: number, in
   return { mesh: mk(32), hit: mk(10) };
 }
 
+// The inlet level is included in each floor mesh's cache key.
+const inletSplits = new WeakMap<Mesh, [Mesh, Mesh]>();
+function inletParts(mesh: Mesh, inside: (p: V3) => boolean) {
+  let parts = inletSplits.get(mesh);
+  if (!parts) {
+    parts = partition(mesh, inside);
+    inletSplits.set(mesh, parts);
+  }
+  return parts;
+}
+
+/** The artery and vein have different wall thicknesses on the cut.
+ * The nerve and cartilage present solid profiles in the same plane. */
+function coreSection(at: V3, r: number, kind: string, inner: number): Mesh {
+  const [x, y, z] = at;
+  return cachedMesh(`arch-core-section-${kind}`, [x, y, z, r], () => {
+    return grid(20, inner ? 3 : 1, (u, v) => {
+      const a = u * 2 * Math.PI;
+      // The first radial segment folds down to the recessed blood surface.
+      const rim = inner ? Math.max(0, (3 * v - 1) / 2) : v;
+      const radius = r * lerp(inner, 1, rim);
+      const depth = inner && v === 0 ? z + 0.007 : z - 0.001;
+      return [x + radius * Math.cos(a), y + radius * Math.sin(a), depth];
+    }, [x, y, z - 1]);
+  });
+}
+
 const BONE_I = ARCH.i;
 const BONE_II = ARCH.ii;
 
@@ -495,14 +527,18 @@ export function pharynxModel(pose: PharynxPose, o: PharynxOpts = {}) {
     e2y[i] = c.oy[i] - (dy / d) * te;
   }
   /** One side's skin and mesenchyme border, thinned onto the endoderm by its peel. */
+  const peelAt = (px: number, y: number) => o.peelBand
+    ? px * (1 - ss(0.38, 1, Math.abs(y - o.peelBand[0]) / o.peelBand[1]))
+    : px;
   const peeled = (px: number) => {
     if (px <= 0.001) return { ox: c.ox, oy: c.oy, ex: e2x, ey: e2y };
     const ox = new Float64Array(n), oy = new Float64Array(n), ex = new Float64Array(n), ey = new Float64Array(n);
     for (let i = 0; i < n; i++) {
-      ox[i] = lerp(c.ox[i], e1x[i] + 0.004, px);
-      oy[i] = lerp(c.oy[i], e1y[i], px);
-      ex[i] = lerp(e2x[i], e1x[i] + 0.002, px);
-      ey[i] = lerp(e2y[i], e1y[i], px);
+      const amount = peelAt(px, rows[i]);
+      ox[i] = lerp(c.ox[i], e1x[i] + 0.004, amount);
+      oy[i] = lerp(c.oy[i], e1y[i], amount);
+      ex[i] = lerp(e2x[i], e1x[i] + 0.002, amount);
+      ey[i] = lerp(e2y[i], e1y[i], amount);
     }
     return { ox, oy, ex, ey };
   };
@@ -510,7 +546,21 @@ export function pharynxModel(pose: PharynxPose, o: PharynxOpts = {}) {
   const dIn = (y: number) => D_IN(y);
   const ridgeK = (y: number) => 0.32 * (H_IN(y) * lobe(y));
   // The floor bulges towards the lumen where an arch lies.
-  const dInner = (y: number, a: number) => dIn(y) - (a > 0.2 ? ridgeK(y) * ss(0.2, 0.9, a) * pose.pouches : 0);
+  // The early section passes through arches IV/VI. The two raised lips and the
+  // recessed lumen belong to the lining itself, including as the camera turns.
+  const inlet = o.inletY;
+  const inletRadius = (x: number, dy: number) => Math.hypot(x / (0.145 + 0.035 * ss(-0.36, 0.24, dy)), dy / 0.38);
+  const dInner = (y: number, a: number) => {
+    const z = dIn(y) - (a > 0.2 ? ridgeK(y) * ss(0.2, 0.9, a) * pose.pouches : 0);
+    if (inlet === undefined || Math.abs(y - inlet) > 0.72 || a < 0.45) return z;
+    const angle = a * Math.PI / 2;
+    const x = c.ix[rowAt(y)] * Math.cos(angle);
+    const dy = y - inlet;
+    const lumen = 1 - ss(0.25, 1.04, inletRadius(x, dy));
+    const lips = gauss(x - 0.19, 0.10) * gauss(dy, 0.34);
+    return z + (0.43 * lumen - 0.105 * lips) / Math.sin(angle);
+  };
+  const floorDeps = inlet === undefined ? deps : [...deps, inlet];
   let fi: FullGrid | null = null;
   let fs: FullGrid | null = null;
   const innerG = () => (fi ??= sweep({ x: c.ix, y: c.iy, rows }, dInner, null, [0, 0, -60]));
@@ -520,7 +570,7 @@ export function pharynxModel(pose: PharynxPose, o: PharynxOpts = {}) {
   const skinG = (s: number) => {
     if (skin[s]) return skin[s]!;
     const pl = peeled(peelOf(s));
-    return (skin[s] = sweep({ x: pl.ox, y: pl.oy, rows }, (y) => lerp(D_OUT(y), dIn(y) + 0.08, peelOf(s)), s, [s * 60, 0, 60]));
+    return (skin[s] = sweep({ x: pl.ox, y: pl.oy, rows }, (y) => lerp(D_OUT(y), dIn(y) + 0.08, peelAt(peelOf(s), y)), s, [s * 60, 0, 60]));
   };
 
   const tint = clamp01(pose.tissue);
@@ -546,14 +596,23 @@ export function pharynxModel(pose: PharynxPose, o: PharynxOpts = {}) {
   CUTS.forEach((cu, k) => {
     const { id, groups } = lumenGroupOf(cu);
     const { col, deep } = inPartColor(cu);
-    items.push({ key: `in${k}`, id, groups, ...partsCached('ph18-in', deps, k, () => rowsOf(innerG(), cu.i0, cu.i1)), color: col, deep, tissue: 'epithelium', opacity: 1 });
+    const lining = partsCached('ph18-in', floorDeps, k, () => rowsOf(innerG(), cu.i0, cu.i1));
+    const item: Item3 = { key: `in${k}`, id, groups, ...lining, color: col, deep, tissue: 'epithelium', opacity: 1 };
+    if (inlet !== undefined && rows[cu.i1] < inlet + 0.39 && rows[cu.i0] > inlet - 0.39) {
+      // Both materials use the same surface normals across the threshold of the lumen.
+      const inside = (p: V3) => inletRadius(p[0], p[1] - inlet) < 0.78;
+      const [lumen, mucosa] = inletParts(lining.mesh, inside);
+      items.push({ ...item, mesh: mucosa, hit: mucosa });
+      if (lumen.idx.length) items.push({ key: `inlet${k}`, id: 'laringe-zuloa', mesh: lumen, hit: lumen,
+        color: '#9aa7b6', deep: '#566478', tissue: 'epithelium', calm: true, outline: false });
+    } else items.push(item);
     // Its outside shows only where a wall has been peeled off.
     if (Math.max(pose.peelL, pose.peelR) > 0.05)
-      items.push({ key: `sh${k}`, id, groups, ...partsCached('ph18-sh', deps, k, () => rowsOf(shellG(), cu.i0, cu.i1)), color: col, deep, tissue: 'epithelium', opacity: 1 });
+      items.push({ key: `sh${k}`, id, groups, ...partsCached('ph18-sh', floorDeps, k, () => rowsOf(shellG(), cu.i0, cu.i1)), color: col, deep, tissue: 'epithelium', opacity: 1 });
   });
 
   // The cut: per side, bands from the lumen out.
-  const cutDeps = (px: number) => [...deps, px];
+  const cutDeps = (px: number) => [...deps, px, ...(px ? o.peelBand ?? [] : [])];
   for (const s of [1, -1]) {
     const px = peelOf(s);
     const pl = peeled(px);
@@ -657,17 +716,20 @@ export function pharynxModel(pose: PharynxPose, o: PharynxOpts = {}) {
   pts['faringe-arraildurak'] = SX(-1, cleft(1));
   // Floor, lumen, germ layers.
   pts['faringe-hestea'] = [0, 0.1, D_IN(0.1) - 0.2];
-  pts['endodermoa'] = [tip(1)[0] - 0.25, 1.0, 0];
-  const lobeRow = rowMid(3);
+  const lobeRow = o.peelBand ? rowAt(o.peelBand[0]) : rowMid(3);
   pts['endodermoa'] = [c.ix[lobeRow] + 0.025, c.iy[lobeRow], -0.01];
   const lobeR2 = rowMid(2);
   pts['ektodermoa'] = [c.ox[lobeR2] - 0.025, c.oy[lobeR2], -0.01];
-  pts['mesenkima'] = [cm(3)[0] - 0.14, cm(3)[1] + 0.22, -0.01];
+  pts['mesenkima'] = o.peelBand
+    ? [(c.ix[lobeRow] + c.ox[lobeRow]) / 2 - 0.14, c.y[lobeRow] + 0.22, -0.01]
+    : [cm(3)[0] - 0.14, cm(3)[1] + 0.22, -0.01];
   pts['goragune-epikardikoa'] = [-c.ox[rowAt(-3.0)] + 0.25, -3.0, -0.01];
 
   // ———— the laryngeal orifice, on the floor ————
   const laY = -2.3;
-  if (pose.larynx > 0.01) {
+  if (inlet !== undefined) {
+    pts['laringe-zuloa'] = [0, inlet, dInner(inlet, 1)];
+  } else if (pose.larynx > 0.01) {
     const zf = dInner(laY, 1);
     put('la-rim', 'laringe-zuloa', blobParts({ center: [0, laY, zf - 0.015], radii: [0.17, 0.33, 0.07], rings: 10, sides: 18 }), '#e7bc4a', { deep: endoD, groups: [] }, pose.larynx);
     put('la-slit', 'laringe-zuloa', blobParts({ center: [0, laY, zf - 0.08], radii: [0.06, 0.25, 0.018], rings: 8, sides: 12 }), '#3a2410', { outline: false, tissue: 'membrane' }, pose.larynx);
@@ -693,12 +755,32 @@ export function pharynxModel(pose: PharynxPose, o: PharynxOpts = {}) {
         if (q.g <= 0.01) continue;
         const dx = q.off[0] * scale, dy = q.off[1] * scale;
         const r = q.r * scale * ss(0, 0.35, q.g);
+        // The dorsal section cuts all four structures in one plane.
+        const cut = o.peelBand !== undefined;
+        const cutZ = -0.009;
         const samples = 16;
         const arc: V3[] = Array.from({ length: samples }, (_, i) => {
           const a = (i / (samples - 1)) * q.end;
-          return [s * (cx0 + dx) * Math.cos((a * Math.PI) / 2), y0 + dy, 0.015 + Dm * Math.sin((a * Math.PI) / 2)] as V3;
+          const x = s * (cx0 + dx) * (cut && i === 1 ? 1 : Math.cos((a * Math.PI) / 2));
+          return [x, y0 + dy, (cut ? cutZ : 0.015) + Dm * Math.sin((a * Math.PI) / 2)] as V3;
         });
-        vess(`${q.key}${s}${lk}`, q.id, arc, q.c, { r0: r, r1: r * 0.92, sides: 10, n: 18, ref: [0, 1, 0] }, clamp01(q.g), 1, { deep: q.deep, tissue: q.key === 'ar' || q.key === 've' ? 'vessel' : q.key === 'ne' ? 'nerve' : 'cartilage', groups: q.key === 'ar' ? ['arkuko-arteria'] : undefined });
+        const blood = q.key === 'ar' || q.key === 've';
+        const surface: Partial<Item3> = { deep: q.deep, tissue: blood ? 'vessel' : q.key === 'ne' ? 'nerve' : 'cartilage',
+          groups: q.key === 'ar' ? ['arkuko-arteria'] : undefined };
+        const key = `${q.key}${s}${lk}`;
+        vess(key, q.id, arc, q.c, { r0: r, r1: r * 0.92, capStart: !cut, sides: cut ? 20 : 10, n: 18, ref: [0, 1, 0] },
+          clamp01(q.g), 1, surface);
+        if (cut && r > 0.001) {
+          const inner = q.key === 'ar' ? 0.61 : q.key === 've' ? 0.78 : 0;
+          const section = coreSection(arc[0], r, q.key, inner);
+          items.push({ key: key + '-cut', id: q.id, mesh: section, color: q.c, ...surface, outline: false });
+          if (blood) {
+            const [x, y, z] = arc[0];
+            const lumen = coreSection([x, y, z + 0.008], r * inner, q.key + '-blood', 0);
+            items.push({ key: key + '-blood', id: q.id, mesh: lumen, ...surface,
+              color: darker(q.deep), deep: darker(q.deep), outline: false });
+          }
+        }
         // Behind the cut each aortic arch runs on over the gut to the dorsal aorta (shown once the wall is off).
         if (q.key === 'ar' && pose.aortic > 0.01) {
           const a0 = arc[0];

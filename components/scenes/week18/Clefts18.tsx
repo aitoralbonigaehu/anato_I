@@ -97,7 +97,7 @@ export const ArchesV17 = poseStage17(specA, (p, o) => archVModel(p, o));
 // ———————————————————————————— 17: arkuaren-osagaiak ————————————————————————————
 
 export const S_INSIDE = [0, 0.2, 0.42, 0.64, 0.82] as const;
-const C_II = (d = 5.6, yaw = 176, elev = 4) => BACK(d, [2.0, 0.95, 0], yaw, elev);
+const C_II = (d = 7.2, yaw = 176, elev = 4) => BACK(d, [2.0, 0.95, 0], yaw, elev);
 
 const specB: StageSpec<ArchPose, Dim> = {
   S: S_INSIDE,
@@ -135,9 +135,10 @@ const specB: StageSpec<ArchPose, Dim> = {
       note: 'Mesenkiman hiru zelula mota: mesodermo paraxialekoak (gero muskuluak), gandor neuralekoak eta alboko mesodermokoak',
     },
     {
-      to: { artery: 1, vein: 1, nerve: 1, cartilage: 1 },
+      to: { artery: 1, vein: 1, nerve: 1, cartilage: 1, dissect: 1 },
       run: [0.06, 0.8],
-      cam: C_II(7, 180, 2),
+      cam: BACK(9.1, [1.72, 1.02, 0.52], 132, 14),
+      fit: false,
       glide: 0.06,
       dim: ['arkuko-arteria', 'arkuko-zaina', 'arkuko-nerbioa', 'arkuko-kartilagoa'],
       names: [
@@ -149,6 +150,7 @@ const specB: StageSpec<ArchPose, Dim> = {
       note: 'Arku bakoitzean, mesenkimaren barnean, orokorrean: zaina, arteria, nerbioa eta kartilagoa',
     },
     {
+      to: { dissect: 0 },
       cam: W(13.5, 0.5, 170, 8),
       glide: 0.05,
       dim: ['mesenkima', 'arkuko-kartilagoa'],
@@ -159,7 +161,7 @@ const specB: StageSpec<ArchPose, Dim> = {
       note: 'Zelula horiek bereizi egingo dira egitura ezberdinak emateko: mesodermo paraxialekoetatik, muskuluak',
     },
     {
-      cam: BACK(6.6, [2.2, 0.35, 0], 178, 6),
+      cam: BACK(7.4, [2.2, 0.35, 0], 160, 12),
       glide: 0.05,
       dim: ['faringe-arraildurak', 'lehen-arraildura', 'faringe-poltsak', 'lehen-poltsa'],
       names: [

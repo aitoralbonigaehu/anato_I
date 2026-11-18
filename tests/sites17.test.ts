@@ -102,7 +102,11 @@ describe('topic 17: the models in one body (the fetal skull)', () => {
       expect(dist(inV, inHead)).toBeLessThan(0.45);
     }
     // Seen from behind: the pharynx's floor (the laryngeal opening) is ventral to its arches.
-    const floor = toRoot(SITE17.archV, v.pts['laringe-zuloa']);
+    // Re-measure the rendered lumen too: a correct label over a misplaced opening would pass an anchor-only check.
+    const lumen = middle(v, it => it.id === 'laringe-zuloa');
+    const label = v.pts['laringe-zuloa'];
+    expect(Math.hypot(label[0] - lumen[0], label[1] - lumen[1])).toBeLessThan(0.1);
+    const floor = toRoot(SITE17.archV, lumen);
     const iv = toRoot(SITE17.archV, [0, v.pts['laugarren-arkua'][1], v.pts['laugarren-arkua'][2]]);
     expect(floor[2]).toBeGreaterThan(iv[2] + 0.3);
   });

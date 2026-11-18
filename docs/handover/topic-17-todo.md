@@ -1,5 +1,13 @@
 # Topic 17 (head and neck I: skull, arches, nerves, larynx): what is left (2026-11-16, late evening)
 
+## Four topic 17 scenes finished on 2026-11-17
+
+- **Ossification and cranial base.** Both tissue sections grow within continuous stromal surfaces. The cells and trabeculae follow those surfaces as bone develops. The cranial floor follows the three fossae and opens into the foramen magnum. The paired wings sit above the steep fossa margin throughout their morph.
+- **Pharyngeal arches and arch contents.** A local dissection of arch II shows the artery, vein, nerve and cartilage in situ. The opposite wall keeps their cut profiles. The artery and vein have distinct annular walls and recessed blood surfaces. The laryngeal inlet is part of the pharyngeal lining between IV and VI. Its rendered surface and its label both pass the ventral-position check. Topic 18 uses the original default pharynx.
+- **Review.** The 148 checks selected for topic 17 passed across six test files, including placement, content, label anchors and visibility. TypeScript passed. The desktop and tablet captures and the before-and-after comparison are in the session scratch directory `enbrioatlas-3d-1718-nov17`. The earlier muscle and dental worklists are outside this pass.
+
+## Historical handover from 2026-11-16
+
 Written for whoever picks topic 17 up next, from the final reports of the four agents (17-A sites/skull/base/bones/arches, 17-B notes/content/figures, 17-C nerves/larynx, 17-D muscles/arch map), who all stopped at 20:00, and from the lead's checks after the stop. **Nothing in this topic's new work has been seen on screen**: the one dev server was overloaded by twelve agents, and no flight or stage sheet came out. Nothing is committed.
 
 ## Done in the late-evening session (seen on screen at 1440, guard tests run)
