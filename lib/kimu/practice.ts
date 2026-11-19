@@ -5,13 +5,21 @@
  * same answer history as the Galderak panel, so the spaced review there counts it.
  */
 
-import { POOL, type PoolQuestion } from '@/content/pool';
+import type { PoolQuestion } from '@/content/pool';
 import { isDue, isMastered, type Answers } from '@/components/shell/answers';
 import type { KimuHere, KimuPractice } from './types';
 
 /** "Galdetu niri", "pregúntame", "quiz me"…: the student wants to practise, not to read. */
 const WANTS = /(galdetu niri|galde(?:ra|tu) (?:batzuk|bat)? ?egin|egidazu galdera|proba(?:tu)? nazazu|neure burua proba|errepas|pract?i(?:ca|ce|katu)|preg[uú]nta?me|hazme (?:unas )?preguntas|ponme a prueba|repaso|quiz me|test me|ask me)/i;
 export const wantsPractice = (question: string) => WANTS.test(question);
+
+/**
+ * The reviewed pool, loaded the first time a round is asked for: building it is about a second of work, and
+ * imported with the engine it froze every page (and the guide's Kimu demo) the moment Kimu woke up.
+ */
+let POOL: PoolQuestion[] = [];
+let loading: Promise<void> | null = null;
+export const loadPracticePool = () => (loading ??= import('@/content/pool').then((m) => void (POOL = m.POOL)));
 
 const usable = (q: PoolQuestion) => q.options.length >= 2 && q.answer >= 0 && q.answer < q.options.length && q.question.trim().length > 4;
 

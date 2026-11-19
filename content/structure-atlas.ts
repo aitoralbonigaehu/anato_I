@@ -231,8 +231,17 @@ export const atlasRelations: AtlasRelation[] = [...legacy, ...manual].filter(
 export const atlasOrigins = (id: string): AtlasRelation[] => atlasRelations.filter(r => r.to === id);
 export const atlasDerivatives = (id: string): AtlasRelation[] => atlasRelations.filter(r => r.from === id);
 
-/** Include definition ownership even when a course record has no illustrated appearance. */
+const topicsCache = new Map<string, number[]>();
+/**
+ * Include definition ownership even when a course record has no illustrated appearance. Asked for every
+ * card and scheme node on each render of the atlas, so each answer is kept once found.
+ */
 export function atlasTopics(id: string): number[] {
+  let hit = topicsCache.get(id);
+  if (!hit) topicsCache.set(id, (hit = topicsOf(id)));
+  return hit;
+}
+function topicsOf(id: string): number[] {
   if (!structures.has(id)) return [];
   return [...new Set([
     ...weeks.filter(w => w.structures.some(s => s.id === id)).map(w => w.week),
@@ -287,15 +296,19 @@ const keysOf = [...structures.values()].map(s => ({
   keys: [s.name, ...(s.aka ?? [])].map(n => plain(n).replace(/\(.*?\)/g, '').trim().replace(/a$/, '')).filter(k => k.length >= 6),
 }));
 
+/** One pattern per name, compiled once: they were compiled again for every sentence (a second at page open). */
+let namePatterns: { id: string; re: RegExp }[] | null = null;
+const patterns = () =>
+  (namePatterns ??= keysOf.flatMap(({ id, keys }) => keys.map(k => ({ id, re: new RegExp(`(^|[^a-z])${k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'g') }))));
+
 /** Structures a sentence names, in reading order; a name inside a longer one ("mesodermo" in "enbrioi barruko mesodermo") does not count. */
 export function namedIn(text: string): string[] {
   const t = plain(text);
   const hits: { id: string; at: number; end: number }[] = [];
-  for (const { id, keys } of keysOf)
-    for (const k of keys) {
-      const re = new RegExp(`(^|[^a-z])${k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'g');
-      for (let m; (m = re.exec(t)); ) hits.push({ id, at: m.index + m[1].length, end: m.index + m[0].length });
-    }
+  for (const { id, re } of patterns()) {
+    re.lastIndex = 0;
+    for (let m; (m = re.exec(t)); ) hits.push({ id, at: m.index + m[1].length, end: m.index + m[0].length });
+  }
   const kept = hits.filter(h => !hits.some(o => o !== h && o.at <= h.at && o.end >= h.end && o.end - o.at > h.end - h.at));
   return [...new Set(kept.sort((a, b) => a.at - b.at).map(h => h.id))];
 }
@@ -312,7 +325,9 @@ function confused(text: string, subject: string[]) {
   return [...subject, ...named, ...(subject.length + new Set(named).size < 2 ? namedIn(text).slice(0, 1) : [])];
 }
 
-const confusions: AtlasConfusion[] = (() => {
+/** Built the first time a structure's warnings are asked for (opening one), not while the page loads. */
+let confusionsCache: AtlasConfusion[] | null = null;
+const buildConfusions = (): AtlasConfusion[] => {
   const out: AtlasConfusion[] = [];
   const add = (text: string, ids: string[], where: string) => {
     const unique = [...new Set(ids)];
@@ -327,10 +342,10 @@ const confusions: AtlasConfusion[] = (() => {
       for (const text of [...(st.cautions ?? []), ...st.keyPoints]) if (CONFUSE.test(plain(text))) add(text, confused(text, []), where);
     }
   return out;
-})();
+};
 
 /** The notes' "ez nahastu" warnings that involve this structure and at least one other. */
-export const atlasConfusions = (id: string): AtlasConfusion[] => confusions.filter(c => c.ids.includes(id));
+export const atlasConfusions = (id: string): AtlasConfusion[] => (confusionsCache ??= buildConfusions()).filter(c => c.ids.includes(id));
 
 /** The structure an answer option *is* (its name, maybe with a case ending: "Esklerotomatik"), else null. */
 export function structureNamed(option: string): string | null {

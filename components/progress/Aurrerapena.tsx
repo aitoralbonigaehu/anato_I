@@ -4,7 +4,7 @@ import { studyKey } from '@/lib/study/storage-scope';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { BEL_ITEMS, BEL_SYSTEMS } from '@/content/belortzioak';
-import { POOL } from '@/content/pool';
+import { usePool } from '@/components/shell/usePool';
 import { weeks } from '@/content/registry';
 import { readCards, STORE as BEL_STORE, type Cards } from '@/lib/belortzioakCards';
 import { parseReviewProgress, STORAGE_KEY as SCHEME_KEY } from '@/lib/learning/scheme-review';
@@ -19,7 +19,6 @@ import { hueOf } from '@/components/shell/topicHue';
 import { Glyph } from './glyphs';
 import p from './aurrerapena.module.css';
 
-const Q_WEEK = new Map(POOL.map((q) => [q.id, q.week]));
 const TOPICS = weeks.map((w) => ({ week: w.week, title: w.title, ready: !isWip(w), stages: w.stages.map((s) => ({ id: s.id, title: s.title })) }));
 const SYSTEMS = BEL_SYSTEMS.map((s) => ({ id: s.id, title: s.short, keys: BEL_ITEMS.filter((x) => x.plate.system === s.id).map((x) => x.item.key) }));
 
@@ -58,6 +57,9 @@ export function Aurrerapena() {
   const visited = useVisitedAll();
   const answers = useAnswers();
   const { bel, scheme } = useCardStores();
+  // Which topic each question belongs to: from the bank, loaded once the page is idle (see usePool).
+  const bank = usePool();
+  const qWeek = useMemo(() => new Map(bank?.POOL.map((q) => [q.id, q.week]) ?? []), [bank]);
   const [now, setNow] = useState(0);
   useEffect(() => {
     const raf = window.setTimeout(() => setNow(Date.now()));
@@ -71,13 +73,13 @@ export function Aurrerapena() {
         activity,
         visited,
         answers,
-        questionWeek: (id) => Q_WEEK.get(id),
+        questionWeek: (id) => qWeek.get(id),
         bel,
         belSystems: SYSTEMS,
         scheme,
         topics: TOPICS,
       }),
-    [now, activity, visited, answers, bel, scheme],
+    [now, activity, visited, answers, bel, scheme, qWeek],
   );
 
   if (!now) return <div className={p.loading} aria-busy="true" />;

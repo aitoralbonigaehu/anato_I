@@ -3049,7 +3049,7 @@ kbd {
 .landing .rv {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 1s var(--ease), transform 1.1s var(--ease), filter 0.9s var(--ease);
+  transition: opacity 1s var(--ease), transform 1.1s var(--ease);
 }
 
 .landing.is-ready .rv {
@@ -3057,15 +3057,8 @@ kbd {
   transform: none;
 }
 
-/* The text comes into focus as the wordmark leaves it (the animated figure stays unfiltered). */
-.hero-text.rv,
-.hero-text .rv {
-  filter: blur(6px);
-}
-
-.landing.is-ready .hero-text .rv {
-  filter: none;
-}
+/* The text rises and fades in as the wordmark leaves (no blur: a blur on five text blocks repainted the whole
+   hero every frame of the reveal, while the page was still painting its first picture). */
 
 /* The bar fades in with the page instead of being there already behind the veil. */
 .landing .land-nav {

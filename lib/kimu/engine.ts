@@ -3,7 +3,7 @@ import { structures, weeks } from '@/content/registry';
 import type { Answers } from '@/components/shell/answers';
 import { evidenceOf, fairHit, intentOf, numbersIn, passagesOfSentences, searchNotes, sectionAsked, strongHit, warmNotes, type NotesContext, type NotesHit } from './notes';
 import { boldName, followupsFor, fromSentence, lineageOf, mentions, notesTarget, offlineReply, SAYS_WHERE, sourceOf, targetsOf, type Evidence } from './offline';
-import { pickPractice, wantsPractice } from './practice';
+import { loadPracticePool, pickPractice, wantsPractice } from './practice';
 import { CONFIDENT, confident, describeHere, factsFrom, GO, isFormationQuestion, nearestFrom, search, toTarget, vocabulary, wantsPlace, withFrom, type Hit } from './search';
 import { askingWord, detectLang, fold, keyWords, match, queryTokens, spell, tokens, topicIn, withoutTopic, type Lang } from './text';
 import type { KimuAsk, KimuHere, KimuModelReply, KimuReply, KimuTurn } from './types';
@@ -140,7 +140,10 @@ export interface AskOptions {
  */
 export async function askKimu(question: string, history: KimuTurn[], here: KimuHere | null, opts: AskOptions = {}): Promise<KimuReply> {
   const lang = detectLang(question);
-  if (wantsPractice(question)) return practiceReply(question, here, opts.answers ?? {}, lang);
+  if (wantsPractice(question)) {
+    await loadPracticePool();
+    return practiceReply(question, here, opts.answers ?? {}, lang);
+  }
 
   const intent = intentOf(question);
   // "Eraman nazazu X-ra", "llévame a X": where to see it from here, not how it forms.

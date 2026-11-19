@@ -15,6 +15,29 @@ const W = 1000;
 const H = 640;
 const noop = () => {};
 
+/**
+ * The drawings waiting their turn: one is drawn per idle moment, so a screenful of cards (each a whole scene)
+ * comes in one after another instead of freezing the page for seconds, on opening and while scrolling.
+ */
+const queue: { go: () => void; live: boolean }[] = [];
+let pumping = false;
+const idle = (f: () => void) => (window.requestIdleCallback ? window.requestIdleCallback(f, { timeout: 160 }) : window.setTimeout(f, 16));
+function pump() {
+  if (pumping) return;
+  pumping = true;
+  const step = () => {
+    let next = queue.shift();
+    while (next && !next.live) next = queue.shift();
+    if (!next) {
+      pumping = false;
+      return;
+    }
+    next.go();
+    idle(step);
+  };
+  idle(step);
+}
+
 /** Each structure's frame, found once per page visit (a card scrolled back into view reuses it). */
 const frames = new Map<string, Box | null>();
 
@@ -26,6 +49,7 @@ const frames = new Map<string, Box | null>();
 function AtlasMini({ id }: { id: string }) {
   const box = useRef<HTMLSpanElement>(null);
   const svg = useRef<SVGSVGElement>(null);
+  // Drawn once its turn comes while near the screen, then kept (scrolling back costs nothing).
   const [near, setNear] = useState(false);
   const [vb, setVb] = useState<Box | null | undefined>(() => frames.get(id));
   const [shot] = useState(() => shotsOf(id)[0]);
@@ -33,9 +57,28 @@ function AtlasMini({ id }: { id: string }) {
   useEffect(() => {
     const el = box.current;
     if (!el || typeof IntersectionObserver === 'undefined') return;
-    const io = new IntersectionObserver(([e]) => setNear(e.isIntersecting), { rootMargin: '320px 0px' });
+    let turn: { go: () => void; live: boolean } | null = null;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting && !turn) {
+          turn = { live: true, go: () => {
+            io.disconnect();
+            setNear(true);
+          } };
+          queue.push(turn);
+          pump();
+        } else if (!e.isIntersecting && turn) {
+          turn.live = false;
+          turn = null;
+        }
+      },
+      { rootMargin: '320px 0px' },
+    );
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      if (turn) turn.live = false;
+    };
   }, []);
 
   // Frame it once it is drawn: the box of its parts (the lit drawing), in scene units.

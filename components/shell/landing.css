@@ -205,8 +205,23 @@
   width: 100%;
   height: auto;
   aspect-ratio: 1000 / 640;
-  -webkit-mask-image: radial-gradient(ellipse 78% 76% at 50% 50%, #000 60%, transparent 100%);
-  mask-image: radial-gradient(ellipse 78% 76% at 50% 50%, #000 60%, transparent 100%);
+}
+
+/* The scene's edges fade into the frame. A vignette over it, not a mask on it: the reel redraws 30 times a
+   second, and a mask on the moving picture cost a masked repaint each frame (dropped frames while Home opens). */
+.lp-reel-tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(ellipse 78% 76% at 50% 50%, rgb(12 12 14 / 0) 60%, #0c0c0e 100%);
+}
+
+.lp-reel-hud,
+.lp-reel-tilt .vf,
+.lp-reel-tilt .hv-scrub {
+  z-index: 1;
 }
 
 /* The reel's own HUD names the moment; a scene's colour key would sit under it in the corner. */

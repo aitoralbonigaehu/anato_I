@@ -298,18 +298,28 @@ export default function ReleaseFilm(props: Props) {
       el.removeEventListener('webglcontextlost', loss);
     };
   }, []);
-  function start(audio: boolean) {
-    if (audio) {
-      try {
-        sound.current = soundtrack();
-        if (!ready) void sound.current.ctx.suspend();
-        setMuted(false);
-        setHasSound(true);
-      } catch {}
-    }
+  // Always with sound (it can be turned off while it plays). The browser lets it play only after a click
+  // on the page: one "Sartu", or none if the student has already clicked here (the film watched again).
+  function start() {
+    if (playback.current.started) return;
+    try {
+      sound.current = soundtrack();
+      if (!ready) void sound.current.ctx.suspend();
+      setMuted(false);
+      setHasSound(true);
+    } catch {}
     playback.current.started = true;
     setStarted(true);
   }
+  const begin = useRef(start);
+  useEffect(() => {
+    begin.current = start;
+  });
+  useEffect(() => {
+    if (!opening) return;
+    const nav = navigator as Navigator & { userActivation?: { hasBeenActive: boolean } };
+    if (nav.userActivation?.hasBeenActive) begin.current();
+  }, [opening]);
   function toggle() {
     playback.current.frozen = false;
     playback.current.paused = !paused;
@@ -325,8 +335,7 @@ export default function ReleaseFilm(props: Props) {
             <div className={s.threshold}>
               <i aria-hidden="true" />
               <div>
-                <button onClick={() => start(true)}>Sartu soinuarekin</button>
-                <button onClick={() => start(false)}>Soinurik gabe</button>
+                <button onClick={() => start()}>Sartu</button>
               </div>
             </div>
           )}

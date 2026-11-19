@@ -1,6 +1,6 @@
 import type { V3 } from '@/lib/three-d/math';
 import { curve3 } from '@/lib/three-d/mesh';
-import { cachedMesh } from '@/lib/three-d/mesh-cache';
+import { geoOf, geoSlot } from '@/lib/three-d/offthread';
 import { mergeParts, plate, vessel, type Parts, type VesselOptions } from '@/lib/three-d/organic';
 import { capsule, ellipsoid, partition, polygon2, prismZ, smin, surfaceMesh, type SDF } from '@/lib/three-d/sdf';
 import type { Item3 } from '@/lib/three-d/scene';
@@ -125,10 +125,7 @@ const groundF: SDF = (() => {
   const d2 = polygon2(OUTLINE);
   return prismZ(d2, BACK_Z, CUT_Z, 0.12);
 })();
-const GROUND = () => {
-  const m = cachedMesh('body19-ground', [0.035], () => surfaceMesh(groundF, [-1.4, -4.62, BACK_Z - 0.02], [1.4, 4.62, CUT_Z + 0.02], 0.035));
-  return m;
-};
+const GROUND = () => G().ground;
 const groundParts = (() => {
   let p: { cut: Parts; back: Parts } | null = null;
   return () => {
@@ -154,10 +151,7 @@ const columnF: SDF = (x, y, z) => {
   const sac = capsule([0.14, SACRUM_TOP - 0.06, -0.4], [0.05, SACRUM_BOT + 0.04, -0.42], 0.11, 0.05)(ax, y, z);
   return smin(d, sac, 0.04);
 };
-const COLUMN = (): Parts => ({
-  mesh: cachedMesh('body19-column', [0.02], () => surfaceMesh(columnF, [-0.3, SACRUM_BOT - 0.12, -0.52], [0.3, 3.42, -0.24], 0.02)),
-  hit: cachedMesh('body19-column-h', [0.05], () => surfaceMesh(columnF, [-0.3, SACRUM_BOT - 0.12, -0.52], [0.3, 3.42, -0.24], 0.05)),
-});
+const COLUMN = (): Parts => G().column;
 
 /** The skull's back half: a bony bowl behind the brain. */
 const B = ROOT19.brain;
@@ -166,10 +160,7 @@ const skullF: SDF = (x, y, z) => {
   const inner = ellipsoid([B[0], B[1] + 0.02, B[2] - 0.02], [0.37, 0.33, 0.46])(x, y, z);
   return smax(smax(outer, -inner, 0.01), z - (B[2] - 0.08), 0.02);
 };
-const SKULL = (): Parts => ({
-  mesh: cachedMesh('body19-skull', [0.02], () => surfaceMesh(skullF, [-0.45, 3.55, -0.55], [0.45, 4.45, -0.05], 0.02)),
-  hit: cachedMesh('body19-skull-h', [0.05], () => surfaceMesh(skullF, [-0.45, 3.55, -0.55], [0.45, 4.45, -0.05], 0.05)),
-});
+const SKULL = (): Parts => G().skull;
 
 /** The brain: two hemispheres with folds, the cerebellum behind and below, the brainstem down to the foramen. */
 const gyri = (x: number, y: number, z: number) => 0.012 * Math.sin(31 * x + 7 * z) * Math.sin(27 * y + 5 * x) * Math.sin(29 * z - 4 * y);
@@ -185,13 +176,30 @@ const cerebellumF: SDF = (() => {
   return (x, y, z) => c(Math.abs(x), y, z) + 0.006 * Math.sin(90 * y);
 })();
 const stemF: SDF = capsule([0, 3.86, -0.08], [ROOT19.magnum[0], ROOT19.magnum[1], ROOT19.magnum[2]], 0.075, 0.06);
-const sculpt = (key: string, f: SDF, lo: V3, hi: V3, step: number): Parts => ({
-  mesh: cachedMesh(`body19-${key}`, [step], () => surfaceMesh(f, lo, hi, step)),
-  hit: cachedMesh(`body19-${key}-h`, [step * 2.5], () => surfaceMesh(f, lo, hi, step * 2.5)),
+const sculpt = (f: SDF, lo: V3, hi: V3, step: number, hitStep = step * 2.5): Parts => ({
+  mesh: surfaceMesh(f, lo, hi, step),
+  hit: surfaceMesh(f, lo, hi, hitStep),
 });
-const CEREBRUM = () => sculpt('cerebrum', cerebrumF, [-0.4, 3.7, -0.46], [0.4, 4.36, 0.45], 0.016);
-const CEREBELLUM = () => sculpt('cerebellum', cerebellumF, [-0.3, 3.56, -0.44], [0.3, 3.84, -0.1], 0.016);
-const STEM = () => sculpt('stem', stemF, [-0.1, 3.32, -0.26], [0.1, 3.96, 0.02], 0.014);
+const CEREBRUM = () => G().cerebrum;
+const CEREBELLUM = () => G().cerebellum;
+const STEM = () => G().stem;
+
+/**
+ * The body's surfaces from distance fields (1.6 s of work in all): built once, off the main thread in the
+ * browser (the scenes wait with `useGeoReady`), here in the tests and on the server.
+ */
+function buildGeo() {
+  return {
+    ground: surfaceMesh(groundF, [-1.4, -4.62, BACK_Z - 0.02], [1.4, 4.62, CUT_Z + 0.02], 0.035),
+    column: sculpt(columnF, [-0.3, SACRUM_BOT - 0.12, -0.52], [0.3, 3.42, -0.24], 0.02, 0.05),
+    skull: sculpt(skullF, [-0.45, 3.55, -0.55], [0.45, 4.45, -0.05], 0.02, 0.05),
+    cerebrum: sculpt(cerebrumF, [-0.4, 3.7, -0.46], [0.4, 4.36, 0.45], 0.016),
+    cerebellum: sculpt(cerebellumF, [-0.3, 3.56, -0.44], [0.3, 3.84, -0.1], 0.016),
+    stem: sculpt(stemF, [-0.1, 3.32, -0.26], [0.1, 3.96, 0.02], 0.014),
+  };
+}
+export const BODY19_GEO = geoSlot('body19', buildGeo);
+const G = () => geoOf(BODY19_GEO);
 
 /** The cord, the conus and the filum terminale. */
 const CORD = (): Parts => {

@@ -1,6 +1,10 @@
 'use client';
 
-import { BP0, bodyModel, type BodyOpts, type BodyPose } from './body-model';
+import type { ComponentType } from 'react';
+import type { SceneProps } from '@/components/kit';
+import { Loading3D } from '@/components/kit/three/Stage3D';
+import { useGeoReady } from '@/lib/three-d/offthread';
+import { BODY19_GEO, BP0, bodyModel, type BodyOpts, type BodyPose } from './body-model';
 import { FRONT19, KEY19, LEFT19, endPose, poseStage19, type StageSpec } from './common';
 import { SITE19 } from './sites';
 import { C19 } from './tones';
@@ -12,6 +16,14 @@ import { C19 } from './tones';
 
 const CAP = 'Gorputz heldua, ornomuinetik koronalki moztuta (3D eredua): aurretik; gorputzaren ezkerra zure eskuinean';
 const build = (pose: BodyPose, opts: BodyOpts) => bodyModel(pose, opts);
+/** The body's surfaces come from the geometry worker (1.6 s that froze the page): the spinner until then. */
+function withGeo(View: ComponentType<SceneProps> & { geo?: string[] }) {
+  function Scene(props: SceneProps) {
+    return useGeoReady([BODY19_GEO]) ? <View {...props} /> : <Loading3D />;
+  }
+  Scene.geo = ['body19', ...(View.geo ?? [])];
+  return Scene;
+}
 const WHOLE = FRONT19(15.5, [0, 0.1, 0], 0, 4);
 const HEAD = (dist = 3.4, yaw = 0, elev = 6) => FRONT19(dist, [0, 3.98, -0.02], yaw, elev);
 const TRUNK = (dist = 8, y = 1.6, yaw = 0, elev = 4) => FRONT19(dist, [0, y, -0.1], yaw, elev);
@@ -65,7 +77,7 @@ const specIntro: StageSpec<BodyPose, BodyOpts> = {
     },
   ],
 };
-export const Intro19 = poseStage19(specIntro, build);
+export const Intro19 = withGeo(poseStage19(specIntro, build));
 
 // ———————————————————————— 2. Mozketak eta ardatzak (1.1, 1.2.1) ————————————————————————
 
@@ -167,7 +179,7 @@ const specCuts: StageSpec<BodyPose, BodyOpts> = {
     },
   ],
 };
-export const Cuts19 = poseStage19(specCuts, build);
+export const Cuts19 = withGeo(poseStage19(specCuts, build));
 
 // ———————————————————————— 3. Zentrala eta periferikoa (2) ————————————————————————
 
@@ -243,7 +255,7 @@ const specCns: StageSpec<BodyPose, BodyOpts> = {
     },
   ],
 };
-export const Cns19 = poseStage19(specCns, build);
+export const Cns19 = withGeo(poseStage19(specCns, build));
 
 // ———————————————————————— 4. Somatikoa eta autonomoa (2) ————————————————————————
 
@@ -319,7 +331,7 @@ const specAuto: StageSpec<BodyPose, BodyOpts> = {
     },
   ],
 };
-export const Auto19 = poseStage19(specAuto, build);
+export const Auto19 = withGeo(poseStage19(specAuto, build));
 
 // ———————————————————————— 9. Borondatezko mugimenduak (4) ————————————————————————
 
@@ -401,4 +413,4 @@ const specVol: StageSpec<BodyPose, BodyOpts> = {
     },
   ],
 };
-export const Voluntary19 = poseStage19(specVol, build);
+export const Voluntary19 = withGeo(poseStage19(specVol, build));

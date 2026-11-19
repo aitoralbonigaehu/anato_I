@@ -698,17 +698,32 @@
   gap: 14px;
   padding: 0;
   border: 0;
-  background: radial-gradient(circle at 50% 50%, rgb(var(--surface-rgb) / 0.55), rgb(var(--surface-rgb) / 0) 60%);
+  background: none;
   color: var(--text, #f5f2ec);
   font: inherit;
   cursor: pointer;
 }
-.kimu-cheer.is-in {
+/* The veil fades by opacity (composited), never by repainting its gradient. */
+.kimu-cheer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 50% 50%, rgb(var(--surface-rgb) / 0.55), rgb(var(--surface-rgb) / 0) 60%);
+  will-change: opacity;
+}
+.kimu-cheer.is-in::before {
   animation: kimu-cheer-veil 400ms ease-out both;
 }
-.kimu-cheer.is-home {
+.kimu-cheer.is-home::before {
   animation: kimu-cheer-veil-out 700ms ease-in both;
+}
+.kimu-cheer.is-home {
   pointer-events: none;
+}
+.kimu-cheer-face,
+.kimu-cheer-bubble {
+  will-change: transform, opacity;
 }
 .kimu-cheer-face {
   display: grid;
@@ -767,8 +782,7 @@
 }
 @keyframes kimu-cheer-veil-out {
   to {
-    background-color: transparent;
-    background-image: none;
+    opacity: 0;
   }
 }
 @keyframes kimu-cheer-pop {
@@ -829,7 +843,7 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .kimu-cheer.is-in,
+  .kimu-cheer.is-in::before,
   .kimu-cheer.is-in .kimu-cheer-face,
   .kimu-cheer.is-in .kimu-cheer-bubble {
     animation: none;

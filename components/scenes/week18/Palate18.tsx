@@ -1,6 +1,10 @@
 'use client';
 
 import { ARCH, BELOW, FRONT, SIDE, TISSUE, poseStage18, type StageSpec } from '@/components/scenes/week17/common';
+import { HeadMap, MAP_LEFT } from '@/components/scenes/week17/HeadMap';
+import { sectionShow } from '@/components/scenes/week14/Section14';
+import { mixHex } from '@/components/scenes/week10/model3d';
+import { PalateBelow, BELOW_LEFT } from './PalateBelow';
 import { CH0, PAL0, choanaModel, palateModel, type ChoanaPose, type PalateOpts, type PalatePose } from './palate-model';
 import { SITE18C, whereC } from './sites-c';
 
@@ -73,7 +77,7 @@ const specSeg: StageSpec<PalatePose, PalateOpts> = {
       run: [0.08, 0.8],
       cam: UNDER(10.5, 0.2),
       glide: 0.05,
-      dim: ['aho-sabai-gandorrak', 'aho-sabaiko-errafea', 'ebakortz-zuloa', 'hasierako-aho-sabaia'],
+      dim: ['aho-sabai-gandorrak', 'aho-sabaiko-errafea', 'ebakortz-zuloa', 'hasierako-aho-sabaia', 'luzapen-maxilarra'],
       names: [
         { id: 'aho-sabai-gandorrak', text: 'Aho sabaiaren plakak / gandorrak', sub: 'erdirantz doaz' },
         { id: 'aho-sabaiko-errafea', sub: 'ebakortz zuloan gelditzen da', from: 0.6 },
@@ -99,6 +103,21 @@ const specSh: StageSpec<PalatePose, PalateOpts> = {
   caption: CAP_COR,
   key: KEY_PAL,
   keyTitle: 'Koloreak',
+  // The same palate from below beside the cut, while the cut shows (steps 1–3): the notes' and textbooks' pair of
+  // figures for each week. When the 3D itself turns to look from below, "Non gaude?" comes back in its place.
+  section: (t, pose, lit) => {
+    const k = sectionShow(S_SH, [0, 1, 2], t);
+    return {
+      show: 1,
+      node: (
+        <>
+          <HeadMap focus="palate" show={1 - k} />
+          <PalateBelow pose={pose} lit={lit} show={k} />
+        </>
+      ),
+      left: k > 0.5 ? BELOW_LEFT : MAP_LEFT,
+    };
+  },
   steps: [
     {
       cam: COR(12.5, 0.1),
@@ -129,8 +148,10 @@ const specSh: StageSpec<PalatePose, PalateOpts> = {
       run: [0.05, 0.85],
       cam: COR(10, 0.1, 18, 12),
       glide: 0.05,
-      dim: ['aho-sabai-gandorrak'],
-      names: [{ id: 'aho-sabai-gandorrak', text: 'Gandorrak fusionatzen', sub: '9. astea, erdian: josturarik ez' }],
+      // The tongue and the septum stay in the picture: the shelves close the roof of the mouth above the tongue,
+      // under the nasal cavities.
+      dim: ['aho-sabai-gandorrak', 'mihia', 'sudur-trenkada', 'hasierako-aho-sabaia'],
+      names: [{ id: 'aho-sabai-gandorrak', text: 'Gandorrak fusionatzen', sub: '9. astea, erdian, aurretik atzera' }],
       note: '9. astea: bi gandorrak erdikaldean fusionatzen dira, aurretik atzera',
     },
     {
@@ -234,7 +255,7 @@ const specDef: StageSpec<PalatePose, PalateOpts> = {
   opts: {},
   caption: CAP_BELOW,
   key: [
-    { color: ARCH.i, text: 'aho sabai gogorra (plakak)' },
+    { color: mixHex(ARCH.i, TISSUE.bone, 0.62), text: 'aho sabai gogorra (hezurtzen da)' },
     { color: '#f6d95a', text: 'hasierako aho sabaia' },
     { color: '#e9a7a0', text: 'aho sabai biguna' },
   ],

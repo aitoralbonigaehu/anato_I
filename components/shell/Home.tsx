@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
 import { weeks } from '@/content/registry';
-import { POOL, compKey } from '@/content/pool';
+import { compKey } from '@/content/pool-keys';
+import { usePool } from './usePool';
 import { isDue, useAnswers } from './answers';
 import { StoryScroll } from './StoryScroll';
 import { HeroReel } from './HeroReel';
@@ -124,6 +125,7 @@ function ReviewCta() {
   const answers = useAnswers();
   const last = useLastPlace();
   const [now] = useState(() => Date.now());
+  const POOL = usePool()?.POOL ?? [];
   const due = new Set(POOL.filter((q) => isDue(answers[q.id], now)).map((q) => compKey(q.comp, q.concept))).size;
   if (!due) return null;
   const week = last && weeks.some((w) => w.week === last.week) ? last.week : firstReady.week;

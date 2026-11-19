@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
-import { KEY_IDS, POOL } from '@/content/pool';
+import { usePool } from './usePool';
 import { weeks } from '@/content/registry';
 import { competenceLevel, isDue, useAnswers } from './answers';
 import { useVisitedAll } from './progress';
@@ -125,8 +125,6 @@ const MAP: MapCard[] = weeks.map(
     },
 );
 
-const questionIds = POOL.map((q) => q.id);
-const competenceKeys = [...KEY_IDS.keys()];
 const stageTotal = weeks.reduce((n, w) => n + w.stages.length, 0);
 
 /** The mental map of the subject: one card per topic, each a chain of steps readable in seconds. */
@@ -158,6 +156,11 @@ export type RouteIcon = 'play' | 'clock' | 'tree' | 'image' | 'quiz' | 'check';
 export function useStudyRoute() {
   const visited = useVisitedAll();
   const answers = useAnswers();
+  // The bank comes a moment after the page (see usePool): until then these counts read 0.
+  const bank = usePool();
+  const questionIds = bank ? bank.POOL.map((q) => q.id) : [];
+  const KEY_IDS = bank?.KEY_IDS ?? new Map<string, string[]>();
+  const competenceKeys = [...KEY_IDS.keys()];
   const seen = weeks.reduce((n, w) => n + w.stages.filter((s) => visited[w.week]?.includes(s.id)).length, 0);
   const answered = questionIds.filter((id) => answers[id]).length;
   const mastered = competenceKeys.filter((k) => competenceLevel(answers, KEY_IDS.get(k) ?? []) === 'menderatuta').length;
@@ -169,7 +172,7 @@ export function useStudyRoute() {
     { n: '2', icon: 'clock', title: 'Kokatu denboran', text: 'Kronologian: zer dagoen egun bakoitzean, zer den berria eta zer desagertu den.', href: '/kronologia', state: 'Zer dago orain?' },
     { n: '3', icon: 'tree', title: 'Lotu jatorriak', text: 'Eratorrietan: egitura bakoitza nondik datorren eta zer bihurtzen den.', href: '/eratorriak', state: 'Nondik → zertan' },
     { n: '4', icon: 'image', title: 'Irakurri irudiak', text: 'Irudi-laborategian: etiketarik gabe, zuri-beltzean eta biratuta.', href: '/irudiak', state: 'Seinalatu · gezia · orientazioa' },
-    { n: '5', icon: 'quiz', title: 'Praktikatu', text: 'Galderak simulagailuan: noiz, nondik, nola, non, zertan eta zergatik.', href: '/astea/1', state: `${answered}/${questionIds.length} erantzunda`, part: answered / questionIds.length },
+    { n: '5', icon: 'quiz', title: 'Praktikatu', text: 'Galderak simulagailuan: noiz, nondik, nola, non, zertan eta zergatik.', href: '/astea/1', state: `${answered}/${questionIds.length} erantzunda`, part: answered / Math.max(1, questionIds.length) },
     { n: '6', icon: 'check', title: 'Menderatu', text: 'Azken 3 saiakerak ondo, galdera eta egun desberdinetan. Huts egindakoak «Errepasoa» moduan itzultzen dira.', href: '/astea/1', state: `${mastered}/${competenceKeys.length} gaitasun${missed ? ` · ${missed} errepasatzeko` : ''}`, part: mastered / Math.max(1, competenceKeys.length) },
   ];
   return route;

@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { KimuFace } from './KimuFace';
+import { WELCOME_SEEN } from '@/components/onboarding/visit';
+import { DEMO_NAME } from '@/lib/demo/demo-script';
 
 /** Cheered this session (sessionStorage): once per visit, like the opening. */
 const CHEER_KEY = 'enbrioatlas:kimu-animo';
@@ -27,29 +29,48 @@ export function KimuCheer() {
     const html = document.documentElement;
     const timers: number[] = [];
     let obs: MutationObserver | null = null;
+    // Once the page has settled (its first picture drawn, its scripts run): started while the page still
+    // works, the animation stuttered, and on a long page each of its frames cost a re-composite.
+    let idleId = 0;
     const show = (delay: number) => {
       obs?.disconnect();
       timers.push(
         window.setTimeout(() => {
-          try {
-            sessionStorage.setItem(CHEER_KEY, '1');
-          } catch {}
-          setPhase('in');
+          const go = () => {
+            try {
+              sessionStorage.setItem(CHEER_KEY, '1');
+            } catch {}
+            setPhase('in');
+          };
+          idleId = window.requestIdleCallback?.(go, { timeout: 2500 }) ?? window.setTimeout(go, 300);
         }, delay),
       );
     };
     // The opening plays only on the home page; wait for it to end so Kimu never covers it.
     const opening = () => !!document.querySelector('.intro') && html.dataset.intro !== 'seen';
-    if (opening()) {
+    // Nor the first visit's film and guide (a dialog that opens a moment after the page): Kimu cheered over
+    // the film and its frames stalled while both drew. It comes once the guide is closed.
+    const welcoming = () => {
+      if (document.querySelector('dialog[open]')) return true;
+      if (window.name === DEMO_NAME || location.pathname.startsWith('/dev')) return false;
+      try {
+        return localStorage.getItem(WELCOME_SEEN) !== '1';
+      } catch {
+        return false;
+      }
+    };
+    const busy = () => opening() || welcoming();
+    if (busy()) {
       obs = new MutationObserver(() => {
-        if (!opening()) show(350);
+        if (!busy()) show(350);
       });
       obs.observe(html, { attributes: true, attributeFilter: ['data-intro'] });
-      obs.observe(document.body, { childList: true, subtree: true });
+      obs.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['open'] });
     } else show(600);
     return () => {
       obs?.disconnect();
       timers.forEach((t) => window.clearTimeout(t));
+      if (idleId) (window.cancelIdleCallback ?? window.clearTimeout)(idleId);
     };
   }, []);
 
@@ -95,7 +116,8 @@ export function KimuCheer() {
     >
       <span className="kimu-cheer-bubble">Animo!!!!</span>
       <span className="kimu-cheer-face">
-        <KimuFace mood="happy" talking size={168} />
+        {/* Still mouth: the face's own SVG animations repaint on the main thread, every frame. */}
+        <KimuFace mood="happy" size={168} />
       </span>
     </button>
   );

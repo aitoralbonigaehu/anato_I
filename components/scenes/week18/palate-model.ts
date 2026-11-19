@@ -186,6 +186,10 @@ const Z_J = 1.6;
 const Z_END = 2.1;
 const Z_SOFT = -0.95;
 const T = 0.13;
+const LIFT = 0.006;
+/** The alveolar ridge's height: low enough to stand out under the face (seen from below), the teeth on it. */
+const RIDGE_Y = -0.66;
+const TOOTH_Y = -0.98;
 const X_ROOT = 1.25;
 const SHELF = ARCH.i;
 const PRIMARY = '#f6d95a';
@@ -204,6 +208,9 @@ const OPEN_WAY = mixHex(G18.cavity, '#b9c6e8', 0.4);
 const hw = (z: number) => (z <= Z_CUT ? X_ROOT : X_ROOT * Math.sqrt(Math.max(0, 1 - ((z - Z_CUT) / (Z_END - Z_CUT)) ** 2)));
 /** Half width of the primary triangle at z: nothing behind its apex at the foramen, then the two straight sides. */
 const tri = (z: number) => (z <= Z_F ? 0 : Math.min(hw(z), (z - Z_F) * ((hw(Z_J) as number) / (Z_J - Z_F))));
+
+/** The palate's plan for the 2D view from below drawn beside the 3D (Palate18): the same outline and stations. */
+export const PALATE_PLAN = { hw: (z: number) => hw(z), tri: (z: number) => tri(z), Z_BACK, Z_SOFT, Z_CUT, Z_F, Z_J, Z_END, X_ROOT } as const;
 
 const OUTER: P2[] = [[-1.5, -0.82], [-2.0, -0.55], [-2.2, 0.6], [-1.9, 2.1], [-0.9, 3.0], [0, 3.2], [0.9, 3.0], [1.9, 2.1], [2.2, 0.6], [2.0, -0.55], [1.5, -0.82]];
 const INNER: P2[] = [[-1.24, -0.62], [-1.3, -0.05], [-1.0, 0.45], [-0.85, 1.1], [-0.62, 1.95], [-0.3, 2.35], [0, 2.42], [0.3, 2.35], [0.62, 1.95], [0.85, 1.1], [1.0, 0.45], [1.3, -0.05], [1.24, -0.62]];
@@ -266,6 +273,8 @@ export function palateModel(pose: PalatePose, o: PalateOpts = {}) {
   const conch = clamp01(pose.conchae);
   const zFront = lerp(Z_CUT, Z_END - 0.01, whole);
   const zShelf = Math.min(zFront, Z_J);
+  /** A part's cut face sits a hair in front of the head's own (coplanar faces z-fight: torn, speckled edges). */
+  const zCap = (z: number) => (z >= zFront - 1e-6 ? z + LIFT : z);
 
   // ———— the upper face, solid, hollowed by the oronasal cavity ————
   {
@@ -286,6 +295,7 @@ export function palateModel(pose: PalatePose, o: PalateOpts = {}) {
   {
     const out = jaw * 2.4;
     const zs = [Z_BACK, Z_CUT];
+    const zsT = [Z_BACK, Z_CUT + LIFT];
     const ringJaw: P2[] = [...JAW_IN, ...[...JAW_OUT].reverse()].map(([x, y]): P2 => [x, y - out]);
     add('jaw', undefined, cachedMesh('palate-jaw', [r3(out)], () => loft([ringJaw, ringJaw], zs, XY, { capEnd: true })), CUT, { deep: CUT_DEEP, quiet: true, ground: true, opacity: 1 - ss(0.3, 1, jaw) });
     const oral: P2[] = [[-1.24, 0.08], [-1.24, -0.95], ...JAW_IN.slice(2, -2), [1.24, -0.95], [1.24, 0.08]];
@@ -305,7 +315,7 @@ export function palateModel(pose: PalatePose, o: PalateOpts = {}) {
       const u = Math.PI * (i / (n - 1));
       ringT.push([rx * Math.cos(u), cy - (cy + 2.15 + out) * 0.98 * Math.sin(u)]);
     }
-    add('tongue', 'mihia', cachedMesh('palate-tongue', [r3(cy), r3(rx), r3(ry)], () => loft([ringT, ringT], zs, XY, { capEnd: true })), TONGUE, { tissue: 'muscle', opacity: 1 - ss(0.3, 1, jaw) });
+    add('tongue', 'mihia', cachedMesh('palate-tongue', [r3(cy), r3(rx), r3(ry)], () => loft([ringT, ringT], zsT, XY, { capEnd: true })), TONGUE, { tissue: 'muscle', opacity: 1 - ss(0.3, 1, jaw) });
     pts['mihia'] = [0.2, cy - 0.05, Z_CUT + 0.02];
   }
 
@@ -358,10 +368,11 @@ export function palateModel(pose: PalatePose, o: PalateOpts = {}) {
     };
     const softC = clamp01(pose.soft);
     const deps = [r3(swing), r3(fuse), r3(grow), r3(zShelf), r3(pose.cleft)];
-    const zsHard = stations(Z_SOFT, zShelf, 44);
+    const zsHard = stations(Z_SOFT, zCap(zShelf), 44);
     const zsSoft = stations(Z_BACK, Z_SOFT, 18);
     const key = whole > 0.01 ? 1 : 0;
-    add('shelves-hard', 'aho-sabai-gandorrak', cachedMesh('palate-hard', [...deps, key], () => build(zsHard, false, true)), SHELF, { groups: ['aho-sabai-gogorra'], tissue: 'mesenchyme' });
+    // Told apart from the soft palate, the hard one turns to bone (its colour: what it becomes).
+    add('shelves-hard', 'aho-sabai-gandorrak', cachedMesh('palate-hard', [...deps, key], () => build(zsHard, false, true)), mixHex(SHELF, BONE, 0.62 * softC), { groups: ['aho-sabai-gogorra'], tissue: 'mesenchyme' });
     add('shelves-soft', 'aho-sabai-gandorrak', cachedMesh('palate-soft', [...deps, key], () => build(zsSoft, true, false)), mixHex(SHELF, SOFT, softC), { groups: ['aho-sabai-biguna'], tissue: 'mesenchyme' });
     // Anchors: inside each shelf at its middle, on the cut when cut, on its underside from below.
     const midA = 0.55;
@@ -386,14 +397,14 @@ export function palateModel(pose: PalatePose, o: PalateOpts = {}) {
       ring.push([-(0.1 + 0.04 * a + closes * 0.16 * ss(0.78, 1, a) ** 2) * lerp(round(a, 5), 1, closes), y]);
     }
     const ringAll: P2[] = [...ring, ...[...ring].reverse().map(([x, y]): P2 => [-x, y])];
-    const zs = [Z_BACK, Math.min(zFront, Z_J)];
+    const zs = [Z_BACK, zCap(Math.min(zFront, Z_J))];
     add('septum', 'sudur-trenkada', cachedMesh('palate-septum', [r3(yTip), r3(closes), r3(zs[1])], () => loft([ringAll, ringAll], zs, XY, { capEnd: true })), BONE, { deep: TISSUE.boneDeep, tissue: 'cartilage' });
     pts['sudur-trenkada'] = [0, lerp(2.2, 0.95, sept), zs[1] + 0.01];
   }
 
   // ———— the conchae, curling out of the side walls ————
   {
-    const zs = [Z_BACK, Z_CUT];
+    const zs = [Z_BACK, Z_CUT + LIFT];
     const defs = [
       { id: 'goiko-kornetea', y: 1.72, x: 0.7, L: 0.3, c: TISSUE.cartilage },
       { id: 'tarteko-kornetea', y: 1.2, x: 0.8, L: 0.36, c: TISSUE.cartilage },
@@ -440,15 +451,15 @@ export function palateModel(pose: PalatePose, o: PalateOpts = {}) {
       const open = seg < 0.97;
       add('primary', 'hasierako-aho-sabaia', cachedMesh('palate-primary', [r3(seg)], () => loft(zs.map(ringAt), zs, XY, { capEnd: true, skip: (_r, i) => open && (i === N - 1 || i === M - N - 1) })), PRIMARY, { groups: ['aho-sabai-gogorra', 'maxilar-arteko-segmentua'], opacity: show, tissue: 'mesenchyme' });
       pts['hasierako-aho-sabaia'] = [0.14, -T, 1.45];
-      pts['maxilar-arteko-segmentua'] = [0.2, -0.42, 2.1];
+      pts['maxilar-arteko-segmentua'] = [0.2, RIDGE_Y, 2.1];
       // The ridge: the maxillary processes round the sides, the segment at the front.
       for (const s of [-1, 1]) {
-        const line: V3[] = stations(Z_BACK, Z_J, 22).map((z) => [s * (hw(z) + 0.24), -0.42, z]);
+        const line: V3[] = stations(Z_BACK, Z_J, 22).map((z) => [s * (hw(z) + 0.24), RIDGE_Y, z]);
         tube(`ridge${s}`, 'luzapen-maxilarra', line, SHELF, 0.3, { opacity: show, tissue: 'mesenchyme' });
       }
-      pts['luzapen-maxilarra'] = [1.49, -0.72, -0.3];
+      pts['luzapen-maxilarra'] = [hw(-0.45) + 0.42, RIDGE_Y - 0.1, -0.45];
       const arc = (from: number, to: number, off: number): V3[] =>
-        stations(from, to, 18).map((t): V3 => [Math.sign(t) * Math.min(hw(Z_J) + 0.24, Math.abs(t)) + Math.sign(t) * off, -0.42, Z_END - 0.0 - (0.5 * Math.abs(t) * Math.abs(t)) / (hw(Z_J) + 0.24)]);
+        stations(from, to, 18).map((t): V3 => [Math.sign(t) * Math.min(hw(Z_J) + 0.24, Math.abs(t)) + Math.sign(t) * off, RIDGE_Y, Z_END - 0.0 - (0.5 * Math.abs(t) * Math.abs(t)) / (hw(Z_J) + 0.24)]);
       const A = hw(Z_J) + 0.24;
       if (open) {
         tube('ridge-seg-r', 'maxilar-arteko-segmentua', arc(-A, -0.001, sep), PRIMARY, 0.3, { opacity: show, groups: ['hasierako-aho-sabaia'] });
@@ -457,16 +468,13 @@ export function palateModel(pose: PalatePose, o: PalateOpts = {}) {
         tube('ridge-seg', 'maxilar-arteko-segmentua', arc(-A, A, 0), PRIMARY, 0.3, { opacity: show, groups: ['hasierako-aho-sabaia'] });
       }
     }
-    // The incisors and the other teeth, on the ridge.
+    // The 4 incisors on the intermaxillary segment (the notes name only these; other teeth would only crowd it).
     const teeth = clamp01(pose.teeth);
     if (teeth > 0.01) {
       const A = hw(Z_J) + 0.24;
-      const place = (t: number): V3 => [t, -0.74, Z_END - (0.5 * t * t) / A];
-      [-0.66, -0.22, 0.22, 0.66].forEach((t, i) => ball(`incisor${i}`, 'ebakortzak', place(t), [0.17, 0.14 * ss(0, 1, teeth) + 0.01, 0.11], '#fbf8ee', { tissue: 'bone', deep: '#9a927c' }));
+      const place = (t: number): V3 => [t, TOOTH_Y - 0.04, Z_END - (0.5 * t * t) / A];
+      [-0.66, -0.22, 0.22, 0.66].forEach((t, i) => ball(`incisor${i}`, 'ebakortzak', place(t), [0.19, 0.17 * ss(0, 1, teeth) + 0.01, 0.13], '#fbf8ee', { tissue: 'bone', deep: '#b3ab94' }));
       pts['ebakortzak'] = place(0.22);
-      for (const s of [-1, 1]) {
-        [1.3, 0.8, 0.3, -0.2, -0.7, -1.2].forEach((z, i) => ball(`tooth${s}${i}`, undefined, [s * (hw(z) + 0.24), -0.74, z], [0.14, 0.12, 0.17], '#efe9d8', { tissue: 'bone', deep: '#8a826d', quiet: true, opacity: teeth }));
-      }
     }
     ball('foramen', 'ebakortz-zuloa', [0, -T - 0.005, Z_F], [0.11, 0.03, 0.11], '#2a2230', { opacity: clamp01(pose.foramen), outline: false });
     pts['ebakortz-zuloa'] = [0, -T - 0.02, Z_F];
@@ -474,7 +482,7 @@ export function palateModel(pose: PalatePose, o: PalateOpts = {}) {
     if (raphe > 0.01) {
       const z1 = lerp(Z_F - 0.12, Z_BACK, raphe);
       tube('raphe', 'aho-sabaiko-errafea', [[0, -T - 0.005, Z_F - 0.12], [0, -T - 0.008, (Z_F - 0.12 + z1) / 2], [0, -T - 0.005, z1]], '#fff0c2', 0.025, { outline: false, tissue: 'membrane' });
-      pts['aho-sabaiko-errafea'] = [0, -T - 0.02, lerp(Z_F, Z_BACK, 0.4)];
+      pts['aho-sabaiko-errafea'] = [0, -T - 0.02, lerp(Z_F, Z_BACK, 0.75)];
     }
     const softK = clamp01(pose.soft);
     ball('uvula', 'ubula', [0, -0.2, Z_BACK - 0.14], [0.13, 0.3, 0.1], SOFT, { opacity: ss(0.15, 1, softK), groups: ['aho-sabai-biguna'] });

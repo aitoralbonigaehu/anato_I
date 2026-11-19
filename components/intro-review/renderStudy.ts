@@ -93,7 +93,7 @@ export async function openProjector(canvas: HTMLCanvasElement, signal: AbortSign
   const programs: WebGLProgram[] = [],
     buffers: WebGLBuffer[] = [],
     vaos: WebGLVertexArrayObject[] = [];
-  function pipeline(vs: string, fs: string) {
+  function link(vs: string, fs: string) {
     const p = gl!.createProgram()!;
     programs.push(p);
     for (const [type, text] of [
@@ -107,6 +107,27 @@ export async function openProjector(canvas: HTMLCanvasElement, signal: AbortSign
       gl!.deleteShader(s);
     }
     gl!.linkProgram(p);
+    return p;
+  }
+  // Every program is handed to the driver first and asked about only once all are built: asked one by one,
+  // each check waited for its compile, and the opening's "Sartu" screen froze for over a second. Where the
+  // browser compiles in the background (KHR_parallel_shader_compile), the page keeps drawing meanwhile.
+  const linked = {
+    volume: link(vertex, fragment),
+    finish: link(vertex, finishFragment),
+    particles: cloud ? link(grainsVertex, grainsFragment) : null,
+    motes: link(motesVertex, motesFragment),
+    palate: link(palateVertex, palateFragment),
+  };
+  const parallel = gl.getExtension('KHR_parallel_shader_compile');
+  if (parallel) {
+    const pending = Object.values(linked).filter((p): p is WebGLProgram => !!p);
+    while (!pending.every((p) => gl.getProgramParameter(p, parallel.COMPLETION_STATUS_KHR))) {
+      await new Promise((r) => setTimeout(r, 16));
+      if (signal.aborted) throw new DOMException('Aborted', 'AbortError');
+    }
+  }
+  function pipeline(p: WebGLProgram) {
     if (!gl!.getProgramParameter(p, gl!.LINK_STATUS)) throw Error(gl!.getProgramInfoLog(p) || 'Shader');
     const vao = gl!.createVertexArray()!;
     vaos.push(vao);
@@ -125,11 +146,11 @@ export async function openProjector(canvas: HTMLCanvasElement, signal: AbortSign
       },
     };
   }
-  const volume = pipeline(vertex, fragment),
-    finish = pipeline(vertex, finishFragment);
-  const particles = cloud ? pipeline(grainsVertex, grainsFragment) : null,
-    motes = pipeline(motesVertex, motesFragment);
-  const palate = pipeline(palateVertex, palateFragment);
+  const volume = pipeline(linked.volume),
+    finish = pipeline(linked.finish);
+  const particles = linked.particles ? pipeline(linked.particles) : null,
+    motes = pipeline(linked.motes);
+  const palate = pipeline(linked.palate);
   function buffer(data: ArrayBufferView<ArrayBuffer>, usage: number = gl!.STATIC_DRAW) {
     const buf = gl!.createBuffer()!;
     buffers.push(buf);
@@ -147,7 +168,10 @@ export async function openProjector(canvas: HTMLCanvasElement, signal: AbortSign
     total = cloud.byteLength / 6;
     const mask = masks(total);
     particles.use();
-    const coords = Float32Array.from(new Int16Array(cloud), (v) => v / 4096);
+    // A plain loop: Float32Array.from with a mapping function took a few hundred ms on the opening's load.
+    const raw = new Int16Array(cloud);
+    const coords = new Float32Array(raw.length);
+    for (let i = 0; i < raw.length; i++) coords[i] = raw[i] / 4096;
     buffer(coords);
     attribute(particles.p, 'surface', 3, gl.FLOAT);
     buffer(mask.text);

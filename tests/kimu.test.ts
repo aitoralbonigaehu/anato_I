@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
@@ -8,7 +8,7 @@ import { allPassages, intentOf, searchNotes } from '@/lib/kimu/notes';
 import { buildMessages } from '@/lib/kimu/prompt';
 import { CONFIDENT, fromHere, search, toTarget } from '@/lib/kimu/search';
 import { detectLang, fold, LAST_TOPIC, topicIn } from '@/lib/kimu/text';
-import { pickPractice, practiceScope, wantsPractice } from '@/lib/kimu/practice';
+import { loadPracticePool, pickPractice, practiceScope, wantsPractice } from '@/lib/kimu/practice';
 import type { KimuAsk, KimuModelReply } from '@/lib/kimu/types';
 import { FORMATIONS, formationFrame, formationOf } from '@/content/formation';
 import { POOL } from '@/content/pool';
@@ -349,6 +349,8 @@ describe('Kimu position: "take me to X" starts from where the student is', () =>
 });
 
 describe('Kimu practice: only the reviewed pool', () => {
+  // The engine loads the pool when a round is asked for; these call the picker directly.
+  beforeAll(() => loadPracticePool());
   afterEach(() => vi.unstubAllGlobals());
   /** The ids content/generate.ts filters out after its hand review, read from the source itself. */
   const filtered = (() => {

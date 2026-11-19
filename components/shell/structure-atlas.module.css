@@ -306,3 +306,7 @@
   .topics button, .viewToggle button, .studyBtn, .crumb button, .lineage button, .lineage b, .confusePair button, .mine li button { min-height: 40px; }
   .figureZoom { width: 40px; height: 40px; }
 }
+
+/* Sections off screen are neither laid out nor painted: the page holds hundreds of drawings, and any change
+   anywhere (a hover, Kimu) re-composited all of them, ~80 ms a frame. */
+.cardSection, .topicSection { content-visibility: auto; contain-intrinsic-size: auto 1400px; }

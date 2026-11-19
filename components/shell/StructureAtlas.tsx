@@ -1,11 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useEffectEvent, useRef } from 'react';
+import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { appearances, structures, weeks } from '@/content/registry';
 import { atlasConfusions, atlasDerivatives, atlasHref, atlasOrigins, atlasPath, atlasRelations, atlasTopics, structureNamed as optionStructure, type AtlasRelation } from '@/content/structure-atlas';
-import { POOL } from '@/content/pool';
+import { usePool, type BankQuestion } from './usePool';
 import { isDue, isMastered, useAnswers, type Answers } from './answers';
 import { AtlasFigure } from './AtlasFigure';
 import { AtlasCards } from './AtlasCards';
@@ -29,11 +29,22 @@ const edgeLabel = (edge: AtlasRelation) => edge.note?.startsWith('Egitura bera:'
 const treeLabel = (edge: AtlasRelation) => edge.kind === 'development' && !edge.note?.startsWith('Egitura bera:') ? null : edgeLabel(edge);
 
 /** Question-bank items about each structure (the simulator's "Galderak", filtered to one concept). */
-const QUESTIONS = new Map<string, string[]>();
-for (const q of POOL) if (q.concept) QUESTIONS.set(q.concept, [...(QUESTIONS.get(q.concept) ?? []), q.id]);
+const EMPTY: BankQuestion[] = [];
+/**
+ * The question bank, built in a worker after the page shows (see usePool): it only adds the review counts
+ * and the mix-ups (the atlas itself does not wait for it).
+ */
+function useBank() {
+  const b = usePool();
+  return useMemo(() => {
+    const questions = new Map<string, string[]>();
+    for (const q of b?.POOL ?? []) if (q.concept) questions.set(q.concept, [...(questions.get(q.concept) ?? []), q.id]);
+    return { pool: b?.POOL ?? EMPTY, questions };
+  }, [b]);
+}
 
 /** Structures with questions waiting for review today (wrong last time, or their review date has come), most first. */
-function dueToday(answers: Answers, now: number) {
+function dueToday(answers: Answers, now: number, QUESTIONS: Map<string, string[]>) {
   return [...QUESTIONS].map(([id, qs]) => ({ id, n: qs.filter((q) => isDue(answers[q], now)).length }))
     .filter((d) => d.n > 0 && structures.has(d.id)).sort((a, b) => b.n - a.n);
 }
@@ -46,7 +57,7 @@ const genitive = (name: string) => `${name.toLocaleLowerCase('eu')}${/[aeiou]$/i
  * structure's name where the right answer is another's (options that only mention one don't count). `instead`: they picked the other where this was
  * the answer; `picked`: they picked this where the other was.
  */
-function mixUps(id: string, answers: Answers) {
+function mixUps(id: string, answers: Answers, POOL: BankQuestion[]) {
   const found = new Map<string, { id: string; instead: number; picked: number }>();
   const bump = (other: string, side: 'instead' | 'picked') => {
     const m = found.get(other) ?? { id: other, instead: 0, picked: 0 };
@@ -172,6 +183,7 @@ export function StructureAtlas() {
   const searchRef = useRef<HTMLInputElement>(null);
   const filtersRef = useRef<HTMLElement>(null);
   const answers = useAnswers();
+  const { pool: POOL, questions: QUESTIONS } = useBank();
   // A new topic starts at the top of its list, just under the sticky bar, not somewhere down the old one.
   const shownTopic = useRef(topic);
   useEffect(() => {
@@ -298,10 +310,10 @@ export function StructureAtlas() {
     if (seen) seen.more++;
     else pairs.push({ ...c, more: 0 });
   }
-  const mine = selected ? mixUps(selected.id, answers) : [];
+  const mine = selected ? mixUps(selected.id, answers, POOL) : [];
   // eslint-disable-next-line react-hooks/purity -- review dates are compared with "now" on each render, on purpose
   const now = Date.now();
-  const due = dueToday(answers, now);
+  const due = dueToday(answers, now, QUESTIONS);
   const practiceHref = selected && asked.length
     ? scene ? sceneHref(scene, { galderak: selected.id }) : `/astea/${POOL.find((q) => q.concept === selected.id)!.week}?galderak=${selected.id}`
     : null;

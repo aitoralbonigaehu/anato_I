@@ -535,6 +535,8 @@ const failureStore = () => {
   try { return typeof window === 'undefined' ? null : window.sessionStorage; } catch { return null; }
 };
 const circuit = createRenderCircuit(failureStore());
+/** Pixels drawn per picture when WebGL runs on the processor (the GPU's budget is 2 M). */
+const SOFTWARE_PIXEL_BUDGET = 450_000;
 export const glWasLost = () => circuit.blocked;
 /** Called each time the GPU is lost or found unavailable (then `glWasLost()`); returns the unsubscribe. */
 export function onGLLost(cb: () => void) {
@@ -549,16 +551,27 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
   let hideTimer = 0;
   // Woken from the pool: the first frame drawn for the new view shows the canvas again.
   let waking = false;
-  const canvas = document.createElement('canvas');
+  let canvas = document.createElement('canvas');
   let renderer: WebGLRenderer;
+  // The GPU first. Without one (hardware acceleration off, or a browser that gave up on its GPU) the browser
+  // may still draw WebGL on the processor: slower, but the model itself, drawn smaller and without the
+  // occlusion pass. The coarse flat picture only where there is no WebGL at all.
+  let software = false;
   try {
     renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true, premultipliedAlpha: true, powerPreference: 'default', failIfMajorPerformanceCaveat: true });
   } catch {
-    circuit.unavailable();
-    return null;
+    try {
+      canvas = document.createElement('canvas');
+      renderer = new WebGLRenderer({ canvas, antialias: false, alpha: true, premultipliedAlpha: true, powerPreference: 'default', failIfMajorPerformanceCaveat: false });
+      software = true;
+    } catch {
+      circuit.unavailable();
+      return null;
+    }
   }
   const maxDimension = Math.min(renderer.capabilities.maxTextureSize, renderer.getContext().getParameter(renderer.getContext().MAX_RENDERBUFFER_SIZE));
-  const ratioFor = (w: number, h: number) => renderRatio(w, h, window.devicePixelRatio || 1, maxDimension);
+  const ratioFor = (w: number, h: number) =>
+    software ? Math.min(1, renderRatio(w, h, window.devicePixelRatio || 1, maxDimension), Math.sqrt(SOFTWARE_PIXEL_BUDGET / (Math.max(1, w) * Math.max(1, h)))) : renderRatio(w, h, window.devicePixelRatio || 1, maxDimension);
   renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
   renderer.setClearColor(0x000000, 0);
   host.appendChild(canvas);
@@ -641,7 +654,7 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
   fsQuad.frustumCulled = false;
   const fsScene = new Scene();
   fsScene.add(fsQuad);
-  const aoOk = aoAllowed();
+  const aoOk = !software && aoAllowed();
   let aoT: { n: WebGLRenderTarget; a: WebGLRenderTarget; b: WebGLRenderTarget } | null = null;
   const dropAO = () => {
     if (!aoT) return;

@@ -199,6 +199,16 @@ html[data-journey-loading] body::after {
   0%, 88% { opacity: 1; }
   100% { opacity: 0; visibility: hidden; }
 }
+/* Under the veil the page is not painted at all: painting the whole home page there kept the GPU busy, and
+   the film's first frame waited ~0.7 s for it. Shown again with the veil's end if the journey never opens
+   (once it opens, journey.module.css takes over). */
+html[data-journey-loading] body > :not(dialog):not(script):not(style) {
+  animation: journey-under 8s step-end both;
+}
+@keyframes journey-under {
+  0% { visibility: hidden; }
+  100% { visibility: visible; }
+}
 @media (prefers-reduced-motion: reduce) {
   .acc-dialog[open] { animation: none; }
 }
