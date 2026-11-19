@@ -38,8 +38,8 @@ export const stages17g: StageDef[] = [
       {
         at: S_PAIRS[1],
         notes: ['w17/2.1/p4/s5', 'w17/2.1/p5/s1-s2'],
-        idea: 'Aurretik atzera: I usaimena, II ikusmena, III okulomotorea, IV patetikoa, V trigeminoa, VI kanpoko okulomotorea.',
-        text: 'Aurretik atzera izendatzen dira, zenbaki erromatarrekin. I. usaimen-nerbioak, II. ikusmen-nerbioak, III. okulomotorea, IV. patetiko-troklearra, V. trigeminoa eta VI. kanpoko nerbio okulomotorea.',
+        idea: 'Aurretik atzera: I usaimena, II ikusmena, III okulomotorra, IV patetikoa, V trigeminoa, VI kanpoko okulomotorra.',
+        text: 'Aurretik atzera izendatzen dira, zenbaki erromatarrekin. I. usaimen-nerbioak, II. ikusmen-nerbioak, III. okulomotorra, IV. patetiko-troklearra, V. trigeminoa eta VI. kanpoko nerbio okulomotorra.',
         focus: ['usaimen-nerbioa', 'ikusmen-nerbioa', 'okulomotorea', 'patetikoa', 'trigeminoa', 'kanpoko-okulomotorea'],
         view: '3d',
       },

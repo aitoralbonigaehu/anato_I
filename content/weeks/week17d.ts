@@ -212,7 +212,7 @@ export const stages17d: StageDef[] = [
       },
       {
         at: SB3[2],
-        notes: ['w17/2.4.3/p2/s1', 'w17/2.4.3/p4/s2'],
+        notes: ['w17/2.4.3/p2/s1', 'w17/2.4.3/p4/s1'],
         idea: 'Estilofaringeoa: estiloidetik faringera; igo eta zabaldu.',
         text: 'Hirugarren arkutik muskulu estilofaringeoa eratzen da, estiloide apofisitik faringera: faringea igo eta zabaldu egiten du.',
         focus: ['muskulu-estilofaringeoa'],
@@ -221,7 +221,7 @@ export const stages17d: StageDef[] = [
       },
       {
         at: SB3[3],
-        notes: ['w17/2.4.3/p3/s1-s6', 'w17/2.4.3/p4/s1'],
+        notes: ['w17/2.4.3/p3/s1-s6', 'w17/2.4.3/p3/s6'],
         idea: 'Muskulu sakonak: goiko ertzatzaileak, III. arkutik.',
         text: 'I. eta II. arkuetako muskuluak nahiko azalekoak ziren; III., IV. eta VI. arkuetakoak, aldiz, sakonagoak. Faringeak hiru talde muskulu ertzatzaile ditu, faringea estutzeko: goikoak, tartekoak eta behekoak. Goikoak hirugarren arkutik datoz eta nerbio glosofaringeoak mugitzen ditu.',
         focus: ['goiko-muskulu-ertzatzaileak'],
@@ -230,7 +230,7 @@ export const stages17d: StageDef[] = [
       },
       {
         at: SB3[4],
-        notes: ['w17/2.4.3/p4/s2'],
+        notes: ['w17/2.4.3/p4/s1'],
         idea: 'Biek degluzioan parte hartzen dute.',
         text: 'Bi muskulu mota hauek degluzioan parte hartzen dute, elikagaiak pasatzean, faringearen uzkurketa emanez.',
         focus: ['muskulu-estilofaringeoa', 'goiko-muskulu-ertzatzaileak'],

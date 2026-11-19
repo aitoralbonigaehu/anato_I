@@ -460,6 +460,21 @@ a.lp-card-in:hover .lp-shot svg {
   transform: scale(1.06);
 }
 
+/* A 3D topic's poster (public/topic-shots): the same entrance, mask and hover as a live scene. */
+.lp-shot.is-poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: lp-shot-in 0.9s var(--ease) both;
+  transition: transform 1.2s var(--ease);
+  -webkit-mask-image: radial-gradient(ellipse 78% 76% at 50% 50%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 78% 76% at 50% 50%, #000 62%, transparent 100%);
+}
+a.lp-card-in:hover .lp-shot.is-poster img {
+  transform: scale(1.06);
+}
+
 .lp-card-n,
 .lp-card-new {
   position: absolute;
@@ -666,7 +681,8 @@ a.lp-card-in:hover .lp-card-go span {
   .lp-aurora,
   .lp-reel-tilt,
   .lp-card-in,
-  .lp-shot svg {
+  .lp-shot svg,
+  .lp-shot.is-poster img {
     transition: none;
     animation: none;
   }

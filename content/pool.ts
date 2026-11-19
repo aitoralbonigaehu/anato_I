@@ -8,19 +8,11 @@ import { generated, type Skill } from './generate';
 import { contrastChecks } from './klasea';
 import { structures, weeks } from './registry';
 import type { Competence } from '@/lib/sim/types';
+import { COMPETENCES, compKey, imageId } from './pool-keys';
 
 export type { Competence };
 
-export const COMPETENCES: { id: Competence; label: string; hint: string }[] = [
-  { id: 'noiz', label: 'Noiz?', hint: 'Kronologia: eguna, astea, ordena, zer dagoen eta zer ez' },
-  { id: 'jatorria', label: 'Nondik?', hint: 'Jatorria: zein egitura edo ernetze orritatik dator' },
-  { id: 'eraketa', label: 'Nola sortzen da?', hint: 'Eraketa: prozesuaren urratsak' },
-  { id: 'kokapena', label: 'Non?', hint: 'Kokapena: non dagoen eta zeren artean' },
-  { id: 'erlazioak', label: 'Erlazioak', hint: 'Zer den zer, zerekin jarraitzen duen, zer osatzen duten' },
-  { id: 'patua', label: 'Zertan bihurtzen da?', hint: 'Patua: eratorriak eta helmuga' },
-  { id: 'kausa', label: 'Zergatik?', hint: 'Kausalitatea: zerk eragiten duen' },
-  { id: 'irudia', label: 'Irudian', hint: 'Irudi batean ezagutzea (Aurkitu)' },
-];
+export { COMPETENCES, compKey, imageId };
 export const competenceLabel = Object.fromEntries(COMPETENCES.map((c) => [c.id, c.label])) as Record<Competence, string>;
 
 export type Source = 'apunteak' | 'urratsa' | 'sortua' | 'klasea';
@@ -162,10 +154,6 @@ const klasea: PoolQuestion[] = contrastChecks().map(({ week, stage, check: k }) 
 
 export const POOL: PoolQuestion[] = [...notes, ...micro, ...gen, ...klasea];
 
-/** Competence key: what "mastering" is measured on (a structure × a competence, or a competence alone). */
-export const compKey = (comp: Competence, concept?: string) => `${comp}:${concept ?? '*'}`;
-/** The id under which an image-recognition attempt ("Aurkitu") is recorded. */
-export const imageId = (concept: string) => `irudia:${concept}`;
 
 /** Every recorded id that feeds a competence key (questions + image attempts). */
 export const KEY_IDS: Map<string, string[]> = (() => {

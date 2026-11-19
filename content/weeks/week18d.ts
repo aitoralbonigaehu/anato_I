@@ -22,7 +22,7 @@ export const stages18d: StageDef[] = [
     beats: [
       {
         at: S_LAM[0],
-        notes: ['w18/4.2/p1/s1', 'w18/4.2/p2/s1', 'w18/4.2/p3/s1-s4'],
+        notes: ['w18/4.2/p2/s1', 'w18/4.2/p3/s1-s4'],
         idea: '8. astean epitelioa lodiagotzen da, C forman: hortz-laminak.',
         text: 'Hortzak eta haginak berdin eratzen dira. 8. astean, maxilar eta barailaren gaineko epitelioan (ektodermoa) lodiunea agertzen da, C forma bat sortuz: hortz-laminak. Bi masailetan gertatzen da, nahiz eta irudian aho-sabaikoa bakarrik agertu.',
         focus: ['hortz-lamina'],
@@ -71,9 +71,9 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_CAP[1],
-        notes: ['w18/4.2/p5/s3-s4'],
+        notes: ['w18/4.2/p6/s1-s3'],
         idea: 'Txanoak bi epitelio ditu; barrukoaren azpian, hortz-papila.',
-        text: 'Txanoak kanpoko epitelioa eta barneko epitelioa ditu. Barneko epitelioaren barnean, txanoz inguratuta, mesenkimako zelula batzuk bereizten dira: hortz-papila.',
+        text: 'Txanoak kanpoko epitelioa eta barneko epitelioa ditu. Barneko epitelioaren barnean, txanoz inguratuta, mesenkimako zelula batzuk (gandor neuraletik datozenak) bereizten dira: hortz-papila.',
         focus: ['kanpoko-epitelioa', 'barneko-epitelioa', 'hortz-papila'],
         view: '3d',
         ask: {
@@ -85,7 +85,7 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_CAP[2],
-        notes: ['w18/4.2/p6/s2-s3'],
+        notes: ['w18/4.2/p7/s2-s3'],
         idea: '3. hilabetean kanpaia: behin betiko hortzaren forma, gutxi gorabehera.',
         text: 'Txanoa sakontzen da eta kanpai forma hartzen du: kanpai aroa, garapenaren 3. hilabetean. Kanpai forma, gutxi gorabehera, behin betiko hortzaren forma izango da.',
         focus: ['kanpaia'],
@@ -94,7 +94,7 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_CAP[3],
-        notes: ['w18/4.2/p6/s1'],
+        notes: ['w18/4.2/p7/s1'],
         idea: 'Kanpaia laminatik askatzen da.',
         text: 'Aurrerago, txanoa laminatik (kanpoko epiteliotik) askatzen da eta mesenkiman geratzen da.',
         focus: ['hortz-lamina', 'kanpaia'],
@@ -117,7 +117,7 @@ export const stages18d: StageDef[] = [
     beats: [
       {
         at: S_LAY[0],
-        notes: ['w18/4.2/p7/s1', 'w18/4.2/p8/s1-s2', 'w18/4.2/p9/s4', 'w18/4.2/p10/s1', 'w18/4.2/p15/s1'],
+        notes: ['w18/4.2/p8/s1', 'w18/4.2/p9/s1-s2', 'w18/4.2/p11/s1', 'w18/4.2/p12/s1', 'w18/4.2/p17/s1'],
         idea: 'Ameloblastoak epiteliotik; odontoblastoak papilatik.',
         text: 'Kanpaian zelula mota desberdinak daude. Kanpaiaren epiteliotik ameloblastoak sortzen dira. Hortz-papilatik odontoblastoak bereizten dira, kanpaiaren barneko epitelioaren kontra.',
         key: 'Hortz laminatik esmaltea; beste egitura guztiak papilatik.',
@@ -127,9 +127,9 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_LAY[1],
-        notes: ['w18/4.2/p8/s3', 'w18/4.2/p10/s2', 'w18/4.2/p14/s1'],
+        notes: ['w18/4.2/p9/s3', 'w18/4.2/p12/s2-s4', 'w18/4.2/p16/s1'],
         idea: 'Esmaltea koroan, dentinaren gainean; dentina barrura hazten da.',
-        text: 'Ameloblastoek esmaltea ematen dute: dentinaren gainean, kanpotik, koroan bakarrik, hortzaren lepoa arte. Odontoblastoek dentina eratzen dute. Biak muga beretik hazten dira, bakoitza bere aldera.',
+        text: 'Ameloblastoek esmaltea ematen dute: dentinaren gainean, kanpotik, koroan bakarrik, hortzaren lepoa arte. Esmaltea gorputzaren ehunik gogorrena da: dentina babesten du. Odontoblastoek dentina eratzen dute (marradun geruza), eta dentinak ematen dio hortzari sentsibilitatea. Biak muga beretik hazten dira, bakoitza bere aldera.',
         focus: ['esmaltea', 'dentina'],
         view: '3d',
         ask: {
@@ -141,7 +141,7 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_LAY[2],
-        notes: ['w18/4.2/p9/s1-s3', 'w18/4.2/p16/s1-s3'],
+        notes: ['w18/4.2/p10/s1-s3', 'w18/4.2/p18/s1-s3'],
         idea: 'Pulpa zabala da hasieran, eta estutzen da dentina loditzean.',
         text: 'Kanpaiaren erdian hortz-pulpa dago, papilatik eratua. Hasieran zabala da, eta gero estutuz eta luzatuz doa dentina loditzean. Bertatik pasatzen dira hortza odoleztatzeko arteria eta zainak, eta inerbatzeko nerbioa.',
         focus: ['hortz-pulpa', 'pulpa-hodiak', 'pulpa-nerbioa'],
@@ -149,7 +149,7 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_LAY[3],
-        notes: ['w18/4.2/p9/s2'],
+        notes: ['w18/4.2/p10/s2'],
         idea: 'Sustraia behera hazten da, dentinaz; pulpa luzatu eta estutzen da.',
         text: 'Sustraia behera hazten da, hezurrerantz. Hortzak luzatu ahala, pulpa estutzen doa.',
         focus: ['dentina', 'hortz-pulpa'],
@@ -157,7 +157,7 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_LAY[4],
-        notes: ['w18/4.2/p11/s1-s4', 'w18/4.2/p12/s1', 'w18/4.2/p14/s2-s4'],
+        notes: ['w18/4.2/p13/s1-s4', 'w18/4.2/p14/s1', 'w18/4.2/p16/s2-s4'],
         idea: 'Zementoa sustraiaren kanpoan, dentina babesten.',
         text: 'Odontoblasto batzuk gehiago bereizten dira eta zementoblasto bihurtzen dira; hauek zementoa eratzen dute, dentinaren kanpoko aldean. Dentina (sentsibilitatea duen eremua) babesten du, nerbioak bertara iristen baitira.',
         caution: 'Apunteek diote dentina "barnetik zementoz" babestuta dagoela eta "sustraitik hurbileko dentinari zemento" esaten zaiola. Haien irudiak zementoa sustraiaren KANPOAN jartzen du, dentinaren gainean; hala marraztu dugu. Zementoa eta dentina ez dira gauza bera.',
@@ -167,7 +167,7 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_LAY[5],
-        notes: ['w18/4.2/p13/s1'],
+        notes: ['w18/4.2/p15/s1'],
         idea: 'Lotailu periodontalak zementoa eta albeoloko hezurra lotzen dituzte.',
         text: 'Zementoaren eta hezurraren albeoloen artean lotailu periodontalak daude (lotailu finak), hortza edo hagina hezurrera lotzeko: sustraiak indartsu eusteko.',
         focus: ['lotailu-periodontalak', 'albeoloa'],
@@ -175,7 +175,7 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_LAY[6],
-        notes: ['w18/4.2/p17/s1'],
+        notes: ['w18/4.2/p19/s1'],
         idea: 'Hortzak albeoloetan kokatuta; kanpoan ikusten dena koroa da.',
         text: 'Hortzak, maxilarrean zein barailan, albeoloetan kokatuta geratzen dira. Hortzetan kanpoan ikusten den atalari koroa deritzo.',
         focus: ['koroa'],
@@ -199,7 +199,7 @@ export const stages18d: StageDef[] = [
     beats: [
       {
         at: S_JAW[0],
-        notes: ['w18/4.2/p18/s1', 'w18/4.2/p19/s1'],
+        notes: ['w18/4.2/p20/s1', 'w18/4.2/p21/s1'],
         idea: 'Behin-behinekoak jaio ostean: 6. hilabetetik 24.era.',
         text: 'Bi hortz mota daude. Behin-behineko hortzak (esnekoak) jaio ostean ateratzen dira, gutxi gorabehera 6. hilabetetik bigarren urtera (24. hilabetea).',
         focus: ['esne-hortzak'],
@@ -208,7 +208,7 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_JAW[1],
-        notes: ['w18/4.2/p20/s1', 'w18/4.2/p21/s1'],
+        notes: ['w18/4.2/p22/s1', 'w18/4.2/p23/s1'],
         idea: 'Behin betikoak jaio aurreko 3. hilabetetik, hezurraren barnean.',
         text: 'Behin betiko hortzak jaio aurretik eratzen dira, 3. hilabetean, hezurraren barnean (baraila eta maxilarra). 5 urteko ume batek bi ilarak ditu: esnekoak goian eta behin betikoak hezurrean.',
         focus: ['behin-betiko-hortzak'],
@@ -217,7 +217,7 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_JAW[2],
-        notes: ['w18/4.2/p20/s2-s3', 'w18/4.2/p22/s1-s2'],
+        notes: ['w18/4.2/p22/s2-s3', 'w18/4.2/p24/s1-s2'],
         idea: 'Behin betikoek sakatzen dituzte esnekoak: 6 urte inguru.',
         text: 'Lehenengo ilaran behin-behinekoak daude, bigarrenean behin betikoak; hauek 6 urte inguruan ateratzen hasten dira. Esne-hortzak ez dira bere kabuz jausten: behin betikoek sakatzen edo mugitzen dituzte.',
         focus: ['behin-betiko-hortzak', 'esne-hortzak'],
@@ -225,7 +225,7 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_JAW[3],
-        notes: ['w18/4.2/p22/s3'],
+        notes: ['w18/4.2/p24/s3'],
         idea: 'Agenesia: behin betikoa ez bada eratu, esnekoa ez da jausten.',
         text: 'Behin betikoren bat eratu ez bada (agenesia), behin-behinekoa ez da jausiko, ez baitu ezerk sakatzen.',
         focus: ['agenesia', 'esne-hortzak'],
@@ -239,9 +239,9 @@ export const stages18d: StageDef[] = [
       },
       {
         at: S_JAW[4],
-        notes: ['w18/4.2/p22/s3'],
+        notes: ['w18/4.2/p24/s3'],
         idea: '14–16 urte bitartean atera egin behar da.',
-        text: 'Azkenean atera egin behar da, 14–16 urte bitartean: behin-behineko hortz bat ez dago prestatuta helduetan irauteko, eta kariesekin arazoak sortzen dira.',
+        text: 'Azkenean atera egin behar da, 14–16 urte bitartean, eta beste bat jarri: behin-behineko hortz bat ez dago prestatuta helduetan irauteko, eta kariesekin arazoak sortzen dira.',
         focus: ['esne-hortzak'],
         view: '3d',
       },

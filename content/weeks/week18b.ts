@@ -21,7 +21,7 @@ export const stages18b: StageDef[] = [
     beats: [
       {
         at: S_SORRERA[0],
-        notes: ['w18/3/p1/s1', 'w18/3/p2/s1', 'w18/3/p3/s1-s2', 'w18/3/p9/s1-s2'],
+        notes: ['w18/3/p2/s1', 'w18/3/p3/s1-s2', 'w18/3/p9/s1-s2', 'w18/3/p10/s1'],
         recall: ['faringe-hestea'],
         idea: 'Tiroidea 4. astean hasten da, gorago, eta gero beheratzen da.',
         key: 'Tiroidea ez da lepoan sortzen: mihiaren atzean sortzen da eta lepora bidaiatzen du.',
@@ -34,7 +34,7 @@ export const stages18b: StageDef[] = [
         at: S_SORRERA[1],
         notes: ['w18/3/p4/s1', 'w18/3/p5/s1'],
         idea: 'Zoruan, tuberkulu bakoitiaren eta kupularen artean, luzapen bat sartzen da mesenkimarantz.',
-        text: 'Hurbilduta: faringearen zoruan, estomodeoaren atzean, zulo itsuaren mailan (tuberkulu bakoitiaren eta kupularen artean), luzapen edo ebaginazio bat agertzen da eta mesenkimarantz sartzen da.',
+        text: 'Hurbilduta: faringearen zoruan, mihiaren gorputzaren eta sustraiaren artean (estomodeoaren atzean), zulo itsuaren mailan (tuberkulu bakoitiaren eta kupularen artean), luzapen edo ebaginazio bat agertzen da eta mesenkimarantz sartzen da.',
         focus: ['zulo-itsua', 'tuberkulu-bakoitia', 'kopula'],
         exam: 'Tiroidea zulo itsuaren mailan: tuberkulu bakoitiaren eta kupularen artean.',
         view: '3d',

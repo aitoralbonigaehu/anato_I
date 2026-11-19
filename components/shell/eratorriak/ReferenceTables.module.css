@@ -114,3 +114,9 @@
 .reveal[aria-expanded='true'] { min-height: 32px; color: var(--text-3); font-size: 12px; }
 .archTable .reveal { padding-inline: 4px; }
 .legend button, .ask button { min-height: 40px; }
+
+/* Level filters: on = tinted in its own colour; off = a quiet outline, still readable (not "disabled"). */
+.legend button[aria-pressed='true'] { opacity: 1; background: color-mix(in oklab, var(--level) 11%, var(--surface)); border-color: color-mix(in oklab, var(--level) 45%, var(--line-2)); color: var(--text); }
+.legend button[aria-pressed='true']:hover { border-color: var(--level); }
+.legend button[aria-pressed='false'] { opacity: 1; background: transparent; border-color: var(--line); color: var(--text-3); }
+.legend button[aria-pressed='false'] span { color: var(--text-4); }

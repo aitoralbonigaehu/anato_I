@@ -1,1 +1,23 @@
 /* Interface polish: sim-head. Loaded after every other global sheet. */
+
+/* The stage list opened from the heading is a sheet over the picture: above the picture's own
+   pills (orientation, tools), which live in the viewport's later stacking layer. */
+.app .stage > .stage-bar:has(.snav.is-open),
+.app:not(.is-focus) .stage > .stage-bar:has(.snav.is-open) {
+  z-index: 30;
+}
+
+/* The key cap takes the sheet's own colours (a white tile with an unreadable "[" on the dark sheet). */
+:root .snav-sheet .snav-pin kbd,
+:root[data-theme] .snav-sheet .snav-pin kbd {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border: 1px solid rgb(var(--fg-rgb) / 0.22);
+  border-radius: 5px;
+  background: var(--surface-2);
+  color: var(--text);
+  box-shadow: none;
+  font-size: 11px;
+  line-height: 16px;
+}

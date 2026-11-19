@@ -29,6 +29,23 @@ describe('fused learning maps', () => {
     }
   });
 
+  it('gives every branch of the topics 15–19 mind maps a visible relationship label', () => {
+    const checkEdges = (node: MNode) => {
+      for (const child of node.kids ?? []) {
+        expect(child.via?.trim(), child.id ?? child.label).toBeTruthy();
+        checkEdges(child);
+      }
+    };
+    const maps = LEARNING_MAPS.filter((map) => map.week >= 15);
+    expect([...new Set(maps.map((map) => map.week))]).toEqual([15, 16, 17, 18, 19]);
+    for (const map of maps) {
+      map.roots.forEach(checkEdges);
+      for (const flow of map.details) flow.roots.forEach(checkEdges);
+    }
+    expect(maps.filter((map) => map.week === 17).flatMap((map) => map.roots.map((root) => root.id)))
+      .toEqual(expect.arrayContaining(['lehen-arkua', 'bigarren-arkua', 'hirugarren-arkua', 'laugarren-arkua', 'seigarren-arkua']));
+  });
+
   it('merges shared prefixes while keeping distinct notes and incoming relationships separate', () => {
     const source: MNode[] = [
       { id: 'origin', kids: [{ label: 'a', note: 'left', via: 'move', move: true }] },

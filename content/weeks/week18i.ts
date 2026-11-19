@@ -22,7 +22,7 @@ export const stages18i: StageDef[] = [
     beats: [
       {
         at: SD[0],
-        notes: ['w18/1.2/p8/s1-s2'],
+        notes: ['w18/1.2/p6/s1-s2'],
         idea: 'Abiapuntua: 3. poltsakoa goian, 4. poltsakoa behean.',
         text: 'Nola jaisten dira egiturak? Faringea atzetik ikusten ari gara. Bakarra den timoa bi aldeetan eratzen da, 3. poltsetan. Oraindik goian daude timoa eta 3. poltsako paratiroidea; 4. poltsako paratiroidea beherago dago.',
         focus: ['timoa', 'beheko-paratiroidea', 'goiko-paratiroidea'],
@@ -30,7 +30,7 @@ export const stages18i: StageDef[] = [
       },
       {
         at: SD[1],
-        notes: ['w18/1.2/p8/s2-s3'],
+        notes: ['w18/1.2/p6/s2-s3'],
         idea: 'Timoa jaisten da erdialdera eta beheko paratiroidea berekin darama.',
         text: 'Timoa alde medialera jaisten da. Beherantz desplazatzen doan heinean, 3. poltsan eratzen den beheko paratiroide guruina harekin desplazatzen du, eta horregatik tiroide guruinaren behekaldean kokatzen da.',
         focus: ['timoa', 'beheko-paratiroidea'],
@@ -38,7 +38,7 @@ export const stages18i: StageDef[] = [
       },
       {
         at: SD[2],
-        notes: ['w18/1.2/p8/s4', 'w18/1.2/p8/s8'],
+        notes: ['w18/1.2/p6/s4', 'w18/1.2/p6/s8'],
         idea: 'Gurutzaketa: izena amaierako lekutik dator.',
         text: 'Goiko paratiroide guruinak ez dira horrenbeste jaisten: 4. poltsan eratu arren, timoaren gorago gelditzen dira, eta horregatik deitzen dira goiko paratiroide guruinak. Goiko eta beheko izenak behin betiko kokapenetik datoz, ez jatorritik.',
         focus: ['goiko-paratiroidea', 'beheko-paratiroidea'],
@@ -52,7 +52,7 @@ export const stages18i: StageDef[] = [
       },
       {
         at: SD[3],
-        notes: ['w18/1.2/p8/s5-s7', 'w18/1.2/p8/s9-s10'],
+        notes: ['w18/1.2/p6/s5-s7', 'w18/1.2/p6/s9-s10'],
         idea: 'U forma: aurretik kartilagoak inguratu, atzean lau paratiroide.',
         text: 'Tiroide guruinak U forma dauka: aurrekaldetik laringeko kartilagoak inguratzen ditu, eta atzetik irekita gelditzen da. Atzekalde horretan, lau muturretan, lau paratiroide guruin daude: bi goiko eta bi beheko.',
         focus: ['tiroide-lobuluak', 'laringeko-kartilagoak'],
@@ -82,7 +82,7 @@ export const stages18i: StageDef[] = [
     beats: [
       {
         at: SM[0],
-        notes: ['w18/3/p10/s1-s3'],
+        notes: ['w18/3/p11/s1-s3'],
         idea: 'Bi lobulu luzanga kartilagoak besarkatzen.',
         text: 'Tiroide guruinak bi lobulu ditu, eskuineko bat eta ezkerreko bat. Biak luzangak dira eta laringeko kartilagoak besarkatzen dituzte.',
         focus: ['tiroide-lobuluak', 'laringeko-kartilagoak'],
@@ -90,7 +90,7 @@ export const stages18i: StageDef[] = [
       },
       {
         at: SM[1],
-        notes: ['w18/3/p10/s3'],
+        notes: ['w18/3/p11/s3'],
         idea: 'Istmoa: lotura aurrekaldean.',
         text: 'Bi lobuluak aurrekaldetik lotuta daude eremu estu batez: istmoa.',
         focus: ['tiroide-istmoa'],
@@ -98,7 +98,7 @@ export const stages18i: StageDef[] = [
       },
       {
         at: SM[2],
-        notes: ['w18/3/p10/s4-s8'],
+        notes: ['w18/3/p11/s4-s5', 'w18/3/p12/s1-s3'],
         idea: 'Atzetik: irekita, lau paratiroide. 7. astean helduta.',
         text: 'Orain eredua aurretik atzera biratuko dugu. Atzetik lobuluak ez daude lotuta, eta bertan ikusten dira goiko eta beheko paratiroide guruinak: bi goiko eta bi beheko. Hau da egitura guztien behin betiko kokapena; 7. astean tiroidea helduta dago, eta jaio aurreko 3. hilabetean funtzionala izaten hasten da.',
         focus: ['goiko-paratiroidea', 'beheko-paratiroidea'],
@@ -106,7 +106,7 @@ export const stages18i: StageDef[] = [
       },
       {
         at: SM[3],
-        notes: ['w18/3/p11/s1-s3'],
+        notes: ['w18/3/p13/s1-s3'],
         idea: 'Piramide itxurako lobulua: anomalia arrunta, arazorik gabe.',
         text: 'Aurrera itzuli gara. Pertsona batzuetan (%50 edo gehiago) anomalia bat agertzen da, ezkerreko lobuluarekin edo istmoarekin erlazionatuta: piramide itxurako lobulua. Hodi tiroglosoaren azken atala ondo endekatzen ez bada gelditzen da, eta ez du arazorik ematen.',
         focus: ['piramide-lobulua'],
@@ -114,7 +114,7 @@ export const stages18i: StageDef[] = [
       },
       {
         at: SM[4],
-        notes: ['w18/3/p12/s1-s4'],
+        notes: ['w18/3/p14/s1-s4'],
         idea: 'Timoa tiroidearen azpian; pubertarotik endekatu.',
         text: 'Timoa ere lepo mailara jaisten da eta tiroide guruinaren behekaldean gelditzen da. Tamaina handia du enbrioi aroan eta pubertarora arte garatzen jarraitzen du; pubertarotik aurrera endekatuz doa, eta helduetan ia ez du funtziorik eta tamaina eskasekoa da.',
         focus: ['timoa'],

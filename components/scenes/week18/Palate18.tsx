@@ -154,7 +154,7 @@ const specSh: StageSpec<PalatePose, PalateOpts> = {
       names: [
         { id: 'aho-sabai-gogorra', text: 'Hezurrezko aho sabaia', sub: '3 atalak batera' },
       ],
-      note: 'Hiru atalak: hezurrezko aho sabaia. Atzekaldean 3 hezurtxo palatino (ez da garrantzitsua)',
+      note: 'Hiru atalak: hezurrezko aho sabaia. Atzekaldean 3 hezurtxo palatino',
     },
   ],
 };

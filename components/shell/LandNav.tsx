@@ -77,6 +77,7 @@ export function LandFoot({ children }: { children?: ReactNode }) {
           <Link href="/berriak">Berriak</Link>
           <Link href="/aurrerapena">Aurrerapena</Link>
           <WelcomeLink />
+          <WelcomeLink screen="film">EnbrioAtlas V2 · Sarrera</WelcomeLink>
         </nav>
         <nav className="foot-col" aria-label="Praktikatu">
           <p>Praktikatu</p>

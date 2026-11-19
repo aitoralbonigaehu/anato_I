@@ -49,7 +49,7 @@ export const stages17i: StageDef[] = [
       },
       {
         at: S_MAP[2],
-        notes: ['w17/2.4.2/p3/s1', 'w17/2.4.2/p3/s2', 'w17/2.4.2/p3/s3', 'w17/2.4.1/p3/s1', 'w17/2.4.1/p3/s2', 'w17/2.4.3/p3/s6', 'w17/2.4.3/p4/s1', 'w17/2.4.3/p4/s2'],
+        notes: ['w17/2.4.2/p3/s1', 'w17/2.4.2/p3/s2', 'w17/2.4.2/p3/s3', 'w17/2.4.1/p3/s1', 'w17/2.4.1/p3/s2', 'w17/2.4.3/p3/s6', 'w17/2.4.3/p3/s6', 'w17/2.4.3/p4/s1'],
         idea: 'III. arkua: IX, hioidearen behekoa, estilofaringeoa.',
         text: 'Hirugarren arkua, IX.a, glosofaringeoa. Ez du beste bien bezalako kartilagorik: hioidearen gorputzaren beheko erdia eta adar nagusiak bakarrik ematen ditu; goiko erdia eta adar txikiak II. arkutik datoz. Muskuluak, sakonagoak: estilofaringeoa eta faringearen goiko ertzatzaileak.',
         focus: ['hirugarren-arkua'],

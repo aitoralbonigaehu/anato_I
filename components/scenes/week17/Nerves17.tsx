@@ -54,7 +54,7 @@ const EYE = ['okulomotorea', 'patetikoa', 'kanpoko-okulomotorea'];
 const TXT = {
   'usaimen-nerbioa': 'usaimena',
   'ikusmen-nerbioa': 'ikusmena',
-  okulomotorea: 'okulomotorea',
+  okulomotorea: 'okulomotorra',
   patetikoa: 'patetikoa',
   trigeminoa: 'trigeminoa',
   'kanpoko-okulomotorea': 'kanpoko okul.',
@@ -82,10 +82,10 @@ const pairsSteps: Step<NervePose, NerveOpts>[] = [
     names: [
       nameOf('usaimen-nerbioa', 'I. usaimen-nerbioa', LEFT),
       nameOf('ikusmen-nerbioa', 'II. ikusmen-nerbioa', RIGHT),
-      nameOf('okulomotorea', 'III. okulomotorea', LEFT),
+      nameOf('okulomotorea', 'III. okulomotorra', LEFT),
       nameOf('patetikoa', 'IV. patetiko-troklearra', RIGHT),
       nameOf('trigeminoa', 'V. trigeminoa', LEFT),
-      nameOf('kanpoko-okulomotorea', 'VI. kanpoko okulomotorea', RIGHT),
+      nameOf('kanpoko-okulomotorea', 'VI. kanpoko okulomotorra', RIGHT),
     ],
     note: 'Aurretik atzera zenbatzen dira, zenbaki erromatarrekin',
   },
@@ -128,9 +128,9 @@ const pairsSteps: Step<NervePose, NerveOpts>[] = [
     dim: EYE,
     marks: NUM(EYE),
     names: [
-      nameOf('okulomotorea', 'III. okulomotorea', LEFT, 'begia mugitu'),
+      nameOf('okulomotorea', 'III. okulomotorra', LEFT, 'begia mugitu'),
       nameOf('patetikoa', 'IV. patetiko-troklearra', RIGHT, 'begia mugitu'),
-      nameOf('kanpoko-okulomotorea', 'VI. kanpoko okulomotorea', LEFT, 'begia mugitu'),
+      nameOf('kanpoko-okulomotorea', 'VI. kanpoko okulomotorra', LEFT, 'begia mugitu'),
     ],
     note: 'III, IV eta VI: begien mugimendua. Kraneoko zuloetatik irteten dira',
   },

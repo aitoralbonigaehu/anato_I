@@ -2,6 +2,7 @@
 
 import { studyKey } from '@/lib/study/storage-scope';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useEffect, useEffectEvent, useRef, useState, useSyncExternalStore } from 'react';
 import { GhostContext, SceneContext, type QuizFlash, type SceneContextValue } from '@/components/kit/context';
@@ -21,7 +22,6 @@ import { knownBefore, namedAt } from './named';
 import { Help, useHelp } from './Help';
 import { TourHost } from './tour/TourHost';
 import { useTourBusy } from './tour/store';
-import { Questions } from './Questions';
 import { Inspector } from './Inspector';
 import { NotesPanel } from './NotesPanel';
 import type { NotesAnchor } from '@/content/notes-text';
@@ -41,14 +41,14 @@ import { Viewport } from './Viewport';
 import { ViewSwitch } from './ViewSwitch';
 import { WeekNav } from './WeekNav';
 import { KimuFace } from '@/components/kimu/KimuFace';
-import { registerKimuHost, setKimuHere, toggleKimu, useKimuOpen } from '@/components/kimu/store';
+import { registerKimuHost, setKimuHere, toggleKimu, useKimuOpen, warmKimu } from '@/components/kimu/store';
 import { NarrationTransport, type AudioSnapshot } from './narrate';
 import { getNarrationSegments, narratedFrame, needsStageRestart, type NarrationKind } from '@/lib/sim/narration';
 import { getPref, setPlayMode, setPref, usePref, type PlayMode } from './prefs';
 import { markVisited, useStudyPosition, useVisited } from './progress';
 import { useStageStudy } from '@/components/study/useActivity';
 import { recordAnswer } from './answers';
-import { imageId } from '@/content/pool';
+import { imageId } from '@/content/pool-keys';
 import { sectionLabel, sectionOf } from '@/content/notes';
 import { examDatesAt } from '@/content/examDates';
 import { formationFrame, formationOf, type Formation } from '@/content/formation';
@@ -58,13 +58,16 @@ import { hasClass, lessonOf } from '@/content/klasea';
 import { stepsOf } from '@/lib/klasea/engine';
 import type { Lesson } from '@/lib/klasea/types';
 import { Board } from '@/components/klasea/Board';
-import { ClassDock } from '@/components/klasea/ClassDock';
 import { KimuWalker } from '@/components/klasea/KimuWalker';
 import { useKlasea, type ClassDriver, type ClassLink } from '@/components/klasea/useKlasea';
 import { hasRoom } from './eratorriak/roomWeeks';
 import { RUN_COMMAND, SearchKey } from './CommandBar';
 import { ThemeKey } from './ThemeKey';
 import { hueStyle } from './topicHue';
+
+// Loaded when opened: both bring the whole question pool (a second of work) that the simulator itself does not need to show a scene.
+const Questions = dynamic(() => import('./Questions').then((m) => m.Questions), { ssr: false });
+const ClassDock = dynamic(() => import('@/components/klasea/ClassDock').then((m) => m.ClassDock), { ssr: false });
 
 interface Pos {
   i: number;
@@ -1802,7 +1805,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
           {/* Ask (Kimu) first; testing yourself (Aurkitu, Galderak) is one menu; the right column's two panels
               are two quiet icons; everything else (glossary, chronology, help…) lives in the «⋯» menu. */}
           <SearchKey compact />
-          <button data-tour="kimu" className={`tool tool-main kimu-tool mobile-tool-hidden${kimuOpen ? ' is-on' : ''}`} onClick={toggleKimu} aria-label="Galdetu Kimuri" aria-expanded={kimuOpen} data-tip="Galdetu Kimuri: lekura eramango zaitu · K" data-tip-pos="bottom">
+          <button data-tour="kimu" className={`tool tool-main kimu-tool mobile-tool-hidden${kimuOpen ? ' is-on' : ''}`} onClick={toggleKimu} onPointerEnter={() => void warmKimu()} onFocus={() => void warmKimu()} aria-label="Galdetu Kimuri" aria-expanded={kimuOpen} data-tip="Galdetu Kimuri: lekura eramango zaitu · K" data-tip-pos="bottom">
             <KimuFace size={24} mood="happy" still /> <span className="tb-l">Kimu</span>
             <span className="tb-s" aria-hidden>Kimu</span>
           </button>

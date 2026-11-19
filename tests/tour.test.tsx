@@ -160,6 +160,16 @@ describe('where the card goes', () => {
     // 768: no help key in the bar; the bottom bar still holds it.
     const narrow = offerSpot(offer, 768, 1024, null, { x: 0, y: 939, w: 758, h: 85 }, { x: 12, y: 229, w: 734, h: 526 });
     expect(overlap({ ...narrow, ...offer }, { x: 12, y: 229, w: 734, h: 526 })).toBe(0);
+    // A page lead under "?" (Belortzioak): not over the words; in the corner above "Galdetu".
+    const lead = { x: 338, y: 84, w: 850, h: 44 };
+    const ask = { x: 1289, y: 843, w: 122, h: 36 };
+    const page = offerSpot(offer, 1440, 900, { x: 1074, y: 12, w: 32, h: 32 }, null, null, [lead], ask);
+    expect(overlap({ ...page, ...offer }, lead)).toBe(0);
+    expect(overlap({ ...page, ...offer }, ask)).toBe(0);
+    expect(page.x + offer.w).toBe(ask.x + ask.w);
+    // A clear spot under "?" (Home: the picture sits lower) keeps the card there.
+    const home = offerSpot(offer, 1440, 900, { x: 1074, y: 12, w: 32, h: 32 }, null, null, [{ x: 100, y: 120, w: 500, h: 200 }], ask);
+    expect(home.y).toBeLessThan(80);
   });
 });
 

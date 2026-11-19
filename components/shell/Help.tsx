@@ -6,7 +6,7 @@ import type { StructureCategory } from '@/lib/sim/types';
 import { KimuFace } from '@/components/kimu/KimuFace';
 import { IconCalendar, IconClose, IconExpand, IconGuide, IconHelp, IconLayers, IconMore, IconNext, IconNotes, IconPlay, IconQuiz, IconSkipNext, IconTag, IconTarget, IconVoice, IconZoomIn, PlaneGlyph } from './icons';
 import { IconRail } from './SidePanel';
-import { startTour } from './tour/store';
+import { GUIDE_STOP, openWelcome } from '@/components/onboarding/Welcome';
 import './tour/tour.css';
 
 /** The help sheet opens only when asked ("?", the menu). The first visit gets the guide's quiet offer instead. */
@@ -114,15 +114,15 @@ export function Help({ onClose }: { onClose: () => void }) {
             <IconHelp size={16} />
           </span>
           <span className="help-tour-text">
-            <b>Gida laburra</b>
-            <small>Minutu bat: pantaila bera, atalez atal, eta nola ikasi.</small>
+            <b>Gida</b>
+            <small>Simulagailua, Kimu, Belortzioak eta Eratorriak, benetan: zer egiten duten eta nola ikasi.</small>
           </span>
           <button
             className="btn small btn-light"
             autoFocus
             onClick={() => {
               onClose();
-              startTour('sim');
+              openWelcome('journey', GUIDE_STOP.sim);
             }}
           >
             Hasi gida <kbd>↵</kbd>

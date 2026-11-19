@@ -8,6 +8,7 @@ import { SUPPLEMENTAL_7_11 } from './eratorriak/supplemental-schemes-7-11';
 import { SUPPLEMENTAL_12_14 } from './eratorriak/supplemental-schemes-12-14';
 import { SCHEMES_15_16 } from './eratorriak/schemes-15-16';
 import { SCHEMES_17_18 } from './eratorriak/schemes-17-18';
+import { SCHEMES_19 } from './eratorriak/schemes-19';
 
 /** One box of a scheme: a structure id (or a plain label when the notes name no structure). */
 export interface MNode {
@@ -914,7 +915,7 @@ const CORE_MIGRATIONS: MigrationTopic[] = [
 /** Keep all schemes in the same topic so navigation, source following and recall work together. */
 export const MIGRATIONS: MigrationTopic[] = (() => {
   const topics = CORE_MIGRATIONS.map((topic) => ({ ...topic, flows: [...topic.flows] }));
-  for (const extra of [...SUPPLEMENTAL_7_11, ...SUPPLEMENTAL_12_14, ...SCHEMES_15_16, ...SCHEMES_17_18]) {
+  for (const extra of [...SUPPLEMENTAL_7_11, ...SUPPLEMENTAL_12_14, ...SCHEMES_15_16, ...SCHEMES_17_18, SCHEMES_19]) {
     const topic = topics.find((item) => item.week === extra.week);
     if (topic) topic.flows.push(...extra.flows);
     else topics.push({ ...extra, flows: [...extra.flows] });

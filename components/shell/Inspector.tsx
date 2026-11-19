@@ -1,12 +1,13 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { appearances, getWeek, structures } from '@/content/registry';
 import { dayLabel, dayToX, firstSeenOf, lifeOf, periodOf, weekOfDay } from '@/content/chronology';
 import { ancestry, childrenOf } from '@/content/lineage';
 import { categoryColor, categoryLabel } from '@/lib/sim/palette';
 import type { WeekDef } from '@/lib/sim/types';
 import { IconClose, IconWarn } from './icons';
-import { COMPETENCES, KEY_IDS, compKey, imageId } from '@/content/pool';
+import { COMPETENCES, compKey, imageId } from '@/content/pool-keys';
 import { competenceLevel, errorsOf, levelLabel, useAnswers, type Answers } from './answers';
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -69,8 +70,27 @@ function Chip({ id, onSelect, title }: { id: string; onSelect: (id: string) => v
  * What the learner can already do with this structure, per competence (Noiz? Nondik? … Irudian), from
  * every question and image attempt about it; with the latest confusion and a way to practise.
  */
+/** The question pool's keys, loaded when an inspector first opens (building the pool takes a second; the simulator should not pay it to load). */
+let keyIds: Map<string, string[]> | null = null;
+function useKeyIds() {
+  const [ids, setIds] = useState(keyIds);
+  useEffect(() => {
+    if (ids) return;
+    let alive = true;
+    import('@/content/pool').then((m) => {
+      keyIds = m.KEY_IDS;
+      if (alive) setIds(m.KEY_IDS);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [ids]);
+  return ids;
+}
+
 function CompetenceGrid({ id, answers, drawn, onPractice, onFind }: { id: string; answers: Answers; drawn: boolean; onPractice?: (id: string) => void; onFind?: (id: string) => void }) {
-  const rows = COMPETENCES.map((c) => ({ c, ids: c.id === 'irudia' ? (drawn ? [imageId(id)] : []) : (KEY_IDS.get(compKey(c.id, id)) ?? []) })).filter((r) => r.ids.length);
+  const keys = useKeyIds();
+  const rows = COMPETENCES.map((c) => ({ c, ids: c.id === 'irudia' ? (drawn ? [imageId(id)] : []) : (keys?.get(compKey(c.id, id)) ?? []) })).filter((r) => r.ids.length);
   if (!rows.length) return null;
   const errors = errorsOf(
     answers,

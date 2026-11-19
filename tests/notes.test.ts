@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { blockText, expandNotes, firstAnchorInSection, NOTES_EXCEPTIONS, notesOf, sectionMatches, sentence, sentenceAnchors } from '@/content/notes-text';
 
 describe('original notes and reviewed alignment', () => {
-  const lengths = [17921, 10991, 17577, 23697, 13010, 18297, 16479, 23379, 27720, 20337, 25845, 21028, 25568, 37344, 27155, 26684, 17875, 28922, 32187];
+  const lengths = [17921, 10991, 17577, 23697, 13010, 18297, 16479, 23379, 27720, 20337, 25845, 21028, 25568, 37344, 28335, 26351, 17870, 29947, 32187];
   const hashes = [
     'f8abeb46de6a656b112e6b89b9c99802bab9a7af8affd6c63ed4ac2a6e0524db',
     'fd368f4eb7b398bec5c5275cd244233a86f4f5e099f796bbf42328b3ac32994c',
@@ -23,10 +23,11 @@ describe('original notes and reviewed alignment', () => {
     '816d77d255a1465d856f16a63b9e03939b3513406234c9602125776a6e2c25eb',
     // Topic 14: both PDFs (part 1, then part 2), joined.
     '295fb1d6d0829f412378c727df6813ab8ed6f1023b639fe0f3e9247b7189d376',
-    'a678255efb612ccb20b5da3dac678819c93c29853e210d7c2469ad0e10b10617',
-    'faf35fc5df5d2db6ca6b04288a0d51ac58130750f5b583eededbb7450b80bc6e',
-    'e0b06d0f9726950505e536a7ddd1537f304e09f6b85a62945f8aa66838091bca',
-    '55e022fd165318c695a9b49048f5d305e4fe23e7b758084cc1f4de2ad0bee004',
+    // Topics 15–18: the owner's final notes of 2026-11-18 (18 came as DOCX, exported to PDF with Word), without the remarks.
+    'b2d1a16ab54d56b0c193bb93eb4b6c7a9f9fee8b201f72f1d2b30877b35546a8',
+    'b339b6ce0778a5175543fe32cd7e34bb90559ba2b22abfa2d9695d0210bdad62',
+    '36e2ef89f2d21fed34f221f8bbe9435f28953f01091754e46c9bafed7a800779',
+    'd57ac15a5422c83050368e3b75e13fdb2f6e07a46a0d58c4303b39fe2fb753dd',
     // Topic 19 (DOCX exported to PDF with Word), without the teacher's remarks (extract.py REMARKS).
     'b593a538e1de770a15dd79394d6171a88eb64d24402ea26f3bad4b8e90a93157',
   ];
@@ -61,7 +62,7 @@ describe('original notes and reviewed alignment', () => {
       }
       for (const id of refs) expect(sentence(id), `${key}: ${id}`).toBeDefined();
     });
-    expect(count).toBe(1506);
+    expect(count).toBe(1507);
     // The second: topic 10 stage 6's summary step (the flat map of the derivatives).
     expect(unmapped).toBe(2);
   });

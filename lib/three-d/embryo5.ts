@@ -14,7 +14,7 @@ import { geoOf, geoSlot } from './offthread';
 
 export const RC = 2.6;
 export const O: V3 = [0, -0.2 - RC, 0];
-const T_TAIL = -2.55;
+const T_TAIL = -2.43;
 const T_HEAD = 1.95;
 
 const smooth = (a: number, b: number, x: number) => {
@@ -27,7 +27,7 @@ export const axisAt = (th: number): V3 => [0, O[1] + RC * Math.cos(th), RC * Mat
 
 /** Body radius along the axis: a thin tail, the full trunk, a slightly narrower neck. */
 function radius(th: number) {
-  const tail = 0.14 + 1.0 * smooth(T_TAIL, -0.85, th);
+  const tail = 0.24 + .90 * smooth(T_TAIL, -0.85, th);
   const neck = 1 - 0.1 * smooth(1.05, 1.5, th);
   return tail * neck;
 }
@@ -49,7 +49,7 @@ function trunk(x: number, y: number, z: number) {
   const dr = r - RC;
   // Somite bumps either side of the dorsal midline, along the whole back.
   const around = Math.atan2(Math.abs(x), dr);
-  const side = Math.max(0, Math.cos((around - 0.5) * 2.6));
+  const side = Math.max(0, Math.cos(Math.min(Math.PI / 2, Math.abs(around - 0.5) * 2.6)));
   const bump = 0.085 * side * (0.5 + 0.5 * Math.cos(((th - SOMITE_TH0) / SOMITE_DTH) * Math.PI * 2)) * smooth(T_TAIL + 0.3, -1.2, th) * (1 - smooth(1.2, 1.6, th));
   return Math.hypot(x * 1.08, dr) - radius(th) - bump;
 }
@@ -60,16 +60,26 @@ const onBody = (th: number, out: number, x = 0): V3 => {
   return add(add(axisAt(th), mul(d, out)), [x, 0, 0]);
 };
 
+export const HEART5: V3 = [0, -2.94, 1.13];
+export const ARCHES5 = [
+  { y: -3.55, z: 2.24, width: .31 },
+  { y: -3.09, z: 2.31, width: .265 },
+  { y: -2.70, z: 2.36, width: .22 },
+];
+
 function makeField(): SDF {
   // Head: hindbrain/midbrain over the neck, the forebrain folded down in front of the heart.
   const mid = ellipsoid(onBody(2.08, 0.25), [1.2, 1.35, 1.35]);
   const fore = ellipsoid(onBody(2.6, -0.45), [1.08, 1.12, 1.18]);
   const face = ellipsoid(onBody(2.42, -1.05), [0.8, 0.7, 0.8]);
   // Ventral bulges: the heart under the pharynx, the liver below it.
-  const heart = ellipsoid(onBody(1.18, -1.05), [0.95, 0.95, 0.9]);
+  const heart = ellipsoid(HEART5, [.91, 1.03, .86]);
   const liver = ellipsoid(onBody(0.42, -0.85), [0.98, 0.85, 0.95]);
   // Pharyngeal arches on the side of the neck, one behind the other.
-  const arches = [1.42, 1.6, 1.76].map((th, i) => ellipsoid(onBody(th, -0.55 - i * 0.05, 0.62 - i * 0.04), [0.32, 0.5 - i * 0.06, 0.2]));
+  const arches = ARCHES5.map(({ y, z, width }, i) => {
+    const ridge = ellipsoid([.91 - i*.045, y, z], [.43-i*.04, width, .50-i*.055]);
+    return (x:number, py:number, pz:number) => ridge(x, py-.20*(pz-z), pz);
+  });
   // Limb buds: paddles at the upper and lower limb levels.
   const armBud = ellipsoid(onBody(0.78, -0.25, 1.05), [0.42, 0.55, 0.38]);
   const legBud = ellipsoid(onBody(-0.82, -0.3, 0.9), [0.4, 0.5, 0.36]);

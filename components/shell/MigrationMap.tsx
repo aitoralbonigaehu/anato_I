@@ -15,7 +15,7 @@ import { hueStyle } from './topicHue';
 /** A topic tab (week 0 = the topics 1–6 germ-layer trees), the arch-systems tab, or one origin followed across topics. */
 type Mode = { week: number; part?: Part; source?: undefined; arch?: undefined } | { source: string; week?: undefined; part?: undefined; arch?: undefined } | { arch: true; week?: undefined; part?: undefined; source?: undefined };
 
-/** Inside a topic only one part shows at a time; the short tables come first and open by default. Study rooms live at /ikasgela/N. */
+/** Inside a topic only one part shows at a time. Study rooms live at /ikasgela/N. */
 type Part = 'taulak' | 'eskemak';
 
 /** Topics 7+ in tab order: every topic with schemes or quick tables. */
@@ -24,11 +24,13 @@ const SHORT: Record<number, string> = { 14: 'Digestioa' };
 const resolveStructureName = (id: string) => structures.get(id)?.name ?? id;
 
 /** The parts a topic has, in reading order. */
-const partsOf = (week: number) =>
-  ([
+const partsOf = (week: number) => {
+  const parts = ([
     ['taulak', 'Taulak', TABLE_TOPICS.includes(week)],
-    ['eskemak', 'Eskemak', MIGRATIONS.some((t) => t.week === week)],
-  ] as const).filter(([, , has]) => has).map(([id, label]) => ({ id: id as Part, label }));
+    ['eskemak', week >= 15 ? 'Mapa mentalak' : 'Eskemak', MIGRATIONS.some((t) => t.week === week)],
+  ] as const).filter(([, , has]) => has).map(([id, label]) => ({ id, label }));
+  return week >= 15 ? parts.reverse() : parts;
+};
 
 /** Self-test: the boxes a structure becomes stay hidden until tapped. */
 interface Quiz {
@@ -76,17 +78,17 @@ function Chip({ node, ctx, path, up }: { node: MNode; ctx: Ctx; path?: string; u
   );
   if (hidden)
     return (
-      <button type="button" className={cls} onClick={() => ctx.quiz.reveal(key!)} aria-label="Erakutsi erantzuna">
+      <button type="button" className={cls} data-node={node.id} onClick={() => ctx.quiz.reveal(key!)} aria-label="Erakutsi erantzuna">
         {body}
       </button>
     );
   const href = s ? hrefOf(s.id, ctx.week, ctx.stage) : null;
   return href ? (
-    <Link className={cls} href={href} title={s?.definition}>
+    <Link className={cls} href={href} title={s?.definition} data-node={node.id}>
       {body}
     </Link>
   ) : (
-    <span className={cls} title={s?.definition}>
+    <span className={cls} title={s?.definition} data-node={node.id}>
       {body}
     </span>
   );
@@ -109,7 +111,7 @@ function Branch({ node, ctx, path, up }: { node: MNode; ctx: Ctx; path: string; 
   const root = !path.includes('.');
   const down = up || isHit(node, ctx);
   return (
-    <div className="mg-b">
+    <div className="mg-b" data-lit={up || undefined}>
       {!root && <Edge via={node.via} move={node.move} />}
       <Chip node={node} ctx={ctx} path={root ? undefined : path} up={up} />
       {!!node.kids?.length && (
@@ -154,9 +156,16 @@ function Merge({ flow, ctx }: { flow: Flow; ctx: Ctx }) {
   );
 }
 
-function Scheme({ flow, ctx }: { flow: Flow; ctx: Ctx }) {
+function Scheme({ flow, ctx: base }: { flow: Flow; ctx: Ctx }) {
   const box = useRef<HTMLDivElement>(null);
   const [more, setMore] = useState(false);
+  // Pointing at a structure lights it and everything derived from it (unless a followed source already lights the scheme).
+  const [hover, setHover] = useState<string | null>(null);
+  const ctx = useMemo(() => (hover && !base.lit ? { ...base, lit: new Set([hover]) } : base), [hover, base]);
+  const point = (e: { target: EventTarget }) => {
+    const id = (e.target as Element).closest?.('[data-node]')?.getAttribute('data-node') ?? null;
+    if (id !== hover) setHover(id);
+  };
   useEffect(() => {
     const el = box.current;
     if (!el) return;
@@ -172,7 +181,17 @@ function Scheme({ flow, ctx }: { flow: Flow; ctx: Ctx }) {
     };
   }, []);
   return (
-    <div className={`mg-scroll${more ? ' is-more' : ''}`} ref={box}>
+    <div
+      className={`mg-scroll${more ? ' is-more' : ''}`}
+      ref={box}
+      tabIndex={ctx.week >= 15 ? 0 : undefined}
+      role={ctx.week >= 15 ? 'region' : undefined}
+      aria-label={ctx.week >= 15 ? flow.title : undefined}
+      onMouseOver={point}
+      onMouseLeave={() => setHover(null)}
+      onFocus={point}
+      data-hover={hover ? '' : undefined}
+    >
       {flow.join ? (
         <Merge flow={flow} ctx={ctx} />
       ) : (
@@ -349,8 +368,8 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
   const layersTab = mode.week === 0;
   const flows = topic ? topic.flows : (src?.groups.flatMap((g) => g.flows) ?? []);
   const total = answersIn(flows);
-  // Topics with integrated grids show them first; the trees and their legend follow.
   const grids = !!topic && part === 'eskemak' && hasGridSchemes(topic.week);
+  const gridsFirst = grids && topic.week < 15;
   const quiz: Quiz = { on: quizOn, shown, reveal: (k) => setShown((s) => new Set(s).add(k)) };
   const nameOf = (week: number) => MIGRATIONS.find((t) => t.week === week)?.short ?? SHORT[week] ?? `${week}. gaia`;
   const mark = mode.arch ? '★' : src ? '→' : layersTab ? '1–6' : String(mode.week);
@@ -445,19 +464,17 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
         {((topic && part === 'eskemak') || src) && (
           <header className="mg-schemes-head" id={topic ? `a${topic.week}-eskemak` : undefined}>
             <p className="mg-intro">
-              <span className="mg-intro-k">Eskemak · </span>
+              <span className="mg-intro-k">{topic && topic.week >= 15 ? 'Mapa mentalak' : 'Eskemak'}</span>
               {topic ? (
-                <>
-                  <b>{getWeek(topic.week)?.title}</b>
-                </>
+                <> · jatorritik eratorrira, apunteen ordenan</>
               ) : (
                 <>
-                  <b>{structures.get(src!.id)?.name ?? src!.id}</b> · {src!.count} eskema {src!.groups.map((g) => `${g.t.week}.`).join(', ')} gaietan. Iturritik datozen egiturak argituta.
+ · <b>{structures.get(src!.id)?.name ?? src!.id}</b> · {src!.count} eskema {src!.groups.map((g) => `${g.t.week}.`).join(', ')} gaietan. Iturritik datozen egiturak argituta.
                 </>
               )}
             </p>
             {follow}
-            {!grids && legend}
+            {!gridsFirst && legend}
             {quizOn && !topic && (
               <p className="mg-quiz-hint" aria-live="polite">
                 Sakatu lauki ezkutu bakoitza eratorria edo erlazioa ikusteko. {Math.min(shown.size, total)} / {total} agerian.
@@ -470,7 +487,7 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
             )}
           </header>
         )}
-        {topic && part === 'eskemak' && grids && (
+        {topic && gridsFirst && (
           <>
             <GridSchemes week={topic.week} />
             <header className="mg-trees-head">
@@ -487,6 +504,12 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
           renderScheme={(flow) => <Scheme flow={flow} ctx={{ flow: flow.id, week: topic.week, stage: flow.stage, lit: null, quiz: { ...quiz, on: false } }} />}
           renderDetail={(flow) => <FlowCard flow={flow} week={topic.week} lit={null} quiz={{ ...quiz, on: false }} />}
         />}
+        {topic && grids && !gridsFirst && (
+          <>
+            <header className="mg-trees-head"><h3>Laburpen-taulak</h3></header>
+            <GridSchemes week={topic.week} />
+          </>
+        )}
         {src && (
           <>
             {early?.kids?.length ? (

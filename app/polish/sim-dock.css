@@ -19,3 +19,10 @@
 .tp-bar:has(.play.is-cue) .tp-pager .cap-next.is-wait .cap-wait-dot {
   display: none;
 }
+
+/* «Gehiago» under the step's text (no fact or trap beside it): a small key at the text's start, not a
+   lone pill floating mid-card behind an empty column's rule. */
+.cap-main > .cap-more-btn {
+  justify-self: start;
+  margin-top: 6px;
+}

@@ -272,7 +272,7 @@ export function Home() {
 
       <LandFoot>
         <button className="link-quiet" onClick={replay}>
-          Sarrera berriro ikusi
+          Ernalkuntzaren animazioa berriro ikusi
         </button>
       </LandFoot>
     </div>

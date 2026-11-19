@@ -4,6 +4,21 @@ import { useSyncExternalStore } from 'react';
 import type { KimuHere, KimuTarget } from '@/lib/kimu/types';
 
 /**
+ * Load Kimu's engine and build its indexes before the first question, when the browser is idle: on the
+ * hover or focus of any of its buttons (the home launcher, the simulator's tool), so opening Kimu does not
+ * freeze the page for a second.
+ */
+let warming: Promise<unknown> | null = null;
+export const warmKimu = () => {
+  warming ??= import('@/lib/kimu/engine').then((m) => {
+    const run = () => m.warmKimu();
+    if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(run, { timeout: 2500 });
+    else setTimeout(run, 300);
+  });
+  return warming;
+};
+
+/**
  * Kimu lives in the root layout, but the simulator owns the playback. This small store is the bridge:
  * the simulator says where the student is and how to jump to a step; Kimu says "open" and "go".
  */

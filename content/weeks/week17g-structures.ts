@@ -10,9 +10,9 @@ const n = (id: string, name: string, color: string, definition: string, extra: P
 export const structures17g: StructureDef[] = [
   n('usaimen-nerbioa', 'Usaimen-nerbioak', QUIET, 'I. bikote kraneala. Ez dago arku faringeoekin lotuta.', { es: 'nervio olfatorio' }),
   n('ikusmen-nerbioa', 'Ikusmen-nerbioak', QUIET, 'II. bikote kraneala. Ez dago arku faringeoekin lotuta.', { es: 'nervio óptico' }),
-  n('okulomotorea', 'Okulomotorea', QUIET, 'III. bikote kraneala. Begien mugimenduan parte hartzen du.', { es: 'motor ocular común' }),
+  n('okulomotorea', 'Okulomotorra', QUIET, 'III. bikote kraneala. Begien mugimenduan parte hartzen du.', { es: 'motor ocular común' }),
   n('patetikoa', 'Patetiko-troklearra', QUIET, 'IV. bikote kraneala. Begien mugimenduan parte hartzen du.', { es: 'nervio patético' }),
-  n('kanpoko-okulomotorea', 'Kanpoko nerbio okulomotorea', QUIET, 'VI. bikote kraneala. Begien mugimenduan parte hartzen du.', { es: 'motor ocular externo' }),
+  n('kanpoko-okulomotorea', 'Kanpoko nerbio okulomotorra', QUIET, 'VI. bikote kraneala. Begien mugimenduan parte hartzen du.', { es: 'motor ocular externo' }),
   n('belarriko-nerbioa', 'Belarriko nerbioa (bestibulokoklearra)', QUIET, 'VIII. bikote kraneala. Ez dago arku faringeoekin lotuta.', { es: 'nervio auditivo' }),
   n('bagoa', 'Nerbio bagoa', ARCH.iv, 'X. bikote kraneala, mistoa eta nerbio parasinpatiko nagusia. Adarrak ematen ditu IV. eta VI. arkuetara.', { es: 'nervio vago, neumogástrico', related: ['goiko-laringe-nerbioa', 'laringe-atzerakaria'] }),
   n('laguntzailea', 'Nerbio laguntzailea', QUIET, 'XI. bikote kraneala. Ez dago arku faringeoekin lotuta.', { es: 'nervio espinal' }),

@@ -769,7 +769,7 @@ export const w17: NotesBlock[] = [
             "text": " edo plakatik aterako dira kartilago txikiak: "
           },
           {
-            "text": "aritenoide eta trikoide kartilagoak",
+            "text": "aritenoide eta krikoide kartilagoak",
             "b": true
           },
           {
@@ -1117,7 +1117,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.1/p4/s4",
         "parts": [
           {
-            "text": "EZ DU AIPATU Dena den, nerbio sistema zentralean badago nerbio multzo bat: 12 bikote kranealak dira (bilateralak) , garunetik (entzefalotik) ateratzen diren nerbio-bikoteak. "
+            "text": "Dena den, nerbio sistema zentralean badago nerbio multzo bat: 12 bikote kranealak dira (bilateralak) , garunetik (entzefalotik) ateratzen diren nerbio-bikoteak. "
           }
         ]
       },
@@ -1148,7 +1148,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.1/p5/s2",
         "parts": [
           {
-            "text": "→ ikusmen-nerbioak III.* → okulomotorea IV.* → patetiko-troklearra V. → trigeminoa VI.* → kanpoko nerbio okulomotorea VII. "
+            "text": "→ ikusmen-nerbioak III.* → okulomotorra IV.* → patetiko-troklearra V. → trigeminoa VI.* → kanpoko nerbio okulomotorra VII. "
           }
         ]
       },
@@ -1311,7 +1311,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.1/p2/s1",
         "parts": [
           {
-            "text": "2.2.1. Kartilago eta hezurrak",
+            "text": "2.2.1. Kartilagoak eta hezurrak",
             "b": true,
             "i": true
           }
@@ -1365,7 +1365,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.1/p3/s3",
         "parts": [
           {
-            "text": "Beraz, baraila EZ atera kartilagotik, kartilago inguruan egon diren mesenkimako zeluletatik baizik!"
+            "text": "Beraz, baraila EZ da ateratzen kartilagotik, kartilago inguruan egon diren mesenkimako zeluletatik baizik!"
           }
         ]
       }
@@ -1403,7 +1403,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.1/p5/s1",
         "parts": [
           {
-            "text": "Gainera, 1. arkutik beste errai kraneoko hezur batzuk garatu: "
+            "text": "Gainera, 1. arkutik beste errai kraneoko hezur batzuk garatuko dira: "
           },
           {
             "text": "hezur maxilarra",
@@ -1420,18 +1420,18 @@ export const w17: NotesBlock[] = [
             "text": "eta "
           },
           {
-            "text": "loki hezurraren",
+            "text": "loki",
             "b": true
           },
           {
             "text": " "
           },
           {
-            "text": "atal bat ",
+            "text": "hezurraren atal bat ",
             "b": true
           },
           {
-            "text": "(kutxa tinpaniko + hezurtxoekin erlazionatuta dagoen atala)."
+            "text": "(kutxa tinpanikoa + hezurtxoekin erlazionatuta dagoen atala)."
           }
         ]
       }
@@ -1501,7 +1501,7 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": " inerbatu, "
+            "text": " inerbatzen du: "
           },
           {
             "text": "nerbio trigeminoaren (V) ",
@@ -1669,7 +1669,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.2/p7/s2",
         "parts": [
           {
-            "text": "Sentsitiboa izateaz gain, motorra ere da (nerbio mistoa), eta nerbio trigeminoan osagai motorra duen nerbio bakarra da (V1 eta V2-k motorra ez). "
+            "text": "Sentsitiboa izateaz gain, motorra da ere(nerbio mistoa), eta nerbio trigeminoan osagai motorra duen nerbio bakarra da (V1 eta V2-k motorra ez). "
           }
         ]
       },
@@ -1677,7 +1677,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.2.2/p7/s3",
         "parts": [
           {
-            "text": "Aurpegiko muskulu murtxikatzaileak mugitzeko balio du: maseteroa eta tenporala → baraila igotzeko erabili. "
+            "text": "Aurpegiko muskulu murtxikatzaileak mugitzeko balio du: maseteroa eta tenporala → baraila igotzeko erabiltzen dira. "
           }
         ]
       },
@@ -2072,7 +2072,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.3.1/p5/s3",
         "parts": [
           {
-            "text": "Hezur tenporalak ezkata aldea du ( atal meheagoa) eta behealdean atal lodiago bat du, arkaitza izenekoa. "
+            "text": "Hezur tenporalak ezkata aldea du ( atal meheagoa) eta behealdean atal lodiago bat du, harkaitza izenekoa. "
           }
         ]
       },
@@ -2080,7 +2080,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.3.1/p5/s4",
         "parts": [
           {
-            "text": "Arkaitzaren barnean tarteko belarria eta barneko belarria egongo dira"
+            "text": "Harkaitzaren barnean tarteko belarria eta barneko belarria egongo dira"
           }
         ]
       }
@@ -2166,7 +2166,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.3.2/p3/s5",
         "parts": [
           {
-            "text": "Hala ere, bereziki motorea da. "
+            "text": "Hala ere, bereziki motorra da. "
           }
         ]
       },
@@ -2213,7 +2213,7 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "deitzen dira (mimikan parte hartzen dute, hau da, aurpegiko borondatezko muskulo somatikoak dira). "
+            "text": "deitzen dira (mimikan parte hartzen dute, aurpegiko borondatezko muskulu somatikoak dira). "
           }
         ]
       },
@@ -2251,28 +2251,21 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "(belarria mugitzeko, baina gizakietan funtzio gabeak)"
+            "text": "(belarria mugitzeko, gizakietan funtzio gabeak)"
           },
           {
-            "text": ",",
+            "text": ", okzipitala",
             "b": true
           },
           {
-            "text": " "
-          },
-          {
-            "text": "okzipitala ",
-            "b": true
-          },
-          {
-            "text": "eta "
+            "text": " eta "
           },
           {
             "text": "digastrikoaren atzeko sabela ",
             "b": true
           },
           {
-            "text": "ere eratzen dira hemendik. "
+            "text": "eratzen dira hemendik. "
           }
         ]
       },
@@ -2562,7 +2555,7 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "(faringea estutu) eratzen dira; faringea estutzeko 3 talde muskulu ertzatzaile ditu: goikoak, tartekoak eta behekoak):"
+            "text": "(faringea estutu) eratzen dira; faringea estutzeko 3 talde muskulu ertzatzaile ditu: goikoak, tartekoak eta behekoak): Goikoak, goiko faringea estutzeko, hirugarren arkutik aterako dira eta nerbio glosofaringeoak mugituko ditu."
           }
         ]
       }
@@ -2575,14 +2568,6 @@ export const w17: NotesBlock[] = [
     "sentences": [
       {
         "id": "w17/2.4.3/p4/s1",
-        "parts": [
-          {
-            "text": "Goikoak, goiko faringea estutzeko, hirugarren arkutik aterako dira eta nerbio glosofaringeoak mugituko ditu. "
-          }
-        ]
-      },
-      {
-        "id": "w17/2.4.3/p4/s2",
         "parts": [
           {
             "text": "Goikoak hirugarren arkutik, "
@@ -2908,7 +2893,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.1/p7/s2",
         "parts": [
           {
-            "text": "Bi sistema hauek "
+            "text": "Bi sistemak "
           },
           {
             "text": "nerbio-sistema autonomo edo begetatiboaren ",
@@ -3313,7 +3298,7 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.3/p7/s1",
         "parts": [
           {
-            "text": "Nerbio bagoa oso handia da eta, nahiz eta eragin motorea daukan, nerbio parasinpatiko nagusiena da (sistema begetatiboaren parte)."
+            "text": "Nerbio bagoa oso handia da eta, nahiz eta eragin motorra daukan, nerbio parasinpatiko nagusiena da (sistema begetatiboaren parte)."
           }
         ]
       }

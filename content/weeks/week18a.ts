@@ -21,20 +21,20 @@ export const stages18a: StageDef[] = [
     beats: [
       {
         at: S1[0],
-        notes: ['w18/1/p2/s1'],
+        notes: ['w18/1/p3/s1'],
         recall: ['faringe-arkuak'],
         text: 'Faringe hestearen alboetan arku faringeoak daude, arku brankialak ere deituak. Goraguneak dira, alde bietan.',
         idea: 'Arkuak: faringe hestearen alboetako goraguneak.',
       },
       {
         at: S1[1],
-        notes: ['w18/1/p2/s1'],
+        notes: ['w18/1/p3/s1'],
         text: 'Ebakian geruzak ikusten dira: kanpotik ektodermoa, barrutik endodermoa, eta tartean mesenkima, gandor neuraletatik eta zelula mesodermikoetatik datorrena.',
         idea: 'Kanpotik ektodermoa, barrutik endodermoa, tartean mesenkima.',
       },
       {
         at: S1[2],
-        notes: ['w18/1/p5/s2-s3'],
+        notes: ['w18/1/p6/s2-s3'],
         text: 'Arkuen artean, kanpotik arraildurak eta barrutik poltsak. Goiko edo erdiko ikuspegia hartuko dugu aintzat.',
         idea: 'Arraildurak kanpotik, poltsak barrutik.',
       },
@@ -55,27 +55,27 @@ export const stages18a: StageDef[] = [
     beats: [
       {
         at: S2[0],
-        notes: ['w18/1/p3/s1-s2'],
+        notes: ['w18/1/p4/s1-s2'],
         text: 'Arraildura faringeoak kanpoko inbaginazioak dira, ektodermoan, arkuen artean: arkuen kanpoko aldeko sakonguneak edo ildoak.',
         idea: 'Arraildurak: kanpotik, ektodermoa.',
         exam: 'Arraildurak ektodermikoak dira, poltsak endodermikoak.',
       },
       {
         at: S2[1],
-        notes: ['w18/1/p4/s1', 'w18/1/p8/s1-s2', 'w18/1/p9/s1-s2'],
+        notes: ['w18/1/p5/s1', 'w18/1/p7/s1-s2', 'w18/1/p8/s1-s2'],
         text: 'Poltsa faringeoak barruko inbaginazioak dira, endodermoan, arkuen artean eta arrailduren kontrako aldean. 6 arku eta 4 poltsa ditugu: azkena batera ikasiko dugu, bi kimurekin (dortsala eta bentrala).',
         idea: 'Poltsak: barrutik, endodermoa; 4 poltsa.',
         caution: 'Liburuaren arabera azkena banatuta (4 eta 5) edo batera ikus daiteke; guk batera ikasten dugu.',
       },
       {
         at: S2[2],
-        notes: ['w18/1/p4/s2'],
+        notes: ['w18/1/p5/s2'],
         text: 'Ezker aldean horma kendu dugu, endodermoa bakarrik uzteko. Aorta arku bakoitza arku batean doa, eta poltsak aorta arkuen artean kokatzen dira.',
         idea: 'Poltsak aorta arkuen artean.',
       },
       {
         at: S2[3],
-        notes: ['w18/1/p4/s3', 'w18/1/p5/s1'],
+        notes: ['w18/1/p5/s3', 'w18/1/p6/s1'],
         text: 'Behealdean, faringearen aurreko paretan, laringe zuloa dago: hortik ebaginatzen da arnas aparatuaren hastapena. Prozesu gehienak 4. astean hasi eta 7. asterako ia garatuta daude.',
         idea: 'Laringe zuloa: arnas aparatuaren hasiera.',
       },
@@ -112,7 +112,7 @@ export const stages18a: StageDef[] = [
       {
         at: S3[2],
         notes: ['w18/1.1.3/p5/s1-s2'],
-        text: 'Alde bentrala luzatu eta timoa eratzen du. Timoa pubertaroraino garatzen da, gero endekatzen da eta helduan ia ez du funtziorik.',
+        text: 'Alde bentrala luzatu eta timoa eratzen du, immunitate sistemaren atala. Timoa pubertaroraino garatzen da, gero endekatzen da eta helduan ia ez du funtziorik.',
         idea: 'Bentrala: timoa.',
       },
       {
@@ -146,8 +146,8 @@ export const stages18a: StageDef[] = [
       },
       {
         at: S4[1],
-        notes: ['w18/1.1.4/p5/s1-s3', 'w18/1.1.4/p6/s1'],
-        text: 'Behekoak goiko poltsan hasten dira, eta goikoak beheko poltsan. Izenak ez du sorrera adierazten, behin betiko kokapen anatomikoa baizik.',
+        notes: ['w18/1.1.4/p5/s1-s2', 'w18/1.1.4/p6/s1-s2'],
+        text: 'Kontuz: behekoak goiko poltsan hasten dira, eta alderantziz: 3. poltsatik beheko paratiroideak sortzen dira, eta 4. poltsatik goikoak. Izenak ez du sorrera adierazten, behin betiko kokapen anatomikoa baizik.',
         idea: 'Izena azken kokapenagatik, ez sorreragatik.',
         caution: 'Beheko paratiroidea 3. poltsatik dator, goikoa 4.etik.',
         exam: '3. poltsa → beheko paratiroidea; 4. poltsa → goiko paratiroidea.',

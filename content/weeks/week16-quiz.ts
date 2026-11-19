@@ -31,7 +31,7 @@ export const quiz16: QuizQuestion[] = [
     question: 'Zein egitura agertzen da arretan epitelioaren eta muin kordoien artean?',
     options: ['Tunika albuginea', 'Barrabil sarea', 'Kortex kordoien 2. belaunaldia', 'Folikulu zelulak'],
     answer: 0,
-    explanation: 'Tunika albuginea: ehun konektibozko geruza. Emeetan, aldiz, epitelioa bera lodituz kortexa eratzen da.',
+    explanation: 'Tunika albuginea: epitelio loditua, muin kordoien gainean (3.4 atalean, ehun konektibozko geruza). Emeetan, aldiz, epitelioa bera lodituz kortexa eratzen da.',
     stageId: 'barrabila',
   },
   {

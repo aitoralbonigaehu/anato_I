@@ -19,12 +19,268 @@ export const w18: NotesBlock[] = [
     ]
   },
   {
-    "kind": "h1",
+    "kind": "toc",
+    "section": "intro",
+    "id": "w18/intro/p2",
+    "sentences": [
+      {
+        "id": "w18/intro/p2/s1",
+        "parts": [
+          {
+            "text": "AURKIBIDEA",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
     "section": "1",
     "id": "w18/1/p1",
     "sentences": [
       {
         "id": "w18/1/p1/s1",
+        "parts": [
+          {
+            "text": "1. Faringe arraildurak eta faringe poltsak",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "1.1",
+    "id": "w18/1.1/p1",
+    "sentences": [
+      {
+        "id": "w18/1.1/p1/s1",
+        "parts": [
+          {
+            "text": "1.1. Poltsetatik eratorritako egiturak",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "1.1.1",
+    "id": "w18/1.1.1/p1",
+    "sentences": [
+      {
+        "id": "w18/1.1.1/p1/s1",
+        "parts": [
+          {
+            "text": "1.1.1. Lehenengo poltsaren eratorriak",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "1.1.2",
+    "id": "w18/1.1.2/p1",
+    "sentences": [
+      {
+        "id": "w18/1.1.2/p1/s1",
+        "parts": [
+          {
+            "text": "1.1.2. Bigarren poltsaren eratorriak",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "1.1.3",
+    "id": "w18/1.1.3/p1",
+    "sentences": [
+      {
+        "id": "w18/1.1.3/p1/s1",
+        "parts": [
+          {
+            "text": "1.1.3. Hirugarren poltsaren eratorriak",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "1.1.4",
+    "id": "w18/1.1.4/p1",
+    "sentences": [
+      {
+        "id": "w18/1.1.4/p1/s1",
+        "parts": [
+          {
+            "text": "1.1.4. Laugarren poltsaren eratorriak",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "1.2",
+    "id": "w18/1.2/p1",
+    "sentences": [
+      {
+        "id": "w18/1.2/p1/s1",
+        "parts": [
+          {
+            "text": "1.2. Arrailduretatik eratorritako egiturak",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "2",
+    "id": "w18/2/p1",
+    "sentences": [
+      {
+        "id": "w18/2/p1/s1",
+        "parts": [
+          {
+            "text": "2. Mihia",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "2.1",
+    "id": "w18/2.1/p1",
+    "sentences": [
+      {
+        "id": "w18/2.1/p1/s1",
+        "parts": [
+          {
+            "text": "2.1. Mihiaren garapena",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "2.2",
+    "id": "w18/2.2/p1",
+    "sentences": [
+      {
+        "id": "w18/2.2/p1/s1",
+        "parts": [
+          {
+            "text": "2.2. Mihiaren inerbazioa",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "2.3",
+    "id": "w18/2.3/p1",
+    "sentences": [
+      {
+        "id": "w18/2.3/p1/s1",
+        "parts": [
+          {
+            "text": "2.3. Mihiaren muskuluak",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "3",
+    "id": "w18/3/p1",
+    "sentences": [
+      {
+        "id": "w18/3/p1/s1",
+        "parts": [
+          {
+            "text": "3. Tiroide guruinaren garapena",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "4",
+    "id": "w18/4/p1",
+    "sentences": [
+      {
+        "id": "w18/4/p1/s1",
+        "parts": [
+          {
+            "text": "4. Aurpegiaren eraketa",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "4.1",
+    "id": "w18/4.1/p1",
+    "sentences": [
+      {
+        "id": "w18/4.1/p1/s1",
+        "parts": [
+          {
+            "text": "4.1. Sudur plakak eta aho sabaia",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "4.2",
+    "id": "w18/4.2/p1",
+    "sentences": [
+      {
+        "id": "w18/4.2/p1/s1",
+        "parts": [
+          {
+            "text": "4.2. Odontogenesia",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h1",
+    "section": "1",
+    "id": "w18/1/p2",
+    "sentences": [
+      {
+        "id": "w18/1/p2/s1",
         "parts": [
           {
             "text": "1. FARINGE ARRAILDURAK ETA FARINGE POLTSAK",
@@ -37,10 +293,10 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "1",
-    "id": "w18/1/p2",
+    "id": "w18/1/p3",
     "sentences": [
       {
-        "id": "w18/1/p2/s1",
+        "id": "w18/1/p3/s1",
         "parts": [
           {
             "text": "Faringe hestearen alboetan "
@@ -59,16 +315,16 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "1",
-    "id": "w18/1/p3",
+    "id": "w18/1/p4",
     "sentences": [
       {
-        "id": "w18/1/p3/s1",
+        "id": "w18/1/p4/s1",
         "parts": [
           {
-            "text": "➢​"
+            "text": "➢ "
           },
           {
-            "text": " Arraildura",
+            "text": "Arraildura",
             "b": true
           },
           {
@@ -82,48 +338,11 @@ export const w18: NotesBlock[] = [
             "text": " kanpoko inbaginazioak dira, "
           },
           {
-            "text": "ektodermikozko",
+            "text": "ektodermikozko ",
             "b": true
           },
           {
-            "text": " estalduran daudenak, arkuen artean. "
-          }
-        ]
-      },
-      {
-        "id": "w18/1/p3/s2",
-        "parts": [
-          {
-            "text": "Arku faringeoen kanpoko aldean arkuen artean dauden sakongune edo ildoak dira."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "1",
-    "id": "w18/1/p4",
-    "sentences": [
-      {
-        "id": "w18/1/p4/s1",
-        "parts": [
-          {
-            "text": "➢​"
-          },
-          {
-            "text": " Poltsa faringeoak",
-            "b": true
-          },
-          {
-            "text": " barruko inbaginazioak dira,"
-          },
-          {
-            "text": " endodermikozko",
-            "b": true
-          },
-          {
-            "text": " epitelioan, arkuen artean ere kokatzen dira arrailduren kontrako aldeetan. "
+            "text": "estalduran daudenak, arkuen artean. "
           }
         ]
       },
@@ -131,22 +350,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/1/p4/s2",
         "parts": [
           {
-            "text": "Poltsak aorta arkuen artean kokatzen dira. "
-          }
-        ]
-      },
-      {
-        "id": "w18/1/p4/s3",
-        "parts": [
-          {
-            "text": "Behealdean, faringearen aurreko paretan "
-          },
-          {
-            "text": "laringe zuloa ",
-            "b": true
-          },
-          {
-            "text": "dago, nondik arnas aparatuaren hastapena ebaginatzen den, arnas aparatuaren atal guztiak sortzeko."
+            "text": "Arku faringeoen kanpoko aldean arkuen artean dauden sakongune edo ildoak dira."
           }
         ]
       }
@@ -161,12 +365,71 @@ export const w18: NotesBlock[] = [
         "id": "w18/1/p5/s1",
         "parts": [
           {
-            "text": "4. astean hasi egiten dira prozesu gehienak eta 7. asterako nahiko garatuta edo ia guztiz garatuta daude. "
+            "text": "➢ "
+          },
+          {
+            "text": "Poltsa faringeoak ",
+            "b": true
+          },
+          {
+            "text": "barruko inbaginazioak dira, "
+          },
+          {
+            "text": "endodermikozko",
+            "b": true
+          },
+          {
+            "text": " epitelioan, arkuen artean ere kokatzen dira arrailduren kontrako aldeetan. "
           }
         ]
       },
       {
         "id": "w18/1/p5/s2",
+        "parts": [
+          {
+            "text": "Poltsak aorta arkuen artean kokatzen dira. "
+          }
+        ]
+      },
+      {
+        "id": "w18/1/p5/s3",
+        "parts": [
+          {
+            "text": "Behealdean, faringearen aurreko paretan "
+          },
+          {
+            "text": "laringe",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "zuloa ",
+            "b": true
+          },
+          {
+            "text": "dago, nondik arnas aparatuaren hastapena ebaginatzen den, arnas aparatuaren atal guztiak sortzeko."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "1",
+    "id": "w18/1/p6",
+    "sentences": [
+      {
+        "id": "w18/1/p6/s1",
+        "parts": [
+          {
+            "text": "4. astean hasten dira prozesu gehienak eta 7. asterako nahiko garatuta edo ia guztiz garatuta daude. "
+          }
+        ]
+      },
+      {
+        "id": "w18/1/p6/s2",
         "parts": [
           {
             "text": "Irudian 6 arku faringeoak agertzen dira, goiko",
@@ -176,13 +439,13 @@ export const w18: NotesBlock[] = [
             "text": " "
           },
           {
-            "text": "ikuspegitik eta aldeko ikuspegitik ikusita. ",
+            "text": "ikuspegitik eta alboko ikuspegitik ikusita. ",
             "i": true
           }
         ]
       },
       {
-        "id": "w18/1/p5/s3",
+        "id": "w18/1/p6/s3",
         "parts": [
           {
             "text": "Guk",
@@ -200,373 +463,12 @@ export const w18: NotesBlock[] = [
     ]
   },
   {
-    "kind": "toc",
-    "section": "1",
-    "id": "w18/1/p6",
-    "sentences": [
-      {
-        "id": "w18/1/p6/s1",
-        "parts": [
-          {
-            "text": "AURKIBIDEA",
-            "b": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
+    "kind": "p",
     "section": "1",
     "id": "w18/1/p7",
     "sentences": [
       {
         "id": "w18/1/p7/s1",
-        "parts": [
-          {
-            "text": "1.​",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Faringe arraildurak eta faringe poltsak",
-            "b": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "1.1",
-    "id": "w18/1.1/p1",
-    "sentences": [
-      {
-        "id": "w18/1.1/p1/s1",
-        "parts": [
-          {
-            "text": "1.1.​",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Poltsetatik eratorritako egiturak",
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "1.1.1",
-    "id": "w18/1.1.1/p1",
-    "sentences": [
-      {
-        "id": "w18/1.1.1/p1/s1",
-        "parts": [
-          {
-            "text": "1.1.1.​",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Lehenengo poltsaren eratorriak",
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "1.1.2",
-    "id": "w18/1.1.2/p1",
-    "sentences": [
-      {
-        "id": "w18/1.1.2/p1/s1",
-        "parts": [
-          {
-            "text": "1.1.2.​",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Bigarren poltsaren eratorriak",
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "1.1.3",
-    "id": "w18/1.1.3/p1",
-    "sentences": [
-      {
-        "id": "w18/1.1.3/p1/s1",
-        "parts": [
-          {
-            "text": "1.1.3.​",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Hirugarren poltsaren eratorriak",
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "1.1.4",
-    "id": "w18/1.1.4/p1",
-    "sentences": [
-      {
-        "id": "w18/1.1.4/p1/s1",
-        "parts": [
-          {
-            "text": "1.1.4.​",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Laugarren poltsaren eratorriak",
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "1.2",
-    "id": "w18/1.2/p1",
-    "sentences": [
-      {
-        "id": "w18/1.2/p1/s1",
-        "parts": [
-          {
-            "text": "1.2.​",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Arrailduretatik eratorritako egiturak",
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "2",
-    "id": "w18/2/p1",
-    "sentences": [
-      {
-        "id": "w18/2/p1/s1",
-        "parts": [
-          {
-            "text": "2.​",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Mihia",
-            "b": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "2.1",
-    "id": "w18/2.1/p1",
-    "sentences": [
-      {
-        "id": "w18/2.1/p1/s1",
-        "parts": [
-          {
-            "text": "2.1.​",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Mihiaren garapena",
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "2.2",
-    "id": "w18/2.2/p1",
-    "sentences": [
-      {
-        "id": "w18/2.2/p1/s1",
-        "parts": [
-          {
-            "text": "2.2.​",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Mihiaren inerbazioa",
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "2.3",
-    "id": "w18/2.3/p1",
-    "sentences": [
-      {
-        "id": "w18/2.3/p1/s1",
-        "parts": [
-          {
-            "text": "2.3.​",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Mihiaren muskuluak",
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "3",
-    "id": "w18/3/p1",
-    "sentences": [
-      {
-        "id": "w18/3/p1/s1",
-        "parts": [
-          {
-            "text": "3.​",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Tiroide guruinaren garapena",
-            "b": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "4",
-    "id": "w18/4/p1",
-    "sentences": [
-      {
-        "id": "w18/4/p1/s1",
-        "parts": [
-          {
-            "text": "4.​",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Aurpegiaren eraketa",
-            "b": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "4.1",
-    "id": "w18/4.1/p1",
-    "sentences": [
-      {
-        "id": "w18/4.1/p1/s1",
-        "parts": [
-          {
-            "text": "4.1.​",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Sudur plakak eta aho sabaia",
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "4.2",
-    "id": "w18/4.2/p1",
-    "sentences": [
-      {
-        "id": "w18/4.2/p1/s1",
-        "parts": [
-          {
-            "text": "4.2.​",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "Odontogenesia",
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "1",
-    "id": "w18/1/p8",
-    "sentences": [
-      {
-        "id": "w18/1/p8/s1",
         "parts": [
           {
             "text": "6 arku faringeo ditugu eta haien artean "
@@ -581,17 +483,17 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/1/p8/s2",
+        "id": "w18/1/p7/s2",
         "parts": [
           {
-            "text": "Azkenengo poltsan (4.poltsan) bi kimuen antzeko egiturak aurkitu ditzakegu (poltsaren "
+            "text": "Azkenen poltsan (4. poltsan) bi kimuen antzeko egiturak aurkitu ditzakegu (poltsaren "
           },
           {
-            "text": "alde dortsala",
+            "text": "alde dortsala ",
             "b": true
           },
           {
-            "text": " eta alde "
+            "text": "eta alde "
           },
           {
             "text": "bentrala",
@@ -607,28 +509,28 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "1",
-    "id": "w18/1/p9",
+    "id": "w18/1/p8",
     "sentences": [
       {
-        "id": "w18/1/p9/s1",
+        "id": "w18/1/p8/s1",
         "parts": [
           {
-            "text": "* Liburuaren arabera azkenengo poltsa banatuta (4 eta 5 poltsak) edo batera (4. poltsa, bakarra) bezala ikusi ditzakegu. "
+            "text": "* Liburuaren arabera azkenen poltsa banatuta (4 eta 5 poltsak) edo batera (4. poltsa, bakarra) bezala ikusi ditzakegu. "
           }
         ]
       },
       {
-        "id": "w18/1/p9/s2",
+        "id": "w18/1/p8/s2",
         "parts": [
           {
             "text": "Guk "
           },
           {
-            "text": "BATERA",
+            "text": "BATERA ",
             "b": true
           },
           {
-            "text": " ikasiko ditugu."
+            "text": "ikasiko ditugu."
           }
         ]
       }
@@ -677,11 +579,11 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.1/p3/s1",
         "parts": [
           {
-            "text": "Lehenengo poltsa",
+            "text": "Lehenengo poltsa ",
             "b": true
           },
           {
-            "text": " sakondu egingo da, hasierako atala hodi forma hartuz. "
+            "text": "sakondu egingo da, hasierako atala hodi forma hartuz. "
           }
         ]
       },
@@ -700,7 +602,14 @@ export const w18: NotesBlock[] = [
             "text": "Honela barrunbe bat eratuko da, zehazki "
           },
           {
-            "text": "tinpano-kutxa",
+            "text": "tinpano-",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "kutxa",
             "b": true
           },
           {
@@ -722,18 +631,18 @@ export const w18: NotesBlock[] = [
             "text": ", "
           },
           {
-            "text": "ingudea",
+            "text": "ingudea ",
             "b": true
           },
           {
-            "text": " eta "
+            "text": "eta "
           },
           {
             "text": "ointokia",
             "b": true
           },
           {
-            "text": "; lehenengo biak 1. arku faringeotik sortuak, ointokia 2. arku faringeotik). "
+            "text": "; lehenengo biak 1. arku faringeotik sortuak; ointokia berriz, 2. arku faringeotik). "
           }
         ]
       },
@@ -763,11 +672,11 @@ export const w18: NotesBlock[] = [
             "text": "faringeoaren endodermoa asko sakontzen da: "
           },
           {
-            "text": "sakonune tubotinpanikoa",
+            "text": "sakonune tubotinpanikoa ",
             "b": true
           },
           {
-            "text": " deritzo. "
+            "text": "deritzo. "
           }
         ]
       },
@@ -790,14 +699,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.1/p5/s1",
         "parts": [
           {
-            "text": "-​ Batetik, hasieran hodi formako egitura (hurbileko atala): "
+            "text": "- Batetik, hasieran hodi formako egitura (hurbileko atala): "
           },
           {
-            "text": "tronpa faringeotinpanikoa",
+            "text": "tronpa faringotinpanikoa ",
             "b": true
           },
           {
-            "text": " edo "
+            "text": "edo "
           },
           {
             "text": "Eustakioren tronpa ",
@@ -819,10 +728,17 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.1/p6/s1",
         "parts": [
           {
-            "text": "-​ Bestetik, amaieran hodiaren muturrean lehengo poltsa zabalduko da eta barrunbetik "
+            "text": "- Bestetik, amaieran hodiaren muturrean lehengo poltsa zabalduko da eta barrunbetik "
           },
           {
-            "text": "tinpano kutxa ",
+            "text": "tinpano",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "kutxa ",
             "b": true
           },
           {
@@ -892,11 +808,11 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.2/p3/s1",
         "parts": [
           {
-            "text": "Bigarren poltsa",
+            "text": "Bigarren poltsa ",
             "b": true
           },
           {
-            "text": " faringeotik "
+            "text": "faringeotik "
           },
           {
             "text": "aho sabaiko amigdala ",
@@ -911,11 +827,11 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.2/p3/s2",
         "parts": [
           {
-            "text": "5.astean",
+            "text": "5.astean ",
             "i": true
           },
           {
-            "text": " hasten dira poltsako zelula batzuk bereizten eta aho sabaiko amigdala garatzen hasten da, baina 3.-5. hilabetera arte ez du barnean ehun-linfatikorik izango. "
+            "text": "hasten dira poltsako zelula batzuk bereizten eta aho sabaiko amigdala garatzen hasten da, baina 3.-5. hilabetera arte ez du barnean ehun-linfatikorik izango. "
           }
         ]
       },
@@ -974,14 +890,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.3/p4/s1",
         "parts": [
           {
-            "text": "➢​ Alde dortsala ​ Alde dortsaletik, "
+            "text": "➢ Alde dortsala Alde dortsaletik, "
           },
           {
             "text": "beheko paratiroide guruinak ",
             "b": true
           },
           {
-            "text": "(parato edo paratiroide hormonak ekoizten dituztenak) eratzen dira, helduaroan tiroide guruinekin batera kokatzen direnak."
+            "text": "(paratohormona edo paratiroide hormonak ekoizten dituztenak) eratzen dira, helduaroan tiroide guruinekin batera kokatzen direnak."
           }
         ]
       }
@@ -996,7 +912,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.3/p5/s1",
         "parts": [
           {
-            "text": "➢​ Alde bentrala ​ Alde bentraletik, "
+            "text": "➢ Alde bentrala Alde bentraletik, "
           },
           {
             "text": "timoa ",
@@ -1011,7 +927,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.3/p5/s2",
         "parts": [
           {
-            "text": "Timoa garatuz doa pubertaraino, baina pubertarotik aurrera endekatuz doa eta helduetan ia ez dauka funtziorik. "
+            "text": "Timoa immunitate sistemako atala da, zeina garatuz doan pubertaraino, baina pubertarotik aurrera endekatuz doa eta helduetan ia ez dauka funtziorik. "
           }
         ]
       },
@@ -1019,7 +935,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.3/p5/s3",
         "parts": [
           {
-            "text": "Nahiz eta hirugarren poltsan eratu, bere behin betiko kokapena lortzeko jaitsi egin behar da: beheruntz eta alde medialerantz bideratuz. "
+            "text": "Nahiz eta hirugarren poltsan eratzen den, bere behin betiko kokapena lortzeko jaitsi egin behar da: beheruntz eta alde medialerantz bideratuz. "
           }
         ]
       },
@@ -1078,14 +994,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.4/p4/s1",
         "parts": [
           {
-            "text": "➢​ Alde dortsala​ Alde dortsaletik "
+            "text": "➢ Alde dortsala Alde dortsaletik "
           },
           {
-            "text": "goiko paratiroide guruinak",
+            "text": "goiko paratiroide guruinak ",
             "b": true
           },
           {
-            "text": " aterako dira."
+            "text": "aterako dira."
           }
         ]
       }
@@ -1100,11 +1016,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.4/p5/s1",
         "parts": [
           {
-            "text": "KONTUZ!",
+            "text": "KONTUZ! ",
             "b": true
-          },
-          {
-            "text": " "
           }
         ]
       },
@@ -1112,15 +1025,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.4/p5/s2",
         "parts": [
           {
-            "text": "​Behekoak goiko poltsan hasiko dira. "
-          }
-        ]
-      },
-      {
-        "id": "w18/1.1.4/p5/s3",
-        "parts": [
-          {
-            "text": "Guruin hauen nomenklatura ez da"
+            "text": "Behekoa goiko poltsan hasiko dira eta alderantziz (3. poltsatik beheko"
           }
         ]
       }
@@ -1135,7 +1040,15 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.4/p6/s1",
         "parts": [
           {
-            "text": "sorreraren arabera, baizik eta haien behin betiko kokapen anatomikoaren arabera."
+            "text": "paratiroideak sortzen dira; 4. poltsatik, berriz, goiko paratiroideak). "
+          }
+        ]
+      },
+      {
+        "id": "w18/1.1.4/p6/s2",
+        "parts": [
+          {
+            "text": "Guruin hauen nomenklatura ez da sorreraren arabera, baizik eta haien behin betiko kokapen anatomikoaren arabera."
           }
         ]
       }
@@ -1150,14 +1063,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.4/p7/s1",
         "parts": [
           {
-            "text": "➢​ Alde bentrala​ Beste zelula batzuk bereizi eta garatuko dira "
+            "text": "➢ Alde bentrala Beste zelula batzuk bereizi eta garatuko dira "
           },
           {
-            "text": "gorputz ultimobrankiala",
+            "text": "gorputz ultimobrankiala ",
             "b": true
           },
           {
-            "text": " eratzeko. "
+            "text": "eratzeko. "
           }
         ]
       },
@@ -1176,18 +1089,18 @@ export const w18: NotesBlock[] = [
             "text": "Zelula hauek "
           },
           {
-            "text": "C zelula",
+            "text": "C zelula ",
             "b": true
           },
           {
-            "text": " izango dira, "
+            "text": "izango dira, "
           },
           {
             "text": "kaltzitonina ",
             "b": true
           },
           {
-            "text": "(kaltzioaren erregulazioaz arduratzen den hormona) ekoiztearen arduradunak.​"
+            "text": "(kaltzioaren erregulazioaz arduratzen den hormona) ekoiztearen arduradunak."
           }
         ]
       }
@@ -1269,11 +1182,11 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.2/p3/s1",
         "parts": [
           {
-            "text": "Lehenengo arraildura",
+            "text": "Lehenengo arraildura ",
             "b": true
           },
           {
-            "text": " sakondu eta luzatu egingo da. "
+            "text": "sakondu eta luzatu egingo da. "
           }
         ]
       },
@@ -1281,10 +1194,17 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.2/p3/s2",
         "parts": [
           {
-            "text": "Barneko poltsarekin batu egingo da (≠ fusionatu; muga ez da irekiko) eta bi guneen artean muga bat geratuko da: "
+            "text": "Barneko poltsaren hormakin batu egingo da (≠ fusionatu; muga ez da irekiko) eta bi guneen artean muga bat geratuko da: "
           },
           {
-            "text": "tinpano mintza",
+            "text": "tinpano",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "mintza",
             "b": true
           },
           {
@@ -1303,7 +1223,7 @@ export const w18: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "da, kanpoko belarria eta tinpanoa lotzen dituen hodia hain zuzen ere. "
+            "text": "da, belarriaren kanpoko irekigunea tinpano-mintzarekin lotzen duen hodia hain zuzen ere. "
           }
         ]
       },
@@ -1326,7 +1246,7 @@ export const w18: NotesBlock[] = [
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "1.2",
     "id": "w18/1.2/p4",
     "sentences": [
@@ -1334,37 +1254,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.2/p4/s1",
         "parts": [
           {
-            "text": "1.​ Kanpoko epitelioa: jatorri ektodermikoa"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "1.2",
-    "id": "w18/1.2/p5",
-    "sentences": [
-      {
-        "id": "w18/1.2/p5/s1",
-        "parts": [
-          {
-            "text": "2.​ Barneko epitelioa: jatorri endodermikoa"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "1.2",
-    "id": "w18/1.2/p6",
-    "sentences": [
-      {
-        "id": "w18/1.2/p6/s1",
-        "parts": [
-          {
-            "text": "3.​ Tartean dauden zelulak: jatorri mesodermikoa duen geruza oso fina"
+            "text": "1. Kanpoko epitelioa: jatorri ektodermikoa 2. Barneko endotelia: jatorri endodermikoa 3. Tartean dauden zelulak: jatorri mesodermikoa duen geruza oso fina"
           }
         ]
       }
@@ -1373,10 +1263,10 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "1.2",
-    "id": "w18/1.2/p7",
+    "id": "w18/1.2/p5",
     "sentences": [
       {
-        "id": "w18/1.2/p7/s1",
+        "id": "w18/1.2/p5/s1",
         "parts": [
           {
             "text": "Kanpotik ",
@@ -1395,22 +1285,22 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/1.2/p7/s2",
+        "id": "w18/1.2/p5/s2",
         "parts": [
           {
-            "text": "Izan ere, bigarren arkuko mesenkima beherantz luzatu eta hazi egiten da, arrailduren gainetik pasatuz eta "
+            "text": "Izan ere, bigarren arkuaren kanpoko mesenkima loditu eta beherantz luzatu egiten da, 3. eta 4. arrailduren gainetik pasatuz eta "
           },
           {
-            "text": "goragune epikardikoarekin",
+            "text": "goragune epikardikoaren mesenkimarekin ",
             "b": true
           },
           {
-            "text": " fusionatuz. "
+            "text": "fusionatuz. "
           }
         ]
       },
       {
-        "id": "w18/1.2/p7/s3",
+        "id": "w18/1.2/p5/s3",
         "parts": [
           {
             "text": "Horrela, arraildurak estalita gelditzen dira eta desagertzen dira. "
@@ -1418,7 +1308,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/1.2/p7/s4",
+        "id": "w18/1.2/p5/s4",
         "parts": [
           {
             "text": "Hasieran, aztarna txikia "
@@ -1433,22 +1323,22 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/1.2/p7/s5",
+        "id": "w18/1.2/p5/s5",
         "parts": [
           {
             "text": "Hala ere, batzuetan gerta daiteke arraildurak guztiz ez desagertzea eta "
           },
           {
-            "text": "sinu zerbikala",
+            "text": "sinu zerbikala edo lepoko sinua ",
             "b": true
           },
           {
-            "text": " mantentzea. "
+            "text": "mantentzea. "
           }
         ]
       },
       {
-        "id": "w18/1.2/p7/s6",
+        "id": "w18/1.2/p5/s6",
         "parts": [
           {
             "text": "Kasu hauetan lepoan barrunbe bat geratzen ohi da, normalean arazorik ematen ez duena. "
@@ -1456,7 +1346,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/1.2/p7/s7",
+        "id": "w18/1.2/p5/s7",
         "parts": [
           {
             "text": "Batzuetan, helduetan infekzio larri baten ondorioz barrunbe honetan likido serosoa metatu daiteke, lepo mailan bultoma bat nabarituz. "
@@ -1464,7 +1354,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/1.2/p7/s8",
+        "id": "w18/1.2/p5/s8",
         "parts": [
           {
             "text": "Likidoa xiringa batekin kentzen da eta ez du arazo handirik ematen."
@@ -1476,10 +1366,10 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "1.2",
-    "id": "w18/1.2/p8",
+    "id": "w18/1.2/p6",
     "sentences": [
       {
-        "id": "w18/1.2/p8/s1",
+        "id": "w18/1.2/p6/s1",
         "parts": [
           {
             "text": "Nola jaisten dira egiturak?",
@@ -1491,7 +1381,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/1.2/p8/s2",
+        "id": "w18/1.2/p6/s2",
         "parts": [
           {
             "text": "Bakarra den timoa bi aldeetan eratzen da, "
@@ -1513,52 +1403,59 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/1.2/p8/s3",
+        "id": "w18/1.2/p6/s3",
         "parts": [
           {
             "text": "Timoa beherantz desplazatzen doan heinean, "
           },
           {
-            "text": "beheko paratiroide guruina",
+            "text": "beheko",
             "b": true
           },
           {
-            "text": " (3.poltsan eratzen dena) harekin desplazatzen du, horregatik tiroide guruinaren behekaldean kokatzen da (goiko paratiroide guruina gutxi desplazatzen da). "
+            "text": " "
+          },
+          {
+            "text": "paratiroide guruina ",
+            "b": true
+          },
+          {
+            "text": "(3.poltsan eratzen dena) harekin desplazatzen da, horregatik tiroide guruinaren behekaldean kokatzen da (goiko paratiroide guruina gutxi desplazatzen da). "
           }
         ]
       },
       {
-        "id": "w18/1.2/p8/s4",
+        "id": "w18/1.2/p6/s4",
         "parts": [
           {
             "text": "Aldiz, "
           },
           {
-            "text": "goiko paratiroide guruinak",
+            "text": "goiko paratiroide guruinak ",
             "b": true
           },
           {
-            "text": " ez dira horrenbeste jaisten eta 4. poltsan eratu arren, timoaren gorago gelditzen direnez, eta horregatik “goiko paratiroide guinak” deitzen dira. "
+            "text": "ez dira horrenbeste jaisten eta 4. poltsan eratu arren, timoaren gorago gelditzen direnez, eta horregatik “goiko paratiroide guinak” deitzen dira. "
           }
         ]
       },
       {
-        "id": "w18/1.2/p8/s5",
+        "id": "w18/1.2/p6/s5",
         "parts": [
           {
             "text": "Tiroide guruinak "
           },
           {
-            "text": "U forma",
+            "text": "U forma ",
             "b": true
           },
           {
-            "text": " dauka. "
+            "text": "dauka. "
           }
         ]
       },
       {
-        "id": "w18/1.2/p8/s6",
+        "id": "w18/1.2/p6/s6",
         "parts": [
           {
             "text": "Forma horri esker, aurrekaldetik laringeko kartilagoak inguratzen ditu (atzetik ez, irekita gelditzen delako). "
@@ -1566,7 +1463,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/1.2/p8/s7",
+        "id": "w18/1.2/p6/s7",
         "parts": [
           {
             "text": "Atzekalde horretan, lotu egiten dira paratiroide guruinak: "
@@ -1579,14 +1476,14 @@ export const w18: NotesBlock[] = [
             "text": "goian eta aldiz, "
           },
           {
-            "text": "beheko paratiroide",
+            "text": "beheko",
             "b": true
           },
           {
             "text": " "
           },
           {
-            "text": "guruinak ",
+            "text": "paratiroide guruinak ",
             "b": true
           },
           {
@@ -1595,7 +1492,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/1.2/p8/s8",
+        "id": "w18/1.2/p6/s8",
         "parts": [
           {
             "text": "Beraz, “goiko” eta “beheko” izen hori bereganatzen dute haien behin-betiko kokapen ondorioz, ez non agertzen edo garatzen diren arabera. "
@@ -1603,7 +1500,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/1.2/p8/s9",
+        "id": "w18/1.2/p6/s9",
         "parts": [
           {
             "text": "Horrela, forma horren atzekaldean 4 muturretan 4 paratiroide guruin 2 goiko eta 2 beheko. "
@@ -1611,7 +1508,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/1.2/p8/s10",
+        "id": "w18/1.2/p6/s10",
         "parts": [
           {
             "text": "Behin betiko posizioaren arabera izendatzen dira, ez poltsetan duten jatorriaren arabera."
@@ -1662,7 +1559,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.1/p3/s1",
         "parts": [
           {
-            "text": "Mihiak jatorri konplexua du, arku guztietatik ateratzen denez, arku guztietako nerbioek parte hartuko dute haren inerbazioan eta beraz, bere inerbazioa ere konplexua izango da. "
+            "text": "Mihiak jatorri konplexua du, arku guztietatik (1, 2, 3 eta 4) ateratzen denez, arku guztietako nerbioek parte hartuko dute haren inerbazioan eta beraz, bere inerbazioa ere konplexua izango da. "
           }
         ]
       },
@@ -1673,11 +1570,18 @@ export const w18: NotesBlock[] = [
             "text": "Mihia garapenaren "
           },
           {
-            "text": "4. astetik 8. astera",
+            "text": "4.",
             "b": true
           },
           {
-            "text": " garatzen da gutxi gorabehera."
+            "text": " "
+          },
+          {
+            "text": "astetik 8. astera ",
+            "b": true
+          },
+          {
+            "text": "garatzen da gutxi gorabehera."
           }
         ]
       }
@@ -1699,10 +1603,10 @@ export const w18: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "edo"
+            "text": "edo "
           },
           {
-            "text": " goragune lateralak",
+            "text": "goragune lateralak",
             "b": true
           },
           {
@@ -1732,11 +1636,11 @@ export const w18: NotesBlock[] = [
             "text": "Garapenean, 3 goragune horiek fusionatzen dira eta "
           },
           {
-            "text": "mihiaren gorputza",
+            "text": "mihiaren gorputza ",
             "b": true
           },
           {
-            "text": " eratuko dute. "
+            "text": "eratuko dute. "
           }
         ]
       },
@@ -1857,11 +1761,8 @@ export const w18: NotesBlock[] = [
             "text": "Gorputza eta sustraiaren artean, V formako ildo edo muga bat ageri da: "
           },
           {
-            "text": "ildo terminala.",
+            "text": "ildo terminala. ",
             "b": true
-          },
-          {
-            "text": " "
           }
         ]
       },
@@ -2040,14 +1941,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p5/s1",
         "parts": [
           {
-            "text": "Mihiaren",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "gorputza (mihiaren",
+            "text": "Mihiaren gorputza (mihiaren",
             "b": true
           },
           {
@@ -2130,14 +2024,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p7/s1",
         "parts": [
           {
-            "text": "Aurpegi nerbioaren adarra",
+            "text": "Aurpegi nerbioaren",
             "b": true
           },
           {
             "text": " "
           },
           {
-            "text": "(VII. ",
+            "text": "adarra (VII. ",
             "b": true
           }
         ]
@@ -2146,7 +2040,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p7/s2",
         "parts": [
           {
-            "text": "bikote kraneala)",
+            "text": "bikote",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "kraneala)",
             "b": true
           }
         ]
@@ -2162,7 +2063,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p8/s1",
         "parts": [
           {
-            "text": "Dastamena"
+            "text": "Dastamena (dastamen botoien informazioa)"
           }
         ]
       }
@@ -2177,21 +2078,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p9/s1",
         "parts": [
           {
-            "text": "Mihiaren",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "sustraia",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "(mihiaren",
+            "text": "Mihiaren sustraia (mihiaren",
             "b": true
           },
           {
@@ -2205,14 +2092,21 @@ export const w18: NotesBlock[] = [
             "text": " "
           },
           {
-            "text": "Nerbio glosofaringeoaren",
+            "text": "Nerbio",
             "b": true
           },
           {
             "text": " "
           },
           {
-            "text": "adarra (IX. ",
+            "text": "glosofaringeoaren adarra",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "(IX. ",
             "b": true
           }
         ]
@@ -2252,21 +2146,56 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p11/s1",
         "parts": [
           {
-            "text": "Nerbio bagoaren adar bat",
+            "text": "Nerbio bagoaren adar",
             "b": true
           },
           {
             "text": " "
           },
           {
-            "text": "(goiko laringe nerbioa) (X.",
+            "text": "bat",
             "b": true
           },
           {
             "text": " "
           },
           {
-            "text": "bikote kraneala)",
+            "text": "(goiko",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "laringe",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "nerbioa)",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "(X.",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "bikote",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "kraneala)",
             "b": true
           }
         ]
@@ -2297,14 +2226,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p13/s1",
         "parts": [
           {
-            "text": "Mihiaren",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "muskulu",
+            "text": "Mihiaren muskulu",
             "b": true
           },
           {
@@ -2351,11 +2273,8 @@ export const w18: NotesBlock[] = [
             "text": " "
           },
           {
-            "text": "mioblastoetatik.",
+            "text": "mioblastoetatik. ",
             "b": true
-          },
-          {
-            "text": " "
           }
         ]
       },
@@ -2389,11 +2308,26 @@ export const w18: NotesBlock[] = [
             "text": "Bikote kraneala, motorra) "
           },
           {
-            "text": "Nerbio hipoglosoa ",
+            "text": "Nerbio",
             "b": true
           },
           {
-            "text": "(nerbio hau ez da zuzenean arku brankialekin erlazionatzen)"
+            "text": " "
+          },
+          {
+            "text": "hipoglosoa",
+            "b": true
+          },
+          {
+            "text": " (nerbio hau ez da zuzenean arku brankialekin erlazionatzen). "
+          }
+        ]
+      },
+      {
+        "id": "w18/2.2/p15/s3",
+        "parts": [
+          {
+            "text": "Motor somatikoa; borondatez mugitzen dugu."
           }
         ]
       }
@@ -2446,7 +2380,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p18/s2",
         "parts": [
           {
-            "text": "Nerbio motorea da kasu honetan, hau da, mihia mugitzeaz arduratzen da, baina gainerako muskuluek zuntz sentsitiboak dituzte, adibidez nerbio trigemino, glosofaringeoa, bago eta fazialak mistoak dira. "
+            "text": "Nerbio motorea da kasu honetan, hau da, mihia mugitzeaz arduratzen da, baina gainerako nerbioak zuntz sentsitiboak dituzte, adibidez nerbio trigemino, glosofaringeoa, bago eta fazialak mistoak dira. "
           }
         ]
       },
@@ -2530,7 +2464,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p4/s1",
         "parts": [
           {
-            "text": "Tiroidea faringe hestearen zoruan barnerantz eratzen da (estomodoaren atzeko aldean), zulo itsua dagoen mailan (tuberkulu bakoitia eta kupularen artean)."
+            "text": "Tiroidea faringe hestearen zoruan barnerantz eratzen da, mihiaren gorputza eta sustraiaren artean (estomodoaren atzeko aldean), zulo itsua dagoen mailan (tuberkulu bakoitia eta kupularen artean)."
           }
         ]
       }
@@ -2612,7 +2546,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p6/s2",
         "parts": [
           {
-            "text": "Hasikin hau hodi tiroglosoa erabiliko du faringearen zorutik behin-betiko tokira joateko. "
+            "text": "Hasikin hau hodi tiroglosoa erabiliko du faringearen zoruti behin-betiko tokira joateko. "
           }
         ]
       },
@@ -2669,11 +2603,11 @@ export const w18: NotesBlock[] = [
             "text": "Lotura hori "
           },
           {
-            "text": "hodi tiroglosoa",
+            "text": "hodi tiroglosoa ",
             "b": true
           },
           {
-            "text": " da."
+            "text": "da."
           }
         ]
       }
@@ -2696,10 +2630,10 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p8/s2",
         "parts": [
           {
-            "text": "Helduetan, hodia ia-ia guztiz endekatuta dago, baina hasi den tokian (V erpinean) aztarna edo zakuondo txiki bat uzten du:"
+            "text": "Helduetan, hodia ia-ia guztiz endekatuta dago, baina hasi den tokian (V erpinean) aztarna edo zakuondo txiki bat uzten du: "
           },
           {
-            "text": " zulo itsua. ",
+            "text": "zulo itsua. ",
             "b": true
           }
         ]
@@ -2739,7 +2673,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p9/s2",
         "parts": [
           {
-            "text": "Mintz bukofaringeoa endodermikoa izango da; estomodeoak aldiz, kanpoko estalkia jatorri ektodermikoa izango du eta barneko atala (mintz bukofaringeoarekin jarraia izango dena) endodermikoa izango da."
+            "text": "Mintz bukofaringeoa endodermikoa izango da; estomodeoak aldiz, kanpoko estalkia jatorri"
           }
         ]
       }
@@ -2754,90 +2688,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p10/s1",
         "parts": [
           {
-            "text": "Tiroide guruinak bi lobulo ditu, eskuineko bat eta ezkerreko bat. "
-          }
-        ]
-      },
-      {
-        "id": "w18/3/p10/s2",
-        "parts": [
-          {
-            "text": "Bi lobuluek laringeko kartilagoak “besarkatzen” dituzte. "
-          }
-        ]
-      },
-      {
-        "id": "w18/3/p10/s3",
-        "parts": [
-          {
-            "text": "Biak dira luzangak eta aurrekaldetik lotuta daude eremu estu batez: "
-          },
-          {
-            "text": "istmoa",
-            "b": true
-          },
-          {
-            "text": ". "
-          }
-        ]
-      },
-      {
-        "id": "w18/3/p10/s4",
-        "parts": [
-          {
-            "text": "Atzetik lobuluak ez daude lotuta eta bertan ikusi dezakeguz goiko eta beheko guruin paratiroideoak. "
-          }
-        ]
-      },
-      {
-        "id": "w18/3/p10/s5",
-        "parts": [
-          {
-            "text": "Hau da egitura guztien behin betiko kokapena. "
-          }
-        ]
-      },
-      {
-        "id": "w18/3/p10/s6",
-        "parts": [
-          {
-            "text": "7. astean tiroidea jada jada helduta dago, behin betiko",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "kokapena hartzen du eta behin betiko itxura lortzen du. ",
-            "b": true
-          }
-        ]
-      },
-      {
-        "id": "w18/3/p10/s7",
-        "parts": [
-          {
-            "text": "Jaio",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "aurreko 3. hilabetean funtzionala izaten hasten da tiroidea.",
-            "b": true
-          },
-          {
-            "text": " "
-          }
-        ]
-      },
-      {
-        "id": "w18/3/p10/s8",
-        "parts": [
-          {
-            "text": "Funtzio: hormonala, hazkuntzan parte hartu …",
-            "b": true
+            "text": "ektodermikoa izango du eta barneko atala (mintz bukofaringeoarekin jarraia izango dena) endodermikoa izango da."
           }
         ]
       }
@@ -2852,7 +2703,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p11/s1",
         "parts": [
           {
-            "text": "Pertsona batzuetan (%50 edo gehiago) anomalia bat agertzen da tiroide guruinean, orokorrean ezkerreko lobuluarekin edo aurreko istmoarekin erlazionatuta, tiroide guruinaren piramide itxurako lobulua. "
+            "text": "Tiroide guruinak bi lobulo ditu, eskuineko bat eta ezkerreko bat. "
           }
         ]
       },
@@ -2860,7 +2711,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p11/s2",
         "parts": [
           {
-            "text": "Anomalia bat da, baina ez du arazorik ematen. "
+            "text": "Bi lobuluek laringeko kartilagoak “besarkatzen” dituzte. "
           }
         ]
       },
@@ -2868,7 +2719,30 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p11/s3",
         "parts": [
           {
-            "text": "Hodi tiroglosoaren azken atala ez bada ondo endekatzen, piramide itxurako lobulua gelditzen da."
+            "text": "Biak dira luzangak eta aurrekaldetik lotuta daude eremu estu batez: "
+          },
+          {
+            "text": "istmoa",
+            "b": true
+          },
+          {
+            "text": ". "
+          }
+        ]
+      },
+      {
+        "id": "w18/3/p11/s4",
+        "parts": [
+          {
+            "text": "Atzetik lobuluak ez daude lotuta eta bertan ikusi dezakeguz goiko eta beheko guruin paratiroideoak. "
+          }
+        ]
+      },
+      {
+        "id": "w18/3/p11/s5",
+        "parts": [
+          {
+            "text": "Hau da egitura guztien behin betiko kokapena."
           }
         ]
       }
@@ -2883,6 +2757,85 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p12/s1",
         "parts": [
           {
+            "text": "7. astean tiroidea jada jada helduta dago, behin betiko kokapena hartzen du eta behin betiko",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "itxura lortzen du. ",
+            "b": true
+          }
+        ]
+      },
+      {
+        "id": "w18/3/p12/s2",
+        "parts": [
+          {
+            "text": "Jaio aurreko 3. hilabetean funtzionala izaten hasten da tiroidea. ",
+            "b": true
+          }
+        ]
+      },
+      {
+        "id": "w18/3/p12/s3",
+        "parts": [
+          {
+            "text": "Funtzio:",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "hormonala, hazkuntzan parte hartu …",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3",
+    "id": "w18/3/p13",
+    "sentences": [
+      {
+        "id": "w18/3/p13/s1",
+        "parts": [
+          {
+            "text": "Pertsona batzuetan (%50 edo gehiago) anomalia bat agertzen da tiroide guruinean, orokorrean ezkerreko lobuluarekin edo aurreko istmoarekin erlazionatuta, tiroide guruinaren piramide itxurako lobulua. "
+          }
+        ]
+      },
+      {
+        "id": "w18/3/p13/s2",
+        "parts": [
+          {
+            "text": "Anomalia bat da, baina ez du arazorik ematen. "
+          }
+        ]
+      },
+      {
+        "id": "w18/3/p13/s3",
+        "parts": [
+          {
+            "text": "Hodi tiroglosoaren azken atala ez bada ondo endekatzen, piramide itxurako lobulua gelditzen da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3",
+    "id": "w18/3/p14",
+    "sentences": [
+      {
+        "id": "w18/3/p14/s1",
+        "parts": [
+          {
             "text": "Timoa",
             "b": true,
             "i": true
@@ -2893,7 +2846,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/3/p12/s2",
+        "id": "w18/3/p14/s2",
         "parts": [
           {
             "text": "Tiroide guruinaren behekaldean gelditzen da. "
@@ -2901,7 +2854,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/3/p12/s3",
+        "id": "w18/3/p14/s3",
         "parts": [
           {
             "text": "Tamaina handia du enbrioi aroan eta pubertarora arte garatzen jarraitzen du. "
@@ -2909,7 +2862,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/3/p12/s4",
+        "id": "w18/3/p14/s4",
         "parts": [
           {
             "text": "Pubertarotik aurrera endekatuz doa, eta helduetan ia ez du funtziorik, eta tamaina eskasekoa da."
@@ -2989,7 +2942,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4/p5/s1",
         "parts": [
           {
-            "text": "-​ Alboetan bi bikote luzapen/goragune: "
+            "text": "- Alboetan bi bikote luzapen/goragune: "
           },
           {
             "text": "luzapen",
@@ -2999,14 +2952,14 @@ export const w18: NotesBlock[] = [
             "text": " "
           },
           {
-            "text": "maxilarrak",
+            "text": "maxilarrak ",
             "b": true
           },
           {
-            "text": " eta"
+            "text": "eta "
           },
           {
-            "text": " barail luzapenak. ",
+            "text": "barail luzapenak (alde kaudalean). ",
             "b": true
           }
         ]
@@ -3015,8 +2968,23 @@ export const w18: NotesBlock[] = [
         "id": "w18/4/p5/s2",
         "parts": [
           {
-            "text": "(1.arkuaren osagaiak)",
+            "text": "(1.",
             "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "arkuaren osagaiak). ",
+            "b": true
+          }
+        ]
+      },
+      {
+        "id": "w18/4/p5/s3",
+        "parts": [
+          {
+            "text": "Bi luzapenak ezker eta eskuman daude."
           }
         ]
       }
@@ -3031,17 +2999,17 @@ export const w18: NotesBlock[] = [
         "id": "w18/4/p6/s1",
         "parts": [
           {
-            "text": "-​ Erdian "
+            "text": "- Erdian "
           },
           {
-            "text": "estomodeoa",
+            "text": "estomodeoa ",
             "b": true
           },
           {
-            "text": " edo"
+            "text": "edo "
           },
           {
-            "text": " hasierako ahoa",
+            "text": "hasierako ahoa",
             "b": true
           },
           {
@@ -3060,7 +3028,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4/p7/s1",
         "parts": [
           {
-            "text": "-​ Barnerago mintz bukofaringeoa (argazkian ez da ikusten barneago dagoelako)."
+            "text": "- Barnerago mintz bukofaringeoa (argazkian ez da ikusten barneago dagoelako)."
           }
         ]
       }
@@ -3075,24 +3043,10 @@ export const w18: NotesBlock[] = [
         "id": "w18/4/p8/s1",
         "parts": [
           {
-            "text": "-​ Estomodeoaren goikaldean beste goragune bat dago/agertuko da: "
+            "text": "- Estomodeoaren goikaldean beste goragune bat dago/agertuko da: "
           },
           {
-            "text": "bekoki",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "goragunea/goragune",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "frontonasala. ",
+            "text": "bekoki goragunea/goragune frontonasala. ",
             "b": true
           }
         ]
@@ -3101,10 +3055,17 @@ export const w18: NotesBlock[] = [
         "id": "w18/4/p8/s2",
         "parts": [
           {
-            "text": "Goragune honetan, plakoda edo goragune txiki bi agertzen dira:"
+            "text": "Goragune honetan, plakoda edo goragune txiki bi agertzen dira: "
           },
           {
-            "text": " sudur plakodak. ",
+            "text": "sudur plakodak ",
+            "b": true
+          },
+          {
+            "text": "(plakoda ektodermiko)"
+          },
+          {
+            "text": ". ",
             "b": true
           }
         ]
@@ -3116,11 +3077,11 @@ export const w18: NotesBlock[] = [
             "text": "Gero "
           },
           {
-            "text": "sudur hobiak",
+            "text": "sudur hobiak ",
             "b": true
           },
           {
-            "text": " izango direnak."
+            "text": "izango direnak."
           }
         ]
       }
@@ -3135,7 +3096,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4/p9/s1",
         "parts": [
           {
-            "text": "-​ Begiak guztiz lateralki agertzen dira."
+            "text": "- Begiak guztiz lateralki agertzen dira."
           }
         ]
       }
@@ -3182,10 +3143,10 @@ export const w18: NotesBlock[] = [
             "b": true
           },
           {
-            "text": " agertzen dira, luzapen maxilarraren goikaldean agertuko dira, bi egitura hauen artea ildo bat sortuko da →"
+            "text": " agertzen dira, luzapen maxilarraren goikaldean agertuko dira, bi egitura hauen artea ildo bat sortuko da → "
           },
           {
-            "text": " ildo nasolagrimala. ",
+            "text": "ildo nasolagrimala. ",
             "b": true
           }
         ]
@@ -3224,10 +3185,10 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.1/p5/s1",
         "parts": [
           {
-            "text": "-​ Ertz Laterala/kanpokoa (urdina):"
+            "text": "- Ertz Laterala/kanpokoa (urdina): "
           },
           {
-            "text": " Tenporala",
+            "text": "Tenporala",
             "b": true
           }
         ]
@@ -3243,7 +3204,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.1/p6/s1",
         "parts": [
           {
-            "text": "-​ Ertz Mediala/barnekoa (horia): "
+            "text": "- Ertz Mediala/barnekoa (horia): "
           },
           {
             "text": "Nasala",
@@ -3269,12 +3230,19 @@ export const w18: NotesBlock[] = [
             "b": true
           },
           {
-            "text": ". "
+            "text": "."
           }
         ]
-      },
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "4.1",
+    "id": "w18/4.1/p8",
+    "sentences": [
       {
-        "id": "w18/4.1/p7/s2",
+        "id": "w18/4.1/p8/s1",
         "parts": [
           {
             "text": "Sudur hobitxoak + ertzak = Sudur plakodak",
@@ -3290,16 +3258,31 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "4.1",
-    "id": "w18/4.1/p8",
+    "id": "w18/4.1/p9",
     "sentences": [
       {
-        "id": "w18/4.1/p8/s1",
+        "id": "w18/4.1/p9/s1",
         "parts": [
           {
-            "text": "Garapenaren 6. eta 7. asteen artean sudur hastapen hauek aurrekalderantz mugitzen/hurbiltzen dira biak fusionatzeko (sudur plakoda bietako"
+            "text": "Garapenaren (6). "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.1/p9/s2",
+        "parts": [
+          {
+            "text": "eta 7. asteen artean sudur hastapen hauek aurrekalderantz mugitzen/hurbiltzen dira biak fusionatzeko (sudur plakoda bietako "
           },
           {
-            "text": " ertz medialak fusionatzen dira",
+            "text": "ertz medialak",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "fusionatzen dira",
             "b": true
           },
           {
@@ -3308,95 +3291,18 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p8/s2",
-        "parts": [
-          {
-            "text": "Luzapen maxilarrak alde medialerantz eta aurrerantz luzatzen dira ere, haien artean fusionatuz, sudur hastapenak eta beste egiturak alde medialerantz ere arrastratuz/eramanez."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "4.1",
-    "id": "w18/4.1/p9",
-    "sentences": [
-      {
-        "id": "w18/4.1/p9/s1",
-        "parts": [
-          {
-            "text": "10. astean bi sudur plakoden ertz medialak haien artean fusionatzen dira eta bi eratorri garatuko dira hortik: "
-          },
-          {
-            "text": "sudurraren",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "erdiko atala ",
-            "b": true
-          },
-          {
-            "text": "eta "
-          },
-          {
-            "text": "goiko ezpainaren erdiko atala ",
-            "b": true
-          },
-          {
-            "text": "("
-          },
-          {
-            "text": "kanpotik, ",
-            "b": true
-          },
-          {
-            "text": "ez dator luzapen maxilarretatik)"
-          },
-          {
-            "text": ". ",
-            "b": true
-          }
-        ]
-      },
-      {
-        "id": "w18/4.1/p9/s2",
-        "parts": [
-          {
-            "text": "Gogoratu barnetik hasierako aho sabaia ematen dutela."
-          },
-          {
-            "text": " ",
-            "b": true
-          }
-        ]
-      },
-      {
         "id": "w18/4.1/p9/s3",
         "parts": [
           {
-            "text": "Bestalde,"
-          },
+            "text": "Luzapen maxilarrak alde medialerantz eta aurrerantz luzatzen dira ere, haien artean fusionatuz, sudur hastapenak eta beste egiturak alde medialerantz ere arrastratuz/eramanez. "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.1/p9/s4",
+        "parts": [
           {
-            "text": " ",
-            "b": true
-          },
-          {
-            "text": "plakoden ertz lateralak"
-          },
-          {
-            "text": " ",
-            "b": true
-          },
-          {
-            "text": "ematen dute "
-          },
-          {
-            "text": "sudur hegalak.",
-            "b": true
+            "text": "Horrek esaten digu gure espainak bi jatorri izango dituela."
           }
         ]
       }
@@ -3411,7 +3317,62 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.1/p10/s1",
         "parts": [
           {
-            "text": "Beraz, goiko ezpainak bi jatorri izango ditu: alde medialerantz mugitutako luzapen maxilarrak eta sudur hastapenen ertz mediala."
+            "text": "10. astean bi sudur plakoden ertz medialak haien artean fusionatzen dira eta bi eratorri garatuko dira hortik: "
+          },
+          {
+            "text": "sudurraren erdiko atala ",
+            "b": true
+          },
+          {
+            "text": "eta "
+          },
+          {
+            "text": "goiko ezpainaren erdiko",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "atala ",
+            "b": true
+          },
+          {
+            "text": "("
+          },
+          {
+            "text": "kanpotik, ",
+            "b": true
+          },
+          {
+            "text": "ez dator luzapen maxilarretatik)"
+          },
+          {
+            "text": ".",
+            "b": true
+          },
+          {
+            "text": " "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.1/p10/s2",
+        "parts": [
+          {
+            "text": "Gogoratu barnetik hasierako aho sabaia ematen dutela. "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.1/p10/s3",
+        "parts": [
+          {
+            "text": "Bestalde, plakoden ertz lateralak ematen dute "
+          },
+          {
+            "text": "sudur hegalak.",
+            "b": true
           }
         ]
       }
@@ -3424,6 +3385,36 @@ export const w18: NotesBlock[] = [
     "sentences": [
       {
         "id": "w18/4.1/p11/s1",
+        "parts": [
+          {
+            "text": "(10. astean aurpegiak aurpegi itxura dauka)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "4.1",
+    "id": "w18/4.1/p12",
+    "sentences": [
+      {
+        "id": "w18/4.1/p12/s1",
+        "parts": [
+          {
+            "text": "Beraz, goiko ezpainak bi jatorri izango ditu: alde medialerantz mugitutako luzapen maxilarrak eta sudur hastapenen ertz mediala."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "4.1",
+    "id": "w18/4.1/p13",
+    "sentences": [
+      {
+        "id": "w18/4.1/p13/s1",
         "parts": [
           {
             "text": "Gainera, hasiera batean alboko ertzen ("
@@ -3442,7 +3433,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p11/s2",
+        "id": "w18/4.1/p13/s2",
         "parts": [
           {
             "text": "Begiak aurrera datozenean, ildo nasolagrimal hau eraldatu egingo da eta "
@@ -3459,23 +3450,23 @@ export const w18: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "eta zaku hori komunikatuko du"
+            "text": "eta zaku hori komunikatuko du "
           },
           {
-            "text": " begien erpin mediala ",
+            "text": "begien erpin mediala ",
             "b": true
           },
           {
-            "text": "eta"
+            "text": "eta "
           },
           {
-            "text": " sudur barrunbea. ",
+            "text": "sudur barrunbea. ",
             "b": true
           }
         ]
       },
       {
-        "id": "w18/4.1/p11/s3",
+        "id": "w18/4.1/p13/s3",
         "parts": [
           {
             "text": "Ildo nasolagrimalaren barnean "
@@ -3490,7 +3481,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p11/s4",
+        "id": "w18/4.1/p13/s4",
         "parts": [
           {
             "text": "Hodi horrek komunikatuko ditu sudur barrunbea eta begiaren mutur mediala. "
@@ -3498,7 +3489,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p11/s5",
+        "id": "w18/4.1/p13/s5",
         "parts": [
           {
             "text": "Malko hodi honek goikaldean zabalgune bat izango du eta "
@@ -3513,7 +3504,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p11/s6",
+        "id": "w18/4.1/p13/s6",
         "parts": [
           {
             "text": "Malko zakua eta malko hodia begi eta sudur barrunbeen arteko komunikabideak izango dira. "
@@ -3521,7 +3512,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p11/s7",
+        "id": "w18/4.1/p13/s7",
         "parts": [
           {
             "text": "(Horregatik negar egiterakoan, hainbeste malko kanporatzerakoan hodietatik malko batzuk",
@@ -3533,52 +3524,6 @@ export const w18: NotesBlock[] = [
           {
             "text": "sudur barrunbeetarantz ateratzen dira).",
             "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "4.1",
-    "id": "w18/4.1/p12",
-    "sentences": [
-      {
-        "id": "w18/4.1/p12/s1",
-        "parts": [
-          {
-            "text": "Alde bietako luzakin maxilarrak eta erdian ertz",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "medialak fusionatu ondoren, egitura berri bat",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "sortu: ",
-            "i": true
-          },
-          {
-            "text": "Maxilar arteko segmentua",
-            "b": true,
-            "i": true
-          },
-          {
-            "text": " (geroago",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "hasierako aho sabaiaren hirukia osatuko du).",
-            "i": true
           },
           {
             "text": " "
@@ -3586,115 +3531,11 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p12/s2",
+        "id": "w18/4.1/p13/s8",
         "parts": [
           {
-            "text": "Hasieran maxilar arteko segmentua zena,",
+            "text": "(10 astean EZ da ildo nasolagrimala, hodia baizik)",
             "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "aurrekaldean aho sabaiaren hiruki formako atal",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "bat emango du: ",
-            "i": true
-          },
-          {
-            "text": "hasierako aho sabaia",
-            "b": true,
-            "i": true
-          },
-          {
-            "text": ". ",
-            "i": true
-          }
-        ]
-      },
-      {
-        "id": "w18/4.1/p12/s3",
-        "parts": [
-          {
-            "text": "Hiruki",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "horren erpinean beste markatxo bat egongo da: ",
-            "i": true
-          },
-          {
-            "text": "ebakortz zuloa",
-            "b": true,
-            "i": true
-          },
-          {
-            "text": ".",
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "4.1",
-    "id": "w18/4.1/p13",
-    "sentences": [
-      {
-        "id": "w18/4.1/p13/s1",
-        "parts": [
-          {
-            "text": "Barrutik (irudia aho sabaia da behekaldetik ikusita) sudur-hastapenen ertz medialek aho sabaiaren atal bat osatuko dute"
-          },
-          {
-            "text": " (kanpotik)",
-            "b": true
-          },
-          {
-            "text": ", aurre-aurrean dagoen hiruki formako atal bat: "
-          },
-          {
-            "text": "hasierako aho sabaia (hemen ebakortzak txertatuko dira). ",
-            "b": true
-          }
-        ]
-      },
-      {
-        "id": "w18/4.1/p13/s2",
-        "parts": [
-          {
-            "text": "Bertan aterako dira "
-          },
-          {
-            "text": "4 ebakortzak",
-            "b": true
-          },
-          {
-            "text": " eta bere erpinean "
-          },
-          {
-            "text": "ebakortz zuloa",
-            "b": true
-          },
-          {
-            "text": " irtengo da. "
-          }
-        ]
-      },
-      {
-        "id": "w18/4.1/p13/s3",
-        "parts": [
-          {
-            "text": "(horregatik deitu 4 ebakortzen hezur maxilarraren atala)"
           }
         ]
       }
@@ -3709,14 +3550,35 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.1/p14/s1",
         "parts": [
           {
-            "text": "2 aldeetako luzapen maxilarrak (aho sabiaren plakak edo gandorrak) erdirantz doaz eta azkenean erdikaldean fusionatu egingo dira, aho sabaia eratuz eta jostura/lerro bat eratuko dute aho sabaiaren erdian: "
+            "text": "Alde bietako luzakin maxilarrak eta",
+            "i": true
           },
           {
-            "text": "aho sabaiaren errafea ",
-            "b": true
+            "text": " "
           },
           {
-            "text": "(jostura horren aztarna guk nabaritu dezakegu). "
+            "text": "erdian ertz medialak fusionatu ondoren,",
+            "i": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "egitura berri bat sortu: ",
+            "i": true
+          },
+          {
+            "text": "Maxilar arteko",
+            "b": true,
+            "i": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "segmentua. ",
+            "b": true,
+            "i": true
           }
         ]
       },
@@ -3724,7 +3586,32 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.1/p14/s2",
         "parts": [
           {
-            "text": "Lerro hori ez da ebakortzetaraino heltzen hor baitago hiruki formako atala, jostura/lerroa bakarrik ebakortz zuloraino helduko da. "
+            "text": "Honek eratuko du",
+            "i": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "espainaren zati bat eta hezur atal bat, 4",
+            "i": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "ebakortzen hezur maxilarraren",
+            "i": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "atala.(geroago hasierako aho sabaiaren hirukia osatuko du).",
+            "i": true
+          },
+          {
+            "text": " "
           }
         ]
       },
@@ -3732,21 +3619,101 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.1/p14/s3",
         "parts": [
           {
-            "text": "Hiru atalak batera (luzakinak/Plakak eta hasierako aho sabaiak), "
+            "text": "Hasieran maxilar arteko segmentua zena, aurrekaldean aho sabaiaren hiruki formako atal bat emango du:",
+            "i": true
           },
           {
-            "text": "hezurrezko aho sabaia",
+            "text": " "
+          },
+          {
+            "text": "hasierako aho sabaia (aho sabai gogorraren eraketan parte hartuko du)",
+            "b": true,
+            "i": true
+          },
+          {
+            "text": ". ",
+            "i": true
+          }
+        ]
+      },
+      {
+        "id": "w18/4.1/p14/s4",
+        "parts": [
+          {
+            "text": "Hiruki horren erpinean beste",
+            "i": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "markatxo bat egongo da: ",
+            "i": true
+          },
+          {
+            "text": "ebakortz zuloa",
+            "b": true,
+            "i": true
+          },
+          {
+            "text": ".",
+            "i": true
+          },
+          {
+            "text": " "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.1/p14/s5",
+        "parts": [
+          {
+            "text": "Hodi",
             "b": true
           },
           {
-            "text": " edo "
+            "text": " Barrutik (irudia aho sabaia da behekaldetik ikusita) sudur-hastapenen ertz medialek aho sabaiaren atal bat osatuko dute "
           },
           {
-            "text": "aho sabai gogorra",
+            "text": "(kanpotik)",
             "b": true
           },
           {
-            "text": " eratuko dute."
+            "text": ", aurre-aurrean dagoen hiruki formako atal bat: "
+          },
+          {
+            "text": "hasierako aho sabaia (hemen ebakortzak txertatuko dira). ",
+            "b": true
+          }
+        ]
+      },
+      {
+        "id": "w18/4.1/p14/s6",
+        "parts": [
+          {
+            "text": "Bertan aterako dira "
+          },
+          {
+            "text": "4 ebakortzak",
+            "b": true
+          },
+          {
+            "text": " eta bere erpinean "
+          },
+          {
+            "text": "ebakortz zuloa ",
+            "b": true
+          },
+          {
+            "text": "irtengo da. "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.1/p14/s7",
+        "parts": [
+          {
+            "text": "(horregatik deitu 4 ebakortzen hezur maxilarraren atala)"
           }
         ]
       }
@@ -3761,11 +3728,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.1/p15/s1",
         "parts": [
           {
-            "text": "Aho sabaiaren gandorrak ",
+            "text": "2 aldeetako luzapen maxilarrak (aho sabiaren plakak edo gandorrak) erdirantz doaz eta azkenean erdikaldean fusionatu egingo dira, aho sabaia eratuz eta jostura/lerro bat eratuko dute aho sabaiaren erdian: "
+          },
+          {
+            "text": "aho sabaiaren errafea ",
             "b": true
           },
           {
-            "text": "prozesu maxilarretatik aterako dira eta erdirantz/medialerantz bideratuko dira, bertan fusionatu behar direlako aho sabai gogorra eratzeko. "
+            "text": "(jostura horren aztarna guk nabaritu dezakegu). "
           }
         ]
       },
@@ -3773,7 +3743,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.1/p15/s2",
         "parts": [
           {
-            "text": "Hala ere, 6. astean mihiaren osagaien azpikaldean daude. "
+            "text": "Lerro hori ez da ebakortzetaraino heltzen hor baitago hiruki formako atala, jostura/lerroa bakarrik ebakortz zuloraino helduko da. "
           }
         ]
       },
@@ -3781,27 +3751,91 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.1/p15/s3",
         "parts": [
           {
+            "text": "Hiru atalak batera (luzakinak/Plakak eta hasierako aho sabaiak), "
+          },
+          {
+            "text": "hezurrezko aho sabaia ",
+            "b": true
+          },
+          {
+            "text": "edo "
+          },
+          {
+            "text": "aho sabai gogorra ",
+            "b": true
+          },
+          {
+            "text": "eratuko dute."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "4.1",
+    "id": "w18/4.1/p16",
+    "sentences": [
+      {
+        "id": "w18/4.1/p16/s1",
+        "parts": [
+          {
+            "text": "Aho sabaiaren gandorrak (=Aho sabai plakak) ",
+            "b": true
+          },
+          {
+            "text": "prozesu"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "caption",
+    "section": "4.1",
+    "id": "w18/4.1/p17",
+    "sentences": [
+      {
+        "id": "w18/4.1/p17/s1",
+        "parts": [
+          {
+            "text": "maxilarretatik aterako dira eta erdirantz/medialerantz bideratuko dira, bertan fusionatu behar direlako aho sabai gogorra eratzeko. "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.1/p17/s2",
+        "parts": [
+          {
+            "text": "Hala ere, 6. astean mihiaren osagaien azpikaldean daude. "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.1/p17/s3",
+        "parts": [
+          {
             "text": "Gandor hauek beherantz daude eta mihia gandor hauek baino gorago dago, hasieran. "
           }
         ]
       },
       {
-        "id": "w18/4.1/p15/s4",
+        "id": "w18/4.1/p17/s4",
         "parts": [
           {
             "text": "Hau da, azkenean, "
           },
           {
-            "text": "aho sabaia",
+            "text": "aho sabaia ",
             "b": true
           },
           {
-            "text": " eratzeko 3 egitura lotu/giltzatu behar dira josturen bitartez: hasierako aho sabaia + aho sabaiaren 2 plakak (luzakin maxilarraren luzapenak). "
+            "text": "eratzeko 3 egitura lotu/giltzatu behar dira josturen bitartez: hasierako aho sabaia + aho sabaiaren 2 plakak (luzakin maxilarraren luzapenak). "
           }
         ]
       },
       {
-        "id": "w18/4.1/p15/s5",
+        "id": "w18/4.1/p17/s5",
         "parts": [
           {
             "text": "7. astean zehar, aho sabaiaren gandorrak horizontalizatu egiten dira eta mihiaren goialdean kokatuko dira (mihia behera egiten du ere), erdirantz luzatuz eta erdikaldean jostura eman arte. "
@@ -3809,112 +3843,119 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p15/s6",
+        "id": "w18/4.1/p17/s6",
         "parts": [
           {
             "text": "Aldi berean, goitik "
           },
           {
-            "text": "trenkada (goian dagoen hezur",
+            "text": "trenkada (goian dagoen",
             "b": true
           },
           {
             "text": " "
           },
           {
-            "text": "etmoidesetik etortzen den trenkada; azkenean sudur",
+            "text": "hezur etmoidesetik etortzen den trenkada; azkenean sudur trenkada izango dena) ",
             "b": true
           },
           {
-            "text": " "
-          },
-          {
-            "text": "trenkada izango dena) ",
-            "b": true
-          },
-          {
-            "text": "bat eratzen hasiko da beherantz,"
-          },
-          {
-            "text": " ",
-            "b": true
-          },
-          {
-            "text": "gero eta gehiago luzatuko da azkenean aho sabaiko gandorrekin lotzeko. "
+            "text": "bat eratzen hasiko da beherantz, gero eta gehiago luzatuko da azkenean aho sabaiko gandorrekin lotzeko. "
           }
         ]
       },
       {
-        "id": "w18/4.1/p15/s7",
+        "id": "w18/4.1/p17/s7",
         "parts": [
           {
-            "text": "Gogoratu, aurrekoa gertatzen den bitartean, ertz medialetik aho sabai primarioa edo hasierako aho sabaia eratuko dela (aurrekaldean gertatzen den beste prozesua). "
+            "text": "Gogoratu, aurrekoa gertatzen den bitartean, ertz medialetik aho sabai primarioa edo hasierako aho sabaia eratuko dela (aurrekaldean gertatzen den beste prozesua).(Alboko hormak: Bihurriagoak bihurtzen dira) 9. astean gandor biak horizontalki dauden gandorrak erdikaldean fusionatu egiten dira, aho-sabia eratzeko, baita hasierako aho sabaiarekin batzen dira (sudurraren ertz medialetik sortzen dena). "
           }
         ]
       },
       {
-        "id": "w18/4.1/p15/s8",
-        "parts": [
-          {
-            "text": "9. astean gandor biak horizontalki dauden gandorrak erdikaldean fusionatu egiten dira, aho-sabia eratzeko, baita hasierako aho sabaiarekin batzen dira (sudurraren ertz medialetik sortzen dena). "
-          }
-        ]
-      },
-      {
-        "id": "w18/4.1/p15/s9",
+        "id": "w18/4.1/p17/s8",
         "parts": [
           {
             "text": "Horrela "
           },
           {
-            "text": "hezurrezko aho sabaia",
+            "text": "hezurrezko",
             "b": true
           },
           {
-            "text": " eratuko da. "
+            "text": " "
+          },
+          {
+            "text": "aho sabaia ",
+            "b": true
+          },
+          {
+            "text": "eratuko da. "
           }
         ]
       },
       {
-        "id": "w18/4.1/p15/s10",
+        "id": "w18/4.1/p17/s9",
         "parts": [
           {
-            "text": "Horrez gain, aho-sabaia atzekaldean 3 hezurtxo ditu palatinoak (hau ez da garrantzitsua; datorren urtean emango dugu). "
+            "text": "Horrez gain, aho-sabaia atzekaldean 3 hezurtxo ditu palatinoak. "
           }
         ]
       },
       {
-        "id": "w18/4.1/p15/s11",
+        "id": "w18/4.1/p17/s10",
         "parts": [
           {
-            "text": "Gutxi gora behera, garapenaren 10-12. asterako sudur trenkada aho sabaira helduko da eta biak fusionatuko dira. "
+            "text": "Bi bihurgune agertzen dira: "
+          },
+          {
+            "text": "korneteak",
+            "b": true
+          },
+          {
+            "text": ". "
           }
         ]
       },
       {
-        "id": "w18/4.1/p15/s12",
+        "id": "w18/4.1/p17/s11",
+        "parts": [
+          {
+            "text": "Gutxi gora behera, garapenaren 10-12. asterako sudur trenkada aho sabaira helduko da eta biak fusionatuko dira."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "4.1",
+    "id": "w18/4.1/p18",
+    "sentences": [
+      {
+        "id": "w18/4.1/p18/s1",
         "parts": [
           {
             "text": "Sudurraren aurreko aldea "
           },
           {
-            "text": "kartilagoz",
+            "text": "kartilagoz ",
             "b": true
           },
           {
-            "text": " osatuta dagoen bitartean, atzeko aldea "
+            "text": "osatuta dagoen bitartean, atzeko aldea "
           },
           {
-            "text": "hezurrez",
+            "text": "hezurrez ",
             "b": true
           },
           {
-            "text": " osatuta dago. "
+            "text": "osatuta dago. "
           }
         ]
       },
       {
-        "id": "w18/4.1/p15/s13",
+        "id": "w18/4.1/p18/s2",
         "parts": [
           {
             "text": "Beraz, sudur barrunbeak barnerago egongo dira. "
@@ -3922,7 +3963,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p15/s14",
+        "id": "w18/4.1/p18/s3",
         "parts": [
           {
             "text": "Kanpoan ez ezik, barruan hainbat prozesu ere gertatzen dira. "
@@ -3930,7 +3971,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p15/s15",
+        "id": "w18/4.1/p18/s4",
         "parts": [
           {
             "text": "Aho sabaia garatzen den bitartean sudur barrunbeak ere garatuz doaz. "
@@ -3938,7 +3979,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p15/s16",
+        "id": "w18/4.1/p18/s5",
         "parts": [
           {
             "text": "Sudur barrunbean goitik beherako "
@@ -3953,7 +3994,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p15/s17",
+        "id": "w18/4.1/p18/s6",
         "parts": [
           {
             "text": "Gainera, tarteko sudur horma hau leuna/trenkada da eta sudur barrunbeen alboko hormak, aldiz, hezur bihurriz eratuta daude eta maskor forma dute. "
@@ -3961,26 +4002,22 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p15/s18",
+        "id": "w18/4.1/p18/s7",
         "parts": [
           {
             "text": "Azken egitura bihurri/maskor hauek "
           },
           {
-            "text": "korneteak ",
+            "text": "korneteak",
             "b": true
           },
           {
-            "text": "deitzen dira."
-          },
-          {
-            "text": " ",
-            "b": true
+            "text": " deitzen dira. "
           }
         ]
       },
       {
-        "id": "w18/4.1/p15/s19",
+        "id": "w18/4.1/p18/s8",
         "parts": [
           {
             "text": "Kornete hauek ere garatuz doaz eta 10-12.astean trenkada jada aho sabaiarekin fusionatu denean korneteak ere eratuta daude. "
@@ -3988,14 +4025,14 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p15/s20",
+        "id": "w18/4.1/p18/s9",
         "parts": [
           {
-            "text": "3 kornete/maskor bikote",
+            "text": "3 kornete/maskor bikote ",
             "b": true
           },
           {
-            "text": " ditugu: "
+            "text": "ditugu: "
           },
           {
             "text": "goikoa",
@@ -4005,14 +4042,14 @@ export const w18: NotesBlock[] = [
             "text": ", "
           },
           {
-            "text": "tartekoa",
+            "text": "tartekoa ",
             "b": true
           },
           {
-            "text": " eta"
+            "text": "eta "
           },
           {
-            "text": " behekoa",
+            "text": "behekoa",
             "b": true
           },
           {
@@ -4025,13 +4062,13 @@ export const w18: NotesBlock[] = [
   {
     "kind": "li",
     "section": "4.1",
-    "id": "w18/4.1/p16",
+    "id": "w18/4.1/p19",
     "sentences": [
       {
-        "id": "w18/4.1/p16/s1",
+        "id": "w18/4.1/p19/s1",
         "parts": [
           {
-            "text": "-​ Goiko eta erdiko/tarteko korneteak, "
+            "text": "- Goiko eta erdiko/tarteko korneteak, "
           },
           {
             "text": "etmoide hezurraren ",
@@ -4043,7 +4080,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p16/s2",
+        "id": "w18/4.1/p19/s2",
         "parts": [
           {
             "text": "Sudur barrunbearen sabaia eratzen duen etmoidesetik eratorritakoak."
@@ -4055,13 +4092,13 @@ export const w18: NotesBlock[] = [
   {
     "kind": "li",
     "section": "4.1",
-    "id": "w18/4.1/p17",
+    "id": "w18/4.1/p20",
     "sentences": [
       {
-        "id": "w18/4.1/p17/s1",
+        "id": "w18/4.1/p20/s1",
         "parts": [
           {
-            "text": "-​ "
+            "text": "- "
           },
           {
             "text": "Beheko kornetea",
@@ -4077,10 +4114,10 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "4.1",
-    "id": "w18/4.1/p18",
+    "id": "w18/4.1/p21",
     "sentences": [
       {
-        "id": "w18/4.1/p18/s1",
+        "id": "w18/4.1/p21/s1",
         "parts": [
           {
             "text": "Honela eratzen da aho-sabaia. "
@@ -4088,7 +4125,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p18/s2",
+        "id": "w18/4.1/p21/s2",
         "parts": [
           {
             "text": "Hala ere, jakin beharra dago aho-sabai osoa ez dagoela hezurtuta (aurreko atala bai hezurrezko da eta gogorra da). "
@@ -4096,7 +4133,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p18/s3",
+        "id": "w18/4.1/p21/s3",
         "parts": [
           {
             "text": "Izan ere, atzeko aldea biguna da. "
@@ -4104,17 +4141,17 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p18/s4",
+        "id": "w18/4.1/p21/s4",
         "parts": [
           {
             "text": "Beraz bi atal daude: "
           },
           {
-            "text": "hezurrezkoa",
+            "text": "hezurrezkoa ",
             "b": true
           },
           {
-            "text": " eta "
+            "text": "eta "
           },
           {
             "text": "biguna",
@@ -4126,7 +4163,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p18/s5",
+        "id": "w18/4.1/p21/s5",
         "parts": [
           {
             "text": "Atzekoa ez da inoiz hezurtuko zeren hezurtzapena ez da ubularaino (kanpanillaraino) helduko, aurreko atalan baino ez gertatuko baita."
@@ -4138,10 +4175,10 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "4.1",
-    "id": "w18/4.1/p19",
+    "id": "w18/4.1/p22",
     "sentences": [
       {
-        "id": "w18/4.1/p19/s1",
+        "id": "w18/4.1/p22/s1",
         "parts": [
           {
             "text": "Aho sabaia ez bada ondo fusionatzen anomaliak edo malformazioak gerta daitezke, aho-sabai berari zein aurpegiaren kapoko egiturei ere eragin ahal diezaieketenak. "
@@ -4149,7 +4186,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p19/s2",
+        "id": "w18/4.1/p22/s2",
         "parts": [
           {
             "text": "Denak kirurgiaz konpondu daitezke; ez dira arazo larriak baina bai konpondu beharrekoak (batez ere aho sabaia bera ez denean fusionatu). "
@@ -4157,7 +4194,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p19/s3",
+        "id": "w18/4.1/p22/s3",
         "parts": [
           {
             "text": "Batzuetan gerta daiteke aho sabaia ondo fusionatuta egotea eta arazoa bakarrik kanpoan egotea, hau da, ezpainetan. "
@@ -4165,7 +4202,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p19/s4",
+        "id": "w18/4.1/p22/s4",
         "parts": [
           {
             "text": "Beste batzuetan, ordea, aho sabaia ez da ondo fusionatzen."
@@ -4177,10 +4214,10 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "4.1",
-    "id": "w18/4.1/p20",
+    "id": "w18/4.1/p23",
     "sentences": [
       {
-        "id": "w18/4.1/p20/s1",
+        "id": "w18/4.1/p23/s1",
         "parts": [
           {
             "text": "Adibidea: (Erbi-ezpaina edo Labio leporino) → Alde bateko erbi ezpaina edo aldebiko",
@@ -4196,7 +4233,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p20/s2",
+        "id": "w18/4.1/p23/s2",
         "parts": [
           {
             "text": "Ahosabai-arrailak izantearen ondorioa. ",
@@ -4205,17 +4242,24 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p20/s3",
+        "id": "w18/4.1/p23/s3",
         "parts": [
           {
-            "text": "Jateko arazoak eragiten ditu",
+            "text": "Jateko",
             "i": true
           },
           {
             "text": " "
           },
           {
-            "text": "janaria sudur barrunbeetara pasatu ahal delako.",
+            "text": "arazoak eragiten ditu janaria sudur barrunbeetara pasatu ahal",
+            "i": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "delako.",
             "i": true
           }
         ]
@@ -4225,10 +4269,10 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "4.1",
-    "id": "w18/4.1/p21",
+    "id": "w18/4.1/p24",
     "sentences": [
       {
-        "id": "w18/4.1/p21/s1",
+        "id": "w18/4.1/p24/s1",
         "parts": [
           {
             "text": "Aho sabaia eratu ostean eta sudurreko trenkada eratu ostean, aho sabai eta sudur barrunbeen artean komunikazioa dago. "
@@ -4236,32 +4280,32 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p21/s2",
+        "id": "w18/4.1/p24/s2",
         "parts": [
           {
             "text": "Aho-sabaiaren eta sudur-barrunbearen arteko komunikazioa "
           },
           {
-            "text": "faringe mailan",
+            "text": "faringe mailan ",
             "b": true
           },
           {
-            "text": " (atzean) emango da. "
+            "text": "(atzean) emango da. "
           }
         ]
       },
       {
-        "id": "w18/4.1/p21/s3",
+        "id": "w18/4.1/p24/s3",
         "parts": [
           {
-            "text": "Komunikazioa gertatu ahal izateko lehenengo kanpoaldean"
+            "text": "Komunikazioa gertatu ahal izateko lehenengo kanpoaldean "
           },
           {
-            "text": " sudur zuloen eraketa",
+            "text": "sudur zuloen eraketa ",
             "b": true
           },
           {
-            "text": " emango da ("
+            "text": "emango da ("
           },
           {
             "text": "sudur hobitxotik ",
@@ -4273,7 +4317,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p21/s4",
+        "id": "w18/4.1/p24/s4",
         "parts": [
           {
             "text": "Sudur-hobitxo hau garapenarekin gero eta sakonagoa egiten da eta 6. astean sakonunearen (sudur-barrunbea) eta ahoaren arteko komunikabidea irekitzen hasiko da. "
@@ -4281,7 +4325,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p21/s5",
+        "id": "w18/4.1/p24/s5",
         "parts": [
           {
             "text": "Hemen mintz fin bat aurkituko dugu: "
@@ -4296,7 +4340,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p21/s6",
+        "id": "w18/4.1/p24/s6",
         "parts": [
           {
             "text": "Geroago, 7. astean, mintz bukonasal hori apurtu eta desagertu egingo da eta sudur-barrunbe eta ahoaren arteko hasierako komunikabidea ireki egingo da: "
@@ -4311,7 +4355,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p21/s7",
+        "id": "w18/4.1/p24/s7",
         "parts": [
           {
             "text": "Komunikabide horiei "
@@ -4326,7 +4370,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p21/s8",
+        "id": "w18/4.1/p24/s8",
         "parts": [
           {
             "text": "Beraz, sudurrean 4 zulo nagusi izango ditugu:"
@@ -4338,13 +4382,13 @@ export const w18: NotesBlock[] = [
   {
     "kind": "li",
     "section": "4.1",
-    "id": "w18/4.1/p22",
+    "id": "w18/4.1/p25",
     "sentences": [
       {
-        "id": "w18/4.1/p22/s1",
+        "id": "w18/4.1/p25/s1",
         "parts": [
           {
-            "text": "-​ 2 zulo kanpoan: "
+            "text": "- 2 zulo kanpoan: "
           },
           {
             "text": "narinak",
@@ -4360,13 +4404,13 @@ export const w18: NotesBlock[] = [
   {
     "kind": "li",
     "section": "4.1",
-    "id": "w18/4.1/p23",
+    "id": "w18/4.1/p26",
     "sentences": [
       {
-        "id": "w18/4.1/p23/s1",
+        "id": "w18/4.1/p26/s1",
         "parts": [
           {
-            "text": "-​ 2 zulo kraneoren barnean: "
+            "text": "- 2 zulo kraneoren barnean: "
           },
           {
             "text": "koanak",
@@ -4378,7 +4422,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p23/s2",
+        "id": "w18/4.1/p26/s2",
         "parts": [
           {
             "text": "Zulo hauen bidez komunikatuko dira sudur- eta aho-barrunbeak. "
@@ -4386,7 +4430,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p23/s3",
+        "id": "w18/4.1/p26/s3",
         "parts": [
           {
             "text": "Hasiera batean, koanak aurrean daude (ahotik gertu kokatuta), baina badakigu sudur eta ahoaren arteko komunikazioa "
@@ -4401,7 +4445,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p23/s4",
+        "id": "w18/4.1/p26/s4",
         "parts": [
           {
             "text": "Beraz, hasieran aurrean garatzen den komunikabidea, gero atzerantz mugituko da (faringerantz). "
@@ -4409,7 +4453,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p23/s5",
+        "id": "w18/4.1/p26/s5",
         "parts": [
           {
             "text": "Izan ere, helduetan sudur barrunbeak handiagoak dira. "
@@ -4417,7 +4461,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p23/s6",
+        "id": "w18/4.1/p26/s6",
         "parts": [
           {
             "text": "Faringean nasofaringea eta ahofaringea izango ditugu, orduan, faringetik egongo dira komunikatuta "
@@ -4432,39 +4476,35 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.1/p23/s7",
+        "id": "w18/4.1/p26/s7",
         "parts": [
           {
-            "text": "Jaten dugunean janariaren usaimena ez zaigu bakarrik",
+            "text": "Jaten dugunean janariaren usaimena ez zaigu bakarrik kanpotik heltzen, barnetik ere (atzetik)",
             "i": true
           },
           {
             "text": " "
           },
           {
-            "text": "kanpotik heltzen, barnetik ere (atzetik) etortzen da. ",
+            "text": "etortzen da. ",
             "i": true
           }
         ]
       },
       {
-        "id": "w18/4.1/p23/s8",
+        "id": "w18/4.1/p26/s8",
         "parts": [
           {
-            "text": "Murtxikatzen dugun bitartean janariaren",
+            "text": "Murtxikatzen dugun bitartean janariaren usainak barnetik helduko da sudurrera.",
             "i": true
           },
           {
             "text": " "
-          },
-          {
-            "text": "usainak barnetik helduko da sudurrera. ",
-            "i": true
           }
         ]
       },
       {
-        "id": "w18/4.1/p23/s9",
+        "id": "w18/4.1/p26/s9",
         "parts": [
           {
             "text": "(Sudurrak kanpoko zein barruko usainak hartu).",
@@ -4500,7 +4540,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p3/s1",
         "parts": [
           {
-            "text": "*Berdin eratzen dira hortzak eta haginak.",
+            "text": "*Berdin eratu eta garatzen dira hortzak eta haginak.",
             "i": true
           },
           {
@@ -4512,7 +4552,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p3/s2",
         "parts": [
           {
-            "text": "Hortzen eraketa 8. astean hasten da, kanpoan (barailaren eta hezur maxilarraren gainean) dagoen epitelioan (jatorri ektodermikoa) loditasun agertzen dira, barail eta maxilarren artean C forma bat sortuz. "
+            "text": "Hortzen eraketa 8. astean hasten da, kanpoan (barailaren eta hezur maxilarraren gainean) dagoen epitelioan (jatorri ektodermikoa, barnean mesenkimarekin) loditasun agertzen dira, barail eta maxilarren artean C forma bat sortuz. "
           }
         ]
       },
@@ -4523,11 +4563,11 @@ export const w18: NotesBlock[] = [
             "text": "Lodiune hauei "
           },
           {
-            "text": "hortz-laminak",
+            "text": "hortz-laminak ",
             "b": true
           },
           {
-            "text": " deritze. "
+            "text": "deritze. "
           }
         ]
       },
@@ -4535,7 +4575,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p3/s4",
         "parts": [
           {
-            "text": "Aho-sabaiko epitelioan eta barailan prozesu berdina ematen da (nahiz eta argazkian bakarrik aho-sabaiko epitelioa agertzen den)."
+            "text": "Aho- sabaiko epitelioan eta barailan prozesu berdina ematen da (nahiz eta argazkian bakarrik aho- sabaiko epitelioa agertzen den)."
           }
         ]
       }
@@ -4550,7 +4590,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p4/s1",
         "parts": [
           {
-            "text": "8. astean, epitelioko loditasunetik mesenkima barnera ebaginazio batzuk hezurrerantz sartzen dira; hau da, barailean eta maxilarrean. "
+            "text": "8. astean, epitelioko loditasunetik mesenkima barnera inbaginazio batzuk hezurrerantz sartzen dira, hortz hasikinak direnak; hau da, barailean eta maxilarrean. "
           }
         ]
       },
@@ -4588,30 +4628,7 @@ export const w18: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "izena hartzen du, laminak hartutako forma bereizgarriagatik. "
-          }
-        ]
-      },
-      {
-        "id": "w18/4.2/p5/s3",
-        "parts": [
-          {
-            "text": "Txano formako egitura honek barneko epitelioa zein kanpoko epitelio bat izango du. "
-          }
-        ]
-      },
-      {
-        "id": "w18/4.2/p5/s4",
-        "parts": [
-          {
-            "text": "Barneko epitelioaren barnean txanoz inguratuta mesenkimako zelula batzuk bereiztu egingo dira egitura berri bat eratuz: "
-          },
-          {
-            "text": "hortz-papila",
-            "b": true
-          },
-          {
-            "text": "."
+            "text": "izena hartzen du, laminak hartutako forma bereizgarriagatik."
           }
         ]
       }
@@ -4626,14 +4643,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p6/s1",
         "parts": [
           {
-            "text": "Aurrerago, txanoa laminatik (kanpoko epiteliotik) askatu eta "
-          },
-          {
-            "text": "kanpai",
-            "b": true
-          },
-          {
-            "text": " forma hartzen du. "
+            "text": "Txano formako egitura honek barneko epitelioa zein kanpoko epitelio bat izango du. "
           }
         ]
       },
@@ -4641,14 +4651,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p6/s2",
         "parts": [
           {
-            "text": "Honi "
+            "text": "Barneko epitelioaren barnean txanoz inguratuta mesenkimako zelula batzuk bereiztu egingo dira egitura berri bat eratuz: "
           },
           {
-            "text": "kanpai aroa",
+            "text": "hortz-papila",
             "b": true
           },
           {
-            "text": " deritzogu (garapen enbrionarioaren 3. hilabetean ematen da). "
+            "text": ". "
           }
         ]
       },
@@ -4656,7 +4666,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p6/s3",
         "parts": [
           {
-            "text": "Kanpai forma behin betiko hortzen forma izango da gutxi gorabehera."
+            "text": "(gandor neuraletako zeluletatik)"
           }
         ]
       }
@@ -4671,14 +4681,44 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p7/s1",
         "parts": [
           {
-            "text": "Egitura honetan zelula mota desberdin izango ditugu:"
+            "text": "Aurrerago, txanoa laminatik (kanpoko epiteliotik) askatu eta "
+          },
+          {
+            "text": "kanpai ",
+            "b": true
+          },
+          {
+            "text": "forma hartzen du. "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.2/p7/s2",
+        "parts": [
+          {
+            "text": "Honi "
+          },
+          {
+            "text": "kanpai aroa ",
+            "b": true
+          },
+          {
+            "text": "deritzogu (garapen enbrionarioaren 3. hilabetean ematen da). "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.2/p7/s3",
+        "parts": [
+          {
+            "text": "Txano forma zuena kanpai forma behin betiko hortzen forma izango da gutxi gorabehera."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "4.2",
     "id": "w18/4.2/p8",
     "sentences": [
@@ -4686,34 +4726,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p8/s1",
         "parts": [
           {
-            "text": "-​ Hortz papiletatik bereiztutako "
-          },
-          {
-            "text": "odontoblastoak",
-            "b": true
-          },
-          {
-            "text": ". "
-          }
-        ]
-      },
-      {
-        "id": "w18/4.2/p8/s2",
-        "parts": [
-          {
-            "text": "Kanpaiaren barneko epitelioan geldituko dira. "
-          }
-        ]
-      },
-      {
-        "id": "w18/4.2/p8/s3",
-        "parts": [
-          {
-            "text": "Dentina",
-            "b": true
-          },
-          {
-            "text": " eratuko dute."
+            "text": "Egitura honetan zelula mota desberdin izango ditugu:"
           }
         ]
       }
@@ -4728,14 +4741,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p9/s1",
         "parts": [
           {
-            "text": "-​ Hortz papilatik ere eratuko dira "
+            "text": "- Hortz papiletatik bereiztutako "
           },
           {
-            "text": "hortz-pulpa",
+            "text": "odontoblastoak",
             "b": true
           },
           {
-            "text": " eratzeko agertuko diren zelulak. "
+            "text": ". "
           }
         ]
       },
@@ -4743,7 +4756,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p9/s2",
         "parts": [
           {
-            "text": "Hortzak hazi ahala murriztuta geldituko da (haginak luzatzen diren heinean estutuz doa). "
+            "text": "Kanpaiaren barneko epitelioan geldituko dira. "
           }
         ]
       },
@@ -4751,12 +4764,61 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p9/s3",
         "parts": [
           {
-            "text": "Gainera, bertatik hotzetara eta haginetara heldu behar diren zain, arteria eta nerbioak joango dira. "
+            "text": "Dentina ",
+            "b": true
+          },
+          {
+            "text": "eratuko dute."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "4.2",
+    "id": "w18/4.2/p10",
+    "sentences": [
+      {
+        "id": "w18/4.2/p10/s1",
+        "parts": [
+          {
+            "text": "- Hortz papilatik ere eratuko dira "
+          },
+          {
+            "text": "hortz-pulpa ",
+            "b": true
+          },
+          {
+            "text": "eratzeko agertuko diren zelulak. "
           }
         ]
       },
       {
-        "id": "w18/4.2/p9/s4",
+        "id": "w18/4.2/p10/s2",
+        "parts": [
+          {
+            "text": "Hortzak hazi ahala murriztuta geldituko da (haginak luzatzen diren heinean estutuz doa). "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.2/p10/s3",
+        "parts": [
+          {
+            "text": "Gainera, bertatik hotzetara eta haginetara heldu behar diren zain, arteria eta nerbioak joango dira."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "4.2",
+    "id": "w18/4.2/p11",
+    "sentences": [
+      {
+        "id": "w18/4.2/p11/s1",
         "parts": [
           {
             "text": "Kanpaian ",
@@ -4772,13 +4834,13 @@ export const w18: NotesBlock[] = [
   {
     "kind": "li",
     "section": "4.2",
-    "id": "w18/4.2/p10",
+    "id": "w18/4.2/p12",
     "sentences": [
       {
-        "id": "w18/4.2/p10/s1",
+        "id": "w18/4.2/p12/s1",
         "parts": [
           {
-            "text": "-​ Kanpaiaren kanpoko geruzan (epiteliotik sortutakoak): "
+            "text": "- Kanpaiaren kanpoko geruzan (epiteliotik sortutakoak): "
           },
           {
             "text": "ameloblastoak ",
@@ -4797,10 +4859,26 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.2/p10/s2",
+        "id": "w18/4.2/p12/s2",
         "parts": [
           {
-            "text": "Esmaltea dentinaren gainean kanpotik kokatzen da (begibistaz ikusten dugun kanpoko geruza gogorra eta zuria, hortzaren lepoa arte iristen dena)."
+            "text": "Esmaltea dentinaren gainean kanpotik kokatzen da (begibistaz ikusten dugun kanpoko geruza gogorra eta zuria, hortzaren lepoa arte iristen dena). "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.2/p12/s3",
+        "parts": [
+          {
+            "text": "Esmaltea gorputzaren ehunik gogorrena izango da, dentina babesten duelako. "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.2/p12/s4",
+        "parts": [
+          {
+            "text": "Dentinak sentsibilitatea ematen diolako hortzari."
           }
         ]
       }
@@ -4809,13 +4887,13 @@ export const w18: NotesBlock[] = [
   {
     "kind": "li",
     "section": "4.2",
-    "id": "w18/4.2/p11",
+    "id": "w18/4.2/p13",
     "sentences": [
       {
-        "id": "w18/4.2/p11/s1",
+        "id": "w18/4.2/p13/s1",
         "parts": [
           {
-            "text": "-​ Tartean: "
+            "text": "- Tartean: "
           },
           {
             "text": "zementoblastoak ",
@@ -4827,19 +4905,19 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.2/p11/s2",
+        "id": "w18/4.2/p13/s2",
         "parts": [
           {
-            "text": "Zementoa",
+            "text": "Zementoa ",
             "b": true
           },
           {
-            "text": " eratuko dute eta dentinaren kanpoko aldean kokatuko dira. "
+            "text": "eratuko dute eta dentinaren kanpoko aldean kokatuko dira. "
           }
         ]
       },
       {
-        "id": "w18/4.2/p11/s3",
+        "id": "w18/4.2/p13/s3",
         "parts": [
           {
             "text": "Haien funtzio nagusia "
@@ -4854,7 +4932,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.2/p11/s4",
+        "id": "w18/4.2/p13/s4",
         "parts": [
           {
             "text": "Beraz, dentina (sentsibilitatea ematen duen eremua) babestu behar da minik ez sentitzeko."
@@ -4866,10 +4944,10 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "4.2",
-    "id": "w18/4.2/p12",
+    "id": "w18/4.2/p14",
     "sentences": [
       {
-        "id": "w18/4.2/p12/s1",
+        "id": "w18/4.2/p14/s1",
         "parts": [
           {
             "text": "Laburbilduz: dentina kanpotik esmaltez babestuta dago eta barnetik zementoz (eta hezurrez)."
@@ -4881,16 +4959,16 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "4.2",
-    "id": "w18/4.2/p13",
+    "id": "w18/4.2/p15",
     "sentences": [
       {
-        "id": "w18/4.2/p13/s1",
+        "id": "w18/4.2/p15/s1",
         "parts": [
           {
-            "text": "Gainera, zementoan eta hezurraren albeoloen artean"
+            "text": "Gainera, zementoan eta hezurraren albeoloen artean "
           },
           {
-            "text": " lotailu periodontalak ",
+            "text": "lotailu periodontalak ",
             "b": true
           },
           {
@@ -4901,14 +4979,7 @@ export const w18: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "hagina edo hortza hezurrera lotzeko"
-          },
-          {
-            "text": " ",
-            "b": true
-          },
-          {
-            "text": "(sustraiak indartsu eusteko hezurrera)."
+            "text": "hagina edo hortza hezurrera lotzeko (sustraiak indartsu eusteko hezurrera)."
           }
         ]
       }
@@ -4917,13 +4988,13 @@ export const w18: NotesBlock[] = [
   {
     "kind": "li",
     "section": "4.2",
-    "id": "w18/4.2/p14",
+    "id": "w18/4.2/p16",
     "sentences": [
       {
-        "id": "w18/4.2/p14/s1",
+        "id": "w18/4.2/p16/s1",
         "parts": [
           {
-            "text": "-​ Kanpaiaren barneko geruzan (barneko epitelioaren kontra): Hortz papilatik "
+            "text": "- Kanpaiaren barneko geruzan (barneko epitelioaren kontra): Hortz papilatik "
           },
           {
             "text": "odontoblastoak ",
@@ -4933,31 +5004,31 @@ export const w18: NotesBlock[] = [
             "text": "eratuko dira eta garapenean, hemendik "
           },
           {
-            "text": "DENTINA",
+            "text": "DENTINA ",
             "b": true
           },
           {
-            "text": " eratuko da. "
+            "text": "eratuko (marradun geruza) da. "
           }
         ]
       },
       {
-        "id": "w18/4.2/p14/s2",
+        "id": "w18/4.2/p16/s2",
         "parts": [
           {
             "text": "Dentinaren kanpokaldean, odontoblasto batzuk, gehiago bereiziko dira "
           },
           {
-            "text": "zementoblasto",
+            "text": "zementoblasto ",
             "b": true
           },
           {
-            "text": " bihurtuz. "
+            "text": "bihurtuz. "
           }
         ]
       },
       {
-        "id": "w18/4.2/p14/s3",
+        "id": "w18/4.2/p16/s3",
         "parts": [
           {
             "text": "DENTINA ",
@@ -4983,63 +5054,10 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.2/p14/s4",
+        "id": "w18/4.2/p16/s4",
         "parts": [
           {
             "text": "(horregatik odontoblasto batzuk→ zementoblasto bihurtu→ zementoa lortzeko)."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "4.2",
-    "id": "w18/4.2/p15",
-    "sentences": [
-      {
-        "id": "w18/4.2/p15/s1",
-        "parts": [
-          {
-            "text": "Orduan, hortz laminatik, esmaltea, eta beste egitura guztiak papilatik garatzen dira."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "4.2",
-    "id": "w18/4.2/p16",
-    "sentences": [
-      {
-        "id": "w18/4.2/p16/s1",
-        "parts": [
-          {
-            "text": "-​ Kanpaiaren erdian: "
-          },
-          {
-            "text": "hortz-pulpa ",
-            "b": true
-          },
-          {
-            "text": "aurkituko dugu (hortz papilatik eratutakoak). "
-          }
-        ]
-      },
-      {
-        "id": "w18/4.2/p16/s2",
-        "parts": [
-          {
-            "text": "Hasieran hortz-pulpa zabala izango da, gero, hortzak heltzean, estutuz eta luzatuz joango da, dentina loditzerakoan. "
-          }
-        ]
-      },
-      {
-        "id": "w18/4.2/p16/s3",
-        "parts": [
-          {
-            "text": "Bertatik hortza odoleztatzeko dauden arteria eta zainak pasatuko dira baita inerbatzeko dagoen nerbioa ere."
           }
         ]
       }
@@ -5052,6 +5070,59 @@ export const w18: NotesBlock[] = [
     "sentences": [
       {
         "id": "w18/4.2/p17/s1",
+        "parts": [
+          {
+            "text": "Orduan, hortz laminatik, esmaltea, eta beste egitura guztiak papilatik garatzen dira."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "4.2",
+    "id": "w18/4.2/p18",
+    "sentences": [
+      {
+        "id": "w18/4.2/p18/s1",
+        "parts": [
+          {
+            "text": "- Kanpaiaren erdian: "
+          },
+          {
+            "text": "hortz-pulpa ",
+            "b": true
+          },
+          {
+            "text": "aurkituko dugu (hortz papilatik eratutakoak). "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.2/p18/s2",
+        "parts": [
+          {
+            "text": "Hasieran hortz-pulpa zabala izango da, gero, hortzak heltzean, estutuz eta luzatuz joango da, dentina loditzerakoan. "
+          }
+        ]
+      },
+      {
+        "id": "w18/4.2/p18/s3",
+        "parts": [
+          {
+            "text": "Bertatik hortza odoleztatzeko dauden arteria eta zainak pasatuko dira baita inerbatzeko dagoen nerbioa ere."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "4.2",
+    "id": "w18/4.2/p19",
+    "sentences": [
+      {
+        "id": "w18/4.2/p19/s1",
         "parts": [
           {
             "text": "Hortzak, bai maxilarrean bai bairailetan, ",
@@ -5089,10 +5160,10 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "4.2",
-    "id": "w18/4.2/p18",
+    "id": "w18/4.2/p20",
     "sentences": [
       {
-        "id": "w18/4.2/p18/s1",
+        "id": "w18/4.2/p20/s1",
         "parts": [
           {
             "text": "2 motatako hortzak daude:"
@@ -5104,13 +5175,13 @@ export const w18: NotesBlock[] = [
   {
     "kind": "li",
     "section": "4.2",
-    "id": "w18/4.2/p19",
+    "id": "w18/4.2/p21",
     "sentences": [
       {
-        "id": "w18/4.2/p19/s1",
+        "id": "w18/4.2/p21/s1",
         "parts": [
           {
-            "text": "-​ "
+            "text": "- "
           },
           {
             "text": "Behin-behineko hortzak ",
@@ -5126,13 +5197,13 @@ export const w18: NotesBlock[] = [
   {
     "kind": "li",
     "section": "4.2",
-    "id": "w18/4.2/p20",
+    "id": "w18/4.2/p22",
     "sentences": [
       {
-        "id": "w18/4.2/p20/s1",
+        "id": "w18/4.2/p22/s1",
         "parts": [
           {
-            "text": "-​ "
+            "text": "- "
           },
           {
             "text": "Behin betiko hortzak ",
@@ -5144,7 +5215,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.2/p20/s2",
+        "id": "w18/4.2/p22/s2",
         "parts": [
           {
             "text": "Lehenengo ilaran behin-behineko hortzak daude eta bigarren ilaran behin betiko hortzak, eta behin betiko hortz hauek gutxi gora behera 6. urtean ateratzen hasten dira. "
@@ -5152,7 +5223,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.2/p20/s3",
+        "id": "w18/4.2/p22/s3",
         "parts": [
           {
             "text": "Hau da, gutxi gora behera 6. urteko ume bati behin behineko hortzak jausten hasten zaizkie eta behin betikoak ateratzen doaz."
@@ -5164,10 +5235,10 @@ export const w18: NotesBlock[] = [
   {
     "kind": "caption",
     "section": "4.2",
-    "id": "w18/4.2/p21",
+    "id": "w18/4.2/p23",
     "sentences": [
       {
-        "id": "w18/4.2/p21/s1",
+        "id": "w18/4.2/p23/s1",
         "parts": [
           {
             "text": "5 urteko ume baten hortzak.",
@@ -5180,10 +5251,10 @@ export const w18: NotesBlock[] = [
   {
     "kind": "p",
     "section": "4.2",
-    "id": "w18/4.2/p22",
+    "id": "w18/4.2/p24",
     "sentences": [
       {
-        "id": "w18/4.2/p22/s1",
+        "id": "w18/4.2/p24/s1",
         "parts": [
           {
             "text": "Behin betiko hortzak eratuta egon behar dira, izan ere, behin-behinekoak jausten dira behin betikoek "
@@ -5198,7 +5269,7 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.2/p22/s2",
+        "id": "w18/4.2/p24/s2",
         "parts": [
           {
             "text": "Behin behineko hortzak ez dira bere kabuz jauzten, barnekoek (behin betikoek) eragiten dute. "
@@ -5206,10 +5277,10 @@ export const w18: NotesBlock[] = [
         ]
       },
       {
-        "id": "w18/4.2/p22/s3",
+        "id": "w18/4.2/p24/s3",
         "parts": [
           {
-            "text": "Behin betikoren bat ez bada eratu (agenesia), behin-behinekoa ez da jauziko (behin betikoak ez dituztelako sakatzen), orduan, azkenean atera egin beharko da 14-16 urte bitartean (behin-behineko hortz bat ez dagoelako prestatuta nagusietan irauteko; kariesekin arazoak sortzen dira)."
+            "text": "Behin betikoren bat ez bada eratu (agenesia), behin-behinekoa ez da jauziko (behin betikoak ez dituztelako sakatzen), orduan, azkenean atera egin beharko da 14-16 urte bitartean eta beste bat jarri (behin-behineko hortz bat ez dagoelako prestatuta nagusietan irauteko; kariesekin arazoak sortzen dira)."
           }
         ]
       }

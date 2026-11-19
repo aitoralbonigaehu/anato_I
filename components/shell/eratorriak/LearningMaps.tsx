@@ -74,7 +74,9 @@ export function LearningMaps({ week, renderScheme, renderDetail, resolveName }: 
       <p>{maps.length} mapa nagusi · {maps.reduce((sum, map) => sum + map.flowIds.length, 0)} eskemaren edukia</p>
     </div>
     {view === 'learn' ? <>
-      <p className={styles.intro}>Hasi mapa nagusitik. Zabaldu xehetasunak urratsak eta salbuespenak lotzeko; gero landu bi noranzkoetan.</p>
+      <p className={styles.intro}>{week >= 15
+        ? 'Hasi ezkerreko egituratik eta jarraitu geziei. Geziaren gainean ageri da egituren arteko lotura.'
+        : 'Hasi mapa nagusitik. Zabaldu xehetasunak urratsak eta salbuespenak lotzeko; gero landu bi noranzkoetan.'}</p>
       {maps.map((map, index) => <details className={styles.map} key={map.id} id={`mapa-${map.id}`} name={`learning-${week}`} open={index === 0}>
         <summary className={styles.mapTitle}><span>{String(index + 1).padStart(2, '0')}</span><h3>{map.title}</h3></summary>
         {renderScheme({ id: map.id, title: map.title, stage: map.details[0]?.stage ?? '', roots: map.roots })}

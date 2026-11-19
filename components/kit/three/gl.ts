@@ -528,15 +528,15 @@ const edgeMaterial = (stream?: StreamUniforms) =>
   });
 
 /**
- * Once a WebGL context has been lost (the GPU driver reset, or the browser took it back), the 3D views
- * draw their flat picture for the rest of this tab's session, including reloads.
+ * When WebGL fails (see `createRenderCircuit`): a lost context is rebuilt by the views; repeated losses, or
+ * a context that cannot start, leave them on their flat picture.
  */
 const failureStore = () => {
   try { return typeof window === 'undefined' ? null : window.sessionStorage; } catch { return null; }
 };
 const circuit = createRenderCircuit(failureStore());
 export const glWasLost = () => circuit.blocked;
-/** Called once if the GPU is lost; returns the unsubscribe. */
+/** Called each time the GPU is lost or found unavailable (then `glWasLost()`); returns the unsubscribe. */
 export function onGLLost(cb: () => void) {
   return circuit.subscribe(cb);
 }
@@ -554,7 +554,7 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
   try {
     renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true, premultipliedAlpha: true, powerPreference: 'default', failIfMajorPerformanceCaveat: true });
   } catch {
-    circuit.trip();
+    circuit.unavailable();
     return null;
   }
   const maxDimension = Math.min(renderer.capabilities.maxTextureSize, renderer.getContext().getParameter(renderer.getContext().MAX_RENDERBUFFER_SIZE));
@@ -572,7 +572,7 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
     lost = true;
     canvas.style.visibility = 'hidden';
     waker.stop();
-    circuit.trip();
+    circuit.lost();
   };
   canvas.addEventListener('webglcontextlost', onLost);
   const scene = new Scene();
@@ -725,9 +725,19 @@ export function createGL(host: HTMLDivElement, ready: () => void): GLApi | null 
       dirty = true;
       kick();
     };
-    renderer.compileAsync(warm, camera).then(done, () => {
-      if (!disposed) circuit.trip();
-    });
+    // Twice: for a render target (the occlusion draws the bodies and its screen passes off screen, and three
+    // builds another program for that: linear output, no tone mapping), then for the screen. Missing the
+    // first set made the first frame of every 3D view wait ~2 s for the occlusion's programs.
+    const offscreen = new WebGLRenderTarget(1, 1, { depthBuffer: true });
+    renderer.setRenderTarget(offscreen);
+    const off = renderer.compileAsync(warm, camera);
+    renderer.setRenderTarget(null);
+    const on = renderer.compileAsync(warm, camera);
+    Promise.all([off, on])
+      .then(done, () => {
+        if (!disposed) circuit.unavailable();
+      })
+      .finally(() => offscreen.dispose());
   }
 
   function sync(f: GLFrame) {

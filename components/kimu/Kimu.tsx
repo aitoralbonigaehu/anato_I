@@ -7,7 +7,7 @@ import type { KimuFrom, KimuPractice, KimuReply, KimuSource, KimuTarget } from '
 import { recordAnswer, useAnswers } from '@/components/shell/answers';
 import { IconClose, IconPlay } from '@/components/shell/icons';
 import { KimuFace } from './KimuFace';
-import { getKimuHere, kimuHost, setKimuOpen, toggleKimu, useKimuHere, useKimuOpen } from './store';
+import { getKimuHere, kimuHost, setKimuOpen, toggleKimu, useKimuHere, useKimuOpen, warmKimu as warm } from './store';
 import './kimu.css';
 
 interface Msg {
@@ -56,16 +56,6 @@ const deepLink = (t: KimuTarget) => {
   return `/astea/${t.week}?${q.toString()}`;
 };
 
-/** Load the engine and build its indexes before the first question, when the browser is idle. */
-let warming: Promise<unknown> | null = null;
-const warm = () => {
-  warming ??= import('@/lib/kimu/engine').then((m) => {
-    const run = () => m.warmKimu();
-    if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(run, { timeout: 2500 });
-    else setTimeout(run, 300);
-  });
-  return warming;
-};
 
 /** **bold** is the only formatting Kimu uses. */
 function Rich({ text }: { text: string }) {

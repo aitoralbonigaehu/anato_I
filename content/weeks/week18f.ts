@@ -24,10 +24,10 @@ export const stages18f: StageDef[] = [
     beats: [
       {
         at: SB[0],
-        notes: ['w18/2/p1/s1', 'w18/2.1/p2/s1', 'w18/2.1/p3/s1-s2'],
+        notes: ['w18/2/p2/s1', 'w18/2.1/p2/s1', 'w18/2.1/p3/s1-s2'],
         recall: ['lehen-arkua', 'bigarren-arkua', 'hirugarren-arkua', 'laugarren-arkua'],
         idea: 'Mihia 4. astetik 8. astera, arku guztietatik.',
-        text: 'Faringearen zorua barrutik ikusten ari gara, mihi-punta goian duela. Mihiak jatorri konplexua du: arku guztietatik ateratzen denez, arku guztietako nerbioek parte hartuko dute haren inerbazioan. Garapenaren 4. astetik 8. astera garatzen da gutxi gorabehera.',
+        text: 'Faringearen zorua barrutik ikusten ari gara, mihi-punta goian duela. Mihiak jatorri konplexua du: arku guztietatik (1., 2., 3. eta 4.) ateratzen denez, arku guztietako nerbioek parte hartuko dute haren inerbazioan. Garapenaren 4. astetik 8. astera garatzen da gutxi gorabehera.',
         focus: ['lehen-arkua', 'bigarren-arkua', 'hirugarren-arkua', 'laugarren-arkua'],
         view: '3d',
       },
@@ -258,9 +258,9 @@ export const stages18f: StageDef[] = [
       },
       {
         at: SM[4],
-        notes: ['w18/2.2/p15/s1-s2', 'w18/2.2/p16/s1', 'w18/2.2/p17/s1', 'w18/2.2/p18/s1-s2', 'w18/2.2/p19/s1'],
+        notes: ['w18/2.2/p15/s1-s3', 'w18/2.2/p16/s1', 'w18/2.2/p17/s1', 'w18/2.2/p18/s1-s2', 'w18/2.2/p19/s1'],
         idea: 'XII, hipoglosoa, motorra: mihia mugitzen du; ez dago arkuekin zuzenean lotuta.',
-        text: 'Hura inerbatzeko XII. bikote kraneala dugu, nerbio hipoglosoa, motorra; ez dago zuzenean arku brankialekin erlazionatuta. Gloso aurrizki edo atzizkiak mihia esan nahi du. Mihia mugitzeko aho sabaiko muskuluak ere baliatzen dira. Gainerako nerbioak (trigeminoa, glosofaringeoa, bagoa eta faziala) mistoak dira. Laringearen argazkiari dagokionez, hioides hezurraren alde bat arku batetik sortzen da eta bestea beste batetik.',
+        text: 'Hura inerbatzeko XII. bikote kraneala dugu, nerbio hipoglosoa, motorra; ez dago zuzenean arku brankialekin erlazionatuta. Motor somatikoa da: mihia borondatez mugitzen dugu. Gloso aurrizki edo atzizkiak mihia esan nahi du. Mihia mugitzeko aho sabaiko muskuluak ere baliatzen dira. Gainerako nerbioak (trigeminoa, glosofaringeoa, bagoa eta faziala) mistoak dira. Laringearen argazkiari dagokionez, hioides hezurraren alde bat arku batetik sortzen da eta bestea beste batetik.',
         focus: ['hipoglosoa', 'mihiaren-muskuluak'],
         exam: 'Mihiaren muskuluak: XII. nerbioa (hipoglosoa), motorra.',
         view: '3d',

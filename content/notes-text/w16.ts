@@ -11,7 +11,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/intro/p1/s1",
         "parts": [
           {
-            "text": "16.GAIA: SISTEMA-UROGENITALA (GONADAK)",
+            "text": "16. GAIA: SISTEMA-UROGENITALA (GONADAK)",
             "b": true
           }
         ]
@@ -511,7 +511,22 @@ export const w16: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "izango dira."
+            "text": "izango dira (gero, garapenean, "
+          },
+          {
+            "text": "zelula genitalak ",
+            "b": true
+          },
+          {
+            "text": "bilakatuko dira). "
+          }
+        ]
+      },
+      {
+        "id": "w16/2.1/p6/s2",
+        "parts": [
+          {
+            "text": "Zelula horiek enbrioierantz sartzen hasiko dira lehenik alantoidea gida bezala erabiliz, ondoren atzeko hestea eta amaitzeko atzeko hestearen atzeko mesenteriotik pasatuko dira gonadetarantz (gandor urogenitaletan kokatuak)."
           }
         ]
       }
@@ -526,14 +541,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/2.1/p7/s1",
         "parts": [
           {
-            "text": "Gero, garapenean, "
-          },
-          {
-            "text": "zelula genitalak ",
-            "b": true
-          },
-          {
-            "text": "bilakatuko dira, hau da, gonaden eraketan parte hartuko duten zelulak. "
+            "text": "Honen ostean gonadaren epitelioa loditu egiten da, eta epitelio horretatik beste zelula batzuk sartzen dira muinerantz, hasierako sexu kordoiak eratuz. "
           }
         ]
       },
@@ -541,7 +549,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/2.1/p7/s2",
         "parts": [
           {
-            "text": "Barneratuko dira eta alantoidesa gida bezala erabiliko dute horretarako, alantoideik pasatuko dira, jarraituko dute atzeko hestearen paretatik eta azkenean atzeko hestearen mesoa erabiliz sartuko dira gonada gandorretan."
+            "text": "Kordoi hauek berdinak izango dira sexu bietan."
           }
         ]
       }
@@ -554,52 +562,6 @@ export const w16: NotesBlock[] = [
     "sentences": [
       {
         "id": "w16/2.1/p8/s1",
-        "parts": [
-          {
-            "text": "Gandorreko epitelioa loditu egiten da, eta epitelio horretatik beste zelula batzuk sartzen dira muinerantz, kordoiak eratuz. "
-          }
-        ]
-      },
-      {
-        "id": "w16/2.1/p8/s2",
-        "parts": [
-          {
-            "text": "Gandorraren kortexeko zelula batzuk bereizi egingo dira, eta gandorraren muinerantz sartuko dira. "
-          }
-        ]
-      },
-      {
-        "id": "w16/2.1/p8/s3",
-        "parts": [
-          {
-            "text": "Horrela, "
-          },
-          {
-            "text": "hasierako sexu kordoiak ",
-            "b": true
-          },
-          {
-            "text": "eratuko dituzte (kordoi forman bata bestearen segidan barneratzen dira zelulak kortexetik muinerantz). "
-          }
-        ]
-      },
-      {
-        "id": "w16/2.1/p8/s4",
-        "parts": [
-          {
-            "text": "Kordoi hauek berdinak izango dira sexu bietan."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2.1",
-    "id": "w16/2.1/p9",
-    "sentences": [
-      {
-        "id": "w16/2.1/p9/s1",
         "parts": [
           {
             "text": "6. asterako, "
@@ -625,10 +587,10 @@ export const w16: NotesBlock[] = [
   {
     "kind": "p",
     "section": "2.1",
-    "id": "w16/2.1/p10",
+    "id": "w16/2.1/p9",
     "sentences": [
       {
-        "id": "w16/2.1/p10/s1",
+        "id": "w16/2.1/p9/s1",
         "parts": [
           {
             "text": "Dena den, gonada hauek "
@@ -643,7 +605,7 @@ export const w16: NotesBlock[] = [
         ]
       },
       {
-        "id": "w16/2.1/p10/s2",
+        "id": "w16/2.1/p9/s2",
         "parts": [
           {
             "text": "Hortaz, "
@@ -665,10 +627,37 @@ export const w16: NotesBlock[] = [
         ]
       },
       {
-        "id": "w16/2.1/p10/s3",
+        "id": "w16/2.1/p9/s3",
         "parts": [
           {
             "text": "Denbora tarte honetan ematen diren aldaketak, sexu bietan berdin-berdin gertatzen direlako, morfologikoki berdinak dira baina genetikoki (XX eta XY) ez."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2.1",
+    "id": "w16/2.1/p10",
+    "sentences": [
+      {
+        "id": "w16/2.1/p10/s1",
+        "parts": [
+          {
+            "text": "7. astean",
+            "b": true
+          },
+          {
+            "text": ", aldiz, behin zelula germinalak gonadetara iritsi direnean, gonadak desberdintzen hasten dira (arren eta emeen ezaugarriak era desberdinean garatzen hasiko dira). "
+          }
+        ]
+      },
+      {
+        "id": "w16/2.1/p10/s2",
+        "parts": [
+          {
+            "text": "Beraz, 7. astetik aurrera, desberdintze prozesuak desberdinak izango dira arretan eta emeetan, bakoitzak bere ezaugarriak sexualak garatuko dituelako."
           }
         ]
       }
@@ -683,19 +672,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/2.1/p11/s1",
         "parts": [
           {
-            "text": "7. astean",
-            "b": true
-          },
-          {
-            "text": ", aldiz, behin zelula germinalak gonadetara iritsi direnean, gonadak desberdintzen hasten dira (arren eta emeen ezaugarriak era desberdinean garatzen hasiko dira). "
-          }
-        ]
-      },
-      {
-        "id": "w16/2.1/p11/s2",
-        "parts": [
-          {
-            "text": "Beraz, 7. astetik aurrera, desberdintze prozesuak desberdinak izango dira arretan eta emeetan, bakoitzak bere ezaugarriak sexualak garatuko dituelako."
+            "text": "Izan ere, kontuan izan behar dugu, nahiz eta ezaugarri sexualak une honetan garatu, berez sexua fekundazioan determinatzen da"
           }
         ]
       }
@@ -710,7 +687,8 @@ export const w16: NotesBlock[] = [
         "id": "w16/2.1/p12/s1",
         "parts": [
           {
-            "text": "Izan ere, kontuan izan behar dugu, nahiz eta ezaugarri sexualak une honetan garatu, berez sexua fekundazioan determinatzen da"
+            "text": "HODI PARAMESONEFRIKOA EDO MÜLLER HODIA",
+            "b": true
           }
         ]
       }
@@ -725,7 +703,31 @@ export const w16: NotesBlock[] = [
         "id": "w16/2.1/p13/s1",
         "parts": [
           {
-            "text": "."
+            "text": "Hodi paramesonefrikoa, mesonefrosaren barnean kokatzen da, zehazki, hodi mesonefrikoaren aurre lateralean. "
+          }
+        ]
+      },
+      {
+        "id": "w16/2.1/p13/s2",
+        "parts": [
+          {
+            "text": "Hodi horrek ez du gernu sisteman parte hartzen, baina sistema genitalean bai. "
+          }
+        ]
+      },
+      {
+        "id": "w16/2.1/p13/s3",
+        "parts": [
+          {
+            "text": "Hodi paramesonefrikoa urdinez marraztuta eta hodi mesonefrikoa gorriz. "
+          }
+        ]
+      },
+      {
+        "id": "w16/2.1/p13/s4",
+        "parts": [
+          {
+            "text": "(Hodi paramesonefrikoak mesonefrikoen gainetik pasatzen dira) (une honetarako mesonefrosa endekatzen hasita dago, metanefrosa edo behin betiko giltzurruna eratzeko)"
           }
         ]
       }
@@ -740,8 +742,18 @@ export const w16: NotesBlock[] = [
         "id": "w16/2.1/p14/s1",
         "parts": [
           {
-            "text": "HODI PARAMESONEFRIKOA EDO MÜLLER HODIA",
+            "text": "Hodi paramesonefrikoa ",
             "b": true
+          },
+          {
+            "text": "egitura "
+          },
+          {
+            "text": "bilaterala ",
+            "b": true
+          },
+          {
+            "text": "da, eskuinekoa eta ezkerrekoa bereizten baitira."
           }
         ]
       }
@@ -754,64 +766,6 @@ export const w16: NotesBlock[] = [
     "sentences": [
       {
         "id": "w16/2.1/p15/s1",
-        "parts": [
-          {
-            "text": "Hodi paramesonefrikoa, mesonefrosaren barnean kokatzen da, zehazki, hodi mesonefrikoaren aurre lateralean. "
-          }
-        ]
-      },
-      {
-        "id": "w16/2.1/p15/s2",
-        "parts": [
-          {
-            "text": "Hodi horrek ez du gernu sisteman parte hartzen, baina sistema genitalean bai. "
-          }
-        ]
-      },
-      {
-        "id": "w16/2.1/p15/s3",
-        "parts": [
-          {
-            "text": "Hodi paramesonefrikoa urdinez marraztuta eta hodi mesonefrikoa gorriz. "
-          }
-        ]
-      },
-      {
-        "id": "w16/2.1/p15/s4",
-        "parts": [
-          {
-            "text": "(Hodi paramesonefrikoak mesonefrikoen gainetik pasatzen dira) (une honetarako mesonefrosa endekatzen hasita dago, metanefrosa edo behin betiko giltzurruna eratzeko)"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "2.1",
-    "id": "w16/2.1/p16",
-    "sentences": [
-      {
-        "id": "w16/2.1/p16/s1",
-        "parts": [
-          {
-            "text": "Hodi paramesonefrikoa ",
-            "b": true
-          },
-          {
-            "text": "egitura "
-          },
-          {
-            "text": "bilaterala ",
-            "b": true
-          },
-          {
-            "text": "da, eskuinekoa eta ezkerrekoa bereizten baitira. "
-          }
-        ]
-      },
-      {
-        "id": "w16/2.1/p16/s2",
         "parts": [
           {
             "text": "Enbrioaren goikaldean barneko zelomara irekita dago, hemendik, "
@@ -830,18 +784,18 @@ export const w16: NotesBlock[] = [
   {
     "kind": "p",
     "section": "2.1",
-    "id": "w16/2.1/p17",
+    "id": "w16/2.1/p16",
     "sentences": [
       {
-        "id": "w16/2.1/p17/s1",
+        "id": "w16/2.1/p16/s1",
         "parts": [
           {
-            "text": "Behekaldean, sinu urogenitalaren atzeko horman batuko da (alde bietakoak bai eskuma bai ezkerrekoa). "
+            "text": "Behekaldean, sinu urogenitalaren atzeko horman batuko dira. "
           }
         ]
       },
       {
-        "id": "w16/2.1/p17/s2",
+        "id": "w16/2.1/p16/s2",
         "parts": [
           {
             "text": "Beraz batuta sartzen dira sinu urogenitalean"
@@ -860,10 +814,10 @@ export const w16: NotesBlock[] = [
   {
     "kind": "p",
     "section": "2.1",
-    "id": "w16/2.1/p18",
+    "id": "w16/2.1/p17",
     "sentences": [
       {
-        "id": "w16/2.1/p18/s1",
+        "id": "w16/2.1/p17/s1",
         "parts": [
           {
             "text": "Gainera, bi hodi paramesonefrikoak beherantz doazen heinean, alde medialerantz ere abiatzen dira eta azkenean bertan batuko dira, "
@@ -885,7 +839,7 @@ export const w16: NotesBlock[] = [
         ]
       },
       {
-        "id": "w16/2.1/p18/s2",
+        "id": "w16/2.1/p17/s2",
         "parts": [
           {
             "text": "Sinu urogenitalean amaitzen dira batera, sinu urogenitalaren atzeko horman sortzen den goragunean, "
@@ -896,6 +850,21 @@ export const w16: NotesBlock[] = [
           },
           {
             "text": "hain zuzen ere."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2.1",
+    "id": "w16/2.1/p18",
+    "sentences": [
+      {
+        "id": "w16/2.1/p18/s1",
+        "parts": [
+          {
+            "text": "Bestalde, hodi paramesonefrikoak gonaden gainetik idekita daudela ikus dezakegu eta hori, belortzioetan oso baliagarria izan daiteke identifikatzeko."
           }
         ]
       }
@@ -943,29 +912,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/3.1/p3/s1",
         "parts": [
           {
-            "text": "Hasieran, "
-          },
-          {
-            "text": "kortexeko sexu kordoiak ",
-            "b": true
-          },
-          {
-            "text": "izango ditugu. "
-          }
-        ]
-      },
-      {
-        "id": "w16/3.1/p3/s2",
-        "parts": [
-          {
-            "text": "Epiteliotik askatzean eta gonadaren muinean sartzen direnean "
-          },
-          {
-            "text": "muin kordoiak ",
-            "b": true
-          },
-          {
-            "text": "izatera pasako dira."
+            "text": "7.astetik aurrera desperdintze prozesua hasten da."
           }
         ]
       }
@@ -980,74 +927,54 @@ export const w16: NotesBlock[] = [
         "id": "w16/3.1/p4/s1",
         "parts": [
           {
-            "text": "Epitelio eta muin kordoiaren artean, "
-          },
-          {
-            "text": "ehun konektibozko geruza ",
-            "b": true
-          },
-          {
-            "text": "bat azalduko da: "
-          },
-          {
-            "text": "tunika",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "albuginea ",
-            "b": true
-          },
-          {
-            "text": "izenekoa."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "3.1",
-    "id": "w16/3.1/p5",
-    "sentences": [
-      {
-        "id": "w16/3.1/p5/s1",
-        "parts": [
-          {
-            "text": "Muin kordoiak ",
-            "b": true
-          },
-          {
-            "text": "barrabilaren hiloaren parean estutu eta findu egiten dira, sare bat eratuz: "
-          },
-          {
-            "text": "barrabil sarea/rete testis",
-            "b": true
-          },
-          {
-            "text": ". "
+            "text": "Gizonetan, hasierako kordoiak epiteliotik askatu egiten dira eta muinera sartzen. "
           }
         ]
       },
       {
-        "id": "w16/3.1/p5/s2",
+        "id": "w16/3.1/p4/s2",
         "parts": [
           {
-            "text": "Muin kordoiek ferra forma hartzen dute eta"
+            "text": "Gainera epitelioa loditzen da eta "
           },
           {
-            "text": " barrabil kordoiak",
+            "text": "tunika albuginea",
             "b": true
           },
           {
-            "text": " eratzen dituzte, trinkoak dira eta barrabil sarearekin komunikatuta egongo dira, hasieran. "
+            "text": " izena hartuko du. "
           }
         ]
       },
       {
-        "id": "w16/3.1/p5/s3",
+        "id": "w16/3.1/p4/s3",
+        "parts": [
+          {
+            "text": "Askatu diren kordoiak garai horretan "
+          },
+          {
+            "text": "muin kordoia",
+            "b": true
+          },
+          {
+            "text": " izena dute (muinean bertan daudelako). "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.1/p4/s4",
+        "parts": [
+          {
+            "text": "Muin kordoia horiek barabilaren hilo mailan findu egiten dira sare bat eratuz: "
+          },
+          {
+            "text": "barabil sarea edo rete testis. ",
+            "b": true
+          }
+        ]
+      },
+      {
+        "id": "w16/3.1/p4/s5",
         "parts": [
           {
             "text": "Sare honen bidez, "
@@ -1073,222 +1000,13 @@ export const w16: NotesBlock[] = [
   {
     "kind": "p",
     "section": "3.1",
-    "id": "w16/3.1/p6",
+    "id": "w16/3.1/p5",
     "sentences": [
       {
-        "id": "w16/3.1/p6/s1",
+        "id": "w16/3.1/p5/s1",
         "parts": [
           {
-            "text": "Garapenean, "
-          },
-          {
-            "text": "zelula desberdinak ",
-            "b": true
-          },
-          {
-            "text": "garatuko dira kordoi hauen artean:"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "3.1",
-    "id": "w16/3.1/p7",
-    "sentences": [
-      {
-        "id": "w16/3.1/p7/s1",
-        "parts": [
-          {
-            "text": "● 4 hilabetean, kordoi hauen artean (gonadaren barnean) "
-          },
-          {
-            "text": "Sertoliren euspen zelulak",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "(barrabilaren euspen zelulak) ",
-            "b": true
-          },
-          {
-            "text": "garatzen hasiko dira. "
-          }
-        ]
-      },
-      {
-        "id": "w16/3.1/p7/s2",
-        "parts": [
-          {
-            "text": "Zelula hauen funtsezko funtzioa "
-          },
-          {
-            "text": "euspena ",
-            "b": true
-          },
-          {
-            "text": "izango da, hau da, kordoi hauen euspen zelulak izango dira."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "3.1",
-    "id": "w16/3.1/p8",
-    "sentences": [
-      {
-        "id": "w16/3.1/p8/s1",
-        "parts": [
-          {
-            "text": "● 4.tik 6. hilabetera, kordoien inguruko muinean beste zelula batzuk agertuko dira "
-          },
-          {
-            "text": "Leydig",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "zelulak ",
-            "b": true
-          },
-          {
-            "text": "eta hauen funtzio nagusiena, "
-          },
-          {
-            "text": "testosterona ekoiztea ",
-            "b": true
-          },
-          {
-            "text": "izango da (funtzio asko dituzte eta muinean kokatzen dira)."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "3.1",
-    "id": "w16/3.1/p9",
-    "sentences": [
-      {
-        "id": "w16/3.1/p9/s1",
-        "parts": [
-          {
-            "text": "Azkenik, pubertaroan, barrabil kordoiak hustuko dira, "
-          },
-          {
-            "text": "hodi bihurtuz",
-            "b": true
-          },
-          {
-            "text": ". "
-          }
-        ]
-      },
-      {
-        "id": "w16/3.1/p9/s2",
-        "parts": [
-          {
-            "text": "Ondorioz, pubertarotik aurrera "
-          },
-          {
-            "text": "hodixka seminifero ",
-            "b": true
-          },
-          {
-            "text": "deituko dira. "
-          }
-        ]
-      },
-      {
-        "id": "w16/3.1/p9/s3",
-        "parts": [
-          {
-            "text": "Hodixka seminiferoen funtzio nagusia, "
-          },
-          {
-            "text": "espermatozoideen ekoizpena ",
-            "b": true
-          },
-          {
-            "text": "da. "
-          }
-        ]
-      },
-      {
-        "id": "w16/3.1/p9/s4",
-        "parts": [
-          {
-            "text": "Espermatozoideak sartuko dira lehendabizi hodixka seminiferoetan, barrabil sarera pasatu eta aurrerago azaltzen diren beste hodixka batzuetatik kanporatuko dira (hartzen duten bidea semen-bidea da)."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "3.1",
-    "id": "w16/3.1/p10",
-    "sentences": [
-      {
-        "id": "w16/3.1/p10/s1",
-        "parts": [
-          {
-            "text": "Leydig zelulek ",
-            "b": true
-          },
-          {
-            "text": "ekoitzitako testosteronaren eta "
-          },
-          {
-            "text": "Sertoli",
-            "b": true
-          },
-          {
-            "text": " zelulen hormona anti-Mülerianoaren eraginez, "
-          },
-          {
-            "text": "hodi paramesonefrikoa endekatu ",
-            "b": true
-          },
-          {
-            "text": "egingo da "
-          },
-          {
-            "text": "gizonezkoetan ",
-            "b": true
-          },
-          {
-            "text": "eta "
-          },
-          {
-            "text": "hodi mesonefrikoa",
-            "b": true
-          },
-          {
-            "text": " bakarrik geratu eta garatuko da."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "3.1",
-    "id": "w16/3.1/p11",
-    "sentences": [
-      {
-        "id": "w16/3.1/p11/s1",
-        "parts": [
-          {
-            "text": "BARRABILAREN HILOA",
+            "text": "HILOA",
             "b": true
           },
           {
@@ -1304,7 +1022,7 @@ export const w16: NotesBlock[] = [
         ]
       },
       {
-        "id": "w16/3.1/p11/s2",
+        "id": "w16/3.1/p5/s2",
         "parts": [
           {
             "text": "Egitura askok/gehienak dituzte, besteak beste; birikak, giltzurrunak, glitzurrun gaineko guruinek, errai askok…… daukate itxura bat eta gero beste atal bat apur bat finagoa dena "
@@ -1317,11 +1035,11 @@ export const w16: NotesBlock[] = [
             "text": "edo batzuetan ere "
           },
           {
-            "text": "lepoa",
+            "text": "lepoa ",
             "b": true
           },
           {
-            "text": " deitzen zaiona."
+            "text": "deitzen zaiona."
           }
         ]
       }
@@ -1330,10 +1048,10 @@ export const w16: NotesBlock[] = [
   {
     "kind": "p",
     "section": "3.1",
-    "id": "w16/3.1/p12",
+    "id": "w16/3.1/p6",
     "sentences": [
       {
-        "id": "w16/3.1/p12/s1",
+        "id": "w16/3.1/p6/s1",
         "parts": [
           {
             "text": "Hilo horietatik, beti pasatzen dira egiturara doazen "
@@ -1363,10 +1081,10 @@ export const w16: NotesBlock[] = [
   {
     "kind": "p",
     "section": "3.1",
-    "id": "w16/3.1/p13",
+    "id": "w16/3.1/p7",
     "sentences": [
       {
-        "id": "w16/3.1/p13/s1",
+        "id": "w16/3.1/p7/s1",
         "parts": [
           {
             "text": "Adib: ",
@@ -1382,7 +1100,7 @@ export const w16: NotesBlock[] = [
         ]
       },
       {
-        "id": "w16/3.1/p13/s2",
+        "id": "w16/3.1/p7/s2",
         "parts": [
           {
             "text": "Egitura"
@@ -1394,10 +1112,10 @@ export const w16: NotesBlock[] = [
   {
     "kind": "p",
     "section": "3.1",
-    "id": "w16/3.1/p14",
+    "id": "w16/3.1/p8",
     "sentences": [
       {
-        "id": "w16/3.1/p14/s1",
+        "id": "w16/3.1/p8/s1",
         "parts": [
           {
             "text": "gehiago bereizten hasiko da eta azkenean behin betiko egitura bihurtuko da."
@@ -1407,12 +1125,192 @@ export const w16: NotesBlock[] = [
     ]
   },
   {
-    "kind": "p",
+    "kind": "li",
     "section": "3.1",
-    "id": "w16/3.1/p15",
+    "id": "w16/3.1/p9",
     "sentences": [
       {
-        "id": "w16/3.1/p15/s1",
+        "id": "w16/3.1/p9/s1",
+        "parts": [
+          {
+            "text": "-​ Garapenean, "
+          },
+          {
+            "text": "zelula desberdinak ",
+            "b": true
+          },
+          {
+            "text": "garatuko dira kordoi hauen artean:"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "3.1",
+    "id": "w16/3.1/p10",
+    "sentences": [
+      {
+        "id": "w16/3.1/p10/s1",
+        "parts": [
+          {
+            "text": "● 4 hilabetean, muin kordoiek (gonaden barnekoek) ferra forma hartzen dute eta "
+          },
+          {
+            "text": "barrabil kordaiak",
+            "b": true
+          },
+          {
+            "text": " bilatzen dira. "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.1/p10/s2",
+        "parts": [
+          {
+            "text": "Oraindik kordoi trinkoak dira pubertaroa arte: pubertaroan ferra formako kordoi horiek bakuolizatu egiten dira eta odol hodi bikatzen dira (orduan hodixka seminiferoak deituko dira). "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.1/p10/s3",
+        "parts": [
+          {
+            "text": "Hodixka seminiferoen funtzio nagusia, "
+          },
+          {
+            "text": "espermatozoideen ekoizpena ",
+            "b": true
+          },
+          {
+            "text": "da. "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.1/p10/s4",
+        "parts": [
+          {
+            "text": "Barrabil kordoi hauetatik zelula ezberdinak sortuko dira: beraien artean, 4. hilabeterako "
+          },
+          {
+            "text": "Sertolin zelulak ",
+            "b": true
+          },
+          {
+            "text": "aurkituko ditugu. "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.1/p10/s5",
+        "parts": [
+          {
+            "text": "Bi funtzio nagusi dituzte: "
+          },
+          {
+            "text": "euspen zelulak (barrabilaren euspen zelulak) ",
+            "b": true
+          },
+          {
+            "text": "izatea eta"
+          },
+          {
+            "text": " espermatozoideen ekoizpena erregulatzea",
+            "b": true
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "3.1",
+    "id": "w16/3.1/p11",
+    "sentences": [
+      {
+        "id": "w16/3.1/p11/s1",
+        "parts": [
+          {
+            "text": "● 8. astean beste zelula mota bat agertuko zaigu barrabil kordoien artean: "
+          },
+          {
+            "text": "Leydig zelula",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "interstizialak ",
+            "b": true
+          },
+          {
+            "text": "eta hauen funtzio nagusiena, "
+          },
+          {
+            "text": "testosterona ekoiztea ",
+            "b": true
+          },
+          {
+            "text": "izango da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3.1",
+    "id": "w16/3.1/p12",
+    "sentences": [
+      {
+        "id": "w16/3.1/p12/s1",
+        "parts": [
+          {
+            "text": "Sertoli",
+            "b": true
+          },
+          {
+            "text": " zelulen hormona anti-Mülerianoaren eraginez, "
+          },
+          {
+            "text": "hodi paramesonefrikoa endekatu",
+            "b": true
+          },
+          {
+            "text": " egingo da, baina ez osoki, funtziorik gabeko (edo arazo klinikoak sortzeko soilik) bi aztarna geratuko dira: bata prostataren barnean, "
+          },
+          {
+            "text": "prostataren mutrikula",
+            "b": true
+          },
+          {
+            "text": " (zakuondo ttiki bat) eta bigarrena "
+          },
+          {
+            "text": "barrabil apendizea",
+            "b": true
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3.1",
+    "id": "w16/3.1/p13",
+    "sentences": [
+      {
+        "id": "w16/3.1/p13/s1",
         "parts": [
           {
             "text": "Irudi honetan ikusten da nola semen xixkua hodi deferentearekin eta biak batera isuriko dute prostataren bidez uretrara, eta bertatik kanporatuko da likido seminala. "
@@ -1420,7 +1318,7 @@ export const w16: NotesBlock[] = [
         ]
       },
       {
-        "id": "w16/3.1/p15/s2",
+        "id": "w16/3.1/p13/s2",
         "parts": [
           {
             "text": "Barrabil trenkada ere ikusten da, izan ere barrabilen artean trenkada bat dago eta horrela barrabil bakoitza bere atalean gelditzen da."
@@ -1447,7 +1345,7 @@ export const w16: NotesBlock[] = [
     ]
   },
   {
-    "kind": "p",
+    "kind": "li",
     "section": "3.2",
     "id": "w16/3.2/p3",
     "sentences": [
@@ -1455,7 +1353,53 @@ export const w16: NotesBlock[] = [
         "id": "w16/3.2/p3/s1",
         "parts": [
           {
-            "text": "Garapenean, 8. astean, barrabilek bi hormona nagusien ekoizpena hasiko dute:"
+            "text": "● Hodixka mesonefrikoak garatu egingo dira eta batzuk barrabilaren goikaldean kokatuko dira: "
+          },
+          {
+            "text": "hodixka epigenitalak",
+            "b": true
+          },
+          {
+            "text": ". "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.2/p3/s2",
+        "parts": [
+          {
+            "text": "Hodixka epigenitaletaik "
+          },
+          {
+            "text": "hodixka eferenteak",
+            "b": true
+          },
+          {
+            "text": " garatuko dira, barabil sarea eta hodi deferentearen arteko komunikazioa. "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.2/p3/s3",
+        "parts": [
+          {
+            "text": "Espermazoideak kordoietatik uretraren kanpoko zuloraino ateratzeko bide osoa hodiz eratuta izango da. "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.2/p3/s4",
+        "parts": [
+          {
+            "text": "Espermatozoideak hodi semiferoetatik sarera pasako dira, saretik hodi eferente eta ondoren deferenteetara. "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.2/p3/s5",
+        "parts": [
+          {
+            "text": "Azken hori prostatan dagoen uretran amaituko da eta espermatozoideak kanporatuak izango dira."
           }
         ]
       }
@@ -1468,127 +1412,6 @@ export const w16: NotesBlock[] = [
     "sentences": [
       {
         "id": "w16/3.2/p4/s1",
-        "parts": [
-          {
-            "text": "● Alde batetik, "
-          },
-          {
-            "text": "Leydig zelulek",
-            "b": true
-          },
-          {
-            "text": ", "
-          },
-          {
-            "text": "testosterona ",
-            "b": true
-          },
-          {
-            "text": "ekoiztuko dute."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "3.2",
-    "id": "w16/3.2/p5",
-    "sentences": [
-      {
-        "id": "w16/3.2/p5/s1",
-        "parts": [
-          {
-            "text": "● Bestetik, "
-          },
-          {
-            "text": "Sertoli zelulek, hormona antimüllerianoa ",
-            "b": true
-          },
-          {
-            "text": "ekoiztuko dute"
-          },
-          {
-            "text": ".",
-            "b": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "3.2",
-    "id": "w16/3.2/p6",
-    "sentences": [
-      {
-        "id": "w16/3.2/p6/s1",
-        "parts": [
-          {
-            "text": "Modu horretan, hodi paramesonefrikoak endekatuko dira eta HODI MESONEFRIKOTIK hurrengo egiturak garatuko dira, hodi genitalak (hodixka mesonefrikoak kokapenaren arabera bi taldetan banatuko dira):"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "3.2",
-    "id": "w16/3.2/p7",
-    "sentences": [
-      {
-        "id": "w16/3.2/p7/s1",
-        "parts": [
-          {
-            "text": "● Barrabil parean dauden hodixka mesonefrikoak, "
-          },
-          {
-            "text": "hodixka epigenitalak ",
-            "b": true
-          },
-          {
-            "text": "deitzen dira. "
-          }
-        ]
-      },
-      {
-        "id": "w16/3.2/p7/s2",
-        "parts": [
-          {
-            "text": "Hoditxo hauek "
-          },
-          {
-            "text": "rete testis-aren/barrabil sarearen ",
-            "b": true
-          },
-          {
-            "text": "bitartez, barrabil kordoiekin (gero tubulu seminiferoak izango direnak) kontaktuan jarriko dira eta, horrela, "
-          },
-          {
-            "text": "hodixka",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "eferenteak ",
-            "b": true
-          },
-          {
-            "text": "bilakatuko dira."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "3.2",
-    "id": "w16/3.2/p8",
-    "sentences": [
-      {
-        "id": "w16/3.2/p8/s1",
         "parts": [
           {
             "text": "● Barrabilaren alde kaudalean (beherago) dauden hodixka mesonefrikoak "
@@ -1610,7 +1433,7 @@ export const w16: NotesBlock[] = [
         ]
       },
       {
-        "id": "w16/3.2/p8/s2",
+        "id": "w16/3.2/p4/s2",
         "parts": [
           {
             "text": "Hauek ez dira kontaktuan egongo rete testis-arekin, garapenean endekatuko dira eta soilik aztarna txiki bat geratuko da; "
@@ -1625,7 +1448,7 @@ export const w16: NotesBlock[] = [
         ]
       },
       {
-        "id": "w16/3.2/p8/s3",
+        "id": "w16/3.2/p4/s3",
         "parts": [
           {
             "text": "Ez dago argi bere funtzioa zein den (ez du funtzio handirik) eta epidimo eta barrabilaren artean kokatzen den aztarna izango da."
@@ -1637,48 +1460,34 @@ export const w16: NotesBlock[] = [
   {
     "kind": "li",
     "section": "3.2",
-    "id": "w16/3.2/p9",
+    "id": "w16/3.2/p5",
     "sentences": [
       {
-        "id": "w16/3.2/p9/s1",
+        "id": "w16/3.2/p5/s1",
         "parts": [
           {
             "text": "● "
           },
           {
-            "text": "Hodixka eferenteak ",
+            "text": "Hodixka eferente",
             "b": true
           },
           {
-            "text": "barrabiletara sartzen diren lekuaren azpian, alde kaudalean, "
+            "text": "en jarraipena "
           },
           {
-            "text": "hodi",
+            "text": "epididimoa",
             "b": true
           },
           {
-            "text": " "
-          },
-          {
-            "text": "mesonefrikoa ",
-            "b": true
-          },
-          {
-            "text": "bilakatuko da, "
-          },
-          {
-            "text": "epididimoa ",
-            "b": true
-          },
-          {
-            "text": "(hodi oso bihurritua)"
+            "text": " da,"
           },
           {
             "text": " ",
             "b": true
           },
           {
-            "text": "osatuz (bertan espermatozoideen heltze prozesu bat emango da)."
+            "text": "barrabilaren alde kaudaletik ateratzen dena (hodi oso bihurritua, bertan espermatozoideen heltze prozesu bat emango da)."
           }
         ]
       }
@@ -1687,10 +1496,10 @@ export const w16: NotesBlock[] = [
   {
     "kind": "li",
     "section": "3.2",
-    "id": "w16/3.2/p10",
+    "id": "w16/3.2/p6",
     "sentences": [
       {
-        "id": "w16/3.2/p10/s1",
+        "id": "w16/3.2/p6/s1",
         "parts": [
           {
             "text": "● Epididimotik jarraian egongo da hodi mesonefrikotik datorren "
@@ -1700,7 +1509,7 @@ export const w16: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "luzea eta zuzena dena"
+            "text": "luzea, leuna eta zuzena dena"
           },
           {
             "text": ". ",
@@ -1709,10 +1518,10 @@ export const w16: NotesBlock[] = [
         ]
       },
       {
-        "id": "w16/3.2/p10/s2",
+        "id": "w16/3.2/p6/s2",
         "parts": [
           {
-            "text": "Prostata barnean dagoen uretra atalean amaituko da."
+            "text": "Hodi honek prostata barnean dagoen uretra atalera isurituko du barnekoa (hau da, prostatako uretra atalean amaitzen da)."
           }
         ]
       }
@@ -1721,13 +1530,13 @@ export const w16: NotesBlock[] = [
   {
     "kind": "li",
     "section": "3.2",
-    "id": "w16/3.2/p11",
+    "id": "w16/3.2/p7",
     "sentences": [
       {
-        "id": "w16/3.2/p11/s1",
+        "id": "w16/3.2/p7/s1",
         "parts": [
           {
-            "text": "● Hodi deferentearen muturrean, prostatara iritsi aurretik, beste kimu bat aterako da, "
+            "text": "● Hodi deferentearen muturrean, prostatatik oso hurbil, beste kimu txiki bat aterako da, "
           },
           {
             "text": "semen xixkua ",
@@ -1739,63 +1548,57 @@ export const w16: NotesBlock[] = [
         ]
       },
       {
-        "id": "w16/3.2/p11/s2",
+        "id": "w16/3.2/p7/s2",
+        "parts": [
+          {
+            "text": "Semen xixkua likido seminala aberasten duen guruina da, gai batzuk isuritzen dituena. "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.2/p7/s3",
+        "parts": [
+          {
+            "text": "Prostata barnean dagoen uretraren atalera (uretra prostatikora) isuriko dituzte semen xixuak eta hodi deferenteak euren osagaiak (likidoa eta espermatozoideak). "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.2/p7/s4",
+        "parts": [
+          {
+            "text": "Hemendik zakil uretrara pasatuko dira azkenean kanporatuak izateko. "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.2/p7/s5",
         "parts": [
           {
             "text": "Hodi deferentea eta semen xixkua elkartzean "
           },
           {
-            "text": "hodi",
+            "text": "hodi isurlea",
+            "b": true
+          },
+          {
+            "text": " eratzen da. "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.2/p7/s6",
+        "parts": [
+          {
+            "text": "Kontutan izan semen xixkuak egitura simetrikoak direla, hau da,",
             "b": true
           },
           {
             "text": " "
           },
           {
-            "text": "isurlea ",
+            "text": "eskuinekoa eta ezkerrekoa daude.",
             "b": true
-          },
-          {
-            "text": "eratzen da, eta azken hau uretra prostatikoan irekiko da semena prostata barnera isurtzeko. "
-          }
-        ]
-      },
-      {
-        "id": "w16/3.2/p11/s3",
-        "parts": [
-          {
-            "text": "Hona iristen dira hodi deferentetik datozen espermatozoideak. "
-          }
-        ]
-      },
-      {
-        "id": "w16/3.2/p11/s4",
-        "parts": [
-          {
-            "text": "Kontutan izan semen xixkuak egitura simetrikoak direla, hau da, eskuinekoa eta",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "ezkerrekoa daude.",
-            "b": true
-          },
-          {
-            "text": " "
-          }
-        ]
-      },
-      {
-        "id": "w16/3.2/p11/s5",
-        "parts": [
-          {
-            "text": "Semen xixkuan ",
-            "b": true
-          },
-          {
-            "text": "(guruin antzekoak dira), likido seminalaren atalik garrantzitsuena ekoiztuko da, hemen espermatozoideak eta likido seminalaren atalik nagusiena elkartu eta elkarrekin, prostata barnean dagoen uretrara isuriko dira, ondoren, uretratik semen bidearen bidez kanporatuko dira."
           }
         ]
       }
@@ -1867,7 +1670,7 @@ export const w16: NotesBlock[] = [
             "text": "pasatuko dira "
           },
           {
-            "text": "epidimo",
+            "text": "epididimo",
             "b": true
           },
           {
@@ -1909,7 +1712,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/3.2.1/p2/s6",
         "parts": [
           {
-            "text": "Laburbilduz: Barrabil kordoiak → barrabil sarea → hodixka eferenteak → epididimoa (bertan metatu kanporatu arte) → hodi deferentea → uretra Bestalde, hodi paramesonefrikoa endekatzen denean, (testosterona eta hormona antimullerinoarengatik) "
+            "text": "Laburbilduz: Barrabil kordoiak/hodiak → barrabil sarea → hodixka eferenteak → epididimoa (bertan metatu kanporatu arte) → hodi deferentea → uretra Bestalde, hodi paramesonefrikoa endekatzen denean, (testosterona eta hormona antimullerinoarengatik) "
           },
           {
             "text": "bi aztarna ",
@@ -1924,7 +1727,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/3.2.1/p2/s7",
         "parts": [
           {
-            "text": "Beraz, urrengo egitura hauen, hodi paramesonefrikotik eratorritako egiturak dira:"
+            "text": "Beraz, hurrengo egitura hauek, hodi paramesonefrikotik eratorritako egiturak dira:"
           }
         ]
       }
@@ -2131,7 +1934,7 @@ export const w16: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "eta elkarrekin aterako dira uretra prostatikora. "
+            "text": "(hodi deferentea + semen xixkuak elkarten diren zatia) eta elkarrekin aterako dira uretra prostatikora. "
           }
         ]
       },
@@ -2149,14 +1952,7 @@ export const w16: NotesBlock[] = [
             "text": "pasatuko da semena eta hemendik, zakilera sartuko da, "
           },
           {
-            "text": "kanpoko uretra",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "zulotik ",
+            "text": "kanpoko uretra zulotik ",
             "b": true
           },
           {
@@ -2219,14 +2015,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/3.3/p4/s1",
         "parts": [
           {
-            "text": "7. astetik aurrera, hasierako sexu-kordoiak epiteliotik askatzen dira eta gonada barnerantz (muinerantz) sartzen dira, baina endekatu egiten dira, "
-          },
-          {
-            "text": "obario muina ",
-            "b": true
-          },
-          {
-            "text": "eratuz gonadaren barnean. "
+            "text": "7. astetik aurrera, desberdintze-aroa hasiko da. "
           }
         ]
       },
@@ -2234,14 +2023,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/3.3/p4/s2",
         "parts": [
           {
-            "text": "Gonadaren paretan epitelioa loditu egiten da horri "
-          },
-          {
-            "text": "kortexa ",
-            "b": true
-          },
-          {
-            "text": "deitzen zaio. "
+            "text": "Zelula batzuk gonadaren muinean geratzen dira eta gonadaren azaleko epitelioa loditzen da. "
           }
         ]
       },
@@ -2249,33 +2031,17 @@ export const w16: NotesBlock[] = [
         "id": "w16/3.3/p4/s3",
         "parts": [
           {
-            "text": "Kortex horretatik aterako da "
+            "text": "Hasierako sexu-kordoiak muinean sartu eta endekatzen dira, eta ondorioz, "
           },
           {
-            "text": "kortex kordoi bigarren belaunaldia, ",
+            "text": "bigarren kordoi belaunaldi",
             "b": true
           },
           {
-            "text": "muinerantz luzatuko direnak (azaleko epitelioa handituz). "
-          }
-        ]
-      },
-      {
-        "id": "w16/3.3/p4/s4",
-        "parts": [
-          {
-            "text": "Hasieran lotuta daude baina 4. hilabetean askatu egiten dira epiteliotik eta muinean edo muinetik hurbil solte (sakabanatuta) geldituko dira zelulak. "
-          }
-        ]
-      },
-      {
-        "id": "w16/3.3/p4/s5",
-        "parts": [
-          {
-            "text": "Epiteliotik, muinean beste zelula batzuk bereiziko dira: "
+            "text": " bat eratzen da: "
           },
           {
-            "text": "folikulu zelulak",
+            "text": "kortex kordoia",
             "b": true
           },
           {
@@ -2284,33 +2050,40 @@ export const w16: NotesBlock[] = [
         ]
       },
       {
-        "id": "w16/3.3/p4/s6",
+        "id": "w16/3.3/p4/s4",
         "parts": [
           {
-            "text": "Hauek kortexetik askatu diren zelulen inguruan kokatuko dira. "
-          }
-        ]
-      },
-      {
-        "id": "w16/3.3/p4/s7",
-        "parts": [
-          {
-            "text": "Azkenean, "
+            "text": "Hasieran lotuta daude baina 4. hilabetean kortex kordoieko zelulak epiteliotik eta kordoi beratik askatu egiten dira eta muinean (sakabanatuta) geldituko dira zelulak → "
           },
           {
-            "text": "obozito primarioak ",
+            "text": "folikulu",
             "b": true
           },
           {
-            "text": "eratzeko. "
+            "text": " "
+          },
+          {
+            "text": "zelulak",
+            "b": true
+          },
+          {
+            "text": " izanen dira. "
           }
         ]
       },
       {
-        "id": "w16/3.3/p4/s8",
+        "id": "w16/3.3/p4/s5",
         "parts": [
           {
-            "text": "Beraz, obozito primarioen barnean, kordoietatik askatutako zelulak eta inguruan zelula folikularrak egongo dira."
+            "text": "Bitelozakuko endoteliotik etorri diren zelulak muinean finkatuta daude, eta hauek oogoniak emanen dituzte. "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.3/p4/s6",
+        "parts": [
+          {
+            "text": "5. hilabetean kordoietatik ateratzen diren folikulu zelulek oogonia hauek inguratuko dituzte obozito primarioak garatuta edukiz obarioen barruan."
           }
         ]
       }
@@ -3061,7 +2834,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/3.4/p24/s2",
         "parts": [
           {
-            "text": "Gernu maskuria eta utero artean dagoena."
+            "text": "Gernu maskuria (ez da irudian irudikatzen) eta utero artean dagoena."
           }
         ]
       }
@@ -3128,7 +2901,15 @@ export const w16: NotesBlock[] = [
         "id": "w16/3.4/p26/s2",
         "parts": [
           {
-            "text": "Eskuineko irudian, mozketa sagitala dena, eskuineko pelbis hezurra ikusten da ezkerretik ikusita."
+            "text": "Eskuineko irudian, mozketa sagitala dena, eskuineko pelbis hezurra ikusten da ezkerretik ikusita. "
+          }
+        ]
+      },
+      {
+        "id": "w16/3.4/p26/s3",
+        "parts": [
+          {
+            "text": "Bi zaku hauek garrantzi klinikoa izango dute, zutik egotean, infekziek jariatutako likidoak bertan pilatu daitezkeelako."
           }
         ]
       }
@@ -3339,11 +3120,11 @@ export const w16: NotesBlock[] = [
             "text": "● "
           },
           {
-            "text": "Mesoobarioa: ",
+            "text": "Mesoobarioa:",
             "b": true
           },
           {
-            "text": "tronpak obulutegietara lotzeko."
+            "text": " tronpak obulutegietara lotzeko."
           }
         ]
       }
@@ -3383,7 +3164,21 @@ export const w16: NotesBlock[] = [
             "text": "● "
           },
           {
-            "text": "Obulutegiaren berariazko lotailua:",
+            "text": "Obulutegiaren",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "berariazko",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "lotailua:",
             "b": true
           },
           {
@@ -3405,7 +3200,14 @@ export const w16: NotesBlock[] = [
             "text": "Abdomen barrunbe eta pelbi barrunbe arteko mugarik ez dago, orduan barrunbe bat edo bestean infekzio bat baldin badago, zakuondo hauetan pilatzen da (adb serosa), horregatik "
           },
           {
-            "text": "klinikoki oso garrantzitsuak ",
+            "text": "klinikoki oso",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "garrantzitsuak ",
             "b": true
           },
           {
@@ -3744,7 +3546,7 @@ export const w16: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "agertzen zaigu (lotailu modukoa da). "
+            "text": "agertzen zaigu (lotailu modukoa da) Gonadatik larruazaleraino . "
           }
         ]
       },
@@ -3806,21 +3608,6 @@ export const w16: NotesBlock[] = [
         "parts": [
           {
             "text": "Larruazalean, ainguratzen da eta enbrioia gero eta handiagoa egiten ari den bitartean gubernaculuma ez da tiratzen, gonada gero eta beherago kokatzea egiten du eta ez behera jaistea (gero eta beherago)."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "4",
-    "id": "w16/4/p7",
-    "sentences": [
-      {
-        "id": "w16/4/p7/s1",
-        "parts": [
-          {
-            "text": "*Irakasleak ez du hau aipatu klasean (2023/24) baina ulertzeko lagungarria izan daiteke"
           }
         ]
       }
@@ -4006,7 +3793,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/4.1/p6/s2",
         "parts": [
           {
-            "text": "Modu honetan barrunbe pebiano eta eskrotoaren arteko komunikabidea ia guztiz ixten da. "
+            "text": "Modu honetan barrunbe pelbikoa eta eskrotoaren arteko komunikabidea ia guztiz ixten da. "
           }
         ]
       },
@@ -4069,7 +3856,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/4.2/p3/s1",
         "parts": [
           {
-            "text": "Obulutegiek ere abdomenetik pelbiserako bidea egin behar dute (nahiz eta bide hau motzagoa den). "
+            "text": "Hasiera batean iztai hodia eratzen hasten da, baina obariak barnean gelditzen direnez iztai hodia desagertzen da eta ia ez da existitzen Obulutegiek ere abdomenetik pelbiserako bidea egin behar dute (nahiz eta bide hau motzagoa den). "
           }
         ]
       },
@@ -4077,7 +3864,7 @@ export const w16: NotesBlock[] = [
         "id": "w16/4.2/p3/s2",
         "parts": [
           {
-            "text": "Emakumeen kasuan, Gubernaculuma iztai hoditik atera eta pelbis hezurraren aurretik igaro ostean ezpain handien larruazalera lotzen da, eta ez da horrenbeste txikitzen."
+            "text": "Emakumeen kasuan, Gubernaculuma pelbis hezurraren aurretik igaro ostean ezpain handien larruazalera lotzen da, eta ez da horrenbeste txikitzen."
           }
         ]
       }
@@ -4269,17 +4056,17 @@ export const w16: NotesBlock[] = [
         "id": "w16/5/p5/s3",
         "parts": [
           {
-            "text": "Alde batetik mintz urogenitala ikusiko dugu kanpotik eta bestetik uzki mintza (atzekaldean), "
+            "text": "Aurretik mintz urogenitala ikusiko dugu kanpotik eta atzetik uzki mintza, "
           },
           {
-            "text": "sinu urogenitala eta uzkia estaliz eta bien",
+            "text": "sinu urogenitala eta uzkia estaliz eta bien artean perinea (bi",
             "b": true
           },
           {
             "text": " "
           },
           {
-            "text": "artean perinea (bi kanpoko zuloen artean)",
+            "text": "kanpoko zuloen artean)",
             "b": true
           },
           {
@@ -4294,11 +4081,11 @@ export const w16: NotesBlock[] = [
             "text": "Ondorioz, tuberkuluak jarraitzen du baina tolespenak, ez dira kloaka tolespena deitzen → "
           },
           {
-            "text": "tolespen urogenitalak/tolespen uretralak",
+            "text": "tolespen urogenitalak/tolespen uretralak ",
             "b": true
           },
           {
-            "text": " deituko dira (sinuaren ertzetan daudelako) Alboan, bi tolespen nagusi garatu egin dira: goragune genitalak→ "
+            "text": "deituko dira (sinuaren ertzetan daudelako) Alboan, bi tolespen nagusi garatu egin dira: goragune genitalak→ "
           },
           {
             "text": "tolespen ezpain eskrotalak",

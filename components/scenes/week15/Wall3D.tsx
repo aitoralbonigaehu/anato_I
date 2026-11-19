@@ -55,11 +55,11 @@ const spec1: StageSpec<UroPose, UroOpts> = {
       glide: 0.08,
       names: [
         { id: 'pronefrosa', sub: 'alde zefalikoa (lepoa)', from: 0.1 },
-        { id: 'mesonefrosa', sub: 'alde toraxikoa', from: 0.35 },
+        { id: 'mesonefrosa', sub: 'torazikotik lunbarrera', from: 0.35 },
         { id: 'hodi-mesonefrikoa', small: true, from: 0.5 },
         { id: 'metanefrosa', sub: 'alde sakroa → behin betiko giltzurruna', from: 0.6 },
       ],
-      note: 'Hiru azpisistema, atzeko paretan, goitik behera: pronefrosa (lepoa), mesonefrosa (toraxa), metanefrosa (sakroa)',
+      note: 'Hiru azpisistema, atzeko paretan, goitik behera: pronefrosa (lepoa), mesonefrosa (torazikotik lunbarrera), metanefrosa (sakroa)',
     },
     {
       to: { proGone: 0.8, mesoGone: 0.75 },
@@ -150,7 +150,7 @@ export const Pro15 = poseStage(spec2, build);
 
 // ———————————————————————————— 5. Mesonefrosa eta gandor urogenitala ————————————————————————————
 
-export const S5 = [0, 0.25, 0.5, 0.75] as const;
+export const S5 = [0, 0.2, 0.4, 0.6, 0.8] as const;
 const TRUNK = (dist = 12.5, yaw = 0, elev = 8, target: [number, number, number] = [0, 0.0, -0.4]) => FRONT(dist, target, yaw, elev);
 
 const spec5: StageSpec<UroPose, UroOpts> = {
@@ -209,6 +209,20 @@ const spec5: StageSpec<UroPose, UroOpts> = {
         { id: 'gonada-gandorra', sub: 'erdialdean: sistema genitala', from: 0.35 },
       ],
       note: 'Gandor urogenitala bitan banatzen da: alboko gernu gandorra (gernu osagaiak) eta erdialdeko gonada gandorra (osagai genitalak)',
+    },
+    {
+      // Final notes (2026-11-18): the ridge carries two ducts from the start, top to bottom. The paramesonephric
+      // duct grows down beside the mesonephric one (its fate is topic 16).
+      to: { muller: 0.8 },
+      run: [0.08, 0.8],
+      cam: TRUNK(10.5, 40, 16, [0, -0.6, -0.35]),
+      glide: 0.06,
+      dim: ['hodi-mesonefrikoa', 'hodi-paramesonefrikoa'],
+      names: [
+        { id: 'hodi-mesonefrikoa', text: 'Hodi mesonefrikoa (Wolff)' },
+        { id: 'hodi-paramesonefrikoa', text: 'Hodi paramesonefrikoa (Müller)', sub: 'sistema genitala · 16. gaia', from: 0.3 },
+      ],
+      note: 'Gandor urogenitalean, goitik behera, bi hodi: hodi mesonefrikoa (Wolff) eta hodi paramesonefrikoa (Müller)',
     },
   ],
 };
@@ -305,10 +319,10 @@ const spec10: StageSpec<UroPose, UroOpts> = {
       glide: 0.05,
       dim: ['giltzurruna', 'gernu-maskuria'],
       names: [
-        { id: 'giltzurruna', sub: '14. astetik gernua egiten du' },
+        { id: 'giltzurruna', sub: '12. astetik gernua egiten du' },
         { id: 'gernu-maskuria', small: true, from: 0.4 },
       ],
-      note: 'Gernuaren ekoizpena 14. astean hasten da; nefrogenesia 35. astean amaitzen da',
+      note: 'Gernuaren ekoizpena 12. astean hasten da; nefrogenesia 35. astean amaitzen da',
     },
     {
       to: { ascend: 1, mesoGone: 0.88 },

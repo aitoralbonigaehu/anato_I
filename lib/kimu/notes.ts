@@ -11,7 +11,7 @@
 import { NOTES } from '@/content/notes';
 import { notesOf, sentenceAnchors, sentenceText, type NotesBlock } from '@/content/notes-text';
 import { weeks } from '@/content/registry';
-import { match, queryTokens, spell, tokens } from './text';
+import { droppedAsking, match, queryTokens, spell, tokens } from './text';
 
 export interface NotesSentenceRef {
   id: string;
@@ -249,7 +249,13 @@ export function searchNotes(question: string, ctx: NotesContext = {}, limit = 3,
   }
   out.sort((a, b) => b.score - a.score);
   const top = out.slice(0, limit);
-  for (const h of top) h.best = bestSentences(h.passage, q, cue, intent);
+  const { passages } = index();
+  for (const h of top) {
+    // Does the passage's closing colon open anything? Only a list right after it, in the same section.
+    const next = passages[passages.indexOf(h.passage) + 1];
+    const opensList = !!next && next.kind === 'li' && next.week === h.passage.week && next.section === h.passage.section;
+    h.best = bestSentences(h.passage, q, cue, intent, opensList);
+  }
   return top;
 }
 
@@ -293,8 +299,10 @@ export function sectionAsked(question: string, ctx: NotesContext = {}): SectionH
     }
     // Every word asked is in the heading, and most of the heading's own words were asked ("notokorda"
     // twice is not "Notokordaren eraketa").
-    const said = [...sec.tok].filter((w) => q.some((alts) => alts.some((alt) => match(alt, w, alt.length >= 6) > 0))).length;
-    if (covered < q.length || said < sec.tok.size * 0.7) continue;
+    // A heading word the question could not have kept ("Poltsetatik eratorritako egiturak": "egiturak") is not counted.
+    const head = [...sec.tok].filter((w) => !droppedAsking(w));
+    const said = head.filter((w) => q.some((alts) => alts.some((alt) => match(alt, w, alt.length >= 6) > 0))).length;
+    if (covered < q.length || said < head.length * 0.7) continue;
     const v = (score / sec.tok.size) * (ctx.week === sec.week ? 1.2 : 1);
     if (!best || v > best.v) best = { s: sec, v };
   }
@@ -332,13 +340,16 @@ export function sectionAsked(question: string, ctx: NotesContext = {}): SectionH
 /** Opens by pointing back: "Komunikazio hauek…", "Hori dela eta…", "Horiek…". */
 const ANAPHOR = /^\s*(?:\S+\s+)?(?:hau|hauek|hori|horiek|hauei|horiei|honek|horrek|hauen|horien|honen\w*|horren\w*|hauet\w*|horiet\w*)\b/i;
 
-function bestSentences(p: Passage, q: Expanded, cue: RegExp | null, intent: Intent): NotesSentenceRef[] {
+function bestSentences(p: Passage, q: Expanded, cue: RegExp | null, intent: Intent, opensList = true): NotesSentenceRef[] {
   // A list answers "which…?"; otherwise its introducing paragraph may hold the sentence asked for.
   if (p.kind === 'li' && (intent === 'zerrenda' || !p.leadCount || p.leadCount < 2)) return p.sentences;
   const pool = p.kind === 'li' ? p.sentences.slice(0, p.leadCount) : p.sentences;
   const scored = pool.map((s, i) => {
     const { score, covered } = scoreTokens(q, new Set(s.tok), new Set());
-    return { s, i, v: score * (0.4 + 0.6 * (covered / q.length)) * (cue && cue.test(s.text) ? (cue === CUE.noiz ? 2 : 1.35) : 1) };
+    // A closing sentence that announces what follows ("… desberdintzen dira:") over a figure the notes do not
+    // put into words says nothing on its own (topic 17, 2.2.1): any other sentence answers better.
+    const dangling = !opensList && i === pool.length - 1 && /:\s*$/.test(s.text);
+    return { s, i, v: score * (0.4 + 0.6 * (covered / q.length)) * (cue && cue.test(s.text) ? (cue === CUE.noiz ? 2 : 1.35) : 1) * (dangling ? 0.1 : 1) };
   });
   // "When…?" is answered by the sentence that gives the time and shares a word with the question,
   // even when another sentence repeats more of the question's words.

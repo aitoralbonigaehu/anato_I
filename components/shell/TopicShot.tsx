@@ -33,6 +33,13 @@ const SHOTS: Record<number, { stage: string; view: string; rest: number }> = {
   19: { stage: 'bost-xixkuak', view: '3d', rest: 0.9 },
 };
 
+/**
+ * Topics whose card scene is a 3D model show a poster instead: the simulator's own frame on the real GPU
+ * (scripts/quality/topic-posters.mjs, which keeps the list of moments). A live model in a 290 px card was
+ * slow to build, framed for the simulator, and brought the scene's names and insets with it.
+ */
+const POSTERS = new Set([12, 13, 14, 15, 16, 17, 18, 19]);
+
 const PLAY_S = 4.5;
 const BACK_S = 0.5;
 const ease = (v: number) => {
@@ -49,6 +56,18 @@ const subscribeReduced = (cb: () => void) => {
 };
 
 export function TopicShot({ week, hot }: { week: number; hot: boolean }) {
+  if (POSTERS.has(week)) {
+    return (
+      <span className="lp-shot is-poster" aria-hidden>
+        {/* eslint-disable-next-line @next/next/no-img-element -- a fixed 640 px WebP, already sized */}
+        <img src={`/topic-shots/${week}.webp`} alt="" loading="lazy" decoding="async" width={640} height={410} />
+      </span>
+    );
+  }
+  return <LiveShot week={week} hot={hot} />;
+}
+
+function LiveShot({ week, hot }: { week: number; hot: boolean }) {
   const shot = SHOTS[week];
   const view = shot ? getWeek(week)?.stages.find((s) => s.id === shot.stage)?.views.find((v) => v.id === shot.view) : undefined;
   const mounted = useSyncExternalStore(subscribeNothing, () => true, () => false);

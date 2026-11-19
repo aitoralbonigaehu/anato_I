@@ -20,7 +20,7 @@ export const stages18g: StageDef[] = [
     beats: [
       {
         at: S_EAR[0],
-        notes: ['w18/1.2/p1/s1', 'w18/1.2/p2/s1', 'w18/1.2/p3/s1'],
+        notes: ['w18/1.2/p2/s1', 'w18/1.2/p3/s1'],
         recall: ['faringe-arraildurak', 'faringe-poltsak'],
         idea: 'Lehen arraildura sakondu eta luzatu.',
         text: 'Lehenengo arraildura sakondu eta luzatu egingo da, barruko lehen poltsarantz.',
@@ -32,7 +32,7 @@ export const stages18g: StageDef[] = [
         notes: ['w18/1.2/p3/s2'],
         idea: 'Poltsarekin batu (≠ fusionatu): muga ez da irekitzen; tinpano mintza.',
         key: 'Batu ≠ fusionatu: muga ez da irekitzen.',
-        text: 'Barneko poltsarekin batu egingo da, baina ez fusionatu: muga ez da irekiko. Bi guneen artean muga bat geratzen da: tinpano mintza.',
+        text: 'Barneko poltsaren hormekin batu egingo da, baina ez fusionatu: muga ez da irekiko. Bi guneen artean muga bat geratzen da: tinpano mintza.',
         focus: ['tinpano-mintza'],
         exam: 'Lehen arraildura eta lehen poltsa batu egiten dira, ez fusionatu: tinpano mintza.',
         caution: 'Batu ≠ fusionatu: arraildura eta poltsa ez dira komunikatzen.',
@@ -42,13 +42,13 @@ export const stages18g: StageDef[] = [
         at: S_EAR[2],
         notes: ['w18/1.2/p3/s3'],
         idea: 'Sortzen den hodia: kanpoko entzumen hodia.',
-        text: 'Bertan sortzen den hodia kanpoko entzumen hodia da, kanpoko belarria eta tinpanoa lotzen dituena. Beste aldean, poltsatik, tinpano-kutxa eta Eustakioren tronpa.',
+        text: 'Bertan sortzen den hodia kanpoko entzumen hodia da, belarriaren kanpoko irekigunea tinpano mintzarekin lotzen duena. Beste aldean, poltsatik, tinpano-kutxa eta Eustakioren tronpa.',
         focus: ['kanpoko-entzumen-hodia', 'tinpano-kutxa', 'eustakioren-tronpa'],
         view: '3d',
       },
       {
         at: S_EAR[3],
-        notes: ['w18/1.2/p3/s4-s5', 'w18/1.2/p4/s1', 'w18/1.2/p5/s1', 'w18/1.2/p6/s1'],
+        notes: ['w18/1.2/p3/s4-s5', 'w18/1.2/p4/s1'],
         idea: 'Tinpano mintza: kanpoan ektodermoa, barnean endodermoa, tartean mesodermo oso fina.',
         text: 'Tinpano mintza oso egitura fina da, ia gardena. Hala ere, hiru jatorri ditu: kanpoko epitelioa ektodermikoa, barneko epitelioa endodermikoa, eta tartean dauden zelulak mesodermikoak, geruza oso fina.',
         focus: ['tinpano-kanpoko-epitelioa', 'tinpano-tarteko-geruza', 'tinpano-barneko-epitelioa'],
@@ -83,7 +83,7 @@ export const stages18g: StageDef[] = [
     beats: [
       {
         at: S_SINUS[0],
-        notes: ['w18/1.2/p7/s1'],
+        notes: ['w18/1.2/p5/s1'],
         idea: 'Gainerako arraildurak desagertu egiten dira.',
         text: 'Kanpotik ikusten diren gainerako faringe-arraildurak desagertu egiten dira.',
         focus: ['faringe-arraildurak', 'lehen-arraildura'],
@@ -91,16 +91,16 @@ export const stages18g: StageDef[] = [
       },
       {
         at: S_SINUS[1],
-        notes: ['w18/1.2/p7/s2'],
+        notes: ['w18/1.2/p5/s2'],
         idea: 'II. arkuaren mesenkima behera hazi, arrailduren gainetik, goragune epikardikoarekin fusionatu.',
-        text: 'Bigarren arkuko mesenkima beherantz luzatu eta hazi egiten da, arrailduren gainetik pasatuz eta goragune epikardikoarekin fusionatuz.',
+        text: 'Bigarren arkuaren kanpoko mesenkima loditu eta beherantz luzatzen da, 3. eta 4. arrailduren gainetik pasatuz eta goragune epikardikoaren mesenkimarekin fusionatuz.',
         focus: ['bigarren-arkua', 'goragune-epikardikoa'],
         exam: 'II. arkua beherantz hazi eta goragune epikardikoarekin fusionatzen da.',
         view: '3d',
       },
       {
         at: S_SINUS[2],
-        notes: ['w18/1.2/p7/s3', 'w18/1.2/p7/s4'],
+        notes: ['w18/1.2/p5/s3', 'w18/1.2/p5/s4'],
         idea: 'Arraildurak estalita: aztarna txikia, sinu zerbikala.',
         text: 'Horrela, arraildurak estalita gelditzen dira. Hasieran aztarna txiki bat ageri da: sinu zerbikala.',
         focus: ['sinu-zerbikala'],
@@ -108,7 +108,7 @@ export const stages18g: StageDef[] = [
       },
       {
         at: S_SINUS[3],
-        notes: ['w18/1.2/p7/s4'],
+        notes: ['w18/1.2/p5/s4'],
         idea: 'Sinua desagertu: egitura trinkoa.',
         text: 'Gero sinu zerbikala ere desagertu egiten da, eta egitura trinkoa eratzen da.',
         focus: ['bigarren-arkua', 'hirugarren-arkua', 'laugarren-arkua'],
@@ -116,9 +116,9 @@ export const stages18g: StageDef[] = [
       },
       {
         at: S_SINUS[4],
-        notes: ['w18/1.2/p7/s5-s8'],
+        notes: ['w18/1.2/p5/s5-s8'],
         idea: 'Batzuetan sinua mantentzen da: barrunbea lepoan; infekzioan likidoa, xiringaz kentzen da.',
-        text: 'Batzuetan arraildurak ez dira guztiz desagertzen eta sinu zerbikala mantentzen da. Lepoan barrunbe bat geratzen da, normalean arazorik ematen ez duena. Helduetan, infekzio larri baten ondorioz, likido serosoa metatu daiteke eta lepoan bultoma bat nabaritzen da. Likidoa xiringa batekin kentzen da, eta ez du arazo handirik ematen.',
+        text: 'Batzuetan arraildurak ez dira guztiz desagertzen eta sinu zerbikala (lepoko sinua) mantentzen da. Lepoan barrunbe bat geratzen da, normalean arazorik ematen ez duena. Helduetan, infekzio larri baten ondorioz, likido serosoa metatu daiteke eta lepoan bultoma bat nabaritzen da. Likidoa xiringa batekin kentzen da, eta ez du arazo handirik ematen.',
         focus: ['sinu-zerbikala'],
         view: '3d',
       },

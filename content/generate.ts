@@ -6,6 +6,7 @@
  * Every generator guarantees a single correct answer by construction (margins around dates, options
  * from disjoint branches), which is what the pack's quarantine list (QH01…) warns about.
  */
+import { firstSentence } from './sentence';
 import { LIFE, MILESTONES, dayIn, dayLabel, firstSeenOf, spanLabel } from './chronology';
 import { LAYERS, ancestry, childrenOf, descendantsOf, layerOf, lineageIds, type LNode } from './lineage';
 import { nameOf, structures } from './registry';
@@ -246,7 +247,7 @@ function parentQuestions(): GenQuestion[] {
 // ——— 7. Zer da hau? (the notes' definition, with the name hidden) ———
 
 // A sentence ends at . ! ? — not after a number ("3.") or a Roman numeral ("I. meiosia").
-export const firstSentence = (t: string) => t.match(/^.+?(?<!\d)(?<![\s(][IVX]{1,4})[.!?](?=\s|$)/)?.[0] ?? t;
+export { firstSentence };
 /** Word-initial stems of a structure's names (Basque adds endings: "trofoblasto-tik"). */
 const stemsCache = new Map<string, string[]>();
 const stemsOf = (id: string) => {

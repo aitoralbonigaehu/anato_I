@@ -6,7 +6,7 @@
  */
 
 import { lifeOf, dayLabel, firstSeenOf, spanLabel } from '@/content/chronology';
-import { firstSentence } from '@/content/generate';
+import { firstSentence } from '@/content/sentence';
 import { structures, weeks } from '@/content/registry';
 import { formationOf } from '@/content/formation';
 import type { KimuFrom, KimuHere, KimuTarget } from './types';

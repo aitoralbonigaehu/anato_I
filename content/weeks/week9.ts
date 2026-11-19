@@ -1013,9 +1013,9 @@ export const week9: WeekDef = {
         {
           at: 0.5,
           notes: ['w9/2.2.1/p11/s1', 'w9/2.2.1/p12/s1', 'w9/2.2.1/p13/s1', 'w9/2.2.1/p14/s1', 'w9/2.2.1/p15/s1', 'w9/2.2.1/p16/s1'],
-          idea: 'Muskuluen izenak ez dira ikasi behar! Lepoan: eskalenoak, genihioideoak eta ornoaurrekoak primaxialak; hioide azpikoak abaxialak.',
-          key: 'Izenak ez: araua bai. Taulako kolorea = domeinua.',
-          text: 'Taula: domeinu primaxiala (urdina) eta domeinu abaxiala (laranja), eskualdez eskualde. Muskuluen izenak ez dira ikasi behar! Lepoko eskualdean: eskalenoak, genihioideoak eta ornoaurrekoak primaxialak dira; hioide azpiko muskuluak, abaxialak.',
+          idea: 'Lepoan: eskalenoak, genihioideoak eta ornoaurrekoak primaxialak; hioide azpikoak abaxialak.',
+          key: 'Araua: taulako kolorea = domeinua.',
+          text: 'Taula: domeinu primaxiala (urdina) eta domeinu abaxiala (laranja), eskualdez eskualde. Lepoko eskualdean: eskalenoak, genihioideoak eta ornoaurrekoak primaxialak dira; hioide azpiko muskuluak, abaxialak.',
           focus: ['muskulu-eskalenoak', 'muskulu-genihioideoak', 'muskulu-prebertebralak', 'hioide-azpiko-muskuluak'],
           view: 'taula',
         },

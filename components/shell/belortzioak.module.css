@@ -335,6 +335,29 @@
   scrollbar-width: thin;
 }
 
+/* A list longer than its box says so: its lower edge fades while names wait below (scroll-driven, so
+   the last name is crisp once reached; browsers without it simply show the list). */
+@supports (animation-timeline: scroll()) {
+  .legend {
+    animation: legendMore linear both;
+    animation-timeline: scroll(self);
+  }
+}
+@keyframes legendMore {
+  from {
+    -webkit-mask-image: linear-gradient(#000 calc(100% - 36px), transparent);
+    mask-image: linear-gradient(#000 calc(100% - 36px), transparent);
+  }
+  99% {
+    -webkit-mask-image: linear-gradient(#000 calc(100% - 36px), transparent);
+    mask-image: linear-gradient(#000 calc(100% - 36px), transparent);
+  }
+  to {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
 .legend button {
   display: flex;
   align-items: center;

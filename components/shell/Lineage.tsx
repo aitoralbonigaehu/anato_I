@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { appearances, structures } from '@/content/registry';
 import { categoryColor } from '@/lib/sim/palette';
 import { LandFoot, LandNav } from './LandNav';
+import { GuideButton } from './tour/TourHost';
 import { MigrationMap } from './MigrationMap';
 import { EARLY as ROOT, LAYERS, type LNode } from '@/content/lineage';
 
@@ -99,7 +100,7 @@ function EarlyLayers() {
 export function Lineage() {
   return (
     <div className="landing ln-page">
-      <LandNav current="eratorriak" />
+      <LandNav current="eratorriak" help={<GuideButton tour="era" />} />
       <header className="ln-hero ln-head-hero">
         <p className="eyebrow">Eratorriak · gai bakoitzaren funtsezkoa</p>
         <h1>Nondik datoz, zer bihurtzen dira</h1>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { nameOf, structures } from '@/content/registry';
-import { imageId } from '@/content/pool';
+import { imageId } from '@/content/pool-keys';
 import { recordAnswer } from './answers';
 
 /**

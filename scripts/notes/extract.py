@@ -33,11 +33,11 @@ FILES = [
     '13. GAIA_ZAIN SISTEMA (zirkulazio-sistema IV) (zuzendu gabe).pdf',
     # Topic 14 came in two PDFs (part 2 = sections 4–6 and the respiratory system): one notes file, part 2's blocks after part 1's.
     ('14.GAIA_DIGESTIO APARATUA 1.ATALA (Zuzenduta).pdf', '14.GAIA_DIGESTIO APARATUA 2.Atala (Zuzenduta).docx.pdf'),
-    '15._GAIA_SISTEMA_UROGENITALA_Zuzenduta.pdf',
-    '16_GAIA_SISTEMA_UROGENITALA_GONADAK_zuzenduta.pdf',
-    # Topic 17: the corrected notes of 2026-11-16 (Google Docs export, named "... fitxategiaren kopia"); same extraction rules.
-    '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA) fitxategiaren kopia.pdf',
-    '18. GAIA_ Burua eta lepoa ll (Zuzenduta).pdf',
+    # Topics 15-18: the owner's final notes of 2026-11-18 (topic 18 came as DOCX: exported to PDF with Word, same name + .pdf).
+    '15. GAIA. SISTEMA-UROGENITALA zuzenduta.pdf',
+    '16 GAIA_SISTEMA UROGENITALA (GONADAK) (zuzenduta) fitxategiaren kopia fitxategiaren kopia.pdf',
+    '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA) fitxategiaren kopia (1).pdf',
+    '18. GAIA. Burua eta lepoa ll (Zuzenduta).docx.pdf',
     # Topic 19 came as DOCX only: exported to PDF with Word (same name + .pdf), text unchanged.
     '19. GAIA. NERBIO SISTEMA (zuzendu gabe).docx.pdf',
 ]
@@ -67,20 +67,48 @@ def furniture(line, page):
 # The teacher's remarks about what will or will not be asked, or about names not to use, never reach the app
 # (topic 19's uncorrected notes carry a few). Removed from the text before it is split into sentences.
 REMARKS = [
-    (re.compile(r'\s*→\s*HOBETO AZALDUKO DU HURRENGO URTEAN\s*'), ''),
+    (re.compile(r'\s*→\s*HOBETO AZALDUKO DU HURRENGO URTEAN\s*'), ' '),
     (re.compile(r'\s*\(Silvioren akueduktoa, berak ez erabili\)'), ''),
     (re.compile(r',\s*berak ez galdetu\)'), ')'),
+    # Final notes of topics 15–18 (2026-11-18).
+    (re.compile(r'\s*○\u200b?\s*Hurrengo gaikoa!+'), ''),
+    (re.compile(r'Oharra: Azterketan ez dira izen propioak galdetuko\.'), ''),
+    (re.compile(r'EZ DU HAU ESATEN BAINA ONDO DAGO PARTEA HOBETO ULERTZEKO:\s*'), ''),
+    (re.compile(r'Oharra: Irudi osagarriak ez dira azterketan agertuko\.'), ''),
+    (re.compile(r'Irudia ez ikasi(?:, irudi osgarria!*)?'), ''),
+    (re.compile(r'\*Irakasleak ez du hau aipatu klasean \(2023/24\) baina ulertzeko lagungarria izan daiteke'), ''),
+    (re.compile(r'\s*\(hau ez da garrantzitsua; datorren urtean emango dugu\)'), ''),
+    (re.compile(r'HAU EZ DA IKASI BEHAR:\s*'), ''),
+    (re.compile(r'EZ DU AIPATU\s+'), ''),
+    (re.compile(r'\s*Oraindik ez dago dena zuzenduta'), ''),
 ]
 
 
+def strip_text(t):
+    for rx, rep in REMARKS:
+        t = rx.sub(rep, t)
+    return t
+
+
 def strip_remarks(parts):
-    out = []
-    for p in parts:
-        t = p['text']
-        for rx, rep in REMARKS:
-            t = rx.sub(rep, t)
-        out.append({**p, 'text': t})
-    return out
+    # A remark can run across a bold/italic change or a line break (two parts): it is found in the joined
+    # text, and its characters are removed from whichever parts hold them; the formatting of the rest is kept.
+    for rx, rep in REMARKS:
+        while True:
+            joined = ''.join(p['text'] for p in parts)
+            m = rx.search(joined)
+            if not m or m.end() == m.start():
+                break
+            out, pos, put = [], 0, False
+            for p in parts:
+                t, lo, hi = p['text'], max(m.start() - pos, 0), min(m.end() - pos, len(p['text']))
+                if hi > lo:
+                    t = t[:lo] + ('' if put else m.expand(rep)) + t[hi:]
+                    put = True
+                pos += len(p['text'])
+                out.append({**p, 'text': t})
+            parts = out
+    return parts
 
 
 def compact(parts):
@@ -266,8 +294,10 @@ def extract(path, week, part=1, counts=None):
         # Week prefix avoids collisions between sections shared by different topics.
         bid = f"w{week}/{b['section']}/p{counts[b['section']]}"
         b['id'] = bid
-        b['sentences'] = [{'id': f'{bid}/s{i}', 'parts': p} for i, p in enumerate(split_sentences(compact(strip_remarks(b.pop('parts'))), week), 1)]
+        b['sentences'] = [{'id': f'{bid}/s{i}', 'parts': p} for i, p in enumerate(split_sentences(compact(strip_remarks(b.pop('parts'))), week), 1) if ''.join(x['text'] for x in p).strip()]
+    blocks = [b for b in blocks if b['sentences']]
     generated = norm(' '.join(block_text(b) for b in blocks))
+    reference = norm(strip_text(reference))
     if generated != reference:
         print('\n'.join(difflib.unified_diff(reference.split(), generated.split(), fromfile='PDF', tofile='extracted', n=3)))
         raise ValueError(f'{path.name}: text fidelity failed')

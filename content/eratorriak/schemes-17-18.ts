@@ -7,139 +7,180 @@ import type { MigrationTopic, MNode } from '../migrations';
 const n = (id: string, kids?: MNode[], extra?: Omit<MNode, 'id' | 'kids'>): MNode => ({ id, kids, ...extra });
 const l = (label: string, kids?: MNode[], extra?: Omit<MNode, 'label' | 'kids'>): MNode => ({ label, kids, ...extra });
 
+const branch = (id: string, via: string, kids?: MNode[], note?: string) => n(id, kids, { via, note });
+const leaf = (label: string, via: string, kids?: MNode[], note?: string) => l(label, kids, { via, note });
+
 export const SCHEMES_17: MigrationTopic = {
   week: 17,
   short: 'Burua eta lepoa I',
   flows: [
     {
       id: 'kraneoaren-jatorriak-17',
-      title: 'Kraneoa: bi atal, bi jatorri',
-      lead: 'Errai kraneoa gandor neuraletik; neurokraneoa gandor neuraletik eta somita okzipitaletako mesodermo paraxialetik.',
+      title: 'Kraneoaren jatorriak: gandor neurala eta mesodermo paraxiala',
       stage: 'kraneoaren-bi-atalak',
       roots: [
         n('gandor-neurala', [
-          l('Hezur frontalak', undefined, { note: 'buru ganga · mintzezkoa' }),
-          l('Errai kraneoa', [l('Aurpegiko hezurrak', undefined, { note: '1. eta 2. arkuen eratorriak' })], { note: 'mintzezkoa' }),
+          leaf('Hezur frontalak', 'gangan mintzez hezurtu'),
+          branch('errai-kraneoa', 'aurpegira migratu', [
+            leaf('Aurpegiko hezur gehienak', 'mintzez hezurtu', undefined, 'I. arkutik, adibidez, maxilarra eta baraila'),
+          ]),
+          leaf('Kraneo-oinaldearen aurrealdea', 'aurreko kartilagoa eratu'),
         ]),
         n('mesodermo-paraxiala', [
-          l('Parietalak', undefined, { note: 'buru ganga · mintzezkoa' }),
-          l('Okzipitalaren ezkata', undefined, { note: 'buru ganga · mintzezkoa' }),
-        ], { note: 'somita okzipitalak' }),
+          leaf('Hezur parietalak', 'gangan mintzez hezurtu'),
+          leaf('Okzipitalaren ezkataren zati bat', 'atzean mintzez hezurtu'),
+          leaf('Kraneo-oinaldearen atzealdea', 'somita okzipitalak elkartu'),
+        ]),
       ],
     },
     {
       id: 'kraneo-hezurtzeak-17',
-      title: 'Bi hezurtze mota',
-      lead: 'Mintzezkoa zuzenean eta azkar; endokondrala kartilagotik eta geldo.',
+      title: 'Mesenkimatik hezurrera: mintzezkoa eta endokondrala',
       stage: 'hezurtze-motak',
       roots: [
-        l('Mesenkima', [
-          l('Hezur lauak', undefined, { via: 'mintzezko hezurtzea: zuzenean', note: 'parietalak, okzipitalaren ezkata, aurpegikoak' }),
-          l('Kartilagoa', [l('Burezurraren oinaldea', undefined, { via: 'hezurtu (kondrozitoak → osteoblastoak)', note: 'kondrokraneoa · luze eta geldoa' })], { via: 'hezurtze endokondrala' }),
+        l('Kraneoko mesenkima', [
+          branch('buru-ganga', 'mintzez hezurtu', [
+            leaf('Josturak eta fontanelak', 'hezurren artean irekita', undefined, 'hazkundea ahalbidetzen dute'),
+          ]),
+          leaf('Kondrokraneoa', 'kartilagozko eredua eratu', [
+            leaf('Kraneo-oinaldeko hezurrak', 'eredua hezurrez ordezkatu', undefined, 'hezurtze endokondrala'),
+          ]),
         ]),
       ],
     },
     {
+      id: 'kondrokraneoaren-eratorriak-17',
+      title: 'Kondrokraneoa: kartilago bakoitza zer hezur-atal bihurtzen den',
+      stage: 'kondrokraneoa',
+      roots: [n('kondrokraneoa', [
+        leaf('Erdiko kartilagoak', 'erdiko lerroan antolatu', [
+          leaf('Parakordalak + esklerotoma okzipitalak', 'atzealdean elkartu', [
+            branch('okzipitalaren-oinaldea', 'endokondralki hezurtu'),
+          ]),
+          branch('hipofisi-kartilagoak', 'hipofisiaren inguruan', [
+            branch('esfenoidesaren-gorputza', 'endokondralki hezurtu'),
+          ]),
+          branch('trenkada-kranialak', 'aurrealdean eratu', [branch('etmoidesa', 'endokondralki hezurtu')]),
+        ]),
+        leaf('Alboko kartilagoak', 'alboetan antolatu', [
+          branch('kapsula-periotikoa', 'barne-belarria inguratu', [branch('harkaitza', 'endokondralki hezurtu')]),
+          branch('hego-tenporala', 'albora hedatu', [branch('esfenoidesaren-hego-handia', 'endokondralki hezurtu')]),
+          branch('begizulo-hegoa', 'orbitara hedatu', [branch('esfenoidesaren-hego-txikia', 'endokondralki hezurtu')]),
+        ]),
+      ])],
+    },
+    {
       id: 'arkuaren-osagaiak-17',
-      title: 'Arku bakoitzaren osagaiak',
-      lead: 'Kanpoan ektodermoa, barruan endodermoa, tartean mesenkima; mesenkiman arteria, zaina, nerbioa eta kartilagoa.',
+      title: 'Faringe-arku baten osagaiak',
       stage: 'arkuaren-osagaiak',
       roots: [
         n('faringe-arkuak', [
-          l('Ektodermoa', [n('faringe-arraildurak', undefined, { note: 'kanpoan, arkuen artean' })], { note: 'kanpoko estalkia' }),
-          l('Endodermoa', [n('faringe-poltsak', undefined, { note: 'barruan, arkuen artean' })], { note: 'barneko epitelioa' }),
-          l('Mesenkima', [l('Arteria'), l('Zaina'), l('Nerbioa', undefined, { note: 'bikote kraneal bat' }), l('Kartilagoa'), l('Muskuluak'), l('Aurpegiko hezurrak', undefined, { note: 'gandor neuraletik' })], { note: 'mesodermo paraxiala + gandor neurala + alboko mesodermoa' }),
-        ], { note: '4.–5. asteak · bikoteka' }),
-        n('bosgarren-arkua', [l('Endekatu', undefined, { gone: true, note: 'ez du eratorririk uzten' })]),
+          leaf('Ektodermoa', 'kanpotik estali', [branch('faringe-arraildurak', 'arkuen artean hondoratu')]),
+          leaf('Endodermoa', 'barrutik estali', [branch('faringe-poltsak', 'arkuen artean irten')]),
+          leaf('Mesenkima', 'erdigunea osatu', [
+            branch('arkuko-kartilagoa', 'gandor neuraletik bereizi'),
+            leaf('Muskuluak', 'mesodermoko mioblastoak'),
+            branch('arkuko-arteria', 'aorta-zakua eta dortsala lotu'),
+            branch('arkuko-zaina', 'bertako odola drainatu'),
+            branch('arkuko-nerbioa', 'arkua inerbatu'),
+          ]),
+          branch('bosgarren-arkua', 'iragankorra edo falta da', [
+            l('Eratorririk ez', undefined, { via: 'goiz endekatu', gone: true }),
+          ]),
+        ]),
       ],
     },
     {
       id: 'lehen-arkua-eratorriak-17',
-      title: 'I. arkua: V3 nerbioa, bi luzapen, muskulu murtxikatzaileak',
-      lead: 'Muskulu bat zein arkutakoa den, bere nerbioari begiratuta jakiten da.',
+      title: 'I. arkua · V3, Meckel eta murtxikatzea',
       stage: 'lehen-arkua-kartilagoak',
       roots: [
         n('lehen-arkua', [
-          n('barail-nerbioa', undefined, { note: 'V3 · trigeminoaren hirugarren adarra · mistoa: muskuluak (V1 eta V2 ez daude arkuan)' }),
-          n('luzapen-maxilarra', [
-            n('hezur-maxilarra'),
-            n('zigomatikoa'),
-            n('loki-hezurraren-atal-tinpanikoa', undefined, { note: 'kutxa tinpanikoa + hezurtxoekin erlazionatua' }),
+          branch('barail-nerbioa', 'inerbazio motorra', undefined, 'V3 · trigeminoaren adarra'),
+          branch('luzapen-maxilarra', 'goiko luzapena', [
+            branch('hezur-maxilarra', 'mintzez hezurtu'),
+            branch('zigomatikoa', 'mintzez hezurtu'),
+            leaf('Tenporalaren ezkata', 'mintzez hezurtu'),
           ]),
-          n('barail-luzapena', [
-            n('meckel-kartilagoa', [
-              n('mailua', undefined, { note: 'goiko muturretik' }),
-              n('ingudea', undefined, { note: 'goiko muturretik' }),
-              l('Endekatu', undefined, { gone: true, note: 'gida da' }),
-              n('baraila', undefined, { via: 'inguruko mesenkima hezurtuta, ez kartilagotik' }),
+          branch('barail-luzapena', 'beheko luzapena', [
+            branch('meckel-kartilagoa', 'kartilagoa eratu', [
+              branch('mailua', 'mutur dortsala hezurtu'),
+              branch('ingudea', 'mutur dortsala hezurtu'),
+              l('Kartilagoaren zati handiena', undefined, { via: 'endekatu', gone: true }),
             ]),
+            branch('baraila', 'Meckelen inguruan hezurtu', undefined, 'inguruko mesenkimatik'),
           ]),
-          l('Muskuluak (V3)', [
-            l('Maseteroa'),
-            l('Tenporala'),
-            l('Milohioideoa'),
-            l('Digastrikoaren aurreko sabela', undefined, { note: 'atzekoa VII.ak' }),
-          ], { note: 'murtxikatzaileak · azalekoak' }),
+          branch('loki-hezurraren-atal-tinpanikoa', 'mesenkima mintzez hezurtu'),
+          leaf('Arkuko muskuluak', 'V3k inerbatzen ditu', [
+            branch('maseteroa', 'baraila igo'),
+            branch('muskulu-tenporala', 'baraila igo'),
+            leaf('Pterigoideoak', 'baraila mugitu'),
+            branch('milohioideoa', 'ahoaren zorua osatu'),
+            branch('digastrikoaren-aurreko-sabela', 'baraila jaitsi'),
+          ]),
         ]),
       ],
     },
     {
       id: 'bigarren-arkua-eratorriak-17',
-      title: 'II. arkua: VII nerbioa, Reichert, muskulu mimikoak',
-      lead: 'Reichert kartilagoa endekatzen da eta muturretan bakarrik eratzen dira hezurrak.',
+      title: 'II. arkua · VII, Reichert eta mimika',
       stage: 'bigarren-arkua',
       roots: [
         n('bigarren-arkua', [
-          n('aurpegi-nerbioa', undefined, { note: 'VII · mistoa' }),
-          n('reichert-kartilagoa', [
-            l('Endekatu', undefined, { gone: true }),
-            n('ointokia', undefined, { note: 'goiko muturra' }),
-            n('estiloide-apofisia'),
-            n('hioide-adar-txikia'),
-            n('hioide-gorputza', undefined, { note: 'goiko erdia' }),
+          branch('aurpegi-nerbioa', 'arkuko muskuluak inerbatu', undefined, 'VII. bikotea'),
+          branch('reichert-kartilagoa', 'kartilagoa eratu', [
+            branch('ointokia', 'goiko muturrean eratu'),
+            branch('estiloide-apofisia', 'hezurtu'),
+            branch('lotailu-estilohioideoa', 'zuntz bihurtu'),
+            branch('hioide-adar-txikia', 'beheko muturrean eratu'),
+            branch('hioide-gorputz-goia', 'goiko erdia osatu'),
           ]),
-          l('Muskuluak (VII)', [
-            l('Muskulu mimikoak'),
-            l('Aurikularrak'),
-            l('Okzipitala'),
-            l('Digastrikoaren atzeko sabela'),
-            l('Estilohioideoa'),
-            l('Platisma'),
-          ], { note: 'azalekoak' }),
+          leaf('Arkuko muskuluak', 'VII.ak inerbatzen ditu', [
+            branch('muskulu-mimikoak', 'aurpegiko adierazpena', [branch('platisma', 'lepoan hedatu')]),
+            branch('muskulu-aurikularrak', 'belarri inguruan'),
+            branch('okzipitala', 'garezurraren atzealdean'),
+            branch('digastrikoaren-atzeko-sabela', 'hioidea igo'),
+            branch('estilohioideoa', 'hioidea igo eta atzeratu'),
+          ]),
         ]),
       ],
     },
     {
       id: 'hirugarren-arkua-eratorriak-17',
-      title: 'III. arkua: IX nerbioa, hioidearen beheko zatia, muskulu sakonak',
-      lead: 'Ez dago aurreko bi arkuen bezalako kartilagorik, baina hioidea osatzen du.',
+      title: 'III. arkua · IX, hioidearen beheko erdia eta estilofaringeoa',
       stage: 'hirugarren-arkua',
       roots: [
         n('hirugarren-arkua', [
-          n('glosofaringeoa', undefined, { note: 'IX · mistoa' }),
-          n('hioide-gorputza', undefined, { note: 'beheko erdia' }),
-          n('hioide-adar-nagusia'),
-          l('Muskuluak (IX)', [l('Estilofaringeoa'), l('Faringearen goiko ertzatzaileak')], { note: 'sakonak' }),
+          branch('glosofaringeoa', 'arkuko nerbioa', undefined, 'IX. bikotea'),
+          leaf('Hioidearen beheko atala', 'arkuko eskeletoa eratu', [
+            branch('hioide-gorputz-behea', 'beheko erdia osatu'),
+            branch('hioide-adar-nagusia', 'alboetara luzatu'),
+          ]),
+          branch('muskulu-estilofaringeoa', 'IX.ak inerbatzen du', undefined, 'faringea igo eta zabaldu'),
         ]),
       ],
     },
     {
       id: 'laugarren-seigarren-eratorriak-17',
-      title: 'IV. eta VI. arkuak: bagoaren bi adar, laringeko kartilagoak',
-      lead: 'X.aren adar bana arku bakoitzari; hezurrik ez, kartilagoak bakarrik.',
+      title: 'IV. eta VI. arkuak · bagoaren adarrak eta laringea',
+      lead: 'Apunteek tiroide-kartilagoaren goiko aldea IV. arkuarekin eta behekoa VI.arekin lotzen dute.',
       stage: 'laugarren-seigarren-muskuluak',
       roots: [
         n('laugarren-arkua', [
-          n('goiko-laringe-nerbioa', [l('Tarteko eta beheko ertzatzaileak')], { via: 'bagoaren adarra' }),
-          n('tiroide-kartilagoa', undefined, { note: 'goiko aldea' }),
+          branch('goiko-laringe-nerbioa', 'X. bikotearen adarra', [
+            branch('krikotiroidea', 'kanpoko adarrak inerbatu'),
+          ]),
+          leaf('Faringeko muskulu ertzatzaileak', 'muskuluak bereizi', undefined, 'inerbazio nagusia: bagoa, faringe-plexuaren bidez'),
+          branch('tiroide-kartilagoa', 'kartilago laringeoari ekarpena', undefined, 'goiko aldea, apunteen arabera'),
         ]),
         n('seigarren-arkua', [
-          n('laringe-atzerakaria', [l('Laringe barneko muskuluak')], { via: 'bagoaren adarra' }),
-          n('tiroide-kartilagoa', undefined, { note: 'beheko atala' }),
-          n('krikoide-kartilagoa'),
-          n('epiglotisa'),
-          n('aritenoide-kartilagoa'),
-          l('Kornikulatuak eta kuneiformeak'),
+          branch('laringe-atzerakaria', 'X. bikotearen adarra', [
+            leaf('Laringeko berezko muskulu gehienak', 'inerbazio motorra', undefined, 'krikotiroideoa IV. arkuari lotuta'),
+          ]),
+          branch('tiroide-kartilagoa', 'kartilago laringeoari ekarpena', undefined, 'beheko aldea, apunteen arabera'),
+          branch('krikoide-kartilagoa', 'eraztuna eratu'),
+          branch('aritenoide-kartilagoa', 'atzeko kartilago parea'),
+          leaf('Kornikulatuak eta kuneiformeak', 'kartilago txiki parekatuak'),
         ]),
       ],
     },
@@ -157,10 +198,10 @@ export const SCHEMES_18: MigrationTopic = {
       stage: 'arraildurak-poltsak',
       roots: [
         n('lehen-poltsa', [
-          n('eustakioren-tronpa', undefined, { note: 'hurbileko atala' }),
-          n('tinpano-kutxa', undefined, { note: 'muturra zabaldu · hiru hezurtxoak' }),
+          n('eustakioren-tronpa', undefined, { via: 'hurbileko zatia estu geratu' }),
+          n('tinpano-kutxa', undefined, { via: 'urruneko muturra zabaldu' }),
         ], { note: 'sakonune tubotinpanikoa' }),
-        n('bigarren-poltsa', [n('aho-sabaiko-amigdala', undefined, { note: 'funtzionala 5. hilabetean' })]),
+        n('bigarren-poltsa', [n('aho-sabaiko-amigdala', undefined, { via: 'epitelioak kriptak eratu' })]),
         n('hirugarren-poltsa', [
           n('beheko-paratiroidea', undefined, { via: 'alde dortsala' }),
           n('timoa', undefined, { via: 'alde bentrala' }),
@@ -178,11 +219,14 @@ export const SCHEMES_18: MigrationTopic = {
       stage: 'lehen-arraildura',
       roots: [
         n('lehen-arraildura', [
-          n('kanpoko-entzumen-hodia'),
+          n('kanpoko-entzumen-hodia', undefined, { via: 'arraildurak iraun' }),
           n('tinpano-mintza', undefined, { via: 'poltsarekin batu (≠ fusionatu)', note: 'ektodermoa · mesodermoa · endodermoa' }),
         ]),
         n('faringe-arraildurak', [
-          l('Sinu zerbikala', [l('Desagertu', undefined, { gone: true, note: 'batzuetan mantendu' })], { via: 'II. arkua gainetik hazi', move: true }),
+          l('Sinu zerbikala', [
+            l('Itxiera', undefined, { via: 'normalean desagertu', gone: true }),
+            l('Kiste zerbikala', undefined, { via: 'hondarra geratzen bada' }),
+          ], { via: 'II. arkuak estali' }),
         ], { note: 'gainerakoak' }),
       ],
     },
@@ -192,7 +236,7 @@ export const SCHEMES_18: MigrationTopic = {
       lead: 'Goikaldean behekoa eratzen da eta behekaldean goikoa.',
       stage: 'guruinen-jaisketa',
       roots: [
-        n('timoa', [l('Tiroidearen behekaldean', undefined, { via: 'behera eta medialera', move: true, note: 'pubertarotik endekatu' })], { note: '3. poltsa' }),
+        n('timoa', [l('Aurreko mediastinoa', undefined, { via: 'behera eta medialera', move: true })], { note: '3. poltsa' }),
         n('beheko-paratiroidea', [l('Tiroidearen atzean, behean', undefined, { via: 'timoak eramanda', move: true })], { note: '3. poltsa' }),
         n('goiko-paratiroidea', [l('Tiroidearen atzean, goian', undefined, { via: 'gutxi jaitsi', move: true })], { note: '4. poltsa' }),
       ],
@@ -200,27 +244,28 @@ export const SCHEMES_18: MigrationTopic = {
     {
       id: 'mihiaren-jatorria-18',
       title: 'Mihia: hiru jatorri, bakoitza bere nerbioekin',
-      lead: 'Gorputza I. arkutik, sustraia II., III. eta IV.aren zati batetik, muskuluak somitetatik.',
+      lead: 'I. arkuak aurreko zatia osatzen du. III. eta IV. arkuak atzeko aldeari lotzen zaizkio, eta somita okzipitalek muskulu gehienak ematen dituzte.',
       stage: 'mihiaren-inerbazioa',
       roots: [
         n('lehen-arkua', [
           l('Bi goragune lateralak + tuberkulu bakoitia', [
             l('Mihiaren gorputza', [
-              n('barail-nerbioa', undefined, { note: 'sentsibilitate orokorra' }),
-              n('aurpegi-nerbioa', undefined, { note: 'dastamena' }),
+              n('barail-nerbioa', undefined, { via: 'sentsibilitate orokorra · V3' }),
+              n('aurpegi-nerbioa', undefined, { via: 'dastamena · tinpanoko korda' }),
             ], { via: 'fusionatu', note: 'aurreko bi herenak' }),
-          ]),
+          ], { via: 'mihi-hasikinak hazi' }),
         ]),
-        l('II., III. eta IV.aren zati bat', [
-          l('Kupula / kopula', [
-            l('Mihiaren sustraia', [
-              n('glosofaringeoa', undefined, { note: 'aurrealdea: dastamena eta orokorra' }),
-              n('bagoa', undefined, { note: 'atzealdea: dastamena eta orokorra' }),
-            ], { note: 'atzeko herena' }),
-          ]),
+        n('bigarren-arkua', [
+          l('Kopula', undefined, { via: 'III. arkuak gainetik estali', gone: true }),
+        ]),
+        n('hirugarren-arkua', [
+          l('Mihiaren sustraia', [n('glosofaringeoa', undefined, { via: 'sentsibilitatea eta dastamena' })], { via: 'atzeko herena osatu' }),
+        ]),
+        n('laugarren-arkua', [
+          n('epiglotisa', [n('bagoa', undefined, { via: 'goiko laringe-adarrak inerbatu' })], { via: 'goragune hipobrankialetik' }),
         ]),
         l('Somita okzipitalak', [
-          l('Muskulu intrintsekoak', [n('hipoglosoa', undefined, { note: 'XII · motorra' })], { via: 'mioblastoak migratu', move: true }),
+          l('Mihiaren muskulu gehienak', [n('hipoglosoa', undefined, { via: 'inerbazio motorra · XII' })], { via: 'mioblastoak migratu', move: true, note: 'palatoglosoa: X' }),
         ], { note: '3 bikote' }),
       ],
     },
@@ -231,11 +276,13 @@ export const SCHEMES_18: MigrationTopic = {
       stage: 'tiroidea-jaisketa',
       roots: [
         n('faringe-hestea', [
-          n('hodi-tiroglosoa', [
-            n('tiroide-guruina', undefined, { via: 'hioidea pasatu', move: true, note: 'krikoidearen mailan · 7. astea' }),
-            l('Endekatu', undefined, { gone: true }),
-            n('zulo-itsua', undefined, { note: 'aztarna, ildo terminalaren erpinean' }),
-          ], { via: 'zoruan ebaginatu', note: '4. astea' }),
+          l('Tiroide-hasikina', [
+            n('tiroide-guruina', undefined, { via: 'hioidea gainditu eta jaitsi', move: true, note: '7. astean, krikoidearen parean' }),
+            n('hodi-tiroglosoa', [
+              l('Hodia desagertu', undefined, { via: 'jaitsieraren ondoren itxi', gone: true }),
+              n('zulo-itsua', undefined, { via: 'mihiaren gainean aztarna utzi' }),
+            ], { via: 'mihiarekiko lotura iragankorra' }),
+          ], { via: 'zoruan endodermoa ebaginatu', note: '4. astea' }),
         ]),
       ],
     },
@@ -247,21 +294,26 @@ export const SCHEMES_18: MigrationTopic = {
       roots: [
         n('goragune-frontonasala', [
           n('sudur-plakoda', [
-            n('sudur-hobitxoa', undefined, { note: 'ertzen erdian' }),
+            n('sudur-hobitxoa', undefined, { via: 'plakoda hondoratu' }),
             l('Ertz medialak', [
-              l('Sudurraren erdiko atala'),
-              l('Goiko ezpainaren erdiko atala'),
-              l('Maxilar arteko segmentua', [l('Hasierako aho sabaia', undefined, { note: '4 ebakortzak · ebakortz zuloa' })]),
-            ], { via: 'fusionatu', note: '10. astea' }),
-            l('Ertz lateralak', [l('Sudur hegalak')]),
-          ], { note: '5. astea' }),
+              l('Sudurraren erdiko atala', undefined, { via: 'erdiko sudurra osatu' }),
+              l('Maxilar arteko segmentua', [
+                l('Goiko ezpainaren erdiko atala', undefined, { via: 'aurreko zatia osatu' }),
+                l('Hasierako aho sabaia', undefined, { via: 'barneko zatia osatu', note: 'ebakortz-zuloaren aurretik' }),
+              ], { via: 'bi ertz medialak batu' }),
+            ], { via: 'hobitxoaren erdialdean hazi' }),
+            l('Ertz lateralak', [l('Sudur hegalak', undefined, { via: 'alboak osatu' })], { via: 'hobitxoaren alboan hazi' }),
+          ], { via: 'ektodermoa loditu', note: '5. astea' }),
         ]),
         n('luzapen-maxilarra', [
-          l('Goiko ezpainaren alboak'),
-          l('Aho sabaiaren gandorrak'),
+          l('Goiko ezpainaren alboak', undefined, { via: 'ertz medialetara batu' }),
+          l('Aho sabaiaren gandorrak', undefined, { via: 'aho barrurantz hazi' }),
         ], { note: 'medialera eta aurrera' }),
+        n('barail-luzapena', [
+          l('Beheko ezpaina eta kokotsa', undefined, { via: 'bi luzapenak erdian batu' }),
+        ]),
         n('ildo-nasolagrimala', [
-          l('Hodi nasolagrimala', [l('Malko zakua', undefined, { note: 'begiaren erpin medialean' })]),
+          l('Hodi nasolagrimala', [l('Malko zakua', undefined, { via: 'goiko muturra zabaldu' })], { via: 'ektodermo-kordoia kanalizatu' }),
         ], { note: 'ertz lateralaren eta luzapen maxilarraren artean' }),
       ],
     },
@@ -274,24 +326,34 @@ export const SCHEMES_18: MigrationTopic = {
         l('Gandorrak mihiaren alboan', [
           l('Horizontalizatu, mihiaren gainean', [
             l('Erdian fusionatu', [
-              l('Aho sabai gogorra', [l('Sudur trenkada iritsi', undefined, { note: '10.–12. asteak' })], { via: '+ hasierako aho sabaia', note: 'errafea ebakortz zuloraino' }),
-            ], { note: '9. astea' }),
-          ], { note: '7. astea' }),
+              l('Bigarren mailako ahosabaia', [
+                l('Ahosabai gogorraren atzeko zatia', undefined, { via: 'aurreko zatia hezurtu' }),
+                l('Ahosabai biguna eta ubula', undefined, { via: 'atzeko zatia bigun iraun' }),
+              ], { via: 'lehen ahosabaiari eta trenkadari lotu' }),
+            ], { via: 'ertzak elkartu', note: '9. astea' }),
+          ], { via: 'mihitik gora biratu', note: '7. astea' }),
         ], { note: '6. astea · beherantz' }),
       ],
     },
     {
       id: 'hortzaren-jatorriak-18',
-      title: 'Hortza: lamina eta papila',
-      lead: 'Hortz laminatik esmaltea; beste egitura guztiak papilatik.',
+      title: 'Hortza: esmalte-organoa, papila eta folikulua',
       stage: 'hortzaren-geruzak',
       roots: [
-        l('Hortz lamina', [l('Ameloblastoak', [l('Esmaltea', undefined, { note: 'koroan bakarrik' })])], { note: 'epitelioa · ektodermoa · 8. astea' }),
+        l('Hortz lamina', [
+          l('Esmalte-organoa', [
+            l('Ameloblastoak', [l('Esmaltea', undefined, { via: 'koroaren gainazala jariatu' })], { via: 'barneko epitelioa bereizi' }),
+          ], { via: 'epitelio-kimua handitu' }),
+        ], { note: 'aho-ektodermoa' }),
         l('Hortz papila', [
-          l('Odontoblastoak', [l('Dentina')]),
-          l('Zementoblastoak', [l('Zementoa', undefined, { note: 'sustraiaren kanpoaldean' })]),
-          l('Hortz pulpa', undefined, { note: 'hazi ahala estutu' }),
-        ], { note: 'mesenkima · 10. astea' }),
+          l('Odontoblastoak', [l('Dentina', undefined, { via: 'dentinaren matrizea jariatu' })], { via: 'kanpoko zelulak bereizi' }),
+          l('Hortz-mamia', undefined, { via: 'erdiko mesenkimak iraun' }),
+        ], { note: 'ektomesenkima' }),
+        l('Hortz-folikulua', [
+          l('Zementoblastoak', [l('Zementoa', undefined, { via: 'sustraia estali' })], { via: 'sustrai inguruan bereizi' }),
+          l('Lotailu periodontala', undefined, { via: 'zuntzak antolatu' }),
+          l('Hezur albeolarra', undefined, { via: 'osteoblastoak bereizi' }),
+        ], { note: 'inguruko ektomesenkima' }),
       ],
     },
   ],

@@ -14,13 +14,16 @@ export const SCHEMES_15: MigrationTopic = {
     {
       id: 'gernu-hiru-azpisistema',
       title: 'Bitarteko mesodermoa → hiru azpisistema, kranealetik kaudalera',
-      lead: 'Bata bestearen atzetik garatu eta endekatzen dira; metanefrosa bakarrik da funtzionala.',
+      lead: 'Hiru azpisistemak kranealetik kaudalera agertzen dira. Metanefrosak behin betiko giltzurruna ematen du.',
       stage: 'sarrera',
       roots: [
         n('bitarteko-mesodermoa', [
-          n('pronefrosa', [l('Endekatu', undefined, { gone: true, note: '4. astea' })], { note: 'lepoa · 7–10 nefrotoma bikote' }),
-          n('mesonefrosa', [n('hodi-mesonefrikoa', [n('ureter-kimua', undefined, { via: 'mutur kaudaleko kimua' })]), l('Ia endekatu', undefined, { gone: true, note: '4. astearen amaiera' })], { note: 'toraxetik sakrora · kordoi nefrogenoak' }),
-          n('metanefrosa', [n('giltzurruna', undefined, { note: 'funtzionala den bakarra' })], { note: 'sakroa · 28–29. eguna' }),
+          n('pronefrosa', [l('Desagertu', undefined, { via: '4. astean endekatu', gone: true })], { via: 'lepoan eratu', note: '7–10 nefrotoma bikote' }),
+          n('mesonefrosa', [
+            n('hodi-mesonefrikoa', [n('ureter-kimua', undefined, { via: 'mutur kaudalak kimua eman' })], { via: 'hodixkak bertara hustu' }),
+            l('Ia desagertu', undefined, { via: 'hodixka gehienak endekatu', gone: true }),
+          ], { via: 'toraxetik lunbarrera eratu' }),
+          n('metanefrosa', [n('giltzurruna', undefined, { via: 'bi jatorrik elkar induzitu' })], { via: 'sakroan eratu', note: '5. astea' }),
         ]),
       ],
     },
@@ -31,10 +34,27 @@ export const SCHEMES_15: MigrationTopic = {
       stage: 'metanefrosa',
       roots: [
         n('ureter-kimua', [
-          n('ureterra'),
-          n('giltzurrun-pelbisa', [n('kaliza-nagusiak', [n('kaliza-txikiak', [n('hodi-biltzaileak', undefined, { note: '9.–10. astea' })], { note: '7. astea' })], { note: '2–3' })], { via: 'muturra zabaldu (metanefros hasikina)' }),
+          n('ureterra', undefined, { via: 'zurtoina luzatu' }),
+          n('giltzurrun-pelbisa', [
+            n('kaliza-nagusiak', [
+              n('kaliza-txikiak', [
+                n('hodi-biltzaileak', undefined, { via: 'adarkatzea jarraitu' }),
+              ], { via: 'hurrengo adarrak bateratu' }),
+            ], { via: 'lehen adarrak bateratu' }),
+          ], { via: 'muturra zabaldu' }),
         ]),
-        n('blastema-metanefrikoa', [n('kapsula-metanefrikoa', [n('xixku-metanefrikoa', [n('nefrona', undefined, { via: 'luzatu; hodi biltzailearekin fusionatu', note: 'gernua 14. astetik' })], { via: 'bakuolizatu' })], { via: 'hodi biltzaileen muturretan' })]),
+        n('blastema-metanefrikoa', [
+          n('kapsula-metanefrikoa', [
+            n('xixku-metanefrikoa', [
+              n('nefrona', [
+                n('kapsula-glomerularra', undefined, { via: 'glomerulua inguratu' }),
+                n('hodixka-bihurgunetsu-proximala', undefined, { via: 'hasierako hodia bihurritu' }),
+                n('henle-lakioa', undefined, { via: 'tarteko atala luzatu' }),
+                n('hodixka-bihurgunetsu-distala', undefined, { via: 'hodi biltzaileari lotu' }),
+              ], { via: 'hodia luzatu eta bereizi' }),
+            ], { via: 'barrunbea ireki' }),
+          ], { via: 'zelulak adar-muturretan metatu' }),
+        ]),
       ],
     },
     {
@@ -45,7 +65,7 @@ export const SCHEMES_15: MigrationTopic = {
       roots: [
         n('nefrotomak', [n('hodixka-pronefrikoak', [n('hodi-pronefrikoa', undefined, { via: 'alboko zabalguneak batu' })], { via: 'xixkua luzatu' })], { note: 'bitarteko mesodermoa' }),
         n('xixku-mesonefrikoa', [n('hodixka-mesonefrikoak', [n('kapsula-glomerularra', undefined, { via: 'glomerulua inguratu (fusiorik gabe)' })], { via: 'luzatu' })]),
-        n('glomeruluak', [n('korpuskulua', undefined, { via: '+ kapsula' })], { note: 'aortaren adarrak' }),
+        n('glomeruluak', [n('korpuskulua', undefined, { via: 'Bowman kapsularekin osatu' })]),
       ],
     },
     {
@@ -53,7 +73,7 @@ export const SCHEMES_15: MigrationTopic = {
       title: 'Giltzurrun gaineko guruina: kortexa eta muina',
       stage: 'giltzurrun-gaineko-guruinak',
       roots: [
-        n('gandor-urogenitala', [n('fetu-kortexa', [l('Desagertu', undefined, { gone: true, note: '1. urtea' })], { note: '6. astea' }), n('behin-betiko-kortexa', undefined, { via: 'fetu-kortexean geruza berria' })], { note: 'mesodermoa' }),
+        n('gandor-urogenitala', [n('fetu-kortexa', [l('Atzera egin', undefined, { via: 'jaio ondoren txikitu', gone: true })], { via: 'lehen zelula-uhina', note: '6. astea' }), n('behin-betiko-kortexa', undefined, { via: 'bigarren uhinak inguratu' })], { note: 'mesodermoa' }),
         n('gandor-neurala', [n('giltzurrun-gaineko-muina', undefined, { via: 'alde medialetik sartu', move: true })], { note: 'maila bereko gongoiletatik' }),
       ],
     },
@@ -66,9 +86,9 @@ export const SCHEMES_15: MigrationTopic = {
         n('kloaka', [
           n('uzki-hodia', undefined, { via: 'atzean', note: 'uzki mintza' }),
           n('sinu-urogenitala', [
-            n('gernu-maskuria', undefined, { note: 'goian, zabalena' }),
-            n('atal-pelbianoa', [n('uretra')], { note: 'estua' }),
-            n('behin-betiko-sinu-urogenitala', [n('baginaren-bestibulua', undefined, { note: 'emeak' }), n('zakil-uretra', undefined, { note: 'arrak' })], { note: 'zapala' }),
+            n('gernu-maskuria', undefined, { via: 'goiko atala zabaldu' }),
+            n('atal-pelbianoa', [n('uretra', undefined, { via: 'pelbiseko zatia eratu' })], { via: 'erdiko atala estu' }),
+            n('behin-betiko-sinu-urogenitala', [n('baginaren-bestibulua', undefined, { via: 'emeetan irekita geratu' }), n('zakil-uretra', undefined, { via: 'arretan ildoak itxi' })], { via: 'beheko atal falikoa' }),
           ], { via: 'aurrean' }),
         ], { note: 'kloaka mintza' }),
       ],
@@ -77,14 +97,14 @@ export const SCHEMES_15: MigrationTopic = {
       id: 'alantoidea-lotailua',
       title: 'Alantoidea → urakoa → erdiko zilbor-lotailua',
       stage: 'sinu-urogenitala',
-      roots: [n('alantoidea', [n('urakoa', [n('erdiko-zilbor-lotailua', undefined, { note: 'gernu maskuriaren erpinetik zilborrera' }), n('fistula-urakala', undefined, { via: 'ixten ez bada' })], { via: 'barrunbea galdu' })])],
+      roots: [n('alantoidea', [n('urakoa', [n('erdiko-zilbor-lotailua', undefined, { via: 'itxi eta zuntz bihurtu', note: 'maskuritik zilborrera' }), n('fistula-urakala', undefined, { via: 'irekita irauten badu' })], { via: 'maskuriari lotutako hondarra' })])],
     },
     {
       id: 'trigonoaren-jatorria',
       title: 'Ureterra gora, hodi mesonefrikoa behera: trigonoa',
       lead: 'Gernu maskuriaren epitelioa endodermikoa da, trigonoa izan ezik (mesodermikoa); gero endodermoz estaltzen da.',
       stage: 'gernu-maskuria',
-      roots: [n('hodi-mesonefrikoa', [n('ureterra', undefined, { via: 'askatu: gorago', move: true }), n('trigonoa', [l('Endodermoz estalia; aztarna geratzen da')], { via: 'atzeko horman erantsi' })])],
+      roots: [n('hodi-mesonefrikoa', [n('ureterra', undefined, { via: 'kimua bereizi; ahoa gorago', move: true }), n('trigonoa', [l('Epitelio endodermikoa', undefined, { via: 'gero gainazala estali' })], { via: 'atzeko horman erantsi' })])],
     },
     {
       id: 'uretraren-muturra',
@@ -109,7 +129,13 @@ export const SCHEMES_16: MigrationTopic = {
       title: 'Hasierako hozi zelulak: bitelo zakutik gonadara',
       lead: '3. astean bereizi; alantoidea gida; 6. asterako gonada gandorrean.',
       stage: 'hozi-zelulak',
-      roots: [n('bitelo-zaku-sekundarioa', [n('hasierako-hozi-zelulak', [l('Alantoidea → atzeko hestearen pareta → mesoa', [n('gonada-gandorra', undefined, { note: '6. astea' })], { move: true })], { note: 'endodermoa, alantoidetik hurbil · 3. astea' })])],
+      roots: [n('hasierako-hozi-zelulak', [
+        n('bitelo-zaku-sekundarioa', [
+          l('Atzeko hestearen pareta', [
+            l('Mesenterio dortsala', [n('gonada-gandorra', undefined, { via: '6. asterako iritsi', move: true })], { via: 'mesotik zeharkatu', move: true }),
+          ], { via: 'atzeko hesterantz migratu', move: true }),
+        ], { via: 'aldi baterako kokatu', note: 'alantoidetik hurbil' }),
+      ], { note: 'epiblastoan zehazten dira' })],
     },
     {
       id: 'gonada-bi-bide',
@@ -118,10 +144,13 @@ export const SCHEMES_16: MigrationTopic = {
       stage: 'desberdindu-gabea',
       roots: [
         n('gonadaren-epitelioa', [n('hasierako-sexu-kordoiak', [
-          n('muin-kordoiak', [n('barrabil-sarea', undefined, { note: 'hiloan' }), n('barrabil-kordoiak', [n('hodixka-seminiferoak', undefined, { via: 'pubertaroan hustu' })], { note: 'ferra forma' })], { via: 'arrak: epiteliotik askatu' }),
-          n('obarioaren-muina', undefined, { via: 'emeak: endekatu' }),
-        ])]),
-        n('obarioaren-kortexa', [n('kortex-kordoiak', [n('obozito-primarioak', undefined, { via: '4. hilabetean askatu + folikulu zelulak' })], { note: '2. belaunaldia' })], { note: 'emeak: epitelioa loditu' }),
+          n('muin-kordoiak', [n('barrabil-sarea', undefined, { via: 'hiloan elkartu' }), n('barrabil-kordoiak', [n('hodixka-seminiferoak', undefined, { via: 'pubertaroan lumena ireki' })], { via: 'ferra forman antolatu' })], { via: 'arretan iraun' }),
+          n('obarioaren-muina', undefined, { via: 'emeetan kordoiak endekatu' }),
+        ], { via: 'epitelioa mesenkiman sartu' })]),
+        n('obarioaren-kortexa', [n('kortex-kordoiak', [
+          l('Folikulu primordialak', undefined, { via: 'zelulek obozitoa inguratu' }),
+        ], { via: 'bigarren belaunaldia eratu' })], { note: 'emeak: epitelioa loditu' }),
+        n('hasierako-hozi-zelulak', [n('obozito-primarioak', undefined, { via: 'oogonioak meiosian sartu' })]),
       ],
     },
     {
@@ -132,7 +161,12 @@ export const SCHEMES_16: MigrationTopic = {
       roots: [
         n('hodixka-epigenitalak', [n('hodixka-eferenteak', undefined, { via: 'arrak: rete testisaren bidez' }), n('epooforoa', undefined, { via: 'emeak: aztarna' })]),
         n('hodixka-paragenitalak', [n('paradidimoa', undefined, { via: 'arrak: aztarna' }), n('paraooforoa', undefined, { via: 'emeak: aztarna' })]),
-        n('hodi-mesonefrikoa', [n('epididimoa'), n('hodi-deferentea', [n('semen-xixkua', undefined, { via: 'kimua' }), n('hodi-isurlea', undefined, { via: '+ semen xixkua' })])], { note: 'arrak' }),
+        n('hodi-mesonefrikoa', [
+          n('epididimoa', undefined, { via: 'atal kraneala kiribildu' }),
+          n('hodi-deferentea', undefined, { via: 'erdiko zatia luzatu' }),
+          n('semen-xixkua', undefined, { via: 'atal kaudalean kimatu' }),
+          n('hodi-isurlea', undefined, { via: 'kimuaz azpiko zatia iraun' }),
+        ], { note: 'arrak · testosteronaren eraginez' }),
       ],
     },
     {
@@ -143,7 +177,7 @@ export const SCHEMES_16: MigrationTopic = {
       roots: [
         n('hodi-paramesonefrikoa', [
           n('falopioren-tronpak', undefined, { via: 'emeak: atal kraneala', note: 'goian irekita' }),
-          n('utero-hodia', [n('uteroa', undefined, { note: 'endometrioa' }), n('baginaren-fornixa', undefined, { note: 'goiko herena' })], { via: 'emeak: erdian fusionatu' }),
+          n('utero-hodia', [n('uteroa', undefined, { via: 'paretak eta barrunbea garatu' }), n('baginaren-fornixa', undefined, { via: 'baginaren goiko zatia' })], { via: 'emeetan atal kaudalak batu' }),
           n('barrabil-apendizea', undefined, { via: 'arrak: aztarna' }),
           n('prostataren-utrikulua', undefined, { via: 'arrak: aztarna' }),
         ]),
@@ -154,8 +188,8 @@ export const SCHEMES_16: MigrationTopic = {
       title: 'Bagina: bi jatorri',
       stage: 'bagina',
       roots: [
-        n('utero-hodia', [n('baginaren-fornixa', undefined, { note: 'goiko herena · mesodermikoa' })]),
-        n('sinu-urogenitala', [n('bulbo-sinubaginalak', [n('plaka-baginala', [n('bagina', undefined, { via: 'lumena (5. hilabetea)', note: 'beheko bi herenak · endodermikoa' })])])]),
+        n('utero-hodia', [n('baginaren-fornixa', undefined, { via: 'goiko zatia eratu', note: 'mesodermikoa' })]),
+        n('sinu-urogenitala', [n('bulbo-sinubaginalak', [n('plaka-baginala', [n('bagina', undefined, { via: 'lumena ireki', note: 'beheko zatia · endodermikoa' })], { via: 'bulboak ugaldu eta elkartu' })], { via: 'bi kimu hazi' })]),
       ],
     },
     {
@@ -165,7 +199,7 @@ export const SCHEMES_16: MigrationTopic = {
       stage: 'jaisketa',
       roots: [
         n('gubernakulua', [
-          l('Arrak: laburtu eta desagertu', undefined, { gone: true }),
+          l('Eskrotoko lotailua', undefined, { via: 'arretan hondarra geratu' }),
           n('lotailu-utero-obarikoa', undefined, { via: 'emeak' }),
           n('uteroaren-lotailu-biribila', undefined, { via: 'emeak' }),
         ]),
@@ -178,8 +212,8 @@ export const SCHEMES_16: MigrationTopic = {
       stage: 'kanpo-genitalak',
       roots: [
         n('tuberkulu-genitala', [n('klitoria', undefined, { via: 'emeak' }), n('faloa', undefined, { via: 'arrak' })]),
-        n('kloaka-tolespenak', [n('tolespen-urogenitalak', [n('ezpain-txikiak', undefined, { via: 'emeak' }), n('zakil-uretra', undefined, { via: 'arrak: ildoa itxi' })])]),
-        n('goragune-genitalak', [n('tolespen-ezpaineskrotalak', [n('ezpain-nagusiak', undefined, { via: 'emeak' }), n('eskrotoa', undefined, { via: 'arrak' })])]),
+        n('kloaka-tolespenak', [n('tolespen-urogenitalak', [n('ezpain-txikiak', undefined, { via: 'emeetan bereizita iraun' }), n('zakil-uretra', undefined, { via: 'arretan ildoa itxi' })], { via: 'aurreko zatia bereizi' })]),
+        n('goragune-genitalak', [n('tolespen-ezpaineskrotalak', [n('ezpain-nagusiak', undefined, { via: 'emeetan bereizita iraun' }), n('eskrotoa', undefined, { via: 'arretan erdian batu' })], { via: 'alboetan handitu' })]),
         n('ildo-urogenitala', [n('baginaren-bestibulua', undefined, { via: 'emeak' })]),
       ],
     },

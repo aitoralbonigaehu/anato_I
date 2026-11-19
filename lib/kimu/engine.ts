@@ -5,7 +5,7 @@ import { evidenceOf, fairHit, intentOf, numbersIn, passagesOfSentences, searchNo
 import { boldName, followupsFor, fromSentence, lineageOf, mentions, notesTarget, offlineReply, SAYS_WHERE, sourceOf, targetsOf, type Evidence } from './offline';
 import { pickPractice, wantsPractice } from './practice';
 import { CONFIDENT, confident, describeHere, factsFrom, GO, isFormationQuestion, nearestFrom, search, toTarget, vocabulary, wantsPlace, withFrom, type Hit } from './search';
-import { askingWord, detectLang, keyWords, match, queryTokens, spell, tokens, topicIn, withoutTopic, type Lang } from './text';
+import { askingWord, detectLang, fold, keyWords, match, queryTokens, spell, tokens, topicIn, withoutTopic, type Lang } from './text';
 import type { KimuAsk, KimuHere, KimuModelReply, KimuReply, KimuTurn } from './types';
 
 /** "Explain this", "zer da hau?": the question is about what is on screen, not about a named thing. */
@@ -124,6 +124,8 @@ export function grounded(reply: string, ask: KimuAsk): boolean {
 }
 
 export interface AskOptions {
+  /** Answer from the local course index without contacting the optional model. */
+  offlineOnly?: boolean;
   /** The answer history (for practice rounds: what is due comes first). */
   answers?: Answers;
   /** How long to wait for the model before answering from the notes alone. */
@@ -152,6 +154,18 @@ export async function askKimu(question: string, history: KimuTurn[], here: KimuH
   const full = retrievalQuestion(question, history, here);
   const rq = withoutTopic(full);
   let places = step ? [] : search(full, 3, week);
+  // "Laringe-zuloa 17. gaian": a structure the named topic shows is found by its name alone ("17. gaian" is no
+  // part of it), even when another topic defines it first (laringe-zuloa, topic 18). One the topic does not
+  // show stays not found there ("mediastinoa 8. gaian").
+  if (!step && asked && rq.trim()) {
+    // By id, or by name: topic 18's "Aorta dortsala" is topic 10's "Aorta dortsalak" in the search.
+    const theirs = weeks.find((w) => w.week === asked)?.structures ?? [];
+    const shown = new Set(theirs.map((st) => st.id));
+    const names = new Set(theirs.flatMap((st) => [st.name, ...(st.aka ?? [])]).map((n) => fold(n)));
+    const shows = (id: string) => shown.has(id) || [structures.get(id)?.name ?? '', ...(structures.get(id)?.aka ?? [])].some((n) => !!n && names.has(fold(n)));
+    const mine = search(rq, 8, week).find((h) => h.doc.kind === 'structure' && !!h.doc.structure && shows(h.doc.structure) && confident(h));
+    if (mine && !places.some((h) => h.doc.structure === mine.doc.structure)) places = [mine, ...places].slice(0, 3);
+  }
   // The structure the question names: the best place that is one (not always the first place found).
   // A tie goes to the structure the question calls by its own name ("birika arteria"), not to one it names
   // only through an alias ("Birika enborraren sustraiak", aka birika arteria).
@@ -203,7 +217,7 @@ export async function askKimu(question: string, history: KimuTurn[], here: KimuH
   const offline = located(step ? step.reply : offlineReply(ev), here, ev.going ? lang : null);
 
   // Nothing the notes really answer: the model would have nothing to stand on, so it is not asked.
-  if (!step && !strongHit(notes[0]) && !(places[0] && confident(places[0]))) return offline;
+  if (opts.offlineOnly || (!step && !strongHit(notes[0]) && !(places[0] && confident(places[0])))) return offline;
 
   const hereInfo = here ? describeHere(here) : null;
   const ask: KimuAsk = { question, history, notes: notes.map((h) => evidenceOf(h)), places: places.slice(0, 2).map((h) => factsFrom(h, here)), here: hereInfo, lang };

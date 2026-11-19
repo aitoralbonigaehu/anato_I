@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createRenderCircuit, GPU_FAILURE_KEY, renderRatio, RENDER_FRAME_MS, RENDER_PIXEL_BUDGET } from '@/lib/three-d/render-policy';
+import { createRenderCircuit, GPU_FAILURE_KEY, GPU_LOSSES_TO_BLOCK, renderRatio, RENDER_FRAME_MS, RENDER_PIXEL_BUDGET } from '@/lib/three-d/render-policy';
 import { sameGLFrame } from '@/components/kit/three/frame-state';
 import { geometryOf, updateGeometry } from '@/components/kit/three/geometry';
 import type { GLFrame } from '@/components/kit/three/gl';
@@ -19,19 +19,34 @@ describe('shared rendering limits and failure circuit', () => {
     expect(RENDER_FRAME_MS).toBeCloseTo(1000 / 30);
   });
 
-  it('notifies once and persists failure across renderer/module reloads', () => {
+  it('rebuilds after one lost context; repeated losses block the tab across reloads', () => {
     const values = new Map<string, string>();
     const storage = { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value); } };
     const circuit = createRenderCircuit(storage);
     let calls = 0;
     const unsubscribe = circuit.subscribe(() => calls++);
     expect(circuit.blocked).toBe(false);
-    circuit.trip();
-    circuit.trip();
+    circuit.lost();
     expect(calls).toBe(1);
-    expect(values.get(GPU_FAILURE_KEY)).toBe('1');
+    expect(circuit.blocked).toBe(false);
+    expect(createRenderCircuit(storage).blocked).toBe(false);
+    for (let i = 1; i < GPU_LOSSES_TO_BLOCK; i++) circuit.lost();
+    expect(circuit.blocked).toBe(true);
+    expect(values.get(GPU_FAILURE_KEY)).toBe(String(GPU_LOSSES_TO_BLOCK));
     expect(createRenderCircuit(storage).blocked).toBe(true);
+    circuit.lost();
+    expect(calls).toBe(GPU_LOSSES_TO_BLOCK);
     unsubscribe();
+  });
+
+  it('a context that cannot start blocks this page only', () => {
+    const values = new Map<string, string>();
+    const storage = { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value); } };
+    const circuit = createRenderCircuit(storage);
+    circuit.unavailable();
+    circuit.unavailable();
+    expect(circuit.blocked).toBe(true);
+    expect(createRenderCircuit(storage).blocked).toBe(false);
   });
 
   it('still protects the current document if storage is denied', () => {
@@ -39,7 +54,7 @@ describe('shared rendering limits and failure circuit', () => {
     let calls = 0;
     const unsubscribe = circuit.subscribe(() => calls++);
     unsubscribe();
-    expect(() => circuit.trip()).not.toThrow();
+    for (let i = 0; i < GPU_LOSSES_TO_BLOCK; i++) expect(() => circuit.lost()).not.toThrow();
     expect(circuit.blocked).toBe(true);
     expect(calls).toBe(0);
   });

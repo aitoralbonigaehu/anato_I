@@ -6,9 +6,9 @@ import { useEffect, useEffectEvent, useMemo, useRef, useState, useSyncExternalSt
 import { Defs } from '@/components/kit/Defs';
 import { SceneContext, type SceneContextValue } from '@/components/kit/context';
 import { SceneView } from '@/components/kit';
-import { firstSentence } from '@/content/generate';
+import { firstSentence } from '@/content/sentence';
 import { KEY_PLATES, PLATES, PLATE_GROUPS, platesOf, type Plate } from '@/content/plates';
-import { imageId } from '@/content/pool';
+import { imageId } from '@/content/pool-keys';
 import { isSpace, nameOf, partsOf, structures, weeks } from '@/content/registry';
 import { recordAnswer } from './answers';
 import { LandFoot, LandNav } from './LandNav';

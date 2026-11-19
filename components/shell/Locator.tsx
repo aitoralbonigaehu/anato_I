@@ -46,6 +46,26 @@ function SchemeGlyph() {
   );
 }
 
+/** A 3D model (a view called "3d") is not a drawn summary either: a cube, its near edges lit. */
+function ModelGlyph() {
+  const Y = '#fbbf24';
+  const D = 'rgba(232,238,252,0.45)';
+  return (
+    <svg viewBox="0 0 120 88" className="loc-svg" aria-hidden>
+      <path d="M60 14 92 30v32L60 78 28 62V30z" fill="rgba(232,238,252,0.05)" stroke={D} strokeWidth={2.5} strokeLinejoin="round" />
+      <path d="M28 30 60 46 92 30M60 46v32" fill="none" stroke={Y} strokeWidth={3} strokeLinejoin="round" strokeLinecap="round" />
+      <path d="M40 20c-9 4-15 9-17 15M80 72c9-3 15-8 18-14" fill="none" stroke={D} strokeWidth={2} strokeLinecap="round" />
+      <path d="m95 55 3 3 3-5M20 36l3-2 2 4" fill="none" stroke={D} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/** What the map says on a 3D view, in place of «Eskema». */
+export const MODEL_TEXT = {
+  name: '3D eredua',
+  text: 'Ez da ebakia: egiturak hiru dimentsiotan, osorik. Arrastatu biratzeko; ertzetako etiketek (kraneala, dortsala…) norabidea ematen dute, eta biratu ahala aldatzen dira.',
+};
+
 const levelName = (l: number) => (l < 0.3 ? 'buru-aldean' : l > 0.7 ? 'buztan-aldean' : 'erdiko mailan (enborra)');
 
 /** A transverse cut elsewhere in the topic: a stop for the dragged plane. */
@@ -115,7 +135,9 @@ export function Locator({
   // 'auto': opened by itself the first time a plane is met; 'user': opened from the button.
   const [open, setOpen] = useState<false | 'auto' | 'user'>(false);
   const flip = flipOf(orientation);
-  const info = PLANE_TEXT[plane];
+  // Topics 10+ give their 3D views the plane «eskema»: they are models, not drawn summaries.
+  const model = plane === 'eskema' && viewKey.endsWith('/3d');
+  const info = model ? MODEL_TEXT : PLANE_TEXT[plane];
   const shape = shapeFor(week, day, plane);
 
   // The view before this one, for a moment: its plane dashed on the same body, and a badge.
@@ -229,7 +251,9 @@ export function Locator({
         }}
         onPointerCancel={() => setDrag(null)}
       >
-        {plane === 'eskema' ? (
+        {model ? (
+          <ModelGlyph />
+        ) : plane === 'eskema' ? (
           <SchemeGlyph />
         ) : (
           <Specimen
@@ -266,9 +290,7 @@ export function Locator({
       </div>
       {shown && (
         <div className="loc-card" role="dialog" aria-label="Non nago?">
-          <div className="loc-big">
-            <Specimen plane={plane} week={week} day={day} level={level} flip={flip} big />
-          </div>
+          <div className="loc-big">{model ? <ModelGlyph /> : <Specimen plane={plane} week={week} day={day} level={level} flip={flip} big />}</div>
           <div>
             <p className="kicker">Non nago?</p>
             <h4>{info.name}</h4>
@@ -278,7 +300,7 @@ export function Locator({
               Irudian: {SHAPE_TEXT[shape]}. {where} {leveled ? null : note}
             </p>
             {line && <p className="loc-dirs">Arrastatu plano horia gora edo behera: gaiaren beste zeharkako mozketetara salto egiten du (marka txikiak).</p>}
-            <p className="loc-dirs">Horia = orain ikusten duzun planoa · Kr = kraneala (burua) · Ka = kaudala (buztana) · Dor = dortsala (bizkarra) · Ben = bentrala (sabela)</p>
+            {!model && <p className="loc-dirs">Horia = orain ikusten duzun planoa · Kr = kraneala (burua) · Ka = kaudala (buztana) · Dor = dortsala (bizkarra) · Ben = bentrala (sabela)</p>}
             <div className="loc-foot">
               <Link className="link-quiet" href="/astea/1?etapa=terminoak">
                 Planoak eta ardatzak (1. gaia) →

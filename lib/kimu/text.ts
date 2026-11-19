@@ -184,6 +184,9 @@ export const tokens = (text: string): string[] =>
 const ASKING = new Set('egitura egiturak egiturek estructura estructuras structure structures viene vienen proviene procede deriva convierte origina come comes become becomes nondik datoz dator zertan bihurtzen bihurtu eratzen zergatik jaisten gertatzen azaltzen deitzen esaten aurkitzen kokatzen habiratzen agertzen ixten itxi'.split(' ').map(fold));
 const ASKING_KEEP = new Set(['jaisten', 'habiratzen', 'ixten', 'itxi', 'agertzen', 'kokatzen'].map(fold));
 
+/** A word the asking query drops ("egiturak"): a heading that has it is not missing it when it is not asked. */
+export const droppedAsking = (w: string) => ASKING.has(fold(w)) && !ASKING_KEEP.has(fold(w));
+
 /** A word that asks (when, how, appears, forms…), not one that says what about. */
 export const askingWord = (w: string) => ASKING.has(fold(w)) || ASKING_KEEP.has(fold(w)) || /^(noiz|nola|zer|non|zein|cuando|como|when|how|what)$/.test(fold(w));
 
@@ -271,11 +274,14 @@ export function stem(w: string): string {
  */
 const TOPIC = /(?:\b(\d{1,2})\s*\.?\s*(?:gai\w*|tema\w*|topic)\b|\b(?:gai\w*|tema|topic)\s*\.?\s*(\d{1,2})\b)/gi;
 
-/** The topic number (1–11) a question names, or null. */
+/** The last topic of the atlas (tests/kimu.test.ts pins it to the registry, so a new topic cannot be missed). */
+export const LAST_TOPIC = 19;
+
+/** The topic number (1–LAST_TOPIC) a question names, or null. */
 export function topicIn(question: string): number | null {
   for (const m of question.matchAll(TOPIC)) {
     const n = Number(m[1] ?? m[2]);
-    if (n >= 1 && n <= 11) return n;
+    if (n >= 1 && n <= LAST_TOPIC) return n;
   }
   return null;
 }

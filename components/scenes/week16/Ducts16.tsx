@@ -77,11 +77,11 @@ const spec7: StageSpec<DuctPose, DuctOpts> = {
       glide: 0.06,
       dim: ['barrabila', 'hodi-paramesonefrikoa', 'hodi-mesonefrikoa'],
       names: [
-        { id: 'barrabila', sub: '8. astea: testosterona + AMH' },
+        { id: 'barrabila', sub: 'Leydig: testosterona · Sertoli: AMH' },
         { id: 'hodi-paramesonefrikoa', sub: 'endekatzen', from: 0.3 },
         { id: 'hodi-mesonefrikoa', sub: 'hodi genitalak', from: 0.5 },
       ],
-      note: '8. astean: Leydig zelulek testosterona, Sertoli zelulek hormona antimüllerianoa. Paramesonefrikoak endekatu; mesonefrikotik hodi genitalak',
+      note: 'Sertoliren hormona antimüllerianoak paramesonefrikoak endekatzen ditu; mesonefrikotik hodi genitalak. Hodixkak bi taldetan: goian epigenitalak, behean paragenitalak',
     },
     {
       to: { efferent: 1 },
@@ -90,8 +90,8 @@ const spec7: StageSpec<DuctPose, DuctOpts> = {
       glide: 0.05,
       dim: ['hodixka-eferenteak', 'barrabila'],
       half: 1,
-      names: [{ id: 'hodixka-eferenteak', text: 'Hodixka epigenitalak → eferenteak', sub: 'barrabil parean; rete testisaren bidez', from: 0.2 }],
-      note: 'Barrabil pareko hodixka mesonefrikoak (epigenitalak) barrabil sarearen bidez barrabil kordoiekin lotu: hodixka eferenteak',
+      names: [{ id: 'hodixka-eferenteak', text: 'Hodixka epigenitalak → eferenteak', sub: 'barrabilaren goikaldean; sarea ↔ deferentea', from: 0.2 }],
+      note: 'Barrabilaren goikaldeko hodixka mesonefrikoak (epigenitalak): hodixka eferenteak, barrabil sarearen eta hodi deferentearen arteko komunikazioa',
     },
     {
       cam: LEFTSIDE(6, [1.5, 0.45, 0], 30, 8),
@@ -117,7 +117,7 @@ const spec7: StageSpec<DuctPose, DuctOpts> = {
       glide: 0.06,
       dim: ['hodi-deferentea', 'uretra-prostatikoa'],
       names: [
-        { id: 'hodi-deferentea', sub: 'luzea eta zuzena → uretra prostatikoa' },
+        { id: 'hodi-deferentea', sub: 'luzea, leuna eta zuzena → uretra prostatikoa' },
         { id: 'uretra-prostatikoa', small: true, from: 0.4 },
       ],
       note: 'Epididimoaren jarraian hodi deferentea, luzea eta zuzena, hodi mesonefrikotik: prostata barneko uretran amaitzen da',
@@ -129,11 +129,11 @@ const spec7: StageSpec<DuctPose, DuctOpts> = {
       glide: 0.06,
       dim: ['semen-xixkua', 'hodi-isurlea', 'prostata', 'uretra-prostatikoa'],
       names: [
-        { id: 'semen-xixkua', sub: 'deferentearen kimua · bikoitza', from: 0.15 },
+        { id: 'semen-xixkua', sub: 'deferentearen kimua · likido seminala aberastu', from: 0.15 },
         { id: 'hodi-isurlea', sub: 'deferentea + xixkua', from: 0.4 },
         { id: 'uretra-prostatikoa', small: true, from: 0.6 },
       ],
-      note: 'Prostatara iritsi aurretik beste kimu bat: semen xixkua (bikoitza). Deferentea + xixkua = hodi isurlea, uretra prostatikoan irekita',
+      note: 'Prostatatik oso hurbil beste kimu bat: semen xixkua (bikoitza), likido seminala aberasten du. Deferentea + xixkua = hodi isurlea, uretra prostatikoan irekita',
     },
   ],
 };
@@ -502,9 +502,9 @@ const spec16: StageSpec<DuctPose, DuctOpts> = {
       dim: ['gubernakulua', 'obarioa'],
       names: [
         { id: 'obarioa', sub: 'abdomenetik pelbisera (bide motzagoa)' },
-        { id: 'gubernakulua', sub: 'iztai hoditik → ezpain handien larruazala', from: 0.5 },
+        { id: 'gubernakulua', sub: 'pelbis hezurraren aurretik → ezpain handien larruazala', from: 0.5 },
       ],
-      note: 'Obulutegiek ere abdomenetik pelbisera. Gubernakulua iztai hoditik atera, pelbis hezurraren aurretik, ezpain handien larruazaleraino; ez da horrenbeste txikitzen',
+      note: 'Obulutegiek ere abdomenetik pelbisera; iztai hodia hasi eta ia desagertu. Gubernakulua pelbis hezurraren aurretik ezpain handien larruazaleraino; ez da horrenbeste txikitzen',
     },
     {
       to: { gub: 0, ligaments: 1 },

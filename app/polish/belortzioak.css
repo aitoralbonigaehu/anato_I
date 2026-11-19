@@ -1,1 +1,16 @@
 /* Interface polish: belortzioak. Loaded after every other global sheet. */
+
+/* The plate's two switches (cover the names, numbers on the figure) read as keys, not as loose text:
+   a quiet outline, and a filled tint while on. */
+.plates .lab-actions .btn.ghost[aria-pressed] {
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+}
+.plates .lab-actions .btn.ghost[aria-pressed]:hover {
+  border-color: var(--line-3);
+}
+.plates .lab-actions .btn.ghost[aria-pressed='true'] {
+  border-color: color-mix(in srgb, var(--signal) 45%, transparent);
+  background: var(--signal-soft);
+  color: var(--text);
+}

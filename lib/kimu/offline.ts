@@ -1,5 +1,5 @@
 import { firstSeenOf } from '@/content/chronology';
-import { firstSentence } from '@/content/generate';
+import { firstSentence } from '@/content/sentence';
 import { ancestry, childrenOf } from '@/content/lineage';
 import { structures, weeks } from '@/content/registry';
 import type { StructureDef } from '@/lib/sim/types';

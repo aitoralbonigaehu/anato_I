@@ -49,12 +49,19 @@ const GROUPS: Group[] = [
   [16, 'gonadak', 'Hozi zelulak eta gonaden desberdintzapena', ['hozi-zelulen-bidaia', 'gonada-bi-bide']],
   [16, 'hodiak', 'Wolff eta Müller hodiak: arren eta emeen hodi genitalak', ['wolff-eratorriak', 'muller-eratorriak', 'baginaren-bi-jatorri']],
   [16, 'kanpoa', 'Jaisketa eta kanpo genitalak', ['gubernakulua-jaisketa', 'kanpo-genitalen-eratorriak']],
+  [17, 'arkuaren-osagaiak', 'Faringe-arkua: estalkiak, mesenkima eta egiturak', ['arkuaren-osagaiak-17']],
+  [17, 'azalekoak', 'I. eta II. arkuak: Meckel, Reichert, V3 eta VII', ['lehen-arkua-eratorriak-17', 'bigarren-arkua-eratorriak-17']],
+  [17, 'hioidea', 'III. arkua: hioidearen beheko zatia eta IX', ['hirugarren-arkua-eratorriak-17']],
+  [17, 'sakonak', 'IV. eta VI. arkuak: laringea eta X', ['laugarren-seigarren-eratorriak-17']],
   [17, 'kraneoa', 'Kraneoa: jatorriak eta hezurtze motak', ['kraneoaren-jatorriak-17', 'kraneo-hezurtzeak-17']],
-  [17, 'azalekoak', 'Arkuaren osagaiak eta I.–II. arkuak', ['arkuaren-osagaiak-17', 'lehen-arkua-eratorriak-17', 'bigarren-arkua-eratorriak-17']],
-  [17, 'sakonak', 'III., IV. eta VI. arkuak: hioidea eta laringea', ['hirugarren-arkua-eratorriak-17', 'laugarren-seigarren-eratorriak-17']],
+  [17, 'kondrokraneoa', 'Kondrokraneoa: kartilagoetatik oinaldeko hezurretara', ['kondrokraneoaren-eratorriak-17']],
   [18, 'poltsak', 'Poltsak, arraildurak eta guruinen jaisketa', ['poltsen-eratorriak-18', 'arrailduren-eratorriak-18', 'guruinen-jaisketa-18']],
   [18, 'mihia', 'Mihia eta tiroidea', ['mihiaren-jatorria-18', 'tiroidearen-bidea-18']],
   [18, 'aurpegia', 'Aurpegia, aho sabaia eta hortzak', ['aurpegiaren-osagaiak-18', 'aho-sabaiaren-asteak-18', 'hortzaren-jatorriak-18']],
+  [19, 'gandorra', 'Gandor neuralaren eratorriak', ['gandor-neuraleko-eratorriak-19']],
+  [19, 'ornomuina', 'Ornomuina: geruzak eta plakak', ['ornomuinaren-geruzak-19', 'ornomuinaren-plakak-19']],
+  [19, 'xixkuak', 'Garun-xixkuak eta haien eratorriak', ['garun-xixkuen-eratorriak-19']],
+  [19, 'bentrikuluak', 'Bentrikuluak eta likido zefalorrakideoa', ['garun-xixkuen-barrunbeak-19', 'likido-zefalorrakideoaren-bidea-19']],
 ];
 
 const clone = (node: MNode): MNode => ({ ...node, ...(node.kids ? { kids: node.kids.map(clone) } : {}) });

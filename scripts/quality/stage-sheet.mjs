@@ -66,7 +66,7 @@ const ctx = await browser.newContext({ viewport: { width: vw, height: vh } });
 await ctx.addInitScript(() => {
   // The renderer's harness hooks (coverage), and no mascot cheer over the first frame.
   window.__perf = {};
-  try { sessionStorage.setItem('enbrioatlas:kimu-animo', '1'); localStorage.setItem('enbrioatlas:ongietorri:v1', '1'); } catch { /* storage may be off */ }
+  try { sessionStorage.setItem('enbrioatlas:kimu-animo', '1'); localStorage.setItem('enbrioatlas:ongietorri:v1', '1'); localStorage.setItem('enbrioatlas:film:v2', '1'); } catch { /* storage may be off */ }
 });
 const page = await ctx.newPage();
 const errors = [];

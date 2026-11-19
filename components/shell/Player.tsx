@@ -1,6 +1,6 @@
 'use client';
 
-import { firstSentence } from '@/content/generate';
+import { firstSentence } from '@/content/sentence';
 import { useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Beat, MicroQuestion, StageDef, StructureDef, ViewGuide } from '@/lib/sim/types';
 import { ModelGuide } from './ModelGuide';
@@ -173,8 +173,16 @@ function Caption({
   // What is always shown beside the text: the fact to keep and the trap. The rest (the key idea, what to
   // recall, the step's structures, the longer detail) waits behind one «Gehiago» so the panel stays quiet.
   const hasMore = !!beat.key || recall.length > 0 || !!extra || !!beat.more;
+  // Closed, with no fact or trap to show: the side column would hold the «Gehiago» key alone behind
+  // its rule. The key then sits under the text, and the column opens with what it brings.
+  const sideNow = !!(beat.exam || beat.caution) || (open && (!!beat.key || recall.length > 0 || !!extra));
+  const moreBtn = hasMore && (
+    <button className="cap-more-btn" aria-expanded={open} onClick={() => setOpenKey(open ? '' : key)} title="Ulertzeko gakoa, gogoratzekoak, urratsaren egiturak eta xehetasunak">
+      {open ? 'Gutxiago' : 'Gehiago'} <span aria-hidden>{open ? '−' : '+'}</span>
+    </button>
+  );
   return (
-    <div className={`cap-text cap-v2${side ? ' has-side' : ''}`} key={key}>
+    <div className={`cap-text cap-v2${side && sideNow ? ' has-side' : ''}`} key={key}>
       <div className="cap-main">
         {beat.idea ? (
           <p className="cap-idea">
@@ -190,8 +198,9 @@ function Caption({
         )}
         <p>{link(beat.text)}</p>
         {open && beat.more && <p className="cap-more">{beat.more}</p>}
+        {!sideNow && moreBtn}
       </div>
-      {side && (
+      {side && sideNow && (
         <div className="cap-side">
           {open && beat.key && (
             <p className="cap-note is-key">
@@ -231,11 +240,7 @@ function Caption({
             </p>
           )}
           {open && extra && <div className="cap-extra">{extra}</div>}
-          {hasMore && (
-            <button className="cap-more-btn" aria-expanded={open} onClick={() => setOpenKey(open ? '' : key)} title="Ulertzeko gakoa, gogoratzekoak, urratsaren egiturak eta xehetasunak">
-              {open ? 'Gutxiago' : 'Gehiago'} <span aria-hidden>{open ? '−' : '+'}</span>
-            </button>
-          )}
+          {moreBtn}
         </div>
       )}
     </div>

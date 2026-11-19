@@ -170,8 +170,14 @@ export function StageNav({ week, current, visited, onStage, label, outlineShown,
   const seen = week.stages.filter((s) => visited.includes(s.id)).length;
   useEffect(() => {
     if (!open) return;
-    sheet.current?.querySelector<HTMLElement>('.ol-stage[aria-current]')?.focus();
-    sheet.current?.querySelector<HTMLElement>('.ol-stage[aria-current]')?.scrollIntoView({ block: 'nearest' });
+    const here = sheet.current?.querySelector<HTMLElement>('.ol-stage[aria-current]');
+    here?.focus({ preventScroll: true });
+    // The current stage a third of the way down: the stages before it show too, none cut at the edge.
+    const list = sheet.current?.querySelector<HTMLElement>('.snav-list');
+    if (here && list) {
+      const top = here.getBoundingClientRect().top - list.getBoundingClientRect().top + list.scrollTop;
+      list.scrollTop = Math.max(0, top - list.clientHeight / 3);
+    }
     const away = (e: PointerEvent) => {
       if (!root.current?.contains(e.target as Node)) setOpen(false);
     };

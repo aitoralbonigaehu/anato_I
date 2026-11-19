@@ -93,8 +93,8 @@ const spec5: StageSpec<GonadPose, GonadOpts> = {
       run: [0.05, 0.6],
       cam: CAM(8.5, [-0.4, -0.6, 0], 4, 6),
       dim: ['tunika-albuginea', 'gonadaren-epitelioa', 'muin-kordoiak'],
-      names: [{ id: 'tunika-albuginea', sub: 'ehun konektiboa: epitelioaren eta kordoien artean', from: 0.25 }],
-      note: 'Epitelioaren eta muin kordoien artean ehun konektibozko geruza bat: tunika albuginea',
+      names: [{ id: 'tunika-albuginea', sub: 'epitelio loditua, kordoien gainean', from: 0.25 }],
+      note: 'Epitelioa loditu egiten da eta tunika albuginea izena hartzen du: muin kordoiak haren azpian',
     },
     {
       to: { horseshoe: 1, link: 1 },
@@ -104,10 +104,10 @@ const spec5: StageSpec<GonadPose, GonadOpts> = {
       dim: ['barrabil-kordoiak', 'barrabil-sarea', 'hodixka-mesonefrikoak'],
       names: [
         { id: 'barrabil-sarea', text: 'Barrabil sarea (rete testis)', sub: 'hiloan, kordoiak estutu eta fundituta', from: 0.2 },
-        { id: 'barrabil-kordoiak', sub: 'ferra forma · trinkoak', from: 0.4 },
+        { id: 'barrabil-kordoiak', sub: '4. hilabetea: ferra forma · trinkoak', from: 0.4 },
         { id: 'hodixka-mesonefrikoak', sub: 'sarearen bidez lotuta', from: 0.6 },
       ],
-      note: 'Hiloan muin kordoiak estutu eta sare bat: barrabil sarea (rete testis). Ferra formako barrabil kordoiak; sarearen bidez hodixka mesonefrikoekin komunikatzen dira',
+      note: 'Hiloan muin kordoiak findu eta sare bat: barrabil sarea (rete testis), hodixka mesonefrikoekin komunikatuta. 4. hilabetean ferra formako barrabil kordoiak',
     },
     {
       to: { sertoli: 1 },
@@ -115,8 +115,8 @@ const spec5: StageSpec<GonadPose, GonadOpts> = {
       cam: CAM(7, [-0.3, -0.6, 0], 12, 10),
       glide: 0.05,
       dim: ['sertoli-zelulak', 'barrabil-kordoiak'],
-      names: [{ id: 'sertoli-zelulak', sub: '4. hilabetea: kordoien euspen zelulak', from: 0.25 }],
-      note: '4. hilabetean, kordoien artean Sertoliren euspen zelulak: kordoien euspena',
+      names: [{ id: 'sertoli-zelulak', sub: '4. hilabetea: euspena · espermatozoideen erregulazioa', from: 0.25 }],
+      note: '4. hilabeterako, barrabil kordoietatik Sertoli zelulak: euspen zelulak, espermatozoideen ekoizpena erregulatzen dute',
     },
     {
       to: { leydig: 1 },
@@ -124,8 +124,8 @@ const spec5: StageSpec<GonadPose, GonadOpts> = {
       cam: CAM(7, [-0.3, -0.6, 0], -6, 10),
       glide: 0.05,
       dim: ['leydig-zelulak', 'barrabil-kordoiak'],
-      names: [{ id: 'leydig-zelulak', sub: '4.–6. hilabeteak: testosterona', from: 0.25 }],
-      note: '4.–6. hilabeteak: kordoien inguruko muinean Leydig zelulak; funtzio nagusia testosterona ekoiztea',
+      names: [{ id: 'leydig-zelulak', text: 'Leydig zelula interstizialak', sub: '8. astea: testosterona', from: 0.25 }],
+      note: '8. astean barrabil kordoien artean Leydig zelula interstizialak; funtzio nagusia testosterona ekoiztea',
     },
     {
       to: { hollow: 1, mullerGone: 1 },
@@ -134,11 +134,11 @@ const spec5: StageSpec<GonadPose, GonadOpts> = {
       glide: 0.05,
       dim: ['hodixka-seminiferoak', 'hodi-paramesonefrikoa', 'hodi-mesonefrikoa'],
       names: [
-        { id: 'hodixka-seminiferoak', sub: 'pubertaroan hustu: espermatozoideak' },
-        { id: 'hodi-paramesonefrikoa', sub: 'testosterona + AMH: endekatu', from: 0.3 },
+        { id: 'hodixka-seminiferoak', sub: 'pubertaroan bakuolizatu: espermatozoideak' },
+        { id: 'hodi-paramesonefrikoa', sub: 'AMH: endekatu, ez osoki', from: 0.3 },
         { id: 'hodi-mesonefrikoa', sub: 'geratu eta garatu', from: 0.5 },
       ],
-      note: 'Pubertaroan kordoiak hustu: hodixka seminiferoak. Testosteronak eta Sertoliren hormona anti-mullerianoak hodi paramesonefrikoa endekatzen dute; mesonefrikoa geratzen da',
+      note: 'Pubertaroan kordoiak bakuolizatu: hodixka seminiferoak. Sertoliren hormona antimüllerianoak hodi paramesonefrikoa endekatzen du (bi aztarna); mesonefrikoa geratzen da',
     },
   ],
 };
@@ -175,7 +175,7 @@ const spec9: StageSpec<GonadPose, GonadOpts> = {
       glide: 0.05,
       dim: ['obarioaren-muina', 'hasierako-sexu-kordoiak'],
       names: [{ id: 'obarioaren-muina', sub: 'hasierako kordoiak muinean endekatuta', from: 0.35 }],
-      note: '7. astetik hasierako sexu kordoiak epiteliotik askatu eta muinerantz sartzen dira, baina endekatu egiten dira: obarioaren muina',
+      note: '7. astetik azaleko epitelioa loditu; hasierako sexu kordoiak muinean sartu eta endekatu egiten dira: obarioaren muina',
     },
     {
       to: { cortex: 1, breakUp: 1 },
@@ -185,9 +185,9 @@ const spec9: StageSpec<GonadPose, GonadOpts> = {
       dim: ['obarioaren-kortexa', 'kortex-kordoiak'],
       names: [
         { id: 'obarioaren-kortexa', text: 'Kortexa', sub: 'epitelioa loditua' },
-        { id: 'kortex-kordoiak', sub: '2. belaunaldia · 4. hilabetean askatu', from: 0.3 },
+        { id: 'kortex-kordoiak', sub: '2. belaunaldia · 4. hilabetean zelulak askatu', from: 0.3 },
       ],
-      note: 'Epitelioa loditu egiten da: kortexa. Hortik kortex kordoien 2. belaunaldia; 4. hilabetean epiteliotik askatu eta zelulak sakabanatuta geratzen dira',
+      note: 'Epitelio loditutik (kortexa) kortex kordoien 2. belaunaldia; 4. hilabetean zelulak askatu eta muinean sakabanatuta: folikulu zelulak izango dira',
     },
     {
       to: { follicles: 1 },
@@ -196,10 +196,10 @@ const spec9: StageSpec<GonadPose, GonadOpts> = {
       glide: 0.05,
       dim: ['folikulu-zelulak', 'obozito-primarioak'],
       names: [
-        { id: 'folikulu-zelulak', sub: 'askatutako zelulen inguruan', from: 0.2 },
+        { id: 'folikulu-zelulak', sub: 'kortex kordoietatik askatuak', from: 0.2 },
         { id: 'obozito-primarioak', from: 0.5 },
       ],
-      note: 'Epiteliotik beste zelula batzuk, folikulu zelulak, askatutako zelulen inguruan: obozito primarioak',
+      note: '5. hilabetean folikulu zelulek bitelo zakutik etorritako oogoniak inguratzen dituzte: obozito primarioak',
     },
   ],
 };

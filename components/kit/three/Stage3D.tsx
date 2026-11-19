@@ -330,6 +330,8 @@ function Stage3DView({ scene, children, orbit = true, axes, continuity, place, h
   const [ready, setReady] = useState(false);
   // WebGL could not start (or is very late): only then the coarse flat picture stands in for it.
   const [flatOnly, setFlatOnly] = useState(false);
+  // Bumped to build the WebGL layer again after its context was lost (once: see createRenderCircuit).
+  const [rebuild, setRebuild] = useState(0);
   // A parked layer is waiting for this view: no "preparing" spinner, the picture is there next frame.
   const [warm] = useState(() => !!ul?.host && (parked.has(ul.host) || (live.get(ul.host) ?? 0) > 0));
   const drag = useRef<{ x: number; y: number; yaw: number; pitch: number; moved: boolean } | null>(null);
@@ -508,9 +510,13 @@ function Stage3DView({ scene, children, orbit = true, axes, continuity, place, h
     live.set(host, (live.get(host) ?? 0) + 1);
     let dead = false;
     let api: GLApi | null = null;
-    const late = window.setTimeout(() => setFlatOnly(true), 2500);
-    // The GPU was lost (driver reset): the flat picture from now on, and nothing more asked of the GPU.
+    // The spinner holds while the layer starts (a heavy model's first picture can take seconds on a slow
+    // computer); the coarse flat picture only if it never comes: shown early, it looked like a broken model.
+    const late = window.setTimeout(() => setFlatOnly(true), 12000);
+    // The GPU was lost (driver reset): the flat picture for a moment, then a new layer; for good only if
+    // WebGL cannot start here or keeps being lost.
     let unLost = () => {};
+    let again = 0;
     import('./gl')
       .then((m) => {
         if (dead) return;
@@ -529,6 +535,8 @@ function Stage3DView({ scene, children, orbit = true, axes, continuity, place, h
             window.clearTimeout(p.timer);
             p.api.dispose();
           }
+          window.clearTimeout(again);
+          if (!m.glWasLost()) again = window.setTimeout(() => !dead && setRebuild((n) => n + 1), 1200);
         };
         if (m.glWasLost()) lost();
         else unLost = m.onGLLost(lost);
@@ -559,6 +567,7 @@ function Stage3DView({ scene, children, orbit = true, axes, continuity, place, h
     return () => {
       dead = true;
       unLost();
+      window.clearTimeout(again);
       live.set(host, (live.get(host) ?? 1) - 1);
       window.clearTimeout(late);
       // Parked for the next 3D view in this frame (one at a time), then let go.
@@ -567,7 +576,7 @@ function Stage3DView({ scene, children, orbit = true, axes, continuity, place, h
       setReady(false);
       setFlatOnly(false);
     };
-  }, [host]);
+  }, [host, rebuild]);
 
   // The shaded picture follows this view's own group (not just the frame's zoom): a camera move between
   // views, which carries and fades the drawings, carries and fades the 3D picture with them.

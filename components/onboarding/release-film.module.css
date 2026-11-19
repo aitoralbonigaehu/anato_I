@@ -1,0 +1,28 @@
+.canvas,.film { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.canvas { z-index:2; display:block; }
+.canvas[hidden] { display:none; }
+.film { z-index:3; color:#f8eddb; font-family:var(--font-geist),system-ui,sans-serif; }
+.wordmark { position:absolute; left:clamp(6vw,10vw,13vw); top:50%; translate:0 -50%; opacity:0; }
+.wordmark p { margin:0 0 .44em; font:italic clamp(23px,2.7vw,48px)/1 Georgia,serif; color:#edb98d; }
+.wordmark h1 { margin:0; font:400 clamp(46px,7.5vw,145px)/.98 Georgia,serif; letter-spacing:-.073em; }
+.wordmark b { display:inline-block; vertical-align:top; margin:.28em 0 0 .20em; padding:.35em .48em; border:1px solid #cda07b; border-radius:4px; color:#f1b47b; font:600 .23em/1 var(--font-geist-mono),monospace; letter-spacing:.06em; }
+.skip,.transport button { pointer-events:auto; color:#f5e5d2; background:#151114; cursor:pointer; font:500 12px/1.35 var(--font-geist),system-ui,sans-serif!important; }
+.skip { position:absolute; top:max(18px,env(safe-area-inset-top)); right:clamp(18px,3vw,58px); border-radius:99px; border:1px solid #b18a694a; padding:10px 16px; }
+.transport { position:absolute; inset-inline:clamp(18px,3vw,58px); bottom:max(18px,env(safe-area-inset-bottom)); display:flex; align-items:center; gap:15px; }
+.transport button { padding:8px; border:none; }
+.rail { flex:1; height:1px; background:#c9ab833b; }
+.rail span { display:block; height:100%; width:100%; transform-origin:left; transform:scaleX(0); background:#eebb89; }
+@media(orientation:portrait){
+ .wordmark { left:0; right:0; top:72%; text-align:center; }
+ .wordmark h1 { font-size:clamp(48px,11.6vw,105px); }
+}
+
+.threshold { position:absolute; inset:0; display:grid; place-content:center; justify-items:center; gap:clamp(64px,13vh,140px); }
+.threshold i { width:5px; height:5px; border-radius:50%; background:#fff4d7; box-shadow:0 0 9px 2px #eacba4,0 0 42px 9px #ffad7439; animation:breathe 1.75s ease-in-out infinite alternate; }
+.threshold div { display:flex; gap:12px; }
+.threshold button { pointer-events:auto; border:1px solid #9e8067; border-radius:42px; background:#efd4b7; color:#201518; padding:12px 20px; }
+.threshold button+button { color:#e7d4bf; background:transparent; }
+.wordmark h1 { clip-path:inset(0 calc(100% - var(--write,0%)) 0 0); padding:0 .05em .08em 0; }
+.wordmark em { display:block; margin-top:.65em; font:italic clamp(18px,2vw,32px)/1.2 Georgia,serif; color:#cfb29b; }
+.waiting { position:absolute; top:44%; width:100%; text-align:center; color:#dfc6ad;font:italic 21px Georgia,serif; }
+@keyframes breathe { to { opacity:.47; transform:scale(.7); } }

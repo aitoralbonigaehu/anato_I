@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { structures } from '@/content/registry';
-import { firstSentence } from '@/content/generate';
+import { firstSentence } from '@/content/sentence';
 import { categoryColor } from '@/lib/sim/palette';
 
 /** One structure name the caption can link: its own matcher (the inflected Basque word) and colour. */

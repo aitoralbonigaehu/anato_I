@@ -23,8 +23,10 @@ import { ThemeSync } from '@/components/shell/theme';
 import { AccountRoot } from '@/components/account/AccountRoot';
 import { StudyAccountGate } from '@/components/account/StudyAccountGate';
 import { Welcome } from '@/components/onboarding/Welcome';
+import { WELCOME_SEEN } from '@/components/onboarding/visit';
 import { VisitBeacon } from '@/components/visits/VisitBeacon';
 import { themeScript } from '@/components/shell/theme-script';
+import { demoScript } from '@/lib/demo/demo-script';
 
 const sans = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
 const mono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono', display: 'swap' });
@@ -41,19 +43,26 @@ export const viewport: Viewport = {
   ],
 };
 
-// Runs before first paint so the opening sequence never flashes when it was already seen this session.
-const introFlag = `try{if(sessionStorage.getItem('enbrioatlas:intro')||matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.dataset.intro='seen'}catch(e){}`;
+// The V2 film owns the automatic opening. The home footer can replay the fertilisation film.
+const introFlag = `try {
+  const flags = document.documentElement.dataset;
+  const firstVisit = localStorage.getItem('${WELCOME_SEEN}') !== '1';
+  const params = new URLSearchParams(location.search);
+  const replay = params.get('ongietorria') === '1' || params.get('intro') === 'v2';
+  if ((firstVisit || replay) && !location.pathname.startsWith('/dev')) flags.journeyLoading = '1';
+  if (!params.has('intro-at') || flags.journeyLoading || matchMedia('(prefers-reduced-motion: reduce)').matches) flags.intro = 'seen';
+} catch {}`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="eu" className={`${sans.variable} ${mono.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript + introFlag }} />
+        <script dangerouslySetInnerHTML={{ __html: demoScript + themeScript + introFlag }} />
       </head>
       <body>
+        <Welcome />
         <StudyAccountGate>
           {children}
-          <Welcome />
           <Kimu />
           <KimuCheer />
           <CommandBar />

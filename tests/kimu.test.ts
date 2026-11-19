@@ -7,12 +7,12 @@ import { offlineReply } from '@/lib/kimu/offline';
 import { allPassages, intentOf, searchNotes } from '@/lib/kimu/notes';
 import { buildMessages } from '@/lib/kimu/prompt';
 import { CONFIDENT, fromHere, search, toTarget } from '@/lib/kimu/search';
-import { detectLang, fold } from '@/lib/kimu/text';
+import { detectLang, fold, LAST_TOPIC, topicIn } from '@/lib/kimu/text';
 import { pickPractice, practiceScope, wantsPractice } from '@/lib/kimu/practice';
 import type { KimuAsk, KimuModelReply } from '@/lib/kimu/types';
 import { FORMATIONS, formationFrame, formationOf } from '@/content/formation';
 import { POOL } from '@/content/pool';
-import { getWeek } from '@/content/registry';
+import { getWeek, weeks } from '@/content/registry';
 import { blockText, expandNotes, notesOf, sentence } from '@/content/notes-text';
 import { askKimu, grounded, retrievalQuestion } from '@/lib/kimu/engine';
 import { createElement } from 'react';
@@ -140,7 +140,8 @@ describe('Kimu grounding: answers come from the original notes', () => {
     ['Zer da hodi neuroenterikoa?', 3, /amnios-barrunbea eta bitelo zakua/],
     ['Non habiratzen da blastozistoa?', 1, /atzeko paretan/],
     // From the stage where it forms (neurulation), not the somites sentence that only places them beside it.
-    ['Nola eratzen da hodi neurala?', 4, /plaka neuraletik/],
+    // (The notes no longer say "plaka neuraletik" here; the topic 4 sentence on the folds fusing answers it.)
+    ['Nola eratzen da hodi neurala?', 4, /Tolestura neural hauek fusionatzean/],
   ])('%s → the notes sentence of topic %i', async (q, week, text) => {
     vi.stubGlobal('fetch', nokey());
     const r = await askKimu(q, [], null);
@@ -692,4 +693,62 @@ describe('Kimu sweep fixes (2026-10-29): headings, names, numbers, typos, other 
     const hum = await ask('¿qué es húmero?');
     expect(hum.targets.map((t) => t.week)).toEqual([8]);
   });
+
+  // 2026-11-18: «Sinu urogenitala 15. gaian» said "nothing found" because a topic above 11 was not read.
+  it('reads every topic of the registry in a question, up to the last one', async () => {
+    expect(LAST_TOPIC).toBe(Math.max(...weeks.map((w) => w.week)));
+    expect(topicIn(`zer da hau ${LAST_TOPIC}. gaian`)).toBe(LAST_TOPIC);
+    expect(topicIn('sinu urogenitala tema 15')).toBe(15);
+    for (const q of ['Sinu urogenitala 15. gaian', 'sinu urogenitala tema 15', 'Sinu urogenitala']) {
+      const r = await ask(q);
+      expect(r.reply, q).toMatch(/^\*\*Sinu urogenitala\*\* \(15\. gaia/);
+    }
+  });
+
+  it('finds a structure the named topic shows even when another topic defines it first, and only then', async () => {
+    const lar = await ask('Laringe-zuloa 17. gaian');
+    expect(lar.reply).toMatch(/Laringe-zuloa\*\*: Faringearen aurreko paretan/);
+    const ao = await ask('Aorta dortsala 18. gaian');
+    expect(ao.reply).toMatch(/Aorta dortsalak\*\*/);
+    // Topic 8 does not show the mediastinum: still nothing there.
+    vi.stubGlobal('fetch', nokey());
+    expect((await askKimu('mediastinoa 8. gaian', [], { week: 7, stage: 'zeloma', beat: 0 })).reply).toMatch(/^Ez dut hori apunteetan aurkitu \(8\. gaian ere ez\)/);
+  });
+
+  it('never answers with a lone notes line that ends in a colon over a figure', async () => {
+    for (const q of ['Hezur maxilarra', 'zer da hezur maxilarra', 'Hezur maxilarra 17. gaian']) {
+      const r = await ask(q);
+      expect(r.reply, q).not.toMatch(/:\s*$/);
+      expect(r.reply, q).toMatch(/hezur maxilarra/i);
+    }
+  });
+
+  it('answers a heading with a word the question drops ("egiturak") as that section', async () => {
+    expect((await ask('Poltsetatik eratorritako egiturak')).reply).toMatch(/\(18\. gaia, 1\.1\. atala\)/);
+    expect((await ask('Arrailduretatik eratorritako egiturak 18. gaian')).reply).toMatch(/\(18\. gaia, 1\.2\. atala\)/);
+  });
+
+  // Topics 15–18 (final notes of 2026-11-18): every atlas entry, asked four ways, and every heading, answered.
+  it('answers every structure and heading of topics 15–18', async () => {
+    const MISS = /^(Ez dut hori apunteetan aurkitu|Apunteek ez dute hori zuzenean)/;
+    const bad: string[] = [];
+    for (const w of [15, 16, 17, 18]) {
+      const wk = getWeek(w)!;
+      const here = { week: w, stage: wk.stages[0].id, beat: 0 };
+      for (const st of wk.structures) {
+        for (const [q, h] of [[`zer da ${st.name.toLowerCase()}`, here], [st.name, null], [`${st.name} ${w}. gaian`, null]] as const) {
+          vi.stubGlobal('fetch', nokey());
+          const r = await askKimu(q, [], h);
+          if (MISS.test(r.reply) || /:\s*$/.test(r.reply)) bad.push(`${w}/${st.id} «${q}»`);
+        }
+      }
+      for (const b of notesOf(w)) {
+        if (b.kind !== 'h1' && b.kind !== 'h2') continue;
+        const q = blockText(b).replace(/^\s*[\d.]+\s*/, '').replace(/\s*(?:→|->).*$/, '').trim();
+        if (q.split(/\s+/).length < 2 || /irudi/i.test(q)) continue;
+        if (!(await ask(q)).reply.includes(`${w}. gaia, ${b.section}.`)) bad.push(`${w} §${b.section} «${q}»`);
+      }
+    }
+    expect(bad).toEqual([]);
+  }, 600000);
 });

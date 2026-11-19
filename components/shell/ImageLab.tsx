@@ -1,12 +1,12 @@
 'use client';
 
-import { firstSentence } from '@/content/generate';
+import { firstSentence } from '@/content/sentence';
 import Link from 'next/link';
 import { useEffect, useEffectEvent, useRef, useState, useSyncExternalStore } from 'react';
 import { Defs } from '@/components/kit/Defs';
 import { SceneContext, type QuizFlash, type SceneContextValue } from '@/components/kit/context';
 import { isSpace, partsOf, nameOf, structures, weeks } from '@/content/registry';
-import { imageId } from '@/content/pool';
+import { imageId } from '@/content/pool-keys';
 import type { Orientation, PlaneKind } from '@/lib/sim/types';
 import { recordAnswer } from './answers';
 import { LandFoot, LandNav, isWip } from './LandNav';

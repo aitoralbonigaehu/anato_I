@@ -3997,7 +3997,7 @@ a.ln-chip:hover {
 .mg-trees-head {
   margin: 8px 0 18px;
   padding-top: 26px;
-  border-top: 1px solid #ffffff1a;
+  border-top: 1px solid var(--line);
 }
 .mg-trees-head h3 {
   margin: 0;
@@ -4685,7 +4685,7 @@ a.mg-chip:hover {
     overflow: visible;
     margin: 0 calc(-1 * var(--gutter));
     padding: 8px var(--gutter);
-    background: rgb(var(--surface-rgb) / 0.88);
+    background: rgb(var(--surface-rgb) / 0.97);
     backdrop-filter: blur(16px) saturate(1.2);
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
@@ -16485,3 +16485,40 @@ kbd {
   border-radius: var(--r-2xs);
   background: var(--signal);
 }
+
+/* Eratorriak, a topic's schemes: what they are and "follow one origin" on one row, the reading key under them. */
+.mg-schemes-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+.mg-schemes-head .mg-intro {
+  margin: 0;
+}
+.mg-intro-k {
+  font: 600 11.5px/1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+.mg-schemes-head .mg-follow {
+  margin: 0 0 0 auto;
+}
+.mg-schemes-head .mg-legend,
+.mg-schemes-head .mg-quiz-hint {
+  flex-basis: 100%;
+}
+.mg-schemes-head .mg-legend {
+  margin: 2px 0 0;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: rgb(var(--fg-rgb) / 0.025);
+}
+
+/* Hover in a scheme: the arrows out of the lit structure light with it, down to its last derivative. */
+.mg-b[data-lit] > .mg-edge .mg-line { background: var(--signal); }
+.mg-b[data-lit] > .mg-edge .mg-line::after { border-left-color: var(--signal); }
+.mg-b[data-lit] > .mg-edge .mg-via { color: var(--ink-signal); }
+.mg-chip, .mg-line, .mg-via { transition: opacity var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
