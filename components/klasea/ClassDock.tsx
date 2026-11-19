@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { MODES, ModeIcon } from '@/components/shell/Player';
 import { Popover } from '@/components/shell/Popover';
 import { IconChevron, IconNext, IconPause, IconPlay, IconPrev } from '@/components/shell/icons';
@@ -10,6 +10,7 @@ import { canResumeClass } from '@/lib/klasea/resume';
 import type { Lesson, Tone } from '@/lib/klasea/types';
 import { speakSeconds, voiceSupported } from '@/lib/klasea/voice';
 import { ClassCheck } from './ClassCheck';
+import { loadFullPool } from '@/components/shell/usePool';
 import { Board } from './Board';
 import { Sheet } from './Sheet';
 import type { Klasea } from './useKlasea';
@@ -58,6 +59,12 @@ export function ClassDock({ k, mode, onMode, holdReason, onAskKimu }: {
 }) {
   const { lesson, cmd, state } = k;
   const [sheet, setSheet] = useState(false);
+  // The class's pool questions, built in a worker once the page is idle: ready before the first check.
+  useEffect(() => {
+    const go = () => void loadFullPool();
+    const id = window.requestIdleCallback ? window.requestIdleCallback(go, { timeout: 4000 }) : window.setTimeout(go, 1500);
+    return () => (window.cancelIdleCallback ? window.cancelIdleCallback(id) : window.clearTimeout(id));
+  }, []);
 
   // Topic 10's scene clock re-renders this dock. Its immutable lesson estimate and check count
   // do not change with the heart pose: do not rescan/syllabify every sentence on every frame.

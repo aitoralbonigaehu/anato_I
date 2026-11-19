@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { recordAnswer } from '@/components/shell/answers';
-import { POOL, imageId } from '@/content/pool';
+import { imageId } from '@/content/pool-keys';
+import { useFullPool } from '@/components/shell/usePool';
 import { nameOf } from '@/content/registry';
 import type { BoardTable, Check, Lesson } from '@/lib/klasea/types';
 import styles from './klasea.module.css';
@@ -43,10 +44,13 @@ export interface CheckProps {
 
 export function ClassCheck(p: CheckProps) {
   const { check } = p;
+  // The bank comes from a worker (imported here it was built while topic 10 opened: a 1.3 s freeze). It is
+  // asked for when the class dock mounts, long before the lesson reaches its first pool question.
+  const POOL = useFullPool();
   if (check.kind === 'predict') return <Choice {...p} kicker="Zer uste duzu?" q={check.q} options={check.options} answer={check.answer} why={check.why} seed={check.q} record={null} graded={false} />;
   if (check.kind === 'contrast') return <Choice {...p} kicker="Bereizi" q={check.q} options={check.options} answer={check.answer} why={check.why} seed={check.id} record={check.id} graded />;
   if (check.kind === 'pool') {
-    const q = POOL.find((x) => x.id === check.id);
+    const q = POOL?.find((x) => x.id === check.id);
     if (!q) return null;
     return <Choice {...p} kicker="Galdera" q={q.question} options={q.options} answer={q.answer} why={q.why ?? q.options.map((_, k) => (k === q.answer ? q.explanation : ''))} seed={q.id} record={q.id} graded keepOrder />;
   }
