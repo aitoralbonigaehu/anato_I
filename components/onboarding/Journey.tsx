@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { openAccount, useAccount } from '@/components/account/account';
+import { StudyMusicButton } from '@/components/shell/StudyMusic';
 import { BrandMark } from '@/components/shell/icons';
 import { structures, weeks } from '@/content/registry';
 import { AppFrame } from './AppFrame';
@@ -511,6 +512,7 @@ export default function Journey({ opening, onFilmEnd, onClose, home, start = 0 }
             </span>
           </span>
           <span className={s.headRule} aria-hidden="true" />
+          <StudyMusicButton />
           <button className={s.skip} onClick={() => leave()}>
             Saltatu <span aria-hidden="true">×</span>
           </button>

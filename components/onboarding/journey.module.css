@@ -46,10 +46,10 @@
 .headRule { height: 1px; background: var(--rule); flex: 1; }
 .journey button { cursor: pointer; font: inherit; }
 .journey button:focus-visible,.journey input:focus-visible { outline: 2px solid var(--warm); outline-offset: 5px; }
-.skip,.subtle,.again,.account button { border: 0; background: none; color: var(--muted); }
+.skip,.subtle,.again { border: 0; background: none; color: var(--muted); }
 .skip { display: flex; align-items: center; gap: 12px; padding: 8px 0 8px 8px; font-size: 13px!important; }
 .skip span { display: grid; place-content: center; width: 28px; height: 28px; border: 1px solid var(--rule); border-radius: 50%; font-size: 18px; }
-.skip:hover,.subtle:hover,.again:hover,.account button:hover { color: white; }
+.skip:hover,.subtle:hover,.again:hover { color: white; }
 .scroller { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #5f5144 transparent; }
 .chapter {
   --direction: 1;
@@ -172,7 +172,7 @@
 @media (max-width: 900px) { .chapter { column-gap: 20px; } .copy h2 { font-size: clamp(52px,7.5vw,75px); } }
 @media (max-width: 760px), (min-width: 761px) and (max-width: 1024px) and (orientation: portrait) {
   .head,.footer,.chapter { padding-inline: clamp(18px,5.5vw,36px); }
-  .head { padding-top: max(10px,env(safe-area-inset-top)); padding-bottom: 6px; gap: 16px; }
+  .head { padding-top: max(10px,env(safe-area-inset-top)); padding-bottom: 6px; gap: 8px; flex-wrap: wrap; }
   .brand { font-size: 18px; }
   .chapter { grid-template-columns: 1fr; align-content: center; gap: 18px; padding-block: 12px 22px; }
   .copy { display: contents; }

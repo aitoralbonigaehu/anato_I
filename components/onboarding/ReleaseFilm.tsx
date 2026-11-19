@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import type { Item3 } from '@/lib/three-d/scene';
 import type { openProjector, Exhibit } from '../intro-review/renderStudy';
+import { filmAudioChange } from '@/components/shell/StudyMusic';
 import s from './release-film.module.css';
 
 const end = 13.5;
@@ -23,33 +24,43 @@ type Props = {
   art: RefObject<HTMLDivElement | null>;
   turn: RefObject<{ yaw: number; pitch: number }>;
 };
-function soundtrack() {
+function soundtrack(offset: number) {
   const ctx = new AudioContext(),
     bus = ctx.createGain();
   bus.gain.value = 0.13;
   bus.connect(ctx.destination);
   const start = ctx.currentTime;
   function tone(at: number, hz: number, duration: number, volume: number, attack: number, fall = 1) {
+    const elapsed = Math.max(0, offset - at);
+    const remaining = duration - elapsed;
+    if (remaining <= 0.03) return;
+    const onset = start + Math.max(0, at - offset);
     const osc = ctx.createOscillator(),
       env = ctx.createGain();
-    osc.frequency.setValueAtTime(hz, start + at);
-    osc.frequency.exponentialRampToValueAtTime(hz * fall, start + at + duration);
-    env.gain.setValueAtTime(0.0001, start + at);
-    env.gain.exponentialRampToValueAtTime(volume, start + at + attack);
-    env.gain.exponentialRampToValueAtTime(0.0001, start + at + duration);
+    osc.frequency.setValueAtTime(hz * fall ** (elapsed / duration), onset);
+    osc.frequency.exponentialRampToValueAtTime(hz * fall, onset + remaining);
+    env.gain.setValueAtTime(0.0001, onset);
+    env.gain.exponentialRampToValueAtTime(volume, onset + Math.min(remaining / 2, Math.max(0.02, attack - elapsed)));
+    env.gain.exponentialRampToValueAtTime(0.0001, onset + remaining);
     osc.connect(env);
     env.connect(bus);
-    osc.start(start + at);
-    osc.stop(start + at + duration);
+    osc.start(onset);
+    osc.stop(onset + remaining);
   }
   for (let t = 3.27; t < 12.3; t += 1 / 1.42) {
     tone(t, 77, 0.22, 0.46, 0.026, 0.58);
     tone(t + 0.17, 67, 0.15, 0.18, 0.02, 0.73);
   }
-  tone(0.35, 110, 8.4, 0.13, 1.9);
-  tone(2.2, 165, 7.2, 0.1, 1.6);
-  tone(7.4, 220, 4.3, 0.12, 1.15);
-  tone(9.35, 329.63, 3.1, 0.12, 0.75);
+  tone(0.35, 110, 8.4, 0.19, 2.5);
+  tone(2.2, 164.81, 7.2, 0.14, 2.1);
+  tone(4.1, 261.63, 4.7, 0.1, 1.6);
+  // The skin resolves, then the title arrives and the camera docks.
+  tone(7.45, 220, 4.7, 0.19, 1.15);
+  tone(7.65, 329.63, 4.4, 0.1, 0.9);
+  tone(9.25, 261.63, 3.9, 0.19, 0.42);
+  tone(9.52, 392, 3.7, 0.14, 0.25);
+  tone(9.88, 523.25, 3.4, 0.09, 0.21);
+  tone(11.85, 130.81, 1.59, 0.11, 0.33);
   return { ctx, bus };
 }
 export default function ReleaseFilm(props: Props) {
@@ -73,7 +84,9 @@ export default function ReleaseFilm(props: Props) {
       void sound.current?.ctx.close().catch(() => {});
       sound.current = null;
     }
+    if (opening) window.dispatchEvent(new CustomEvent(filmAudioChange, { detail: true }));
     return () => {
+      if (opening) window.dispatchEvent(new CustomEvent(filmAudioChange, { detail: false }));
       void sound.current?.ctx.close().catch(() => {});
       sound.current = null;
     };
@@ -299,7 +312,7 @@ export default function ReleaseFilm(props: Props) {
   }, []);
   function enableSound() {
     try {
-      const score = sound.current ?? soundtrack();
+      const score = sound.current ?? soundtrack(playback.current.t);
       sound.current = score;
       score.bus.gain.setTargetAtTime(0.13, score.ctx.currentTime, 0.025);
       void (ready && !paused ? score.ctx.resume() : score.ctx.suspend()).catch(() => {});

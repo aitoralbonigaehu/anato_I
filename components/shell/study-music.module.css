@@ -1,0 +1,21 @@
+.button,.floating {
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 7px 13px;
+  border: 1px solid #ae8b70;
+  border-radius: 999px;
+  background: #231a17;
+  color: #f8eddb;
+  font: 600 13px/1.2 var(--font-geist), system-ui, sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.button:hover,.floating:hover { background: #3d2a21; }
+.button:focus-visible,.floating:focus-visible { outline: 2px solid #f1ad76; outline-offset: 3px; }
+.floating {
+  position: fixed;
+  z-index: 46;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  left: max(14px, env(safe-area-inset-left));
+}
+:global(html[data-demo='1']) .floating { display: none; }
