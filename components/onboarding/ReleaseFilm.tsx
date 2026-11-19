@@ -65,7 +65,6 @@ export default function ReleaseFilm(props: Props) {
     [muted, setMuted] = useState(true);
   const [fallback, setFallback] = useState(false),
     [ready, setReady] = useState(false);
-  const [hasSound, setHasSound] = useState(false);
   useEffect(() => {
     latest.current = props;
   }, [props]);
@@ -298,27 +297,19 @@ export default function ReleaseFilm(props: Props) {
       el.removeEventListener('webglcontextlost', loss);
     };
   }, []);
-  // Always with sound (it can be turned off while it plays). The browser lets it play only after a click
-  // on the page: one "Sartu", or none if the student has already clicked here (the film watched again).
-  function start() {
-    if (playback.current.started) return;
+  function enableSound() {
     try {
-      sound.current = soundtrack();
-      if (!ready) void sound.current.ctx.suspend();
+      const score = sound.current ?? soundtrack();
+      sound.current = score;
+      score.bus.gain.setTargetAtTime(0.13, score.ctx.currentTime, 0.025);
+      void (ready && !paused ? score.ctx.resume() : score.ctx.suspend()).catch(() => {});
       setMuted(false);
-      setHasSound(true);
     } catch {}
-    playback.current.started = true;
-    setStarted(true);
   }
-  const begin = useRef(start);
-  useEffect(() => {
-    begin.current = start;
-  });
   useEffect(() => {
     if (!opening) return;
-    const nav = navigator as Navigator & { userActivation?: { hasBeenActive: boolean } };
-    if (nav.userActivation?.hasBeenActive) begin.current();
+    playback.current.started = true;
+    setStarted(true);
   }, [opening]);
   function toggle() {
     playback.current.frozen = false;
@@ -331,14 +322,6 @@ export default function ReleaseFilm(props: Props) {
       <canvas ref={canvas} className={s.canvas} hidden={fallback} aria-hidden="true" />
       {opening && (
         <section className={s.film} aria-label="EnbrioAtlas V2">
-          {!started && (
-            <div className={s.threshold}>
-              <i aria-hidden="true" />
-              <div>
-                <button onClick={() => start()}>Sartu</button>
-              </div>
-            </div>
-          )}
           {started && !ready && <p className={s.waiting}>Somitek egitura bilaterala dute…</p>}
           <div ref={title} className={s.wordmark}>
             <p>Ongi etorri</p>
@@ -358,19 +341,21 @@ export default function ReleaseFilm(props: Props) {
               <div className={s.rail} aria-hidden="true">
                 <span ref={rail} />
               </div>
-              {hasSound && (
                 <button
                   type="button"
                   aria-pressed={!muted}
                   onClick={() => {
-                    const score = sound.current;
-                    if (score) score.bus.gain.setTargetAtTime(muted ? 0.13 : 0, score.ctx.currentTime, 0.025);
-                    setMuted(!muted);
+                    if (muted) {
+                      enableSound();
+                    } else {
+                      const score = sound.current;
+                      if (score) score.bus.gain.setTargetAtTime(0, score.ctx.currentTime, 0.025);
+                      setMuted(true);
+                    }
                   }}
                 >
                   {muted ? 'Soinua piztu' : 'Soinua itzali'}
                 </button>
-              )}
             </footer>
           )}
         </section>
