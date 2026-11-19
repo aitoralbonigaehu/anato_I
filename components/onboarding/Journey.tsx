@@ -229,7 +229,7 @@ function Devices() {
   );
 }
 
-export default function Journey({ opening, onFilmEnd, onClose, home, start = 0 }: { opening: boolean; onFilmEnd: () => void; onClose: () => void; home: boolean; start?: number }) {
+export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, home, start = 0 }: { opening: boolean; onFilmEnd: () => void; onReplayFilm: () => void; onClose: () => void; home: boolean; start?: number }) {
   const first = Math.max(0, Math.min(STOPS.length - 1, start));
   const [step, setStep] = useState(first);
   const [direction, setDirection] = useState(1);
@@ -606,6 +606,9 @@ export default function Journey({ opening, onFilmEnd, onClose, home, start = 0 }
                 <button className={s.primary} onClick={last ? finish : () => go(step + 1)}>
                   {last && home ? 'Ireki 17. gaia' : stop.next} <span aria-hidden="true">→</span>
                 </button>
+                {step === 0 && (
+                  <button className={s.subtle} onClick={onReplayFilm}>Ikusi sarrera</button>
+                )}
                 {step === 3 && (kimuPhase >= 4 || kimuYours) && (
                   <button className={s.subtle} onClick={() => setKimuRun((r) => r + 1)}>
                     Ikusi berriro

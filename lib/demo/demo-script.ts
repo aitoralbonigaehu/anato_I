@@ -1,3 +1,5 @@
+import { RELEASE_SEEN, WELCOME_SEEN } from '@/components/onboarding/visit';
+
 /**
  * The app inside the onboarding's frame (an iframe named `enbrio-demo`): the real interface, shown to a
  * first-time student, that must leave no trace. Run in <head> before anything else:
@@ -33,7 +35,7 @@ export const demoScript = `try {
     var session = shade(null);
     Object.defineProperty(window, 'localStorage', { configurable: true, get: function () { return local.shadow; } });
     Object.defineProperty(window, 'sessionStorage', { configurable: true, get: function () { return session.shadow; } });
-    ['enbrioatlas:ongietorri:v1', 'enbrioatlas:film:v2', 'enbrioatlas:intro-full'].forEach(function (k) { local.mem.set(k, '1'); });
+    ['${WELCOME_SEEN}', '${RELEASE_SEEN}', 'enbrioatlas:intro-full'].forEach(function (k) { local.mem.set(k, '1'); });
     local.mem.set('enbrioatlas:planes-seen', JSON.stringify(['sagitala', 'zeharkakoa', 'koronala', 'dortsala']));
     ['enbrioatlas:bisita', 'enbrioatlas:kimu-animo'].forEach(function (k) { session.mem.set(k, '1'); });
   }

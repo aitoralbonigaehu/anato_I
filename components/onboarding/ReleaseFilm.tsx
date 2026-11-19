@@ -47,20 +47,24 @@ function soundtrack(offset: number) {
     osc.start(onset);
     osc.stop(onset + remaining);
   }
-  for (let t = 3.27; t < 12.3; t += 1 / 1.42) {
-    tone(t, 77, 0.22, 0.46, 0.026, 0.58);
-    tone(t + 0.17, 67, 0.15, 0.18, 0.02, 0.73);
-  }
-  tone(0.35, 110, 8.4, 0.19, 2.5);
-  tone(2.2, 164.81, 7.2, 0.14, 2.1);
-  tone(4.1, 261.63, 4.7, 0.1, 1.6);
+  const figures = [
+    [261.63, 329.63, 392, 493.88],
+    [349.23, 440, 523.25, 659.25],
+    [293.66, 392, 440, 587.33],
+  ];
+  figures.forEach((notes, bar) => {
+    const start = 0.45 + bar * 2.2;
+    notes.forEach((hz, note) => tone(start + note * 0.28, hz, 1.03, 0.26, 0.034));
+    tone(start + 1.54, notes[2], 0.62, 0.17, 0.035);
+  });
   // The skin resolves, then the title arrives and the camera docks.
-  tone(7.45, 220, 4.7, 0.19, 1.15);
-  tone(7.65, 329.63, 4.4, 0.1, 0.9);
-  tone(9.25, 261.63, 3.9, 0.19, 0.42);
-  tone(9.52, 392, 3.7, 0.14, 0.25);
-  tone(9.88, 523.25, 3.4, 0.09, 0.21);
-  tone(11.85, 130.81, 1.59, 0.11, 0.33);
+  tone(7.45, 523.25, 1.34, 0.33, 0.05);
+  tone(7.73, 659.25, 1.16, 0.25, 0.045);
+  tone(8.04, 783.99, 1.21, 0.23, 0.045);
+  tone(9.25, 261.63, 2.9, 0.18, 0.1);
+  tone(9.52, 392, 2.4, 0.24, 0.07);
+  tone(9.82, 659.25, 2.1, 0.28, 0.055);
+  tone(11.85, 523.25, 1.59, 0.16, 0.08);
   return { ctx, bus };
 }
 export default function ReleaseFilm(props: Props) {

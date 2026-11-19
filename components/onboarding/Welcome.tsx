@@ -38,6 +38,7 @@ export function Welcome() {
   const path = usePathname() ?? '/';
   const [screen, setScreen] = useState<Screen | null>(null);
   const [at, setAt] = useState(0);
+  const [replayId, setReplayId] = useState(0);
   const tour: TourId | null = path === '/' ? 'home' : path.startsWith('/astea/') ? 'sim' : path.startsWith('/belortzioak') ? 'bel' : null;
 
   useEffect(() => {
@@ -46,6 +47,7 @@ export function Welcome() {
     const replay = (e: Event) => {
       const d = (e as CustomEvent<Replay | Screen>).detail;
       const r = typeof d === 'string' ? { screen: d, at: 0 } : d;
+      if (r?.screen === 'film') setReplayId((id) => id + 1);
       setAt(r?.at ?? 0);
       setScreen(r?.screen || 'journey');
     };
@@ -56,7 +58,8 @@ export function Welcome() {
     let timer = 0;
     const offer = () => {
       if (path.startsWith('/dev')) return;
-      const next = showFilm ? 'film' : showJourney ? 'journey' : seen(WELCOME_SEEN) ? null : seen(RELEASE_SEEN) ? 'journey' : 'film';
+      const needsFilm = !seen(RELEASE_SEEN) && (path === '/' || !seen(WELCOME_SEEN));
+      const next = showFilm ? 'film' : showJourney ? 'journey' : needsFilm ? 'film' : seen(WELCOME_SEEN) ? null : 'journey';
       if (!next) return;
       if (document.querySelector('dialog[open], .kimu-panel')) {
         timer = window.setTimeout(offer, 500);
@@ -88,5 +91,5 @@ export function Welcome() {
     setScreen(null);
   }
 
-  return screen ? <Journey opening={screen === 'film'} onFilmEnd={finishFilm} onClose={closeJourney} home={path === '/'} start={screen === 'film' ? 0 : at} /> : null;
+  return screen ? <Journey key={replayId} opening={screen === 'film'} onFilmEnd={finishFilm} onReplayFilm={() => openWelcome('film')} onClose={closeJourney} home={path === '/'} start={screen === 'film' ? 0 : at} /> : null;
 }

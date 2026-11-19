@@ -24,7 +24,7 @@ import { AccountRoot } from '@/components/account/AccountRoot';
 import { StudyAccountGate } from '@/components/account/StudyAccountGate';
 import { StudyMusic } from '@/components/shell/StudyMusic';
 import { Welcome } from '@/components/onboarding/Welcome';
-import { WELCOME_SEEN } from '@/components/onboarding/visit';
+import { RELEASE_SEEN, WELCOME_SEEN } from '@/components/onboarding/visit';
 import { VisitBeacon } from '@/components/visits/VisitBeacon';
 import { themeScript } from '@/components/shell/theme-script';
 import { demoScript } from '@/lib/demo/demo-script';
@@ -50,7 +50,8 @@ const introFlag = `try {
   const firstVisit = localStorage.getItem('${WELCOME_SEEN}') !== '1';
   const params = new URLSearchParams(location.search);
   const replay = params.get('ongietorria') === '1' || params.get('intro') === 'v2';
-  if ((firstVisit || replay) && !location.pathname.startsWith('/dev')) flags.journeyLoading = '1';
+  const updatedFilm = location.pathname === '/' && localStorage.getItem('${RELEASE_SEEN}') !== '1';
+  if ((firstVisit || updatedFilm || replay) && !location.pathname.startsWith('/dev')) flags.journeyLoading = '1';
   if (!params.has('intro-at') || flags.journeyLoading || matchMedia('(prefers-reduced-motion: reduce)').matches) flags.intro = 'seen';
 } catch {}`;
 
