@@ -76,11 +76,12 @@
 .primary span { font-size: 21px; line-height: 1; transition: transform .25s; }
 .primary:hover { background: #ffe2c0; transform: translateY(-2px); }
 .primary:hover span { transform: translateX(3px); }
-.subtle,.account button,.again { padding: 6px 0; text-decoration: underline; text-underline-offset: 4px; font-size: 13px!important; }
+.subtle,.again { padding: 6px 0; text-decoration: underline; text-underline-offset: 4px; font-size: 13px!important; }
 .account { max-width: 45ch; border-left: 1px solid #8b6a50; padding-left: 14px; margin-top: 16px; }
 .account p { margin: 0; color: var(--muted); line-height: 1.5; font-size: 14px; }
-.account button { color: var(--warm); }
-.accountActions { display: flex; flex-wrap: wrap; gap: 0 1rem; }
+.accountActions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.accountSecondary { min-height: 44px; padding: 10px 16px; border: 1px solid #8b6a50; border-radius: 40px; background: transparent; color: var(--cream); font-size: 15px; font-weight: 600; }
+.accountSecondary:hover { border-color: var(--warm); background: #f6d4ad18; }
 .art { width: 100%; position: relative; animation: exhibit .75s cubic-bezier(.16,.7,.19,1) both; }
 .stage { position: relative; display: grid; place-items: center; width: 100%; min-height: clamp(320px,52vh,640px); }
 .stage[data-art='0'] { height: clamp(320px,66vh,670px); }

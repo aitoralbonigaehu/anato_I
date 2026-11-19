@@ -587,8 +587,8 @@ export default function Journey({ opening, onFilmEnd, onClose, home, start = 0 }
                     <>
                       <p>Kontua aukerakoa da. Zure kontuarekin, aurrerapena bereiz gordeko da nabigatzaile honetan, beste norbaitek gailu bera erabili arren.</p>
                       <div className={s.accountActions}>
-                        <button type="button" onClick={() => leave(() => openAccount('sartu'))}>Hasi saioa</button>
-                        <button type="button" onClick={() => leave(() => openAccount('sortu'))}>Sortu kontua</button>
+                        <button type="button" className={s.primary} onClick={() => leave(() => openAccount('sartu'))}>Hasi saioa</button>
+                        <button type="button" className={s.accountSecondary} onClick={() => leave(() => openAccount('sortu'))}>Sortu kontua</button>
                       </div>
                     </>
                   ) : (
@@ -601,7 +601,7 @@ export default function Journey({ opening, onFilmEnd, onClose, home, start = 0 }
                 </div>
               )}
               <div className={s.actions}>
-                <button className={s.primary} onClick={last ? finish : () => go(step + 1)}>
+                <button className={last && acc.status === 'out' ? s.accountSecondary : s.primary} onClick={last ? finish : () => go(step + 1)}>
                   {last && home ? 'Ireki 17. gaia' : stop.next} <span aria-hidden="true">→</span>
                 </button>
                 {step === 3 && (kimuPhase >= 4 || kimuYours) && (
