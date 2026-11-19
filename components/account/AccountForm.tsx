@@ -14,7 +14,7 @@ const MESSAGES: Record<string, string> = {
 
 /**
  * Sign in or create an account: a name with a 4-digit PIN. Used by the first-visit welcome
- * and by the "Gorde hodeian" card. `onDone` runs once signed in.
+ * and by the progress page. `onDone` runs once signed in.
  */
 export function AccountForm({ onDone }: { onDone?: () => void }) {
   const [tab, setTab] = useState<'sortu' | 'sartu'>('sortu');
@@ -73,7 +73,7 @@ export function AccountForm({ onDone }: { onDone?: () => void }) {
           </p>
         )}
         <button type="submit" className="btn primary acc-submit" disabled={busy}>
-          {busy ? 'Itxaron…' : tab === 'sortu' ? 'Sortu eta gorde' : 'Hasi saioa'}
+          {busy ? 'Itxaron…' : tab === 'sortu' ? 'Sortu kontua' : 'Hasi saioa'}
         </button>
         <p className="acc-note">{tab === 'sortu' ? 'Gogoratu izena eta PINa: ez dago berreskuratzeko modurik. Ez erabili beste inon erabiltzen duzun PINik.' : 'Izena idatzi zenuen bezala (maiuskulek eta azentuek ez dute axola).'}</p>
       </form>

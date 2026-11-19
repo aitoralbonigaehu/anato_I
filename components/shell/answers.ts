@@ -1,3 +1,4 @@
+import { studyKey } from '@/lib/study/storage-scope';
 import { useSyncExternalStore } from 'react';
 import { noteRecall } from '@/lib/study/activity';
 
@@ -35,7 +36,7 @@ const listeners = new Set<() => void>();
 const read = (): Answers => {
   if (!cache) {
     try {
-      cache = JSON.parse(window.localStorage.getItem(KEY) ?? '{}') as Answers;
+      cache = JSON.parse(window.localStorage.getItem(studyKey(KEY)) ?? '{}') as Answers;
     } catch {
       cache = {};
     }
@@ -63,7 +64,7 @@ export function recordAnswer(id: string, ok: boolean, picked?: string, opts?: { 
   cache = { ...read(), [id]: next };
   noteRecall(ok);
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(cache));
+    window.localStorage.setItem(studyKey(KEY), JSON.stringify(cache));
   } catch {
     // Storage unavailable: the history lasts for this page only.
   }
@@ -72,7 +73,7 @@ export function recordAnswer(id: string, ok: boolean, picked?: string, opts?: { 
 
 // Another tab, or the account sync, rewrote the stored copy: read it again.
 const storageChanged = (e: StorageEvent) => {
-  if (e.key !== null && e.key !== KEY) return;
+  if (e.key !== null && e.key !== studyKey(KEY)) return;
   cache = null;
   listeners.forEach((l) => l());
 };

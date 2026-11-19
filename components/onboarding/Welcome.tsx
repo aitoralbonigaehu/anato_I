@@ -148,7 +148,7 @@ export function Welcome() {
   const slides: Slide[] = [
     ...SLIDES,
     withAccount
-      ? { id: 'kontua', kicker: '5 · Aukerakoa', title: 'Gorde zure aurrerapena', lead: 'Hasi saioa, eta ikusitakoa, txartelak eta galderak edozein gailutan izango dituzu. Saiorik gabe ere dena dabil: nabigatzaile honetan gordetzen da.', visual: 'account' }
+      ? { id: 'kontua', kicker: '5 · Aukerakoa', title: 'Zure kontua', lead: 'Kontua aukerakoa da. Ikasketa-aurrerapena nabigatzaile honetan gordetzen da.', visual: 'account' }
       : { id: 'prest', kicker: 'Prest', title: 'Hasteko prest', lead: 'Hau guztia «Ongietorria» atalean duzu berriz, orri-oinean. Orri bakoitzaren gida laburra, «?» botoian.', visual: 'ready' },
   ];
   const slide = slides[Math.min(i, slides.length - 1)];

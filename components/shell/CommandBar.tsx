@@ -1,5 +1,6 @@
 'use client';
 
+import { studyKey } from '@/lib/study/storage-scope';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
 import { openKimu } from '@/components/kimu/store';
@@ -17,7 +18,7 @@ export const openCommandBar = () => window.dispatchEvent(new Event(OPEN_COMMAND)
 const RECENT_KEY = 'enbrioatlas:command-recent';
 const readRecent = (): string[] => {
   try {
-    return JSON.parse(localStorage.getItem(RECENT_KEY) ?? '[]');
+    return JSON.parse(localStorage.getItem(studyKey(RECENT_KEY)) ?? '[]');
   } catch {
     return [];
   }
@@ -137,7 +138,7 @@ export function CommandBar() {
     const id = c.id;
     const next = [id, ...readRecent().filter((r) => r !== id)].slice(0, 8);
     try {
-      localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+      localStorage.setItem(studyKey(RECENT_KEY), JSON.stringify(next));
     } catch {}
     if (c.href) {
       router.push(c.href);

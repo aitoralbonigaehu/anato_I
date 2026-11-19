@@ -5,6 +5,7 @@
  * idempotent (merge(a, a) = a, merging twice changes nothing).
  */
 
+import { studyKey } from '@/lib/study/storage-scope';
 import { ACTIVITY_KEY, mergeActivity, parseActivity } from '@/lib/study/activity';
 
 export type Snapshot = Record<string, unknown>;
@@ -100,7 +101,7 @@ export function collectSnapshot(): Snapshot {
   const out: Snapshot = {};
   for (const k of SYNC_KEYS) {
     try {
-      const raw = window.localStorage.getItem(k);
+      const raw = window.localStorage.getItem(studyKey(k));
       if (raw !== null) out[k] = JSON.parse(raw);
     } catch {
       // An unreadable store is left out (and so never overwrites the cloud copy).
@@ -114,7 +115,7 @@ export function applySnapshot(s: Snapshot) {
   for (const k of SYNC_KEYS) {
     if (s[k] === undefined) continue;
     try {
-      window.localStorage.setItem(k, JSON.stringify(s[k]));
+      window.localStorage.setItem(studyKey(k), JSON.stringify(s[k]));
     } catch {
       // Storage unavailable: the cloud keeps the copy.
     }

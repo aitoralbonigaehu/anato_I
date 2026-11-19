@@ -1,5 +1,6 @@
 'use client';
 
+import { studyKey } from '@/lib/study/storage-scope';
 import { useEffect, useRef, useState } from 'react';
 import { getWeek, structures } from '@/content/registry';
 import { reached, type NamesOf } from '@/lib/klasea/cues';
@@ -39,7 +40,7 @@ const RATES = [0.8, 1, 1.25, 1.5, 1.75, 2];
 const nearestRate = (r: number) => RATES.reduce((a, b) => (Math.abs(b - r) < Math.abs(a - r) ? b : a));
 const RATE_KEY = 'enbrioatlas:klasea:abiadura';
 const PACING_KEY = 'enbrioatlas:klasea:learner-paced';
-const placeKey = (week: number) => `enbrioatlas:klasea:${week}`;
+const placeKey = (week: number) => studyKey(`enbrioatlas:klasea:${week}`);
 
 /** A structure's names as a line may say them (its name and other names). */
 export const namesOf: NamesOf = (id) => {

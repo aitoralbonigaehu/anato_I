@@ -1,5 +1,6 @@
 'use client';
 
+import { studyKey } from '@/lib/study/storage-scope';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { BEL_ITEMS, BEL_SYSTEMS } from '@/content/belortzioak';
@@ -36,13 +37,13 @@ function useCardStores() {
     const load = () => {
       setBel(readCards());
       try {
-        const sp = parseReviewProgress(window.localStorage.getItem(SCHEME_KEY));
+        const sp = parseReviewProgress(window.localStorage.getItem(studyKey(SCHEME_KEY)));
         const all = Object.values(sp);
         setScheme({ reviewed: all.length, known: all.filter((x) => x.correct > 0 && x.mistakes === 0).length });
       } catch {}
     };
     const raf = window.setTimeout(load);
-    const onStorage = (e: StorageEvent) => (e.key === null || e.key === BEL_STORE || e.key === SCHEME_KEY) && load();
+    const onStorage = (e: StorageEvent) => (e.key === null || e.key === studyKey(BEL_STORE) || e.key === studyKey(SCHEME_KEY)) && load();
     window.addEventListener('storage', onStorage);
     return () => {
       window.clearTimeout(raf);
@@ -163,7 +164,7 @@ function AccountLine() {
   if (acc.status === 'in')
     return (
       <p className={p.account}>
-        <Glyph name="cloud" size={15} /> Hodeian gordeta{acc.syncing ? '…' : ''} · {acc.user?.name}
+        <Glyph name="lock" size={15} /> {acc.user?.name} · Kontu honen aurrerapena nabigatzaile honetan gordetzen da.
         <button className={p.linkBtn} onClick={() => void signOut()}>
           Saioa itxi
         </button>
@@ -174,7 +175,7 @@ function AccountLine() {
       <p className={p.account}>
         <Glyph name="lock" size={15} /> Nabigatzaile honetan bakarrik gordeta.
         <button className="btn small primary" onClick={askAccount}>
-          Gorde hodeian
+          Hasi saioa
         </button>
       </p>
     );

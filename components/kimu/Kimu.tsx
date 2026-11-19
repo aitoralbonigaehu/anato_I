@@ -1,5 +1,6 @@
 'use client';
 
+import { studyKey } from '@/lib/study/storage-scope';
 import { usePathname, useRouter } from 'next/navigation';
 import { Fragment, useCallback, useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import type { KimuFrom, KimuPractice, KimuReply, KimuSource, KimuTarget } from '@/lib/kimu/types';
@@ -35,7 +36,7 @@ const SIM_ASKS = ['Azaldu urrats hau', 'Zergatik gertatzen da hau?', 'Galdetu ni
 const readSaved = (): Msg[] => {
   if (typeof window === 'undefined') return [];
   try {
-    const saved = JSON.parse(window.sessionStorage.getItem(STORE) ?? '[]') as Msg[];
+    const saved = JSON.parse(window.sessionStorage.getItem(studyKey(STORE)) ?? '[]') as Msg[];
     return Array.isArray(saved) ? saved.slice(-MAX_MSGS) : [];
   } catch {
     return [];
@@ -207,7 +208,7 @@ export function Kimu() {
   }, []);
   useEffect(() => {
     try {
-      window.sessionStorage.setItem(STORE, JSON.stringify(msgs.slice(-MAX_MSGS)));
+      window.sessionStorage.setItem(studyKey(STORE), JSON.stringify(msgs.slice(-MAX_MSGS)));
     } catch {}
   }, [msgs]);
 

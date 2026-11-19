@@ -1,5 +1,6 @@
 'use client';
 
+import { studyKey } from '@/lib/study/storage-scope';
 import { useCallback, useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from 'react';
 import type { StudyCard as Card } from '@/content/eratorriak/model';
 import { decodeBoxes } from '@/content/eratorriak/flashcard-store';
@@ -15,14 +16,14 @@ const MAX_BOX = 4;
 
 function load(KEY: string): Record<string, number> {
   try {
-    return decodeBoxes(localStorage.getItem(KEY));
+    return decodeBoxes(localStorage.getItem(studyKey(KEY)));
   } catch {
     return {};
   }
 }
 function save(KEY: string, b: Record<string, number>) {
   try {
-    localStorage.setItem(KEY, JSON.stringify(b));
+    localStorage.setItem(studyKey(KEY), JSON.stringify(b));
   } catch {
     // Private window or blocked storage: the round still works, it is just not remembered.
   }

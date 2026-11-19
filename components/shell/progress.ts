@@ -1,3 +1,4 @@
+import { studyKey } from '@/lib/study/storage-scope';
 import { useEffect, useRef, useSyncExternalStore } from 'react';
 
 const KEY = 'enbrioatlas:visited';
@@ -6,7 +7,7 @@ type Store = Record<string, string[]>;
 
 const read = (): Store => {
   try {
-    const value = JSON.parse(window.localStorage.getItem(KEY) ?? '{}');
+    const value = JSON.parse(window.localStorage.getItem(studyKey(KEY)) ?? '{}');
     if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
     return Object.fromEntries(Object.entries(value).filter(([, ids]) => Array.isArray(ids) && ids.every((id) => typeof id === 'string'))) as Store;
   } catch {
@@ -20,7 +21,7 @@ const listeners = new Set<() => void>();
 const NONE: string[] = [];
 
 function storageChanged(event: StorageEvent) {
-  if (event.key !== null && ![KEY, LAST_KEY, PLACE_KEY].includes(event.key)) return;
+  if (event.key !== null && ![KEY, LAST_KEY, PLACE_KEY].some((key) => studyKey(key) === event.key)) return;
   cache.clear();
   allCache = null;
   lastCache = undefined;
@@ -53,7 +54,7 @@ export const markVisited = (week: number, stageId: string) => {
   const list = [...(all[week] ?? []), stageId];
   all[week] = list;
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(all));
+    window.localStorage.setItem(studyKey(KEY), JSON.stringify(all));
   } catch {
     // Storage unavailable (private mode): progress simply isn't remembered.
   }
@@ -85,7 +86,7 @@ let lastCache: LastPlace | null | undefined;
 const readLast = (): LastPlace | null => {
   if (lastCache === undefined) {
     try {
-      lastCache = validPlace(JSON.parse(window.localStorage.getItem(LAST_KEY) ?? 'null'));
+      lastCache = validPlace(JSON.parse(window.localStorage.getItem(studyKey(LAST_KEY)) ?? 'null'));
     } catch {
       lastCache = null;
     }
@@ -109,9 +110,9 @@ function validPlace(v: unknown): LastPlace | null {
 function persistedPlaces(): Record<string, LastPlace> {
   const places: Record<string, LastPlace> = {};
   try {
-    const legacy = validPlace(JSON.parse(window.localStorage.getItem(LAST_KEY) ?? 'null'));
+    const legacy = validPlace(JSON.parse(window.localStorage.getItem(studyKey(LAST_KEY)) ?? 'null'));
     if (legacy) places[legacy.week] = legacy;
-    const raw = JSON.parse(window.localStorage.getItem(PLACE_KEY) ?? '{}');
+    const raw = JSON.parse(window.localStorage.getItem(studyKey(PLACE_KEY)) ?? '{}');
     for (const v of Object.values(raw ?? {})) {
       const p = validPlace(v);
       if (p) places[p.week] = p;
@@ -137,8 +138,8 @@ export function savePlace(place: LastPlace) {
   placesCache = merged;
   lastCache = p;
   try {
-    window.localStorage.setItem(PLACE_KEY, JSON.stringify(placesCache));
-    window.localStorage.setItem(LAST_KEY, JSON.stringify(p));
+    window.localStorage.setItem(studyKey(PLACE_KEY), JSON.stringify(placesCache));
+    window.localStorage.setItem(studyKey(LAST_KEY), JSON.stringify(p));
   } catch {} // The in-memory location still works when storage is unavailable.
   listeners.forEach((l) => l());
 }

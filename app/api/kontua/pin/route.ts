@@ -14,6 +14,7 @@ function failure(error: Failure, status: number, retryAfterSec?: number) {
 }
 
 function config(): Config | null {
+  if (process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_ACCOUNTS !== 'supabase') return null;
   const { SUPABASE_URL: url, SUPABASE_SERVICE_ROLE_KEY: service, NEXT_PUBLIC_SUPABASE_ANON_KEY: anon,
     PIN_PEPPER: encoded, PIN_EMAIL_DOMAIN: domain } = process.env;
   if (!url || !service || !anon || !encoded || !domain || !/^[a-zA-Z0-9.-]+$/.test(domain) || !domain.includes('.')) return null;
@@ -32,7 +33,11 @@ function digest(pepper: Buffer, text: string) {
 }
 
 function headers(key: string) {
-  return { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' };
+  return {
+    apikey: key,
+    ...(key.startsWith('sb_') ? {} : { Authorization: `Bearer ${key}` }),
+    'Content-Type': 'application/json',
+  };
 }
 
 async function jsonResponse(response: Response): Promise<Record<string, unknown> | null> {

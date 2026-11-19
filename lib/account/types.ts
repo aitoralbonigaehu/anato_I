@@ -31,6 +31,8 @@ export interface AccountBackend {
   readonly kind: 'supabase' | 'mock';
   /** The signed-in user (a restored session); null when signed out. */
   currentUser(): Promise<AccountUser | null>;
+  /** Reports identity changes, including changes originating in another tab. */
+  onSessionChange?(listener: (user: AccountUser | null) => void): void;
   signInWithPin(name: string, pin: string): Promise<AuthResult>;
   signUpWithPin(name: string, pin: string): Promise<AuthResult>;
   signOut(): Promise<void>;

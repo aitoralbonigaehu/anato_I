@@ -1,6 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
+import { initializeStudyOwner } from '@/lib/study/storage-scope';
 import { getBackend } from '@/lib/account/backend';
 import { applySnapshot, collectSnapshot, mergeSnapshot, sameSnapshot } from '@/lib/account/snapshot';
 import type { AccountBackend, AccountUser, AuthResult } from '@/lib/account/types';
@@ -41,18 +42,22 @@ export const accountState = () => state;
 
 let backend: AccountBackend | null = null;
 let started = false;
+let ready = false;
+let reloading = false;
 let running: Promise<void> | null = null;
 const EVERY = 3 * 60_000;
 
-/** Pull, merge, write here, push. One at a time; a failure is retried on the next turn. */
+/** Exercise sync with the mock only until production progress has account isolation and conflict handling. */
 export function syncNow(): Promise<void> {
-  if (!backend || state.status !== 'in') return Promise.resolve();
+  if (reloading || !backend || backend.kind !== 'mock' || state.status !== 'in') return Promise.resolve();
   if (running) return running;
   const b = backend;
+  const owner = state.user?.id;
   running = (async () => {
     set({ syncing: true });
     try {
       const remote = await b.loadProgress();
+      if ((await b.currentUser())?.id !== owner || reloading) return;
       const local = collectSnapshot();
       const merged = remote ? mergeSnapshot(local, remote.data) : local;
       if (!sameSnapshot(merged, local)) applySnapshot(merged);
@@ -76,22 +81,46 @@ export async function startAccounts() {
   started = true;
   backend = getBackend();
   if (!backend) return set({ status: 'off' });
+  let observed: AccountUser | null | undefined;
+  backend.onSessionChange?.((user) => {
+    observed = user;
+    if (ready) changeSession(user);
+  });
+  let restored: AccountUser | null = null;
   try {
-    const user = await backend.currentUser();
-    set({ status: user ? 'in' : 'out', user });
+    restored = await backend.currentUser();
   } catch {
-    set({ status: 'out', user: null });
+    // A session that cannot be restored must not select an account's local progress.
   }
-  if (state.status === 'in') void syncNow();
-  window.setInterval(() => !document.hidden && void syncNow(), EVERY);
-  document.addEventListener('visibilitychange', () => document.hidden && void syncNow());
+  const user = observed === undefined ? restored : observed;
+  initializeStudyOwner(user?.id ?? null);
+  ready = true;
+  set({ status: user ? 'in' : 'out', user });
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted && !reloading) {
+      void backend?.currentUser().then(changeSession, reloadStudy);
+    }
+  });
+  if (backend.kind === 'mock') {
+    if (state.status === 'in') void syncNow();
+    window.setInterval(() => !document.hidden && void syncNow(), EVERY);
+    document.addEventListener('visibilitychange', () => document.hidden && void syncNow());
+  }
 }
 
-async function afterSignIn(r: AuthResult): Promise<AuthResult> {
-  if (r.ok) {
-    set({ status: 'in', user: r.user, asking: false });
-    await syncNow();
-  }
+function reloadStudy() {
+  if (reloading) return;
+  reloading = true;
+  set({ status: 'loading', user: null, asking: false });
+  window.setTimeout(() => window.location.replace('/aurrerapena'), 0);
+}
+
+function changeSession(user: AccountUser | null) {
+  if (user?.id !== state.user?.id) reloadStudy();
+}
+
+function afterSignIn(r: AuthResult): AuthResult {
+  if (r.ok) changeSession(r.user);
   return r;
 }
 
@@ -101,7 +130,7 @@ export const signUpWithPin = async (name: string, pin: string) => (backend ? aft
 export async function signOut() {
   await syncNow();
   await backend?.signOut();
-  set({ status: 'out', user: null, synced: 0 });
+  changeSession(null);
 }
 
 // ---- the first-visit card ------------------------------------------------------------------------

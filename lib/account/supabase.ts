@@ -52,6 +52,11 @@ export const supabaseBackend: AccountBackend = {
     const { data, error } = await supabase.auth.getSession();
     return !error && data.session?.user ? accountUser(data.session.user) : null;
   },
+  onSessionChange(listener) {
+    browserClient()?.auth.onAuthStateChange((_event, session) => {
+      listener(session?.user ? accountUser(session.user) : null);
+    });
+  },
   signInWithPin: (name, pin) => pinAuth('signin', name, pin),
   signUpWithPin: (name, pin) => pinAuth('signup', name, pin),
   async signOut() {

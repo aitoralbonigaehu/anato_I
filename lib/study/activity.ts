@@ -2,11 +2,13 @@
  * Study activity kept in this browser: how many times each stage of the simulator was opened, how long
  * it was studied, and what was done each day (seconds studied, flashcards and questions right/wrong).
  * The progress page ("Aurrerapena") draws everything from here and from the other study stores; a
- * signed-in account copies it all to the cloud (lib/account).
+ * signed-in account has its own copy in this browser.
  *
  * Pure helpers (record*, mergeActivity) take and return snapshots, so they can be tested; the browser
  * store at the bottom wraps them with localStorage.
  */
+
+import { studyKey } from './storage-scope';
 
 export const ACTIVITY_KEY = 'enbrioatlas:jarduera';
 
@@ -128,7 +130,7 @@ const EMPTY = emptyActivity();
 export function readActivity(): Activity {
   if (cache) return cache;
   try {
-    cache = parseActivity(JSON.parse(window.localStorage.getItem(ACTIVITY_KEY) ?? 'null'));
+    cache = parseActivity(JSON.parse(window.localStorage.getItem(studyKey(ACTIVITY_KEY)) ?? 'null'));
   } catch {
     cache = emptyActivity();
   }
@@ -138,7 +140,7 @@ export function readActivity(): Activity {
 function write(next: Activity) {
   cache = next;
   try {
-    window.localStorage.setItem(ACTIVITY_KEY, JSON.stringify(next));
+    window.localStorage.setItem(studyKey(ACTIVITY_KEY), JSON.stringify(next));
   } catch {
     // Storage unavailable: this page still counts, nothing is remembered.
   }
@@ -152,7 +154,7 @@ export function reloadActivity() {
 }
 
 const storageChanged = (e: StorageEvent) => {
-  if (e.key === null || e.key === ACTIVITY_KEY) reloadActivity();
+  if (e.key === null || e.key === studyKey(ACTIVITY_KEY)) reloadActivity();
 };
 
 export const subscribeActivity = (cb: () => void) => {

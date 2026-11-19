@@ -1,3 +1,5 @@
+import { studyKey } from '@/lib/study/storage-scope';
+
 /**
  * Belortzioak flashcards: one card per structure (an arrow on a figure → its name), on Leitner boxes,
  * and the study mode ("Ikasketa modua"): one arrow lit at a time, the student thinks of the name,
@@ -23,14 +25,14 @@ export const KNOWN = 2;
 
 export const readCards = (): Cards => {
   try {
-    return JSON.parse(window.localStorage.getItem(STORE) ?? '{}') as Cards;
+    return JSON.parse(window.localStorage.getItem(studyKey(STORE)) ?? '{}') as Cards;
   } catch {
     return {};
   }
 };
 export const writeCards = (c: Cards) => {
   try {
-    window.localStorage.setItem(STORE, JSON.stringify(c));
+    window.localStorage.setItem(studyKey(STORE), JSON.stringify(c));
   } catch {
     // Without storage the progress is only lost; studying still works.
   }

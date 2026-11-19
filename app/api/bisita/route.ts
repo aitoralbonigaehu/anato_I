@@ -25,6 +25,7 @@ const geo = (h: Headers, k: string) => {
  */
 export async function POST(request: Request) {
   const done = new Response(null, { status: 204 });
+  if (process.env.NODE_ENV === 'production' && process.env.VISITS_ENABLED !== '1') return done;
   if (!visitsConfigured()) return done;
   const h = request.headers;
   const ip = clientIp(h);

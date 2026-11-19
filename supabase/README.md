@@ -3,12 +3,12 @@
 > **Prompt para quien conecte Supabase.** Puedes dárselo tal cual a una persona o a un agente (Claude Code, etc.).
 > Todo lo del lado del cliente ya está hecho y probado con un backend de mentira; falta el lado Supabase.
 
-> **Cuentas: no activar todavía.** La sincronización actual lee, mezcla y sobrescribe el documento sin
-> control de concurrencia. Dos dispositivos pueden sobrescribirse. Además, la mezcla actual elige una
-> copia de algunos historiales de respuestas y tarjetas, de modo que un control de concurrencia por sí
-> solo no evitaría perder datos divergentes. El progreso local tampoco está aislado por cuenta: al
-> cambiar de usuario podría fusionarse con otra cuenta. Antes de activar `NEXT_PUBLIC_ACCOUNTS`, hay que
-> rediseñar y probar la reconciliación y el aislamiento, incluida la transición del progreso anónimo.
+> **Cuentas y progreso.** El inicio de sesión selecciona un espacio de progreso local por usuario. El
+> progreso anterior a esta separación permanece en el espacio anónimo y no se importa al iniciar sesión.
+> El cambio de cuenta, también entre pestañas, abre de nuevo la página de progreso para descartar el
+> estado en memoria de la sesión anterior. Supabase no sincroniza el progreso: el código de sincronización
+> solo se ejecuta con el backend de desarrollo. Antes de sincronizar entre dispositivos, hay que resolver
+> las escrituras concurrentes y la reconciliación de historiales divergentes.
 
 ---
 

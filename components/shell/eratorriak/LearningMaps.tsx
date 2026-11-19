@@ -1,5 +1,6 @@
 'use client';
 
+import { studyKey } from '@/lib/study/storage-scope';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { LEARNING_MAPS } from '@/content/eratorriak/learning-maps';
 import type { Flow } from '@/content/migrations';
@@ -30,7 +31,7 @@ export function LearningMaps({ week, renderScheme, renderDetail, resolveName }: 
 
   useEffect(() => {
     const hydrate = window.setTimeout(() => {
-      try { setProgress(parseReviewProgress(localStorage.getItem(STORAGE_KEY))); }
+      try { setProgress(parseReviewProgress(localStorage.getItem(studyKey(STORAGE_KEY)))); }
       catch { setStorageOk(false); }
       setNow(Date.now());
       setReady(true);
@@ -38,8 +39,8 @@ export function LearningMaps({ week, renderScheme, renderDetail, resolveName }: 
     const timer = window.setInterval(() => setNow(Date.now()), 60000);
     // Another tab, or the account sync, rewrote the stored cards: show them.
     const onStorage = (e: StorageEvent) => {
-      if (e.key !== null && e.key !== STORAGE_KEY) return;
-      try { setProgress(parseReviewProgress(localStorage.getItem(STORAGE_KEY))); } catch {}
+      if (e.key !== null && e.key !== studyKey(STORAGE_KEY)) return;
+      try { setProgress(parseReviewProgress(localStorage.getItem(studyKey(STORAGE_KEY)))); } catch {}
     };
     window.addEventListener('storage', onStorage);
     return () => { window.clearTimeout(hydrate); window.clearInterval(timer); window.removeEventListener('storage', onStorage); };
@@ -57,7 +58,7 @@ export function LearningMaps({ week, renderScheme, renderDetail, resolveName }: 
     const next = gradeReview(progress, card.id, known, Date.now());
     noteRecall(known);
     setProgress(next);
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); }
+    try { localStorage.setItem(studyKey(STORAGE_KEY), JSON.stringify(next)); }
     catch { setStorageOk(false); }
     setNow(Date.now());
     setSession((current) => new Set(current).add(card.id));

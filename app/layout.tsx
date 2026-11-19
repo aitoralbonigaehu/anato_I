@@ -21,6 +21,7 @@ import { KimuCheer } from '@/components/kimu/KimuCheer';
 import { CommandBar } from '@/components/shell/CommandBar';
 import { ThemeSync } from '@/components/shell/theme';
 import { AccountRoot } from '@/components/account/AccountRoot';
+import { StudyAccountGate } from '@/components/account/StudyAccountGate';
 import { Welcome } from '@/components/onboarding/Welcome';
 import { VisitBeacon } from '@/components/visits/VisitBeacon';
 import { themeScript } from '@/components/shell/theme-script';
@@ -50,13 +51,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script dangerouslySetInnerHTML={{ __html: themeScript + introFlag }} />
       </head>
       <body>
-        {children}
-        <Kimu />
-        <KimuCheer />
-        <CommandBar />
+        <StudyAccountGate>
+          {children}
+          <Welcome />
+          <Kimu />
+          <KimuCheer />
+          <CommandBar />
+        </StudyAccountGate>
         <ThemeSync />
         <AccountRoot />
-        <Welcome />
         <VisitBeacon />
       </body>
     </html>

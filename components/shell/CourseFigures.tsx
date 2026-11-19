@@ -1,5 +1,6 @@
 'use client';
 
+import { studyKey } from '@/lib/study/storage-scope';
 import { useEffect, useMemo, useState } from 'react';
 import type { BelItem, BelPlate } from '@/content/belortzioak';
 import { Figure, type Marks as BelMarks } from './Belortzioak';
@@ -54,7 +55,7 @@ export function CourseFigures() {
   const [page, setPage] = useState(1);
   const [pageLines, setPageLines] = useState<{ id: string; lines: Line[] }>({ id: '', lines: [] });
   const [marks, setMarks] = useState<Marks>(() => {
-    try { return typeof window === 'undefined' ? {} : JSON.parse(localStorage.getItem(key) || '{}'); } catch { return {}; }
+    try { return typeof window === 'undefined' ? {} : JSON.parse(localStorage.getItem(studyKey(key)) || '{}'); } catch { return {}; }
   });
   const [available, setAvailable] = useState(true);
   const id = `${documents[doc].file ?? doc + 1}-${page}`;
@@ -97,7 +98,7 @@ export function CourseFigures() {
       if (!next[markId]) next[markId] = 1;
       else if (next[markId] === 1) next[markId] = 2;
       else delete next[markId];
-      try { localStorage.setItem(key, JSON.stringify(next)); } catch { /* storage unavailable */ }
+      try { localStorage.setItem(studyKey(key), JSON.stringify(next)); } catch { /* storage unavailable */ }
       return next;
     });
   }

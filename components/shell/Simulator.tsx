@@ -1,5 +1,6 @@
 'use client';
 
+import { studyKey } from '@/lib/study/storage-scope';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useEffectEvent, useRef, useState, useSyncExternalStore } from 'react';
@@ -314,7 +315,7 @@ const BACK_KEY = 'enbrioatlas:back';
 
 const readBack = (week: number, stage: string): Back | null => {
   try {
-    const raw = window.sessionStorage.getItem(BACK_KEY);
+    const raw = window.sessionStorage.getItem(studyKey(BACK_KEY));
     const b = raw ? (JSON.parse(raw) as Back & { to: string }) : null;
     return b && b.to === `${week}/${stage}` && (!b.at || Date.now() - b.at < 1_800_000) ? b : null;
   } catch {
@@ -1087,7 +1088,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
       return;
     }
     try {
-      window.sessionStorage.setItem(BACK_KEY, JSON.stringify({ ...here, to: `${w}/${stageId}` }));
+      window.sessionStorage.setItem(studyKey(BACK_KEY), JSON.stringify({ ...here, to: `${w}/${stageId}` }));
     } catch {
       // Without storage the jump still works; only the way back is lost.
     }
@@ -1114,7 +1115,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
     setPlaying(false);
     const origin: Back = { week: week.week, stage: stage.id, t: pos.t, view: view.id, selected, title: stage.title };
     if (t.week !== week.week) {
-      try { window.sessionStorage.setItem(BACK_KEY, JSON.stringify({ ...origin, to: `${t.week}/${t.stage}` })); } catch {}
+      try { window.sessionStorage.setItem(studyKey(BACK_KEY), JSON.stringify({ ...origin, to: `${t.week}/${t.stage}` })); } catch {}
       const q = new URLSearchParams({ etapa: t.stage, une: String(f?.start ?? t.at) });
       if (f) { q.set('eraketa', f.structure); q.set('apunteak', '1'); }
       else if (t.structure) q.set('egitura', t.structure);
@@ -1236,7 +1237,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
     setPlaying(false);
     setBack(null);
     try {
-      window.sessionStorage.removeItem(BACK_KEY);
+      window.sessionStorage.removeItem(studyKey(BACK_KEY));
     } catch {}
     if (back.href) {
       router.push(back.href);

@@ -1,5 +1,6 @@
 'use client';
 
+import { studyKey } from '@/lib/study/storage-scope';
 import { Fragment, useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { BEL_ITEMS, BEL_KINDS, BEL_MERGED, BEL_MERGED_PLATES, BEL_PLATES, BEL_SYSTEMS, matchesName, sameKey, type BelItem, type BelKind, type BelMerged, type BelPlate, type BelSystem } from '@/content/belortzioak';
 import { LandFoot, LandNav } from './LandNav';
@@ -553,7 +554,7 @@ export function Belortzioak() {
       try {
         const st = window.localStorage.getItem(STYLE_KEY);
         if (st === 'aukerak' || st === 'buruz' || st === 'idatzi') setStyle(st);
-        setMarks(JSON.parse(window.localStorage.getItem(MARKS_KEY) ?? '{}') as Marks);
+        setMarks(JSON.parse(window.localStorage.getItem(studyKey(MARKS_KEY)) ?? '{}') as Marks);
       } catch {
         // Defaults are fine.
       }
@@ -575,10 +576,10 @@ export function Belortzioak() {
   // Another tab, or the account sync, rewrote the cards or the marks: show the stored copy.
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
-      if (e.key === null || e.key === STORE) setCards(readCards());
-      if (e.key === null || e.key === MARKS_KEY)
+      if (e.key === null || e.key === studyKey(STORE)) setCards(readCards());
+      if (e.key === null || e.key === studyKey(MARKS_KEY))
         try {
-          setMarks(JSON.parse(window.localStorage.getItem(MARKS_KEY) ?? '{}') as Marks);
+          setMarks(JSON.parse(window.localStorage.getItem(studyKey(MARKS_KEY)) ?? '{}') as Marks);
         } catch {}
     };
     window.addEventListener('storage', onStorage);
@@ -817,7 +818,7 @@ export function Belortzioak() {
     else delete next[key];
     setMarks(next);
     try {
-      window.localStorage.setItem(MARKS_KEY, JSON.stringify(next));
+      window.localStorage.setItem(studyKey(MARKS_KEY), JSON.stringify(next));
     } catch {
       // Without storage the marks last until the page closes.
     }

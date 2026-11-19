@@ -37,6 +37,13 @@ export const mockBackend: AccountBackend = {
     const id = session();
     return id ? (read()[id]?.user ?? null) : null;
   },
+  onSessionChange(listener) {
+    window.addEventListener('storage', (event) => {
+      if (event.key !== SESSION && event.key !== null) return;
+      const id = session();
+      listener(id ? (read()[id]?.user ?? null) : null);
+    });
+  },
   async signUpWithPin(name, pin): Promise<AuthResult> {
     await wait();
     if (checkName(name) || checkPin(pin)) return { ok: false, error: 'invalid' };

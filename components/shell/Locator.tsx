@@ -1,5 +1,6 @@
 'use client';
 
+import { studyKey } from '@/lib/study/storage-scope';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import type { Orientation, PlaneKind } from '@/lib/sim/types';
@@ -20,14 +21,14 @@ export const PLANE_TEXT: Record<PlaneKind, { name: string; text: string }> = {
 const SEEN_KEY = 'enbrioatlas:planes-seen';
 const readSeen = (): string[] => {
   try {
-    return JSON.parse(window.localStorage.getItem(SEEN_KEY) ?? '[]') as string[];
+    return JSON.parse(window.localStorage.getItem(studyKey(SEEN_KEY)) ?? '[]') as string[];
   } catch {
     return [];
   }
 };
 export const markSeen = (plane: string) => {
   try {
-    window.localStorage.setItem(SEEN_KEY, JSON.stringify([...new Set([...readSeen(), plane])]));
+    window.localStorage.setItem(studyKey(SEEN_KEY), JSON.stringify([...new Set([...readSeen(), plane])]));
   } catch {}
 };
 

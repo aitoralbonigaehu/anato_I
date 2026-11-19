@@ -1,5 +1,6 @@
 'use client';
 
+import { studyKey } from '@/lib/study/storage-scope';
 import Link from 'next/link';
 import { useEffect, useEffectEvent, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { Defs } from '@/components/kit/Defs';
@@ -43,7 +44,7 @@ interface Quiz {
 const BEST_KEY = 'enbrioatlas:fitxak';
 const readBest = (): Record<string, number> => {
   try {
-    return JSON.parse(window.localStorage.getItem(BEST_KEY) ?? '{}') as Record<string, number>;
+    return JSON.parse(window.localStorage.getItem(studyKey(BEST_KEY)) ?? '{}') as Record<string, number>;
   } catch {
     return {};
   }
@@ -51,7 +52,7 @@ const readBest = (): Record<string, number> => {
 const saveBest = (id: string, pct: number) => {
   try {
     const all = readBest();
-    if ((all[id] ?? -1) < pct) window.localStorage.setItem(BEST_KEY, JSON.stringify({ ...all, [id]: pct }));
+    if ((all[id] ?? -1) < pct) window.localStorage.setItem(studyKey(BEST_KEY), JSON.stringify({ ...all, [id]: pct }));
   } catch {
     // Without storage the score is only lost; the cards still work.
   }

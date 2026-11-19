@@ -27,8 +27,8 @@ export function AccountRoot() {
       <button className="icon-btn acc-x" onClick={closeAccountCard} aria-label="Itxi">
         <IconClose size={16} />
       </button>
-      <h2 id="acc-title">Gorde zure aurrerapena</h2>
-      <p className="acc-lead">Hasi saioa, eta ikusitakoa, txartelak eta galderak edozein gailutan izango dituzu. Aukerakoa da: saiorik gabe ere dena dabil, nabigatzaile honetan gordeta.</p>
+      <h2 id="acc-title">Zure kontua</h2>
+      <p className="acc-lead">Kontu bakoitzak bere aurrerapena gordetzen du nabigatzaile honetan. Saioa hasi gabe egindakoa bereiz gordetzen da.</p>
       {acc.asking && <AccountForm onDone={closeAccountCard} />}
     </dialog>
   );
