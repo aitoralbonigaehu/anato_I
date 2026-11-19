@@ -1,11 +1,11 @@
-"""Belortzioak: clean figures + arrow geometry from the course PDF ("Belortzioak zuzenduta.pdf").
+"""Belortzioak: clean figures + arrow geometry from "Belortzioak zuzenduta1.pdf".
 
 The figures go to `public/belortzioak-irudiak/` (served as static files), and the geometry to
 `content/belortzioak-geometry.json` — for every numbered label, where the number sat and the
 point(s) its arrow touches, plus an outline of the structure under that point when the drawing
 allows one to be traced.
 
-usage: python -I scripts/belortzioak/extract.py <pdf> [--repo <repo root>] [--debug <dir>]
+usage: python scripts/belortzioak/extract.py <pdf> [--repo <repo root>] [--debug <dir>] [--pages 2 3 ...]
 needs: PyMuPDF, Pillow, numpy, scipy, scikit-image
 """
 import argparse, json, math, os, re, sys
@@ -14,10 +14,11 @@ import numpy as np
 from PIL import Image, ImageDraw
 from scipy import ndimage as ndi
 from skimage import color, measure, filters
+from revised import REVISED_TARGETS, TRACES
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-PAGES = range(2, 24)  # skin anatomy … digestive system (inclusive)
+PAGES = range(2, 36)  # anatomical plates, after the cover
 MAX_SIDE = 1600
 
 # Page-specific fixes, in PDF points (72/inch).
@@ -281,13 +282,21 @@ def main():
     ap.add_argument("pdf")
     ap.add_argument("--repo", default=os.getcwd())
     ap.add_argument("--debug")
+    ap.add_argument("--pages", nargs="+", type=int, default=PAGES)
     a = ap.parse_args()
     out_img = os.path.join(a.repo, "public", "belortzioak-irudiak")
     os.makedirs(out_img, exist_ok=True)
     if a.debug: os.makedirs(a.debug, exist_ok=True)
     doc = fitz.open(a.pdf)
-    plates = {}
-    for pg in PAGES:
+    geo = os.path.join(a.repo, "content", "belortzioak-geometry.json")
+    traces = os.path.join(a.repo, "content", "belortzioak-revised-areas.json")
+    def read_previous(path):
+        if not os.path.exists(path):
+            return {}
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    plates, revised_areas = read_previous(geo), read_previous(traces)
+    for pg in a.pages:
         page = doc[pg - 1]
         area, labels, arrows = page_geometry(page)
         crop = fitz.Rect(area)
@@ -338,6 +347,20 @@ def main():
             extra = {k: e[k] for k in ("tag", "ink") if k in e}
             if e["id"] != str(e["n"]) or "tag" not in e: extra["id"] = e["id"]
             items[e["id"]] = {"n": e["n"], **extra, "label": fx(e["label"]), "targets": [fx(p) for p in e.get("targets", [])]}
+        # The reference page was rendered to 1450 px before measuring its marks and outlines.
+        def reference_point(p):
+            return fx(tuple(v * page.rect.height / 1450 for v in p))
+        for key, label, targets in REVISED_TARGETS.get(pg, []):
+            if isinstance(key, str):
+                items[key] = {"id": key, "n": 12, "tag": "12"}
+            e = items.setdefault(key, {"n": key})
+            if label is not None:
+                e["label"] = reference_point(label)
+            e["targets"] = [reference_point(t) for t in targets]
+            if pg == 21 and key == 13:
+                e["tag"] = "13/14"
+        for key, rings in TRACES.get(pg, {}).items():
+            revised_areas[f"p{pg:02d}:{key}"] = [[reference_point(point) for point in ring] for ring in rings]
         # Spotlight size: traced outlines are too unreliable to draw (they leak along vessels and
         # shading), but their extent still tells a pit from a limb bud. Clamped, so a leak only
         # widens the light a little.
@@ -370,9 +393,10 @@ def main():
                 dr.text((lx - 10, ly - 10), str(e["n"]), fill=(0, 0, 0, 255), font_size=22)
             Image.alpha_composite(dbg, ov).convert("RGB").resize((W // 2, H // 2)).save(os.path.join(a.debug, f"dbg{pg:02d}.png"))
         print(pg, (W, H), "items", len(items), "outlines", sum(1 for e in items.values() for o in e["outlines"] if o))
-    geo = os.path.join(a.repo, "content", "belortzioak-geometry.json")
     with open(geo, "w", encoding="utf-8") as f:
         json.dump(plates, f, separators=(",", ":"))
+    with open(traces, "w", encoding="utf-8") as f:
+        json.dump(revised_areas, f, sort_keys=True, separators=(",", ":"))
     print("wrote", geo)
 
 if __name__ == "__main__":

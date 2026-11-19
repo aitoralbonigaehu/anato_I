@@ -72,22 +72,12 @@
   cursor: crosshair;
 }
 
-.dim {
-  fill: #121214;
-  opacity: 0;
-  transition: opacity 0.28s var(--ease);
+.location {
+  fill: var(--signal);
+  stroke: #fff;
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
   pointer-events: none;
-}
-
-.dim.isOn {
-  opacity: 0.6;
-}
-
-.hole {
-  transition:
-    cx 0.32s var(--ease),
-    cy 0.32s var(--ease),
-    r 0.32s var(--ease);
 }
 
 /* leaders: a light core on a dark halo reads on the paper and on the figure's colours alike */
@@ -124,7 +114,7 @@
 }
 
 .leader.isFaded {
-  opacity: 0.18;
+  visibility: hidden;
 }
 
 .leader.isOn .core {
@@ -175,6 +165,7 @@
   line-height: 1.2;
   letter-spacing: -0.005em;
   text-wrap: balance;
+  overflow-wrap: anywhere;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   transition:
     background 0.18s,
@@ -640,7 +631,7 @@
   stroke-width: 1.6;
 }
 
-/* the lit structure's whole extent: a fine bright edge over the figure, fading in with the light */
+/* A fine edge keeps the isolated shape legible against the stage. */
 .extent {
   fill: none;
   stroke: var(--signal);
@@ -648,20 +639,6 @@
   stroke-linejoin: round;
   opacity: 0.9;
   pointer-events: none;
-  filter: drop-shadow(0 0 3px rgba(255, 106, 61, 0.55));
-  animation: bel-extent 0.32s var(--ease) both;
-}
-
-@keyframes bel-extent {
-  from {
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .extent {
-    animation: none;
-  }
 }
 
 /* ---- polish: the figure and its panel share the first screen ---- */

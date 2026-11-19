@@ -6,23 +6,46 @@ import { arrange, H } from '@/lib/belortzioakLayout';
 const inUnit = ([x, y]: [number, number]) => x >= 0 && x <= 1 && y >= 0 && y <= 1;
 
 describe('belortzioak: the figure set', () => {
-  it('covers skin anatomy to the digestive system, every system with figures', () => {
-    expect(BEL_PLATES.map((p) => p.id)).toEqual(Array.from({ length: 22 }, (_, i) => `p${String(i + 2).padStart(2, '0')}`));
+  it('covers all 34 anatomical plates in the revised PDF', () => {
+    expect(BEL_PLATES.map((p) => p.id)).toEqual(Array.from({ length: 34 }, (_, i) => `p${String(i + 2).padStart(2, '0')}`));
     for (const sys of BEL_SYSTEMS) expect(BEL_PLATES.some((p) => p.system === sys.id)).toBe(true);
   });
 
   it('gives every figure its size and named, placed structures', () => {
     for (const p of BEL_PLATES) {
       expect(p.size[0], p.id).toBeGreaterThan(500);
-      expect(p.items.length, p.id).toBeGreaterThan(2);
+      expect(p.items.length, p.id).toBeGreaterThanOrEqual(2);
       for (const it of p.items) {
         expect(it.name.trim(), it.key).not.toBe('');
         expect(inUnit(it.label), it.key).toBe(true);
         expect(it.targets.length, it.key).toBeGreaterThan(0);
         expect(it.targets.every(inUnit), it.key).toBe(true);
         expect(it.r.length, it.key).toBe(it.targets.length);
+        for (const shape of it.area ?? [])
+          for (const ring of shape) {
+            expect(ring.length, it.key).toBeGreaterThanOrEqual(3);
+            expect(ring.every(inUnit), it.key).toBe(true);
+          }
       }
     }
+  });
+
+  it('uses the revised digestive labels and leaves out crossed-out or hidden parts', () => {
+    const at = (key: string) => BEL_ITEMS.find(({ item }) => item.key === key)?.item;
+    for (const key of ['p16:6', 'p18:3', 'p18:4', 'p19:9', 'p20:2', 'p20:14', 'p21:5', 'p23:10', 'p26:6', 'p27:13', 'p30:10', 'p30:11', 'p32:2', 'p32:4']) {
+      expect(at(key), key).toBeUndefined();
+    }
+    expect(at('p16:16')?.name).toBe('Hodi tiroglosoa');
+    expect(at('p17:14')?.name).toBe('Timoa');
+    expect(at('p20:5')?.name).toBe('Hestegorria');
+    expect(at('p20:8')?.name).toBe('Are-hasikin dortsala');
+    expect(at('p20:9')?.name).toBe('Are-hasikin bentrala');
+    expect(at('p20:23')?.name).toBe('Hodi tiroglosoa');
+    expect(at('p21:13')).toMatchObject({ tag: '13/14', name: 'Jejunoa eta ileona' });
+    expect(at('p22:5')?.name).toBe('Duodenoa');
+    expect(at('p24:2.2')?.name).toBe('Bowmanen kapsula');
+    expect(at('p35:17')?.name).toBe('Diafragma');
+    expect(matchesName('hodi tiroglosoa', at('p20:5')!)).toBe(false);
   });
 
   it('keeps keys unique and one number per name within a figure', () => {
@@ -72,7 +95,7 @@ describe('belortzioak: the figure set', () => {
 
   it('links the same structure across figures', () => {
     const sinus = BEL_ITEMS.filter((x) => sameKey(x.item.name) === sameKey('Kloaka'));
-    expect(sinus.map((x) => x.plate.id).sort()).toEqual(['p19', 'p20']);
+    expect(sinus.map((x) => x.plate.id).sort()).toEqual(['p19', 'p20', 'p24']);
   });
 });
 

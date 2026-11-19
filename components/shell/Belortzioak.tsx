@@ -1,7 +1,7 @@
 'use client';
 
 import { studyKey } from '@/lib/study/storage-scope';
-import { Fragment, useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { Fragment, useEffect, useId, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { BEL_ITEMS, BEL_KINDS, BEL_MERGED, BEL_MERGED_PLATES, BEL_PLATES, BEL_SYSTEMS, matchesName, sameKey, type BelItem, type BelKind, type BelMerged, type BelPlate, type BelSystem } from '@/content/belortzioak';
 import { LandFoot, LandNav } from './LandNav';
 import { arrange, H, type Placed } from '@/lib/belortzioakLayout';
@@ -15,8 +15,7 @@ import { noteRecall } from '@/lib/study/activity';
  * Belortzioak: the course's figures where an arrow points at a structure and the name is asked.
  *
  * - Esploratu: every name in two tidy columns, a leader to its structure; hovering a name (or the
- *   structure) lights that structure and dims the rest: the whole structure where the drawing shows its
- *   extent (the vessel from end to end, the organ's outline), else a circle round the arrow tip. Names can be covered and turned one by one,
+ *   structure) isolates its traced extent or marks the documented location. Names can be covered and turned one by one,
  *   or shown as the figure's own numbers with the legend beside it.
  * - Zer da? one arrow, as on paper: pick, recall-and-flip, or type the name.
  * - Non dago? a name: tap where it is.
@@ -107,7 +106,7 @@ interface Stage {
   fx: number;
   /** Figure fraction → stage units. */
   at: (p: Pt) => Pt;
-  /** Spotlight radius in stage units. */
+  /** Quiz hit tolerance in stage units. */
   rad: (r: number) => number;
 }
 const stageOf = (plate: BelPlate): Stage => {
@@ -155,8 +154,7 @@ const pathOf = (st: Stage, shape: Pt[][]) =>
   shape.map((ring) => `M${ring.map((p) => st.at(p).map((v) => v.toFixed(1)).join(' ')).join('L')}Z`).join('');
 
 /**
- * The structure at a figure point: an arrow tip pointed at closely, else the smallest extent the point
- * is inside, else the nearest tip within its light (`reach`: how much of the light counts).
+ * Allow for imprecise taps when checking an answer in the location quiz.
  */
 const structureAt = (plate: BelPlate, st: Stage, p: Pt, reach: number, skip?: string): string | null => {
   const [bx, by] = st.at(p);
@@ -203,14 +201,17 @@ interface FigureProps {
 export function Figure({ plate, mode, numbers, covered, active, onHover, onPick, marks, onMark, asked, answered, tap, onTap, missing, src, tour }: FigureProps) {
   const st = stageOf(plate);
   const svg = useRef<SVGSVGElement>(null);
+  const figureId = useId();
   const explore = mode === 'esploratu';
   const lit = explore ? (active ? itemOf(plate, active) : undefined) : answered ? (asked ?? undefined) : undefined;
+  const imageId = lit?.area && lit.from ? lit.from : plate.img;
+  const imageTransform = imageId ? plate.imgTransforms?.[imageId] ?? plate.imgM : undefined;
   // A crowded merged figure with every kind: coloured dots, and only the name pointed at in its column.
   const dots = explore && !numbers && !!plate.merge && !plate.merge.kind && plate.items.length > CROWDED;
   const placed = useMemo(() => (dots ? (lit ? arrange([lit]) : []) : arrange(plate.items)), [plate, dots, lit]);
   const pct = (u: number, of: number) => `${(u / of) * 100}%`;
 
-  // Pointer → the structure under it (nearest arrow tip within its light), so the figure itself answers hover too.
+  // Figure hover uses the traced boundary or the visible target marker.
   const toFig = (e: ReactPointerEvent<SVGSVGElement>): Pt | null => {
     const el = svg.current;
     if (!el) return null;
@@ -219,9 +220,31 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
     const uy = ((e.clientY - b.top) / b.height) * H;
     const x = (ux - st.fx) / st.fw;
     const y = uy / H;
-    return x < -0.02 || x > 1.02 || y < -0.02 || y > 1.02 ? null : [x, y];
+    return x < 0 || x > 1 || y < 0 || y > 1 ? null : [x, y];
   };
-  const nearest = (p: Pt): string | null => structureAt(plate, st, p, 0.8);
+  const nearest = (p: Pt): string | null => {
+    const [x, y] = st.at(p);
+    if (!dots) {
+      const inside = plate.items.filter((it) => inArea(it, p)).sort((a, b) => areaSize(a) - areaSize(b));
+      if (inside.length) return inside[0].key;
+    }
+    let distance = dots ? 8 : 5;
+    let key: string | null = null;
+    for (const it of plate.items) {
+      if (!dots && it.area?.length) continue;
+      for (const target of it.targets) {
+        const [tx, ty] = st.at(target);
+        const d = Math.hypot(x - tx, y - ty);
+        if (d < distance) {
+          distance = d;
+          key = it.key;
+        } else if (d === distance && key !== it.key) {
+          key = null;
+        }
+      }
+    }
+    return key;
+  };
 
   const isMark = (it: BelItem, t: Pt) => it.marks.some((m) => m.at[0] === t[0] && m.at[1] === t[1]);
   const lineEnd = (pl: Placed): Pt => [pl.side === 'l' ? COL : st.fx + st.fw + GAP, pl.y];
@@ -254,7 +277,7 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
           if (!explore || e.pointerType === 'touch') return;
           const p = toFig(e);
           const k = p ? nearest(p) : null;
-          if (k !== active) onHover(k);
+          onHover(k);
         }}
         onPointerLeave={() => explore && onHover(null)}
         onClick={(e) => {
@@ -268,24 +291,8 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
         }}
       >
         <defs>
-          <radialGradient id="bel-hole">
-            <stop offset="0" stopColor="#000" />
-            <stop offset="0.62" stopColor="#000" />
-            <stop offset="1" stopColor="#fff" />
-          </radialGradient>
-          {/* a lit extent's edge, only antialiased: the light stops on the outline, so it never spills onto the neighbour */}
-          <filter id="bel-soft" x="-10%" y="-10%" width="120%" height="120%">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" />
-          </filter>
-          <mask id={`bel-mask-${plate.id}`} maskUnits="userSpaceOnUse" x="0" y="0" width={st.tw} height={H}>
-            <rect width={st.tw} height={H} fill="#fff" />
-            {lit?.area?.map((sh, i) => <path key={`a${i}`} d={pathOf(st, sh)} fill="#000" fillRule="evenodd" filter="url(#bel-soft)" />)}
-            {lit?.targets.map((t, i) => {
-              if (covers(st, lit, t)) return null;
-              const [cx, cy] = st.at(t);
-              const r = st.rad(lit.r[i] ?? 0.05) * 1.35;
-              return <circle key={i} className={s.hole} cx={cx} cy={cy} r={r} fill="url(#bel-hole)" />;
-            })}
+          <mask id={`${figureId}-isolation`} maskUnits="userSpaceOnUse" x={st.fx} y="0" width={st.fw} height={H}>
+            {lit?.area?.map((sh, i) => <path key={i} d={pathOf(st, sh)} fill="#fff" fillRule="evenodd" />)}
           </mask>
           <marker id="bel-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse" markerUnits="strokeWidth">
             <path d="M0 0 L10 5 L0 10 z" fill="currentColor" />
@@ -293,32 +300,35 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
         </defs>
 
         <rect className={s.paper} width={st.tw} height={H} rx="18" />
-        {/* keyed: a new element per figure (Chrome may keep painting the old bitmap when only href changes) */}
-        {!missing && !plate.imgM && <image key={plate.id} href={src ?? imgOf(plate.id)} x={st.fx} y={0} width={st.fw} height={H} className={s.img} />}
-        {/* a merged figure: the copy coloured for what is shown, laid exactly onto the base drawing */}
-        {!missing && plate.imgM && (
-          <>
-            <clipPath id={`bel-clip-${plate.id}`}>
-              <rect x={st.fx} y={0} width={st.fw} height={H} />
-            </clipPath>
-            <g clipPath={`url(#bel-clip-${plate.id})`}>
-              <image
-                key={plate.id}
-                href={imgOf(plate.img!)}
-                width={1}
-                height={1}
-                preserveAspectRatio="none"
-                className={s.img}
-                transform={`matrix(${st.fw * plate.imgM[0][0]} ${H * plate.imgM[1][0]} ${st.fw * plate.imgM[0][1]} ${H * plate.imgM[1][1]} ${st.fx + st.fw * plate.imgM[0][2]} ${H * plate.imgM[1][2]})`}
-              />
-            </g>
-          </>
-        )}
-
-        {/* the light: everything but the structure dims */}
-        <rect className={`${s.dim}${lit ? ` ${s.isOn}` : ''}`} width={st.tw} height={H} rx="18" mask={`url(#bel-mask-${plate.id})`} />
-        {/* and the lit extent's edge, drawn once over the figure so where it ends is plain */}
+        <clipPath id={`${figureId}-frame`}>
+          <rect x={st.fx} width={st.fw} height={H} />
+        </clipPath>
+        <g
+          clipPath={`url(#${figureId}-frame)`}
+          mask={lit ? `url(#${figureId}-isolation)` : undefined}
+          data-belor-isolation={lit?.key}
+        >
+          {!missing && !imageTransform && (
+            <image key={plate.id} href={src ?? imgOf(plate.id)} x={st.fx} width={st.fw} height={H} className={s.img} />
+          )}
+          {!missing && imageTransform && imageId && (
+            <image
+              key={imageId}
+              href={imgOf(imageId)}
+              width={1}
+              height={1}
+              preserveAspectRatio="none"
+              className={s.img}
+              transform={`matrix(${st.fw * imageTransform[0][0]} ${H * imageTransform[1][0]} ${st.fw * imageTransform[0][1]} ${H * imageTransform[1][1]} ${st.fx + st.fw * imageTransform[0][2]} ${H * imageTransform[1][2]})`}
+            />
+          )}
+        </g>
         {lit?.area?.map((sh, i) => <path key={`${lit.key}-${i}`} className={s.extent} d={pathOf(st, sh)} fillRule="evenodd" />)}
+        {lit?.targets.map((target, i) => {
+          if (covers(st, lit, target)) return null;
+          const [cx, cy] = st.at(target);
+          return <circle key={i} className={s.location} cx={cx} cy={cy} r="5" />;
+        })}
 
         {explore && !numbers && (
           <g className={s.leaders}>
@@ -831,7 +841,7 @@ export function Belortzioak() {
       <LandNav current="belortzioak" help={<GuideButton tour="bel" />} />
       <TourHost tour="bel" />
       <section className={`ln-hero lab-hero plate-hero ${s.hero}`}>
-        <p className="eyebrow">Belortzioak · azaletik digestio-aparatura · {BEL_PLATES.length} irudi, {BEL_ITEMS.length} egitura</p>
+        <p className="eyebrow">Belortzioak · {BEL_PLATES.length} irudi, {BEL_ITEMS.length} egitura</p>
         <h1>Gezia → izena</h1>
         <p className="hero-lead">
           <b>Esploratu</b>: pasatu sagua izen baten gainetik, eta haren egitura argituko da. <b>Zer da?</b> eta <b>Non dago?</b>: galdetu zeure buruari irudi batean. <b>Ikasketa modua</b>: txartelak irudi
@@ -869,7 +879,7 @@ export function Belortzioak() {
             const pc = pctKnown(p);
             return (
               <li key={p.id}>
-                <button className={p.id === shown.id ? 'is-on' : ''} aria-current={p.id === shown.id} onClick={() => open(p)} title={`${p.title} · ${p.items.length} egitura`} disabled={(!!quiz?.review && !finished) || studying}>
+                <button className={p.id === shown.id ? 'is-on' : ''} aria-label={p.title} aria-current={p.id === shown.id} onClick={() => open(p)} title={`${p.title} · ${p.items.length} egitura`} disabled={(!!quiz?.review && !finished) || studying}>
                   <span className="plate-strip-n">{i + 1}</span>
                   <span className="plate-strip-t">{p.title}</span>
                   {pc > 0 && <span className={`plate-best${pc === 100 ? ' is-full' : ''}`}>{pc}%</span>}
