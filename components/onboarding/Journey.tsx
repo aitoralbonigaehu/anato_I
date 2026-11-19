@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
-import { askAccount, useAccount } from '@/components/account/account';
+import { openAccount, useAccount } from '@/components/account/account';
 import { BrandMark } from '@/components/shell/icons';
 import { structures, weeks } from '@/content/registry';
 import { AppFrame } from './AppFrame';
@@ -586,7 +586,10 @@ export default function Journey({ opening, onFilmEnd, onClose, home, start = 0 }
                   {acc.status === 'out' ? (
                     <>
                       <p>Kontua aukerakoa da. Zure kontuarekin, aurrerapena bereiz gordeko da nabigatzaile honetan, beste norbaitek gailu bera erabili arren.</p>
-                      <button onClick={() => leave(askAccount)}>Hasi saioa edo sortu kontua ↗</button>
+                      <div className={s.accountActions}>
+                        <button type="button" onClick={() => leave(() => openAccount('sartu'))}>Hasi saioa</button>
+                        <button type="button" onClick={() => leave(() => openAccount('sortu'))}>Sortu kontua</button>
+                      </div>
                     </>
                   ) : (
                     <p>

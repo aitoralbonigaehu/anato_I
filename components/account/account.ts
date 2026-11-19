@@ -21,6 +21,7 @@ export interface AccountState {
   synced: number;
   /** The first-visit card ("Gorde zure aurrerapena") is open. */
   asking: boolean;
+  accountMode?: 'sartu' | 'sortu';
 }
 
 const SERVER: AccountState = { status: 'off', user: null, syncing: false, synced: 0, asking: false };
@@ -138,7 +139,11 @@ export async function signOut() {
 const ASKED = 'enbrioatlas:kontua-galdetuta';
 
 /** Opens the sign-in card (from any "Hasi saioa" button). */
-export const askAccount = () => state.status !== 'off' && set({ asking: true });
+export function openAccount(mode: 'sartu' | 'sortu') {
+  if (state.status === 'out') set({ asking: true, accountMode: mode });
+}
+
+export const askAccount = () => openAccount('sartu');
 
 export function closeAccountCard() {
   try {
