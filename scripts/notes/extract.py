@@ -42,6 +42,9 @@ FILES = [
     '19. GAIA. NERBIO SISTEMA (zuzendu gabe).docx.pdf',
 ]
 
+# First topic whose blue (supplementary) text is marked for the "skip blue" reading mode.
+BLUE_FROM = 16
+
 # Week 14 part 2's unnumbered headings open sections of their own.
 HEADINGS_14 = {'ERATORRIEN KOKAPENA LABURBILDUTA': 'laburpena', 'ARNAS APARATUA': 'arnas'}
 
@@ -116,8 +119,13 @@ def compact(parts):
     for p in parts:
         if not p['text']:
             continue
-        if out and (out[-1].get('b'), out[-1].get('i')) == (p.get('b'), p.get('i')):
+        # A space between two blue runs is not a colour change of its own: it joins the run before it
+        # (and a blue run absorbs the spaces left before it), so blue passages stay whole.
+        same = out and (out[-1].get('b'), out[-1].get('i')) == (p.get('b'), p.get('i'))
+        if same and (out[-1].get('u') == p.get('u') or not p['text'].strip()):
             out[-1]['text'] += p['text']
+        elif same and not out[-1]['text'].strip():
+            out[-1] = {**p, 'text': out[-1]['text'] + p['text']}
         else:
             out.append(dict(p))
     return out
@@ -186,6 +194,10 @@ def extract(path, week, part=1, counts=None):
                         p['b'] = True
                     if span['flags'] & 2:
                         p['i'] = True
+                    # From topic 16 the notes set what was not taught this year in pure blue: kept as `u` so
+                    # the reader can skip it. Earlier topics' blue is not marked.
+                    if week >= BLUE_FROM and span['color'] == 0x0000ff and span['text'].strip():
+                        p['u'] = True
                     parts.append(p)
                 joined = ''.join(p['text'] for p in parts)
                 # Trim edges without changing any non-whitespace character.

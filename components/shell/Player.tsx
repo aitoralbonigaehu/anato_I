@@ -17,6 +17,8 @@ import type { ExamDate } from '@/content/examDates';
 interface PlayerProps {
   modelGuide?: { key: string; content: ViewGuide; onOpen: () => void };
   stage: StageDef;
+  /** "Skip blue" mode: steps whose notes are all blue (not taught this year), shown faded on the timeline. */
+  skipped?: boolean[];
   stageIndex: number;
   stageCount: number;
   nextTitle?: string;
@@ -519,7 +521,7 @@ export function Player(p: PlayerProps) {
             return (
               <span
                 key={k}
-                className={`scrub-seg${k === p.activeBeat ? ' is-on' : k < p.activeBeat ? ' is-past' : ''}${hover?.k === k ? ' is-hover' : ''}`}
+                className={`scrub-seg${k === p.activeBeat ? ' is-on' : k < p.activeBeat ? ' is-past' : ''}${hover?.k === k ? ' is-hover' : ''}${p.skipped?.[k] ? ' is-skipped' : ''}`}
                 style={{
                   left: `${b.at * 100}%`,
                   width: `${(end - b.at) * 100}%`,

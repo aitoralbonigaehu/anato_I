@@ -2,8 +2,9 @@
 
 import { memo, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
 import { getWeek } from '@/content/registry';
-import { blockText, expandNotes, firstAnchorInSection, notesOf, sectionConfig, sentenceAnchors, type NotesAnchor, type NotesBlock, type NotesPart } from '@/content/notes-text';
+import { allBlue, blockText, expandNotes, hasBlue, firstAnchorInSection, notesOf, sectionConfig, sentenceAnchors, type NotesAnchor, type NotesBlock, type NotesPart } from '@/content/notes-text';
 import type { StageDef } from '@/lib/sim/types';
+import { blueSteps } from '@/lib/sim/skip-blue';
 import { IconClose, IconList, IconMoon, IconSun } from './icons';
 import { useTheme } from './theme';
 
@@ -14,15 +15,17 @@ interface Reading {
   font: number;
   /** Paper or dark sheet; null = follow the app's look (paper in light mode, dark in dark mode). */
   paper: boolean | null;
+  /** Skip the text the original sets in blue (not taught this year): topics 16+. */
+  skipBlue: boolean;
 }
-const DEFAULT_READING: Reading = { font: 16, paper: null };
+const DEFAULT_READING: Reading = { font: 16, paper: null, skipBlue: false };
 const readingListeners = new Set<() => void>();
 let reading: Reading | undefined;
 const readReading = (): Reading => {
   if (!reading) {
     try {
       const saved = JSON.parse(window.localStorage.getItem(PREFS_KEY) ?? 'null') as Partial<Reading> | null;
-      reading = { font: Math.min(22, Math.max(13, Number(saved?.font) || 16)), paper: typeof saved?.paper === 'boolean' ? saved.paper : null };
+      reading = { font: Math.min(22, Math.max(13, Number(saved?.font) || 16)), paper: typeof saved?.paper === 'boolean' ? saved.paper : null, skipBlue: saved?.skipBlue === true };
     } catch {
       reading = DEFAULT_READING;
     }
@@ -45,6 +48,12 @@ const subscribeReading = (fn: () => void) => {
   };
 };
 
+/** The "skip blue" mode is on and this topic's notes mark blue text: the simulator skips blue steps too. */
+export function useSkipBlue(week: number) {
+  const { skipBlue } = useSyncExternalStore(subscribeReading, readReading, () => DEFAULT_READING);
+  return skipBlue && hasBlue(week);
+}
+
 /* ——— The document ——— */
 
 const isHeading = (b: NotesBlock) => b.kind === 'h1' || b.kind === 'h2';
@@ -64,7 +73,8 @@ function Parts({ parts, hang }: { parts: NotesPart[]; hang?: boolean }) {
       );
     }
     if (p.i) text = <em>{text}</em>;
-    return p.b ? <strong key={i}>{text}</strong> : <span key={i}>{text}</span>;
+    const cls = p.u ? 'notes-u' : undefined;
+    return p.b ? <strong key={i} className={cls}>{text}</strong> : <span key={i} className={cls}>{text}</span>;
   });
 }
 
@@ -94,10 +104,12 @@ const NotesDoc = memo(function NotesDoc({ week, blocks, stageIds, activeKey, cur
     const now = b.sentences.some((s) => active.has(s.id));
     const Tag = b.kind === 'title' ? 'h1' : b.kind === 'h1' ? 'h2' : b.kind === 'h2' ? 'h3' : 'p';
     const linked = b.kind === 'caption' && b.sentences.some((s) => sentenceAnchors.has(s.id));
+    // A wholly blue block goes when blue is skipped, unless a step of this stage starts in it (its marker stays).
+    const blue = b.sentences.every(allBlue) && !b.sentences.some((s) => markers.has(s.id));
     return (
       <div
         key={b.id}
-        className={`notes-block notes-${b.kind}${passage ? ' is-passage' : ''}${now ? ' is-now' : ''}${uncovered ? ' is-uncovered' : ''}${b.kind === 'toc' && b.section.includes('.') ? ' is-sub' : ''}`}
+        className={`notes-block notes-${b.kind}${passage ? ' is-passage' : ''}${now ? ' is-now' : ''}${uncovered ? ' is-uncovered' : ''}${b.kind === 'toc' && b.section.includes('.') ? ' is-sub' : ''}${blue ? ' is-blue' : ''}`}
         data-heading-section={isHeading(b) ? b.section : undefined}
       >
         {isHeading(b) && uncovered && <span className="notes-section-note">{config.note}</span>}
@@ -109,7 +121,7 @@ const NotesDoc = memo(function NotesDoc({ week, blocks, stageIds, activeKey, cur
           ) : (
             b.sentences.map((s) => {
               const steps = markers.get(s.id);
-              const cls = `notes-s${sentenceAnchors.has(s.id) ? ' is-linked' : ''}${active.has(s.id) ? ' is-active' : ''}${s.id === current ? ' is-current' : ''}`;
+              const cls = `notes-s${allBlue(s) ? ' is-blue' : ''}${sentenceAnchors.has(s.id) ? ' is-linked' : ''}${active.has(s.id) ? ' is-active' : ''}${s.id === current ? ' is-current' : ''}`;
               return (
                 <span key={s.id} className={cls} data-sentence={s.id}>
                   {steps?.map((k) => (
@@ -155,7 +167,9 @@ export function NotesPanel({ week, stage, activeBeat: playbackBeat, progress, so
   const [away, setAway] = useState<'up' | 'down' | null>(null);
   const [hint, setHint] = useState<string | null>(null);
   const [tocOpen, setTocOpen] = useState(false);
-  const { font, paper: chosen } = useSyncExternalStore(subscribeReading, readReading, () => DEFAULT_READING);
+  const { font, paper: chosen, skipBlue: skipChosen } = useSyncExternalStore(subscribeReading, readReading, () => DEFAULT_READING);
+  const blueable = useMemo(() => hasBlue(week), [week]);
+  const skipBlue = blueable && skipChosen;
   // Unless the student chose a sheet, the notes follow the app's look: paper on paper, dark in the dark.
   const { theme } = useTheme();
   const paper = chosen ?? theme === 'light';
@@ -165,12 +179,15 @@ export function NotesPanel({ week, stage, activeBeat: playbackBeat, progress, so
     // Each step is marked once, at its first sentence in reading order.
     const order = new Map(blocks.flatMap((b) => b.sentences).map((s, i) => [s.id, i] as const));
     const m = new Map<string, number[]>();
+    // "Skip blue": the steps the simulator skips get no marker (their text is hidden too).
+    const skipped = skipBlue ? blueSteps(stage) : [];
     stage.beats.forEach((b, k) => {
+      if (skipped[k]) return;
       const first = expandNotes(b.notes).sort((x, y) => (order.get(x) ?? 0) - (order.get(y) ?? 0))[0];
       if (first) m.set(first, [...(m.get(first) ?? []), k]);
     });
     return m;
-  }, [blocks, stage]);
+  }, [blocks, stage, skipBlue]);
   const activeIds = useMemo(() => expandNotes(stage.beats[activeBeat]?.notes), [stage, activeBeat]);
   // The sentence the reader clicked (reading starts there, not at the top of the step).
   const [picked, setPicked] = useState<{ stageId: string; beat: number; id: string } | null>(null);
@@ -213,6 +230,7 @@ export function NotesPanel({ week, stage, activeBeat: playbackBeat, progress, so
       const line = box.top + root.clientHeight / 3 + 4;
       let seen = '';
       for (const el of root.querySelectorAll<HTMLElement>('[data-heading-section]')) {
+        if (!el.offsetParent) continue; // a blue heading hidden by "skip blue"
         if (el.getBoundingClientRect().top <= line) seen = el.dataset.headingSection ?? '';
         else break;
       }
@@ -306,7 +324,9 @@ export function NotesPanel({ week, stage, activeBeat: playbackBeat, progress, so
   const gotoSection = (to: string) => {
     setTocOpen(false);
     setFollow(false);
-    const node = scroller.current?.querySelector<HTMLElement>(`[data-heading-section="${CSS.escape(to)}"]`);
+    let node = scroller.current?.querySelector<HTMLElement>(`[data-heading-section="${CSS.escape(to)}"]`);
+    // A hidden (blue) heading: land on the first visible block after it.
+    while (node && !node.offsetParent) node = node.nextElementSibling as HTMLElement | null;
     if (node) scroller.current!.scrollTo({ top: Math.max(0, offsetOf(node) - 12), behavior: 'smooth' });
     const ref = firstAnchorInSection(week, to);
     if (ref) onGoto(ref);
@@ -349,11 +369,11 @@ export function NotesPanel({ week, stage, activeBeat: playbackBeat, progress, so
   })();
 
   return (
-    <div className={`notes-panel${paper ? ' is-paper' : ''}`} style={{ '--notes-font': `${font}px` } as CSSProperties}>
+    <div className={`notes-panel${paper ? ' is-paper' : ''}${skipBlue ? ' is-skip-blue' : ''}`} style={{ '--notes-font': `${font}px` } as CSSProperties}>
       <div className="notes-head">
         <div className="notes-name">
           <strong>Apunteak</strong>
-          <small>{week}. gaia · jatorrizko testua</small>
+          <small>{week}. gaia · jatorrizko testua{skipBlue ? ' · aurten emandakoa' : ''}</small>
         </div>
         <div className="notes-tools">
           <button className="icon-btn notes-size" onClick={() => setReading({ font: font - 1 })} disabled={font <= 13} aria-label="Letra txikiagoa" data-tip="Letra txikiagoa" data-tip-pos="bottom">
@@ -362,6 +382,18 @@ export function NotesPanel({ week, stage, activeBeat: playbackBeat, progress, so
           <button className="icon-btn notes-size" onClick={() => setReading({ font: font + 1 })} disabled={font >= 22} aria-label="Letra handiagoa" data-tip="Letra handiagoa" data-tip-pos="bottom">
             A<sup>+</sup>
           </button>
+          {blueable && (
+            <button
+              className={`icon-btn notes-blue-btn${skipBlue ? ' is-on' : ''}`}
+              onClick={() => setReading({ skipBlue: !skipBlue })}
+              aria-pressed={skipBlue}
+              aria-label={skipBlue ? 'Urdina erakutsi: aurten eman ez dena' : 'Urdina saltatu: aurten eman ez dena'}
+              data-tip={skipBlue ? 'Urdina erakutsi (aurten ez da eman)' : 'Urdina saltatu (aurten ez da eman)'}
+              data-tip-pos="bottom"
+            >
+              <span className="notes-blue-swatch" aria-hidden />
+            </button>
+          )}
           <button className="icon-btn" onClick={() => setReading({ paper: !paper })} aria-pressed={paper} aria-label={paper ? 'Itxura iluna' : 'Paper itxura'} data-tip={paper ? 'Itxura iluna' : 'Paper itxura'} data-tip-pos="bottom">
             {paper ? <IconMoon size={16} /> : <IconSun size={16} />}
           </button>
@@ -380,7 +412,7 @@ export function NotesPanel({ week, stage, activeBeat: playbackBeat, progress, so
         </p>
         {tocOpen && (
           <nav className="notes-toc-pop" aria-label="Apunteen aurkibidea">
-            {headings.map((h) => {
+            {headings.filter((h) => !(skipBlue && h.sentences.every(allBlue))).map((h) => {
               const config = sectionConfig(week, h.section);
               const off = !!config?.note && !config.stages.length;
               return (

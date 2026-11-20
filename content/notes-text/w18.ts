@@ -395,21 +395,25 @@ export const w18: NotesBlock[] = [
         "id": "w18/1/p5/s3",
         "parts": [
           {
-            "text": "Behealdean, faringearen aurreko paretan "
+            "text": "Behealdean, faringearen aurreko paretan ",
+            "u": true
           },
           {
             "text": "laringe",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "zuloa ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "dago, nondik arnas aparatuaren hastapena ebaginatzen den, arnas aparatuaren atal guztiak sortzeko."
+            "text": "dago, nondik arnas aparatuaren hastapena ebaginatzen den, arnas aparatuaren atal guztiak sortzeko.",
+            "u": true
           }
         ]
       }
@@ -650,7 +654,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.1.1/p3/s5",
         "parts": [
           {
-            "text": "5. aste hasieran poltsak asko sakondu gabe daude baina garapena aurrera doala batzuk sakondu egiten dira eta beste batzuetan egiturak garatzen dira."
+            "text": "5. aste hasieran poltsak asko sakondu gabe daude baina garapena aurrera doala batzuk sakondu egiten dira eta beste batzuetan egiturak garatzen dira.",
+            "u": true
           }
         ]
       }
@@ -1216,14 +1221,17 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.2/p3/s3",
         "parts": [
           {
-            "text": "Bertan sortzen den hodia, "
+            "text": "Bertan sortzen den hodia, ",
+            "u": true
           },
           {
             "text": "kanpoko entzumen hodia ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "da, belarriaren kanpoko irekigunea tinpano-mintzarekin lotzen duen hodia hain zuzen ere. "
+            "text": "da, belarriaren kanpoko irekigunea tinpano-mintzarekin lotzen duen hodia hain zuzen ere. ",
+            "u": true
           }
         ]
       },
@@ -1311,14 +1319,17 @@ export const w18: NotesBlock[] = [
         "id": "w18/1.2/p5/s4",
         "parts": [
           {
-            "text": "Hasieran, aztarna txikia "
+            "text": "Hasieran, aztarna txikia ",
+            "u": true
           },
           {
             "text": "sinu zerbikala ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "ageri bada ere, gero desagertu egiten da eta egitura trinkoa eratuz. "
+            "text": "ageri bada ere, gero desagertu egiten da eta egitura trinkoa eratuz. ",
+            "u": true
           }
         ]
       },
@@ -1701,7 +1712,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.1/p6/s1",
         "parts": [
           {
-            "text": "Mihiaren sustraia, bigarren, hirugarren eta laugarren arkuetatik (laugarrenaren atal batetik bakarrik) eratzen da. "
+            "text": "Mihiaren sustraia, bigarren, hirugarren eta laugarren arkuetatik "
+          },
+          {
+            "text": "(laugarrenaren atal batetik bakarrik) ",
+            "u": true
+          },
+          {
+            "text": "eratzen da. "
           }
         ]
       },
@@ -1743,14 +1761,17 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.1/p7/s1",
         "parts": [
           {
-            "text": "*Laugarren arkuan alde erdi dortsaletik bakarrik eratzen da, hemendik "
+            "text": "*Laugarren arkuan alde erdi dortsaletik bakarrik eratzen da, hemendik ",
+            "u": true
           },
           {
             "text": "epiglotisa ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "eratzen delako, kupularen behekaldean. "
+            "text": "eratzen delako, kupularen behekaldean. ",
+            "u": true
           }
         ]
       },
@@ -1785,7 +1806,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.1/p7/s4",
         "parts": [
           {
-            "text": "Tuberkulu bakoitia eta kupularen arteko mugan garatuko da, eta gero ildo terminalaren erpinean geratuko da."
+            "text": "Tuberkulu bakoitia eta kupularen arteko mugan garatuko da, eta gero ildo terminalaren erpinean geratuko da.",
+            "u": true
           }
         ]
       }
@@ -1801,14 +1823,16 @@ export const w18: NotesBlock[] = [
         "parts": [
           {
             "text": "Epiglotisa laringe zuloa estaltzeko erabiltzen da, hau da helduetan janaria arnasbideetara ez",
-            "i": true
+            "i": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "joateko. ",
-            "i": true
+            "i": true,
+            "u": true
           }
         ]
       },
@@ -1817,14 +1841,16 @@ export const w18: NotesBlock[] = [
         "parts": [
           {
             "text": "Jaioberriek, aldiz, ez dute sistema hau garatuta eta horregatik jan eta arnasa hartu",
-            "i": true
+            "i": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "batera egin dezakete.",
-            "i": true
+            "i": true,
+            "u": true
           }
         ]
       }
@@ -1840,14 +1866,16 @@ export const w18: NotesBlock[] = [
         "parts": [
           {
             "text": "Laringe zuloaren alboetan: aritenoides goraguneak sortu: gero aritenoides kartilagoak",
-            "i": true
+            "i": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "emango dituzte. ",
-            "i": true
+            "i": true,
+            "u": true
           }
         ]
       },
@@ -1856,7 +1884,8 @@ export const w18: NotesBlock[] = [
         "parts": [
           {
             "text": "(laringearen kartilago batzuk dira)",
-            "i": true
+            "i": true,
+            "u": true
           }
         ]
       }
@@ -1941,15 +1970,21 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p5/s1",
         "parts": [
           {
-            "text": "Mihiaren gorputza (mihiaren",
+            "text": "Mihiaren gorputza ",
             "b": true
+          },
+          {
+            "text": "(mihiaren",
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "aurreko bi herenak)",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
@@ -2078,15 +2113,21 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p9/s1",
         "parts": [
           {
-            "text": "Mihiaren sustraia (mihiaren",
+            "text": "Mihiaren sustraia ",
             "b": true
+          },
+          {
+            "text": "(mihiaren",
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "atzeko herena)",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
@@ -2252,7 +2293,12 @@ export const w18: NotesBlock[] = [
             "text": "Hauek ez dira arkuetatik garatzen, baizik eta "
           },
           {
-            "text": "3 somita",
+            "text": "3 ",
+            "b": true,
+            "u": true
+          },
+          {
+            "text": "somita",
             "b": true
           },
           {
@@ -2282,7 +2328,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p14/s2",
         "parts": [
           {
-            "text": "Mioblastoak mugitu eta migratu egiten dute mihiaren barnera sartzeko, bertan muskulu intrinsekoak eratuz (4. somita bikote kraneala desagertu egiten da)."
+            "text": "Mioblastoak mugitu eta migratu egiten dute mihiaren barnera sartzeko, bertan muskulu intrinsekoak eratuz (4. somita bikote kraneala desagertu egiten da).",
+            "u": true
           }
         ]
       }
@@ -2357,7 +2404,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p17/s1",
         "parts": [
           {
-            "text": "(Mihia mugitzeko aho sabaiko muskuluak baliatzen dira ere.)"
+            "text": "(Mihia mugitzeko aho sabaiko muskuluak baliatzen dira ere.)",
+            "u": true
           }
         ]
       }
@@ -2403,7 +2451,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/2.2/p19/s1",
         "parts": [
           {
-            "text": "Laringearen argazkiari dagokionez: Hioides hezurraren alde bat arku batetik sortzen da eta bestea, beste batetik."
+            "text": "Laringearen argazkiari dagokionez: Hioides hezurraren alde bat arku batetik sortzen da eta bestea, beste batetik.",
+            "u": true
           }
         ]
       }
@@ -2464,7 +2513,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p4/s1",
         "parts": [
           {
-            "text": "Tiroidea faringe hestearen zoruan barnerantz eratzen da, mihiaren gorputza eta sustraiaren artean (estomodoaren atzeko aldean), zulo itsua dagoen mailan (tuberkulu bakoitia eta kupularen artean)."
+            "text": "Tiroidea faringe hestearen zoruan barnerantz eratzen da, mihiaren gorputza eta sustraiaren artean (estomodoaren atzeko aldean), "
+          },
+          {
+            "text": "zulo itsua dagoen mailan (tuberkulu bakoitia eta kupularen artean)",
+            "u": true
+          },
+          {
+            "text": "."
           }
         ]
       }
@@ -2576,7 +2632,11 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p7/s1",
         "parts": [
           {
-            "text": "Tiroide guruina garapenean beherantz doa, hioide hezurra pasatzen du eta hioide hezurraren azpian dauden laringe kartilagoen (krikoide kartilagoa) mailan, aurrekaldea, geldituko da. "
+            "text": "Tiroide guruina garapenean beherantz doa"
+          },
+          {
+            "text": ", hioide hezurra pasatzen du eta hioide hezurraren azpian dauden laringe kartilagoen (krikoide kartilagoa) mailan, aurrekaldea, geldituko da. ",
+            "u": true
           }
         ]
       },
@@ -2783,14 +2843,16 @@ export const w18: NotesBlock[] = [
         "parts": [
           {
             "text": "Funtzio:",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "hormonala, hazkuntzan parte hartu …",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       }
@@ -3046,7 +3108,12 @@ export const w18: NotesBlock[] = [
             "text": "- Estomodeoaren goikaldean beste goragune bat dago/agertuko da: "
           },
           {
-            "text": "bekoki goragunea/goragune frontonasala. ",
+            "text": "bekoki goragunea",
+            "b": true,
+            "u": true
+          },
+          {
+            "text": "/goragune frontonasala. ",
             "b": true
           }
         ]
@@ -3170,7 +3237,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.1/p4/s1",
         "parts": [
           {
-            "text": "Sudur plakoda horiek gero eta lodiago bihurtzen dira eta bertan bi ertz aurkituko ditugu:"
+            "text": "Sudur plakoda horiek gero eta "
+          },
+          {
+            "text": "lodiago bihurtzen dira ",
+            "u": true
+          },
+          {
+            "text": "eta bertan bi ertz aurkituko ditugu:"
           }
         ]
       }
@@ -4075,7 +4149,14 @@ export const w18: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "(errai-hezurra) atalak dira. "
+            "text": "("
+          },
+          {
+            "text": "errai-hezurra",
+            "u": true
+          },
+          {
+            "text": ") atalak dira. "
           }
         ]
       },
@@ -4480,14 +4561,16 @@ export const w18: NotesBlock[] = [
         "parts": [
           {
             "text": "Jaten dugunean janariaren usaimena ez zaigu bakarrik kanpotik heltzen, barnetik ere (atzetik)",
-            "i": true
+            "i": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "etortzen da. ",
-            "i": true
+            "i": true,
+            "u": true
           }
         ]
       },
@@ -4496,7 +4579,8 @@ export const w18: NotesBlock[] = [
         "parts": [
           {
             "text": "Murtxikatzen dugun bitartean janariaren usainak barnetik helduko da sudurrera.",
-            "i": true
+            "i": true,
+            "u": true
           },
           {
             "text": " "
@@ -4508,7 +4592,8 @@ export const w18: NotesBlock[] = [
         "parts": [
           {
             "text": "(Sudurrak kanpoko zein barruko usainak hartu).",
-            "i": true
+            "i": true,
+            "u": true
           }
         ]
       }
@@ -4552,7 +4637,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p3/s2",
         "parts": [
           {
-            "text": "Hortzen eraketa 8. astean hasten da, kanpoan (barailaren eta hezur maxilarraren gainean) dagoen epitelioan (jatorri ektodermikoa, barnean mesenkimarekin) loditasun agertzen dira, barail eta maxilarren artean C forma bat sortuz. "
+            "text": "Hortzen eraketa 8. astean hasten da, kanpoan (barailaren eta hezur maxilarraren gainean) dagoen epitelioan (jatorri ektodermikoa, barnean mesenkimarekin) loditasun agertzen dira, barail eta maxilarren artean "
+          },
+          {
+            "text": "C forma bat sortuz",
+            "u": true
+          },
+          {
+            "text": ". "
           }
         ]
       },
@@ -4575,7 +4667,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p3/s4",
         "parts": [
           {
-            "text": "Aho- sabaiko epitelioan eta barailan prozesu berdina ematen da (nahiz eta argazkian bakarrik aho- sabaiko epitelioa agertzen den)."
+            "text": "Aho- sabaiko epitelioan eta barailan prozesu berdina ematen da (nahiz eta argazkian bakarrik aho- sabaiko epitelioa agertzen den).",
+            "u": true
           }
         ]
       }
@@ -5072,7 +5165,11 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p17/s1",
         "parts": [
           {
-            "text": "Orduan, hortz laminatik, esmaltea, eta beste egitura guztiak papilatik garatzen dira."
+            "text": "Orduan, hortz laminatik, esmaltea, eta beste egitura guztiak papilatik garatze"
+          },
+          {
+            "text": "n dira.",
+            "u": true
           }
         ]
       }
@@ -5102,7 +5199,14 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p18/s2",
         "parts": [
           {
-            "text": "Hasieran hortz-pulpa zabala izango da, gero, hortzak heltzean, estutuz eta luzatuz joango da, dentina loditzerakoan. "
+            "text": "Hasieran hortz-pulpa zabala izango da, gero, hortzak heltzean, estutuz eta luzatuz joango da, "
+          },
+          {
+            "text": "dentina loditzerakoan",
+            "u": true
+          },
+          {
+            "text": ". "
           }
         ]
       },
@@ -5126,32 +5230,38 @@ export const w18: NotesBlock[] = [
         "parts": [
           {
             "text": "Hortzak, bai maxilarrean bai bairailetan, ",
-            "i": true
+            "i": true,
+            "u": true
           },
           {
             "text": "albeoloetan ",
             "b": true,
-            "i": true
+            "i": true,
+            "u": true
           },
           {
             "text": "kokatuta egongo dira eta",
-            "i": true
+            "i": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "hortzetan kanpoan ikusten den atalari deitzen zaio ",
-            "i": true
+            "i": true,
+            "u": true
           },
           {
             "text": "koroa",
             "b": true,
-            "i": true
+            "i": true,
+            "u": true
           },
           {
             "text": ".",
-            "i": true
+            "i": true,
+            "u": true
           }
         ]
       }

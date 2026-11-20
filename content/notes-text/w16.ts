@@ -1436,7 +1436,11 @@ export const w16: NotesBlock[] = [
         "id": "w16/3.2/p4/s2",
         "parts": [
           {
-            "text": "Hauek ez dira kontaktuan egongo rete testis-arekin, garapenean endekatuko dira eta soilik aztarna txiki bat geratuko da; "
+            "text": "Hauek ez dira kontaktuan egongo rete testis-arekin, ",
+            "u": true
+          },
+          {
+            "text": "garapenean endekatuko dira eta soilik aztarna txiki bat geratuko da; "
           },
           {
             "text": "paradidimoa",
@@ -1575,14 +1579,17 @@ export const w16: NotesBlock[] = [
         "id": "w16/3.2/p7/s5",
         "parts": [
           {
-            "text": "Hodi deferentea eta semen xixkua elkartzean "
+            "text": "Hodi deferentea eta semen xixkua elkartzean ",
+            "u": true
           },
           {
             "text": "hodi isurlea",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " eratzen da. "
+            "text": " eratzen da. ",
+            "u": true
           }
         ]
       },
@@ -3622,7 +3629,8 @@ export const w16: NotesBlock[] = [
         "id": "w16/4/p8/s1",
         "parts": [
           {
-            "text": "Hodi paramesonefrikoek lehen aipatutako bidea egiten dutenean, obulutegiak ere arrastratuko dituzte beraiekin. "
+            "text": "Hodi paramesonefrikoek lehen aipatutako bidea egiten dutenean, obulutegiak ere arrastratuko dituzte beraiekin. ",
+            "u": true
           }
         ]
       },
@@ -3630,7 +3638,8 @@ export const w16: NotesBlock[] = [
         "id": "w16/4/p8/s2",
         "parts": [
           {
-            "text": "Hasieran, barrabilekin gertatzen den moduan, abdomeneko atzeko paretan garatzen dira, baina gero pelbisera jaitsi behar dira. "
+            "text": "Hasieran, barrabilekin gertatzen den moduan, abdomeneko atzeko paretan garatzen dira, baina gero pelbisera jaitsi behar dira. ",
+            "u": true
           }
         ]
       },
@@ -3638,7 +3647,8 @@ export const w16: NotesBlock[] = [
         "id": "w16/4/p8/s3",
         "parts": [
           {
-            "text": "Izan ere, giltzurrunak alde pelbikotik abdomenera igotzean, gonadak kontrako prozesua egingo dute. "
+            "text": "Izan ere, giltzurrunak alde pelbikotik abdomenera igotzean, gonadak kontrako prozesua egingo dute. ",
+            "u": true
           }
         ]
       },
@@ -3646,7 +3656,8 @@ export const w16: NotesBlock[] = [
         "id": "w16/4/p8/s4",
         "parts": [
           {
-            "text": "Horrela, gonadak hodi paramesonefrikoen alde medialeko aurrean edo alboan egotetik, atzeko aldean egotera pasatuko dira."
+            "text": "Horrela, gonadak hodi paramesonefrikoen alde medialeko aurrean edo alboan egotetik, atzeko aldean egotera pasatuko dira.",
+            "u": true
           }
         ]
       }

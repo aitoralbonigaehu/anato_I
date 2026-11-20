@@ -204,7 +204,8 @@ export const w19: NotesBlock[] = [
         "parts": [
           {
             "text": "10. Talamoa",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       }
@@ -220,7 +221,8 @@ export const w19: NotesBlock[] = [
         "parts": [
           {
             "text": "11.Kortexa",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       }
@@ -283,7 +285,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/1/p3/s1",
         "parts": [
           {
-            "text": "Nerbio-sistema informazioa garraiatzen eta prozesatzen duen sistema da, hau da, ingurunearekin erlazionatzeko dugun sistema da, inguruneko estimulu guztiak hartuz. "
+            "text": "Nerbio-sistema informazioa garraiatzen eta prozesatzen duen sistema da, hau da, ingurunearekin erlazionatzeko dugun sistema da, inguruneko estimulu guztiak hartuz. ",
+            "u": true
           }
         ]
       },
@@ -291,56 +294,68 @@ export const w19: NotesBlock[] = [
         "id": "w19/1/p3/s2",
         "parts": [
           {
-            "text": "Bi modutan sailkatu dezakegu; anatomikoki ("
+            "text": "Bi modutan sailkatu dezakegu; anatomikoki (",
+            "u": true
           },
           {
             "text": "erdiko nerbio-sistema",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " eta "
+            "text": " eta ",
+            "u": true
           },
           {
             "text": "nerbio-sistema",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "periferikoa",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ") eta funtzionalki "
+            "text": ") eta funtzionalki ",
+            "u": true
           },
           {
             "text": "(nerbio-sistema",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "somatikoa",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " eta "
+            "text": " eta ",
+            "u": true
           },
           {
             "text": "nerbio-sistema",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "autonomoa/begetatiboa",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ", azkenengo honek erraiak inerbatuko ditu eta bere barnean sistema sinpatiko eta parasinpatiko egongo dira)."
+            "text": ", azkenengo honek erraiak inerbatuko ditu eta bere barnean sistema sinpatiko eta parasinpatiko egongo dira).",
+            "u": true
           }
         ]
       }
@@ -481,14 +496,20 @@ export const w19: NotesBlock[] = [
         "id": "w19/1.2.1/p2/s2",
         "parts": [
           {
-            "text": "Nerbio-sistema "
+            "text": "Nerbio-sistema ",
+            "u": true
           },
           {
             "text": "makurtuta ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "egongo da, hori dela eta, ornomuina bertikalki dago, aldiz burmuina horizontalizatu egiten da. "
+            "text": "egongo da, hori dela eta, ",
+            "u": true
+          },
+          {
+            "text": "ornomuina bertikalki dago, aldiz burmuina horizontalizatu egiten da. "
           }
         ]
       },
@@ -504,7 +525,11 @@ export const w19: NotesBlock[] = [
         "id": "w19/1.2.1/p2/s4",
         "parts": [
           {
-            "text": "Makurdura dela eta ordea, burmuinean "
+            "text": "Makurdura dela eta ordea",
+            "u": true
+          },
+          {
+            "text": ", burmuinean "
           },
           {
             "text": "dortsala ",
@@ -731,7 +756,11 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p5/s5",
         "parts": [
           {
-            "text": "Zelulak ez dira erregeneratzen, orduan oso ondo babestuta egon behar da (hezurrez inguratuta). "
+            "text": "Zelulak ez dira erregeneratzen",
+            "u": true
+          },
+          {
+            "text": ", orduan oso ondo babestuta egon behar da (hezurrez inguratuta). "
           }
         ]
       },
@@ -1533,7 +1562,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p5/s3",
         "parts": [
           {
-            "text": "Nahiko fina da. "
+            "text": "Nahiko fina da. ",
+            "u": true
           }
         ]
       },
@@ -1541,7 +1571,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p5/s4",
         "parts": [
           {
-            "text": "IMMA: Pia Materrari itsatsia Hemendik barneragoko eremuari, eremu azpiaraknoideoa deritzo. "
+            "text": "IMMA: Pia Materrari itsatsia Hemendik barneragoko eremuari, eremu azpiaraknoideoa deritzo. ",
+            "u": true
           }
         ]
       },
@@ -1579,7 +1610,11 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p6/s2",
         "parts": [
           {
-            "text": "Beti ehunari (ornomuinari) lotuta agertuko da, bai garunean baita ornomuinean ere. "
+            "text": "Beti ehunari (ornomuinari) lotuta agertuko da, bai garunean baita ornomuinean ere"
+          },
+          {
+            "text": ". ",
+            "u": true
           }
         ]
       },
@@ -1587,7 +1622,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p6/s3",
         "parts": [
           {
-            "text": "Nahiko fina da. "
+            "text": "Nahiko fina da. ",
+            "u": true
           }
         ]
       },
@@ -2088,7 +2124,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/5/p7/s1",
         "parts": [
           {
-            "text": "- Neurona sentsitibo primarioaren soma, gongoiletan (gandor neuraleko eratorria) egongo da eta beste luzapen bat izango du ornomuinerantz (hemen beste neurona sentsitibo batzuen somak egongo dira)."
+            "text": "- Neurona sentsitibo primarioaren soma, gongoiletan (gandor neuraleko eratorria) egongo da eta beste luzapen bat izango du ornomuinerantz (hemen beste neurona sentsitibo batzuen somak egongo dira).",
+            "u": true
           }
         ]
       }
@@ -2239,10 +2276,12 @@ export const w19: NotesBlock[] = [
           },
           {
             "text": "Bikote kranealen gongoilak (parasinpatikoak)",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " (aurpegiko nerbioaren gongoil genikulatua…)"
+            "text": " (aurpegiko nerbioaren gongoil genikulatua…)",
+            "u": true
           }
         ]
       }
@@ -2486,7 +2525,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p3/s1",
         "parts": [
           {
-            "text": "Garapena 5. astean hasi eta 3. hilabetean amaitu. "
+            "text": "Garapena 5. astean hasi eta 3. hilabetean amaitu. ",
+            "u": true
           }
         ]
       },
@@ -2494,7 +2534,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p3/s2",
         "parts": [
           {
-            "text": "Hodi neurala hasiera batean hodi bat da, eta ornomuinak hodi forma mantenduko du."
+            "text": "Hodi neurala hasiera batean hodi bat da, eta ornomuinak hodi forma mantenduko du.",
+            "u": true
           }
         ]
       }
@@ -2854,7 +2895,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p11/s2",
         "parts": [
           {
-            "text": "Hodiaren bi muturretan, goikaldean sabai-plaka eta behekaldean zoru-plaka izango dugu. "
+            "text": "Hodiaren bi muturretan, goikaldean sabai-plaka eta behekaldean zoru-plaka izango dugu. ",
+            "u": true
           }
         ]
       },
@@ -2862,7 +2904,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p11/s3",
         "parts": [
           {
-            "text": "Bi plaka horietan ez daude ia neuronarik (ez dagoelako manto geruzarik, bakarrik geruza marginala), axoiak bakarrik aurkitzen dira. "
+            "text": "Bi plaka horietan ez daude ia neuronarik (ez dagoelako manto geruzarik, bakarrik geruza marginala), axoiak bakarrik aurkitzen dira. ",
+            "u": true
           }
         ]
       },
@@ -2870,7 +2913,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p11/s4",
         "parts": [
           {
-            "text": "Plaka hauek ezker eta eskuin aldeak komunikatzeko daude, axoiez eratuta daude. "
+            "text": "Plaka hauek ezker eta eskuin aldeak komunikatzeko daude, axoiez eratuta daude. ",
+            "u": true
           }
         ]
       },
@@ -2878,14 +2922,17 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p11/s5",
         "parts": [
           {
-            "text": "Hegal-plaka eta oinaldeko-plaken artean ildo bat agertuko da, "
+            "text": "Hegal-plaka eta oinaldeko-plaken artean ildo bat agertuko da, ",
+            "u": true
           },
           {
             "text": "ildo mugatzailea",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ", bi plakak mugatzen baititu. "
+            "text": ", bi plakak mugatzen baititu. ",
+            "u": true
           }
         ]
       },
@@ -2893,7 +2940,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p11/s6",
         "parts": [
           {
-            "text": "Barnean, ependimoa dago, hasieran neuroepitelio bat izango du, horren zelula neuroepitelialak glioblastoetatik garatuko dira. "
+            "text": "Barnean, ependimoa dago, hasieran neuroepitelio bat izango du, horren zelula neuroepitelialak glioblastoetatik garatuko dira. ",
+            "u": true
           }
         ]
       },
@@ -2901,7 +2949,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p11/s7",
         "parts": [
           {
-            "text": "Gero (behin jaiota) ependimoan, zelula ependimarioak egongo dira."
+            "text": "Gero (behin jaiota) ependimoan, zelula ependimarioak egongo dira.",
+            "u": true
           }
         ]
       }
@@ -3466,7 +3515,11 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p6/s5",
         "parts": [
           {
-            "text": "(Gosearen zentroa, loaren zentroa…) ■ Azpitalamoa"
+            "text": "(Gosearen zentroa, loaren zentroa…) ",
+            "u": true
+          },
+          {
+            "text": "■ Azpitalamoa"
           }
         ]
       }
@@ -3504,7 +3557,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p7/s3",
         "parts": [
           {
-            "text": "Hasierako zatian handia gero txikitu eta bukaerako zatian nahiko txikia. "
+            "text": "Hasierako zatian handia gero txikitu eta bukaerako zatian nahiko txikia. ",
+            "u": true
           }
         ]
       },
@@ -3512,7 +3566,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p7/s4",
         "parts": [
           {
-            "text": "Nagusietan ere mesentzefaloa deritzo."
+            "text": "Nagusietan ere mesentzefaloa deritzo.",
+            "u": true
           }
         ]
       }
@@ -3810,14 +3865,16 @@ export const w19: NotesBlock[] = [
         "parts": [
           {
             "text": "10.",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "TALAMOA",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       }
@@ -3832,7 +3889,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p3/s1",
         "parts": [
           {
-            "text": "Eskema honetan nerbio sistemak nola funtzionatzen duen azaldu. "
+            "text": "Eskema honetan nerbio sistemak nola funtzionatzen duen azaldu. ",
+            "u": true
           }
         ]
       },
@@ -3840,7 +3898,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p3/s2",
         "parts": [
           {
-            "text": "Hasieran nerbio sistema da ingurumenarekin erlazionatzeko daukagun sistema nagusiena (endokrinoak ere ditugu). "
+            "text": "Hasieran nerbio sistema da ingurumenarekin erlazionatzeko daukagun sistema nagusiena (endokrinoak ere ditugu). ",
+            "u": true
           }
         ]
       },
@@ -3848,7 +3907,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p3/s3",
         "parts": [
           {
-            "text": "Izan ere inguruneko estimulu guztiak (ikusi, usaindu, ukitu, mina, temperatura…) nerbio sistematik hartuko dugu. "
+            "text": "Izan ere inguruneko estimulu guztiak (ikusi, usaindu, ukitu, mina, temperatura…) nerbio sistematik hartuko dugu. ",
+            "u": true
           }
         ]
       },
@@ -3856,21 +3916,26 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p3/s4",
         "parts": [
           {
-            "text": "Hasieran estimulu guzti hauek "
+            "text": "Hasieran estimulu guzti hauek ",
+            "u": true
           },
           {
             "text": "neurona sentsitibo batek ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "hartuko ditu eta "
+            "text": "hartuko ditu eta ",
+            "u": true
           },
           {
             "text": "garunerantz ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "bideratuko du. "
+            "text": "bideratuko du. ",
+            "u": true
           }
         ]
       },
@@ -3878,14 +3943,17 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p3/s5",
         "parts": [
           {
-            "text": "Batzuetan "
+            "text": "Batzuetan ",
+            "u": true
           },
           {
             "text": "ornomuinean sinapsia",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " emango da beste neurona sentsitibo bati informazioa pasatuz. "
+            "text": " emango da beste neurona sentsitibo bati informazioa pasatuz. ",
+            "u": true
           }
         ]
       },
@@ -3893,14 +3961,17 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p3/s6",
         "parts": [
           {
-            "text": "Ornomuinean egiten ez badu, "
+            "text": "Ornomuinean egiten ez badu, ",
+            "u": true
           },
           {
             "text": "entzefaloan",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " egingo du lehenengo sinapsia. "
+            "text": " egingo du lehenengo sinapsia. ",
+            "u": true
           }
         ]
       },
@@ -3908,25 +3979,30 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p3/s7",
         "parts": [
           {
-            "text": "Baina informazioa "
+            "text": "Baina informazioa ",
+            "u": true
           },
           {
             "text": "garun kortexera",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " heldu aurretik "
+            "text": " heldu aurretik ",
+            "u": true
           },
           {
             "text": "sinapsiak eman behar",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "dira. ",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       },
@@ -3934,7 +4010,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p3/s8",
         "parts": [
           {
-            "text": "Sinapsi garrantzitsuena TALAMOAN ematen dena da."
+            "text": "Sinapsi garrantzitsuena TALAMOAN ematen dena da.",
+            "u": true
           }
         ]
       }
@@ -3950,10 +4027,12 @@ export const w19: NotesBlock[] = [
         "parts": [
           {
             "text": "TALAMOA",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ": entzefalo osoko egitura sensitibo nagusiena (osagai motorrak ere baditu). "
+            "text": ": entzefalo osoko egitura sensitibo nagusiena (osagai motorrak ere baditu). ",
+            "u": true
           }
         ]
       },
@@ -3961,7 +4040,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p4/s2",
         "parts": [
           {
-            "text": "Gainera, berezitasun handia dauka: sentsazioak ez badute sinapsia talamoan egiten ez gara kontziente sentsazio hori daukagunik. "
+            "text": "Gainera, berezitasun handia dauka: sentsazioak ez badute sinapsia talamoan egiten ez gara kontziente sentsazio hori daukagunik. ",
+            "u": true
           }
         ]
       },
@@ -3969,7 +4049,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p4/s3",
         "parts": [
           {
-            "text": "SENTSAZIO GUZTIETAN USAIMENEAN izan ezik. "
+            "text": "SENTSAZIO GUZTIETAN USAIMENEAN izan ezik. ",
+            "u": true
           }
         ]
       },
@@ -3977,7 +4058,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p4/s4",
         "parts": [
           {
-            "text": "Izan ere, usaimena zuzenean sudurretik kortexera doa (primitiboena delako)."
+            "text": "Izan ere, usaimena zuzenean sudurretik kortexera doa (primitiboena delako).",
+            "u": true
           }
         ]
       }
@@ -3993,14 +4075,16 @@ export const w19: NotesBlock[] = [
         "parts": [
           {
             "text": "11.",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "KORTEXA",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       }
@@ -4015,7 +4099,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/11/p3/s1",
         "parts": [
           {
-            "text": "Kortexean prozesatuko da informazioa. "
+            "text": "Kortexean prozesatuko da informazioa. ",
+            "u": true
           }
         ]
       },
@@ -4024,38 +4109,46 @@ export const w19: NotesBlock[] = [
         "parts": [
           {
             "text": "Kortex",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "sentsitiboak",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " informazioa "
+            "text": " informazioa ",
+            "u": true
           },
           {
             "text": "kortex",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "motoreari",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " pasatuko dio eta hor "
+            "text": " pasatuko dio eta hor ",
+            "u": true
           },
           {
             "text": "neurona motoreak ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "egongo dira. "
+            "text": "egongo dira. ",
+            "u": true
           }
         ]
       },
@@ -4063,7 +4156,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/11/p3/s3",
         "parts": [
           {
-            "text": "Eta bertan dagoen neurona bidaliko du axoiaren bidez informazioa ornomuinean gai zuritik berantz, heltzen den informazio hori hona ornomuinaren maila batera eta hemen dagoen neurona motorrak eragingo du kortexetik datorren erantzuna eta informazio hori aterako da aurreko sustraitik helduko da muskuluetara eta muskulua mugituko dugu. "
+            "text": "Eta bertan dagoen neurona bidaliko du axoiaren bidez informazioa ornomuinean gai zuritik berantz, heltzen den informazio hori hona ornomuinaren maila batera eta hemen dagoen neurona motorrak eragingo du kortexetik datorren erantzuna eta informazio hori aterako da aurreko sustraitik helduko da muskuluetara eta muskulua mugituko dugu. ",
+            "u": true
           }
         ]
       },
@@ -4071,21 +4165,25 @@ export const w19: NotesBlock[] = [
         "id": "w19/11/p3/s4",
         "parts": [
           {
-            "text": "Hauek informazioa prozesatuko dute "
+            "text": "Hauek informazioa prozesatuko dute ",
+            "u": true
           },
           {
             "text": "erantzun",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "motore",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " bat agintzeko. "
+            "text": " bat agintzeko. ",
+            "u": true
           }
         ]
       },
@@ -4093,7 +4191,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/11/p3/s5",
         "parts": [
           {
-            "text": "Agindu motorea muskuluko esku eta besoetara heldu behar da. "
+            "text": "Agindu motorea muskuluko esku eta besoetara heldu behar da. ",
+            "u": true
           }
         ]
       },
@@ -4101,7 +4200,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/11/p3/s6",
         "parts": [
           {
-            "text": "Goitik hasita beheranzko bideetatik sinapsi batzuk egin ondoren azkenengo moto neurona muskuluetara heldu eta bertan ekintza egingo da. "
+            "text": "Goitik hasita beheranzko bideetatik sinapsi batzuk egin ondoren azkenengo moto neurona muskuluetara heldu eta bertan ekintza egingo da. ",
+            "u": true
           }
         ]
       },
@@ -4109,7 +4209,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/11/p3/s7",
         "parts": [
           {
-            "text": "Guzti hau milisegundutan emango da (mina badaukagu eskua kentzea)."
+            "text": "Guzti hau milisegundutan emango da (mina badaukagu eskua kentzea).",
+            "u": true
           }
         ]
       }
@@ -4125,7 +4226,8 @@ export const w19: NotesBlock[] = [
         "parts": [
           {
             "text": "5.1 Mugimendu erreflexuak",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       }
@@ -4140,14 +4242,17 @@ export const w19: NotesBlock[] = [
         "id": "w19/5.1/p2/s1",
         "parts": [
           {
-            "text": "Badaude beste mugimendu batzuk, "
+            "text": "Badaude beste mugimendu batzuk, ",
+            "u": true
           },
           {
             "text": "erreflexuak",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ", hauek askoz azkarragoak dira borondatezko mugimenduak baino. "
+            "text": ", hauek askoz azkarragoak dira borondatezko mugimenduak baino. ",
+            "u": true
           }
         ]
       },
@@ -4155,14 +4260,17 @@ export const w19: NotesBlock[] = [
         "id": "w19/5.1/p2/s2",
         "parts": [
           {
-            "text": "izan ere, hauen informazio sentsitiboa ez da kortexera heltzen, baizik eta "
+            "text": "izan ere, hauen informazio sentsitiboa ez da kortexera heltzen, baizik eta ",
+            "u": true
           },
           {
             "text": "ornomuinera",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ". "
+            "text": ". ",
+            "u": true
           }
         ]
       },
@@ -4170,7 +4278,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/5.1/p2/s3",
         "parts": [
           {
-            "text": "Bertan prozesatzen dira eta motor neurona bertatik aterako da. "
+            "text": "Bertan prozesatzen dira eta motor neurona bertatik aterako da. ",
+            "u": true
           }
         ]
       },
@@ -4178,7 +4287,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/5.1/p2/s4",
         "parts": [
           {
-            "text": "**sentsitiboak: goranzko bideak / motoreak: beheranzko bideak **sinapsia egitea = erreleboa egin ** neurona motorea = moto neurona "
+            "text": "**sentsitiboak: goranzko bideak / motoreak: beheranzko bideak **sinapsia egitea = erreleboa egin ** neurona motorea = moto neurona ",
+            "u": true
           },
           {
             "text": "(alboko ikuspegia)",
@@ -4197,14 +4307,17 @@ export const w19: NotesBlock[] = [
         "id": "w19/5.1/p3/s1",
         "parts": [
           {
-            "text": "Nerbio sistema tolestu egiten da, horrela mesentzefaloan tolespen zefalikoa eta erronbentzefalo eta ornomuin muga artean "
+            "text": "Nerbio sistema tolestu egiten da, horrela mesentzefaloan tolespen zefalikoa eta erronbentzefalo eta ornomuin muga artean ",
+            "u": true
           },
           {
             "text": "tolespen zerbikala/lepo tolespena",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ". "
+            "text": ". ",
+            "u": true
           }
         ]
       },
@@ -4212,21 +4325,25 @@ export const w19: NotesBlock[] = [
         "id": "w19/5.1/p3/s2",
         "parts": [
           {
-            "text": "5. astean bihurriago eta garatuago dago nerbio sistema eta entzefaloa, beste tolespen bat, "
+            "text": "5. astean bihurriago eta garatuago dago nerbio sistema eta entzefaloa, beste tolespen bat, ",
+            "u": true
           },
           {
             "text": "zubi",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "tolespena",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ", alde bentralean. "
+            "text": ", alde bentralean. ",
+            "u": true
           }
         ]
       },
@@ -4234,7 +4351,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/5.1/p3/s3",
         "parts": [
           {
-            "text": "Gainera metentzefalo eta mesentzefalo arteko muga estutu egiten da, istmo izena hartuz. "
+            "text": "Gainera metentzefalo eta mesentzefalo arteko muga estutu egiten da, istmo izena hartuz. ",
+            "u": true
           }
         ]
       },
@@ -4244,11 +4362,13 @@ export const w19: NotesBlock[] = [
           {
             "text": "itsmoa",
             "b": true,
-            "i": true
+            "i": true,
+            "u": true
           },
           {
             "text": "=estutze (hau azalpenean gehitu)",
-            "i": true
+            "i": true,
+            "u": true
           }
         ]
       }
@@ -4333,14 +4453,17 @@ export const w19: NotesBlock[] = [
         "id": "w19/12/p4/s1",
         "parts": [
           {
-            "text": "Xixkuak, barrunbeak dira, baina hauek ez dira hutsik egongo, "
+            "text": "Xixkuak, barrunbeak dira, baina hauek ez dira hutsik egongo, ",
+            "u": true
           },
           {
             "text": "likido zefalorrakideoa",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " dabil bertatik. "
+            "text": " dabil bertatik. ",
+            "u": true
           }
         ]
       },
@@ -4348,7 +4471,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/12/p4/s2",
         "parts": [
           {
-            "text": "Horretarako, xixkuen barrunbe guztiak komunikaturik egon behar dira, hau da, hauen artean jarraiturik edo komunikaturik egongo dira. "
+            "text": "Horretarako, xixkuen barrunbe guztiak komunikaturik egon behar dira, hau da, hauen artean jarraiturik edo komunikaturik egongo dira. ",
+            "u": true
           }
         ]
       },
@@ -4356,14 +4480,17 @@ export const w19: NotesBlock[] = [
         "id": "w19/12/p4/s3",
         "parts": [
           {
-            "text": "Orokorrean, barrunbe hauek, "
+            "text": "Orokorrean, barrunbe hauek, ",
+            "u": true
           },
           {
             "text": "bentrikulu",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " izena hartzen dute."
+            "text": " izena hartzen dute.",
+            "u": true
           }
         ]
       }
@@ -4385,7 +4512,14 @@ export const w19: NotesBlock[] = [
             "b": true
           },
           {
-            "text": " (garun hemisferioren barnean, xixku bakoitzean 1*) → 2 alboko bentrikuluak/bentrikulu lateralak (helduetan nahiko handiak, hemisferiak garapenean handitzen baitira) *EZ esan I. eta II. bentrikuluak direla, bata bestearen parean baitaude."
+            "text": " (garun hemisferioren barnean, xixku bakoitzean 1*) → 2 alboko bentrikuluak/bentrikulu lateralak "
+          },
+          {
+            "text": "(helduetan nahiko handiak, hemisferiak garapenean handitzen baitira)",
+            "u": true
+          },
+          {
+            "text": " *EZ esan I. eta II. bentrikuluak direla, bata bestearen parean baitaude."
           }
         ]
       }
@@ -4614,7 +4748,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/13/p3/s6",
         "parts": [
           {
-            "text": "IV. bentrikuluaren sabaian, zerebeloa aurkitzen da."
+            "text": "IV. bentrikuluaren sabaian, zerebeloa aurkitzen da.",
+            "u": true
           }
         ]
       }

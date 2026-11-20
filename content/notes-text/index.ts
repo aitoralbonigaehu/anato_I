@@ -20,7 +20,8 @@ import { w17 } from './w17';
 import { w18 } from './w18';
 import { w19 } from './w19';
 
-export interface NotesPart { text: string; b?: boolean; i?: boolean }
+/** `u`: set in blue in the original (topics 16+): not taught this year; the reader may skip it. */
+export interface NotesPart { text: string; b?: boolean; i?: boolean; u?: boolean }
 export interface NotesSentence { id: string; parts: NotesPart[] }
 export interface NotesBlock {
   id: string;
@@ -33,6 +34,15 @@ const documents: Record<number, NotesBlock[]> = { 1: w1, 2: w2, 3: w3, 4: w4, 5:
 export const notesOf = (week: number): NotesBlock[] => documents[week] ?? [];
 export const sentenceText = (s: NotesSentence) => s.parts.map(p => p.text).join('');
 export const blockText = (b: NotesBlock) => b.sentences.map(sentenceText).join('');
+/** Every visible character of the sentence is blue (spaces and punctuation-only parts don't count). */
+export const allBlue = (s: NotesSentence) => s.parts.every((p) => p.u || !/[\p{L}\p{N}]/u.test(p.text)) && s.parts.some((p) => p.u);
+/** Topics whose notes mark blue (not taught this year) text: the "skip blue" reading mode is offered there. */
+const blueWeeks = new Map<number, boolean>();
+export const hasBlue = (week: number) => {
+  let v = blueWeeks.get(week);
+  if (v === undefined) blueWeeks.set(week, (v = notesOf(week).some((b) => b.sentences.some((s) => s.parts.some((p) => p.u)))));
+  return v;
+};
 const sentences = new Map(Object.values(documents).flatMap(blocks => blocks.flatMap(b => b.sentences.map(s => [s.id, s] as const))));
 export const sentence = (id: string) => sentences.get(id);
 

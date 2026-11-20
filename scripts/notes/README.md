@@ -13,3 +13,5 @@ IDs have a topic prefix (`w1/4.2/p3/s2`) so identical section numbers in differe
 `tests/notes.test.ts` checks IDs, complete beat coverage, section boundaries, reverse links, TOC routing, and pinned text lengths/SHA-256 hashes. After changing an extraction rule, review all six PDFs visually and re-review affected alignment before updating those pins.
 
 Open `/astea/1?apunteak=1` or press N in the simulator. A−/A+ and the notes preference are remembered in the browser. Manual scrolling pauses follow; Jarraitu resumes it. Notes remain visible in focus/fullscreen mode. The existing information panel returns when notes mode is disabled.
+
+From topic 16 (`BLUE_FROM` in `extract.py`) text set in pure blue (#0000ff) in the PDF is what was not taught this year: its parts carry `u: true`. The notes panel shows it blue and offers a toggle (blue square, top right) that hides it — partly blue sentences lose only their blue words, wholly blue sentences and blocks go, step markers stay. The choice is remembered with the other reading preferences.

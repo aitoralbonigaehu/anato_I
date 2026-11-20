@@ -24,7 +24,8 @@ import { Help, useHelp } from './Help';
 import { TourHost } from './tour/TourHost';
 import { useTourBusy } from './tour/store';
 import { Inspector } from './Inspector';
-import { NotesPanel } from './NotesPanel';
+import { NotesPanel, useSkipBlue } from './NotesPanel';
+import { blueSteps, isBlueStep, nextShown, stageAllBlue } from '@/lib/sim/skip-blue';
 import type { NotesAnchor } from '@/content/notes-text';
 import { NowCard } from './NowCard';
 import { Locator, type CutStop, type Crumb } from './Locator';
@@ -531,6 +532,12 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
   const modelFrameMs = view.id === '3d' || (view.scene as { geo?: string[] }).geo?.length ? frameMs : 0;
   const activeBeat = beatIndexAt(stage, pos.t);
   const beat = stage.beats[activeBeat];
+  // "Skip blue" (notes panel, topics 16+): playback and the step/stage keys pass over steps whose notes are all blue.
+  const skipBlue = useSkipBlue(week.week);
+  const skipBlueRef = useRef(skipBlue);
+  useEffect(() => {
+    skipBlueRef.current = skipBlue;
+  });
   /** Where the stage sits in the notes, and the exam dates the current step shows. */
   const notesAt = sectionOf(week.week, stage.id);
   const dates = examDatesAt(week.week, stage.id, beat?.at);
@@ -651,7 +658,20 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
     let raf = 0;
     let last = performance.now();
     let nextFrame = -Infinity;
-    const publish = (next: Pos) => {
+    // Entering a blue step (never one the viewer is already on): on to the next step that is not blue,
+    // into the next stage only when auto-continuing; with none left, stop at the last step's end.
+    const overBlue = (prev: Pos, next: Pos): Pos => {
+      const st = week.stages[next.i];
+      const k = beatIndexAt(st, next.t);
+      if ((prev.i === next.i && beatIndexAt(week.stages[prev.i], prev.t) === k) || !isBlueStep(st, k)) return next;
+      const to = nextShown(week.stages, next.i, k, 1);
+      if (to && (to.i === next.i || autoContinue)) return { i: to.i, t: to.k === 0 ? 0 : week.stages[to.i].beats[to.k].at + 0.000001 };
+      // Stop where we are (still on the last step that is not blue): no hop back to its completed frame.
+      setPlaying(false);
+      return prev;
+    };
+    const publish = (raw: Pos) => {
+      const next = skipBlueRef.current ? overBlue(live.current, raw) : raw;
       if (next.i === live.current.i && next.t === live.current.t) return;
       live.current = next;
       perfCount('simFrame');
@@ -973,13 +993,19 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
     setSelected(null);
   };
   const gotoStage = (delta: number) => {
+    // "Skip blue": stages whose steps are all blue are passed over, and a stage opens at its first step that is not.
+    let i = pos.i + delta;
+    if (skipBlue) while (i >= 0 && i < week.stages.length && stageAllBlue(week.stages[i])) i += Math.sign(delta);
+    if (i < 0 || i >= week.stages.length) i = pos.i + delta;
     // While playing, a new stage opens with its quick preview.
-    if (playing && pos.i + delta >= 0 && pos.i + delta < week.stages.length) startIntro();
+    if (playing && i >= 0 && i < week.stages.length) startIntro();
     else endIntro();
     clearTour();
+    i = Math.min(week.stages.length - 1, Math.max(0, i));
+    const first = skipBlue ? nextShown([week.stages[i]], 0, 0, 1) : null;
     place({
-      i: Math.min(week.stages.length - 1, Math.max(0, pos.i + delta)),
-      t: 0,
+      i,
+      t: first && first.k > 0 ? week.stages[i].beats[first.k].at + 0.001 : 0,
     });
     setSelected(null);
   };
@@ -1035,6 +1061,14 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
     }
     endIntro();
     const k = shownBeat + delta;
+    if (skipBlue) {
+      const to = nextShown(week.stages, pos.i, k, delta > 0 ? 1 : -1);
+      if (!to) return;
+      if (to.i === pos.i) return gotoBeat(to.k);
+      const st = week.stages[to.i];
+      place({ i: to.i, t: delta > 0 ? (to.k === 0 ? 0 : st.beats[to.k].at + 0.001) : doneAt(st, to.k) });
+      return;
+    }
     if (k < 0) {
       if (pos.i > 0) place({ i: pos.i - 1, t: 0.999 });
       return;
@@ -2313,6 +2347,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
           <Player
             modelGuide={view.guide && !find ? { key: sceneKey, content: view.guide, onOpen: () => { transport.cancel(); speaking.current = false; setPlaying(false); } } : undefined}
             stage={withRecall(week.week, stage)}
+            skipped={skipBlue ? blueSteps(stage) : undefined}
             stageIndex={pos.i}
             stageCount={week.stages.length}
             nextTitle={nextStage?.title}
