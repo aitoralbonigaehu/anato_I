@@ -326,6 +326,8 @@ export default function ReleaseFilm(props: Props) {
   useEffect(() => {
     if (!opening) return;
     playback.current.started = true;
+    // The earlier film, kept as it was (only ?intro=v2 opens it): it starts when it opens.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setStarted(true);
   }, [opening]);
   function toggle() {

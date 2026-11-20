@@ -54,7 +54,7 @@ export function Welcome() {
     window.addEventListener(REPLAY, replay);
     const url = new URL(window.location.href);
     const showJourney = url.searchParams.get('ongietorria') === '1';
-    const showFilm = url.searchParams.get('intro') === 'v2';
+    const showFilm = url.searchParams.get('intro') === 'v2' || url.searchParams.get('intro') === 'v3';
     let timer = 0;
     const offer = () => {
       if (path.startsWith('/dev')) return;
@@ -81,7 +81,7 @@ export function Welcome() {
   }
   function closeJourney() {
     const url=new URL(location.href);
-    if(url.searchParams.get('intro')==='v2'||url.searchParams.get('ongietorria')==='1'){
+    if(url.searchParams.get('intro')==='v2'||url.searchParams.get('intro')==='v3'||url.searchParams.get('ongietorria')==='1'){
       url.searchParams.delete('intro');url.searchParams.delete('ongietorria');url.searchParams.delete('t');
       window.history.replaceState(window.history.state,'',url);
     }

@@ -24,6 +24,7 @@ export function AppFrame({
   onScale,
   isReady,
   onReady,
+  expanded = false,
   children,
 }: {
   src: string;
@@ -38,6 +39,8 @@ export function AppFrame({
   /** True once the page inside shows what the stop is about (the 3D drawn, the figure's names placed). */
   isReady: (doc: Document) => boolean;
   onReady: () => void;
+  /** Grown over the whole screen (the simulator's full screen, shown): the frame travels there and back. */
+  expanded?: boolean;
   children?: ReactNode;
 }) {
   const box = useRef<HTMLDivElement>(null);
@@ -48,15 +51,18 @@ export function AppFrame({
   const check = useRef(isReady);
   const done = useRef(onReady);
   const scaled = useRef(onScale);
+  const grown = useRef(expanded);
   useEffect(() => {
     check.current = isReady;
     done.current = onReady;
     scaled.current = onScale;
+    grown.current = expanded;
   });
 
   useEffect(() => {
     let raf = 0;
     let last = '';
+    let was: { x: number; y: number; w: number; h: number; big: boolean } | null = null;
     const place = () => {
       raf = requestAnimationFrame(place);
       const shell = host.current;
@@ -68,16 +74,32 @@ export function AppFrame({
       // Placed in the frames' layer (the stops' area), wherever the slot is in the stop.
       const h = (el.parentElement ?? shell).getBoundingClientRect();
       const r = slot?.getBoundingClientRect();
-      const x = r ? r.left - h.left : 0;
-      const y = r ? r.top - h.top : 0;
-      const w = r && r.width > 40 ? r.width : 900;
-      const hh = r && r.height > 40 ? r.height : 560;
-      const key = `${Math.round(x)},${Math.round(y)},${Math.round(w)},${Math.round(hh)}`;
+      const big = grown.current;
+      // Grown: the whole window (the frames' layer lets it out while it is).
+      const x = big ? -h.left : r ? r.left - h.left : 0;
+      const y = big ? -h.top : r ? r.top - h.top : 0;
+      const w = big ? window.innerWidth : r && r.width > 40 ? r.width : 900;
+      const hh = big ? window.innerHeight : r && r.height > 40 ? r.height : 560;
+      const key = `${Math.round(x)},${Math.round(y)},${Math.round(w)},${Math.round(hh)},${big}`;
       if (key === last) return;
       last = key;
-      el.style.transform = `translate(${x}px, ${y}px)`;
+      const from = was;
+      was = { x, y, w, h: hh, big };
       el.style.width = `${w}px`;
       el.style.height = `${hh}px`;
+      if (from && from.big !== big) {
+        // FLIP: laid out once at the new size, drawn first where it was, then glides (transform only: smooth).
+        el.style.transition = 'none';
+        el.style.transform = `translate(${from.x}px, ${from.y}px) scale(${from.w / w}, ${from.h / hh})`;
+        void el.offsetWidth;
+        el.style.transition = 'transform .85s cubic-bezier(.2, .75, .12, 1), opacity .55s ease';
+        el.style.transform = `translate(${x}px, ${y}px)`;
+        const end = () => {
+          el.style.transition = '';
+          el.removeEventListener('transitionend', end);
+        };
+        el.addEventListener('transitionend', end);
+      } else el.style.transform = `translate(${x}px, ${y}px)`;
       const vw = v.clientWidth;
       const vh = v.clientHeight;
       const W = Math.min(MAX_W, Math.max(MIN_W, vw / 0.8));
@@ -120,7 +142,7 @@ export function AppFrame({
   }, [loaded, ready, frame]);
 
   return (
-    <div ref={box} className={s.frame} data-shown={shown} data-ready={ready} aria-hidden={!shown} inert={!shown}>
+    <div ref={box} className={s.frame} data-shown={shown} data-ready={ready} data-expanded={expanded} aria-hidden={!shown} inert={!shown}>
       <div className={s.frameBar}>
         <span className={s.frameLive}>
           <i aria-hidden />
@@ -129,7 +151,7 @@ export function AppFrame({
         <span className={s.frameLabel}>{label}</span>
       </div>
       <div ref={view} className={s.frameView}>
-        <iframe ref={frame} name={DEMO_NAME} src={src} title={label} onLoad={() => setLoaded(true)} tabIndex={shown ? 0 : -1} />
+        <iframe ref={frame} name={DEMO_NAME} src={src} title={label} onLoad={() => setLoaded(true)} tabIndex={shown ? 0 : -1} allow="fullscreen" allowFullScreen />
         {!ready && (
           <p className={s.frameWait} role="status">
             <i aria-hidden />

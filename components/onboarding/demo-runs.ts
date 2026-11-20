@@ -32,7 +32,7 @@ export function playScene(win: Window) {
   if (p && !playing(win.document)) p.click();
 }
 
-export const KIMU_QUESTION = 'Nondik dator goiko ezpaina?';
+export const KIMU_QUESTION = 'Nondik dator baraila?';
 
 /**
  * Kimu gets ready the way it does for a student (its button hovered): it loads its engine and builds its
@@ -80,7 +80,8 @@ export async function runKimu(frameWin: Window, live: () => boolean, phase: (n: 
   await sleep(3000, live);
   // The card of the answer's own step ("in this stage", with its notes) first, else the notes' link.
   const cards = [...doc.querySelectorAll<HTMLElement>('.kimu-go')];
-  const go = cards.find((c) => /Etapa honetan/.test(c.textContent ?? '')) ?? doc.querySelector<HTMLElement>('.kimu-src-open') ?? cards[0];
+  const go =
+    cards.find((c) => /Etapa honetan/.test(c.textContent ?? '')) ?? cards.find((c) => /Gai honetan/.test(c.textContent ?? '')) ?? doc.querySelector<HTMLElement>('.kimu-src-open') ?? cards[0];
   if (!go) return;
   go.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   go.classList.add('demo-glow');
@@ -89,6 +90,40 @@ export async function runKimu(frameWin: Window, live: () => boolean, phase: (n: 
   go.classList.remove('demo-glow');
   go.click();
   phase(4);
+}
+
+/**
+ * The simulator's full screen, shown: the pointer goes to the picture's full-screen key and presses it, and the
+ * journey grows the frame over the whole screen (a real full screen needs the student's own press: the stop offers
+ * that too); inside, the app's own F (focus mode) gives the picture the room, as its full screen does.
+ * `phase`: 1 going to the key, 2 pressed, 3 full screen, 4 back.
+ */
+export async function runFullscreen(frameWin: Window, live: () => boolean, cursor: (c: Cursor | null) => void, phase: (n: number) => void) {
+  const win = frameWin as FrameWindow;
+  const doc = win.document;
+  await sleep(4200, live);
+  const keys = [...doc.querySelectorAll<HTMLElement>('[aria-label="Pantaila osoa"]')].filter((b) => b.getBoundingClientRect().width > 0);
+  const key = keys[keys.length - 1];
+  const r = key?.getBoundingClientRect();
+  cursor({ x: win.innerWidth * 0.62, y: win.innerHeight * 0.58 });
+  await sleep(160, live);
+  phase(1);
+  cursor(r ? { x: r.left + r.width / 2, y: r.top + r.height / 2 } : { x: win.innerWidth - 28, y: win.innerHeight * 0.33 });
+  await sleep(1150, live);
+  key?.classList.add('demo-glow');
+  phase(2);
+  await sleep(420, live);
+  key?.classList.remove('demo-glow');
+  cursor(null);
+  phase(3);
+  win.dispatchEvent(new win.KeyboardEvent('keydown', { key: 'f', bubbles: true }));
+  try {
+    await sleep(5200, live);
+  } finally {
+    // Back as it was, even when the student takes over or leaves the stop.
+    if (doc.querySelector('.app.is-focus')) win.dispatchEvent(new win.KeyboardEvent('keydown', { key: 'f', bubbles: true }));
+    phase(4);
+  }
 }
 
 /** Names of the heart-and-vessels figure: each lights a whole vessel or chamber, from end to end. */

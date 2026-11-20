@@ -7,9 +7,9 @@ import { StudyMusicButton } from '@/components/shell/StudyMusic';
 import { BrandMark } from '@/components/shell/icons';
 import { structures, weeks } from '@/content/registry';
 import { AppFrame } from './AppFrame';
-import { ERA_MAP, KIMU_QUESTION, PLATE_FIGURE, framePlate, playScene, runKimu, runPlate, runSchemes, type Cursor } from './demo-runs';
-import type { PalateState } from './ReleaseFilm';
-import ReleaseFilm from './ReleaseFilm';
+import { ERA_MAP, KIMU_QUESTION, PLATE_FIGURE, framePlate, playScene, runFullscreen, runKimu, runPlate, runSchemes, type Cursor } from './demo-runs';
+import Show, { type Place } from './show/Show';
+import ReleaseFilm, { type PalateState } from './ReleaseFilm';
 import s from './journey.module.css';
 
 /**
@@ -49,7 +49,7 @@ const STOPS: Stop[] = [
     eyebrow: 'Enbriologian barrena',
     title: 'Hitzetatik',
     italic: 'formara.',
-    body: 'Enbrioia ez da orrialde bat: hazi, tolestu eta biratu egiten da, hiru dimentsiotan. EnbrioAtlasek zure apunteak hartzen ditu eta bizia ematen die, urratsez urrats.',
+    body: 'Enbrioia ez da orrialde bat: hazi, tolestu eta fusionatu egiten da, hiru dimentsiotan. EnbrioAtlasek zure apunteak hartzen ditu eta bizia ematen die, urratsez urrats.',
     next: 'Hasi bidaia',
   },
   {
@@ -65,7 +65,7 @@ const STOPS: Stop[] = [
     eyebrow: 'Irtenbidea',
     title: 'Apunteak,',
     italic: 'bizirik.',
-    body: 'Hau ez da bideo bat: benetako simulagailua da, orri bereko aurpegiaren fusioa. Apunteetako esaldi bakoitza urrats bat da, eta urrats bakoitzak bere eszena du: aipatzen den egitura pizten da, eta mugitzen dena zure aurrean mugitzen da.',
+    body: 'Hau ez da bideo bat: benetako simulagailua da, 17. gaiaren lehen urratsa. Apunteetako esaldi bakoitza urrats bat da, eta urrats bakoitzak bere eszena du: aipatzen den egitura pizten da, eta mugitzen dena zure aurrean mugitzen da.',
     next: 'Ezagutu Kimu',
     app: 'sim',
   },
@@ -116,10 +116,11 @@ const STOPS: Stop[] = [
 ];
 
 /**
- * Where the opening film's embryo goes at each stop: 0 in the picture, 3 dissolved (the page of notes,
- * then the real app, take the stage), 4 inside the laptop's screen.
+ * Where the opening show's points are at each stop: the face fusing in the first stop's picture, a quiet dust while
+ * the page of notes and the live app take the stage (the canvas then stops drawing), the skull of topic 17 (where
+ * the guide sends a student to start) on the last.
  */
-const CUE = [0, 3, 3, 3, 3, 3, 3, 4];
+const PLACE: Place[] = ['face', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'skull'];
 /** The stops of each live frame, and the one before (it loads there, out of sight). */
 const FRAME_STOPS: Record<App, number[]> = { sim: [2, 3], bel: [4], era: [5] };
 /** How long each stop's own motion lasts (ms): the next stop's frame loads after it (Arazoa: the page's whole timeline). */
@@ -127,13 +128,15 @@ const SETTLE: Record<number, number> = { 0: 3200, 1: 5600 };
 /** The stop with the numbers and every topic. */
 const DENA = 6;
 
-const SIM_SRC = '/astea/18?etapa=aurpegi-fusioa&une=0.3';
+const SIM_SRC = '/astea/17?etapa=sarrera&une=0.02';
 const BEL_SRC = '/belortzioak?irudia=p07';
 const ERA_SRC = '/eratorriak#a18-eskemak';
 /** Where the guide leaves a student who starts from it: 17. gaia, from its first step. */
 const LESSON = '/astea/17';
 
 const SIM_POINTS = ['Eredua 3Dn: arrastatu biratzeko', 'Urrats bakoitza, apunteetako esaldi bat', 'Izen bakoitza, aipatzen den unean'];
+/** The simulator's full screen: its key in the picture's tools, or F. */
+const FS_POINT = 'Pantaila osoa: ⤢ botoia edo F tekla';
 const ERA_STEPS = ['Egitura bat, eta hortik eratortzen den guztia', 'Landu: galdera bat, zure kabuz erantzuteko', 'Erakutsi erantzuna, eta egiaztatu'];
 const KIMU_STEPS = ['Zure hitzekin galdetu', 'Apunteetatik erantzuten du, gaia eta atala aipatuta', 'Sakatu, eta hantxe zaude: urratsa eta apunteetako esaldia'];
 
@@ -242,8 +245,10 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
   const scroll = useRef<HTMLDivElement>(null);
   const art = useRef<HTMLDivElement>(null);
   const turn = useRef({ yaw: 0, pitch: -0.1 });
+  // The previous opening film (v2) stays reachable at ?intro=v2, to compare with the particle show.
+  const [filmV2] = useState(() => new URLSearchParams(window.location.search).get('intro') === 'v2');
+  const noPalate = useRef<PalateState | null>(null);
   const drag = useRef<{ x: number; y: number; moved: boolean } | null>(null);
-  const palate = useRef<PalateState | null>(null);
   const [fromFilm] = useState(opening);
   const [live, setLive] = useState(false);
   const [showHint, setShowHint] = useState(false);
@@ -268,14 +273,20 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
   const [eraPhase, setEraPhase] = useState(0);
   const [eraYours, setEraYours] = useState(false);
   const [cursor, setCursor] = useState<Cursor | null>(null);
+  // Simulagailua: the full-screen lesson (the frame grown over the screen) and whether the student took over.
+  const [fsPhase, setFsPhase] = useState(0);
+  const [expanded, setExpanded] = useState(false);
+  const [simYours, setSimYours] = useState(false);
   const toward = destination ?? step;
   // A frame loading inside this page holds up its animations for a second or two (same page, same thread),
   // so the next stop's frame starts loading only once this stop's own motion is over.
   const [settled, setSettled] = useState(-1);
   useEffect(() => {
+    // The clock starts once the opening show has handed over (its points are still flying to the face then).
+    if (opening) return;
     const id = window.setTimeout(() => setSettled(step), SETTLE[step] ?? 2600);
     return () => window.clearTimeout(id);
-  }, [step]);
+  }, [step, opening]);
   // The simulator, the heaviest, already loads on the opening stop once it is still: a student who goes
   // through Arazoa quickly finds it ready instead of loading.
   const ahead = (i: number) => settled === step && (i === step + 1 || (step === 0 && i === 2));
@@ -314,18 +325,51 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
     scroll.current?.scrollTo(0, 0);
   }, [step, opening]);
 
-  // Simulagailua: the scene plays by itself.
+  // Simulagailua: the scene plays by itself; then the pointer shows its full screen (the frame takes the screen).
   useEffect(() => {
-    if (step !== 2 || !simReady) return;
+    if (step !== 2 || !simReady || simYours) return;
     const win = sim.current?.contentWindow;
     if (!win) return;
+    let alive = true;
+    const mine = (e: Event) => {
+      if (!e.isTrusted || !alive) return;
+      alive = false;
+      setSimYours(true);
+      setCursor(null);
+    };
+    win.document.addEventListener('pointerdown', mine, true);
+    win.document.addEventListener('keydown', mine, true);
     const id = window.setTimeout(() => {
       try {
         playScene(win);
       } catch {}
     }, 700);
-    return () => window.clearTimeout(id);
-  }, [step, simReady]);
+    setFsPhase(0);
+    runFullscreen(
+      win,
+      () => alive,
+      (c) => alive && setCursor(c && { x: c.x * scale.current.sim, y: c.y * scale.current.sim }),
+      (n) => {
+        setFsPhase(n);
+        if (n === 3) setExpanded(true);
+        if (n === 4) setExpanded(false);
+      },
+    )
+      .catch(() => {})
+      .finally(() => setCursor(null));
+    return () => {
+      alive = false;
+      window.clearTimeout(id);
+      win.document.removeEventListener('pointerdown', mine, true);
+      win.document.removeEventListener('keydown', mine, true);
+    };
+  }, [step, simReady, simYours]);
+  /** A real full screen of the live simulator (the student's own press allows it); Esc comes back. */
+  function tryFullscreen() {
+    setExpanded(false);
+    const f = sim.current;
+    if (f?.requestFullscreen) void f.requestFullscreen().then(() => f.focus()).catch(() => {});
+  }
 
   // Kimu: a question typed into the real Kimu, its answer, and its "take me there". A touch hands over.
   useEffect(() => {
@@ -467,6 +511,7 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
       onCancel={(e) => {
         e.preventDefault();
         if (opening) onFilmEnd();
+        else if (expanded) setSimYours(true);
         else leave();
       }}
       onKeyDown={(e) => {
@@ -492,18 +537,12 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
         }
       }}
     >
-      <ReleaseFilm
-        onLive={setLive}
-        focus={0}
-        palate={palate}
-        opening={opening}
-        step={CUE[step]}
-        destination={destination === null ? null : CUE[destination]}
-        onFinish={onFilmEnd}
-        art={art}
-        turn={turn}
-      />
-      <div ref={shell} className={s.shell} data-stop={step} data-cinema={fromFilm && step === 0} data-opening={opening} inert={opening}>
+      {filmV2 && opening ? (
+        <ReleaseFilm onLive={setLive} focus={0} palate={noPalate} opening step={0} destination={null} onFinish={onFilmEnd} art={art} turn={turn} />
+      ) : (
+        <Show opening={opening} place={PLACE[step]} toward={PLACE[destination ?? step]} onFinish={onFilmEnd} onLive={setLive} art={art} shell={shell} turn={turn} />
+      )}
+      <div ref={shell} className={s.shell} data-stop={step} data-cinema={fromFilm && step === 0} data-opening={opening} data-live={live} inert={opening}>
         <header className={s.head}>
           <span className={s.brand}>
             <BrandMark size={27} />
@@ -534,6 +573,9 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
                   {SIM_POINTS.map((p) => (
                     <li key={p}>{p}</li>
                   ))}
+                  <li className={s.fsPoint} data-now={fsPhase >= 1 && fsPhase < 4 && !simYours}>
+                    {FS_POINT}
+                  </li>
                 </ul>
               )}
               {step === 3 && (
@@ -609,6 +651,11 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
                 {step === 0 && (
                   <button className={s.subtle} onClick={onReplayFilm}>Ikusi sarrera</button>
                 )}
+                {step === 2 && (
+                  <button className={s.subtle} onClick={tryFullscreen} disabled={!simReady}>
+                    Probatu pantaila osoan <span aria-hidden="true">⤢</span>
+                  </button>
+                )}
                 {step === 3 && (kimuPhase >= 4 || kimuYours) && (
                   <button className={s.subtle} onClick={() => setKimuRun((r) => r + 1)}>
                     Ikusi berriro
@@ -640,12 +687,12 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
             </div>
             <div className={s.art}>
               <div ref={art} className={app ? s.slot : s.stage} data-art={step} data-art-slot {...(app ? { 'data-frame-slot': '' } : {})}>
-                {step === 0 && (
+                {(step === 0 || (last && live)) && (
                   <button
                     type="button"
                     disabled={!live}
                     className={s.spin}
-                    aria-label="Biratu enbrioia"
+                    aria-label={step === 0 ? 'Biratu aurpegia' : 'Biratu burezurra'}
                     onKeyDown={(e) => {
                       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
                         touched.current = true;
@@ -685,31 +732,38 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
                 )}
                 {step === 1 && <NotesPage />}
                 {step === DENA && <Mosaic />}
-                {step === DENA + 1 && <Devices />}
+                {step === DENA + 1 && !live && <Devices />}
               </div>
-              {step === 0 && (
+              {(step === 0 || (last && live)) && (
                 <p className={s.figCaption}>
-                  <span>01. IRUDIA</span>
+                  <span>{step === 0 ? '01. IRUDIA' : '17. GAIA'}</span>
                   <i />
-                  5. asteko enbrioia{showHint && live ? ' · Arrastatu biratzeko' : ''}
+                  {step === 0 ? (live ? 'Aurpegiaren hastapenak, 5. astetik 10.era' : '5. asteko enbrioia') : 'Fetuaren burezurra, arku bakoitza bere kolorez'}
+                  {(showHint || last) && live ? ' · Arrastatu biratzeko' : ''}
                 </p>
               )}
             </div>
           </section>
         </div>
         {!opening && (
-          <div className={s.frames}>
+          <div className={s.frames} data-expanded={expanded && step === 2}>
             {mounted.sim && (
               <AppFrame
                 src={SIM_SRC}
                 shown={showing('sim')}
-                label="18. gaia · Aurpegiaren fusioa"
+                label="17. gaia · Burua eta lepoa: gaiaren bidea"
                 host={shell}
                 frameRef={sim}
+                expanded={expanded && step === 2}
+                onScale={(k) => {
+                  scale.current.sim = k;
+                }}
                 // The 3D drawn, or (no WebGL on this computer) its flat picture: either way the scene is there.
                 isReady={(d) => !!d.querySelector('.viewport canvas, .viewport .stage3d-flat') && !!d.querySelector('[data-tour="play"]')}
                 onReady={() => setSimReady(true)}
-              />
+              >
+                {cursor && step === 2 && <span className={s.ghost} data-press={fsPhase === 2} style={{ transform: `translate(${cursor.x}px, ${cursor.y}px)` }} aria-hidden />}
+              </AppFrame>
             )}
             {mounted.bel && (
               <AppFrame
@@ -746,6 +800,20 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
                 {cursor && step === 5 && <span className={s.ghost} style={{ transform: `translate(${cursor.x}px, ${cursor.y}px)` }} aria-hidden />}
               </AppFrame>
             )}
+          </div>
+        )}
+        {expanded && step === 2 && (
+          <div className={s.fsHud} role="status">
+            <span>
+              <kbd>⤢</kbd> edo <kbd>F</kbd> pantaila osoa
+            </span>
+            <i aria-hidden="true" />
+            <span>
+              <kbd>Esc</kbd> irteteko
+            </span>
+            <button type="button" onClick={() => setSimYours(true)}>
+              Itxi
+            </button>
           </div>
         )}
         <footer className={s.footer}>

@@ -1,15 +1,20 @@
 .button,.floating {
   box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   min-height: 44px;
-  padding: 7px 13px;
-  border: 1px solid #ae8b70;
+  padding: 7px 15px 7px 12px;
+  border: 1px solid rgb(235 206 175 / .28);
   border-radius: 999px;
-  background: #231a17;
+  background: rgb(20 16 15 / .7);
   color: #f8eddb;
   font: 600 13px/1.2 var(--font-geist), system-ui, sans-serif;
   cursor: pointer;
   white-space: nowrap;
+  transition: background .2s, border-color .2s;
 }
+.button[data-on='true'],.floating[data-on='true'] { border-color: rgb(241 173 118 / .7); }
 .button:hover,.floating:hover { background: #3d2a21; }
 .button:focus-visible,.floating:focus-visible { outline: 2px solid #f1ad76; outline-offset: 3px; }
 .floating {
@@ -17,5 +22,16 @@
   z-index: 46;
   bottom: max(14px, env(safe-area-inset-bottom));
   left: max(14px, env(safe-area-inset-left));
+  backdrop-filter: blur(6px);
 }
-:global(html[data-demo='1']) .floating { display: none; }
+.icon { position: relative; display: inline-grid; place-items: center; color: #f1ad76; }
+.bars { position: absolute; right: -7px; top: -3px; display: inline-flex; align-items: flex-end; gap: 1px; height: 8px; }
+.bars i { width: 1.5px; height: 100%; background: currentColor; border-radius: 1px; transform-origin: bottom; animation: eq .8s ease-in-out infinite alternate; }
+.bars i:nth-child(2) { animation-duration: .6s; animation-delay: -.2s; }
+.bars i:nth-child(3) { animation-duration: 1s; animation-delay: -.5s; }
+@keyframes eq { from { transform: scaleY(.25); } to { transform: scaleY(1); } }
+@media (prefers-reduced-motion: reduce) { .bars i { animation: none; } }
+/* The simulator has its own key in its tool bar: the floating one would sit on its transport. */
+:global(html[data-demo='1']) .floating,
+:global(body:has(.tb-tools)) .floating,
+:global(body:has(dialog[open])) .floating { display: none; }

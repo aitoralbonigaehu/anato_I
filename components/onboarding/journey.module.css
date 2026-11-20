@@ -184,7 +184,7 @@
   .account { grid-row: 5; margin: 0; }
   .actions { grid-row: 6; margin: 0; }
   .stage { min-height: 0; }
-  .stage[data-art='0'] { height: clamp(180px,29dvh,330px); }
+  .stage[data-art='0'], .shell[data-live='true'] .stage[data-art='7'] { height: clamp(180px,29dvh,330px); }
   .figCaption { margin-top: 5px; font-size: 9px; }
   .footer { border-top: 1px solid var(--rule); padding-top: 7px; padding-bottom: max(10px,env(safe-area-inset-bottom)); gap: 15px; }
   .rail { flex: 1; }
@@ -208,11 +208,12 @@
 @media (min-width: 761px) and (max-width: 1024px) and (orientation: portrait) {
   .chapter { align-content: center; max-width: 720px; gap: 22px; }
   .art { max-width: 580px; }
-  .stage[data-art='0'] { height: min(39dvh,465px); }
+  /* The points' pictures (the face; the skull at the end) need a real box once the column is one. */
+  .stage[data-art='0'], .shell[data-live='true'] .stage[data-art='7'] { height: min(39dvh,465px); }
   .lead { font-size: 17px; max-width: 60ch; }
   .eyebrow { font-size: 12px; }
   .rail button { font-size: 12px; }
-  .rail button:not([aria-current]) span { visibility: visible; }
+  .shell:not([data-opening='true']) .rail button:not([aria-current]) span { visibility: visible; }
   .footer { padding-block: 16px 24px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -403,3 +404,30 @@
   6% { filter: brightness(1.2) saturate(1.12); box-shadow: 0 18px 40px #0008, 0 0 0 1px #f1ad76, 0 0 38px #f1ad7655; }
 }
 @keyframes tabletIn { from { opacity: 0; transform: translateX(26px) rotate(4deg); } }
+
+/* ———— The opening show's points under the journey (components/onboarding/show) ———— */
+/* The canvas paints the ground (and the points) once it runs: the shell lets it through. */
+.shell[data-live='true'] { background: transparent; }
+
+/* The simulator's full screen, shown: the frame leaves the stops' area and covers the window. */
+.frame { transform-origin: 0 0; }
+.frames[data-expanded='true'] { overflow: visible; z-index: 30; }
+.frame[data-expanded='true'] { border-radius: 0; border-color: transparent; box-shadow: none; }
+.fsPoint { transition: color .4s ease; }
+.fsPoint[data-now='true'] { color: var(--cream); }
+.fsPoint::before { transition: width .4s ease, height .4s ease; }
+.fsPoint[data-now='true']::before { width: 26px !important; height: 2px !important; }
+:is(.points) li:nth-child(4) { animation-delay: 740ms; }
+.ghost[data-press='true'] { scale: .82; transition: transform .85s cubic-bezier(.45, 0, .2, 1), scale .15s ease; }
+.fsHud {
+  /* Sits in the frame's own top bar (empty in the middle), so it covers nothing of the simulator. */
+  position: fixed; left: 50%; top: 4px; z-index: 40; translate: -50% 0;
+  display: flex; align-items: center; gap: 12px; padding: 3px 4px 3px 14px; border-radius: 99px;
+  border: 1px solid rgb(235 206 175 / .24); background: rgb(18 15 16 / .86); backdrop-filter: blur(10px);
+  color: #e9dccd; font-size: 12px; box-shadow: 0 10px 30px #0008;
+  animation: hudIn .5s .35s cubic-bezier(.2, .7, .2, 1) both;
+}
+.fsHud i { width: 1px; height: 14px; background: rgb(235 206 175 / .2); }
+.fsHud kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; margin: 0 2px; padding: 0 6px; border-radius: 6px; border: 1px solid rgb(235 206 175 / .35); border-bottom-width: 2px; background: #241c19 !important; color: #fbe9d6 !important; font: 600 11px/1 var(--font-geist-mono), monospace !important; }
+.fsHud button { min-height: 26px; padding: 0 12px; border-radius: 99px; border: 1px solid rgb(241 173 118 / .5); background: #2a1d17; color: #fbe9d6; }
+@keyframes hudIn { from { opacity: 0; translate: -50% -10px; } }
