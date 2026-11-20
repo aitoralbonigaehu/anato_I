@@ -10,10 +10,10 @@ import { readCards, STORE as BEL_STORE, type Cards } from '@/lib/belortzioakCard
 import { parseReviewProgress, STORAGE_KEY as SCHEME_KEY } from '@/lib/learning/scheme-review';
 import { dayKey } from '@/lib/study/activity';
 import { LEVELS, summarize, type Summary, type TopicRow } from '@/lib/study/summary';
-import { askAccount, signOut, useAccount } from '@/components/account/account';
+import { openAccount, signOut, useAccount } from '@/components/account/account';
 import { useActivity } from '@/components/study/useActivity';
 import { useAnswers } from '@/components/shell/answers';
-import { isWip } from '@/components/shell/LandNav';
+import { firstReady, isWip } from '@/components/shell/LandNav';
 import { resumeHref, useLastPlace, useVisitedAll } from '@/components/shell/progress';
 import { hueOf } from '@/components/shell/topicHue';
 import { Glyph } from './glyphs';
@@ -87,6 +87,7 @@ export function Aurrerapena() {
   return (
     <div className={p.root}>
       <Hero sum={sum} />
+      <StartGuide sum={sum} />
       <Tiles sum={sum} />
       <Next sum={sum} />
       <div className={p.split}>
@@ -176,8 +177,11 @@ function AccountLine() {
     return (
       <p className={p.account}>
         <Glyph name="lock" size={15} /> Nabigatzaile honetan bakarrik gordeta.
-        <button className="btn small primary" onClick={askAccount}>
-          Hasi saioa
+        <button className="btn small primary" onClick={() => openAccount('sortu')}>
+          Sortu kontua
+        </button>
+        <button className={p.linkBtn} onClick={() => openAccount('sartu')}>
+          Badut kontua: hasi saioa
         </button>
       </p>
     );
@@ -185,6 +189,83 @@ function AccountLine() {
     <p className={p.account}>
       <Glyph name="lock" size={15} /> Nabigatzaile honetan gordetzen da.
     </p>
+  );
+}
+
+// ---- first steps: how to reach the simulation and choose a topic -----------------------------------
+
+/** The topic the course is on now (the welcome's "Ireki 17. gaia"); the picker starts there. */
+const START_TOPIC = 17;
+const GUIDE_DONE = 'enbrioatlas:aurrerapena-gida';
+
+/**
+ * Shown until the student opens a first stage (a new account lands here): where the simulation is,
+ * how to choose a topic, and how to move inside it. "Ulertuta" hides it for good.
+ */
+function StartGuide({ sum }: { sum: Summary }) {
+  const ready = useMemo(() => weeks.filter((w) => !isWip(w)), []);
+  const [week, setWeek] = useState<number>(() => (ready.some((w) => w.week === START_TOPIC) ? START_TOPIC : firstReady.week));
+  const [hidden, setHidden] = useState(() => {
+    try {
+      return window.localStorage.getItem(studyKey(GUIDE_DONE)) === '1';
+    } catch {
+      return false;
+    }
+  });
+  if (hidden || sum.totals.stagesSeen > 0) return null;
+  const done = () => {
+    try {
+      window.localStorage.setItem(studyKey(GUIDE_DONE), '1');
+    } catch {}
+    setHidden(true);
+  };
+  const title = ready.find((w) => w.week === week)?.title ?? '';
+  return (
+    <section className={`${p.section} ${p.guide}`} aria-labelledby="guide-h">
+      <header className={p.sectionHead}>
+        <h2 id="guide-h">Nola hasi</h2>
+        <small>Hiru urrats simulaziora iristeko. Ez duzu ezer ikusi oraindik: hasi gai batekin.</small>
+        <button className={p.linkBtn} onClick={done}>
+          Ulertuta, ezkutatu
+        </button>
+      </header>
+      <ol className={p.guideSteps}>
+        <li>
+          <span className={p.guideN}>1</span>
+          <b>Aukeratu gaia</b>
+          <p>
+            Hasierako orriko <Link href="/#gaiak">«Gaiak»</Link> atalean gai bakoitzak bere txartela du; klikatu bat. Edo aukeratu hemen:
+          </p>
+          <label className={p.guidePick}>
+            <select aria-label="Gaia" value={week} onChange={(e) => setWeek(Number(e.target.value))}>
+              {ready.map((w) => (
+                <option key={w.week} value={w.week}>
+                  {w.week}. gaia · {w.title}
+                </option>
+              ))}
+            </select>
+          </label>
+        </li>
+        <li>
+          <span className={p.guideN}>2</span>
+          <b>Ireki simulazioa</b>
+          <p>
+            Gaia irekitzean simulazioa agertzen da. Barruan, goian ezkerrean, <em>gaiaren izena ▾</em> sakatuta beste gai batera alda zaitezke, eta <em>Etapa ▾</em> menuan gaiaren etapa bat aukeratu.
+          </p>
+          <Link href={`/astea/${week}`} className={`btn primary ${p.guideGo}`}>
+            Ireki {week}. gaia simulazioan <span aria-hidden>→</span>
+          </Link>
+          <small className={p.guideTopic}>{title}</small>
+        </li>
+        <li>
+          <span className={p.guideN}>3</span>
+          <b>Ikusi eta ikasi</b>
+          <p>
+            Sakatu <kbd>▶</kbd> Erreproduzitu edo <kbd>zuriunea</kbd>. <kbd>→</kbd> hurrengo urratsa, <kbd>←</kbd> aurrekoa. <kbd>N</kbd> apunteak ondoan irekitzen ditu. Zure aurrerapena hemen ikusiko duzu beti: goiko menuko <em>Aurrerapena</em>.
+          </p>
+        </li>
+      </ol>
+    </section>
   );
 }
 

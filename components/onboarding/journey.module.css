@@ -82,6 +82,8 @@
 .accountActions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
 .accountSecondary { min-height: 44px; padding: 10px 16px; border: 1px solid #8b6a50; border-radius: 40px; background: transparent; color: var(--cream); font-size: 15px; font-weight: 600; }
 .accountSecondary:hover { border-color: var(--warm); background: #f6d4ad18; }
+.accountQuiet { min-height: 44px; padding: 10px 6px; border: 0; background: none; color: #c9b8a6; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+.accountQuiet:hover { color: var(--cream); }
 .art { width: 100%; position: relative; animation: exhibit .75s cubic-bezier(.16,.7,.19,1) both; }
 .stage { position: relative; display: grid; place-items: center; width: 100%; min-height: clamp(320px,52vh,640px); }
 .stage[data-art='0'] { height: clamp(320px,66vh,670px); }

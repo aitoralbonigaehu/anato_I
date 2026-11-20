@@ -656,10 +656,11 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
                 <div className={s.account}>
                   {acc.status === 'out' ? (
                     <>
-                      <p>Kontua aukerakoa da. Zure kontuarekin, aurrerapena bereiz gordeko da nabigatzaile honetan, beste norbaitek gailu bera erabili arren.</p>
+                      <p>Lehen aldia bada, sortu zure kontua: izen bat eta 4 zenbakiko PIN bat. Zure aurrerapena bereiz gordeko da nabigatzaile honetan, beste norbaitek gailu bera erabili arren.</p>
                       <div className={s.accountActions}>
-                        <button type="button" className={s.primary} onClick={() => leave(() => openAccount('sartu'))}>Hasi saioa</button>
-                        <button type="button" className={s.accountSecondary} onClick={finish}>Jarraitu saioa hasi gabe</button>
+                        <button type="button" className={s.primary} onClick={() => leave(() => openAccount('sortu'))}>Sortu kontua</button>
+                        <button type="button" className={s.accountSecondary} onClick={() => leave(() => openAccount('sartu'))}>Badut kontua: hasi saioa</button>
+                        <button type="button" className={s.accountQuiet} onClick={finish}>Jarraitu konturik gabe</button>
                       </div>
                     </>
                   ) : (

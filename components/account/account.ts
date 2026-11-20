@@ -138,12 +138,12 @@ export async function signOut() {
 
 const ASKED = 'enbrioatlas:kontua-galdetuta';
 
-/** Opens the sign-in card (from any "Hasi saioa" button). */
+/** Opens the account card on "Sortu kontua" (a first visit) or "Hasi saioa". */
 export function openAccount(mode: 'sartu' | 'sortu') {
   if (state.status === 'out') set({ asking: true, accountMode: mode });
 }
 
-export const askAccount = () => openAccount('sartu');
+export const askAccount = () => openAccount('sortu');
 
 export function closeAccountCard() {
   try {

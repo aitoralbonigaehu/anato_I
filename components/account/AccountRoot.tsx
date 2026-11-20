@@ -27,8 +27,6 @@ export function AccountRoot() {
       <button className="icon-btn acc-x" onClick={closeAccountCard} aria-label="Itxi">
         <IconClose size={16} />
       </button>
-      <h2 id="acc-title">Zure kontua</h2>
-      <p className="acc-lead">Kontu bakoitzak bere aurrerapena gordetzen du nabigatzaile honetan. Saioa hasi gabe egindakoa bereiz gordetzen da.</p>
       {acc.asking && <AccountForm initialMode={acc.accountMode} onDone={closeAccountCard} />}
     </dialog>
   );
