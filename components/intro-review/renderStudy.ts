@@ -7,6 +7,8 @@ type Box = [number, number, number];
 export type Exhibit = { items: Item3[]; rect: DOMRect; yaw: number; pitch: number };
 export interface Shot {
   t: number;
+  /** The heart's own clock (optics.ts `pulse`), when the film's time is slowed or warped; default `t`. */
+  pulse?: number;
   box: Box;
   angles: V2;
   skin: number;
@@ -254,6 +256,7 @@ export async function openProjector(canvas: HTMLCanvasElement, signal: AbortSign
     }
     if (skin > 0.001) {
       view(volume);
+      gl!.uniform1f(volume.u.beatTime, shot.pulse ?? t);
       gl!.uniform1f(volume.u.skin, skin);
       gl!.uniform1f(volume.u.focusRegion, focus);
       gl!.drawArrays(gl!.TRIANGLES, 0, 3);

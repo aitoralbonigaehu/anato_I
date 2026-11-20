@@ -49,7 +49,7 @@ const STOPS: Stop[] = [
     eyebrow: 'Enbriologian barrena',
     title: 'Hitzetatik',
     italic: 'formara.',
-    body: 'Enbrioia ez da orrialde bat: hazi, tolestu eta fusionatu egiten da, hiru dimentsiotan. EnbrioAtlasek zure apunteak hartzen ditu eta bizia ematen die, urratsez urrats.',
+    body: 'Enbrioia ez da orrialde bat: hazi, tolestu eta biratu egiten da, hiru dimentsiotan. EnbrioAtlasek zure apunteak hartzen ditu eta bizia ematen die, urratsez urrats.',
     next: 'Hasi bidaia',
   },
   {
@@ -120,7 +120,11 @@ const STOPS: Stop[] = [
  * the page of notes and the live app take the stage (the canvas then stops drawing), the skull of topic 17 (where
  * the guide sends a student to start) on the last.
  */
+/** The points' picture at each stop: with the v3 film the face opens the journey; with v2 its embryo does (CUE). */
 const PLACE: Place[] = ['face', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'skull'];
+const PLACE_V2: Place[] = ['rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'skull'];
+/** The v2 film's camera cues per stop (ReleaseFilm): 0 the embryo in the picture, 3 out of the way. */
+const CUE = [0, 3, 3, 3, 3, 3, 3, 3];
 /** The stops of each live frame, and the one before (it loads there, out of sight). */
 const FRAME_STOPS: Record<App, number[]> = { sim: [2, 3], bel: [4], era: [5] };
 /** How long each stop's own motion lasts (ms): the next stop's frame loads after it (Arazoa: the page's whole timeline). */
@@ -245,8 +249,9 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
   const scroll = useRef<HTMLDivElement>(null);
   const art = useRef<HTMLDivElement>(null);
   const turn = useRef({ yaw: 0, pitch: -0.1 });
-  // The previous opening film (v2) stays reachable at ?intro=v2, to compare with the particle show.
-  const [filmV2] = useState(() => new URLSearchParams(window.location.search).get('intro') === 'v2');
+  // The opening film: v2 (the embryo built from the notes' words). The particle show (v3) stays at ?intro=v3.
+  const [filmV2] = useState(() => new URLSearchParams(window.location.search).get('intro') !== 'v3');
+  const places = filmV2 ? PLACE_V2 : PLACE;
   const noPalate = useRef<PalateState | null>(null);
   const drag = useRef<{ x: number; y: number; moved: boolean } | null>(null);
   const [fromFilm] = useState(opening);
@@ -537,10 +542,32 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
         }
       }}
     >
-      {filmV2 && opening ? (
-        <ReleaseFilm onLive={setLive} focus={0} palate={noPalate} opening step={0} destination={null} onFinish={onFilmEnd} art={art} turn={turn} />
-      ) : (
-        <Show opening={opening} place={PLACE[step]} toward={PLACE[destination ?? step]} onFinish={onFilmEnd} onLive={setLive} art={art} shell={shell} turn={turn} />
+      {filmV2 && (
+        <ReleaseFilm
+          onLive={setLive}
+          focus={0}
+          palate={noPalate}
+          opening={opening}
+          step={CUE[step]}
+          destination={destination === null ? null : CUE[destination]}
+          onFinish={onFilmEnd}
+          art={art}
+          turn={turn}
+        />
+      )}
+      {/* With the v2 film, the points (the last stop's skull) load once the first stop is still: never under the film. */}
+      {(!filmV2 || (!opening && (step !== 0 || settled === 0))) && (
+        <Show
+          opening={opening && !filmV2}
+          hidden={filmV2 && places[step] === 'rest' && places[destination ?? step] === 'rest'}
+          place={places[step]}
+          toward={places[destination ?? step]}
+          onFinish={onFilmEnd}
+          onLive={setLive}
+          art={art}
+          shell={shell}
+          turn={turn}
+        />
       )}
       <div ref={shell} className={s.shell} data-stop={step} data-cinema={fromFilm && step === 0} data-opening={opening} data-live={live} inert={opening}>
         <header className={s.head}>
@@ -692,7 +719,7 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
                     type="button"
                     disabled={!live}
                     className={s.spin}
-                    aria-label={step === 0 ? 'Biratu aurpegia' : 'Biratu burezurra'}
+                    aria-label={step === 0 ? (filmV2 ? 'Biratu enbrioia' : 'Biratu aurpegia') : 'Biratu burezurra'}
                     onKeyDown={(e) => {
                       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
                         touched.current = true;
@@ -738,7 +765,7 @@ export default function Journey({ opening, onFilmEnd, onReplayFilm, onClose, hom
                 <p className={s.figCaption}>
                   <span>{step === 0 ? '01. IRUDIA' : '17. GAIA'}</span>
                   <i />
-                  {step === 0 ? (live ? 'Aurpegiaren hastapenak, 5. astetik 10.era' : '5. asteko enbrioia') : 'Fetuaren burezurra, arku bakoitza bere kolorez'}
+                  {step === 0 ? (live && !filmV2 ? 'Aurpegiaren hastapenak, 5. astetik 10.era' : '5. asteko enbrioia') : 'Fetuaren burezurra, arku bakoitza bere kolorez'}
                   {(showHint || last) && live ? ' · Arrastatu biratzeko' : ''}
                 </p>
               )}

@@ -27,6 +27,8 @@ type Props = {
   /** The journey's shell: it takes over during the film's last second. */
   shell: RefObject<HTMLDivElement | null>;
   turn: RefObject<Pose>;
+  /** Out of sight (another picture has the stage): nothing is drawn, the canvas fades out; it fades back in. */
+  hidden?: boolean;
 };
 
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
@@ -137,11 +139,14 @@ export default function Show(props: Props) {
       if (ac.signal.aborted) return engine.dispose();
       // The words and the wordmark are drawn here (fonts first, briefly); the clouds come over the network.
       await Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 700))]);
-      const text = notesText();
-      engine.upload(L.text, text.xyzw, text.rgb);
-      const logo = wordmark();
-      engine.upload(L.logo, logo.xyzw, logo.rgb);
-      loaded.add(L.text).add(L.logo);
+      // The words and the wordmark only for the film (the journey alone needs only the clouds).
+      if (latest.current.opening) {
+        const text = notesText();
+        engine.upload(L.text, text.xyzw, text.rgb);
+        const logo = wordmark();
+        engine.upload(L.logo, logo.xyzw, logo.rgb);
+        loaded.add(L.text).add(L.logo);
+      }
       for (const [name, layer] of CLOUDS)
         void loadCloud(name, ac.signal)
           .then((c) => {
@@ -333,6 +338,10 @@ export default function Show(props: Props) {
           shot = { ...base, a: b, b, mix: 1, spread: 0, sweep: 0, stir: 0, exposure: exposureOf(going) };
         }
         lastB = shot.mix < 0.5 ? shot.a : shot.b;
+        if (latest.current.hidden) {
+          drewRest = false;
+          return;
+        }
         // At rest (the live app on stage), the canvas keeps its last picture and costs nothing.
         if (going === 'rest' && k >= 1 && pointer.push < 0.02) {
           if (drewRest) return;
@@ -405,7 +414,7 @@ export default function Show(props: Props) {
 
   return (
     <>
-      <canvas ref={canvas} className={s.canvas} hidden={fallback} aria-hidden="true" />
+      <canvas ref={canvas} className={s.canvas} hidden={fallback} data-away={!!props.hidden && !props.opening} aria-hidden="true" />
       {props.opening && <canvas ref={skinCanvas} className={s.skin} hidden={fallback} aria-hidden="true" />}
       {fallback && !props.opening && <style>{'[data-specimen-poster]{opacity:1!important}'}</style>}
       <audio ref={audio} preload="auto">

@@ -35,7 +35,10 @@ void main(){
  float departure=smoothstep(1.45+seed*.82,3.22+s*.55,beatTime);
  float u=max(0.,(beatTime-birth)*4.8);
  float settle=1.-(1.+u)*exp(-u);
- vec2 page=resolution*.5+letter*min(resolution.x*.85,resolution.y*1.20);
+ // The words write themselves, line by line, left to right (done by film second .62), each glyph rising into place.
+ float line=clamp(floor((.0644-letter.y)/.0622+.5),0.,2.),order=line+letter.x+.5;
+ float write=smoothstep(order-.08,order+.06,beatTime/.62*3.15);
+ vec2 page=resolution*.5+letter*min(resolution.x*.85,resolution.y*1.20)-vec2(0.,(1.-write)*7.*pixelRatio);
  float lane=floor(s*11.)-5.;
  // The source line and glyph position determine the feeding stream. Individual
  // cohorts peel off this current as their anatomical region becomes ready.
@@ -53,7 +56,7 @@ void main(){
  gl_Position=vec4(pos/resolution*2.-1.,0.,1.);
  tint=mix(vec3(.98,.86,.72),tint,departure);
  float visible=mix(.63,.24+.66*settle+.22*fly+arrival,departure);
- power=visible*energy*smoothstep(0.,.55,beatTime)*(.72+.28*seed)/(1.+defocus)*clamp(90000./number,.45,1.25);
+ power=visible*energy*write*(.72+.28*seed)/(1.+defocus)*clamp(90000./number,.45,1.25);
 }`;
 export const grainsFragment = `
 precision highp float;

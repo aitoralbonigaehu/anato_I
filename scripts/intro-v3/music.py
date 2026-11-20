@@ -571,9 +571,173 @@ def pieces():
     )
 
 
+
+# ———————————————————————————— the v2 film's score ————————————————————————————
+
+BEAT2 = 60 / 85.2
+# components/onboarding/ReleaseFilm.tsx KNOTS (in beats): real seconds -> the projector's seconds.
+KNOTS2 = [(b * BEAT2, y) for b, y in [(0, 0), (4, 0.62), (7, 1.3), (12, 3.97), (16, 4.95), (20, 6.75), (25, 8.95), (32, 11.85), (35, 13.5)]]
+
+
+def _slopes():
+    n = len(KNOTS2)
+    d = [(KNOTS2[i + 1][1] - KNOTS2[i][1]) / (KNOTS2[i + 1][0] - KNOTS2[i][0]) for i in range(n - 1)]
+    m = [d[0]] + [(d[i - 1] + d[i]) / 2 for i in range(1, n - 1)] + [d[-1]]
+    for i in range(n - 1):
+        a, b = m[i] / d[i], m[i + 1] / d[i]
+        h = a * a + b * b
+        if h > 9:
+            k = 3 / np.sqrt(h)
+            m[i], m[i + 1] = k * a * d[i], k * b * d[i]
+    return m
+
+
+def film_time(real):
+    m = _slopes()
+    if real >= KNOTS2[-1][0]:
+        return 13.5 + real - KNOTS2[-1][0]
+    i = 0
+    while KNOTS2[i + 1][0] < real:
+        i += 1
+    (x0, y0), (x1, y1) = KNOTS2[i], KNOTS2[i + 1]
+    h = x1 - x0
+    u = (real - x0) / h
+    return (2 * u**3 - 3 * u * u + 1) * y0 + (u**3 - 2 * u * u + u) * h * m[i] + (-2 * u**3 + 3 * u * u) * y1 + (u**3 - u * u) * h * m[i + 1]
+
+
+def real_time(film):
+    """The real second at which the projector reaches `film` (bisection)."""
+    lo, hi = 0.0, KNOTS2[-1][0] + 5
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        if film_time(mid) < film:
+            lo = mid
+        else:
+            hi = mid
+    return lo
+
+
+def heartbeat(vel=0.5):
+    """Lub-dub: a soft low thump and a smaller second one."""
+    n = int(0.9 * SR)
+    t = np.arange(n) / SR
+    out = np.zeros(n)
+    for at, g in ((0.0, 1.0), (0.18, 0.55)):
+        i = int(at * SR)
+        tt = t[: n - i]
+        f = 48 + 30 * np.exp(-tt / 0.03)
+        out[i:] += g * np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt / 0.12)
+    return (np.tanh(out * 1.3) * vel).astype(np.float32)
+
+
+def score2():
+    """The v2 film: ~25 s at 85.2 bpm in D (a beat 0.704 s), a slow build from the words to the living embryo."""
+    B = BEAT2
+    L = 30.0
+    m = Mix(L)
+    D = chord('D2', 'A2', 'F#3', 'A3', 'D4', 'E4')
+    Dlow = chord('D2', 'A2', 'D3', 'F#3')
+    Bm = chord('B1', 'F#2', 'D3', 'F#3', 'A3', 'D4')
+    G = chord('G1', 'D2', 'B2', 'D3', 'F#3', 'A3')
+    Em = chord('E2', 'B2', 'G3', 'B3', 'D4')
+    A = chord('A1', 'E2', 'A2', 'C#3', 'E3', 'A3')
+    DF = chord('F#2', 'A2', 'D3', 'F#3', 'A3', 'E4')
+    Dmaj9 = chord('D2', 'A2', 'F#3', 'A3', 'C#4', 'E4', 'F#4', 'A4')
+    heart = real_time(5.95)
+    limbs = (real_time(6.35), real_time(6.6))
+    skin0, skin1 = real_time(7.45), real_time(8.9)
+    title = real_time(9.4)
+    v2 = real_time(10.7)
+    print(f'heart {heart:.2f}  limbs {limbs[0]:.2f}/{limbs[1]:.2f}  skin {skin0:.2f}-{skin1:.2f}  title {title:.2f}  V2 {v2:.2f}')
+
+    # 0-7 beats: the words write themselves. A quiet bed, a felt piano, glints as the glyphs land.
+    m.add(pad(Dlow, 7 * B, attack=2.2, release=1.5, cut0=420, cut1=900, vel=0.13), 0.0, send=0.55)
+    for b, n, v in [(0.5, 'F#5', 0.42), (1.5, 'A4', 0.32), (2.5, 'E5', 0.36), (3.5, 'D5', 0.34), (4.5, 'A5', 0.3), (5.5, 'F#5', 0.28)]:
+        m.add(felt_piano(hz(n), 1.4, v), b * B + human(0.006), gain=0.4, pan=RNG.uniform(-0.3, 0.3), send=0.55)
+    for i in range(40):
+        at = 0.15 + i * (2.8 / 40) + RNG.uniform(0, 0.05)
+        m.add(bell(hz(RNG.choice(['A6', 'D7', 'E7', 'F#6', 'B6'])), 0.9, 0.022 + 0.02 * RNG.random()), at, pan=RNG.uniform(-0.8, 0.8), send=0.75)
+
+    # 7-12: the words lift into a stream; the neural tube forms. Low strings rise; a slow swell into beat 12.
+    m.add(pad(Bm, 2.5 * B, attack=1.4, release=0.8, cut0=500, cut1=1300, vel=0.2), 7 * B, send=0.5)
+    m.add(pad(G, 2.5 * B, attack=0.9, release=1.0, cut0=700, cut1=1700, vel=0.23), 9.5 * B, send=0.5)
+    m.add(sub(hz('B1'), 2.4 * B, 0.13), 7 * B, send=0)
+    m.add(sub(hz('G1'), 2.4 * B, 0.15), 9.5 * B, send=0)
+    for b, n in [(7.5, 'D5'), (8.5, 'C#5'), (9.5, 'B4'), (10.5, 'A4'), (11.25, 'B4')]:
+        m.add(felt_piano(hz(n), 1.2, 0.34), b * B + human(0.006), gain=0.4, pan=-0.15, send=0.5)
+    m.add(riser(2.2 * B, 0.18, 300, 4500), 9.8 * B, send=0.35)
+    m.add(reverse_swell(D, 1.6, 0.32), 12 * B - 1.6, send=0.2)
+
+    # 12-16: the somites, pair by pair: two plucks at once, left and right (they are bilateral), rising.
+    m.add(pad(D, 4 * B, attack=0.1, release=0.8, cut0=900, cut1=2200, vel=0.24), 12 * B, send=0.45)
+    m.add(sub(hz('D2'), 4 * B, 0.17), 12 * B, send=0)
+    ladder = ['D4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5', 'A5']
+    for i in range(8):
+        at = 12 * B + i * B / 2
+        k = i / 7
+        for pan in (-0.55, 0.55):
+            m.add(pluck(hz(ladder[i]), 0.3, 0.12 + 0.12 * k, cut=1400 + 2600 * k), at + (0.012 if pan > 0 else 0), pan=pan, send=0.4)
+        m.add(shaker(0.05 + 0.06 * k), at + B / 4, pan=0.2, send=0.1)
+    m.add(bell(hz('A5'), 2.4, 0.16), 16 * B - 0.05, pan=0, send=0.6)
+
+    # 16-20: the body closes; the heart appears and starts to beat (in time with the skin's pulse); limb buds.
+    m.add(pad(Em, 2 * B, attack=0.3, release=0.6, cut0=1100, cut1=2400, vel=0.3), 16 * B, send=0.45)
+    m.add(pad(A, 2 * B, attack=0.3, release=0.8, cut0=1200, cut1=2800, vel=0.32), 18 * B, send=0.45)
+    m.add(sub(hz('E2'), 2 * B, 0.15), 16 * B, send=0)
+    m.add(sub(hz('A1'), 2 * B, 0.17), 18 * B, send=0)
+    arp = ['E4', 'B4', 'G4', 'D5', 'A4', 'E5', 'C#5', 'E5']
+    for i in range(8):
+        m.add(pluck(hz(arp[i]), 0.25, 0.17, cut=2600), 16 * B + i * B / 2, pan=0.35 * np.sin(i * 1.7), send=0.4)
+    first = int(np.ceil(heart / B))
+    for b in range(first, 33):
+        k = min(1.0, (b - first + 1) / 4) * (1 - max(0, b - 26) / 7)
+        m.add(heartbeat((0.36 + 0.03 * min(b - first, 8)) * k), b * B, send=0.12)
+    for at, n, pan in ((limbs[0], 'F#6', -0.6), (limbs[1], 'A6', 0.6)):
+        m.add(bell(hz(n), 2.8, 0.22), at, pan=pan, send=0.65)
+        m.add(bell(hz(n) / 2, 2.0, 0.1), at, pan=pan / 2, send=0.5)
+
+    # 20-25: the skin condenses over the points: the build. Strings climb, a riser, the chord turns each beat.
+    for b, c in [(20, Bm), (21, G), (22, DF), (23, A), (24, A)]:
+        m.add(pad(c, B * 1.05, attack=0.12, release=0.5, cut0=1400 + (b - 20) * 450, cut1=2200 + (b - 20) * 500, vel=0.32 + 0.07 * (b - 20)), b * B, send=0.45)
+        m.add(sub(hz(['B1', 'G1', 'F#1', 'A1', 'A1'][b - 20]), B, 0.14 + 0.03 * (b - 20)), b * B, send=0)
+    for i, n in enumerate(['B4', 'D5', 'F#5', 'A5', 'C#6', 'E6', 'A5', 'C#6', 'E6', 'G6']):
+        m.add(pluck(hz(n), 0.22, 0.14 + 0.035 * i, cut=3000 + 300 * i), 20 * B + i * B / 2, pan=0.4 * (-1) ** i, send=0.45)
+    m.add(riser(5 * B, 0.55, 250, 9000), 20 * B, send=0.35)
+    m.add(reverse_swell(Dmaj9, 2.2, 0.45), 25 * B - 2.2, send=0.25)
+    for i in range(12):
+        m.add(snare(0.04 + 0.2 * (i / 12) ** 2, soft=True), 23 * B + i * B / 6, pan=0.1, send=0.3)
+
+    # 25: the embryo is whole. The full chord, a soft deep hit; the title (Ongi etorri, EnbrioAtlas V2).
+    m.add(boom(0.42, 4.0), 25 * B, send=0.4)
+    m.add(crash(0.18, 4.5), 25 * B, send=0.5)
+    m.add(pad(Dmaj9, 4 * B, attack=0.03, release=1.8, cut0=3200, cut1=1400, vel=0.42), 25 * B, send=0.55)
+    m.add(sub(hz('D2'), 4 * B, 0.22), 25 * B, send=0)
+    for i, n in enumerate(['D4', 'A4', 'D5', 'F#5', 'A5', 'E6']):
+        m.add(felt_piano(hz(n), 3.0, 0.38), 25 * B + i * 0.05, gain=0.55, pan=-0.5 + i * 0.2, send=0.6)
+    # The title: a melody over A/C# - Bm - G, the heart slowing out under it.
+    prog = [(29, chord('C#2', 'A2', 'E3', 'A3', 'C#4'), 'C#2'), (30.5, Bm, 'B1'), (32, G, 'G1')]
+    for b, c, root in prog:
+        m.add(pad(c, 1.6 * B, attack=0.25, release=1.4, cut0=1600, cut1=1100, vel=0.32), b * B, send=0.55)
+        m.add(sub(hz(root), 1.5 * B, 0.15), b * B, send=0)
+    for b, n, v in [(26, 'F#5', 0.42), (27, 'E5', 0.36), (27.5, 'D5', 0.34), (28, 'A5', 0.44), (29.5, 'G#5', 0.34), (30, 'E5', 0.34), (30.5, 'F#5', 0.4), (31.5, 'D5', 0.34), (32, 'B4', 0.34)]:
+        m.add(felt_piano(hz(n), 1.4, v), b * B + human(0.006), gain=0.6, pan=0.1, send=0.55)
+    m.add(bell(hz('A6'), 3.2, 0.22), v2, pan=0.2, send=0.7)
+    m.add(bell(hz('D6'), 3.2, 0.16), v2 + 0.09, pan=-0.2, send=0.7)
+    # 33-35: the embryo docks into the page; the last chord rings out under the journey.
+    m.add(pad(Dmaj9, 4.0, attack=0.6, release=3.0, cut0=1800, cut1=700, vel=0.36), 33 * B, send=0.6)
+    m.add(sub(hz('D2'), 3.5, 0.16), 33 * B, send=0)
+    for i, n in enumerate(['A4', 'D5', 'E5', 'F#5', 'A5']):
+        m.add(felt_piano(hz(n), 3.5, 0.3), 33 * B + i * 0.22, gain=0.5, pan=-0.4 + i * 0.2, send=0.65)
+    m.add(bell(hz('F#6'), 3.5, 0.14), 35 * B, pan=0, send=0.75)
+    out = master(m, L, ir_seconds=3.6, wet=0.38, peak_db=-1.5, fade_out=3.0)
+    save(out, os.path.join(ROOT, 'public', 'intro-v2', 'score'))
+
+
 if __name__ == '__main__':
     which = sys.argv[1] if len(sys.argv) > 1 else 'all'
     if which in ('all', 'score'):
         score()
+    if which in ('all', 'score2'):
+        score2()
     if which in ('all', 'pieces'):
         pieces()

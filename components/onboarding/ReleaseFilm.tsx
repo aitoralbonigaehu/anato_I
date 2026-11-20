@@ -3,10 +3,79 @@
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import type { Item3 } from '@/lib/three-d/scene';
 import type { openProjector, Exhibit } from '../intro-review/renderStudy';
-import { filmAudioChange } from '@/components/shell/StudyMusic';
+import { enableStudyMusic, filmAudioChange } from '@/components/shell/StudyMusic';
+import v from './show/show.module.css';
 import s from './release-film.module.css';
 
+/** The film's own clock (the projector's timeline, components/intro-review): the camera docks at 13.5. */
 const end = 13.5;
+/**
+ * The film is played slower than its projector timeline, and not evenly: time to read the words, a calm
+ * neural tube, the somites pair by pair, the body, the skin, the title held. Knots (real s → film s) sit on
+ * the score's beats (85.2 bpm, a beat 0.704 s, scripts/intro-v3/music.py `score2`); between them a monotone
+ * cubic keeps every point's speed continuous (no jolts where the pace changes).
+ */
+const BEAT = 60 / 85.2;
+const KNOTS: [number, number][] = [
+  [0, 0],
+  [4 * BEAT, 0.62],
+  [7 * BEAT, 1.3],
+  [12 * BEAT, 3.97],
+  [16 * BEAT, 4.95],
+  [20 * BEAT, 6.75],
+  [25 * BEAT, 8.95],
+  [32 * BEAT, 11.85],
+  [35 * BEAT, end],
+];
+export const FILM_END = KNOTS[KNOTS.length - 1][0];
+const SLOPES = (() => {
+  const n = KNOTS.length,
+    d = KNOTS.slice(1).map(([x, y], i) => (y - KNOTS[i][1]) / (x - KNOTS[i][0])),
+    m = KNOTS.map((_, i) => (i === 0 ? d[0] : i === n - 1 ? d[n - 2] : (d[i - 1] + d[i]) / 2));
+  // Fritsch–Carlson: no overshoot, so film time never runs backwards.
+  for (let i = 0; i < n - 1; i++) {
+    const a = m[i] / d[i],
+      b = m[i + 1] / d[i],
+      h = a * a + b * b;
+    if (h > 9) {
+      const k = 3 / Math.sqrt(h);
+      m[i] = k * a * d[i];
+      m[i + 1] = k * b * d[i];
+    }
+  }
+  return m;
+})();
+/** Real seconds → the projector's seconds. */
+function filmTime(real: number) {
+  if (real <= 0) return 0;
+  const last = KNOTS.length - 1;
+  if (real >= KNOTS[last][0]) return end + (real - KNOTS[last][0]);
+  let i = 0;
+  while (KNOTS[i + 1][0] < real) i++;
+  const [x0, y0] = KNOTS[i],
+    [x1, y1] = KNOTS[i + 1],
+    h = x1 - x0,
+    u = (real - x0) / h;
+  const h00 = 2 * u ** 3 - 3 * u * u + 1,
+    h10 = u ** 3 - 2 * u * u + u,
+    h01 = -2 * u ** 3 + 3 * u * u,
+    h11 = u ** 3 - u * u;
+  return h00 * y0 + h10 * h * SLOPES[i] + h01 * y1 + h11 * h * SLOPES[i + 1];
+}
+/** What forms now, in film seconds (the projector's births, grains.ts): named as it appears, never pointed at. */
+function reading(t: number): { kicker: string; value: string } | null {
+  if (t < 0.12) return null;
+  if (t < 1.75) return { kicker: 'Apunteak', value: '4. gaia · 3.1' };
+  if (t < 2.75) return null;
+  if (t < 3.95) return { kicker: '1 · Hodi neurala', value: 'Erdialdean, buztanetik burura' };
+  if (t < 5.75) return { kicker: '2 · Somitak', value: 'Bikoteka, hodiaren bi aldeetan' };
+  if (t < 6.3) return { kicker: '3 · Bihotz goragunea', value: 'Bihotza taupaka hasten da' };
+  if (t < 7.3) return { kicker: '4 · Gorputz-adarren hasikinak', value: 'Besoak eta hankak' };
+  if (t < 9.05) return { kicker: '4. gaia', value: '5. asteko enbrioia' };
+  return null;
+}
+/** The heart's pulse (optics.ts `pulse`) peaks on the score's beats: 1.42 a second, 85.2 bpm. */
+const pulseAt = (real: number) => 7.5 + real - 0.19 / 1.42;
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
 function ease(a: number, b: number, t: number) {
   const u = Math.min(1, Math.max(0, (t - a) / (b - a)));
@@ -24,75 +93,32 @@ type Props = {
   art: RefObject<HTMLDivElement | null>;
   turn: RefObject<{ yaw: number; pitch: number }>;
 };
-function soundtrack(offset: number) {
-  const ctx = new AudioContext(),
-    bus = ctx.createGain();
-  bus.gain.value = 0.13;
-  bus.connect(ctx.destination);
-  const start = ctx.currentTime;
-  function tone(at: number, hz: number, duration: number, volume: number, attack: number, fall = 1) {
-    const elapsed = Math.max(0, offset - at);
-    const remaining = duration - elapsed;
-    if (remaining <= 0.03) return;
-    const onset = start + Math.max(0, at - offset);
-    const osc = ctx.createOscillator(),
-      env = ctx.createGain();
-    osc.frequency.setValueAtTime(hz * fall ** (elapsed / duration), onset);
-    osc.frequency.exponentialRampToValueAtTime(hz * fall, onset + remaining);
-    env.gain.setValueAtTime(0.0001, onset);
-    env.gain.exponentialRampToValueAtTime(volume, onset + Math.min(remaining / 2, Math.max(0.02, attack - elapsed)));
-    env.gain.exponentialRampToValueAtTime(0.0001, onset + remaining);
-    osc.connect(env);
-    env.connect(bus);
-    osc.start(onset);
-    osc.stop(onset + remaining);
-  }
-  const figures = [
-    [261.63, 329.63, 392, 493.88],
-    [349.23, 440, 523.25, 659.25],
-    [293.66, 392, 440, 587.33],
-  ];
-  figures.forEach((notes, bar) => {
-    const start = 0.45 + bar * 2.2;
-    notes.forEach((hz, note) => tone(start + note * 0.28, hz, 1.03, 0.26, 0.034));
-    tone(start + 1.54, notes[2], 0.62, 0.17, 0.035);
-  });
-  // The skin resolves, then the title arrives and the camera docks.
-  tone(7.45, 523.25, 1.34, 0.33, 0.05);
-  tone(7.73, 659.25, 1.16, 0.25, 0.045);
-  tone(8.04, 783.99, 1.21, 0.23, 0.045);
-  tone(9.25, 261.63, 2.9, 0.18, 0.1);
-  tone(9.52, 392, 2.4, 0.24, 0.07);
-  tone(9.82, 659.25, 2.1, 0.28, 0.055);
-  tone(11.85, 523.25, 1.59, 0.16, 0.08);
-  return { ctx, bus };
-}
 export default function ReleaseFilm(props: Props) {
   const { opening, step } = props,
     latest = useRef(props);
   const canvas = useRef<HTMLCanvasElement>(null),
     title = useRef<HTMLDivElement>(null),
-    rail = useRef<HTMLSpanElement>(null);
-  const playback = useRef({ started: false, paused: false, t: opening ? 0 : end, frozen: false });
-  const sound = useRef<ReturnType<typeof soundtrack> | null>(null);
+    rail = useRef<HTMLSpanElement>(null),
+    instrument = useRef<HTMLDivElement>(null),
+    kicker = useRef<HTMLSpanElement>(null),
+    value = useRef<HTMLSpanElement>(null),
+    audio = useRef<HTMLAudioElement>(null);
+  // The clock is in real seconds (the score's); the projector gets film seconds (`filmTime`).
+  const playback = useRef({ started: false, paused: false, t: opening ? 0 : FILM_END, frozen: false });
   const [started, setStarted] = useState(false),
     [paused, setPaused] = useState(false),
-    [muted, setMuted] = useState(true);
+    [sound, setSound] = useState(false);
   const [fallback, setFallback] = useState(false),
     [ready, setReady] = useState(false);
   useEffect(() => {
     latest.current = props;
   }, [props]);
+  // The study music waits while the film plays (the film has its own score, which rings out under the journey).
   useEffect(() => {
-    if (!opening) {
-      void sound.current?.ctx.close().catch(() => {});
-      sound.current = null;
-    }
-    if (opening) window.dispatchEvent(new CustomEvent(filmAudioChange, { detail: true }));
+    if (!opening) return;
+    window.dispatchEvent(new CustomEvent(filmAudioChange, { detail: true }));
     return () => {
-      if (opening) window.dispatchEvent(new CustomEvent(filmAudioChange, { detail: false }));
-      void sound.current?.ctx.close().catch(() => {});
-      sound.current = null;
+      window.dispatchEvent(new CustomEvent(filmAudioChange, { detail: false }));
     };
   }, [opening]);
   useEffect(() => {
@@ -122,17 +148,11 @@ export default function ReleaseFilm(props: Props) {
     const search = new URL(location.href).searchParams;
     const frozen = search.get('intro') === 'v2' ? search.get('t') : null;
     if (latest.current.opening && frozen !== null && Number.isFinite(Number(frozen))) {
-      state.t = Math.max(0, Math.min(end - 0.01, Number(frozen)));
+      state.t = Math.max(0, Math.min(FILM_END - 0.01, Number(frozen)));
       state.frozen = true;
       state.started = true;
       setStarted(true);
     }
-    const visibility = () => {
-      const score = sound.current;
-      if (!score || !renderer || !state.started || state.paused) return;
-      void (document.hidden ? score.ctx.suspend() : score.ctx.resume()).catch(() => {});
-    };
-    document.addEventListener('visibilitychange', visibility);
     media.addEventListener('change', change);
     el.addEventListener('webglcontextlost', loss);
     if (media.matches) stop();
@@ -147,7 +167,6 @@ export default function ReleaseFilm(props: Props) {
           }
           setReady(true);
           latest.current.onLive(true);
-          if (state.started && !state.paused) void sound.current?.ctx.resume().catch(() => {});
           let prev = 0,
             x = 0,
             y = 0,
@@ -162,7 +181,8 @@ export default function ReleaseFilm(props: Props) {
           let quality = 1,
             slow = 0,
             samples = 0,
-            ended = false;
+            ended = false,
+            said = '';
           const tick = (now: number) => {
             if (ac.signal.aborted || !renderer) return;
             const dt = prev ? (now - prev) / 1000 : 0;
@@ -177,13 +197,29 @@ export default function ReleaseFilm(props: Props) {
               id = requestAnimationFrame(tick);
               return;
             }
-            if (!state.paused && !state.frozen) state.t += Math.min(0.16, dt);
+            // The score is the clock while it plays; else the frame time.
+            const a = audio.current;
+            if (opening && a && !a.paused && !state.frozen && !state.paused) state.t = a.currentTime;
+            else if (!state.paused && !state.frozen) state.t += Math.min(0.16, dt);
             if (!opening) {
-              state.t = Math.max(end, state.t);
+              state.t = Math.max(FILM_END, state.t);
               state.frozen = false;
               state.paused = false;
             }
-            const t = state.t;
+            const real = state.t,
+              t = filmTime(real);
+            if (opening) {
+              const r = reading(t),
+                key = r ? r.kicker + r.value : '';
+              if (key !== said && instrument.current && kicker.current && value.current) {
+                said = key;
+                instrument.current.dataset.on = String(!!r);
+                if (r) {
+                  kicker.current.textContent = r.kicker;
+                  value.current.textContent = r.value;
+                }
+              }
+            }
             if (title.current) {
               title.current.style.opacity = String(ease(9.4, 10.25, t) * (1 - ease(12, 12.78, t)));
               title.current.style.setProperty('--write', String(ease(9.4, 10.75, t) * 100) + '%');
@@ -192,7 +228,7 @@ export default function ReleaseFilm(props: Props) {
                 shell?.style.setProperty('--handoff', String(ease(12.72, end, t)));
               }
             }
-            if (rail.current) rail.current.style.transform = 'scaleX(' + Math.min(1, t / end) + ')';
+            if (rail.current) rail.current.style.transform = 'scaleX(' + Math.min(1, real / FILM_END) + ')';
             const w = el.clientWidth,
               h = el.clientHeight;
             const target = destination ?? step;
@@ -222,8 +258,9 @@ export default function ReleaseFilm(props: Props) {
                 dock = ease(11.85, end, t),
                 portrait = w < h;
               tx = lerp(w * (0.518 + (portrait ? 0 : 0.18) * name), ax, dock);
-              ty = lerp(h * (0.512 - (portrait ? 0.12 : 0) * name), ay, dock);
-              tr = lerp(Math.min(h / 9.35, w / 8.3) * (1 - 0.13 * (1 - ease(3, 7.3, t)) - 0.13 * name), unit, dock);
+              // Portrait: the title sits under the embryo, so the embryo rises and shrinks further to leave it room.
+              ty = lerp(h * (0.512 - (portrait ? 0.17 : 0) * name), ay, dock);
+              tr = lerp(Math.min(h / 9.35, w / 8.3) * (1 - 0.13 * (1 - ease(3, 7.3, t)) - (portrait ? 0.3 : 0.13) * name), unit, dock);
               angle = -0.59 + 0.74 * ease(2.5, 8.75, t) - 0.15 * name;
               tilt = -0.105;
               ts = ease(7.45, 8.9, t);
@@ -281,6 +318,7 @@ export default function ReleaseFilm(props: Props) {
               renderer.draw(
                 {
                   t,
+                  pulse: pulseAt(real),
                   box: [x, y, scale],
                   angles: [yaw, pitch],
                   skin,
@@ -294,8 +332,10 @@ export default function ReleaseFilm(props: Props) {
                 quality,
               );
             }
-            if (opening && t >= end && !ended) {
+            if (opening && real >= FILM_END && !ended) {
               ended = true;
+              // The score rings out under the journey; the study music follows it (the sound was wanted).
+              if (a && !a.paused) a.addEventListener('ended', () => enableStudyMusic(), { once: true });
               onFinish();
             }
             id = requestAnimationFrame(tick);
@@ -309,39 +349,76 @@ export default function ReleaseFilm(props: Props) {
       ac.abort();
       cancelAnimationFrame(id);
       renderer?.dispose();
-      document.removeEventListener('visibilitychange', visibility);
       media.removeEventListener('change', change);
       el.removeEventListener('webglcontextlost', loss);
     };
   }, []);
-  function enableSound() {
-    try {
-      const score = sound.current ?? soundtrack(playback.current.t);
-      sound.current = score;
-      score.bus.gain.setTargetAtTime(0.13, score.ctx.currentTime, 0.025);
-      void (ready && !paused ? score.ctx.resume() : score.ctx.suspend()).catch(() => {});
-      setMuted(false);
-    } catch {}
-  }
   useEffect(() => {
     if (!opening) return;
     playback.current.started = true;
-    // The earlier film, kept as it was (only ?intro=v2 opens it): it starts when it opens.
+    // The film starts when it opens.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setStarted(true);
   }, [opening]);
+  // Sound: tried at once (a returning visitor's browser may allow it), else one press away.
+  useEffect(() => {
+    if (!opening || !ready) return;
+    const a = audio.current;
+    if (!a) return;
+    a.volume = 0.9;
+    a.currentTime = playback.current.t;
+    if (playback.current.frozen) return;
+    void a
+      .play()
+      .then(() => setSound(true))
+      .catch(() => setSound(false));
+  }, [opening, ready]);
+  function toggleSound() {
+    const a = audio.current;
+    if (!a) return;
+    if (sound) {
+      a.pause();
+      setSound(false);
+      return;
+    }
+    a.currentTime = playback.current.t;
+    void a
+      .play()
+      .then(() => {
+        setSound(true);
+        if (playback.current.paused) a.pause();
+      })
+      .catch(() => {});
+  }
   function toggle() {
-    playback.current.frozen = false;
-    playback.current.paused = !paused;
-    setPaused(!paused);
-    if (sound.current) void (paused ? sound.current.ctx.resume() : sound.current.ctx.suspend()).catch(() => {});
+    const p = playback.current;
+    p.frozen = false;
+    p.paused = !p.paused;
+    setPaused(p.paused);
+    const a = audio.current;
+    if (a && sound) {
+      if (p.paused) a.pause();
+      else {
+        a.currentTime = p.t;
+        void a.play().catch(() => {});
+      }
+    }
   }
   return (
     <>
       <canvas ref={canvas} className={s.canvas} hidden={fallback} aria-hidden="true" />
+      <audio ref={audio} preload="auto">
+        <source src="/intro-v2/score.ogg" type="audio/ogg" />
+        <source src="/intro-v2/score.mp3" type="audio/mpeg" />
+      </audio>
       {opening && (
-        <section className={s.film} aria-label="EnbrioAtlas V2">
+        <section className={s.film} aria-label="EnbrioAtlas V2: sarrera">
           {started && !ready && <p className={s.waiting}>Somitek egitura bilaterala dute…</p>}
+          <div ref={instrument} className={v.instrument} data-on="false" aria-hidden="true">
+            <i />
+            <span ref={kicker} className={v.kicker} />
+            <span ref={value} className={v.value} />
+          </div>
           <div ref={title} className={s.wordmark}>
             <p>Ongi etorri</p>
             <h1 id="release-title">
@@ -349,32 +426,34 @@ export default function ReleaseFilm(props: Props) {
             </h1>
             <em>Hitzetatik formara.</em>
           </div>
-          <button type="button" className={s.skip} onClick={props.onFinish}>
-            Sarrera saltatu ↗
+          <button type="button" className={v.skip} onClick={props.onFinish}>
+            Saltatu sarrera <span aria-hidden="true">→</span>
           </button>
           {started && (
-            <footer className={s.transport}>
-              <button type="button" onClick={toggle}>
-                {paused ? 'Erreproduzitu' : 'Pausatu'}
+            <footer className={v.transport}>
+              <button type="button" className={v.round} onClick={toggle} aria-label={paused ? 'Erreproduzitu' : 'Pausatu'}>
+                {paused ? (
+                  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                    <path d="M3 1.5v11l9-5.5z" fill="currentColor" />
+                  </svg>
+                ) : (
+                  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                    <path d="M3 1.5h3v11H3zM8 1.5h3v11H8z" fill="currentColor" />
+                  </svg>
+                )}
               </button>
-              <div className={s.rail} aria-hidden="true">
+              <div className={v.rail} aria-hidden="true">
                 <span ref={rail} />
               </div>
-                <button
-                  type="button"
-                  aria-pressed={!muted}
-                  onClick={() => {
-                    if (muted) {
-                      enableSound();
-                    } else {
-                      const score = sound.current;
-                      if (score) score.bus.gain.setTargetAtTime(0, score.ctx.currentTime, 0.025);
-                      setMuted(true);
-                    }
-                  }}
-                >
-                  {muted ? 'Soinua piztu' : 'Soinua itzali'}
-                </button>
+              <button type="button" className={v.sound} data-on={sound} aria-pressed={sound} onClick={toggleSound}>
+                <span className={v.bars} aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                {sound ? 'Soinua itzali' : 'Piztu soinua'}
+              </button>
             </footer>
           )}
         </section>
