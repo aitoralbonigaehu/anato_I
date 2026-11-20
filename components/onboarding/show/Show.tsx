@@ -413,7 +413,7 @@ export default function Show(props: Props) {
         <source src="/intro-v3/score.mp3" type="audio/mpeg" />
       </audio>
       {props.opening && (
-        <section className={s.film} aria-label="EnbrioAtlas: sarrera" data-ready={ready}>
+        <section className={s.film} aria-label="EnbrioAtlas V2: sarrera" data-ready={ready}>
           <div ref={instrument} className={s.instrument} data-on="false" aria-hidden="true">
             <i />
             <span ref={kicker} className={s.kicker} />
@@ -422,7 +422,7 @@ export default function Show(props: Props) {
           <p ref={caption} className={s.caption} data-on="false" aria-live="off" />
           <div ref={tag} className={s.tag}>
             <h1 id="release-title" className={s.srOnly}>
-              EnbrioAtlas
+              EnbrioAtlas V2
             </h1>
             <p>Hitzetatik formara.</p>
           </div>

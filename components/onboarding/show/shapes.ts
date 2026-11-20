@@ -117,7 +117,7 @@ export function notesText(): Points {
 /** The wordmark: the brand's mark and "EnbrioAtlas", 2 world units wide. */
 export function wordmark(): Points {
   const c = document.createElement('canvas');
-  c.width = 2200;
+  c.width = 2600;
   c.height = 420;
   const ctx = c.getContext('2d')!;
   const family = getComputedStyle(document.body).getPropertyValue('--font-geist').trim() || 'system-ui, sans-serif';
