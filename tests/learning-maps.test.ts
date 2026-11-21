@@ -32,7 +32,8 @@ describe('fused learning maps', () => {
   it('gives every branch of the topics 15–19 mind maps a visible relationship label', () => {
     const checkEdges = (node: MNode) => {
       for (const child of node.kids ?? []) {
-        expect(child.via?.trim(), child.id ?? child.label).toBeTruthy();
+        // A heading (Kartilagoak / Nerbioa / Muskuluak) only sorts branches; the branches under it carry the relationship.
+        if (!child.group) expect(child.via?.trim(), child.id ?? child.label).toBeTruthy();
         checkEdges(child);
       }
     };

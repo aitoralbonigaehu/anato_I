@@ -133,3 +133,24 @@
 .mg-chip.is-blue em {
   color: color-mix(in srgb, var(--mg-blue) 75%, var(--text-3));
 }
+
+/* A heading that sorts an arch's branches (Kartilagoak / Nerbioa / Muskuluak): a quiet label, not a structure box. */
+.mg-chip.is-group {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding-inline: 2px;
+  color: var(--text-3);
+  font: 600 11px/1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.mg-chip.is-group > i {
+  display: none;
+}
+.mg-chip.is-group em {
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-ui);
+  font-weight: 400;
+}

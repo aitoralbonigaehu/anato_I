@@ -85,7 +85,12 @@ export function LearningMaps({ week, renderScheme, renderDetail, resolveName, ta
         : 'Hasi mapa nagusitik. Zabaldu xehetasunak urratsak eta salbuespenak lotzeko; gero landu bi noranzkoetan.'}</p>
       {maps.map((map, index) => <details className={styles.map} key={map.id} id={`mapa-${map.id}`} name={`learning-${week}`} open={index === 0}>
         <summary className={styles.mapTitle}><span>{String(index + 1).padStart(2, '0')}</span><h3>{map.title}</h3></summary>
+        {map.details.some((d) => d.lead) && <ul className={styles.leads}>{map.details.filter((d) => d.lead).map((d) => <li key={d.id}>{d.lead}</li>)}</ul>}
         {renderScheme({ id: map.id, title: map.title, stage: map.details[0]?.stage ?? '', roots: map.roots })}
+        {map.details.some((d) => d.pitfalls?.length) && <aside className={styles.kontuz} aria-label="Kontuz">
+          <b>Kontuz</b>
+          <ul>{map.details.flatMap((d) => (d.pitfalls ?? []).map((t) => <li key={`${d.id}-${t}`}>{t}</li>))}</ul>
+        </aside>}
         <details className={styles.details}>
           <summary>Xehetasunak eta urratsak · {map.details.length}</summary>
           <div>{map.details.map((detail) => <div key={detail.id}>{renderDetail(detail)}</div>)}</div>

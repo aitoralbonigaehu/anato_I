@@ -51,8 +51,7 @@ describe('Eratorriak: taught this year', () => {
       expect(t!.rows.length).toBe(s.rows.filter((r) => !r.blue).length);
       expect(t!.rows.some((r) => r.blue)).toBe(false);
     }
-    const skull = taughtGrid(GRID_SCHEMES.find((s) => s.id === 'kraneoaren-hezurrak-17')!)!;
-    expect(skull.rows.flatMap((r) => r.cells.map((c) => c?.text))).not.toContain('Frontalak');
+    expect(taughtGrid(GRID_SCHEMES.find((s) => s.id === 'bikote-kranealak-17')!)).toBeNull();
     const ear = taughtGrid(GRID_SCHEMES.find((s) => s.id === 'poltsa-arraildura-matrizea-18')!)!;
     const cleft = ear.rows.flatMap((r) => r.cells).find((c) => c?.text === '1. arraildura');
     expect(cleft?.span ?? 1).toBe(1);

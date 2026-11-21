@@ -53,11 +53,11 @@ export const GRID_18: GridScheme[] = [
       { label: 'Funtzioa', tone: 'ondorioa', w: 1.2 },
     ],
     rows: [
-      r([c('Gorputza', { span: 2, note: 'aurreko bi herenak' }), c('I. arkua', { span: 2, note: 'bi goragune lateralak + tuberkulu bakoitia' }), 'V3 · barail-nerbioa', 'Sentsibilitate orokorra']),
+      r([c('Gorputza', { span: 2 }), c('I. arkua', { span: 2, note: 'bi goragune lateralak + tuberkulu bakoitia' }), 'V3 · barail-nerbioa', 'Sentsibilitate orokorra']),
       r([null, null, 'VII · aurpegi-nerbioa', 'Dastamena']),
-      r([c('Sustraia', { span: 2, note: 'atzeko herena' }), c('II., III. eta IV.aren zati bat', { span: 2, note: 'kupula / kopula' }), c('IX · glosofaringeoa', { note: 'aurrealdea' }), c('Dastamena eta sentsibilitate orokorra', { span: 2, note: 'bakoitzak bere eremuko informazio osoa' })]),
+      r([c('Sustraia', { span: 2, note: 'barnean, leporaino' }), c('II., III. eta IV. arkuak', { span: 2, note: 'erdiko goragunea: kupula' }), c('IX · glosofaringeoa', { note: 'aurrealdea' }), c('Dastamena eta sentsibilitate orokorra', { span: 2, note: 'bakoitzak bere eremuko informazio osoa' })]),
       r([null, null, c('X · goiko laringe nerbioa', { note: 'atzealdea' }), null]),
-      r([c('Muskulu intrintsekoak'), c('3 somita okzipital bikoteen mioblastoak', { move: true, note: 'ez arkuetatik' }), 'XII · hipoglosoa', 'Mihia mugitzea']),
+      r([c('Muskulu intrintsekoak'), c('Somita okzipitaleko mioblastoak', { move: true, note: 'ez arkuetatik' }), 'XII · hipoglosoa', 'Mihia mugitzea']),
     ],
     pitfalls: [
       'Gorputzean bi nerbiok partekatzen dute lana (V3 orokorra, VII dastamena). Sustraian nerbio bakoitzak biak egiten ditu, eremu banatan.',
@@ -103,7 +103,6 @@ export const GRID_18: GridScheme[] = [
       r([c('Sudur plakoden ertz medialak', { note: '10. astean fusionatu' }), 'Sudurraren erdiko atala eta goiko ezpainaren erdiko atala', c('Maxilar arteko segmentua → hasierako aho sabaia', { note: '4 ebakortzak · ebakortz zuloa' })]),
       r([c('Sudur plakoden ertz lateralak'), 'Sudur hegalak', '—']),
       r([c('Luzapen maxilarrak', { note: 'medialera eta aurrera' }), 'Goiko ezpainaren alboak', c('Aho sabaiaren gandorrak (plakak)', { note: 'erdian fusionatu: errafea' })]),
-      r([c('Barail luzapenak'), 'Beheko aurpegia', '—']),
       r([c('Ildo nasolagrimala', { note: 'ertz lateralaren eta luzapen maxilarraren artean' }), '—', 'Hodi nasolagrimala eta malko zakua']),
     ],
     pitfalls: [

@@ -42,7 +42,13 @@ export function buildReviewCards(maps: readonly ReviewMap[], resolveName: (id: s
       const lineage = ancestors.length ? ` (${ancestors.join(' → ')})` : '';
       // Grouping labels organize convergences, but are not anatomical structures to recall.
       const children = (parent.kids ?? []).flatMap((child) => child.label === 'Jatorria / osagaia' && !child.id
-        ? (child.kids ?? []).map((origin) => ({ ...origin, via: origin.via ? `osagaia · ${origin.via}` : 'osagaia' })) : [child]);
+        ? (child.kids ?? []).map((origin) => ({ ...origin, via: origin.via ? `osagaia · ${origin.via}` : 'osagaia' }))
+        : child.group && !child.id
+          ? (child.kids ?? []).map((kid) => {
+            const head = (child.label ?? '').toLocaleLowerCase('eu');
+            return { ...kid, via: kid.via ? `${head} · ${kid.via}` : head };
+          })
+          : [child]);
       for (const child of children) {
         const childText = label(child);
         const relationship = child.via ? ` [${child.via}]` : '';

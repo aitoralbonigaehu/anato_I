@@ -67,7 +67,7 @@ function Chip({ node, ctx, path, up }: { node: MNode; ctx: Ctx; path?: string; u
   const hit = isHit(node, ctx);
   const key = path ? `${ctx.flow}/${path}` : null;
   const hidden = !!key && ctx.quiz.on && !ctx.quiz.shown.has(key);
-  const cls = `mg-chip${s ? '' : ' is-plain'}${node.gone ? ' is-gone' : ''}${node.blue ? ' is-blue' : ''}${hit ? ' is-hit' : up ? ' is-path' : ''}${ctx.lit && !hit && !up ? ' is-dim' : ''}${key ? ' is-q' : ''}${key && !hidden ? ' is-shown' : ''}`;
+  const cls = `mg-chip${s ? '' : ' is-plain'}${node.gone ? ' is-gone' : ''}${node.blue ? ' is-blue' : ''}${node.group ? ' is-group' : ''}${hit ? ' is-hit' : up ? ' is-path' : ''}${ctx.lit && !hit && !up ? ' is-dim' : ''}${key ? ' is-q' : ''}${key && !hidden ? ' is-shown' : ''}`;
   const body = (
     <>
       {s ? <i style={{ background: s.color ?? categoryColor[s.category] }} /> : <i className={node.gone ? 'is-x' : 'is-o'} />}

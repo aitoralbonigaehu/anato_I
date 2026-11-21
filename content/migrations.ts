@@ -27,6 +27,8 @@ export interface MNode {
    * out and hangs its children on its parent; see content/eratorriak/taught.ts.
    */
   blue?: boolean;
+  /** A heading that sorts the branches below it (e.g. «Nerbioa», «Muskuluak»), not a structure to recall. */
+  group?: boolean;
   /** What the node says in "Aurten emandakoa" mode when only part of it is blue. */
   plain?: { label?: string; via?: string; note?: string | null };
   kids?: MNode[];
@@ -37,6 +39,8 @@ export interface Flow {
   title: string;
   /** One line from the notes that says what the scheme shows. */
   lead?: string;
+  /** Traps from the notes, shown under the scheme («Kontuz»), so the schemes alone are enough to study from. */
+  pitfalls?: string[];
   /** Stage of the topic where the simulator shows it. */
   stage: string;
   /** Trees drawn one under the other; with `join`, chains that converge into it. */
