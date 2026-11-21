@@ -118,7 +118,9 @@ function junction(R: number, H: number, apex: number, root: number): P2[] {
       out.push([r, apex - H * (1 - Math.cos(th))]);
     } else {
       const v = (s - CROWN) / (1 - CROWN);
-      out.push([neckR * (1 - Math.pow(v, 1.5) * 0.76), neckY - L * v]);
+      // The root narrows to its tip only as it grows: with no root yet its points stay at the neck, so the dentine and
+      // papilla do not run a flat, folded ledge inwards under the crown (it showed as a yellow foot over the pulp).
+      out.push([neckR * (1 - Math.pow(v, 1.5) * 0.76 * ss(0, 0.2, root)), neckY - L * v]);
     }
   }
   return out;
@@ -203,6 +205,13 @@ function shellMesh(p: P2[], f: Xf, sides = 30): Mesh {
   });
 }
 
+/**
+ * Each layer's face sits a little proud of the cut, the deeper tissue lower: the odontoblasts are drawn over the
+ * papilla's edge and the dentine's inner line can fold at the neck, and two faces at one depth flicker into stripes
+ * (z-fighting). Pulp/papilla lowest, then the odontoblasts, then everything else, dentine on top of its neighbours.
+ */
+const FACE_Z = (key: string) => (key === 'papilla' || key.endsWith('-pulp') ? 0.002 : key === 'odonto' ? 0.004 : key === 'dentine' || key.endsWith('-dent') ? 0.008 : 0.006);
+
 /** Items collected for one model, with the shared dim rule. */
 function maker(dim: ToothOpts['dim']) {
   const items: Item3[] = [];
@@ -214,7 +223,7 @@ function maker(dim: ToothOpts['dim']) {
   const layer = (key: string, id: string | undefined, outer: P2[], inner: P2[], color: string, deep: string, op: number, f: Xf, extra: Partial<Item3> = {}, shell = true, matrix?: M4) => {
     if (op <= 0.01) return;
     const opacity = op;
-    const face = faceMesh(outer, inner, f);
+    const face = faceMesh(outer, inner, f, FACE_Z(key));
     items.push({ key, id, mesh: face, hit: face, color, deep, tissue: 'mesenchyme', opacity, outline: false, matrix, ...extra });
     if (shell) {
       const sh = shellMesh([...outer, inner[inner.length - 1]], f);
@@ -294,7 +303,7 @@ function sheetMesh(key: string, y0: number, y1: number, half: (v: number) => num
         return [s * half(u), y, lerp(zb, 0, v)];
       }, [s * 100, (y0 + y1) / 2, -1]);
     const out: P2[] = Array.from({ length: n + 1 }, (_, i) => [half(i / n), lerp(y0, y1, i / n)]);
-    const face = faceMesh(out, axis(out), { x: 0, y: 0, s: 1 }, 0.006);
+    const face = faceMesh(out, axis(out), { x: 0, y: 0, s: 1 }, 0.01);
     return merge([side(-1), side(1), face]);
   });
 }
