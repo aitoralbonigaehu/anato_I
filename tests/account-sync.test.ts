@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
-  kind: 'mock', loadProgress: vi.fn(), saveProgress: vi.fn(), collectSnapshot: vi.fn(),
+  kind: 'mock', loadProgress: vi.fn(), saveProgress: vi.fn(), collectSnapshot: vi.fn(), mergeSnapshot: vi.fn(),
 }));
 vi.mock('@/lib/account/backend', () => ({
   getBackend: () => ({
@@ -11,7 +11,8 @@ vi.mock('@/lib/account/backend', () => ({
   }),
 }));
 vi.mock('@/lib/account/snapshot', () => ({
-  collectSnapshot: mocks.collectSnapshot, applySnapshot: vi.fn(), mergeSnapshot: vi.fn(), sameSnapshot: vi.fn(),
+  collectSnapshot: mocks.collectSnapshot, applySnapshot: vi.fn(), isEmptySnapshot: () => false,
+  mergeSnapshot: mocks.mergeSnapshot, sameSnapshot: Object.is,
 }));
 
 
@@ -29,17 +30,26 @@ it('does not push local progress when reading the remote copy fails', async () =
   expect(mocks.saveProgress).not.toHaveBeenCalled();
 });
 
-it('keeps progress local when a Supabase account signs in', async () => {
+it('re-reads and merges Supabase progress when another device wins the first write', async () => {
   vi.resetModules();
   vi.clearAllMocks();
   mocks.kind = 'supabase';
   vi.stubGlobal('window', { setInterval: vi.fn(), addEventListener: vi.fn() });
   vi.stubGlobal('document', { addEventListener: vi.fn() });
+  const local = { local: true };
+  const remote = { remote: true };
+  const merged = { ...local, ...remote };
+  mocks.collectSnapshot.mockReturnValue(local);
+  mocks.loadProgress.mockResolvedValueOnce(null).mockResolvedValueOnce({ blob: { data: remote }, revision: 'r1' });
+  mocks.mergeSnapshot.mockReturnValue(merged);
+  mocks.saveProgress.mockResolvedValueOnce('conflict').mockResolvedValueOnce('saved');
   const { accountState, startAccounts, syncNow } = await import('@/components/account/account');
   await startAccounts();
   await syncNow();
   expect(accountState().status).toBe('in');
-  expect(mocks.loadProgress).not.toHaveBeenCalled();
-  expect(mocks.collectSnapshot).not.toHaveBeenCalled();
-  expect(mocks.saveProgress).not.toHaveBeenCalled();
+  expect(accountState().synced).toBeGreaterThan(0);
+  expect(mocks.loadProgress).toHaveBeenCalledTimes(2);
+  expect(mocks.mergeSnapshot).toHaveBeenCalledWith(local, remote);
+  expect(mocks.saveProgress).toHaveBeenNthCalledWith(1, 'user-1', expect.objectContaining({ data: local }), null);
+  expect(mocks.saveProgress).toHaveBeenNthCalledWith(2, 'user-1', expect.objectContaining({ data: merged }), 'r1');
 });

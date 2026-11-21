@@ -6,9 +6,9 @@
 > **Cuentas y progreso.** El inicio de sesión selecciona un espacio de progreso local por usuario. El
 > progreso anterior a esta separación permanece en el espacio anónimo y no se importa al iniciar sesión.
 > El cambio de cuenta, también entre pestañas, abre de nuevo la página de progreso para descartar el
-> estado en memoria de la sesión anterior. Supabase no sincroniza el progreso: el código de sincronización
-> solo se ejecuta con el backend de desarrollo. Antes de sincronizar entre dispositivos, hay que resolver
-> las escrituras concurrentes y la reconciliación de historiales divergentes.
+> estado en memoria de la sesión anterior. La sincronización lee la revisión de la cuenta antes de
+> guardar. Si otro dispositivo actualiza la fila en ese intervalo, vuelve a leer y fusionar el progreso
+> con las reglas de cada tipo de dato antes de reintentar.
 
 ---
 
@@ -25,10 +25,9 @@ EnbrioAtlas (Next.js 16, App Router; lee `AGENTS.md`: esta versión de Next tien
 - **Sincronización** ya escrita (`components/account/account.ts` + `lib/account/snapshot.ts`): al entrar, cada 3 min
   y al ocultar la pestaña hace *pull → merge → escribe local → push* de un único documento JSON (`ProgressBlob`).
   El merge es idempotente; el servidor solo guarda y devuelve el documento.
-- **Recolector de visitas** ya escrito: `components/visits/VisitBeacon.tsx` (cliente, 1 vez por sesión del navegador,
-  respeta Do Not Track / GPC) → `app/api/bisita/route.ts` (servidor: navegador, SO, dispositivo, idioma, zona
-  horaria, hora, pantalla, página, sitio de referencia, país/ciudad de las cabeceras de Vercel e **IP truncada**:
-  IPv4 `a.b.c.0`, IPv6 /48) → `lib/visits/store.ts` → tabla `visits` por PostgREST con la *service role key*.
+- **Contador de visitas**: `components/visits/VisitBeacon.tsx` (una vez por sesión de pestaña, respeta Do
+  Not Track / GPC) → `app/api/bisita/route.ts` → `lib/visits/store.ts` → tabla `visits`.
+  Guarda la fecha, la categoría de dispositivo, el sistema operativo, el navegador y si parece un bot.
   Sin variables de entorno es un no-op.
 - Para probar las cuentas sin Supabase en desarrollo: `localStorage['enbrioatlas:dev-kontuak']='mock'` y recargar
   (`lib/account/mock.ts`; nunca se activa en producción). Úsalo como referencia del comportamiento esperado.
@@ -92,9 +91,10 @@ referencia es `lib/account/mock.ts`). Puedes añadir `@supabase/supabase-js`.
 - `signInWithPin` / `signUpWithPin`: `fetch('/api/kontua/pin')` → si `ok`, `auth.setSession(session)` y devuelve
   `{ ok: true, user }`; errores de red → `network`.
 - `signOut()`: `auth.signOut()`.
-- `loadProgress()`: `select data from user_progress where user_id = <uid>` → el `data` es el `ProgressBlob`
-  (`null` si no hay fila o si falla).
-- `saveProgress(blob)`: `upsert({ user_id, data: blob })` → `true/false`.
+- `loadProgress(owner)`: lee `data` y `updated_at` de la cuenta activa. Devuelve `null` si aún no hay fila y
+  propaga el error si falla la lectura.
+- `saveProgress(owner, blob, revision)`: inserta la primera copia o actualiza la fila si conserva la
+  revisión leída. Un conflicto obliga a leer y fusionar de nuevo.
 - `lib/account/backend.ts` ya elige este backend cuando `NEXT_PUBLIC_ACCOUNTS=supabase`.
 
 ### 4. Variables de entorno (Vercel → Settings → Environment Variables, y `.env.local`)
@@ -105,24 +105,25 @@ NEXT_PUBLIC_SUPABASE_URL=https://<proyecto>.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon key>
 SUPABASE_URL=https://<proyecto>.supabase.co   # servidor: visitas y ruta PIN
 SUPABASE_SERVICE_ROLE_KEY=<service role key>  # ¡solo servidor! nunca NEXT_PUBLIC_
+VISITS_ENABLED=1                            # activa el contador en producción
 PIN_PEPPER=<32+ bytes aleatorios, base64>     # no lo cambies después: invalidaría todas las cuentas PIN
+PIN_EMAIL_DOMAIN=<dominio usado para las cuentas PIN>
 ```
 
-Las visitas funcionan solo con `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`, aunque las cuentas sigan apagadas.
+El contador requiere `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY`. En producción también requiere
+`VISITS_ENABLED=1` y un nuevo despliegue al añadir la variable en Vercel. El contador funciona aunque
+las cuentas estén desactivadas.
 
 ### 5. Comprobaciones antes de dar por terminado
 
 1. `npx tsc --noEmit`, `npx eslint .`, `npx vitest run tests/study-progress.test.ts tests/visits.test.ts`.
-2. Visitas: abre la web en una ventana privada, espera 5 s → aparece 1 fila en `visits` con `ip_trunc` acabada en
-   `.0` (o `::`), navegador y dispositivo correctos; recargar no crea otra fila (1 por sesión). Con Do Not Track
-   activado no se crea ninguna.
+2. Visitas: abre la web en una ventana privada, espera 5 s y verifica que aparece una fila en `visits` y que
+   se actualizan ambas vistas. Recargar la misma pestaña no crea otra fila. Con Do Not Track activado no se crea ninguna.
 3. PIN: crea «Ane Proba» / 4321 en `/aurrerapena` → «Gorde hodeian». Aparece en `auth.users`, `pin_accounts` y,
    tras unos segundos, en `user_progress`. En otro navegador: «ane proba» + PIN erróneo → «Izena edo PINa ez dira
    zuzenak.»; 5 errores → mensaje de bloqueo con minutos; PIN correcto (pasados 15 min) → vuelve el progreso.
    Crear otra vez «Ané Proba» → «Izen hori hartuta dago…».
 4. RLS: con la anon key y la sesión de un usuario, `select * from user_progress` devuelve solo su fila;
    `select * from visits` y `pin_accounts` no devuelven nada.
-5. Privacidad: añade una línea a la política de privacidad del sitio (se guardan visitas sin identificador, con IP
-   truncada, 13 meses; el progreso solo si el usuario crea una cuenta, y se borra al borrar la cuenta).
 
 `migrations/0001_progress.sql` (el diseño antiguo, nunca aplicado) se ha eliminado: no lo busques.

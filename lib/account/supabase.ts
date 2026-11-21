@@ -65,25 +65,37 @@ export const supabaseBackend: AccountBackend = {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   },
-  async loadProgress() {
+  async loadProgress(owner) {
     const supabase = browserClient();
     if (!supabase) throw new Error('Supabase is not configured');
     const { data: session, error: sessionError } = await supabase.auth.getSession();
-    if (sessionError || !session.session?.user) throw sessionError ?? new Error('No active session');
-    const { data, error } = await supabase.from('user_progress').select('data').eq('user_id', session.session.user.id).maybeSingle();
+    if (sessionError || session.session?.user.id !== owner) throw sessionError ?? new Error('Study account changed');
+    const { data, error } = await supabase.from('user_progress').select('data,updated_at').eq('user_id', owner).maybeSingle();
     if (error) throw error;
-    return data ? data.data as ProgressBlob : null;
+    if (!data) return null;
+    const blob = data.data as ProgressBlob;
+    if (blob?.v !== 1 || !Number.isFinite(blob.savedAt) || !blob.data ||
+        typeof blob.data !== 'object' || Array.isArray(blob.data) || typeof data.updated_at !== 'string') {
+      throw new Error('Invalid saved study progress');
+    }
+    return { blob, revision: data.updated_at };
   },
-  async saveProgress(blob) {
+  async saveProgress(owner, blob, revision) {
     try {
       const supabase = browserClient();
-      if (!supabase) return false;
+      if (!supabase) return 'failed';
       const { data: session } = await supabase.auth.getSession();
-      if (!session.session?.user) return false;
-      const { error } = await supabase.from('user_progress').upsert({ user_id: session.session.user.id, data: blob });
-      return !error;
+      if (session.session?.user.id !== owner) return 'failed';
+      const table = supabase.from('user_progress');
+      if (revision === null) {
+        const { error } = await table.insert({ user_id: owner, data: blob });
+        return error?.code === '23505' ? 'conflict' : error ? 'failed' : 'saved';
+      }
+      const { data, error } = await table.update({ data: blob })
+        .eq('user_id', owner).eq('updated_at', revision).select('user_id').maybeSingle();
+      return error ? 'failed' : data ? 'saved' : 'conflict';
     } catch {
-      return false;
+      return 'failed';
     }
   },
 };
