@@ -11,6 +11,12 @@ function browserClient(): SupabaseClient | null {
   return (client ??= createClient(url, key, { auth: { persistSession: true, detectSessionInUrl: false } }));
 }
 
+export async function feedbackAccessToken(owner: string) {
+  const result = await browserClient()?.auth.getSession();
+  if (result?.error || result?.data.session?.user.id !== owner) throw new Error('Study account changed');
+  return result.data.session.access_token;
+}
+
 function accountUser(user: User): AccountUser {
   const metadata = user.user_metadata ?? {};
   return {

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useEffect, useEffectEvent, useRef, useState, useSyncExternalStore } from 'react';
+import TopicFeedback from './TopicFeedback';
+import { DEMO_NAME } from '@/lib/demo/demo-script';
 import { GhostContext, SceneContext, type QuizFlash, type SceneContextValue } from '@/components/kit/context';
 import { getWeek, isSpace, partsOf, nameOf, structures, weeks } from '@/content/registry';
 import { firstSeenOf, periodOf, weekOfDay } from '@/content/chronology';
@@ -399,6 +401,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
   const [legendOpen, setLegendOpen] = useState(false);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
   const [questionsOpen, setQuestionsOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [find, setFind] = useState<FindQuiz | null>(null);
   const [flash, setFlash] = useState<QuizFlash>(null);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -1800,11 +1803,40 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
   const nextStage = week.stages[pos.i + 1];
   // The topic's last stage ends on the next topic (or, after the last one, on the questions): no dead end.
   const nextTopic = nextStage ? undefined : weeks.find((w) => w.week > week.week && !isWip(w));
-  const finish = nextStage
+  const finishAction = nextStage
     ? undefined
     : nextTopic
       ? { label: 'Hurrengo gaia', tip: `Hurrengo gaia: ${nextTopic.week}. ${nextTopic.title}`, onClick: () => router.push(`/astea/${nextTopic.week}`) }
       : { label: 'Galderak', tip: 'Gaiak amaituta: frogatu zure burua galderekin', onClick: () => { setQuestionsConcept(undefined); setQuestionsOpen(true); } };
+  const feedbackKey = 'enbrioatlas:feedback:' + week.week;
+  const feedbackEnabled = process.env.NEXT_PUBLIC_TOPIC_FEEDBACK === '1' || process.env.NODE_ENV === 'development';
+  const feedbackAvailable = feedbackEnabled && !classOn && !isWip(week);
+  const finishedTopic = feedbackAvailable && !nextStage && pos.t >= 1 && !playing &&
+    intro === null && !find && !questionsOpen && !helpOpen && !tourBusy;
+  useEffect(() => {
+    if (!finishedTopic || window.name === DEMO_NAME || document.querySelector('dialog[open]')) return;
+    try {
+      if (sessionStorage.getItem(feedbackKey)) return;
+    } catch {}
+    setFeedbackOpen(true);
+  }, [finishedTopic, feedbackKey]);
+  const finish = finishAction && feedbackAvailable
+    ? {
+        ...finishAction,
+        label: 'Gaia amaitu',
+        tip: 'Gaia amaitu eta jarraitu',
+        onClick: () => {
+          if (window.name !== DEMO_NAME) {
+            try {
+              if (sessionStorage.getItem(feedbackKey)) return finishAction.onClick();
+            } catch {}
+            setFeedbackOpen(true);
+            return;
+          }
+          finishAction.onClick();
+        },
+      }
+    : finishAction;
   const prevWeek = weeks[weeks.indexOf(week) - 1];
   const prevStage = week.stages[pos.i - 1] ?? prevWeek?.stages[prevWeek.stages.length - 1];
   // The command bar (⌘K) runs the simulator's own actions through one event.
@@ -1834,6 +1866,13 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
     // The default "taught this year" mode reaches the scenes (drawn here, beside the player) and the player.
     <TaughtOnly.Provider value={skipBlue}>
     <div ref={appRef} className={`app${focusMode ? ' is-focus' : ''}${voice ? ' is-narrated' : ''}`} style={hueStyle(week.week)}>
+      {feedbackOpen && (
+        <TopicFeedback topic={week.week} title={week.title} onDone={() => {
+          try { sessionStorage.setItem(feedbackKey, '1'); } catch {}
+          setFeedbackOpen(false);
+          finishAction?.onClick();
+        }} />
+      )}
       <header className="topbar">
         <Link href="/" className="tb-brand" title="Hasiera">
           <Wordmark size={20} />
