@@ -22,7 +22,6 @@ import { CommandBar } from '@/components/shell/CommandBar';
 import { ThemeSync } from '@/components/shell/theme';
 import { AccountRoot } from '@/components/account/AccountRoot';
 import { StudyAccountGate } from '@/components/account/StudyAccountGate';
-import { StudyMusic } from '@/components/shell/StudyMusic';
 import { Welcome } from '@/components/onboarding/Welcome';
 import { RELEASE_SEEN, WELCOME_SEEN } from '@/components/onboarding/visit';
 import { VisitBeacon } from '@/components/visits/VisitBeacon';
@@ -63,7 +62,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body>
         <Welcome />
-        <StudyMusic />
         <StudyAccountGate>
           {children}
           <Kimu />

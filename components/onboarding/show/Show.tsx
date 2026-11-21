@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState, type RefObject } from 'react';
-import { enableStudyMusic, filmAudioChange } from '@/components/shell/StudyMusic';
 import { N, SWARM, model, openEngine, type Engine, type Shape, type Shot } from './engine';
 import { END, HITS, LINES, T, camera, ease, frustum, introShot, label, skinAt } from './intro';
 import type { openProjector } from '../../intro-review/renderStudy';
@@ -52,25 +51,15 @@ export default function Show(props: Props) {
   const value = useRef<HTMLSpanElement>(null);
   const instrument = useRef<HTMLDivElement>(null);
   const rail = useRef<HTMLSpanElement>(null);
-  const audio = useRef<HTMLAudioElement>(null);
   const clock = useRef({ t: 0, paused: false, frozen: false, ended: false });
   const [ready, setReady] = useState(false);
   const [fallback, setFallback] = useState(false);
   const [paused, setPaused] = useState(false);
-  const [sound, setSound] = useState(false);
 
   useEffect(() => {
     latest.current = props;
   }, [props]);
 
-  // The ambient music waits while the film plays (the film has its own score).
-  useEffect(() => {
-    if (!props.opening) return;
-    window.dispatchEvent(new CustomEvent(filmAudioChange, { detail: true }));
-    return () => {
-      window.dispatchEvent(new CustomEvent(filmAudioChange, { detail: false }));
-    };
-  }, [props.opening]);
 
   useEffect(() => {
     const cv = canvas.current;
@@ -207,14 +196,10 @@ export default function Show(props: Props) {
 
         let shot: Shot;
         if (opening) {
-          // The score is the clock when it plays; else the frame time.
-          const a = audio.current;
           if (!c.frozen && !c.paused) {
             // The clouds are needed from the drop on: the film waits for them there (rarely, on a slow network).
             const need = c.t > T.compact[1] - 0.2 && !(loaded.has(L.embryo) && loaded.has(L.skull) && loaded.has(L.face5) && loaded.has(L.face10));
-            if (a && !a.paused && !need) c.t = a.currentTime;
-            else if (!need) c.t += dt;
-            else a?.pause();
+            if (!need) c.t += dt;
           }
           const t = Math.min(END, c.t);
           shot = introShot(t, aspect, count, pp, pointer.push);
@@ -251,8 +236,6 @@ export default function Show(props: Props) {
           if (rail.current) rail.current.style.transform = `scaleX(${t / END})`;
           if (t >= END && !c.ended) {
             c.ended = true;
-            // The score rings out under the journey; the study music follows it (the sound was wanted).
-            if (a && !a.paused) a.addEventListener('ended', () => enableStudyMusic(), { once: true });
             onFinish();
           }
           engine.draw(shot);
@@ -366,50 +349,11 @@ export default function Show(props: Props) {
     };
   }, []);
 
-  // Sound: tried at once (a returning visitor's browser may allow it), else one press away.
-  useEffect(() => {
-    if (!props.opening || !ready) return;
-    const a = audio.current;
-    if (!a) return;
-    a.volume = 0.9;
-    a.currentTime = clock.current.t;
-    if (clock.current.frozen) return;
-    void a
-      .play()
-      .then(() => setSound(true))
-      .catch(() => setSound(false));
-  }, [props.opening, ready]);
-
-  function toggleSound() {
-    const a = audio.current;
-    if (!a) return;
-    if (sound) {
-      a.pause();
-      setSound(false);
-      return;
-    }
-    a.currentTime = clock.current.t;
-    void a
-      .play()
-      .then(() => {
-        setSound(true);
-        if (clock.current.paused) a.pause();
-      })
-      .catch(() => {});
-  }
   function togglePause() {
     const c = clock.current;
     c.frozen = false;
     c.paused = !c.paused;
     setPaused(c.paused);
-    const a = audio.current;
-    if (a && sound) {
-      if (c.paused) a.pause();
-      else {
-        a.currentTime = c.t;
-        void a.play().catch(() => {});
-      }
-    }
   }
 
   return (
@@ -417,10 +361,6 @@ export default function Show(props: Props) {
       <canvas ref={canvas} className={s.canvas} hidden={fallback} data-away={!!props.hidden && !props.opening} aria-hidden="true" />
       {props.opening && <canvas ref={skinCanvas} className={s.skin} hidden={fallback} aria-hidden="true" />}
       {fallback && !props.opening && <style>{'[data-specimen-poster]{opacity:1!important}'}</style>}
-      <audio ref={audio} preload="auto">
-        <source src="/intro-v3/score.ogg" type="audio/ogg" />
-        <source src="/intro-v3/score.mp3" type="audio/mpeg" />
-      </audio>
       {props.opening && (
         <section className={s.film} aria-label="EnbrioAtlas V2: sarrera" data-ready={ready}>
           <div ref={instrument} className={s.instrument} data-on="false" aria-hidden="true">
@@ -453,15 +393,6 @@ export default function Show(props: Props) {
             <div className={s.rail} aria-hidden="true">
               <span ref={rail} />
             </div>
-            <button type="button" className={s.sound} data-on={sound} aria-pressed={sound} onClick={toggleSound}>
-              <span className={s.bars} aria-hidden="true">
-                <i />
-                <i />
-                <i />
-                <i />
-              </span>
-              {sound ? 'Soinua itzali' : 'Piztu soinua'}
-            </button>
           </footer>
         </section>
       )}

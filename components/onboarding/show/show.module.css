@@ -54,27 +54,7 @@
 .rail { flex: 1; height: 1px; background: rgb(201 171 131 / .2); overflow: hidden; }
 .rail span { display: block; height: 100%; transform-origin: left; transform: scaleX(0); background: linear-gradient(90deg, #ff9a55, #f8d2ad); }
 
-/* The sound key: it calls attention until pressed (sound is half the show). */
-.sound {
-  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 18px 0 14px; border-radius: 99px;
-  border: 1px solid #f1ad76; background: #2a1d17; color: #fbe9d6; font-weight: 600 !important;
-  box-shadow: 0 0 0 0 rgb(241 173 118 / .5); animation: call 2.2s ease-out 1.2s infinite;
-}
-.sound[data-on='true'] { animation: none; border-color: rgb(235 206 175 / .3); background: rgb(16 14 15 / .55); font-weight: 500 !important; }
-.sound:hover { background: #3a281f; }
-@keyframes call { 0% { box-shadow: 0 0 0 0 rgb(241 173 118 / .45); } 70%, 100% { box-shadow: 0 0 0 12px rgb(241 173 118 / 0); } }
-.bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
-.bars i { width: 2px; height: 100%; background: currentColor; border-radius: 1px; transform-origin: bottom; transform: scaleY(.3); }
-.sound[data-on='true'] .bars i { animation: eq .9s ease-in-out infinite alternate; }
-.sound[data-on='true'] .bars i:nth-child(2) { animation-delay: -.3s; animation-duration: .7s; }
-.sound[data-on='true'] .bars i:nth-child(3) { animation-delay: -.6s; animation-duration: 1.1s; }
-.sound[data-on='true'] .bars i:nth-child(4) { animation-delay: -.15s; animation-duration: .8s; }
-@keyframes eq { from { transform: scaleY(.25); } to { transform: scaleY(1); } }
-
 @media (orientation: portrait) {
   .instrument { top: clamp(70px, 11vh, 140px); }
   .caption { bottom: clamp(100px, 18vh, 200px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .sound { animation: none; }
 }

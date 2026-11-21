@@ -14,7 +14,6 @@ import { mentionedIn } from '@/lib/sim/mentions';
 import { categoryColor, categoryLabel } from '@/lib/sim/palette';
 import type { PlaneKind, StageDef, StructureCategory, StructureDef, WeekDef } from '@/lib/sim/types';
 import { Glossary } from './Glossary';
-import { StudyMusicButton } from './StudyMusic';
 import { IconBook, IconCalendar, IconChevron, IconNotes, IconClock, IconExpand, IconHelp, IconImage, IconLayers, IconMore, IconQuiz, IconShrink, IconSpark, IconTag, IconTarget, IconTree } from './icons';
 import { Popover } from './Popover';
 import { Wordmark, isWip } from './LandNav';
@@ -1876,7 +1875,6 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
               <IconNotes size={16} />
             </button>
           </div>
-          <StudyMusicButton compact className="tool tool-icon mobile-tool-hidden" />
           <ThemeKey className="tool tool-icon mobile-tool-hidden" />
           <Popover
             trigger={({ open, toggle }) => (
