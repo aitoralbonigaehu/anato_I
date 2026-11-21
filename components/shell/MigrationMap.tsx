@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Fragment, useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState, useSyncExternalStore, type MouseEvent, type ReactNode } from 'react';
 import { appearances, getWeek, structures } from '@/content/registry';
 import { EARLY, LAYERS, type LNode } from '@/content/lineage';
 import { MIGRATIONS, SOURCES, flowIds, sourceIds, type Flow, type MNode } from '@/content/migrations';
@@ -10,6 +10,7 @@ import { ReferenceTables, TABLE_TOPICS } from './eratorriak/ReferenceTables';
 import { hasRoom } from './eratorriak/roomWeeks';
 import { LearningMaps } from './eratorriak/LearningMaps';
 import { GridSchemes, hasGridSchemes } from './eratorriak/GridSchemes';
+import { hasBlueContent, taughtFlow } from '@/content/eratorriak/taught';
 import { hueStyle } from './topicHue';
 
 /** A topic tab (week 0 = the topics 1–6 germ-layer trees), the arch-systems tab, or one origin followed across topics. */
@@ -66,7 +67,7 @@ function Chip({ node, ctx, path, up }: { node: MNode; ctx: Ctx; path?: string; u
   const hit = isHit(node, ctx);
   const key = path ? `${ctx.flow}/${path}` : null;
   const hidden = !!key && ctx.quiz.on && !ctx.quiz.shown.has(key);
-  const cls = `mg-chip${s ? '' : ' is-plain'}${node.gone ? ' is-gone' : ''}${hit ? ' is-hit' : up ? ' is-path' : ''}${ctx.lit && !hit && !up ? ' is-dim' : ''}${key ? ' is-q' : ''}${key && !hidden ? ' is-shown' : ''}`;
+  const cls = `mg-chip${s ? '' : ' is-plain'}${node.gone ? ' is-gone' : ''}${node.blue ? ' is-blue' : ''}${hit ? ' is-hit' : up ? ' is-path' : ''}${ctx.lit && !hit && !up ? ' is-dim' : ''}${key ? ' is-q' : ''}${key && !hidden ? ' is-shown' : ''}`;
   const body = (
     <>
       {s ? <i style={{ background: s.color ?? categoryColor[s.category] }} /> : <i className={node.gone ? 'is-x' : 'is-o'} />}
@@ -294,11 +295,41 @@ const parseHash = (): Mode | null => {
  * A self-test switch hides every derivative until it is tapped. The first tab holds the topics 1–6
  * germ-layer trees (`layers`), so nothing from them shows under a later topic.
  */
+const FULL_KEY = 'enbrioatlas:eratorriak-osoa';
+const fullListeners = new Set<() => void>();
+/** Kept in memory too, so the switch still works where storage is blocked. */
+let fullNow: boolean | null = null;
+const readFull = () => {
+  try {
+    return localStorage.getItem(FULL_KEY) === '1';
+  } catch {
+    return !!fullNow;
+  }
+};
+const subscribeFull = (fn: () => void) => {
+  fullListeners.add(fn);
+  window.addEventListener('storage', fn);
+  return () => {
+    fullListeners.delete(fn);
+    window.removeEventListener('storage', fn);
+  };
+};
+const pickFull = (on: boolean) => {
+  fullNow = on;
+  try {
+    if (on) localStorage.setItem(FULL_KEY, '1');
+    else localStorage.removeItem(FULL_KEY);
+  } catch {}
+  fullListeners.forEach((fn) => fn());
+};
+
 export function MigrationMap({ layers }: { layers: ReactNode }) {
   const [mode, setMode] = useState<Mode>({ week: MIGRATIONS[0].week });
   const [quizOn, setQuizOn] = useState(false);
   const [shown, setShown] = useState<ReadonlySet<string>>(new Set());
   const [menu, setMenu] = useState(false);
+  // Topics 16+: by default only what was taught this year (the notes' blue text left out); "Osoa" shows all.
+  const full = useSyncExternalStore(subscribeFull, readFull, () => false);
   const top = useRef<HTMLDivElement>(null);
   const side = useRef<HTMLElement>(null);
 
@@ -366,7 +397,10 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
   const src = mode.source ? bySource.find((s) => s.id === mode.source)! : null;
   const early = src ? findLineage(src.id) : null;
   const layersTab = mode.week === 0;
-  const flows = topic ? topic.flows : (src?.groups.flatMap((g) => g.flows) ?? []);
+  const blueHere = topic ? hasBlueContent(topic.week) : !!src?.groups.some((g) => hasBlueContent(g.t.week));
+  const taughtOnly = blueHere && !full;
+  const view = (flow: Flow) => (taughtOnly ? taughtFlow(flow) : flow);
+  const flows = (topic ? topic.flows : (src?.groups.flatMap((g) => g.flows) ?? [])).map(view);
   const total = answersIn(flows);
   const grids = !!topic && part === 'eskemak' && hasGridSchemes(topic.week);
   const gridsFirst = grids && topic.week < 15;
@@ -432,6 +466,17 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
             <p className="mg-eyebrow">{eyebrow}</p>
             <h2>{short}</h2>
           </div>
+          {blueHere && (
+            <div className="mg-blue" role="radiogroup" aria-label="Apunteetako testu urdina (aurten eman ez dena)">
+              <button type="button" role="radio" aria-checked={!full} className={!full ? 'is-on' : undefined} onClick={() => pickFull(false)} title="Apunteetako testu urdina (aurten eman ez dena) kanpoan utzita">
+                Aurten emandakoa
+              </button>
+              <button type="button" role="radio" aria-checked={full} className={full ? 'is-on' : undefined} onClick={() => pickFull(true)} title="Dena, testu urdina barne (urdinez markatuta)">
+                <i aria-hidden />
+                Osoa
+              </button>
+            </div>
+          )}
           {!layersTab && !(topic && part === 'eskemak') && (
             <button className={`mg-quiz${quizOn ? ' is-on' : ''}`} aria-pressed={quizOn} onClick={toggleQuiz} title="Erantzunak ezkutatu eta zeure burua probatu">
               <i aria-hidden />
@@ -489,7 +534,7 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
         )}
         {topic && gridsFirst && (
           <>
-            <GridSchemes week={topic.week} />
+            <GridSchemes week={topic.week} taughtOnly={taughtOnly} />
             <header className="mg-trees-head">
               <h3>Zuhaitzak eta errepasoa</h3>
               <p>Egitura bakoitzaren bilakaera urratsez urrats, eta bi noranzkoetako errepasoa.</p>
@@ -498,8 +543,9 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
           </>
         )}
         {topic && part === 'eskemak' && <LearningMaps
-          key={topic.week}
+          key={`${topic.week}${taughtOnly ? '' : '-osoa'}`}
           week={topic.week}
+          taughtOnly={taughtOnly}
           resolveName={resolveStructureName}
           renderScheme={(flow) => <Scheme flow={flow} ctx={{ flow: flow.id, week: topic.week, stage: flow.stage, lit: null, quiz: { ...quiz, on: false } }} />}
           renderDetail={(flow) => <FlowCard flow={flow} week={topic.week} lit={null} quiz={{ ...quiz, on: false }} />}
@@ -507,7 +553,7 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
         {topic && grids && !gridsFirst && (
           <>
             <header className="mg-trees-head"><h3>Laburpen-taulak</h3></header>
-            <GridSchemes week={topic.week} />
+            <GridSchemes week={topic.week} taughtOnly={taughtOnly} />
           </>
         )}
         {src && (
@@ -529,7 +575,7 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
                   <b>{g.t.week}. gaia</b> {g.t.short}
                 </h4>
                 {g.flows.map((f) => (
-                  <FlowCard key={f.id} flow={f} week={g.t.week} lit={src.lit} quiz={quiz} />
+                  <FlowCard key={f.id} flow={taughtOnly && hasBlueContent(g.t.week) ? taughtFlow(f) : f} week={g.t.week} lit={src.lit} quiz={quiz} />
                 ))}
               </section>
             ))}

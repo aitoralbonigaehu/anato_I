@@ -1,4 +1,4 @@
-import { c, r, type GridScheme } from './grid-kit';
+import { blueRow, c, r, type GridScheme } from './grid-kit';
 
 /** Topic 17, head and neck I: skull origins, cranial nerves and the arch matrix. */
 export const GRID_17: GridScheme[] = [
@@ -17,9 +17,9 @@ export const GRID_17: GridScheme[] = [
       { label: 'Muskuluak', tone: 'muskulua', w: 1.5 },
     ],
     rows: [
-      r([c('I', { span: 2 }), c('V · trigeminoa', { span: 2, note: 'muskuluetara V3, barail-nerbioa' }), c('Luzapen maxilarra: hezur maxilarra, zigomatikoa, tenporalaren ezkata; mailua eta ingudea', { note: 'tenporalaren harkaitza ez' }), c('Maseteroa, tenporala, milohioideoa, digastrikoaren aurreko sabela', { span: 2, note: 'azalekoak: murtxikatzea eta degluzioa' })], ['azalekoak']),
-      r([null, null, c('Barail luzapena: Meckel kartilagoa (endekatu), baraila haren inguruan', { note: 'mintzezko hezurtzea' }), null], ['azalekoak']),
-      r([c('II', { span: 2 }), c('VII · aurpegi-nerbioa', { span: 2, note: 'mistoa' }), c('Reichert, goiko muturra: ointokia'), c('Muskulu mimikoak, aurikularrak, okzipitala, digastrikoaren atzeko sabela, estilohioideoa, platisma', { span: 2, note: 'azalekoak' })], ['azalekoak']),
+      r([c('I', { span: 2 }), c('V · trigeminoa', { span: 2, note: 'muskuluetara V3, barail-nerbioa' }), c('Luzapen maxilarra: hezur maxilarra, zigomatikoa, tenporalaren ezkata; mailua eta ingudea', { note: 'tenporalaren harkaitza ez', plain: 'Luzapen maxilarra: hezur maxilarra, zigomatikoa, loki hezurraren atal bat (kutxa tinpanikoa)', plainNote: null }), c('Maseteroa, tenporala, milohioideoa, digastrikoaren aurreko sabela', { span: 2, note: 'azalekoak: murtxikatzea eta degluzioa', plain: 'Maseteroa, tenporala, digastrikoaren aurreko sabela' })], ['azalekoak']),
+      r([null, null, c('Barail luzapena: Meckel kartilagoa (endekatu), baraila haren inguruan', { note: 'mintzezko hezurtzea', plain: 'Barail luzapena: Meckel kartilagoa (endekatu): goiko muturretik mailua eta ingudea; baraila haren inguruan' }), null], ['azalekoak']),
+      r([c('II', { span: 2 }), c('VII · aurpegi-nerbioa', { span: 2, note: 'mistoa' }), c('Reichert, goiko muturra: ointokia'), c('Muskulu mimikoak, aurikularrak, okzipitala, digastrikoaren atzeko sabela, estilohioideoa, platisma', { span: 2, note: 'azalekoak', plain: 'Muskulu mimikoak, digastrikoaren atzeko sabela, platisma' })], ['azalekoak']),
       r([null, null, c('Beste muturra: estiloide apofisia, hioidearen adar txikia, hioidearen gorputzaren goiko erdia'), null], ['azalekoak']),
       r(['III', c('IX · glosofaringeoa', { note: 'mistoa' }), c('Hioidearen gorputzaren beheko erdia, hioidearen adar nagusiak', { note: 'ez dago I. eta II.aren bezalako kartilagorik' }), c('Estilofaringeoa, faringearen goiko ertzatzaileak', { note: 'sakonak' })], ['sakonak']),
       r(['IV', c('X · bagoa: goiko laringe nerbioa', { note: 'adarra' }), c('Tiroide kartilagoaren goiko aldea', { note: 'hezurrik ez' }), c('Faringearen tarteko eta beheko ertzatzaileak', { note: 'sakonak' })], ['sakonak']),
@@ -38,6 +38,11 @@ export const GRID_17: GridScheme[] = [
       'Apunteek «hezur estilohioideoa» idazten dute II. arkuan, baina muskulua da: apofisi estiloideotik hioidera doana.',
       'Epiglotisa: 17. gaiko zerrendan VI. arkuarekin; 18. gaiko mihiaren atalean IV. arkuaren alde erdi dortsalarekin lotzen da.',
     ],
+    plainPitfalls: [
+      'Digastrikoak bi jatorri ditu: aurreko sabela V3 (I. arkua), atzeko sabela VII. (II. arkua).',
+      'Meckel eta Reichert ez dira hezur bihurtzen: endekatu egiten dira, eta arkuetako hezurrak mintzezko hezurtzapenez eratzen dira.',
+      'Hioideak bi arku ditu: goiko erdia eta adar txikia II.etik, beheko erdia eta adar nagusia III.etik.',
+    ],
   },
   {
     id: 'kraneoaren-hezurrak-17',
@@ -54,22 +59,24 @@ export const GRID_17: GridScheme[] = [
       { label: 'Hezurtzea', tone: 'aldaketa', w: 0.9 },
     ],
     rows: [
-      r([c('Buru ganga', { span: 3, note: 'mintzezko neurokraneoa' }), 'Frontalak', 'Gandor neurala', c('Mintzezkoa', { span: 3 })]),
-      r([null, 'Parietalak', c('Mesodermo paraxiala', { span: 2 }), null]),
-      r([null, 'Okzipitalaren ezkata', null, null]),
-      r([c('Burezurraren oinaldea', { note: 'kartilagozko neurokraneoa / kondrokraneoa' }), 'Oinaldeko hezur gehienak', c('Kartilagozko lamina batetik'), 'Endokondrala']),
+      blueRow(r([c('Buru ganga', { span: 3, note: 'mintzezko neurokraneoa' }), 'Frontalak', 'Gandor neurala', c('Mintzezkoa', { span: 3 })])),
+      blueRow(r([null, 'Parietalak', c('Mesodermo paraxiala', { span: 2 }), null])),
+      blueRow(r([null, 'Okzipitalaren ezkata', null, null])),
+      r([c('Burezurraren oinaldea', { note: 'kartilagozko neurokraneoa / kondrokraneoa', plain: 'Neurokraneoaren oinaldea', plainNote: null }), 'Oinaldeko hezur gehienak', c('Kartilagozko lamina batetik', { plain: '—' }), 'Endokondrala']),
       r([c('Errai kraneoa'), c('Aurpegiko hezurrak', { note: '1. eta 2. arkuen eratorriak' }), 'Gandor neurala', 'Mintzezkoa']),
     ],
     pitfalls: [
       'Frontalak gandor neuraletik; parietalak eta okzipitalaren ezkata mesodermo paraxialetik. Hirurak mintzezkoak dira.',
       'Fontanelak: aurrekoa 2. urtean eta atzekoa 2. hilabetean ixten dira, apunteen testuan; irudian 3. hilabetea jartzen du. Testua da zuzena.',
     ],
+    plainPitfalls: ['Fontanelak: aurrekoa 2. urtean eta atzekoa 2. hilabetean ixten dira, apunteen testuan; irudian 3. hilabetea jartzen du. Testua da zuzena.'],
   },
   {
     id: 'bikote-kranealak-17',
     week: 17,
     section: '2.1',
     title: 'Hamabi bikote kranealak: aurretik atzera',
+    blue: true,
     lead: 'Arku bakoitzari nerbio bat dagokio. Lau bikote bakarrik daude arkuekin lotuta.',
     stage: 'bikote-kranealak',
     path: false,
@@ -104,6 +111,7 @@ export const GRID_17: GridScheme[] = [
     section: '2.2.1',
     title: 'Trigeminoaren hiru adarrak, goitik behera',
     lead: 'Gasser gongoiletik hiru adar. Hiruretatik V3-k bakarrik mugitzen ditu muskuluak.',
+    plainLead: 'Hiru adar, goitik behera. Hiruretatik V3-k bakarrik mugitzen ditu muskuluak.',
     stage: 'trigeminoa',
     path: false,
     columns: [
@@ -112,10 +120,11 @@ export const GRID_17: GridScheme[] = [
       { label: 'Mota', tone: 'aldaketa', w: 1.4 },
     ],
     rows: [
-      r([c('V1 · oftalmikoa'), 'Begirantz', c('Batez ere sentsitiboa', { note: 'ez du ikusmenarekin zerikusirik' })]),
-      r([c('V2 · maxilarra'), 'Hezur maxilarrera, aurpegiaren behe erdikaldera', 'Sentsitiboa: aurpegiko larruazala']),
+      r([c('V1 · oftalmikoa'), c('Begirantz', { plain: '—' }), c('Batez ere sentsitiboa', { note: 'ez du ikusmenarekin zerikusirik', plainNote: null })]),
+      r([c('V2 · maxilarra'), c('Hezur maxilarrera, aurpegiaren behe erdikaldera', { plain: '—' }), c('Sentsitiboa: aurpegiko larruazala', { plain: 'Sentsitiboa' })]),
       r([c('V3 · barail-nerbioa'), 'Barail ingurura', c('Mistoa', { note: 'murtxikatzeko eta degluzioko muskuluak' })]),
     ],
     pitfalls: ['Apunteek diote V1 begiaren mugimenduez arduratzen dela, baina orrialde berean III., IV. eta VI. nerbioek mugitzen dituzte begiak eta V1 batez ere sentsitiboa da.'],
+    plainPitfalls: [],
   },
 ];

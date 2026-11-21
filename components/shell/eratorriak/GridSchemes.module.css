@@ -72,6 +72,11 @@
 .wide { align-items: center; text-align: center; }
 .gone { background: var(--surface-2); box-shadow: none; border-color: var(--line-2); }
 .gone .text { color: var(--text-3); text-decoration: line-through; text-decoration-color: #6d6475; }
+/* "Osoa" mode: what the notes set in blue (not taught this year) keeps the notes' blue. */
+.blue .text, .blue .note { color: var(--mg-blue); }
+.blue { border-color: color-mix(in srgb, var(--mg-blue) 45%, var(--line-2)); }
+.blueTag { margin-left: 10px; border: 1px solid color-mix(in srgb, var(--mg-blue) 60%, transparent); border-radius: 999px; padding: 1px 8px; color: var(--mg-blue); text-transform: none; letter-spacing: 0; }
+.blueScheme h3 { color: var(--mg-blue); }
 .hidden { align-items: center; border-style: dashed; border-color: var(--line-3); background: var(--surface-2); box-shadow: none; }
 .hidden:hover { background: var(--surface-3); }
 .ask { color: var(--text-2); font: 600 15px/1 var(--font-mono); }

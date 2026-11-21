@@ -1,4 +1,4 @@
-import { c, r, type GridScheme } from './grid-kit';
+import { blueRow, c, r, type GridScheme } from './grid-kit';
 
 /** Topic 18, head and neck II: pouches and clefts, tongue, thyroid, face, palate and teeth. */
 export const GRID_18: GridScheme[] = [
@@ -24,7 +24,7 @@ export const GRID_18: GridScheme[] = [
       r([null, 'Bentrala', 'Timoa', c('Behera eta medialera; pubertarotik endekatu', { move: true })], ['poltsak']),
       r([c('4. poltsa', { span: 2, note: 'alde bentrala, batzuetan 5. poltsa' }), 'Dortsala', c('GOIKO paratiroideak'), c('Gutxi jaitsi: tiroidearen atzean, goian', { move: true })], ['poltsak']),
       r([null, 'Bentrala', 'Gorputz ultimobrankiala', c('Tiroidean barneratu: C zelulak, kaltzitonina', { move: true })], ['poltsak']),
-      r([c('1. arraildura', { span: 2 }), 'Sakondu eta luzatu', 'Kanpoko entzumen hodia', 'Kanpoko belarria eta tinpanoa lotzen ditu'], ['arraildurak']),
+      blueRow(r([c('1. arraildura', { span: 2 }), 'Sakondu eta luzatu', 'Kanpoko entzumen hodia', 'Kanpoko belarria eta tinpanoa lotzen ditu'], ['arraildurak'])),
       r([null, c('Poltsarekin batu', { note: '≠ fusionatu: muga ez da irekitzen' }), 'Tinpano mintza', c('Hiru geruza: ektodermoa kanpoan, endodermoa barruan, mesodermoa tartean')], ['arraildurak']),
       r(['Gainerako arraildurak', c('II. arkua gainetik hazi', { note: 'goragune epikardikoarekin fusionatu' }), c('Sinu zerbikala'), c('Desagertu; batzuetan mantendu eta likidoa bil daiteke', { gone: true })], ['arraildurak']),
     ],
@@ -79,9 +79,9 @@ export const GRID_18: GridScheme[] = [
       { label: 'Non', tone: 'kokapena', w: 1.2 },
     ],
     rows: [
-      r(['4. astea', 'Luzapena faringearen zoruan, erdian hodi tiroglosoa; muturrean guruinaren hasikina', 'Zulo itsuaren mailan, tuberkulu bakoitiaren eta kupularen artean']),
-      r(['Jaistean', c('Hioidea pasatu; hodia itxi eta endekatu', { move: true }), 'Hasierako tokian zulo itsua geratzen da']),
-      r(['7. astea', 'Behin betiko kokapena eta itxura: bi lobulu eta istmoa', 'Krikoide kartilagoaren mailan, aurrean; atzean irekita, paratiroideekin']),
+      r(['4. astea', 'Luzapena faringearen zoruan, erdian hodi tiroglosoa; muturrean guruinaren hasikina', c('Zulo itsuaren mailan, tuberkulu bakoitiaren eta kupularen artean', { plain: 'Mihiaren gorputzaren eta sustraiaren artean' })]),
+      r(['Jaistean', c('Hioidea pasatu; hodia itxi eta endekatu', { move: true, plain: 'Beherantz jaitsi; hodia itxi eta endekatu' }), 'Hasierako tokian zulo itsua geratzen da']),
+      r(['7. astea', 'Behin betiko kokapena eta itxura: bi lobulu eta istmoa', c('Krikoide kartilagoaren mailan, aurrean; atzean irekita, paratiroideekin', { plain: 'Laringeko kartilagoen aurrean; atzean irekita, paratiroideekin' })]),
       r(['Jaio aurreko 3. hilabetea', 'Funtzionala izaten hasten da', '—']),
     ],
     pitfalls: ['Piramide itxurako lobulua (%50 edo gehiago): hodiaren azken atala ondo endekatzen ez bada. Anomalia da, baina ez du arazorik ematen.'],

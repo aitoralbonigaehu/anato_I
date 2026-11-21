@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useMemo, useState, type CSSProperties } from 'react';
 import { gridSchemesFor, type GridCell, type GridScheme } from '@/content/eratorriak/grid-schemes';
+import { taughtGrid } from '@/content/eratorriak/taught';
 import styles from './GridSchemes.module.css';
 
 /** A placed cell: its grid position and the rows it covers. */
@@ -13,6 +14,8 @@ interface Placed {
   span: number;
   cols: number;
   tags: Set<string>;
+  /** Every row it covers is blue in the notes (not taught this year; shown in "Osoa" mode). */
+  blue: boolean;
 }
 
 function place(scheme: GridScheme): Placed[] {
@@ -21,8 +24,9 @@ function place(scheme: GridScheme): Placed[] {
     row.cells.forEach((cell, col) => {
       if (!cell) return;
       const span = cell.span ?? 1;
-      const tags = new Set(scheme.rows.slice(r, r + span).flatMap((x) => x.tags ?? []));
-      out.push({ cell, row: r, col, span, cols: cell.cols ?? 1, tags });
+      const covered = scheme.rows.slice(r, r + span);
+      const tags = new Set(covered.flatMap((x) => x.tags ?? []));
+      out.push({ cell, row: r, col, span, cols: cell.cols ?? 1, tags, blue: covered.every((x) => x.blue) });
     }),
   );
   return out;
@@ -60,12 +64,13 @@ function Grid({ scheme }: { scheme: GridScheme }) {
   };
 
   return (
-    <article className={`${styles.scheme}${scheme.optional ? ` ${styles.optional}` : ''}`} id={`eskema-int-${scheme.id}`}>
+    <article className={`${styles.scheme}${scheme.optional ? ` ${styles.optional}` : ''}${scheme.blue ? ` ${styles.blueScheme}` : ''}`} id={`eskema-int-${scheme.id}`}>
       <header className={styles.schemeHead}>
         <div>
           <p className={styles.section}>
             Apunteak · {scheme.section}
             {scheme.optional && <span className={styles.optTag}>ez da jakin beharra</span>}
+            {scheme.blue && <span className={styles.blueTag}>urdinez: aurten ez da eman</span>}
           </p>
           <h3>{scheme.title}</h3>
           {scheme.lead && <p className={styles.lead}>{scheme.lead}</p>}
@@ -146,6 +151,7 @@ function Grid({ scheme }: { scheme: GridScheme }) {
               styles.cell,
               scheme.path && p.col > 0 ? styles.arrow : '',
               p.cell.gone ? styles.gone : '',
+              p.blue ? styles.blue : '',
               p.cols > 1 ? styles.wide : '',
               p.cell.move ? styles.move : '',
               on ? styles.on : '',
@@ -214,8 +220,9 @@ function Grid({ scheme }: { scheme: GridScheme }) {
  * row, in the notes' order. Hover or tap a cell to light its whole path; a row filter narrows to one group;
  * hiding a column turns the grid into a self-test.
  */
-export function GridSchemes({ week }: { week: number }) {
-  const schemes = useMemo(() => gridSchemesFor(week), [week]);
+export function GridSchemes({ week, taughtOnly = false }: { week: number; taughtOnly?: boolean }) {
+  // "Aurten emandakoa": without the notes' blue text (rows, whole sections, wording); "Osoa" keeps it, tinted.
+  const schemes = useMemo(() => gridSchemesFor(week).flatMap((s) => (taughtOnly ? (taughtGrid(s) ?? []) : [s])), [week, taughtOnly]);
   if (!schemes.length) return null;
   const go = (id: string) => document.getElementById(`eskema-int-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   return (
@@ -235,7 +242,7 @@ export function GridSchemes({ week }: { week: number }) {
         </nav>
       </header>
       {schemes.map((s) => (
-        <Grid key={s.id} scheme={s} />
+        <Grid key={`${s.id}${taughtOnly ? '' : '-osoa'}`} scheme={s} />
       ))}
     </section>
   );

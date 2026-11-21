@@ -165,7 +165,7 @@ export const SCHEMES_16: MigrationTopic = {
           n('epididimoa', undefined, { via: 'atal kraneala kiribildu' }),
           n('hodi-deferentea', undefined, { via: 'erdiko zatia luzatu' }),
           n('semen-xixkua', undefined, { via: 'atal kaudalean kimatu' }),
-          n('hodi-isurlea', undefined, { via: 'kimuaz azpiko zatia iraun' }),
+          n('hodi-isurlea', undefined, { via: 'kimuaz azpiko zatia iraun', blue: true }),
         ], { note: 'arrak · testosteronaren eraginez' }),
       ],
     },

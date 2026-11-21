@@ -22,6 +22,13 @@ export interface MNode {
   move?: boolean;
   /** It disappears: drawn muted and nothing follows it. */
   gone?: boolean;
+  /**
+   * Only in the notes' blue text (topics 16+: not taught this year). "Aurten emandakoa" mode leaves the node
+   * out and hangs its children on its parent; see content/eratorriak/taught.ts.
+   */
+  blue?: boolean;
+  /** What the node says in "Aurten emandakoa" mode when only part of it is blue. */
+  plain?: { label?: string; via?: string; note?: string | null };
   kids?: MNode[];
 }
 

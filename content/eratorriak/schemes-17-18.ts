@@ -8,6 +8,8 @@ const n = (id: string, kids?: MNode[], extra?: Omit<MNode, 'id' | 'kids'>): MNod
 const l = (label: string, kids?: MNode[], extra?: Omit<MNode, 'label' | 'kids'>): MNode => ({ label, kids, ...extra });
 
 const branch = (id: string, via: string, kids?: MNode[], note?: string) => n(id, kids, { via, note });
+/** Only in the notes' blue text (not taught this year): left out in "Aurten emandakoa" mode. */
+const blue = (node: MNode): MNode => ({ ...node, blue: true });
 const leaf = (label: string, via: string, kids?: MNode[], note?: string) => l(label, kids, { via, note });
 
 export const SCHEMES_17: MigrationTopic = {
@@ -20,17 +22,17 @@ export const SCHEMES_17: MigrationTopic = {
       stage: 'kraneoaren-bi-atalak',
       roots: [
         n('gandor-neurala', [
-          leaf('Hezur frontalak', 'gangan mintzez hezurtu'),
+          blue(leaf('Hezur frontalak', 'gangan mintzez hezurtu')),
           branch('errai-kraneoa', 'aurpegira migratu', [
             leaf('Aurpegiko hezur gehienak', 'mintzez hezurtu', undefined, 'I. arkutik, adibidez, maxilarra eta baraila'),
           ]),
-          leaf('Kraneo-oinaldearen aurrealdea', 'aurreko kartilagoa eratu'),
+          blue(leaf('Kraneo-oinaldearen aurrealdea', 'aurreko kartilagoa eratu')),
         ]),
-        n('mesodermo-paraxiala', [
-          leaf('Hezur parietalak', 'gangan mintzez hezurtu'),
-          leaf('Okzipitalaren ezkataren zati bat', 'atzean mintzez hezurtu'),
-          leaf('Kraneo-oinaldearen atzealdea', 'somita okzipitalak elkartu'),
-        ]),
+        blue(n('mesodermo-paraxiala', [
+          blue(leaf('Hezur parietalak', 'gangan mintzez hezurtu')),
+          blue(leaf('Okzipitalaren ezkataren zati bat', 'atzean mintzez hezurtu')),
+          blue(leaf('Kraneo-oinaldearen atzealdea', 'somita okzipitalak elkartu')),
+        ])),
       ],
     },
     {
@@ -100,7 +102,7 @@ export const SCHEMES_17: MigrationTopic = {
           branch('luzapen-maxilarra', 'goiko luzapena', [
             branch('hezur-maxilarra', 'mintzez hezurtu'),
             branch('zigomatikoa', 'mintzez hezurtu'),
-            leaf('Tenporalaren ezkata', 'mintzez hezurtu'),
+            blue(leaf('Tenporalaren ezkata', 'mintzez hezurtu')),
           ]),
           branch('barail-luzapena', 'beheko luzapena', [
             branch('meckel-kartilagoa', 'kartilagoa eratu', [
@@ -115,7 +117,7 @@ export const SCHEMES_17: MigrationTopic = {
             branch('maseteroa', 'baraila igo'),
             branch('muskulu-tenporala', 'baraila igo'),
             leaf('Pterigoideoak', 'baraila mugitu'),
-            branch('milohioideoa', 'ahoaren zorua osatu'),
+            blue(branch('milohioideoa', 'ahoaren zorua osatu')),
             branch('digastrikoaren-aurreko-sabela', 'baraila jaitsi'),
           ]),
         ]),
@@ -137,10 +139,10 @@ export const SCHEMES_17: MigrationTopic = {
           ]),
           leaf('Arkuko muskuluak', 'VII.ak inerbatzen ditu', [
             branch('muskulu-mimikoak', 'aurpegiko adierazpena', [branch('platisma', 'lepoan hedatu')]),
-            branch('muskulu-aurikularrak', 'belarri inguruan'),
-            branch('okzipitala', 'garezurraren atzealdean'),
+            blue(branch('muskulu-aurikularrak', 'belarri inguruan')),
+            blue(branch('okzipitala', 'garezurraren atzealdean')),
             branch('digastrikoaren-atzeko-sabela', 'hioidea igo'),
-            branch('estilohioideoa', 'hioidea igo eta atzeratu'),
+            blue(branch('estilohioideoa', 'hioidea igo eta atzeratu')),
           ]),
         ]),
       ],
@@ -219,7 +221,7 @@ export const SCHEMES_18: MigrationTopic = {
       stage: 'lehen-arraildura',
       roots: [
         n('lehen-arraildura', [
-          n('kanpoko-entzumen-hodia', undefined, { via: 'arraildurak iraun' }),
+          n('kanpoko-entzumen-hodia', undefined, { via: 'arraildurak iraun', blue: true }),
           n('tinpano-mintza', undefined, { via: 'poltsarekin batu (≠ fusionatu)', note: 'ektodermoa · mesodermoa · endodermoa' }),
         ]),
         n('faringe-arraildurak', [
@@ -262,7 +264,7 @@ export const SCHEMES_18: MigrationTopic = {
           l('Mihiaren sustraia', [n('glosofaringeoa', undefined, { via: 'sentsibilitatea eta dastamena' })], { via: 'atzeko herena osatu' }),
         ]),
         n('laugarren-arkua', [
-          n('epiglotisa', [n('bagoa', undefined, { via: 'goiko laringe-adarrak inerbatu' })], { via: 'goragune hipobrankialetik' }),
+          n('epiglotisa', [n('bagoa', undefined, { via: 'goiko laringe-adarrak inerbatu' })], { via: 'goragune hipobrankialetik', blue: true }),
         ]),
         l('Somita okzipitalak', [
           l('Mihiaren muskulu gehienak', [n('hipoglosoa', undefined, { via: 'inerbazio motorra · XII' })], { via: 'mioblastoak migratu', move: true, note: 'palatoglosoa: X' }),
@@ -277,7 +279,7 @@ export const SCHEMES_18: MigrationTopic = {
       roots: [
         n('faringe-hestea', [
           l('Tiroide-hasikina', [
-            n('tiroide-guruina', undefined, { via: 'hioidea gainditu eta jaitsi', move: true, note: '7. astean, krikoidearen parean' }),
+            n('tiroide-guruina', undefined, { via: 'hioidea gainditu eta jaitsi', move: true, note: '7. astean, krikoidearen parean', plain: { via: 'beherantz jaitsi', note: '7. astean' } }),
             n('hodi-tiroglosoa', [
               l('Hodia desagertu', undefined, { via: 'jaitsieraren ondoren itxi', gone: true }),
               n('zulo-itsua', undefined, { via: 'mihiaren gainean aztarna utzi' }),

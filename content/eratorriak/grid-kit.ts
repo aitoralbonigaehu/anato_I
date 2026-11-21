@@ -23,6 +23,9 @@ export interface GridCell {
   gone?: boolean;
   /** A real displacement (migrates / moves up). */
   move?: boolean;
+  /** "Aurten emandakoa" mode (topics 16+): the text, and the note (null = none), without the notes' blue part. */
+  plain?: string;
+  plainNote?: string | null;
 }
 
 export interface GridRow {
@@ -30,6 +33,8 @@ export interface GridRow {
   cells: (GridCell | null)[];
   /** Filter keys this row belongs to. */
   tags?: string[];
+  /** Only in the notes' blue text (not taught this year): left out in "Aurten emandakoa" mode. */
+  blue?: boolean;
 }
 
 export interface GridScheme {
@@ -52,7 +57,14 @@ export interface GridScheme {
   links?: { href: string; label: string }[];
   /** Notes mark the section as not required. */
   optional?: boolean;
+  /** The whole section is blue in the notes (not taught this year): hidden in "Aurten emandakoa" mode. */
+  blue?: boolean;
+  /** Lead and traps for "Aurten emandakoa" mode, when the usual ones lean on blue text. */
+  plainLead?: string;
+  plainPitfalls?: string[];
 }
 
 export const c = (text: string, extra?: Omit<GridCell, 'text'>): GridCell => ({ text, ...extra });
 export const r = (cells: (GridCell | string | null)[], tags?: string[]): GridRow => ({ cells: cells.map((x) => (typeof x === 'string' ? c(x) : x)), tags });
+/** A row only in the notes' blue text. */
+export const blueRow = (row: GridRow): GridRow => ({ ...row, blue: true });

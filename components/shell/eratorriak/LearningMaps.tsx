@@ -3,6 +3,7 @@
 import { studyKey } from '@/lib/study/storage-scope';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { LEARNING_MAPS } from '@/content/eratorriak/learning-maps';
+import { taughtMap } from '@/content/eratorriak/taught';
 import type { Flow } from '@/content/migrations';
 import { buildReviewCards, gradeReview, parseReviewProgress, selectReviewCards, STORAGE_KEY, type ReviewProgress } from '@/lib/learning/scheme-review';
 import { noteRecall } from '@/lib/study/activity';
@@ -13,9 +14,11 @@ interface Props {
   renderScheme: (flow: Flow) => ReactNode;
   renderDetail: (flow: Flow) => ReactNode;
   resolveName: (id: string) => string;
+  /** "Aurten emandakoa": maps, details and practice cards without the notes' blue text. */
+  taughtOnly?: boolean;
 }
 
-export function LearningMaps({ week, renderScheme, renderDetail, resolveName }: Props) {
+export function LearningMaps({ week, renderScheme, renderDetail, resolveName, taughtOnly = false }: Props) {
   const [view, setView] = useState<'learn' | 'practice'>('learn');
   const [filter, setFilter] = useState<'all' | 'due' | 'mistakes'>('due');
   const [direction, setDirection] = useState<'both' | 'forward' | 'reverse'>('both');
@@ -26,7 +29,10 @@ export function LearningMaps({ week, renderScheme, renderDetail, resolveName }: 
   const [activeId, setActiveId] = useState<string | null>(null);
   const [now, setNow] = useState(0);
   const [session, setSession] = useState<Set<string>>(new Set());
-  const maps = useMemo(() => LEARNING_MAPS.filter((map) => map.week === week), [week]);
+  const maps = useMemo(
+    () => LEARNING_MAPS.filter((map) => map.week === week).map((map) => (taughtOnly ? taughtMap(map) : map)).filter((map) => map.roots.length),
+    [week, taughtOnly],
+  );
   const cards = useMemo(() => buildReviewCards(maps, resolveName), [maps, resolveName]);
 
   useEffect(() => {
