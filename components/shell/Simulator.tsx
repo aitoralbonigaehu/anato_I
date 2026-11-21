@@ -25,7 +25,8 @@ import { TourHost } from './tour/TourHost';
 import { useTourBusy } from './tour/store';
 import { Inspector } from './Inspector';
 import { NotesPanel, useSkipBlue } from './NotesPanel';
-import { blueSteps, isBlueStep, nextShown, stageAllBlue } from '@/lib/sim/skip-blue';
+import { blueSteps, isBlueStep, nextShown, stageAllBlue, taughtBeat, taughtStage } from '@/lib/sim/skip-blue';
+import { TaughtOnly } from '@/lib/sim/taught-context';
 import type { NotesAnchor } from '@/content/notes-text';
 import { NowCard } from './NowCard';
 import { Locator, type CutStop, type Crumb } from './Locator';
@@ -531,9 +532,10 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
   const { frameMs, preserveCadence } = renderTiming();
   const modelFrameMs = view.id === '3d' || (view.scene as { geo?: string[] }).geo?.length ? frameMs : 0;
   const activeBeat = beatIndexAt(stage, pos.t);
-  const beat = stage.beats[activeBeat];
-  // "Skip blue" (notes panel, topics 16+): playback and the step/stage keys pass over steps whose notes are all blue.
+  // "Skip blue" (notes panel, topics 15+, the default): playback and the step/stage keys pass over steps whose notes
+  // are all blue or grey, and a step shows its taught-only wording (its question too).
   const skipBlue = useSkipBlue(week.week);
+  const beat = skipBlue && stage.beats[activeBeat] ? taughtBeat(stage.beats[activeBeat]) : stage.beats[activeBeat];
   const skipBlueRef = useRef(skipBlue);
   useEffect(() => {
     skipBlueRef.current = skipBlue;
@@ -1830,6 +1832,8 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
   const sceneT = intro !== null ? easeInOut(Math.min(1, intro)) : pos.t;
 
   return (
+    // The default "taught this year" mode reaches the scenes (drawn here, beside the player) and the player.
+    <TaughtOnly.Provider value={skipBlue}>
     <div ref={appRef} className={`app${focusMode ? ' is-focus' : ''}${voice ? ' is-narrated' : ''}`} style={hueStyle(week.week)}>
       <header className="topbar">
         <Link href="/" className="tb-brand" title="Hasiera">
@@ -2346,7 +2350,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
           ) : (
           <Player
             modelGuide={view.guide && !find ? { key: sceneKey, content: view.guide, onOpen: () => { transport.cancel(); speaking.current = false; setPlaying(false); } } : undefined}
-            stage={withRecall(week.week, stage)}
+            stage={skipBlue ? taughtStage(withRecall(week.week, stage)) : withRecall(week.week, stage)}
             skipped={skipBlue ? blueSteps(stage) : undefined}
             stageIndex={pos.i}
             stageCount={week.stages.length}
@@ -2466,6 +2470,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
       <TourHost tour="sim" ready={!classActive} />
       {questionsOpen && <Questions week={week.week} concept={questionsConcept} review={questionsReview} onClose={() => { setQuestionsOpen(false); setQuestionsReview(false); }} onGoto={(w, sid, c) => gotoWeekStage(w, sid, c)} onFind={findConcept} />}
     </div>
+    </TaughtOnly.Provider>
   );
 }
 

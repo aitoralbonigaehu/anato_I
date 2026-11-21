@@ -1,5 +1,5 @@
 /**
- * "Aurten emandakoa" (taught this year) views of the Eratorriak data, topics 16+.
+ * "Aurten emandakoa" (taught this year) views of the Eratorriak data, topics 15+ (the notes' blue or grey text left out).
  *
  * Blue text in the notes is what was not taught this year (see scripts/notes/README.md). The maps mark such
  * nodes `blue` and the tables mark rows `blue` (or a whole section); `plain` holds the wording without the blue
@@ -7,7 +7,7 @@
  */
 import { MIGRATIONS, type Flow, type MNode } from '@/content/migrations';
 import { GRID_SCHEMES, type GridCell, type GridRow, type GridScheme } from './grid-schemes';
-import type { LearningMap } from './learning-maps';
+import { mergeBranches, overviewRoots, type LearningMap } from './learning-maps';
 
 /** A node with its `plain` wording applied (a null note removes the note). */
 function plainNode({ plain, blue: _blue, kids: _kids, ...node }: MNode): MNode {
@@ -33,11 +33,18 @@ export function taughtNodes(nodes: MNode[]): MNode[] {
 
 export function taughtFlow(flow: Flow): Flow {
   const join = flow.join && !flow.join.blue ? { ...plainNode(flow.join), ...(flow.join.kids ? { kids: taughtNodes(flow.join.kids) } : {}) } : undefined;
-  return { ...flow, roots: taughtNodes(flow.roots), join };
+  const { plainLead, plainPitfalls, blue: _blue, ...rest } = flow;
+  return { ...rest, lead: plainLead ?? flow.lead, pitfalls: plainPitfalls ?? flow.pitfalls, roots: taughtNodes(flow.roots), join };
 }
 
+/** Whether a flow still has something to show in "Aurten emandakoa" mode. */
+export const flowShown = (flow: Flow) => !flow.blue && (flow.roots.length > 0 || !!flow.join);
+
 export function taughtMap(map: LearningMap): LearningMap {
-  return { ...map, roots: taughtNodes(map.roots), details: map.details.map(taughtFlow) };
+  // A scheme that is wholly not taught leaves the overview too.
+  const kept = map.details.filter((flow) => !flow.blue);
+  const roots = kept.length === map.details.length ? map.roots : mergeBranches(kept.flatMap(overviewRoots));
+  return { ...map, roots: taughtNodes(roots), details: kept.map(taughtFlow).filter(flowShown) };
 }
 
 const plainCell = ({ plain, plainNote, ...cell }: GridCell): GridCell => {
@@ -85,7 +92,8 @@ export function taughtGrid(scheme: GridScheme): GridScheme | null {
 }
 
 const nodeHasBlue = (node: MNode): boolean => !!node.blue || !!node.plain || !!node.kids?.some(nodeHasBlue);
-const flowHasBlue = (flow: Flow) => flow.roots.some(nodeHasBlue) || (!!flow.join && nodeHasBlue(flow.join));
+const flowHasBlue = (flow: Flow) =>
+  !!flow.blue || flow.plainLead !== undefined || !!flow.plainPitfalls || flow.roots.some(nodeHasBlue) || (!!flow.join && nodeHasBlue(flow.join));
 const gridHasBlue = (s: GridScheme) =>
   !!s.blue || s.plainLead !== undefined || !!s.plainPitfalls || s.rows.some((row) => row.blue || row.cells.some((cell) => cell && (cell.plain !== undefined || cell.plainNote !== undefined)));
 

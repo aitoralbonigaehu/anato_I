@@ -21,6 +21,7 @@ function withGeo(View: ComponentType<SceneProps> & { geo?: string[] }) {
     return useGeoReady([BRAIN19_GEO]) ? <View {...props} /> : <Loading3D />;
   }
   Scene.geo = ['brain19', ...(View.geo ?? [])];
+  Scene.spec = (View as { spec?: unknown }).spec;
   return Scene;
 }
 const SAG = (dist = 7, y = -0.3, z = 0, yaw = 90, elev = 3) => LEFT19(dist, [0, y, z], yaw, elev);
@@ -276,6 +277,7 @@ const specVent: StageSpec<BrainPose, BrainOpts> = {
       dim: ['alboko-bentrikuluak'],
       names: [{ id: 'alboko-bentrikuluak', text: 'Alboko bentrikuluak', sub: 'telentzefaloan, bat hemisferio bakoitzean' }],
       note: 'Telentzefaloan, hemisferio bakoitzean bat: bi alboko bentrikuluak (helduetan nahiko handiak)',
+      plainNote: 'Telentzefaloan, hemisferio bakoitzean bat: bi alboko bentrikuluak',
       warn: true,
     },
     {

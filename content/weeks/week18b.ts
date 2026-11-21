@@ -26,6 +26,9 @@ export const stages18b: StageDef[] = [
         idea: 'Tiroidea 4. astean hasten da, gorago, eta gero beheratzen da.',
         key: 'Tiroidea ez da lepoan sortzen: mihiaren atzean sortzen da eta lepora bidaiatzen du.',
         text: 'Burua erditik moztuta, ezkerretik. Aurrean estomodeoa, ektodermoz estalia, eta apur bat barnerago mintz bukofaringeoa. Haren atzean faringe hestea hasten da. Tiroide guruina 4. astean eratzen hasten da: gorago garatzen da, eta gero beherantz joaten da.',
+        plain: {
+          caution: null,
+        },
         focus: ['estomodeoa', 'mintz-bukofaringeoa', 'faringe-hestea'],
         caution: 'Apunteen arabera, mintz bukofaringeoa endodermikoa da; estomodeoaren kanpoko estalkia ektodermikoa eta barneko atala, mintzarekin jarraia, endodermikoa.',
         view: '3d',
@@ -35,6 +38,11 @@ export const stages18b: StageDef[] = [
         notes: ['w18/3/p4/s1', 'w18/3/p5/s1'],
         idea: 'Zoruan, tuberkulu bakoitiaren eta kupularen artean, luzapen bat sartzen da mesenkimarantz.',
         text: 'Hurbilduta: faringearen zoruan, mihiaren gorputzaren eta sustraiaren artean (estomodeoaren atzean), zulo itsuaren mailan (tuberkulu bakoitiaren eta kupularen artean), luzapen edo ebaginazio bat agertzen da eta mesenkimarantz sartzen da.',
+        plain: {
+          idea: 'Zoruan, mihiaren gorputzaren eta sustraiaren artean, luzapen bat sartzen da mesenkimarantz.',
+          text: 'Hurbilduta: faringearen zoruan, mihiaren gorputzaren eta sustraiaren artean (estomodeoaren atzean), luzapen edo ebaginazio bat agertzen da eta mesenkimarantz sartzen da.',
+          exam: 'Tiroidea faringearen zoruan sortzen da, mihiaren gorputzaren eta sustraiaren artean.',
+        },
         focus: ['zulo-itsua', 'tuberkulu-bakoitia', 'kopula'],
         exam: 'Tiroidea zulo itsuaren mailan: tuberkulu bakoitiaren eta kupularen artean.',
         view: '3d',
@@ -87,6 +95,11 @@ export const stages18b: StageDef[] = [
         notes: ['w18/3/p7/s1', 'w18/3/p7/s3-s4'],
         idea: 'Guruina hioidearen aurretik jaisten da, hodiak zoruari lotuta.',
         text: 'Tiroide guruina beherantz doa eta hioide hezurra aurretik pasatzen du. Jaisten den bitartean faringearen zoruari lotuta dago, eta lotura hori hodi tiroglosoa da.',
+        plain: {
+          idea: 'Guruina beherantz doa, hodiak zoruari lotuta.',
+          text: 'Tiroide guruina beherantz doa. Jaisten den bitartean faringearen zoruari lotuta dago, eta lotura hori hodi tiroglosoa da.',
+          exam: 'Jaisten den bitartean hodi tiroglosoak zoruari lotzen dio.',
+        },
         focus: ['tiroide-guruina', 'hodi-tiroglosoa', 'hioide-hezurra'],
         exam: 'Hioide hezurraren aurretik jaisten da.',
         view: '3d',

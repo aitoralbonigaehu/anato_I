@@ -6,6 +6,7 @@ import { UC } from './uro-model';
 import { PP0, pelvisModel, type PelvisOpts, type PelvisPose } from './pelvis-model';
 import { TP0, trigoneModel, type TrigoneOpts, type TrigonePose } from './trigone-model';
 import { GP0, glansModel, type GlansOpts, type GlansPose } from './glans-model';
+import { SITE15 } from './sites';
 
 /**
  * Topic 15, notes 2.2–2.4, on the caudal end cut down the middle (pelvis-model.ts, seen from the embryo's left
@@ -30,6 +31,8 @@ export const S12 = [0, 0.12, 0.25, 0.37, 0.5, 0.62, 0.75, 0.88] as const;
 
 const spec12: StageSpec<PelvisPose, PelvisOpts> = {
   map: 'cloaca',
+  site: SITE15.pelvis,
+  arrive: 'Behera, enbrioiaren alde kaudalera: erditik moztu dugu (sagitala) eta ezkerretik ikusiko dugu',
   where: { th: -1.45, at: [0, -0.2, -0.5], scale: 2.2, planes: [{ center: [0, -0.2, 0.1], a: [0, 0, 2.1], b: [0, 2.7, 0] }], note: 'Enbrioiaren behealdea, erditik moztuta (ebakidura sagitala), ezkerretik ikusita' },
   S: S12,
   pose: PP0,
@@ -73,13 +76,19 @@ const spec12: StageSpec<PelvisPose, PelvisOpts> = {
         { id: 'gernu-maskuria', sub: 'goian, zabalena', from: 0.35 },
         { id: 'alantoidea', small: true, from: 0.55 },
       ],
+      plainNames: [
+        { id: 'gernu-maskuria', sub: 'goian', from: 0.35 },
+        { id: 'alantoidea', small: true, from: 0.55 },
+      ],
       note: 'Sinu urogenitalaren eremuan hiru barrunbe, luzatu eta alantoidean amaitzen direnak. Goian, zabalena: gernu maskuria',
+      plainNote: 'Sinu urogenitalaren eremuan hiru barrunbe, luzatu eta alantoidean amaitzen direnak. Goian: gernu maskuria',
     },
     {
       cam: SIDE(6, [0, -0.9, 0.6], 96, 4),
       dim: ['atal-pelbianoa'],
       names: [{ id: 'atal-pelbianoa', sub: 'estua → uretra' }],
       note: 'Atal pelbianoa: estutu egiten da, gernu maskuriaren jarraia; uretra bihurtzen da (emeetan mintzezkoa; arretan mintzezkoa eta prostatikoa)',
+      plainNote: 'Atal pelbianoa: estutu egiten da, gernu maskuriaren jarraia; uretra bihurtzen da',
     },
     {
       cam: SIDE(6, [0, -1.2, 0.4], 84, 6),
@@ -89,7 +98,13 @@ const spec12: StageSpec<PelvisPose, PelvisOpts> = {
         { id: 'mintz-urogenitala', small: true, from: 0.3 },
         { id: 'perineoa', sub: 'sinuaren eta uzkiaren artean', from: 0.5 },
       ],
+      plainNames: [
+        { id: 'behin-betiko-sinu-urogenitala', sub: 'gernuaren irteera' },
+        { id: 'mintz-urogenitala', small: true, from: 0.3 },
+        { id: 'perineoa', sub: 'sinuaren eta uzkiaren artean', from: 0.5 },
+      ],
       note: 'Behin-betiko sinu urogenitala: barrunbe zapala, mintz urogenitalez estalia (emeetan bestibulua, arretan zakil uretra). Uzkiaren artean: perineoa',
+      plainNote: 'Behin-betiko sinu urogenitala: gernuaren irteera, mintz urogenitalez estalia (emeetan bestibulua, arretan zakil uretra). Uzkiaren artean: perineoa',
     },
     {
       cam: SIDE(8.5, [0, 0.1, 0.5], 90, 4),
@@ -137,11 +152,15 @@ export const Sinus15 = poseStage(spec12, (p, o) => pelvisModel(p, o));
 // ———————————————————————————— 13. Gernu maskuria: igoera, trigonoa, urakoa ————————————————————————————
 
 export const S13 = [0, 0.18, 0.36, 0.54, 0.72, 0.86] as const;
-// The kidney, the ureter and the duct come in at the start (stage 12 had none).
-const P13: PelvisPose = { ...PP0, sept: 1, split: 1, parts: 1, urachus: 0.6 };
+// From where stage 12 ended (the model runs on), the urachus closed again (the fistula was the anomaly); the
+// kidney, the ureter and the duct come in with the first step (stage 12 had none).
+const P13: PelvisPose = { ...endPose(spec12).pose, fistula: 0, ligament: 0 };
 
 const spec13side: StageSpec<PelvisPose, PelvisOpts> = {
   map: 'bladder',
+  site: SITE15.pelvis,
+  // Shown when the side view comes back from the bladder seen from behind (its last step).
+  arrive: 'Berriro ezkerretik, ebakidura sagitalean: maskuriaren erpinetik zilborrera',
   where: { th: -1.45, at: [0, -0.2, -0.5], scale: 2.2, planes: [{ center: [0, -0.2, 0.1], a: [0, 0, 2.1], b: [0, 2.7, 0] }], note: 'Enbrioiaren behealdea, erditik moztuta: gernu maskuria sinu urogenitaletik' },
   S: S13,
   pose: P13,
@@ -177,7 +196,12 @@ const spec13side: StageSpec<PelvisPose, PelvisOpts> = {
         { id: 'hodi-mesonefrikoa', sub: 'beherantz' },
         { id: 'ureterra', sub: 'gorantz · askatuta', from: 0.3 },
       ],
+      plainNames: [
+        { id: 'hodi-mesonefrikoa', sub: 'beherantz' },
+        { id: 'ureterra', sub: 'gorantz', from: 0.3 },
+      ],
       note: 'Hasieran hodi mesonefrikoa eta ureter kimua batera (kimua haren adarra zen). Askatu egiten dira: ureterra gorantz, hodi mesonefrikoa beherantz',
+      plainNote: 'Hasieran hodi mesonefrikoa eta ureter kimua batera, gernu maskuritik gertu. Enbrioia luzatzean: ureterra gorantz, hodi mesonefrikoa beherantz',
     },
     { cam: SIDE(7.5, [0.2, -0.3, 0.2], 60, 8) },
     { cam: SIDE(7.5, [0.2, -0.3, 0.2], 60, 8) },
@@ -202,6 +226,8 @@ const BACK = (dist = 8, yaw = 180, elev = 6, target: [number, number, number] = 
 
 const spec13back: StageSpec<TrigonePose, TrigoneOpts> = {
   map: 'bladder',
+  site: SITE15.trigone,
+  arrive: 'Gernu maskuria atzetik ikusiko dugu: bere atzeko horma, ureterrak eta hodi mesonefrikoak',
   S: S13,
   pose: TP0,
   opts: {},
@@ -250,7 +276,12 @@ const spec13back: StageSpec<TrigonePose, TrigoneOpts> = {
         { id: 'trigonoa', sub: 'endodermoz estalia · aztarna geratzen da' },
         { id: 'ureterra', text: 'Ureter zuloak', sub: 'trigonoaren goiko muga (sondak)', p: 'ureter-zuloa', key: 'zuloak', from: 0.4 },
       ],
+      plainNames: [
+        { id: 'trigonoa', sub: 'aztarna geratzen da' },
+        { id: 'ureterra', text: 'Ureter zuloak', sub: 'trigonoaren goiko muga (sondak)', p: 'ureter-zuloa', key: 'zuloak', from: 0.4 },
+      ],
       note: 'Zelula mesodermikoak endekatu eta endodermikoek ordezkatzen dituzte: helduetan epitelio osoa endodermikoa, baina hirukiaren aztarna geratzen da',
+      plainNote: 'Helduetan hirukiaren aztarna beti geratzen da: ureter zuloak trigonoaren goiko mugan',
     },
     { cam: BACK(8.5, 180, 10, [0, 0.5, 0]), names: [{ id: 'urakoa', small: true }] },
   ],
@@ -265,6 +296,8 @@ const P14: PelvisPose = endPose(spec13side).pose;
 
 const spec14: StageSpec<PelvisPose, PelvisOpts> = {
   map: 'urethra',
+  site: SITE15.pelvis,
+  arrive: 'Ebakidura sagitala, ezkerretik: gernu maskuriaren azpian, uretra',
   where: { th: -1.45, at: [0, -0.2, -0.5], scale: 2.2, planes: [{ center: [0, -0.2, 0.1], a: [0, 0, 2.1], b: [0, 2.7, 0] }], note: 'Enbrioiaren behealdea, erditik moztuta: uretra maskuriaren azpian' },
   S: S14,
   pose: P14,
@@ -275,7 +308,7 @@ const spec14: StageSpec<PelvisPose, PelvisOpts> = {
   steps: [
     {
       to: { ducts: 0 },
-      run: [0.02, 0.45],
+      run: [0, 0.2],
       cam: SIDE(7.5, [0, -0.6, 0.6]),
       glide: 0.06,
       dim: ['atal-pelbianoa', 'gernu-maskuria'],
@@ -316,7 +349,13 @@ const spec14: StageSpec<PelvisPose, PelvisOpts> = {
         { id: 'zakil-uretra', sub: 'zatirik luzeena', from: 0.5 },
         { id: 'prostata', sub: '3. hilabetearen bukaeran', from: 0.65 },
       ],
+      plainNames: [
+        { id: 'zakil-uretra', sub: 'zatirik luzeena', from: 0.3 },
+        { id: 'prostata', sub: '3. hilabetearen bukaeran', from: 0.5 },
+      ],
+      plainDim: ['zakil-uretra', 'prostata'],
       note: 'Gizonetan uretra zakilean sartu eta luzatzen da: prostatikoa (prostata), mintzezkoa eta zakil uretra (luzeena)',
+      plainNote: 'Gizonetan uretra zakilean sartu eta luzatzen da: zakil uretra (luzeena). 3. hilabetearen bukaeran, prostata',
     },
     {
       cam: SIDE(6.5, [0, -2.0, 2.0], 80, 6),
@@ -339,6 +378,8 @@ const GCAM = (dist = 7.5, yaw = 0, elev = 4, target: [number, number, number] = 
 
 const spec15: StageSpec<GlansPose, GlansOpts> = {
   map: 'glans',
+  site: SITE15.glans,
+  arrive: 'Zakilaren muturrera, aurretik inguratuz beste aldera: erditik moztuta, apunteetan bezala',
   where: { th: -1.75, at: [0.6, -2.6, 0.6], frame: 'perineum', scale: 3, planes: [{ center: [0.6, 0, 0.2], a: [2.2, 0, 0], b: [0, 2.2, 0] }], note: 'Kanpo genitalak: enbrioiaren behealdea, behetik eta aurretik ikusita' },
   S: S15,
   pose: GP0,

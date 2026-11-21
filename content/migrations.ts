@@ -48,6 +48,11 @@ export interface Flow {
   join?: MNode;
   /** Process on the converging arrow. */
   joinVia?: string;
+  /** Topics 15+: the whole scheme is notes text not taught this year (left out in "Aurten emandakoa" mode). */
+  blue?: boolean;
+  /** "Aurten emandakoa" wording of the lead / traps when part of them is not taught. */
+  plainLead?: string;
+  plainPitfalls?: string[];
 }
 
 export interface MigrationTopic {

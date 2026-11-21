@@ -169,6 +169,11 @@ const specB: StageSpec<ArchPose, Dim> = {
         { id: 'faringe-poltsak', text: 'Faringe-poltsak', sub: 'barnean · endodermikoak', from: 0.3 },
       ],
       note: 'Kanpoan, arkuen artean: faringe-arraildurak. Barnean: faringe-poltsak (ez «brankialak»), endodermozko epitelioarekin',
+      plainNote: 'Kanpoan, arkuen artean: faringe-arraildurak. Barnean: faringe-poltsak (ez «brankialak»)',
+      plainNames: [
+        { id: 'faringe-arraildurak', text: 'Faringe-arraildurak', sub: 'kanpoan' },
+        { id: 'faringe-poltsak', text: 'Faringe-poltsak', sub: 'barnean', from: 0.3 },
+      ],
     },
   ],
 };
@@ -305,6 +310,9 @@ const specS: StageSpec<PharynxPose, PharynxBOpts> = {
       dim: ['sinu-zerbikala', 'faringe-arraildurak'],
       names: [{ id: 'sinu-zerbikala', text: 'Sinu zerbikala', sub: 'arraildurak estalita: aztarna txikia', from: 0.2 }],
       note: 'Arraildurak estalita gelditzen dira. Hasieran aztarna txiki bat ageri da: sinu zerbikala',
+      plainNote: 'Arraildurak estalita gelditzen dira eta desagertzen dira',
+      plainNames: [],
+      plainDim: ['faringe-arraildurak'],
     },
     {
       to: { close: 1 },

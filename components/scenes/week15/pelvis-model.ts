@@ -76,8 +76,8 @@ const OUTLINE = L([[0, 2.6, 1.7], UMB, [0, 0.6, 1.85], [0, -0.9, 1.65], [0, -1.6
 const SAGITTAL = { u: [0, 0, -1] as V3, v: [0, 1, 0] as V3, w: [1, 0, 0] as V3 };
 const SECTION = OUTLINE.map((p): [number, number] => [-p[2], p[1]]);
 /** The cut face's mesenchyme: pale and cool, so the endoderm and the ducts stand out from it lit or not. */
-const CUT = '#9c8f8a';
-const CUT_DEEP = '#3e3532';
+const CUT = UC.wallCut;
+const CUT_DEEP = UC.wallCutDeep;
 const SPINE = L([[0, 2.35, -1.42], [0, 0.4, -1.5], [0, -1.15, -1.25], [0, -1.72, -0.85]], 11);
 
 export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {

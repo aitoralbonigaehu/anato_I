@@ -67,6 +67,9 @@ export const stages17d: StageDef[] = [
         recall: ['luzapen-maxilarra'],
         idea: '1. arkutik beste hezur batzuk: maxilarra, zigomatikoa eta loki hezurraren atal bat.',
         text: 'Lehenengo arkuaren alde dortsalean luzapen maxilarra dago. Lehen arkutik errai kraneoko beste hezur batzuk garatzen dira: hezur maxilarra, zigomatikoa eta loki hezurraren atal bat, kutxa tinpanikoarekin eta hezurtxoekin erlazionatuta dagoena.',
+        plain: {
+          text: 'Lehen arkutik errai kraneoko beste hezur batzuk garatzen dira: hezur maxilarra, zigomatikoa eta loki hezurraren atal bat, kutxa tinpanikoarekin eta hezurtxoekin erlazionatuta dagoena.',
+        },
         focus: ['hezur-maxilarra', 'zigomatikoa', 'loki-hezurraren-atal-tinpanikoa'],
         exam: '1. arkutik: hezur maxilarra, zigomatikoa eta loki hezurraren atal bat (kutxa tinpanikoa).',
         view: '3d',
@@ -152,6 +155,10 @@ export const stages17d: StageDef[] = [
         notes: ['w17/2.3.1/p5/s1-s4'],
         idea: 'Estiloidean lotailuak; loki hezurra: ezkata mehea eta arkaitz lodia.',
         text: 'Estiloide apofisia garrantzitsua da: muskulu asko txertatzen dira bertan, eta hemendik lotailuak barailerantz eta faringerantz doaz; giltzaduran, lotailuei eusten laguntzen du. Loki hezurrak ezkata aldea du, atal meheagoa, eta behealdean atal lodiago bat, arkaitza; arkaitzaren barnean tarteko belarria eta barneko belarria daude.',
+        plain: {
+          idea: 'Estiloide apofisia: lotailuak barailera eta faringera.',
+          text: 'Estiloide apofisia garrantzitsua da: hemendik lotailuak barailerantz eta faringerantz doaz.',
+        },
         focus: ['estiloide-apofisia', 'arkaitza', 'tenporalaren-ezkata'],
         view: '3d',
       },
@@ -215,6 +222,8 @@ export const stages17d: StageDef[] = [
         notes: ['w17/2.4.3/p2/s1', 'w17/2.4.3/p4/s1'],
         idea: 'Estilofaringeoa: estiloidetik faringera; igo eta zabaldu.',
         text: 'Hirugarren arkutik muskulu estilofaringeoa eratzen da, estiloide apofisitik faringera: faringea igo eta zabaldu egiten du.',
+        // The muscle and its nerve are taught (2.4.2); its origin and action sentence (2.4.3/p4) is grey.
+        plain: { idea: 'Estilofaringeoa: IX.ak inerbatzen du.', text: 'Hirugarren arkuko nerbioak, IX.ak (glosofaringeoa), faringeko muskulu estilofaringeoak inerbatzen ditu.' },
         focus: ['muskulu-estilofaringeoa'],
         exam: 'Estilofaringeoa: III. arkua, IX. nerbioa.',
         view: '3d',

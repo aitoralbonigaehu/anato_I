@@ -162,6 +162,11 @@ const specMature: StageSpec<NeckPose, NeckOpts> = {
         { id: 'beheko-paratiroidea', sub: 'bi: behean', from: 0.35 },
       ],
       note: 'Eredua atzera biratu dugu: atzetik lobuluak ez daude lotuta, eta han daude lau paratiroideak, bi goian eta bi behean',
+      plainNote: '7. astean tiroidea helduta: behin betiko kokapena eta itxura. Jaio aurreko 3. hilabetean funtzionala',
+      plainNames: [
+        { id: 'tiroide-lobuluak', text: 'Tiroidea', sub: '7. astean helduta' },
+      ],
+      plainDim: ['tiroide-lobuluak', 'tiroide-istmoa'],
     },
     {
       to: { pyramid: 1 },

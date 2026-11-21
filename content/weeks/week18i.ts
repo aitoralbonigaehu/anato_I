@@ -101,6 +101,11 @@ export const stages18i: StageDef[] = [
         notes: ['w18/3/p11/s4-s5', 'w18/3/p12/s1-s3'],
         idea: 'Atzetik: irekita, lau paratiroide. 7. astean helduta.',
         text: 'Orain eredua aurretik atzera biratuko dugu. Atzetik lobuluak ez daude lotuta, eta bertan ikusten dira goiko eta beheko paratiroide guruinak: bi goiko eta bi beheko. Hau da egitura guztien behin betiko kokapena; 7. astean tiroidea helduta dago, eta jaio aurreko 3. hilabetean funtzionala izaten hasten da.',
+        // w18/3/p11 (lobes, isthmus, parathyroids behind) is grey in the notes: not taught this year.
+        plain: {
+          idea: '7. astean tiroidea helduta; 3. hilabetean funtzionala.',
+          text: '7. astean tiroidea jada helduta dago: behin betiko kokapena hartzen du eta behin betiko itxura lortzen du. Jaio aurreko 3. hilabetean funtzionala izaten hasten da.',
+        },
         focus: ['goiko-paratiroidea', 'beheko-paratiroidea'],
         view: '3d',
       },

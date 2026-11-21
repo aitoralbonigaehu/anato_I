@@ -103,6 +103,10 @@ export const stages18g: StageDef[] = [
         notes: ['w18/1.2/p5/s3', 'w18/1.2/p5/s4'],
         idea: 'Arraildurak estalita: aztarna txikia, sinu zerbikala.',
         text: 'Horrela, arraildurak estalita gelditzen dira. Hasieran aztarna txiki bat ageri da: sinu zerbikala.',
+        plain: {
+          idea: 'Arraildurak estalita gelditzen dira eta desagertzen dira.',
+          text: 'Horrela, arraildurak estalita gelditzen dira eta desagertzen dira.',
+        },
         focus: ['sinu-zerbikala'],
         view: '3d',
       },

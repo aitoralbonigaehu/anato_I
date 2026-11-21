@@ -103,6 +103,13 @@ const specRoot: StageSpec<TonguePose, TongueOpts> = {
         { id: 'laugarren-arkua', text: 'IV. arkua (atal bat)', small: true, from: 0.6 },
       ],
       note: 'Bigarren, hirugarren eta laugarrenaren atal batetik: erdian goragune bat, kupula. Hortik mihiaren sustraia',
+      plainNote: 'Bigarren, hirugarren eta laugarren arkuetatik: erdian goragune bat, kupula. Hortik mihiaren sustraia',
+      plainNames: [
+        { id: 'kupula', text: 'Kupula (irudian: Kopula)', sub: 'II., III. eta IV. arkuen erdian', from: 0.2 },
+        { id: 'bigarren-arkua', text: 'II. arkua', small: true, from: 0.4 },
+        { id: 'hirugarren-arkua', text: 'III. arkua', small: true, from: 0.5 },
+        { id: 'laugarren-arkua', text: 'IV. arkua', small: true, from: 0.6 },
+      ],
     },
     {
       to: { epi: 1 },
@@ -125,6 +132,10 @@ const specRoot: StageSpec<TonguePose, TongueOpts> = {
         { id: 'zulo-itsua', sub: 'V-aren erpinean: tuberkulua eta kupularen artean', from: 0.5 },
       ],
       note: 'Gorputza eta sustraiaren artean V formako ildoa. Bere erpinean aztarnatxo bat: zulo itsua',
+      plainNames: [
+        { id: 'ildo-terminala', text: 'Ildo terminala', sub: 'V forma: gorputza | sustraia', p: 'ildo-terminala', from: 0.3 },
+        { id: 'zulo-itsua', sub: 'V-aren erpinean', from: 0.5 },
+      ],
     },
     {
       to: { ary: 1 },

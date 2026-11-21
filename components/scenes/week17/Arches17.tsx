@@ -23,6 +23,7 @@ function withHead(View: ReturnType<typeof poseStage17>) {
     return useGeoReady([ARCH_HEAD]) ? <View {...props} /> : <Loading3D />;
   }
   Scene.geo = ['embryo5', 'arch-head'];
+  Scene.spec = (View as { spec?: unknown }).spec;
   return Scene;
 }
 
@@ -114,6 +115,12 @@ const specV: StageSpec<ArchPose, ArchOpts> = {
         { id: 'lehen-arkua', text: 'I. arkua', sub: 'kranealena', from: 0.5 },
       ],
       note: 'Arku bakoitzari nerbio bat: I. arkuari V3, barail-nerbioa, trigeminoaren (V) hirugarren adarra. Gongoil nagusi bat du (Gasser), hiru adarrekin',
+      plainNote: 'Arku bakoitzari nerbio bat: I. arkuari V3, barail-nerbioa, trigeminoaren (V) hirugarren adarra. Trigeminoak hiru adar ditu',
+      plainNames: [
+        { id: 'gasser-gongoila', text: 'Trigeminoa (V)', sub: 'hiru adar' },
+        { id: 'barail-nerbioa', text: 'V3 · barail-nerbioa', sub: 'I. arkuaren nerbioa', from: 0.3 },
+        { id: 'lehen-arkua', text: 'I. arkua', sub: 'kranealena', from: 0.5 },
+      ],
     },
     {
       to: { v1: 1 },
@@ -127,6 +134,11 @@ const specV: StageSpec<ArchPose, ArchOpts> = {
         { id: 'begia', small: true, from: 0.5 },
       ],
       note: 'Goitik behera lehena, V1: begirantz doa, baina ez dauka ikusmenarekin zerikusirik. Gehien bat sentsitiboa. 1. faringe arkuan EZ',
+      plainNote: 'Goitik behera lehena, V1, adar oftalmikoa. Gehien bat sentsitiboa. 1. faringe arkuan EZ',
+      plainNames: [
+        { id: 'nerbio-oftalmikoa', text: 'V1 · adar oftalmikoa', sub: 'gehien bat sentsitiboa · 1. arkuan EZ', from: 0.25 },
+        { id: 'begia', small: true, from: 0.5 },
+      ],
     },
     {
       to: { v2: 1 },
@@ -140,6 +152,11 @@ const specV: StageSpec<ArchPose, ArchOpts> = {
         { id: 'luzapen-maxilarra', small: true, from: 0.5 },
       ],
       note: 'Tartekoa, V2: hezur maxilarrera doa, aurpegiaren behe erdikalderantz. Sentsitiboa. 1. faringe arkuan EZ',
+      plainNote: 'Tartekoa, V2, adar maxilarra. Sentsitiboa. 1. faringe arkuan EZ',
+      plainNames: [
+        { id: 'nerbio-maxilarra', text: 'V2 · adar maxilarra', sub: 'sentsitiboa · 1. arkuan EZ', from: 0.25 },
+        { id: 'luzapen-maxilarra', small: true, from: 0.5 },
+      ],
     },
     {
       cam: SIDE(14, [0, 0.2, 0], 84, 0),

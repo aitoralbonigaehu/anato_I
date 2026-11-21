@@ -902,7 +902,15 @@ export const w18: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "(paratohormona edo paratiroide hormonak ekoizten dituztenak) eratzen dira, helduaroan tiroide guruinekin batera kokatzen direnak."
+            "text": "(paratohormona edo paratiroide hormonak ekoizten dituztenak) ",
+            "u": true
+          },
+          {
+            "text": "eratzen dira, "
+          },
+          {
+            "text": "helduaroan tiroide guruinekin batera kokatzen direnak.",
+            "u": true
           }
         ]
       }
@@ -2725,7 +2733,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p9/s1",
         "parts": [
           {
-            "text": "Mintz bukofaringeoa beti kokatuko da estomodeoa baino apur bat barnerago. "
+            "text": "Mintz bukofaringeoa beti kokatuko da estomodeoa baino apur bat barnerago. ",
+            "u": true
           }
         ]
       },
@@ -2733,7 +2742,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p9/s2",
         "parts": [
           {
-            "text": "Mintz bukofaringeoa endodermikoa izango da; estomodeoak aldiz, kanpoko estalkia jatorri"
+            "text": "Mintz bukofaringeoa endodermikoa izango da; estomodeoak aldiz, kanpoko estalkia jatorri",
+            "u": true
           }
         ]
       }
@@ -2748,7 +2758,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p10/s1",
         "parts": [
           {
-            "text": "ektodermikoa izango du eta barneko atala (mintz bukofaringeoarekin jarraia izango dena) endodermikoa izango da."
+            "text": "ektodermikoa izango du eta barneko atala (mintz bukofaringeoarekin jarraia izango dena) endodermikoa izango da.",
+            "u": true
           }
         ]
       }
@@ -2763,7 +2774,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p11/s1",
         "parts": [
           {
-            "text": "Tiroide guruinak bi lobulo ditu, eskuineko bat eta ezkerreko bat. "
+            "text": "Tiroide guruinak bi lobulo ditu, eskuineko bat eta ezkerreko bat. ",
+            "u": true
           }
         ]
       },
@@ -2771,7 +2783,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p11/s2",
         "parts": [
           {
-            "text": "Bi lobuluek laringeko kartilagoak “besarkatzen” dituzte. "
+            "text": "Bi lobuluek laringeko kartilagoak “besarkatzen” dituzte. ",
+            "u": true
           }
         ]
       },
@@ -2779,14 +2792,17 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p11/s3",
         "parts": [
           {
-            "text": "Biak dira luzangak eta aurrekaldetik lotuta daude eremu estu batez: "
+            "text": "Biak dira luzangak eta aurrekaldetik lotuta daude eremu estu batez: ",
+            "u": true
           },
           {
             "text": "istmoa",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ". "
+            "text": ". ",
+            "u": true
           }
         ]
       },
@@ -2794,7 +2810,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p11/s4",
         "parts": [
           {
-            "text": "Atzetik lobuluak ez daude lotuta eta bertan ikusi dezakeguz goiko eta beheko guruin paratiroideoak. "
+            "text": "Atzetik lobuluak ez daude lotuta eta bertan ikusi dezakeguz goiko eta beheko guruin paratiroideoak. ",
+            "u": true
           }
         ]
       },
@@ -2802,7 +2819,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p11/s5",
         "parts": [
           {
-            "text": "Hau da egitura guztien behin betiko kokapena."
+            "text": "Hau da egitura guztien behin betiko kokapena.",
+            "u": true
           }
         ]
       }
@@ -2867,7 +2885,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p13/s1",
         "parts": [
           {
-            "text": "Pertsona batzuetan (%50 edo gehiago) anomalia bat agertzen da tiroide guruinean, orokorrean ezkerreko lobuluarekin edo aurreko istmoarekin erlazionatuta, tiroide guruinaren piramide itxurako lobulua. "
+            "text": "Pertsona batzuetan (%50 edo gehiago) anomalia bat agertzen da tiroide guruinean, orokorrean ezkerreko lobuluarekin edo aurreko istmoarekin erlazionatuta, tiroide guruinaren piramide itxurako lobulua. ",
+            "u": true
           }
         ]
       },
@@ -2875,7 +2894,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p13/s2",
         "parts": [
           {
-            "text": "Anomalia bat da, baina ez du arazorik ematen. "
+            "text": "Anomalia bat da, baina ez du arazorik ematen. ",
+            "u": true
           }
         ]
       },
@@ -2883,7 +2903,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p13/s3",
         "parts": [
           {
-            "text": "Hodi tiroglosoaren azken atala ez bada ondo endekatzen, piramide itxurako lobulua gelditzen da."
+            "text": "Hodi tiroglosoaren azken atala ez bada ondo endekatzen, piramide itxurako lobulua gelditzen da.",
+            "u": true
           }
         ]
       }
@@ -2900,10 +2921,12 @@ export const w18: NotesBlock[] = [
           {
             "text": "Timoa",
             "b": true,
-            "i": true
+            "i": true,
+            "u": true
           },
           {
-            "text": " Timoa ere garatu egiten da eta lepo mailara jaisten da. "
+            "text": " Timoa ere garatu egiten da eta lepo mailara jaisten da. ",
+            "u": true
           }
         ]
       },
@@ -2911,7 +2934,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p14/s2",
         "parts": [
           {
-            "text": "Tiroide guruinaren behekaldean gelditzen da. "
+            "text": "Tiroide guruinaren behekaldean gelditzen da. ",
+            "u": true
           }
         ]
       },
@@ -2919,7 +2943,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p14/s3",
         "parts": [
           {
-            "text": "Tamaina handia du enbrioi aroan eta pubertarora arte garatzen jarraitzen du. "
+            "text": "Tamaina handia du enbrioi aroan eta pubertarora arte garatzen jarraitzen du. ",
+            "u": true
           }
         ]
       },
@@ -2927,7 +2952,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/3/p14/s4",
         "parts": [
           {
-            "text": "Pubertarotik aurrera endekatuz doa, eta helduetan ia ez du funtziorik, eta tamaina eskasekoa da."
+            "text": "Pubertarotik aurrera endekatuz doa, eta helduetan ia ez du funtziorik, eta tamaina eskasekoa da.",
+            "u": true
           }
         ]
       }
@@ -5150,7 +5176,8 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p16/s4",
         "parts": [
           {
-            "text": "(horregatik odontoblasto batzuk→ zementoblasto bihurtu→ zementoa lortzeko)."
+            "text": "(horregatik odontoblasto batzuk→ zementoblasto bihurtu→ zementoa lortzeko).",
+            "u": true
           }
         ]
       }
@@ -5165,10 +5192,7 @@ export const w18: NotesBlock[] = [
         "id": "w18/4.2/p17/s1",
         "parts": [
           {
-            "text": "Orduan, hortz laminatik, esmaltea, eta beste egitura guztiak papilatik garatze"
-          },
-          {
-            "text": "n dira.",
+            "text": "Orduan, hortz laminatik, esmaltea, eta beste egitura guztiak papilatik garatzen dira.",
             "u": true
           }
         ]
@@ -5352,7 +5376,8 @@ export const w18: NotesBlock[] = [
         "parts": [
           {
             "text": "5 urteko ume baten hortzak.",
-            "i": true
+            "i": true,
+            "u": true
           }
         ]
       }

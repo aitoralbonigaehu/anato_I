@@ -249,8 +249,8 @@ const spec17: StageSpec<ExternalPose, ExternalOpts> = {
   S: S17,
   pose: EX0,
   opts: {},
-  // The whole perineal disc stays in sight round the folds and swellings it carries.
-  fit: { ground: true, fill: 0.84 },
+  // Framed on what the step is about; the skin runs on past the frame (external-model.ts).
+  fit: { fill: 0.8, limits: [0.7, 1.25] },
   caption: ECAP,
   key: KEY_E,
   axes: EAXES,
@@ -319,8 +319,8 @@ const spec18: StageSpec<ExternalPose, ExternalOpts> = {
   S: S18,
   pose: EX_END,
   opts: {},
-  // The whole perineal disc stays in sight round the folds and swellings it carries.
-  fit: { ground: true, fill: 0.84 },
+  // Framed on what the step is about; the skin runs on past the frame (external-model.ts).
+  fit: { fill: 0.8, limits: [0.7, 1.25] },
   caption: ECAP,
   key: KEY_E,
   axes: EAXES,
@@ -367,8 +367,8 @@ const spec19: StageSpec<ExternalPose, ExternalOpts> = {
   S: S19,
   pose: EX_END,
   opts: {},
-  // The whole perineal disc stays in sight round the folds and swellings it carries.
-  fit: { ground: true, fill: 0.84 },
+  // Framed on what the step is about; the skin runs on past the frame (external-model.ts).
+  fit: { fill: 0.8, limits: [0.7, 1.25] },
   caption: ECAP,
   key: KEY_E,
   axes: EAXES,

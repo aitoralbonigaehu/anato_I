@@ -43,7 +43,9 @@ FILES = [
 ]
 
 # First topic whose blue (supplementary) text is marked for the "skip blue" reading mode.
-BLUE_FROM = 16
+BLUE_FROM = 15
+# Colours that mark text not taught this year: pure blue, and the greys some passages are set in (owner, 2026-11-21).
+NOT_TAUGHT = {0x0000ff, 0x999999, 0xb7b7b7, 0x666666}
 
 # Week 14 part 2's unnumbered headings open sections of their own.
 HEADINGS_14 = {'ERATORRIEN KOKAPENA LABURBILDUTA': 'laburpena', 'ARNAS APARATUA': 'arnas'}
@@ -194,9 +196,9 @@ def extract(path, week, part=1, counts=None):
                         p['b'] = True
                     if span['flags'] & 2:
                         p['i'] = True
-                    # From topic 16 the notes set what was not taught this year in pure blue: kept as `u` so
-                    # the reader can skip it. Earlier topics' blue is not marked.
-                    if week >= BLUE_FROM and span['color'] == 0x0000ff and span['text'].strip():
+                    # From topic 15 the notes set what was not taught this year in pure blue or grey: kept as `u`
+                    # so the reader can skip it. Earlier topics' colours are not marked.
+                    if week >= BLUE_FROM and span['color'] in NOT_TAUGHT and span['text'].strip():
                         p['u'] = True
                     parts.append(p)
                 joined = ''.join(p['text'] for p in parts)

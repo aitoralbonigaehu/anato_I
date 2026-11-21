@@ -27,6 +27,7 @@ const body: StageDef[] = [
         notes: ['w19/1/p2/s1', 'w19/1/p3/s1'],
         idea: 'Nerbio sistema: ingurunearekin erlazionatzeko sistema.',
         text: 'Nerbio sistemak informazioa garraiatu eta prozesatzen du: ingurunearekin erlazionatzeko dugun sistema da, inguruneko estimulu guztiak hartuz. Gorputz osoan zehar ikusten da: burmuina, ornomuina eta haietatik ateratzen diren nerbioak.',
+        notTaught: true,
         focus: ['entzefaloa', 'ornomuina', 'nerbio-espinalak'],
         view: '3d',
       },
@@ -104,6 +105,9 @@ const body: StageDef[] = [
         notes: ['w19/1.2.1/p1/s1', 'w19/1.2.1/p2/s1-s3'],
         idea: 'Ornomuinean: dortsala atzekoa, bentrala aurrekoa.',
         text: 'Ornomuinean zeharkako mozketak erabiltzen dira, ez horizontalak. Nerbio sistema makurtuta dago: ornomuina bertikalki, burmuina horizontalki. Orain arte bentrala eta aurrekoa berdinak ziren, eta atzekoa eta dortsala ere bai: ornomuinean hala jarraitzen du.',
+        plain: {
+          text: 'Ornomuinean zeharkako mozketak erabiltzen dira, ez horizontalak. Ornomuina bertikalki dago, eta burmuina horizontalki. Orain arte bentrala eta aurrekoa berdinak ziren, eta atzekoa eta dortsala ere bai: ornomuinean hala jarraitzen du.',
+        },
         focus: ['ornomuina'],
         view: '3d',
       },
@@ -113,6 +117,9 @@ const body: StageDef[] = [
         idea: 'Burmuinean: dortsala goikoa, bentrala behekoa.',
         key: 'Burmuinean dortsala = goikoa eta bentrala = behekoa; ornomuinean dortsala = atzekoa eta bentrala = aurrekoa.',
         text: 'Makurduraren ondorioz, burmuinean dortsala ez da atzekoa, goikoa baizik; bentrala, berriz, behekoa (burmuinaren oinaldea). Ornomuinean, aldiz, dortsala eta atzekoa berdinak dira, eta bentrala eta aurrekoa.',
+        plain: {
+          text: 'Burmuinean dortsala ez da atzekoa, goikoa baizik; bentrala, berriz, behekoa (burmuinaren oinaldea). Ornomuinean, aldiz, dortsala eta atzekoa berdinak dira, eta bentrala eta aurrekoa.',
+        },
         focus: ['entzefaloa'],
         caution: 'Hitz berak norabide ezberdinak: burmuinean dortsala goikoa da, ornomuinean atzekoa.',
         ask: {
@@ -167,6 +174,9 @@ const body: StageDef[] = [
         idea: 'Zentrala: entzefaloa eta ornomuina, jarraiak, hezurrez babestuta.',
         key: 'Zentrala = entzefaloa (garezurrean) + ornomuina (bizkarrezurrean).',
         text: 'Erdiko nerbio sistema edo zentrala gorputzaren erdian dago, hezurrez babestuta (kraneoa eta ornoak). Osagaiak entzefaloa (garezurraren barruan) eta ornomuina (bizkarrezurraren barruan) dira, eta jarraiak dira. Zelulak ez dira erregeneratzen: horregatik dago hain ondo babestuta. Zentralean somatikoa eta autonomoa kokatzen dira.',
+        plain: {
+          text: 'Erdiko nerbio sistema edo zentrala gorputzaren erdian dago, hezurrez babestuta (kraneoa eta ornoak). Osagaiak entzefaloa (garezurraren barruan) eta ornomuina (bizkarrezurraren barruan) dira, eta jarraiak dira. Oso ondo babestuta egon behar du, hezurrez inguratuta. Zentralean somatikoa eta autonomoa kokatzen dira.',
+        },
         focus: ['entzefaloa', 'ornomuina', 'neurokraneoa', 'ornoak'],
         view: '3d',
       },
@@ -247,6 +257,12 @@ const body: StageDef[] = [
         idea: 'Parasinpatikoa (S2–S4 eta entzefaloa): erlaxazioaren sistema.',
         key: 'Parasinpatikoa: entzefaloa (bikote kranealak, bagoa) eta S2–S4; lasaitasuna.',
         text: 'Parasinpatikoa (S2–S4 eta entzefaloan): arriskua amaitutakoan aktibatzen da, egoera basalera itzultzeko: bihotzaren erritmoa jaitsi, esfinterrak zabaldu, bronkokonstrikzioa, peristaltismo normala eta gosea. Erlaxazioaren sistema da. Sistema autonomoaren bikote kranealak parasinpatikoak dira (adibidez, bagoa), baina bikote kraneal guztiak ez dira autonomoak.',
+        plain: {
+          idea: 'Parasinpatikoa: erlaxazioaren sistema.',
+          text: 'Parasinpatikoa: arriskua amaitutakoan aktibatzen da, egoera basalera itzultzeko: bihotzaren erritmoa jaitsi, esfinterrak zabaldu, bronkokonstrikzioa, peristaltismo normala eta gosea. Erlaxazioaren sistema da. Sistema autonomoaren bikote kranealak parasinpatikoak dira, baina bikote kraneal guztiak ez dira parasinpatikoak.',
+          key: 'Parasinpatikoa: lasaitasuna, egoera basalera itzuli.',
+          caution: 'Sistema autonomoaren bikote kranealak parasinpatikoak dira; ez dira bikote kraneal guztiak parasinpatikoak.',
+        },
         focus: ['sistema-parasinpatikoa', 'nerbio-bagoa'],
         caution: 'Bikote kraneal autonomoak parasinpatikoak dira; ez dira bikote kraneal guztiak autonomoak.',
         ask: {
@@ -262,6 +278,9 @@ const body: StageDef[] = [
         notes: ['w19/2/p15/s1-s3', 'w19/2/p17/s9-s10'],
         idea: 'Osagarriak: parasinpatikoa bi muturretan, sinpatikoa tartean.',
         text: 'Biak osagarriak dira. Parasinpatikoa garunean (bikote kranealak) eta behekaldean, ornomuinaren alde sakroan dago; ornomuinaren gainerako neuronak sinpatikoak dira. Neurona horietatik adarrak ateratzen dira eta nerbio periferiko autonomoak (sinpatikoak eta parasinpatikoak) buru eta erraietara heltzen dira.',
+        plain: {
+          text: 'Biak osagarriak dira. Parasinpatikoa garunean (bikote kranealak) eta behekaldean, ornomuinaren alde sakroan dago; ornomuinaren gainerako neuronak sinpatikoak dira.',
+        },
         focus: ['sistema-parasinpatikoa', 'sistema-sinpatikoa'],
         view: '3d',
       },

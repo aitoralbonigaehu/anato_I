@@ -33,6 +33,9 @@ export const stages17i: StageDef[] = [
         notes: ['w17/2.2.2/p3/s2', 'w17/2.2.1/p3/s1', 'w17/2.2.1/p3/s2', 'w17/2.2.1/p5/s1', 'w17/2.2.3/p3/s2', 'w17/2.2.3/p3/s3', 'w17/2.2.3/p4/s1'],
         idea: 'I. arkua: V3, Meckel, baraila, mailua eta ingudea, murtxikatzaileak.',
         text: 'Lehenengo arkua. Bere nerbioa V3 da, barail-nerbioa: trigeminoaren hirugarren adarra. Meckel kartilagoaren goiko muturretik mailua eta ingudea sortzen dira, eta haren inguruko mesenkimatik baraila. Arku beretik hezur maxilarra, zigomatikoa eta loki hezurraren atal bat. Muskuluak: murtxikatzaileak, maseteroa eta tenporala, eta milohioideoa.',
+        plain: {
+          text: 'Lehenengo arkua. Bere nerbioa V3 da, barail-nerbioa: trigeminoaren hirugarren adarra. Meckel kartilagoaren goiko muturretik mailua eta ingudea sortzen dira, eta haren inguruko mesenkimatik baraila. Arku beretik hezur maxilarra, zigomatikoa eta loki hezurraren atal bat. Muskuluak: murtxikatzaileak, maseteroa eta tenporala.',
+        },
         focus: ['lehen-arkua'],
         exam: 'I. arkua: V3 · Meckel · baraila, mailua, ingudea · murtxikatzaileak.',
         view: 'mapa',
@@ -42,6 +45,10 @@ export const stages17i: StageDef[] = [
         notes: ['w17/2.3.2/p3/s1', 'w17/2.3.2/p3/s2', 'w17/2.3.1/p3/s1', 'w17/2.3.1/p3/s2', 'w17/2.3.1/p3/s3', 'w17/2.3.3/p3/s1', 'w17/2.3.3/p3/s3', 'w17/2.3.3/p4/s1', 'w17/2.3.3/p4/s2', 'w17/2.2.1/p6/s1', 'w17/2.2.1/p6/s2', 'w17/2.2.3/p5/s1'],
         idea: 'II. arkua: VII, Reichert, ointokia eta estiloide apofisia, mimikoak.',
         text: 'Bigarren arkua, VII.a, aurpegi-nerbioa. Reichert kartilagoa endekatu egiten da eta muturretan bakarrik uzten ditu hezurrak: ointokia eta estiloide apofisia. Muskuluak: mimikoak eta platisma, aurikularrak, okzipitala eta estilohioideoa. Digastrikoa bitan banatzen da: aurreko sabela I. arkutik, V3k inerbatuta, eta atzeko sabela II.etik, VII.ak inerbatuta.',
+        plain: {
+          text: 'Bigarren arkua, VII.a, aurpegi-nerbioa. Reichert kartilagoa endekatu egiten da eta muturretan bakarrik uzten ditu hezurrak: ointokia eta estiloide apofisia. Muskuluak: mimikoak eta platisma. Digastrikoa bitan banatzen da: aurreko sabela I. arkutik, V3k inerbatuta, eta atzeko sabela II.etik, VII.ak inerbatuta.',
+          caution: null,
+        },
         caution: 'Beste liburu batzuetan ingudearen adar luzea II. arkutik dator; apunteetan horri ez zaio kasurik egiten: mailua eta ingudea I. arkutik.',
         focus: ['bigarren-arkua'],
         exam: 'II. arkua: VII · Reichert · ointokia, estiloide apofisia · mimikoak.',
@@ -70,6 +77,10 @@ export const stages17i: StageDef[] = [
         notes: ['w17/2.6.1/p5/s2', 'w17/2.6.2/p3/s2', 'w17/2.6.2/p3/s3', 'w17/2.6.2/p3/s4', 'w17/2.6.3/p5/s2'],
         idea: 'VI. arkua: laringe-nerbio atzerakaria, laringe barneko muskuluak.',
         text: 'Seigarren arkuari bagoaren beste adarra, laringe-nerbio atzerakaria. Tiroide kartilagoaren goiko aldea, goranzko adarra, IV. arkutik dator; gorputzaren beheko atala eta beste kartilagoak VI.etik: krikoidea, aritenoidea, kornikulatuak eta kuneiformeak. Muskuluak: laringe barneko muskulu intrintsekoak.',
+        plain: {
+          text: 'Seigarren arkuari bagoaren beste adarra, laringe-nerbio atzerakaria. Tiroide kartilagoaren goiko aldea, goranzko adarra, IV. arkutik dator; gorputzaren beheko atala eta beste kartilagoak VI.etik: krikoidea, aritenoidea, kornikulatuak eta kuneiformeak. Muskuluak: laringe barneko muskuluak.',
+          caution: null,
+        },
         caution: 'Epiglotisa: gai honek «4. eta 6. arkuetatik» besterik ez du esaten; 18. gaiak zehazten du 4. arkuaren alde dortsaletik datorrela.',
         focus: ['seigarren-arkua'],
         exam: 'VI. arkua: X, atzerakaria · laringe barneko muskuluak.',

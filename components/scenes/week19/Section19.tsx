@@ -118,6 +118,7 @@ const specDeriv: StageSpec<SectionPose, SectionOpts> = {
       dim: ['schwann-zelulak'],
       names: [{ id: 'schwann-zelulak', text: 'Schwann zelulak', sub: 'mielina, periferikoan bakarrik' }],
       note: 'Bikote kranealen gongoilak ere bai (adib. aurpegiko nerbioaren gongoil genikulatua). Schwann zelulek mielina ekoizten dute, nerbio sistema periferikoan soilik',
+      plainNote: 'Schwann zelulek mielina ekoizten dute, nerbio sistema periferikoan soilik',
     },
     {
       cam: VIEW(9.0, -0.6),

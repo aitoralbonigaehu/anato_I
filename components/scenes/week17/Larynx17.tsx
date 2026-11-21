@@ -106,6 +106,14 @@ const specC: StageSpec<LarynxPose, LarynxOpts> = {
         { id: 'trakea', sub: 'aurreko hestea, ez arkuak', from: 0.35 },
       ],
       note: 'Tiroidearen beheko atala eta beste kartilagoak VI. arkutik (epiglotisa: IV, 18. gaiaren arabera). Hemendik behera trakea: aurreko hestetik, ez arkuetatik',
+      plainNote: 'Tiroidearen beheko atala eta beste kartilagoak VI. arkutik (epiglotisa: IV, 18. gaiaren arabera)',
+      plainNames: [
+        { id: 'tiroide-goiko-atala', text: 'Tiroidea (goian)', sub: 'IV', small: true },
+        { id: 'tiroide-beheko-atala', text: 'Tiroidea (behean)', sub: 'VI', small: true },
+        { id: 'krikoide-kartilagoa', sub: 'VI', small: true },
+        { id: 'epiglotisa', sub: 'IV (18. gaia)', small: true },
+      ],
+      plainDim: ['tiroide-goiko-atala', 'tiroide-beheko-atala', 'krikoide-kartilagoa', 'epiglotisa'],
     },
   ],
 };
@@ -156,6 +164,10 @@ const specM: StageSpec<LarynxPose, LarynxOpts> = {
         { id: 'aritenoide-kartilagoa', small: true, from: 0.65 },
       ],
       note: 'Faringea kendu dugu eta eskuineko ertzatzaileak atzeratu, barrua ikusteko: VI. arkutik laringe barneko muskuluak',
+      plainNames: [
+        { id: 'laringe-barneko-muskuluak', text: 'Laringe barneko muskuluak', sub: 'VI. arkua', from: 0.45 },
+        { id: 'aritenoide-kartilagoa', small: true, from: 0.65 },
+      ],
     },
     {
       to: { nerve: 1, open: 0 },
@@ -179,6 +191,7 @@ const specM: StageSpec<LarynxPose, LarynxOpts> = {
         { id: 'trakea', sub: 'ez arkuak', small: true, from: 0.5 },
       ],
       note: 'Bagoa handia da: toraxeko errai guztiak eta abdomeneko asko inerbatzen ditu. Horregatik zehazten da zein atalek',
+      plainNote: 'Bagoa handia da, nerbio parasinpatiko nagusiena: toraxeko errai guztiak eta abdomeneko asko inerbatzen ditu',
     },
   ],
 };

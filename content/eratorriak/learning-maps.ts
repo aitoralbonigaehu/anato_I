@@ -62,10 +62,17 @@ const GROUPS: Group[] = [
   [18, 'aurpegia', 'Aurpegia: goraguneak, sudur plakodak eta goiko ezpaina', ['aurpegiaren-hasiera-18', 'aurpegiaren-osagaiak-18']],
   [18, 'aho-sabaia', 'Aho sabaia eta sudurra', ['aho-sabaiaren-asteak-18', 'sudurraren-garapena-18']],
   [18, 'hortzak', 'Hortzak: aroak, geruzak eta motak', ['hortzaren-aroak-18', 'hortzaren-jatorriak-18', 'hortz-motak-18']],
+  [19, 'ikuspegiak', 'Mozketak eta ikuspegiak: ornomuina eta burmuina', ['mozketak-19']],
+  [19, 'sailkapenak', 'Nerbio sistema: kokapena eta funtzioa', ['kokapen-sailkapena-19', 'sailkapen-funtzionala-19']],
+  [19, 'sustraiak', 'Sustraiak, gongoila eta nerbio espinala', ['sustraiak-gongoila-19']],
+  [19, 'bideak', 'Borondatezko mugimendua eta aktu erreflexua', ['borondatezko-bidea-19', 'aktu-erreflexua-19']],
+  [19, 'meningeak', 'Meningeak: dura materra, araknoidesa, pia materra', ['meningeak-19']],
   [19, 'gandorra', 'Gandor neuralaren eratorriak', ['gandor-neuraleko-eratorriak-19']],
-  [19, 'ornomuina', 'Ornomuina: geruzak eta plakak', ['ornomuinaren-geruzak-19', 'ornomuinaren-plakak-19']],
-  [19, 'xixkuak', 'Garun-xixkuak eta haien eratorriak', ['garun-xixkuen-eratorriak-19']],
-  [19, 'bentrikuluak', 'Bentrikuluak eta likido zefalorrakideoa', ['garun-xixkuen-barrunbeak-19', 'likido-zefalorrakideoaren-bidea-19']],
+  [19, 'ornomuina', 'Ornomuinaren garapena: geruzak, plakak, gai grisa eta zuria', ['ornomuinaren-geruzak-19', 'ornomuinaren-plakak-19', 'gai-grisa-zuria-19']],
+  [19, 'aldaketak', 'Ornomuinaren aldaketak: konoa, zaldi buztana, puntzioa', ['ornomuinaren-igoera-19', 'puntzioa-epidurala-19']],
+  [19, 'plaka-neurala', 'Plaka neurala eta neuroporoak', ['plaka-neurala-19']],
+  [19, 'xixkuak', 'Garun-xixkuak: eratorriak eta tolespenak', ['garun-xixkuen-eratorriak-19', 'xixkuen-tolespenak-19']],
+  [19, 'bentrikuluak', 'Bentrikuluak eta likido zefalorrakideoa', ['bentrikuluak-19', 'likido-zefalorrakideoa-19']],
 ];
 
 const clone = (node: MNode): MNode => ({ ...node, ...(node.kids ? { kids: node.kids.map(clone) } : {}) });

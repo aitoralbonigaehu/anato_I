@@ -44,6 +44,12 @@ const spec1: StageSpec<FacePose, FaceOpts> = {
         { id: 'estomodeoa', text: 'Estomodeoa / hasierako ahoa', sub: 'epitelio ektodermikoa', from: 0.6 },
       ],
       note: 'Aurpegia 4. astearen bukaeran hasi eta 12. astearen inguruan bukatzen da: hasieran egiturak nahiko lateralak dira',
+      plainNames: [
+        { id: 'goragune-frontonasala', text: 'Goragune frontonasala', sub: 'estomodeoaren gainean' },
+        { id: 'luzapen-maxilarra', sub: 'I. arkua, alboetan', from: 0.2 },
+        { id: 'barail-luzapena', sub: 'I. arkua, alboetan', from: 0.4 },
+        { id: 'estomodeoa', text: 'Estomodeoa / hasierako ahoa', sub: 'epitelio ektodermikoa', from: 0.6 },
+      ],
     },
     {
       cam: FRONT(7.2, [0, -1.4, 0], 0, -6),
@@ -115,6 +121,7 @@ const spec2: StageSpec<FacePose, FaceOpts> = {
         { id: 'sudur-ertz-laterala', text: 'Ertz laterala / kanpokoa', sub: 'tenporala (urdina)', from: 0.3 },
       ],
       note: 'Plakodak gero eta lodiago: bi ertz, laterala edo kanpokoa (urdina, tenporala) eta mediala edo barnekoa (horia, nasala)',
+      plainNote: 'Plakodek bi ertz: laterala edo kanpokoa (urdina, tenporala) eta mediala edo barnekoa (horia, nasala)',
     },
     {
       to: { age: 5.9 },

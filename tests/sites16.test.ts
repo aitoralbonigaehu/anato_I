@@ -89,7 +89,8 @@ describe('topic 16: the six models in one body', () => {
   });
 
   test('the perineum lies below the trunk, in the midline', () => {
-    const skin = middle(external, (it) => it.key === 'skin');
+    // The perineum region of the skin (the skin itself runs on past the frame and curves away).
+    const skin = middle(external, (it) => it.key === 'per');
     const inDucts = apply(between(SITE16.external.place, SITE16.ducts.place), skin);
     const wallBox = middle(ducts, (it) => it.key === 'wall');
     expect(Math.abs(inDucts[0])).toBeLessThan(0.2);

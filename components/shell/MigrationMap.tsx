@@ -10,7 +10,7 @@ import { ReferenceTables, TABLE_TOPICS } from './eratorriak/ReferenceTables';
 import { hasRoom } from './eratorriak/roomWeeks';
 import { LearningMaps } from './eratorriak/LearningMaps';
 import { GridSchemes, hasGridSchemes } from './eratorriak/GridSchemes';
-import { hasBlueContent, taughtFlow } from '@/content/eratorriak/taught';
+import { flowShown, hasBlueContent, taughtFlow } from '@/content/eratorriak/taught';
 import { hueStyle } from './topicHue';
 
 /** A topic tab (week 0 = the topics 1–6 germ-layer trees), the arch-systems tab, or one origin followed across topics. */
@@ -328,7 +328,7 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
   const [quizOn, setQuizOn] = useState(false);
   const [shown, setShown] = useState<ReadonlySet<string>>(new Set());
   const [menu, setMenu] = useState(false);
-  // Topics 16+: by default only what was taught this year (the notes' blue text left out); "Osoa" shows all.
+  // Topics 15+: by default only what was taught this year (the notes' blue or grey text left out); "Osoa" shows all.
   const full = useSyncExternalStore(subscribeFull, readFull, () => false);
   const top = useRef<HTMLDivElement>(null);
   const side = useRef<HTMLElement>(null);
@@ -400,7 +400,7 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
   const blueHere = topic ? hasBlueContent(topic.week) : !!src?.groups.some((g) => hasBlueContent(g.t.week));
   const taughtOnly = blueHere && !full;
   const view = (flow: Flow) => (taughtOnly ? taughtFlow(flow) : flow);
-  const flows = (topic ? topic.flows : (src?.groups.flatMap((g) => g.flows) ?? [])).map(view);
+  const flows = (topic ? topic.flows : (src?.groups.flatMap((g) => g.flows) ?? [])).filter((f) => !taughtOnly || flowShown(f)).map(view).filter((f) => !taughtOnly || flowShown(f));
   const total = answersIn(flows);
   const grids = !!topic && part === 'eskemak' && hasGridSchemes(topic.week);
   const gridsFirst = grids && topic.week < 15;
@@ -574,9 +574,12 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
                 <h4>
                   <b>{g.t.week}. gaia</b> {g.t.short}
                 </h4>
-                {g.flows.map((f) => (
-                  <FlowCard key={f.id} flow={taughtOnly && hasBlueContent(g.t.week) ? taughtFlow(f) : f} week={g.t.week} lit={src.lit} quiz={quiz} />
-                ))}
+                {g.flows
+                  .map((f) => (taughtOnly && hasBlueContent(g.t.week) && flowShown(f) ? taughtFlow(f) : f))
+                  .filter((f) => !(taughtOnly && hasBlueContent(g.t.week)) || flowShown(f))
+                  .map((f) => (
+                    <FlowCard key={f.id} flow={f} week={g.t.week} lit={src.lit} quiz={quiz} />
+                  ))}
               </section>
             ))}
           </>

@@ -22,6 +22,7 @@ function withBrain(View: ReturnType<typeof poseStage17>) {
     return useGeoReady([NERVE_BRAIN]) ? <View {...props} /> : <Loading3D />;
   }
   Scene.geo = ['nerve-brain'];
+  Scene.spec = (View as { spec?: unknown }).spec;
   return Scene;
 }
 const CAP_BASE = 'Garuna behetik (apunteetako irudia bezala): aurrealdea goian, gorputzaren ezkerra zure eskuinean';

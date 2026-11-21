@@ -42,6 +42,7 @@ export const stages17e: StageDef[] = [
         notes: ['w17/2.2.3/p4/s1'],
         idea: 'Milohioideoa: ahoaren zoruaren muskulu nagusia.',
         text: 'Mihiaren zorua eratzen duten eta haren mugimenduetan parte hartzen duten muskuluak ere arku honetatik datoz, degluzioan parte hartzen dutenak. Milohioideoa da ahoaren zorua eratzen duen muskulu nagusiena.',
+        notTaught: true,
         focus: ['milohioideoa'],
         view: '3d',
       },

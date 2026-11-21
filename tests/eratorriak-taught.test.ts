@@ -4,7 +4,7 @@ import { LEARNING_MAPS } from '@/content/eratorriak/learning-maps';
 import { hasBlueContent, taughtGrid, taughtMap, taughtNodes } from '@/content/eratorriak/taught';
 import type { MNode } from '@/content/migrations';
 
-// "Aurten emandakoa" (default in Eratorriak from topic 16): the notes' blue text, not taught this year, is left out.
+// "Aurten emandakoa" (default in Eratorriak from topic 15): the notes' blue or grey text, not taught this year, is left out.
 const slotsFilled = (s: GridScheme) => {
   const covered = s.rows.map(() => s.columns.map(() => 0));
   s.rows.forEach((row, r) =>
@@ -16,11 +16,13 @@ const slotsFilled = (s: GridScheme) => {
   return covered.flat().every((n) => n === 1);
 };
 const labels = (nodes: MNode[]): string[] => nodes.flatMap((n) => [n.label ?? n.id ?? '', ...labels(n.kids ?? [])]);
+/** What the map shows once its taught wording (`plain`) is applied, blue nodes kept: only blue ones may go. */
+const plainLabels = (nodes: MNode[]): string[] => nodes.flatMap((n) => [n.plain?.label ?? n.label ?? n.id ?? '', ...plainLabels(n.kids ?? [])]);
 const anyBlue = (nodes: MNode[]): boolean => nodes.some((n) => n.blue || anyBlue(n.kids ?? []));
 
 describe('Eratorriak: taught this year', () => {
-  it('only topics 16+ have blue content', () => {
-    for (let w = 1; w <= 19; w++) expect(hasBlueContent(w), `topic ${w}`).toBe([16, 17, 18].includes(w));
+  it('only topics 15+ have blue content', () => {
+    for (let w = 1; w <= 19; w++) expect(hasBlueContent(w), `topic ${w}`).toBe([15, 17, 18, 19].includes(w));
   });
 
   it('drops blue nodes and lifts their taught children', () => {
@@ -33,7 +35,8 @@ describe('Eratorriak: taught this year', () => {
       const t = taughtMap(map);
       expect(anyBlue(t.roots), map.id).toBe(false);
       for (const d of t.details) expect(anyBlue(d.roots), `${map.id}/${d.id}`).toBe(false);
-      if (!anyBlue(map.roots)) expect(labels(t.roots)).toEqual(labels(map.roots));
+      if (!anyBlue(map.roots) && !map.details.some((d) => d.blue)) expect(labels(t.roots)).toEqual(plainLabels(map.roots));
+      for (const d of t.details) expect(d.blue, `${map.id}/${d.id}`).toBeUndefined();
     }
     const pharynx = LEARNING_MAPS.find((m) => m.week === 17 && anyBlue(m.roots))!;
     expect(labels(taughtMap(pharynx).roots)).not.toContain('milohioideoa');

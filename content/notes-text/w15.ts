@@ -120,7 +120,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p1/s1",
         "parts": [
           {
-            "text": "2.1. Giltzurrun gaineko guruinak"
+            "text": "2.1. Giltzurrun gaineko guruinak",
+            "u": true
           }
         ]
       }
@@ -557,10 +558,15 @@ export const w15: NotesBlock[] = [
           },
           {
             "text": "bi hodi",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " aterako dira:"
+            "text": " aterako dira",
+            "u": true
+          },
+          {
+            "text": ":"
           }
         ]
       }
@@ -624,14 +630,17 @@ export const w15: NotesBlock[] = [
             "b": true
           },
           {
-            "text": " (luzetarako hodia, maila desberdinetako nefrotomak lotuz): bestalde, "
+            "text": " (luzetarako hodia, maila desberdinetako nefrotomak lotuz): bestalde, ",
+            "u": true
           },
           {
             "text": "hodi pronefrikoa ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "nefrotoma desberdinak beste hodi baten ondorioz alde lateraletik lotzean eratzen da."
+            "text": "nefrotoma desberdinak beste hodi baten ondorioz alde lateraletik lotzean eratzen da.",
+            "u": true
           }
         ]
       }
@@ -661,7 +670,14 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.1/p7/s2",
         "parts": [
           {
-            "text": "Adar horien urrutiko muturretan, hari edo “ovillo” formako arteriolaz (kapilarrez) osatutako egitura batzuk eratuko dira: "
+            "text": "Adar horien urrutiko muturretan, hari "
+          },
+          {
+            "text": "edo “ovillo” ",
+            "u": true
+          },
+          {
+            "text": "formako arteriolaz (kapilarrez) osatutako egitura batzuk eratuko dira: "
           },
           {
             "text": "glomeruluak ",
@@ -731,7 +747,11 @@ export const w15: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "nefrotometarantz edo hodixka pronefrikoetarantz luzatuko direnak. "
+            "text": "nefrotometarantz ",
+            "u": true
+          },
+          {
+            "text": "edo hodixka pronefrikoetarantz luzatuko direnak. "
           }
         ]
       },
@@ -739,7 +759,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.1/p9/s2",
         "parts": [
           {
-            "text": "Hodixka, barneko glomerulurantz doa eta aldi berean, barneko glomeruluak hodixkarantz joaten dira, hortaz, azkenean biak batu egingo dira (kontuz! "
+            "text": "Hodixka, barneko glomerulurantz doa eta aldi berean, barneko glomeruluak hodixkarantz joaten dira, hortaz, azkenean biak batu egingo dira (kontuz! ",
+            "u": true
           }
         ]
       },
@@ -747,7 +768,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.1/p9/s3",
         "parts": [
           {
-            "text": "ez dira fusionatuko ez lotuko) hodixkak txano formako egitura osatuko du glomerulu gainean. "
+            "text": "ez dira fusionatuko ez lotuko) hodixkak txano formako egitura osatuko du glomerulu gainean. ",
+            "u": true
           }
         ]
       },
@@ -755,28 +777,35 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.1/p9/s4",
         "parts": [
           {
-            "text": "Egitura horri "
+            "text": "Egitura horri ",
+            "u": true
           },
           {
             "text": "korpuskulua ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "deritzo, "
+            "text": "deritzo, ",
+            "u": true
           },
           {
             "text": "hasierako iraitz unitateak",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " direnak eta "
+            "text": " direnak eta ",
+            "u": true
           },
           {
             "text": "ia funtzionalak ez ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "direnak. "
+            "text": "direnak. ",
+            "u": true
           }
         ]
       },
@@ -784,7 +813,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.1/p9/s5",
         "parts": [
           {
-            "text": "Hauek, hasieran, hasierako gernu sistemaren osagaiak dira."
+            "text": "Hauek, hasieran, hasierako gernu sistemaren osagaiak dira.",
+            "u": true
           }
         ]
       }
@@ -845,7 +875,14 @@ export const w15: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "sortu eta 4.astearen amaierarako ia endekatuko da (ez da guztiz endekatzen), pronefrosaren antzera ("
+            "text": "sortu eta 4.astearen amaierarako ia endekatuko da "
+          },
+          {
+            "text": "(ez da guztiz endekatzen)",
+            "u": true
+          },
+          {
+            "text": ", pronefrosaren antzera ("
           },
           {
             "text": "ez da funtzionala",
@@ -889,7 +926,11 @@ export const w15: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "(eskuinean eta ezkerrean) eratuta dago, kordoi nefrogenoak direnak. "
+            "text": "(eskuinean eta ezkerrean) eratuta dago, "
+          },
+          {
+            "text": "kordoi nefrogenoak direnak. ",
+            "u": true
           }
         ]
       },
@@ -926,7 +967,14 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p5/s1",
         "parts": [
           {
-            "text": "Gero, kordoi nefrogenoak eraldatu, garatu eta hodiaren barnean 2 egitura mota agertuko dira: "
+            "text": "Gero, "
+          },
+          {
+            "text": "kordoi nefrogenoak eraldatu, garatu eta ",
+            "u": true
+          },
+          {
+            "text": "hodiaren barnean 2 egitura mota agertuko dira: "
           },
           {
             "text": "gernu osagaia ",
@@ -948,14 +996,17 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p5/s2",
         "parts": [
           {
-            "text": "Egitura horiek garatzean kordoi nefrogenoak "
+            "text": "Egitura horiek garatzean kordoi nefrogenoak ",
+            "u": true
           },
           {
             "text": "gandor urogenitalak ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "deitzera pasatzen dira."
+            "text": "deitzera pasatzen dira.",
+            "u": true
           }
         ]
       }
@@ -1014,11 +1065,13 @@ export const w15: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "(kordoi nefrogenoak gandor urogenitala izatera pasatzen dira, osagai hauek eratu eta gero)"
+            "text": "(kordoi nefrogenoak gandor urogenitala izatera pasatzen dira, osagai hauek eratu eta gero)",
+            "u": true
           },
           {
             "text": ". ",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       },
@@ -1271,7 +1324,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p17/s4",
         "parts": [
           {
-            "text": "(ez dira fusionatzen, soilik bata bestearekin kontaktuan jarri). "
+            "text": "(ez dira fusionatzen, soilik bata bestearekin kontaktuan jarri). ",
+            "u": true
           }
         ]
       },
@@ -1343,7 +1397,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p19/s1",
         "parts": [
           {
-            "text": "●​ Mesonefrosaren atal funtzionala glomeruluak eta kapsulak eratuko du. "
+            "text": "●​ Mesonefrosaren atal funtzionala glomeruluak eta kapsulak eratuko du. ",
+            "u": true
           }
         ]
       },
@@ -1351,7 +1406,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p19/s2",
         "parts": [
           {
-            "text": "Pronefrosean baino funtzionalagoa, ez hain primitiboa (oraindik ez da guztiz funtzionala). "
+            "text": "Pronefrosean baino funtzionalagoa, ez hain primitiboa (oraindik ez da guztiz funtzionala). ",
+            "u": true
           }
         ]
       },
@@ -1359,7 +1415,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p19/s3",
         "parts": [
           {
-            "text": "Mesonefrosaren eta pronefrosaren arteko desberdintasun nagusia, hurrengoa da: mesonefrosean hodia gandorrean eratuta dago, pronefrosean hodi pronefrikoa hodixka atzean eratzen da."
+            "text": "Mesonefrosaren eta pronefrosaren arteko desberdintasun nagusia, hurrengoa da: mesonefrosean hodia gandorrean eratuta dago, pronefrosean hodi pronefrikoa hodixka atzean eratzen da.",
+            "u": true
           }
         ]
       }
@@ -1375,17 +1432,21 @@ export const w15: NotesBlock[] = [
         "parts": [
           {
             "text": "Aorta dortsaletik ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "ere adartxoak aterako dira ezker eta eskuinerantz, eta adar horiek muturretan arteriolaz osaturiko hari (“ovillo”) formako egiturak izango dituzte: "
+            "text": "ere adartxoak aterako dira ezker eta eskuinerantz, eta adar horiek muturretan arteriolaz osaturiko hari (“ovillo”) formako egiturak izango dituzte: ",
+            "u": true
           },
           {
             "text": "glomeruluak",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ". "
+            "text": ". ",
+            "u": true
           }
         ]
       },
@@ -1393,21 +1454,26 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p20/s2",
         "parts": [
           {
-            "text": "Aitzitik, "
+            "text": "Aitzitik, ",
+            "u": true
           },
           {
             "text": "hodi mesonefrikotik ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "aterako dira hodi batzuk, "
+            "text": "aterako dira hodi batzuk, ",
+            "u": true
           },
           {
             "text": "hodixka mesonefrikoak ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "deitutakoak. "
+            "text": "deitutakoak. ",
+            "u": true
           }
         ]
       },
@@ -1415,28 +1481,34 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p20/s3",
         "parts": [
           {
-            "text": "Hauen aurretik "
+            "text": "Hauen aurretik ",
+            "u": true
           },
           {
             "text": "xixku mesonefriko ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "bat egoten da, eta hau luzatzearen ondorioz, "
+            "text": "bat egoten da, eta hau luzatzearen ondorioz, ",
+            "u": true
           },
           {
             "text": "hodixka",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "mesonefriko ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "bihurtzen da. "
+            "text": "bihurtzen da. ",
+            "u": true
           }
         ]
       },
@@ -1444,21 +1516,26 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p20/s4",
         "parts": [
           {
-            "text": "Hodixkak luzatu egingo dira glomeruluetarantz, "
+            "text": "Hodixkak luzatu egingo dira glomeruluetarantz, ",
+            "u": true
           },
           {
             "text": "alde medialerantz",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ", eta muturrean, glomeruluen mailara iristen direnean, glomerulua inguratuko dute, txano formako kapsula bat eratuz, "
+            "text": ", eta muturrean, glomeruluen mailara iristen direnean, glomerulua inguratuko dute, txano formako kapsula bat eratuz, ",
+            "u": true
           },
           {
             "text": "kapsula bat ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "(ez dira fusionatzen, soilik bata bestearekin kontaktuan jarri). "
+            "text": "(ez dira fusionatzen, soilik bata bestearekin kontaktuan jarri). ",
+            "u": true
           }
         ]
       },
@@ -1481,14 +1558,17 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p20/s6",
         "parts": [
           {
-            "text": "Luzatzen ari den bitartean, "
+            "text": "Luzatzen ari den bitartean, ",
+            "u": true
           },
           {
             "text": "hodixka mesonefrikoa ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "bihurritu/tolestu egingo da. "
+            "text": "bihurritu/tolestu egingo da. ",
+            "u": true
           }
         ]
       },
@@ -1497,10 +1577,12 @@ export const w15: NotesBlock[] = [
         "parts": [
           {
             "text": "Hodixka pronefrikoak ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "nahiko zuzenak ziren, baina hauek jada tolesturak izaten dituzte."
+            "text": "nahiko zuzenak ziren, baina hauek jada tolesturak izaten dituzte.",
+            "u": true
           }
         ]
       }
@@ -1531,21 +1613,26 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p22/s1",
         "parts": [
           {
-            "text": "Korpuskuluetan emango da "
+            "text": "Korpuskuluetan emango da ",
+            "u": true
           },
           {
             "text": "iraizpen funtzioa",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ", hau da, odola bertan filtratuko da eta horrekin batera, "
+            "text": ", hau da, odola bertan filtratuko da eta horrekin batera, ",
+            "u": true
           },
           {
             "text": "gernua ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "sortuko da. "
+            "text": "sortuko da. ",
+            "u": true
           }
         ]
       },
@@ -1553,14 +1640,17 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p22/s2",
         "parts": [
           {
-            "text": "Horren ondorioz, odola aortatik irten eta glomeruluetara iritsiko da, "
+            "text": "Horren ondorioz, odola aortatik irten eta glomeruluetara iritsiko da, ",
+            "u": true
           },
           {
             "text": "arteriola afereteen ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "bitartez. "
+            "text": "bitartez. ",
+            "u": true
           }
         ]
       },
@@ -1568,21 +1658,25 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p22/s3",
         "parts": [
           {
-            "text": "Iraizpena gertatu ondoren, odola bueltatuko da "
+            "text": "Iraizpena gertatu ondoren, odola bueltatuko da ",
+            "u": true
           },
           {
             "text": "arteriola",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "eferenteen ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "bitartez. "
+            "text": "bitartez. ",
+            "u": true
           }
         ]
       },
@@ -1590,14 +1684,17 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.2/p22/s4",
         "parts": [
           {
-            "text": "Beraz, mesonefrosa "
+            "text": "Beraz, mesonefrosa ",
+            "u": true
           },
           {
             "text": "funtzionala ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "da."
+            "text": "da.",
+            "u": true
           }
         ]
       }
@@ -1675,7 +1772,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.3/p3/s5",
         "parts": [
           {
-            "text": "Beraz, hiru azpisistemetatik funtzionalena eta garatuena izango da. "
+            "text": "Beraz, hiru azpisistemetatik funtzionalena eta garatuena izango da. ",
+            "u": true
           }
         ]
       },
@@ -1817,18 +1915,25 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.3/p7/s2",
         "parts": [
           {
-            "text": "○​ Hodi mesonefrikoaren alde kaudalean edo distalean (kloakan* amaitzen da hasiera batean) edo gernu maskuritik hurbil dagoen muturrean kimu txiki bat eratuko da: "
+            "text": "○​ "
+          },
+          {
+            "text": "Hodi mesonefrikoaren alde kaudalean edo distalean (kloakan* amaitzen da hasiera batean) edo gernu maskuritik hurbil dagoen muturrean kimu txiki bat eratuko da: ",
+            "u": true
           },
           {
             "text": "ureter kimua ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "(adar bat ateratzen zaio hodiari)"
+            "text": "(adar bat ateratzen zaio hodiari)",
+            "u": true
           },
           {
             "text": ". ",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       },
@@ -1836,7 +1941,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.3/p7/s3",
         "parts": [
           {
-            "text": "Luzakin hori inguruko mesenkimara luzatuko da (eskuin eta ezkerrera) enbrioiaren atzeko horman sartuz. "
+            "text": "Luzakin hori inguruko mesenkimara luzatuko da (eskuin eta ezkerrera) enbrioiaren atzeko horman sartuz. ",
+            "u": true
           }
         ]
       },
@@ -1844,14 +1950,17 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.3/p7/s4",
         "parts": [
           {
-            "text": "Aldi berean, mesenkima horretan (enbrioiaren atzeko paretan, ureter kimuaren maila berdinean) zelula batzuk desberdintzen doaz eta multzokatu egingo dira "
+            "text": "Aldi berean, mesenkima horretan (enbrioiaren atzeko paretan, ureter kimuaren maila berdinean) zelula batzuk desberdintzen doaz eta multzokatu egingo dira ",
+            "u": true
           },
           {
             "text": "blastema metanefrikoa ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "eratuz; metaketa trinkoa dena."
+            "text": "eratuz; metaketa trinkoa dena.",
+            "u": true
           }
         ]
       }
@@ -1926,7 +2035,14 @@ export const w15: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "(bi edo hiru izaten dira, kopa formakoak). "
+            "text": "(bi edo hiru izaten dira, "
+          },
+          {
+            "text": "kopa formakoak",
+            "u": true
+          },
+          {
+            "text": "). "
           }
         ]
       },
@@ -1941,7 +2057,21 @@ export const w15: NotesBlock[] = [
             "b": true
           },
           {
-            "text": " emanez (7. asterako eratzen dira; kopa itxurako egitura txikiagoak dira). "
+            "text": " emanez ("
+          },
+          {
+            "text": "7. asterako eratzen dira",
+            "u": true
+          },
+          {
+            "text": "; "
+          },
+          {
+            "text": "kopa itxurako ",
+            "u": true
+          },
+          {
+            "text": "egitura txikiagoak dira). "
           }
         ]
       },
@@ -1972,7 +2102,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.3/p8/s9",
         "parts": [
           {
-            "text": "Hodi biltzaileak eta eta sistema garatuta egongo dira 9-10. asterako. "
+            "text": "Hodi biltzaileak eta eta sistema garatuta egongo dira 9-10. asterako. ",
+            "u": true
           }
         ]
       },
@@ -2077,7 +2208,11 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.3/p13/s2",
         "parts": [
           {
-            "text": "○​ 3. hilabetean:Enbrioi gernua garatu ○​ 5. hilabetetean:Giltzurrunak ia guztiz helduta ○​ Jaiotzaren inguruan:Guztiz helduta ○​ Denak, pelbisa izan ezik, giltzurrunaren blastemaren barnean geratuko dira."
+            "text": "○​ 3. hilabetean:Enbrioi gernua garatu ○​ 5. hilabetetean:Giltzurrunak ia guztiz helduta ○​ Jaiotzaren inguruan:Guztiz helduta ○​ "
+          },
+          {
+            "text": "Denak, pelbisa izan ezik, giltzurrunaren blastemaren barnean geratuko dira.",
+            "u": true
           }
         ]
       }
@@ -2191,7 +2326,11 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.3/p14/s9",
         "parts": [
           {
-            "text": "○​ Hasieran trinkoa da, baina gero metaketa hau xixku bihurtzen (bakuolizatu ondoren) da, hau da, metaketaren barnean barrunbe bat sortzen/zulatu egiten da, "
+            "text": "○​ Hasieran trinkoa da, baina gero metaketa hau xixku bihurtzen (bakuolizatu ondoren) da, "
+          },
+          {
+            "text": "hau da, metaketaren barnean barrunbe bat sortzen/zulatu egiten da, ",
+            "u": true
           },
           {
             "text": "xixku metanefrikoa ",
@@ -2352,7 +2491,11 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.3/p15/s12",
         "parts": [
           {
-            "text": "○​ Glomeruluan arteriola aferenteak eta arteriola eferenteak egongo dira, baina kasu honetan glomeruluak ez dira aortatik zuzenean etorriko, baizik eta giltzurrun arterietatik eta hemendik ateratako adarretatik (aortatik ateratzen dira). "
+            "text": "○​ "
+          },
+          {
+            "text": "Glomeruluan arteriola aferenteak eta arteriola eferenteak egongo dira, baina kasu honetan glomeruluak ez dira aortatik zuzenean etorriko, baizik eta giltzurrun arterietatik eta hemendik ateratako adarretatik (aortatik ateratzen dira). ",
+            "u": true
           }
         ]
       },
@@ -2360,7 +2503,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.3/p15/s13",
         "parts": [
           {
-            "text": "Izan ere, sistema kardiobaskularra garatuago dago."
+            "text": "Izan ere, sistema kardiobaskularra garatuago dago.",
+            "u": true
           }
         ]
       }
@@ -2406,7 +2550,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/1.3/p16/s4",
         "parts": [
           {
-            "text": "Hodi biltzaile batek hainbat adar ditu, beraz, adar bakoitzera nefrona baten gernua helduko da. "
+            "text": "Hodi biltzaile batek hainbat adar ditu, beraz, adar bakoitzera nefrona baten gernua helduko da. ",
+            "u": true
           }
         ]
       },
@@ -2446,7 +2591,8 @@ export const w15: NotesBlock[] = [
         "parts": [
           {
             "text": "2. GILTZURRUNAK",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       }
@@ -2541,7 +2687,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2/p3/s7",
         "parts": [
           {
-            "text": "Eta nefrogenesia 35. astean amaitzen da, hemen hasten da metanefrosa funtzionala izaten. "
+            "text": "Eta nefrogenesia 35. astean amaitzen da, hemen hasten da metanefrosa funtzionala izaten. ",
+            "u": true
           }
         ]
       }
@@ -2556,7 +2703,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2/p4/s1",
         "parts": [
           {
-            "text": "Giltzurrunak alde sakroan eratzen dira, kloakatik gertu, baina nagusietan alde lunbarrean daukagu. "
+            "text": "Giltzurrunak alde sakroan eratzen dira, kloakatik gertu, baina nagusietan alde lunbarrean daukagu. ",
+            "u": true
           }
         ]
       },
@@ -2564,7 +2712,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2/p4/s2",
         "parts": [
           {
-            "text": "Orduan, gorantz mugitzen dira, abdomenaren luzapenaren ondorioz. "
+            "text": "Orduan, gorantz mugitzen dira, abdomenaren luzapenaren ondorioz. ",
+            "u": true
           }
         ]
       },
@@ -2572,7 +2721,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2/p4/s3",
         "parts": [
           {
-            "text": "Giltzurrunak gorantz doazen heinean, mesonefrosa gero eta txikiagoa da endekatu egiten delako. "
+            "text": "Giltzurrunak gorantz doazen heinean, mesonefrosa gero eta txikiagoa da endekatu egiten delako. ",
+            "u": true
           }
         ]
       },
@@ -2580,14 +2730,17 @@ export const w15: NotesBlock[] = [
         "id": "w15/2/p4/s4",
         "parts": [
           {
-            "text": "Mesonefrosaren parean, "
+            "text": "Mesonefrosaren parean, ",
+            "u": true
           },
           {
             "text": "gonadak ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "eratuko dira. "
+            "text": "eratuko dira. ",
+            "u": true
           }
         ]
       },
@@ -2595,7 +2748,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2/p4/s5",
         "parts": [
           {
-            "text": "Gonada hauek, beherantz egingo dute. "
+            "text": "Gonada hauek, beherantz egingo dute. ",
+            "u": true
           }
         ]
       },
@@ -2603,21 +2757,26 @@ export const w15: NotesBlock[] = [
         "id": "w15/2/p4/s6",
         "parts": [
           {
-            "text": "Giltzurrunak gorantz joatean, "
+            "text": "Giltzurrunak gorantz joatean, ",
+            "u": true
           },
           {
             "text": "ureterrak ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "gero eta gorago eta luzeago egiten dira, eta gonadak beherantz joatean, "
+            "text": "gero eta gorago eta luzeago egiten dira, eta gonadak beherantz joatean, ",
+            "u": true
           },
           {
             "text": "hodi mesonefrikoa ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "gero eta txikiagoa egiten da (endekatuz doalako). "
+            "text": "gero eta txikiagoa egiten da (endekatuz doalako). ",
+            "u": true
           }
         ]
       },
@@ -2625,7 +2784,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2/p4/s7",
         "parts": [
           {
-            "text": "Honen ondorioz, gernu maskurian egitura berezi bat sortuko da. "
+            "text": "Honen ondorioz, gernu maskurian egitura berezi bat sortuko da. ",
+            "u": true
           }
         ]
       },
@@ -2633,7 +2793,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2/p4/s8",
         "parts": [
           {
-            "text": "Barrunbe abdominala luzatzen den heinean mugituko dira errai hauek."
+            "text": "Barrunbe abdominala luzatzen den heinean mugituko dira errai hauek.",
+            "u": true
           }
         ]
       }
@@ -2649,7 +2810,8 @@ export const w15: NotesBlock[] = [
         "parts": [
           {
             "text": "Irudi osagarria: Giltzurrunen igoera prozesua",
-            "i": true
+            "i": true,
+            "u": true
           }
         ]
       }
@@ -2666,7 +2828,8 @@ export const w15: NotesBlock[] = [
           {
             "text": "2.1 Giltzurrun gaineko guruinak",
             "b": true,
-            "i": true
+            "i": true,
+            "u": true
           }
         ]
       }
@@ -2682,10 +2845,12 @@ export const w15: NotesBlock[] = [
         "parts": [
           {
             "text": "Giltzurrun gaineko guruinak ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "garatzen diren tokian geratzen dira; ez dira mugitzen. "
+            "text": "garatzen diren tokian geratzen dira; ez dira mugitzen. ",
+            "u": true
           }
         ]
       },
@@ -2693,7 +2858,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p3/s2",
         "parts": [
           {
-            "text": "Hauek, batez ere, hormonen ekoizpenean parte hartzen dute: hormona esteroideak, epinefrina, norepinefrina."
+            "text": "Hauek, batez ere, hormonen ekoizpenean parte hartzen dute: hormona esteroideak, epinefrina, norepinefrina.",
+            "u": true
           }
         ]
       }
@@ -2708,7 +2874,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p4/s1",
         "parts": [
           {
-            "text": "Azkenengo bi hormona horiek, bihotzen taupadak kontrolatzeko balio dute; taupaden abiadura edo frekuentzia."
+            "text": "Azkenengo bi hormona horiek, bihotzen taupadak kontrolatzeko balio dute; taupaden abiadura edo frekuentzia.",
+            "u": true
           }
         ]
       }
@@ -2723,7 +2890,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p5/s1",
         "parts": [
           {
-            "text": "Giltzurrun gaineko guruinak, 6. astean hasten dira garatzen. "
+            "text": "Giltzurrun gaineko guruinak, 6. astean hasten dira garatzen. ",
+            "u": true
           }
         ]
       },
@@ -2731,7 +2899,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p5/s2",
         "parts": [
           {
-            "text": "Bi jatorri desberdin dauzkate: ektodermikoa-gandor neuronalatik (muina) eta mesodermikoa (gainerakoa). "
+            "text": "Bi jatorri desberdin dauzkate: ektodermikoa-gandor neuronalatik (muina) eta mesodermikoa (gainerakoa). ",
+            "u": true
           }
         ]
       },
@@ -2739,7 +2908,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p5/s3",
         "parts": [
           {
-            "text": "Honako hauek, ez dira guztiz desagertuko, ezberdinak direlako."
+            "text": "Honako hauek, ez dira guztiz desagertuko, ezberdinak direlako.",
+            "u": true
           }
         ]
       }
@@ -2754,21 +2924,26 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p6/s1",
         "parts": [
           {
-            "text": "Hasieran, kortexa hasiko da garatzen: "
+            "text": "Hasieran, kortexa hasiko da garatzen: ",
+            "u": true
           },
           {
             "text": "enbrio-kortexa ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "edo "
+            "text": "edo ",
+            "u": true
           },
           {
             "text": "fetu-kortexa",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ". "
+            "text": ". ",
+            "u": true
           }
         ]
       },
@@ -2776,7 +2951,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p6/s2",
         "parts": [
           {
-            "text": "Hau, mesodermotik garatuko da. "
+            "text": "Hau, mesodermotik garatuko da. ",
+            "u": true
           }
         ]
       },
@@ -2784,11 +2960,13 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p6/s3",
         "parts": [
           {
-            "text": "Gandor urogenitaletako zelula batzuk bereizi egiten dira, berriro multzotuz, eta horren ondorioz, hasierako kortex hori sortzen dute: "
+            "text": "Gandor urogenitaletako zelula batzuk bereizi egiten dira, berriro multzotuz, eta horren ondorioz, hasierako kortex hori sortzen dute: ",
+            "u": true
           },
           {
             "text": "fetu-kortexa.",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       }
@@ -2803,7 +2981,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p7/s1",
         "parts": [
           {
-            "text": "Geroago, gandor neuraleko zelula batzuk, gutxi gorabehera giltzurrun gaineko guruinek eratzen diren maila berdineko gongoiletatik daudenak, luzatu edo abiatu egingo dira zelula batzuk, atera eta kortexaren alde medialerantz joango dira. "
+            "text": "Geroago, gandor neuraleko zelula batzuk, gutxi gorabehera giltzurrun gaineko guruinek eratzen diren maila berdineko gongoiletatik daudenak, luzatu edo abiatu egingo dira zelula batzuk, atera eta kortexaren alde medialerantz joango dira. ",
+            "u": true
           }
         ]
       },
@@ -2811,7 +2990,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p7/s2",
         "parts": [
           {
-            "text": "Bertan, itsatsi egingo dira. "
+            "text": "Bertan, itsatsi egingo dira. ",
+            "u": true
           }
         ]
       },
@@ -2819,7 +2999,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p7/s3",
         "parts": [
           {
-            "text": "Horietatik, guruinetako muina aterako da. "
+            "text": "Horietatik, guruinetako muina aterako da. ",
+            "u": true
           }
         ]
       },
@@ -2827,18 +3008,22 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p7/s4",
         "parts": [
           {
-            "text": "Muina eratzen duten zelula hauek, barneratu egiten dira; gero eta barrurago "
+            "text": "Muina eratzen duten zelula hauek, barneratu egiten dira; gero eta barrurago ",
+            "u": true
           },
           {
             "text": "enbrio/fetu-kortexaren ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "barnean eta beste geruza bat bereizten hasiko da: "
+            "text": "barnean eta beste geruza bat bereizten hasiko da: ",
+            "u": true
           },
           {
             "text": "behin-betiko kortexaren hasikina. ",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       },
@@ -2846,7 +3031,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p7/s5",
         "parts": [
           {
-            "text": "Gero, garapenean, beste geruza batzuk agertuko dira."
+            "text": "Gero, garapenean, beste geruza batzuk agertuko dira.",
+            "u": true
           }
         ]
       }
@@ -2861,7 +3047,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p8/s1",
         "parts": [
           {
-            "text": "Muina, hasiera batean txikituko da, baina gero, berriro ere, handituko da. "
+            "text": "Muina, hasiera batean txikituko da, baina gero, berriro ere, handituko da. ",
+            "u": true
           }
         ]
       },
@@ -2869,14 +3056,17 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p8/s2",
         "parts": [
           {
-            "text": "Lehenengo urtean zehar, desagertu egingo da "
+            "text": "Lehenengo urtean zehar, desagertu egingo da ",
+            "u": true
           },
           {
             "text": "behin-behineko kortexa",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ". "
+            "text": ". ",
+            "u": true
           }
         ]
       },
@@ -2884,7 +3074,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.1/p8/s3",
         "parts": [
           {
-            "text": "Beraz, giltzurrun gaineko guruinek ez dira bakarrik garatzen enbrioi eta fetu barruan, baizik eta jaioberrietan ere; lehenengo urtean oraindik garatzen ari dira."
+            "text": "Beraz, giltzurrun gaineko guruinek ez dira bakarrik garatzen enbrioi eta fetu barruan, baizik eta jaioberrietan ere; lehenengo urtean oraindik garatzen ari dira.",
+            "u": true
           }
         ]
       }
@@ -3027,28 +3218,34 @@ export const w15: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "Emeetan "
+            "text": "Emeetan ",
+            "u": true
           },
           {
             "text": "baginaren",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
           },
           {
             "text": "bestibulua ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "eratuko da, eta arretan zakila tamainaz hazi eta luzatu egingo da, "
+            "text": "eratuko da, eta arretan zakila tamainaz hazi eta luzatu egingo da, ",
+            "u": true
           },
           {
             "text": "uretraren zakila atala ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "eratuz. "
+            "text": "eratuz. ",
+            "u": true
           }
         ]
       },
@@ -3087,25 +3284,31 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.2/p6/s7",
         "parts": [
           {
-            "text": "Emeetan "
+            "text": "Emeetan ",
+            "u": true
           },
           {
             "text": "mintzezko uretra ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "eratzen da zati pelbianotik eta arretan "
+            "text": "eratzen da zati pelbianotik eta arretan ",
+            "u": true
           },
           {
             "text": "mintzezko uretra ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "nahiz "
+            "text": "nahiz ",
+            "u": true
           },
           {
             "text": "uretraren zati prostatikoa.",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": " "
@@ -3255,7 +3458,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.2/p9/s1",
         "parts": [
           {
-            "text": "Egiturak garatzen edo ezberdintzen joaten dira: Lehenik alantoidea ikusten da hodi moduan (gero soka forma eta urako izango dena). "
+            "text": "Egiturak garatzen edo ezberdintzen joaten dira: Lehenik alantoidea ikusten da hodi moduan (gero soka forma eta urako izango dena). ",
+            "u": true
           }
         ]
       },
@@ -3263,7 +3467,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.2/p9/s2",
         "parts": [
           {
-            "text": "Hori gernu maskuriarekin jarraitzen du. "
+            "text": "Hori gernu maskuriarekin jarraitzen du. ",
+            "u": true
           }
         ]
       },
@@ -3271,7 +3476,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.2/p9/s3",
         "parts": [
           {
-            "text": "Gernu maskuria primitiboa ikusten da, hasierako gernu maskuria bat, zabalgune bat bezala agertzen da, hau da, hodia zabaldu eta gernu maskuria eratzen da. "
+            "text": "Gernu maskuria primitiboa ikusten da, hasierako gernu maskuria bat, zabalgune bat bezala agertzen da, hau da, hodia zabaldu eta gernu maskuria eratzen da. ",
+            "u": true
           }
         ]
       },
@@ -3279,14 +3485,17 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.2/p9/s4",
         "parts": [
           {
-            "text": "Gernu maskuria pasatu eta gero, hodia berriro estutu egiten da eta beste atal bat eratzen da, "
+            "text": "Gernu maskuria pasatu eta gero, hodia berriro estutu egiten da eta beste atal bat eratzen da, ",
+            "u": true
           },
           {
             "text": "atal pelbianoa",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ". "
+            "text": ". ",
+            "u": true
           }
         ]
       },
@@ -3294,7 +3503,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.2/p9/s5",
         "parts": [
           {
-            "text": "Bertatik uretra garatuko da. "
+            "text": "Bertatik uretra garatuko da. ",
+            "u": true
           }
         ]
       },
@@ -3302,14 +3512,17 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.2/p9/s6",
         "parts": [
           {
-            "text": "Azkenik, hasierako egitura zapala aurkitzen da (kanporatzeko zuloan beste zabalgune bat), eta hortik "
+            "text": "Azkenik, hasierako egitura zapala aurkitzen da (kanporatzeko zuloan beste zabalgune bat), eta hortik ",
+            "u": true
           },
           {
             "text": "behin-betiko sinu urogenitala ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "sortuko da (emakumetan azkenean baginaren bestibulua dena)."
+            "text": "sortuko da (emakumetan azkenean baginaren bestibulua dena).",
+            "u": true
           }
         ]
       }
@@ -3370,7 +3583,11 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.2/p12/s1",
         "parts": [
           {
-            "text": "●​ Guruin parauretralak (emakumeak) Urakoa ez bada ixten guztiz, hau da, ez badu soka forma hartzen batzuetan barnean barrunbeak gelditzen dira. "
+            "text": "●​ Guruin parauretralak (emakumeak) "
+          },
+          {
+            "text": "Urakoa ez bada ixten guztiz, hau da, ez badu soka forma hartzen batzuetan barnean barrunbeak gelditzen dira. ",
+            "u": true
           }
         ]
       },
@@ -3378,7 +3595,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.2/p12/s2",
         "parts": [
           {
-            "text": "Ondorioz, fistulak eratzen dira (hauek arazoak eragiten dituzte jaioberrietan)."
+            "text": "Ondorioz, fistulak eratzen dira (hauek arazoak eragiten dituzte jaioberrietan).",
+            "u": true
           }
         ]
       }
@@ -3607,7 +3825,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.3/p7/s7",
         "parts": [
           {
-            "text": "Hasieran, ureter-kimua hodi mesonefrikoaren mutur kaudaletik sortzen den adar bat da."
+            "text": "Hasieran, ureter-kimua hodi mesonefrikoaren mutur kaudaletik sortzen den adar bat da.",
+            "u": true
           }
         ]
       }
@@ -3622,7 +3841,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.3/p8/s1",
         "parts": [
           {
-            "text": "Hodi mesonefrikoa kloakan amaitzen da; beraz, ureter-kimua hasieran ez da zuzenean kloakan irekitzen, hodi mesonefrikoaren bidez baizik. "
+            "text": "Hodi mesonefrikoa kloakan amaitzen da; beraz, ureter-kimua hasieran ez da zuzenean kloakan irekitzen, hodi mesonefrikoaren bidez baizik. ",
+            "u": true
           }
         ]
       },
@@ -3630,7 +3850,11 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.3/p8/s2",
         "parts": [
           {
-            "text": "Garapena dela eta (enbrioa beherantz hastean eta luzatzean), ureter kimua eta hodi mesonefrikoa askatu egiten dira. "
+            "text": "Garapena dela eta (enbrioa beherantz hastean eta luzatzean), ureter kimua eta hodi mesonefrikoa "
+          },
+          {
+            "text": "askatu egiten dira. ",
+            "u": true
           }
         ]
       },
@@ -3638,7 +3862,11 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.3/p8/s3",
         "parts": [
           {
-            "text": "Hortaz, haien kokapena guztiz aldatzen da ("
+            "text": "Hortaz, ",
+            "u": true
+          },
+          {
+            "text": "haien kokapena guztiz aldatzen da ("
           },
           {
             "text": "ureterra",
@@ -3721,14 +3949,17 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.3/p8/s9",
         "parts": [
           {
-            "text": "Trigono honek "
+            "text": "Trigono honek ",
+            "u": true
           },
           {
             "text": "inerbazio autonomoa ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "(berezia; garrantzitsua kliniko eta funtzionalki) du eta inerbazio honek parte hartuko du txisalarri garenean esfinterrak irekitzen."
+            "text": "(berezia; garrantzitsua kliniko eta funtzionalki) du eta inerbazio honek parte hartuko du txisalarri garenean esfinterrak irekitzen.",
+            "u": true
           }
         ]
       }
@@ -3782,7 +4013,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.3/p11/s1",
         "parts": [
           {
-            "text": "Garapenarekin, hala ere, zelula mesodermiko horiek endekatu egiten dira eta uzten duten tokia inguruko zelula endodermikoek betetzen dute (zelula endodermikoek hiruki formako trigono egitura hau beteko dute). "
+            "text": "Garapenarekin, hala ere, zelula mesodermiko horiek endekatu egiten dira eta uzten duten tokia inguruko zelula endodermikoek betetzen dute (zelula endodermikoek hiruki formako trigono egitura hau beteko dute). ",
+            "u": true
           }
         ]
       },
@@ -3790,7 +4022,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.3/p11/s2",
         "parts": [
           {
-            "text": "Hau da, ehun endodermikoko zelulek trigonoa estaltzen dute eta beraz, gernu maskuriaren kanpotik ez da trigonoa ikusiko. "
+            "text": "Hau da, ehun endodermikoko zelulek trigonoa estaltzen dute eta beraz, gernu maskuriaren kanpotik ez da trigonoa ikusiko. ",
+            "u": true
           }
         ]
       },
@@ -3798,7 +4031,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.3/p11/s3",
         "parts": [
           {
-            "text": "Gernu maskuriaren barnetik, ordea, bai ikus daiteke trigonoa. "
+            "text": "Gernu maskuriaren barnetik, ordea, bai ikus daiteke trigonoa. ",
+            "u": true
           }
         ]
       },
@@ -3806,7 +4040,8 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.3/p11/s4",
         "parts": [
           {
-            "text": "Horrela, helduetan epitelio osoak jatorri endodermikoa izango du. "
+            "text": "Horrela, helduetan epitelio osoak jatorri endodermikoa izango du. ",
+            "u": true
           }
         ]
       },
@@ -3814,7 +4049,11 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.3/p11/s5",
         "parts": [
           {
-            "text": "Hala ere, helduetan hiruki formaren aztarna beti geratzen da. "
+            "text": "Hala ere, ",
+            "u": true
+          },
+          {
+            "text": "helduetan hiruki formaren aztarna beti geratzen da. "
           }
         ]
       },
@@ -3822,7 +4061,11 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.3/p11/s6",
         "parts": [
           {
-            "text": "Trigonoak garrantzi kliniko handia du, helduetan trigonoan ureter zuloak (trigonoaren goiko muga izango dira) aurkitu daitezkeelako (sondak sartzeko, batik bat), erreferentzia bezala erabiltzen da (kirurgian eta sondak jartzean)."
+            "text": "Trigonoak garrantzi kliniko handia du, helduetan trigonoan ureter zuloak (trigonoaren goiko muga izango dira) aurkitu daitezkeelako "
+          },
+          {
+            "text": "(sondak sartzeko, batik bat), erreferentzia bezala erabiltzen da (kirurgian eta sondak jartzean).",
+            "u": true
           }
         ]
       }
@@ -4156,18 +4399,25 @@ export const w15: NotesBlock[] = [
         "id": "w15/2.4/p6/s3",
         "parts": [
           {
-            "text": "Gizonen uretrak hiru atal desberdin izango ditu: "
+            "text": "Gizonen uretrak hiru atal desberdin izango ditu: ",
+            "u": true
           },
           {
             "text": "uretra prostatikoa ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "(prostata guruina dauka), "
+            "text": "(prostata guruina dauka)",
+            "u": true
+          },
+          {
+            "text": ", "
           },
           {
             "text": "mintzezko uretra ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
             "text": "eta "

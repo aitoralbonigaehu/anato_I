@@ -6,6 +6,7 @@ import { UC } from './uro-model';
 import { KP0, kidneyModel, type KidneyOpts, type KidneyPose } from './kidney-model';
 import { NP0, nephronModel, type NephronOpts, type NephronPose } from './nephron-model';
 import { AC, AP0, adrenalModel, type AdrenalOpts, type AdrenalPose } from './adrenal-model';
+import { SITE15 } from './sites';
 
 /**
  * Topic 15's close-ups: the collecting system branching inside the blastema (stage 8), a nephron forming at
@@ -25,6 +26,8 @@ const KEY_K = [
 
 const spec8: StageSpec<KidneyPose, KidneyOpts> = {
   map: 'kidney',
+  site: SITE15.kidney,
+  arrive: 'Ezkerreko metanefrosara hurbildu gara: ureter kimua blasteman sartzen',
   where: { th: -0.9, at: [-2.4, -0.4, 3.0], scale: 6, planes: [-1, 1].map((s) => ({ center: [0, -0.4 + s * 2.2, 0] as V3, a: [2.2, 0, 0] as V3, b: [0, 0, 1.8] as V3 })), note: 'Ezkerreko metanefrosa: atzeko paretan, sakroaren mailan; aurretik eta gertutik' },
   S: S8,
   pose: KP0,
@@ -65,7 +68,11 @@ const spec8: StageSpec<KidneyPose, KidneyOpts> = {
       fit: ['kaliza-nagusiak', 'giltzurrun-pelbisa', 'blastema-metanefrikoa'],
       dim: ['kaliza-nagusiak', 'giltzurrun-pelbisa'],
       names: [{ id: 'kaliza-nagusiak', sub: 'bi edo hiru, kopa formakoak', from: 0.5 }],
+      plainNames: [
+        { id: 'kaliza-nagusiak', sub: 'bi edo hiru', from: 0.5 },
+      ],
       note: 'Pelbisa adarkatzen da: lehen adar nagusiak, kaliza nagusiak (bi edo hiru, kopa formakoak)',
+      plainNote: 'Pelbisa adarkatzen da: lehen adar nagusiak, kaliza nagusiak (bi edo hiru)',
     },
     {
       to: { minor: 1, coll: 1, bean: 1 },
@@ -77,7 +84,12 @@ const spec8: StageSpec<KidneyPose, KidneyOpts> = {
         { id: 'kaliza-txikiak', sub: '7. asterako', from: 0.15 },
         { id: 'hodi-biltzaileak', sub: 'luzeak eta finak · 9.–10. asterako', from: 0.5 },
       ],
+      plainNames: [
+        { id: 'kaliza-txikiak', from: 0.15 },
+        { id: 'hodi-biltzaileak', sub: 'luzeak eta finak', from: 0.5 },
+      ],
       note: 'Kaliza nagusi bakoitza → kaliza txikiak (7. astea); hauek → hodi biltzaileak, luze eta finak (9.–10. astea)',
+      plainNote: 'Kaliza nagusi bakoitza → kaliza txikiak; hauek → hodi biltzaileak, luze eta finak',
     },
     {
       to: { urine: 1 },
@@ -110,6 +122,8 @@ const KEY_N = [
 
 const spec9: StageSpec<NephronPose, NephronOpts> = {
   map: 'nephron',
+  site: SITE15.nephron,
+  arrive: 'Giltzurrunaren goiko polora, hodi biltzaile baten muturrera: hemen eratzen da nefrona',
   where: { th: -0.9, at: [-2.4, -0.4, 3.0], scale: 6, planes: [-1, 1].map((s) => ({ center: [0, -0.4 + s * 2.2, 0] as V3, a: [2.2, 0, 0] as V3, b: [0, 0, 1.8] as V3 })), note: 'Giltzurrunaren barrura: nefrona bakoitza giltzurrun kortexean eratzen da' },
   S: S9,
   pose: NP0,
@@ -163,6 +177,7 @@ const spec9: StageSpec<NephronPose, NephronOpts> = {
         { id: 'arteriola-eferentea', small: true, from: 0.6 },
       ],
       note: 'Beste muturra glomerulurantz: txano formako kapsula. Glomeruluak ez datoz aortatik zuzenean, giltzurrun arterien adarretatik',
+      plainNote: 'Beste muturra glomerulurantz: txano formako kapsula (glomerulua + kapsula = korpuskulua). Glomeruluak giltzurrun arterietatik',
     },
     {
       to: { grow: 1, parts: 1 },
@@ -187,7 +202,12 @@ const spec9: StageSpec<NephronPose, NephronOpts> = {
         { id: 'nefrona', sub: 'unitate funtzionala · 14. astetik gernua' },
         { id: 'hodi-biltzaileak', sub: 'hainbat nefronaren gernua biltzen du', from: 0.35 },
       ],
+      plainNames: [
+        { id: 'nefrona', sub: 'unitate funtzionala · 14. astetik gernua' },
+        { id: 'hodi-biltzaileak', small: true, from: 0.35 },
+      ],
       note: 'Nefrona: unitate iraizle funtzionala (blastematik). Gernua 14. astetik. Hodi biltzaile bakoitzak hainbat nefronaren gernua biltzen du',
+      plainNote: 'Nefrona: unitate iraizle funtzionala (blastematik). Gernua 14. astetik',
     },
   ],
 };
@@ -205,6 +225,8 @@ const KEY_A = [
 
 const spec11: StageSpec<AdrenalPose, AdrenalOpts> = {
   map: 'adrenal',
+  site: SITE15.adrenal,
+  arrive: 'Ezkerreko guruina erdibitu dugu: barrua aurretik, alde mediala zure ezkerrean',
   where: { th: 0.1, at: [-2.6, -0.4, 3.0], scale: 6, planes: [-1, 1].map((s) => ({ center: [-0.2, -0.4 + s * 2.0, 0] as V3, a: [2.2, 0, 0] as V3, b: [0, 0, 1.8] as V3 })), note: 'Ezkerreko giltzurrun gaineko guruina: gonadaren eta giltzurrunaren artean; aurretik eta gertutik' },
   S: S11,
   pose: AP0,

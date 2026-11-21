@@ -57,6 +57,13 @@ const spec1: StageSpec<PharynxPose, PharynxBOpts> = {
         { id: 'bigarren-arkua', text: 'II. arkua', p: II_L, from: 0.4 },
       ],
       note: '5. aste hasieran poltsak ez dira asko sakondu; garapenean batzuk sakondu egiten dira eta beste batzuetan egiturak garatzen dira',
+      plainNote: 'Lehenengo poltsa I. eta II. arkuen artean dago',
+      plainNames: [
+        { id: 'lehen-poltsa', text: 'Lehenengo poltsa', sub: 'I. eta II. arkuen artean' },
+        { id: 'bigarren-poltsa', small: true, from: 0.2 },
+        { id: 'lehen-arkua', text: 'I. arkua', p: I_L, from: 0.3 },
+        { id: 'bigarren-arkua', text: 'II. arkua', p: II_L, from: 0.4 },
+      ],
     },
     {
       to: { p1: 1 },

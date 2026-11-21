@@ -140,6 +140,11 @@ const GLIDE_MS = 1100;
 const ease = (x: number) => x * x * x * (x * (x * 6 - 15) + 10);
 /** A calm part (`Item3.calm`) steps back as context does, never to the dark states. */
 const calmed = (state: GLState, calm: boolean | undefined): GLState => (calm && (state === 'dim' || state === 'shade') ? 'ctx' : state);
+/**
+ * A named part of the ground (a swelling of the perineal skin, a cut face named for its tissue) looks, while it is
+ * not put forward, exactly like the unnamed ground round it: one surface, no patch where the name begins.
+ */
+const grounded = (state: GLState, ground: boolean | undefined, plain: GLState): GLState => (ground && (state === 'dim' || state === 'shade' || state === 'ctx') ? plain : state);
 
 /**
  * The WebGL layer a 3D view leaves behind stays parked a few seconds for the next one in the same frame:
@@ -595,6 +600,7 @@ function Stage3DView({ scene, children, orbit = true, axes, continuity, place, h
   const flight = inFlight ? smooth(0.8, 1, enterP) : round ? smooth(0.55, 0.95, enterP) : 1;
   // Every render hands the WebGL layer this frame's meshes, matrices and highlight states.
   useLayoutEffect(() => {
+    const plain: GLState = ctx.hovered || ctx.selected || ctx.spotlight ? 'ctx' : 'idle';
     const own: GLItem[] = drawn.map(({ it }) => ({
       key: it.key,
       mesh: it.mesh,
@@ -604,7 +610,7 @@ function Stage3DView({ scene, children, orbit = true, axes, continuity, place, h
       tissue: it.tissue ?? 'skin',
       opacity: (it.show ?? 1) * (it.opacity ?? 1),
       outline: it.outline ?? true,
-      state: it.id ? calmed(STATE[partState(ctx, it.id, it.groups)], it.calm) : ctx.hovered || ctx.selected || ctx.spotlight ? 'ctx' : 'idle',
+      state: it.id ? grounded(calmed(STATE[partState(ctx, it.id, it.groups)], it.calm), it.ground, plain) : plain,
       quiet: !!it.quiet,
       clip: it.clip,
       stream: it.stream,

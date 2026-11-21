@@ -1028,7 +1028,8 @@ export const w19: NotesBlock[] = [
             "b": true
           },
           {
-            "text": " (T1-T12, eremu toraxikoan): "
+            "text": " (T1-T12, eremu toraxikoan): ",
+            "u": true
           },
           {
             "text": "Estresaren",
@@ -1084,7 +1085,11 @@ export const w19: NotesBlock[] = [
             "b": true
           },
           {
-            "text": " (S2-S4 eta entzefaloan): lasaitasunera heltzeko, berriro egoera basalera bueltatzeko, arriskua amaitutakoan aktibatzen da. "
+            "text": " (S2-S4 eta entzefaloan):",
+            "u": true
+          },
+          {
+            "text": " lasaitasunera heltzeko, berriro egoera basalera bueltatzeko, arriskua amaitutakoan aktibatzen da. "
           }
         ]
       },
@@ -1122,14 +1127,20 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p14/s2",
         "parts": [
           {
-            "text": "Hala ere, bikote kraneal guztiak ez dira parasinpatikoak: adibidez, "
+            "text": "Hala ere, bikote kraneal guztiak ez dira parasinpatikoak: "
+          },
+          {
+            "text": "adibidez, ",
+            "u": true
           },
           {
             "text": "bagoa",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ", parasinpatikoa da edo parasinpatiko sakroa (S2, S4 mailetan dagoelako)."
+            "text": ", parasinpatikoa da edo parasinpatiko sakroa (S2, S4 mailetan dagoelako).",
+            "u": true
           }
         ]
       }
@@ -1408,7 +1419,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p17/s8",
         "parts": [
           {
-            "text": "Ondorioz, bi sistema hauek NSZ-an osagarriak direla esaten da parasinpatikoa bi muturretan eta sinpatikoa tartean kokatzen delako (irudian ikus daiteke). "
+            "text": "Ondorioz, bi sistema hauek NSZ-an osagarriak direla esaten da parasinpatikoa bi muturretan eta sinpatikoa tartean kokatzen delako (irudian ikus daiteke). ",
+            "u": true
           }
         ]
       },
@@ -1416,7 +1428,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p17/s9",
         "parts": [
           {
-            "text": "Gero, neurona horietatik adarrak aterako dira eta nerbio periferikoak (sinpatikoena eta parasinpatikoena) buru eta erraietara helduko dira. "
+            "text": "Gero, neurona horietatik adarrak aterako dira eta nerbio periferikoak (sinpatikoena eta parasinpatikoena) buru eta erraietara helduko dira. ",
+            "u": true
           }
         ]
       },
@@ -1424,7 +1437,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p17/s10",
         "parts": [
           {
-            "text": "Nerbio periferiko hauek autonomoak izango dira."
+            "text": "Nerbio periferiko hauek autonomoak izango dira.",
+            "u": true
           }
         ]
       }
@@ -3343,7 +3357,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p3/s3",
         "parts": [
           {
-            "text": "Atzeko neuroporoa 25. egunean ixten da eta aurreko neuroporoa 28. egunean. "
+            "text": "Atzeko neuroporoa 25. egunean ixten da eta aurreko neuroporoa 28. egunean. ",
+            "u": true
           }
         ]
       },

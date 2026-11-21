@@ -77,6 +77,11 @@ const specPlate: StageSpec<NeuralPose, NeuralOpts> = {
         { id: 'neuroporo-kraneala', text: 'Aurrekoa: 28. eguna', from: 0.4 },
       ],
       note: 'Atzeko neuroporoa 25. egunean ixten da eta aurrekoa 28. egunean: atzekoa arinago',
+      plainNote: 'Atzeko neuroporoa aurrekoa baino arinago ixten da',
+      plainNames: [
+        { id: 'neuroporo-kaudala', text: 'Atzekoa', sub: 'lehenago ixten da' },
+        { id: 'neuroporo-kraneala', text: 'Aurrekoa', from: 0.4 },
+      ],
       warn: true,
     },
   ],
@@ -205,6 +210,10 @@ const specFive: StageSpec<NeuralPose, NeuralOpts> = {
         { id: 'zubi-tolespena', text: 'Zubi tolespena', sub: 'alde bentralean', from: 0.5 },
       ],
       note: 'Garuntxoa eratzen hasia dago eta haren aurrean zubia; tolespen gehiago: zubi tolespena, metentzefalo mailan',
+      plainNames: [
+        { id: 'metentzefaloa', text: 'Garuntxoa eta zubia', sub: 'eratzen hasiak' },
+        { id: 'zubi-tolespena', text: 'Zubi tolespena', sub: 'zubian (metentzefaloa)', from: 0.5 },
+      ],
     },
     {
       cam: SIDEV(4.2, 5.2, 0.6),

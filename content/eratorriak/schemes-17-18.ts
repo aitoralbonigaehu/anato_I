@@ -34,7 +34,7 @@ export const SCHEMES_17: MigrationTopic = {
           n('buru-ganga', [
             n('fontanelak', undefined, { via: '2 hezur baino gehiago lotzen diren tokian', note: 'aurrekoa 18. hilabetean itxi, atzekoa 1.ean · erditzean buruaren neurria gutxitu' }),
             l('Josturak', undefined, { via: 'bi hezurren arteko lotura' }),
-          ], { via: 'atal batzuk mintzez hezurtu' }),
+          ], { via: 'atal batzuk mintzez hezurtu', plain: { label: 'Neurokraneoaren atal batzuk' } }),
           l('Oinaldeko hezur gehienak', undefined, { via: 'hezurtze endokondrala' }),
         ], { note: 'garuna inguratu eta babestu' }),
         n('errai-kraneoa', [
@@ -197,9 +197,9 @@ export const SCHEMES_17: MigrationTopic = {
           ]),
           g('Nerbioa', [n('glosofaringeoa', undefined, { via: 'IX', note: 'mistoa · gloso = mihia · mihia eta faringea' })]),
           g('Muskuluak', [
-            n('muskulu-estilofaringeoa', undefined, { via: 'faringea igo eta zabaldu' }),
+            n('muskulu-estilofaringeoa', undefined, { via: 'faringea igo eta zabaldu', plain: { via: 'IX.ak inerbatu' } }),
             n('goiko-ertzatzailea', undefined, { via: 'faringea estutu' }),
-          ], { note: 'sakonak · degluzioa · IX.ak mugitu' }),
+          ], { note: 'sakonak · degluzioa · IX.ak mugitu', plain: { note: 'sakonak · IX.ak mugitu' } }),
         ]),
       ],
     },
@@ -212,6 +212,10 @@ export const SCHEMES_17: MigrationTopic = {
         'IV. eta VI. arkuetan ez dago hezurrik ez lotailurik: laringeko kartilagoak bakarrik.',
         'Tiroide kartilagoa bitan: goiko aldea IV.etik, beheko atala VI.etik.',
         'Trakea ez da arku baten eratorria: aurreko hestetik dator.',
+      ],
+      plainPitfalls: [
+        'IV. eta VI. arkuetan ez dago hezurrik ez lotailurik: laringeko kartilagoak bakarrik.',
+        'Tiroide kartilagoa bitan: goiko aldea IV.etik, beheko atala VI.etik.',
       ],
       roots: [
         n('laugarren-arkua', [
@@ -226,13 +230,13 @@ export const SCHEMES_17: MigrationTopic = {
           g('Kartilagoak', [
             n('tiroide-beheko-atala', undefined, { via: 'gorputzaren beheko atala' }),
             n('krikoide-kartilagoa', undefined, { via: 'eratu' }),
-            n('epiglotisa', undefined, { via: 'eratu', note: '«L» itxura' }),
+            n('epiglotisa', undefined, { via: 'eratu', note: '«L» itxura', plain: { note: null } }),
             n('aritenoide-kartilagoa', undefined, { via: 'eratu', note: 'bikoitza' }),
             n('kartilago-kornikulatua', undefined, { via: 'eratu', note: 'bikoitza' }),
             n('kartilago-kuneiformea', undefined, { via: 'eratu', note: 'bikoitza' }),
           ]),
           g('Nerbioa', [n('laringe-atzerakaria', undefined, { via: 'bagoaren adarra' })]),
-          g('Muskuluak', [n('laringe-barneko-muskuluak', undefined, { via: 'hedatu', note: 'intrintsekoak' })]),
+          g('Muskuluak', [n('laringe-barneko-muskuluak', undefined, { via: 'hedatu', note: 'intrintsekoak', plain: { note: null } })]),
         ]),
       ],
     },
@@ -258,6 +262,8 @@ export const SCHEMES_17: MigrationTopic = {
     {
       id: 'nerbio-sistema-17',
       title: 'Nerbio-sistema sailkatzeko bi irizpide',
+      // 2.6.1 p7–p14 is grey in the notes: not taught this year (topic 19 teaches it).
+      blue: true,
       lead: 'Bagoa (X) mistoa da, NSZtik ateratzen da eta parasinpatiko nagusia da.',
       stage: 'bagoa',
       pitfalls: ['Parasinpatikoa ez da «inhibitzailea»: egoera aktibotik egoera basal edo normalera itzultzen du.'],
@@ -302,7 +308,7 @@ export const SCHEMES_18: MigrationTopic = {
           n('aho-sabaiko-amigdala', undefined, { via: '5. astean zelulak bereizi', note: 'ehun linfatikoa 3.–5. hilabetean · funtzionala 5. hilabetean' }),
         ]),
         n('hirugarren-poltsa', [
-          n('beheko-paratiroidea', undefined, { via: 'alde dortsala', note: 'paratohormona' }),
+          n('beheko-paratiroidea', undefined, { via: 'alde dortsala', note: 'paratohormona', plain: { note: null } }),
           n('timoa', undefined, { via: 'alde bentrala', note: 'immunitatea · pubertarotik endekatu' }),
         ], { note: 'bi kimu, biak jaitsi' }),
         n('laugarren-poltsa', [
@@ -405,19 +411,21 @@ export const SCHEMES_18: MigrationTopic = {
         'Hodi tiroglosoa gida da: jaisten den bitartean tiroidea faringearen zoruari lotuta dago, gero hodia itxi eta endekatu.',
         'Piramide itxurako lobulua (%50 edo gehiago): hodiaren azken atala ondo endekatzen ez bada. Anomalia da, baina ez du arazorik ematen.',
       ],
+      // 3/p11 (lobes, isthmus), 3/p13 (pyramidal lobe) and 3/p14 (thymus) are grey in the notes: not taught this year.
+      plainPitfalls: ['Hodi tiroglosoa gida da: jaisten den bitartean tiroidea faringearen zoruari lotuta dago, gero hodia itxi eta endekatu.'],
       roots: [
         n('faringe-hestea', [
           n('hodi-tiroglosoa', [
             n('tiroide-guruina', [
-              n('tiroide-lobuluak', undefined, { via: 'bi lobulu luzanga', note: 'laringeko kartilagoak besarkatu' }),
-              n('tiroide-istmoa', undefined, { via: 'aurrean lotu' }),
+              n('tiroide-lobuluak', undefined, { via: 'bi lobulu luzanga', note: 'laringeko kartilagoak besarkatu', blue: true }),
+              n('tiroide-istmoa', undefined, { via: 'aurrean lotu', blue: true }),
               l('Atzean irekita', [n('goiko-paratiroidea', undefined, { via: 'goian' }), n('beheko-paratiroidea', undefined, { via: 'behean' })], { via: 'atzean ez dago lotuta' }),
             ], { via: 'muturrean hasikina, beherantz jaitsi', move: true, note: '7. astean behin betiko tokian' }),
             n('zulo-itsua', undefined, { via: 'hodia itxi eta endekatu: aztarna', note: 'ildo terminalaren erpinean' }),
-            n('piramide-lobulua', undefined, { via: 'azken atala endekatu ez bada', note: 'anomalia, arazorik gabe' }),
+            n('piramide-lobulua', undefined, { via: 'azken atala endekatu ez bada', note: 'anomalia, arazorik gabe', blue: true }),
           ], { via: 'zoruan luzapena, erdian hodia', note: 'mihiaren gorputzaren eta sustraiaren artean · 4. astea' }),
         ]),
-        n('timoa', [l('Tiroidearen behekaldea', undefined, { via: 'lepo mailara jaitsi', move: true })], { note: 'handia enbrioian · pubertarotik endekatu' }),
+        n('timoa', [l('Tiroidearen behekaldea', undefined, { via: 'lepo mailara jaitsi', move: true })], { note: 'handia enbrioian · pubertarotik endekatu', blue: true }),
       ],
     },
     {
@@ -431,7 +439,7 @@ export const SCHEMES_18: MigrationTopic = {
           n('goragune-frontonasala', [n('sudur-plakoda', undefined, { via: 'bi plakoda agertu', note: 'ektodermikoak · gero sudur hobiak' })], { via: 'goian' }),
           n('luzapen-maxilarra', undefined, { via: 'alboetan, goian', note: 'I. arkua' }),
           n('barail-luzapena', undefined, { via: 'alboetan, behean', note: 'I. arkua' }),
-          n('mintz-bukofaringeoa', undefined, { via: 'barnerago', note: 'endodermikoa' }),
+          n('mintz-bukofaringeoa', undefined, { via: 'barnerago', note: 'endodermikoa', plain: { note: null } }),
         ], { note: 'hasierako ahoa · ektodermoa' }),
       ],
     },

@@ -112,6 +112,13 @@ const specOss: StageSpec<OssPose, BaseOpts> = {
         { id: 'hezur-endokondrala', text: 'Oinaldeko hezur gehienak', sub: 'prozesu luze eta geldoa', from: 0.2 },
       ],
       note: 'Azkenean biak hezur dira. Hezur lauak azkar; kraneoaren oinaldekoak, kartilagotik igarota, geldo',
+      plainNote: 'Azkenean biak hezur dira: neurokraneoaren atal batzuk mintzezko hezurtzapenetik; oinaldeko hezur gehienak, endokondralak',
+      plainNames: [
+        BLOCK_L,
+        BLOCK_R,
+        { id: 'hezur-lauak', text: 'Neurokraneoaren atal batzuk', sub: 'mintzezko hezurtzapena' },
+        { id: 'hezur-endokondrala', text: 'Oinaldeko hezur gehienak', sub: 'endokondralak', from: 0.2 },
+      ],
     },
   ],
 };
@@ -177,6 +184,7 @@ const specBase: StageSpec<BasePose, BaseOpts> = {
         { ...N_TRAB, from: 0.72 },
       ],
       note: 'Hasieran kartilagozko lamina bat dago oinaldean: erdian, atzetik aurrera, kartilago hauek',
+      plainNote: 'Oinaldeko hezur gehienak hezurtzapen endokondralaren bidez sortzen dira: erdian, atzetik aurrera, kartilago hauek',
     },
     {
       to: { side: 1 },

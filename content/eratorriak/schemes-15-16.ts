@@ -20,7 +20,7 @@ export const SCHEMES_15: MigrationTopic = {
         n('bitarteko-mesodermoa', [
           n('pronefrosa', [l('Desagertu', undefined, { via: '4. astean endekatu', gone: true })], { via: 'lepoan eratu', note: '7–10 nefrotoma bikote' }),
           n('mesonefrosa', [
-            n('hodi-mesonefrikoa', [n('ureter-kimua', undefined, { via: 'mutur kaudalak kimua eman' })], { via: 'hodixkak bertara hustu' }),
+            n('hodi-mesonefrikoa', [n('ureter-kimua', undefined, { via: 'mutur kaudalak kimua eman', blue: true })], { via: 'hodixkak bertara hustu' }),
             l('Ia desagertu', undefined, { via: 'hodixka gehienak endekatu', gone: true }),
           ], { via: 'toraxetik lunbarrera eratu' }),
           n('metanefrosa', [n('giltzurruna', undefined, { via: 'bi jatorrik elkar induzitu' })], { via: 'sakroan eratu', note: '5. astea' }),
@@ -64,13 +64,15 @@ export const SCHEMES_15: MigrationTopic = {
       stage: 'nefrotomak',
       roots: [
         n('nefrotomak', [n('hodixka-pronefrikoak', [n('hodi-pronefrikoa', undefined, { via: 'alboko zabalguneak batu' })], { via: 'xixkua luzatu' })], { note: 'bitarteko mesodermoa' }),
-        n('xixku-mesonefrikoa', [n('hodixka-mesonefrikoak', [n('kapsula-glomerularra', undefined, { via: 'glomerulua inguratu (fusiorik gabe)' })], { via: 'luzatu' })]),
+        n('xixku-mesonefrikoa', [n('hodixka-mesonefrikoak', [n('kapsula-glomerularra', undefined, { via: 'glomerulua inguratu (fusiorik gabe)', plain: { via: 'glomerulua inguratu' } })], { via: 'luzatu' })]),
         n('glomeruluak', [n('korpuskulua', undefined, { via: 'Bowman kapsularekin osatu' })]),
       ],
     },
     {
       id: 'giltzurrun-gaineko-bi-jatorri',
       title: 'Giltzurrun gaineko guruina: kortexa eta muina',
+      // Section 2.1 is grey in the notes: not taught this year.
+      blue: true,
       stage: 'giltzurrun-gaineko-guruinak',
       roots: [
         n('gandor-urogenitala', [n('fetu-kortexa', [l('Atzera egin', undefined, { via: 'jaio ondoren txikitu', gone: true })], { via: 'lehen zelula-uhina', note: '6. astea' }), n('behin-betiko-kortexa', undefined, { via: 'bigarren uhinak inguratu' })], { note: 'mesodermoa' }),
@@ -97,14 +99,16 @@ export const SCHEMES_15: MigrationTopic = {
       id: 'alantoidea-lotailua',
       title: 'Alantoidea → urakoa → erdiko zilbor-lotailua',
       stage: 'sinu-urogenitala',
-      roots: [n('alantoidea', [n('urakoa', [n('erdiko-zilbor-lotailua', undefined, { via: 'itxi eta zuntz bihurtu', note: 'maskuritik zilborrera' }), n('fistula-urakala', undefined, { via: 'irekita irauten badu' })], { via: 'maskuriari lotutako hondarra' })])],
+      roots: [n('alantoidea', [n('urakoa', [n('erdiko-zilbor-lotailua', undefined, { via: 'itxi eta zuntz bihurtu', note: 'maskuritik zilborrera' }), n('fistula-urakala', undefined, { via: 'irekita irauten badu', blue: true })], { via: 'maskuriari lotutako hondarra' })])],
     },
     {
       id: 'trigonoaren-jatorria',
       title: 'Ureterra gora, hodi mesonefrikoa behera: trigonoa',
       lead: 'Gernu maskuriaren epitelioa endodermikoa da, trigonoa izan ezik (mesodermikoa); gero endodermoz estaltzen da.',
+      // 2.3/p11 (the endoderm covering the trigone) is grey in the notes: not taught this year.
+      plainLead: 'Gernu maskuriaren epitelioa endodermikoa da, trigonoa izan ezik (mesodermikoa).',
       stage: 'gernu-maskuria',
-      roots: [n('hodi-mesonefrikoa', [n('ureterra', undefined, { via: 'kimua bereizi; ahoa gorago', move: true }), n('trigonoa', [l('Epitelio endodermikoa', undefined, { via: 'gero gainazala estali' })], { via: 'atzeko horman erantsi' })])],
+      roots: [n('hodi-mesonefrikoa', [n('ureterra', undefined, { via: 'kimua bereizi; ahoa gorago', move: true }), n('trigonoa', [l('Epitelio endodermikoa', undefined, { via: 'gero gainazala estali', blue: true })], { via: 'atzeko horman erantsi' })])],
     },
     {
       id: 'uretraren-muturra',
@@ -165,7 +169,7 @@ export const SCHEMES_16: MigrationTopic = {
           n('epididimoa', undefined, { via: 'atal kraneala kiribildu' }),
           n('hodi-deferentea', undefined, { via: 'erdiko zatia luzatu' }),
           n('semen-xixkua', undefined, { via: 'atal kaudalean kimatu' }),
-          n('hodi-isurlea', undefined, { via: 'kimuaz azpiko zatia iraun', blue: true }),
+          n('hodi-isurlea', undefined, { via: 'kimuaz azpiko zatia iraun' }),
         ], { note: 'arrak · testosteronaren eraginez' }),
       ],
     },

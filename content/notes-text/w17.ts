@@ -2681,21 +2681,26 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.4.3/p4/s1",
         "parts": [
           {
-            "text": "Goikoak hirugarren arkutik, "
+            "text": "Goikoak hirugarren arkutik, ",
+            "u": true
           },
           {
             "text": "muskulu estilofaringeoa ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "(estiloide apofisitik faringera) (faringea igo eta zabaldu) eta "
+            "text": "(estiloide apofisitik faringera) (faringea igo eta zabaldu) eta ",
+            "u": true
           },
           {
             "text": "faringearen goiko muskulu ertzatzaileak ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "(faringea estutu) eratzen dira; bi muskulu mota hauek degluzioan (elikagaiak pasatzean) parte hartzen dute, faringearen uzkurketa emanez."
+            "text": "(faringea estutu) eratzen dira; bi muskulu mota hauek degluzioan (elikagaiak pasatzean) parte hartzen dute, faringearen uzkurketa emanez.",
+            "u": true
           }
         ]
       }
@@ -2975,28 +2980,35 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.1/p7/s1",
         "parts": [
           {
-            "text": "*Sistema "
+            "text": "*Sistema ",
+            "u": true
           },
           {
             "text": "sinpatikoak aktibatzaile ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "funtzioa du eta sistema "
+            "text": "funtzioa du eta sistema ",
+            "u": true
           },
           {
             "text": "parasinpatikoak ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "funtzio inhibitzailea izatearen ordez "
+            "text": "funtzio inhibitzailea izatearen ordez ",
+            "u": true
           },
           {
             "text": "egoera aktibotik egoera basal edo normalera bueltatzeko",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": " funtzioa du. "
+            "text": " funtzioa du. ",
+            "u": true
           }
         ]
       },
@@ -3004,14 +3016,17 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.1/p7/s2",
         "parts": [
           {
-            "text": "Bi sistemak "
+            "text": "Bi sistemak ",
+            "u": true
           },
           {
             "text": "nerbio-sistema autonomo edo begetatiboaren ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "bi atalak dira."
+            "text": "bi atalak dira.",
+            "u": true
           }
         ]
       }
@@ -3026,14 +3041,17 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.1/p8/s1",
         "parts": [
           {
-            "text": "Nerbio-sistema sailkatzeko "
+            "text": "Nerbio-sistema sailkatzeko ",
+            "u": true
           },
           {
             "text": "bi irizpide ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "desberdin daude:"
+            "text": "desberdin daude:",
+            "u": true
           }
         ]
       }
@@ -3048,21 +3066,26 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.1/p9/s1",
         "parts": [
           {
-            "text": "-​ Irizpide "
+            "text": "-​ Irizpide ",
+            "u": true
           },
           {
             "text": "anatomikoa",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": ": "
+            "text": ": ",
+            "u": true
           },
           {
             "text": "kokapenaren arabera ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "sailkatzen da nerbio-sistema. "
+            "text": "sailkatzen da nerbio-sistema. ",
+            "u": true
           }
         ]
       },
@@ -3071,7 +3094,8 @@ export const w17: NotesBlock[] = [
         "parts": [
           {
             "text": "○",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       }
@@ -3086,11 +3110,13 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.1/p10/s1",
         "parts": [
           {
-            "text": "-​ "
+            "text": "-​ ",
+            "u": true
           },
           {
             "text": "Nerbio-sistema zentrala",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       }
@@ -3105,11 +3131,13 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.1/p11/s1",
         "parts": [
           {
-            "text": "-​ "
+            "text": "-​ ",
+            "u": true
           },
           {
             "text": "Nerbio-sistema periferikoa",
-            "b": true
+            "b": true,
+            "u": true
           }
         ]
       }
@@ -3124,14 +3152,17 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.1/p12/s1",
         "parts": [
           {
-            "text": "-​ Irizpide "
+            "text": "-​ Irizpide ",
+            "u": true
           },
           {
             "text": "funtzionala: funtzioaren arabera",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "."
+            "text": ".",
+            "u": true
           }
         ]
       }
@@ -3146,14 +3177,17 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.1/p13/s1",
         "parts": [
           {
-            "text": "-​ "
+            "text": "-​ ",
+            "u": true
           },
           {
             "text": "Nerbio-sistema begetatibo edo autonomoa",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "k ez-borondatezko ekintzak kontrolatzen ditu; hala nola, erreflexuak."
+            "text": "k ez-borondatezko ekintzak kontrolatzen ditu; hala nola, erreflexuak.",
+            "u": true
           }
         ]
       }
@@ -3168,14 +3202,17 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.1/p14/s1",
         "parts": [
           {
-            "text": "-​ "
+            "text": "-​ ",
+            "u": true
           },
           {
             "text": "Nerbio-sistema somatikoak ",
-            "b": true
+            "b": true,
+            "u": true
           },
           {
-            "text": "borondatezko ekintzak kontrolatzen ditu."
+            "text": "borondatezko ekintzak kontrolatzen ditu.",
+            "u": true
           }
         ]
       }
@@ -3229,10 +3266,10 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "kartilagoak (epiglotisa irudian ez da agertzen, “L” formako egitura da)"
+            "text": "kartilagoak ("
           },
           {
-            "text": ". ",
+            "text": "epiglotisa irudian ez da agertzen, “L” formako egitura da). ",
             "u": true
           }
         ]
@@ -3362,7 +3399,8 @@ export const w17: NotesBlock[] = [
             "b": true
           },
           {
-            "text": "intrintsekoak."
+            "text": "intrintsekoak.",
+            "u": true
           }
         ]
       }
@@ -3436,7 +3474,8 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.3/p8/s2",
         "parts": [
           {
-            "text": "Horregatik, laugarren eta seigarren arku faringeoetako muskuluak nerbio bagoaren zein atalek inerbatzen duten zehazten da. "
+            "text": "Horregatik, laugarren eta seigarren arku faringeoetako muskuluak nerbio bagoaren zein atalek inerbatzen duten zehazten da. ",
+            "u": true
           }
         ]
       },
@@ -3444,7 +3483,8 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.3/p8/s3",
         "parts": [
           {
-            "text": "Hemendik aurrera, trakea dago. "
+            "text": "Hemendik aurrera, trakea dago. ",
+            "u": true
           }
         ]
       },
@@ -3452,7 +3492,8 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.3/p8/s4",
         "parts": [
           {
-            "text": "Hau aurreko hestearen eratorria eta ez du zerikusirik arku brakialekin. "
+            "text": "Hau aurreko hestearen eratorria eta ez du zerikusirik arku brakialekin. ",
+            "u": true
           }
         ]
       },
@@ -3460,7 +3501,8 @@ export const w17: NotesBlock[] = [
         "id": "w17/2.6.3/p8/s5",
         "parts": [
           {
-            "text": "4. poltsaren atal bentrala batzuetan 5. poltsatzat ematen da."
+            "text": "4. poltsaren atal bentrala batzuetan 5. poltsatzat ematen da.",
+            "u": true
           }
         ]
       }

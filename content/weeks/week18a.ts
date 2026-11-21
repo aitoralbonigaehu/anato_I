@@ -77,6 +77,10 @@ export const stages18a: StageDef[] = [
         at: S2[3],
         notes: ['w18/1/p5/s3', 'w18/1/p6/s1'],
         text: 'Behealdean, faringearen aurreko paretan, laringe zuloa dago: hortik ebaginatzen da arnas aparatuaren hastapena. Prozesu gehienak 4. astean hasi eta 7. asterako ia garatuta daude.',
+        plain: {
+          idea: 'Prozesu gehienak 4. astean hasi, 7. asterako ia garatuta.',
+          text: 'Prozesu gehienak 4. astean hasi eta 7. asterako ia garatuta daude.',
+        },
         idea: 'Laringe zuloa: arnas aparatuaren hasiera.',
       },
     ],
@@ -106,6 +110,9 @@ export const stages18a: StageDef[] = [
         at: S3[1],
         notes: ['w18/1.1.3/p4/s1'],
         text: 'Alde dortsala kimatu eta beheko paratiroide guruina bihurtzen da. Parato hormona ekoizten du, eta helduan tiroidearekin batera kokatzen da.',
+        plain: {
+          text: 'Alde dortsala kimatu eta beheko paratiroide guruina bihurtzen da.',
+        },
         idea: 'Dortsala: beheko paratiroidea.',
         exam: '3. poltsa: dortsala → beheko paratiroidea; bentrala → timoa.',
       },

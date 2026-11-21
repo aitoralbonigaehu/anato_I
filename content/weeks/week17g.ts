@@ -146,6 +146,9 @@ export const stages17g: StageDef[] = [
         notes: ['w17/2.6.1/p6/s1', 'w17/2.6.1/p6/s2', 'w17/2.6.1/p6/s3', 'w17/2.6.1/p6/s4', 'w17/2.6.1/p6/s5', 'w17/2.6.1/p7/s1', 'w17/2.6.1/p7/s2', 'w17/2.6.1/p8/s1', 'w17/2.6.1/p9/s1-s2', 'w17/2.6.1/p10/s1', 'w17/2.6.1/p11/s1', 'w17/2.6.1/p12/s1', 'w17/2.6.1/p13/s1', 'w17/2.6.1/p14/s1'],
         idea: 'Parasinpatiko nagusia: bihotza, toraxeko errai guztiak, aurreko eta tarteko hesteen eratorriak.',
         text: 'Bagoa nerbio parasinpatiko nagusia da: aurreko eta tarteko hestetik ateratzen diren errai guztiak eta bihotza inerbatzen ditu, hau da, toraxeko errai guztiak. Sistema sinpatikoa eta parasinpatikoa nerbio-sistema autonomo edo begetatiboaren bi atalak dira; sinpatikoak aktibatu egiten du eta parasinpatikoak egoera basalera itzultzen du. Nerbio-sistema sailkatzeko bi irizpide daude, eta bat anatomikoa da, kokapenaren araberakoa.',
+        plain: {
+          text: 'Bagoa nerbio parasinpatiko nagusia da: aurreko eta tarteko hestetik ateratzen diren errai guztiak eta bihotza inerbatzen ditu, hau da, toraxeko errai guztiak.',
+        },
         focus: ['bagoa', 'bihotza', 'birikak', 'urdaila', 'gibela', 'tarteko-hestea'],
         exam: 'Bagoa, nerbio parasinpatiko nagusia.',
         view: '3d',

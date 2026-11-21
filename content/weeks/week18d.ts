@@ -25,6 +25,11 @@ export const stages18d: StageDef[] = [
         notes: ['w18/4.2/p2/s1', 'w18/4.2/p3/s1-s4'],
         idea: '8. astean epitelioa lodiagotzen da, C forman: hortz-laminak.',
         text: 'Hortzak eta haginak berdin eratzen dira. 8. astean, maxilar eta barailaren gaineko epitelioan (ektodermoa) lodiunea agertzen da, C forma bat sortuz: hortz-laminak. Bi masailetan gertatzen da, nahiz eta irudian aho-sabaikoa bakarrik agertu.',
+        plain: {
+          idea: '8. astean epitelioa lodiagotzen da: hortz-laminak.',
+          text: 'Hortzak eta haginak berdin eratzen dira. 8. astean, maxilar eta barailaren gaineko epitelioan (ektodermoa) lodiunea agertzen da: hortz-laminak.',
+          exam: '8. astea: hortz-lamina, epitelio ektodermikoaren lodiunea.',
+        },
         focus: ['hortz-lamina'],
         exam: '8. astea: hortz-lamina, epitelio ektodermikoaren lodiunea, C forman.',
         view: '3d',
@@ -120,6 +125,9 @@ export const stages18d: StageDef[] = [
         notes: ['w18/4.2/p8/s1', 'w18/4.2/p9/s1-s2', 'w18/4.2/p11/s1', 'w18/4.2/p12/s1', 'w18/4.2/p17/s1'],
         idea: 'Ameloblastoak epiteliotik; odontoblastoak papilatik.',
         text: 'Kanpaian zelula mota desberdinak daude. Kanpaiaren epiteliotik ameloblastoak sortzen dira. Hortz-papilatik odontoblastoak bereizten dira, kanpaiaren barneko epitelioaren kontra.',
+        plain: {
+          key: null,
+        },
         key: 'Hortz laminatik esmaltea; beste egitura guztiak papilatik.',
         focus: ['ameloblastoak', 'odontoblastoak'],
         exam: 'Ameloblastoak → esmaltea (epiteliotik); odontoblastoak → dentina (papilatik).',
@@ -144,6 +152,10 @@ export const stages18d: StageDef[] = [
         notes: ['w18/4.2/p10/s1-s3', 'w18/4.2/p18/s1-s3'],
         idea: 'Pulpa zabala da hasieran, eta estutzen da dentina loditzean.',
         text: 'Kanpaiaren erdian hortz-pulpa dago, papilatik eratua. Hasieran zabala da, eta gero estutuz eta luzatuz doa dentina loditzean. Bertatik pasatzen dira hortza odoleztatzeko arteria eta zainak, eta inerbatzeko nerbioa.',
+        plain: {
+          idea: 'Pulpa zabala da hasieran, gero estutu eta luzatzen da.',
+          text: 'Kanpaiaren erdian hortz-pulpa dago, papilatik eratua. Hasieran zabala da, eta gero, hortzak heltzean, estutuz eta luzatuz doa. Bertatik pasatzen dira hortza odoleztatzeko arteria eta zainak, eta inerbatzeko nerbioa.',
+        },
         focus: ['hortz-pulpa', 'pulpa-hodiak', 'pulpa-nerbioa'],
         view: '3d',
       },
@@ -211,6 +223,9 @@ export const stages18d: StageDef[] = [
         notes: ['w18/4.2/p22/s1', 'w18/4.2/p23/s1'],
         idea: 'Behin betikoak jaio aurreko 3. hilabetetik, hezurraren barnean.',
         text: 'Behin betiko hortzak jaio aurretik eratzen dira, 3. hilabetean, hezurraren barnean (baraila eta maxilarra). 5 urteko ume batek bi ilarak ditu: esnekoak goian eta behin betikoak hezurrean.',
+        plain: {
+          text: 'Behin betiko hortzak jaio aurretik eratzen dira, 3. hilabetean, hezurraren barnean (baraila eta maxilarra).',
+        },
         focus: ['behin-betiko-hortzak'],
         exam: 'Behin betikoak: jaio aurreko 3. hilabetetik, hezurraren barnean.',
         view: '3d',

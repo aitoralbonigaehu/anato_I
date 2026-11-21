@@ -20,6 +20,7 @@ function withGeo(View: ComponentType<SceneProps> & { geo?: string[] }) {
     return useGeoReady([SKULL_GEO]) ? <View {...props} /> : <Loading3D />;
   }
   Scene.geo = ['skull17', ...(View.geo ?? [])];
+  Scene.spec = (View as { spec?: unknown }).spec;
   return Scene;
 }
 
@@ -104,6 +105,11 @@ const specB: StageSpec<SkullPose, SkullOpts> = {
         { id: 'neurokraneoa', from: 0.1 },
       ],
       note: 'Neurokraneoa: garuna inguratu eta babesten duten hezurrak. Entzefaloa dago barnean',
+      plainNote: 'Neurokraneoa: garuna inguratu eta babesten duten hezurrak',
+      plainNames: [
+        { id: 'entzefaloa', text: 'Garuna', from: 0.4 },
+        { id: 'neurokraneoa', from: 0.1 },
+      ],
     },
     {
       to: { lid: 0, brain: 0, origin: 1 },
@@ -233,6 +239,7 @@ const specD: StageSpec<SkullPose, SkullOpts> = {
         { id: 'mintza', text: 'Mintza', sub: 'mesenkima', from: 0.05 },
       ],
       note: 'Buru ganga: hezur lauak mintzean zuzenean hezurtzen dira, bakoitza bere zentrotik. Oinaldea, berriz, endokondrala',
+      plainNote: 'Buru ganga: neurokraneoaren atal batzuk mintzezko hezurtzapenetik sortzen dira. Oinaldeko hezur gehienak, berriz, endokondralak',
     },
     {
       to: { origin: 1 },

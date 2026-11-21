@@ -2,6 +2,7 @@
 
 import { FRONT, KEY15, endPose, poseStage, type StageSpec, type Where } from './common';
 import { UP0, uroModel, type UroOpts, type UroPose } from './uro-model';
+import { SITE15 } from './sites';
 
 /**
  * Topic 15 on the posterior body wall (uro-model.ts): the three kidney systems (stage 1), the pronephros at
@@ -27,6 +28,7 @@ export const S1 = [0, 0.22, 0.47, 0.73] as const;
 
 const spec1: StageSpec<UroPose, UroOpts> = {
   map: 'all',
+  site: SITE15.wall,
   S: S1,
   pose: UP0,
   opts: { glom: 0 },
@@ -99,6 +101,9 @@ const NECK = (dist = 8.5, yaw = 0, elev = 8) => FRONT(dist, [0, 2.75, -0.5], yaw
 
 const spec2: StageSpec<UroPose, UroOpts> = {
   map: 'pro',
+  // Played on from stage 1 the wall runs on: the later systems shrink back while the camera goes up to the neck.
+  site: SITE15.wall,
+  arrive: 'Atzeko paretan, lepoaren mailan: lehen giltzurruna, pronefrosa',
   where: { ...WALL_WHERE, note: 'Lepoaren maila: atzeko paretan, lehen giltzurruna (pronefrosa)' },
   S: S2,
   pose: { ...UP0, meso: 0, wolff: 0 },
@@ -155,6 +160,8 @@ const TRUNK = (dist = 12.5, yaw = 0, elev = 8, target: [number, number, number] 
 
 const spec5: StageSpec<UroPose, UroOpts> = {
   map: 'meso',
+  site: SITE15.wall,
+  arrive: 'Ebakia hemen zegoen, lepoan. Orain atzeko pareta osoa: toraxetik gerrira, mesonefrosa',
   where: { ...WALL_WHERE, note: 'Toraxaren eta gerriaren maila: atzeko paretako mesonefrosa' },
   S: S5,
   pose: { ...UP0, pro: 1, proDuct: 1, proGone: 0.45 },
@@ -235,6 +242,8 @@ const SACRAL = (dist = 8.5, yaw = 20, elev = 10) => FRONT(dist, [0, -3.6, -0.35]
 
 const spec7: StageSpec<UroPose, UroOpts> = {
   map: 'meta',
+  site: SITE15.wall,
+  arrive: 'Ebakia toraxean zegoen. Orain behera, sakroaren mailara, kloakaren ondora: metanefrosa',
   where: { ...WALL_WHERE, note: 'Sakroaren maila, kloakaren ondoan: metanefrosa sortzen da' },
   S: S7,
   pose: { ...endPose(spec5).pose, gonadal: 0 },
@@ -254,6 +263,7 @@ const spec7: StageSpec<UroPose, UroOpts> = {
         { id: 'kloaka', from: 0.5 },
       ],
       note: 'Metanefrosa: garatuena eta konplexuena. Atzeko paretan, alde oso kaudalean (sakroan), 28–29. egunean, mesonefrosa endekatzen ari den bitartean',
+      plainNote: 'Metanefrosa: atzeko paretan, alde oso kaudalean (sakroan), 28–29. egunean, mesonefrosa endekatzen ari den bitartean',
     },
     {
       to: { bud: 1 },
@@ -266,7 +276,12 @@ const spec7: StageSpec<UroPose, UroOpts> = {
         { id: 'ureter-kimua', sub: 'hodi mesonefrikoaren adar bat, kloakatik hurbil', from: 0.2 },
         { id: 'hodi-mesonefrikoa', small: true },
       ],
+      plainNames: [
+        { id: 'ureter-kimua', sub: 'hortik sistema biltzailea', from: 0.2 },
+        { id: 'hodi-mesonefrikoa', small: true },
+      ],
       note: 'Hodi mesonefrikoaren mutur kaudalean kimu txiki bat: ureter kimua. Inguruko mesenkimara luzatzen da, atzeko horman sartuz',
+      plainNote: 'Ureter kimua: hortik sortzen da sistema biltzailea, hodiz osatua',
     },
     {
       to: { blast: 1 },
@@ -297,6 +312,8 @@ export const S10 = [0, 0.24, 0.46, 0.74] as const;
 
 const spec10: StageSpec<UroPose, UroOpts> = {
   map: 'ascent',
+  site: SITE15.wall,
+  arrive: 'Giltzurrun osora eta atzeko paretara itzuli gara: giltzurruna sakroan dago oraindik',
   where: { ...WALL_WHERE, note: 'Atzeko pareta osoa: giltzurrunak sakrotik gerrira igotzen dira' },
   S: S10,
   pose: { ...UP0, meso: 1, wolff: 1, mesoGone: 0.5, bud: 1, blast: 1, kidney: 1, gonadal: 1, bladder: 1 },
@@ -323,6 +340,7 @@ const spec10: StageSpec<UroPose, UroOpts> = {
         { id: 'gernu-maskuria', small: true, from: 0.4 },
       ],
       note: 'Gernuaren ekoizpena 12. astean hasten da; nefrogenesia 35. astean amaitzen da',
+      plainNote: 'Gernuaren ekoizpena 12. astean hasten da',
     },
     {
       to: { ascend: 1, mesoGone: 0.88 },
@@ -362,6 +380,9 @@ export const Ascent15 = poseStage(spec10, build);
 
 export const spec11wall: StageSpec<UroPose, UroOpts> = {
   map: 'adrenal',
+  // Played on from stage 10 the wall runs on (its end pose); the gland's close-up is the flight after it.
+  site: SITE15.wall,
+  arrive: 'Atzeko pareta bera, giltzurrunaren gainean: giltzurrun gaineko guruinak',
   S: [0],
   pose: { ...endPose(spec10).pose },
   opts: { glom: 0, gut: 1, iliac: 1 },

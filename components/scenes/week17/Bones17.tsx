@@ -176,6 +176,11 @@ const spec2: StageSpec<BonesPose, BonesOpts> = {
         { id: 'estiloide-apofisia', sub: 'lotailuak barailerantz eta faringerantz', from: 0.6 },
       ],
       note: 'Estiloide apofisitik lotailuak barailerantz eta faringerantz. Loki hezurrak ezkata (mehea) eta arkaitza (lodia, belarriak barruan) ditu',
+      plainNote: 'Estiloide apofisitik lotailuak barailerantz eta faringerantz',
+      plainNames: [
+        { id: 'estiloide-apofisia', sub: 'lotailuak barailerantz eta faringerantz', from: 0.3 },
+      ],
+      plainDim: ['estiloide-apofisia', 'ointokia'],
     },
     {
       to: { n7: 1 },
@@ -240,6 +245,11 @@ const spec3: StageSpec<BonesPose, BonesOpts> = {
         { id: 'estiloide-apofisia', small: true },
       ],
       note: 'Muskulu estilofaringeoa estiloide apofisitik faringera doa: faringea igo eta zabaldu',
+      plainNote: 'Muskulu estilofaringeoa: IX.ak (glosofaringeoak) inerbatzen du',
+      plainNames: [
+        { id: 'muskulu-estilofaringeoa', text: 'Muskulu estilofaringeoa', sub: 'IX', from: 0.25 },
+        { id: 'estiloide-apofisia', small: true },
+      ],
     },
     {
       to: { constr: 1 },

@@ -189,6 +189,9 @@ const stagesA: StageDef[] = [
         notes: ['w15/1.1/p6/s1'],
         idea: 'Alboko zabalguneak batuta: luzetarako hodi pronefrikoa.',
         text: 'Hodixka pronefrikoen alde lateraleko zabalguneak euren artean batzen dira, zefalikotik kaudalera. Horrela luzetarako hodi bat eratzen da, maila desberdinetako nefrotomak alde lateraletik lotzen dituena: hodi pronefrikoa.',
+        plain: {
+          text: 'Hodixka pronefrikoen alde lateraleko zabalguneak euren artean batzen dira, zefalikotik kaudalera. Horrela luzetarako hodi bat eratzen da: hodi pronefrikoa.',
+        },
         focus: ['hodi-pronefrikoa', 'hodixka-pronefrikoak'],
         exam: 'Hodi pronefrikoa: hodixken alboko zabalguneak batuta (luzetarakoa).',
         ask: {
@@ -226,6 +229,11 @@ const stagesA: StageDef[] = [
         recall: ['aorta-dortsalak'],
         idea: 'Aorta dortsalaren adarren muturrean, kapilar «ovilloak»: glomeruluak.',
         text: 'Horrekin batera, aorta dortsaletik adar batzuk ateratzen dira nefrotometarantz. Adar horien urrutiko muturretan hari edo «ovillo» formako egiturak eratzen dira, arteriolaz (kapilarrez) osatuak: glomeruluak.',
+        plain: {
+          idea: 'Aorta dortsalaren adarren muturrean, kapilarrez osatutako egiturak: glomeruluak.',
+          text: 'Horrekin batera, aorta dortsaletik adar batzuk ateratzen dira nefrotometarantz. Adar horien urrutiko muturretan hari formako egiturak eratzen dira, arteriolaz (kapilarrez) osatuak: glomeruluak.',
+          exam: 'Glomeruluak: aorta dortsalaren adarren muturretan, arteriolaz (kapilarrez) osatuak.',
+        },
         focus: ['aorta-dortsalak', 'glomeruluak'],
         exam: 'Glomeruluak: aorta dortsalaren adarren muturretan, arteriolaz (kapilarrez) osatutako «ovilloak».',
         view: '3d',
@@ -235,6 +243,10 @@ const stagesA: StageDef[] = [
         notes: ['w15/1.1/p7/s3', 'w15/1.1/p8/s1', 'w15/1.1/p9/s1'],
         idea: 'Bi glomerulu mota, biak aortatik: kanpokoak (zelomara) eta barnekoak (hodixkarantz).',
         text: 'Liburuan glomerulu bakarra irudikatzen da, baina bi mota garatzen dira, biak aortatik. Kanpoko glomeruluak enbrioi barruko zelomara zuzenean zabaltzen dira. Barneko glomeruluak nefrotometarantz edo hodixka pronefrikoetarantz luzatzen dira.',
+        // "nefrotometarantz" is grey in the notes (w15): not taught this year.
+        plain: {
+          text: 'Liburuan glomerulu bakarra irudikatzen da, baina bi mota garatzen dira, biak aortatik. Kanpoko glomeruluak enbrioi barruko zelomara zuzenean zabaltzen dira. Barneko glomeruluak hodixka pronefrikoetarantz luzatzen dira.',
+        },
         focus: ['kanpoko-glomeruluak', 'barneko-glomeruluak'],
         exam: 'Kanpoko glomeruluak → zelomara; barneko glomeruluak → hodixka pronefrikoetara. Biak aortatik.',
         view: '3d',
@@ -291,6 +303,10 @@ const stagesA: StageDef[] = [
         recall: ['pronefrosa'],
         idea: 'Mesonefrosa: kaudalerago eta garatuago; pronefrosa endekatzen den bitartean hasten da.',
         text: 'Mesonefrosa pronefrosa baino alde kaudalerago dago, eta garatuago (fisiologikoki aktiboagoa). 4. astean sortzen da, pronefrosa endekatzen den bitartean, eta 4. astearen amaierarako ia endekatzen da (ez guztiz), pronefrosaren antzera: ez da funtzionala.',
+        plain: {
+          text: 'Mesonefrosa pronefrosa baino alde kaudalerago dago, eta garatuago (fisiologikoki aktiboagoa). 4. astean sortzen da, pronefrosa endekatzen den bitartean, eta 4. astearen amaierarako ia endekatzen da, pronefrosaren antzera: ez da funtzionala.',
+          exam: 'Mesonefrosa: 4. astean sortu, 4. astearen amaierarako ia endekatu; ez funtzionala.',
+        },
         focus: ['mesonefrosa', 'pronefrosa'],
         exam: 'Mesonefrosa: 4. astean sortu, 4. astearen amaierarako ia endekatu (ez guztiz); ez funtzionala.',
         view: '3d',
@@ -311,6 +327,9 @@ const stagesA: StageDef[] = [
         idea: 'Barruan gernu osagaia eta osagai genitala: gandor urogenitala.',
         key: 'Izenak edukia esaten du: bi sistemen osagaiak daramatzalako, «urogenitala».',
         text: 'Gero kordoi nefrogenoak eraldatu eta garatu egiten dira, eta barruan bi egitura mota agertzen dira: gernu osagaia eta osagai genitala. Bi sistemen egiturak daramatzatenez, gandor urogenitala deitzen zaie.',
+        plain: {
+          text: 'Gero barruan bi egitura mota agertzen dira: gernu osagaia eta osagai genitala. Bi sistemen egiturak daramatzatenez, gandor urogenitala deitzen zaie.',
+        },
         focus: ['gandor-urogenitala', 'hodixka-mesonefrikoak'],
         view: '3d',
       },
@@ -384,6 +403,10 @@ const stagesA: StageDef[] = [
         idea: 'Alboko muturra hodi mesonefrikoan irekita; erdikoak glomerulua inguratzen du: Bowman kapsula.',
         key: 'Pronefrosean hodixka zelomara irekitzen zen; mesonefrosan hodi mesonefrikoan: biltzeko bide bat dago.',
         text: 'Hodixka mesonefrikoek bi mutur dituzte. Alboko muturra hodi mesonefrikoan irekitzen da. Erdikoa glomerulurantz luzatzen da (aorta dortsalaren adartxoak, ovillo formakoak) eta, kontaktuan jartzean, glomerulua inguratzen duen txano formako egitura eratzen du: Bowman kapsula. Ez dira fusionatzen.',
+        plain: {
+          text: 'Hodixka mesonefrikoek bi mutur dituzte. Alboko muturra hodi mesonefrikoan irekitzen da. Erdikoa glomerulurantz luzatzen da (aorta dortsalaren adartxoak) eta, kontaktuan jartzean, glomerulua inguratzen duen txano formako egitura eratzen du: Bowman kapsula.',
+          exam: 'Hodixka mesonefrikoa: alboa → hodi mesonefrikoan irekita; erdikoa → glomerulua inguratu (Bowman kapsula).',
+        },
         focus: ['hodixka-mesonefrikoak', 'kapsula-glomerularra', 'glomeruluak'],
         exam: 'Hodixka mesonefrikoa: alboa → hodi mesonefrikoan irekita; erdikoa → glomerulua inguratu (Bowman kapsula), fusiorik gabe.',
         view: '3d',
@@ -393,6 +416,13 @@ const stagesA: StageDef[] = [
         notes: ['w15/1.2/p17/s5', 'w15/1.2/p20/s5-s7'],
         idea: 'Tokia mugatua: hodixka mesonefrikoa bihurritu egiten da (pronefrikoa zuzena zen).',
         text: 'Tokia mugatua denez, hodixka mesonefrikoa bihurritu (tolestu) egiten da luzatzen ari den bitartean: ez da zuzena, hodixka pronefrikoak ziren bezala. Glomerulu eta kapsulen multzoari mesonefrosaren korpuskulua deritzo.',
+        // The tubule bending as it lengthens (and the pronephric ones straight) is grey in the notes: not taught this year.
+        plain: {
+          idea: 'Glomerulua + kapsula = mesonefrosaren korpuskulua.',
+          text: 'Glomerulu eta kapsulen multzoari mesonefrosaren korpuskulua deritzo.',
+          exam: 'Glomerulua + kapsula = korpuskulua.',
+          ask: null,
+        },
         focus: ['hodixka-mesonefrikoak', 'korpuskulua'],
         exam: 'Hodixka pronefrikoak zuzenak; mesonefrikoak bihurriak. Glomerulua + kapsula = korpuskulua.',
         ask: {
@@ -408,6 +438,10 @@ const stagesA: StageDef[] = [
         notes: ['w15/1.2/p18/s1-s3', 'w15/1.2/p19/s1-s3', 'w15/1.2/p21/s1', 'w15/1.2/p22/s1-s4'],
         idea: 'Mesonefrosa ez da funtzionala: gernua behin betiko sisteman eratzen da.',
         text: 'Mesonefrosa ere primitiboa da: ez pronefrosean ez mesonefrosan ez da gernurik eratzen; gernua behin betiko sisteman eratzen da. Haren atal funtzionala glomeruluek eta kapsulek osatzen dute: odola aortatik arteriola aferenteen bidez iristen da glomerulura eta arteriola eferenteen bidez itzultzen da. Pronefrosarekiko desberdintasun nagusia: mesonefrosean hodia gandorrean eratuta dago; pronefrosean hodi pronefrikoa hodixken atzean.',
+        plain: {
+          text: 'Mesonefrosa ere primitiboa da: ez pronefrosean ez mesonefrosan ez da gernurik eratzen; gernua behin betiko sisteman eratzen da.',
+          caution: null,
+        },
         focus: ['arteriola-aferentea', 'arteriola-eferentea', 'korpuskulua'],
         exam: 'Ez pronefrosak ez mesonefrosak ez dute gernurik egiten: gernua behin betiko sisteman (metanefrosan).',
         caution: 'Apunteetako paragrafo batek («Berdina da baina modu desberdinean azalduta») kontrakoa dio: korpuskuluetan iraizpena dagoela eta mesonefrosa funtzionala dela. Atal bereko gainerako esaldiek (eta sarrerak) ez funtzionala diote: pronefrosa baino funtzionalagoa, baina ez guztiz.',
@@ -442,6 +476,10 @@ const stagesA: StageDef[] = [
         recall: ['mesonefrosa', 'hodi-mesonefrikoa', 'kloaka'],
         idea: 'Metanefrosa: atzeko paretan, alde sakroan, 28–29. egunean; behin betiko giltzurruna, guztiz funtzionala.',
         text: 'Metanefrosa hiru azpisistemetan garatuena eta konplexuena da. Enbrioiaren atzeko paretan eratzen da, alde oso kaudalean: alde sakroan hasten da 4. astearen amaieran edo 5.aren hasieran (28–29. egunean), mesonefrosa endekatzen ari den bitartean. Behin betiko giltzurruna sortzen du: odola filtratu eta gernua egiten du, guztiz funtzionala.',
+        // "the most functional and developed of the three" is grey in the notes: not taught this year.
+        plain: {
+          text: 'Metanefrosa enbrioiaren atzeko paretan eratzen da, alde oso kaudalean: alde sakroan hasten da 4. astearen amaieran edo 5.aren hasieran (28–29. egunean), mesonefrosa endekatzen ari den bitartean. Behin betiko giltzurruna sortzen du: odola filtratu eta gernua egiten du, guztiz funtzionala.',
+        },
         focus: ['mesonefrosa', 'hodi-mesonefrikoa', 'kloaka'],
         exam: 'Metanefrosa: alde sakroan, 28–29. egunean; behin betiko giltzurruna, guztiz funtzionala.',
         view: '3d',
@@ -452,6 +490,12 @@ const stagesA: StageDef[] = [
         idea: 'Hodi mesonefrikoaren mutur kaudalean ureter kimua; atzeko hormako mesenkimara luzatzen da.',
         key: 'Ureter kimua hodi mesonefrikoaren adar bat da: horregatik da gerora haren eratorriak gernu maskuriaren atzeko hormarekin lotuta.',
         text: 'Hodi mesonefrikoaren alde kaudalean (hasieran kloakan amaitzen da; kloaka gero gernu sistema bihurtzen da) kimu txiki bat ateratzen zaio: ureter kimua. Kimua inguruko mesenkimara luzatzen da, eskuin eta ezkerrera, enbrioiaren atzeko horman sartuz.',
+        plain: {
+          idea: 'Sistema biltzailea ureter kimutik sortzen da.',
+          text: 'Sistema biltzailea, hodiz osatutako sistema, ureter kimutik sortzen da.',
+          key: null,
+          exam: 'Sistema biltzailea: ureter kimutik.',
+        },
         focus: ['ureter-kimua', 'hodi-mesonefrikoa'],
         exam: 'Ureter kimua: hodi mesonefrikoaren mutur kaudaletik (kloakatik hurbil).',
         view: '3d',
@@ -510,6 +554,9 @@ const stagesC: StageDef[] = [
         recall: ['giltzurruna', 'ureter-kimua'],
         idea: 'Giltzurruna: piramideetan hodi biltzaileak eta nefronak; kalizak eta pelbisa enbutuak; ureterra gernu maskurira.',
         text: 'Hau da metanefrosatik sortutako giltzurruna, oraindik pelbisean. Haren egitura piramideetan antolatzen da: hodi biltzaileak eta nefronak. Kalizak enbutuak dira, eta pelbisa enbuturik nagusia; ureterrak gernua gernu maskurira darama.',
+        plain: {
+          text: 'Hau da metanefrosatik sortutako giltzurruna. Haren egitura piramideetan antolatzen da: hodi biltzaileak eta nefronak. Kalizak enbutuak dira, eta pelbisa enbuturik nagusia; ureterrak gernua gernu maskurira darama.',
+        },
         focus: ['giltzurruna', 'ureterra'],
         view: '3d',
       },
@@ -518,6 +565,11 @@ const stagesC: StageDef[] = [
         notes: ['w15/2/p3/s6-s7'],
         idea: 'Gernua 12. astean hasten da; nefrogenesia 35. astean amaitzen da.',
         text: 'Gernuaren ekoizpena 12. astean hasten da, eta nefrogenesia (nefronen eraketa) 35. astean amaitzen da.',
+        plain: {
+          idea: 'Gernuaren ekoizpena 12. astean hasten da.',
+          text: 'Gernuaren ekoizpena 12. astean hasten da.',
+          exam: 'Gernua: 12. astetik (1.3 atalean, 14. astea).',
+        },
         caution: 'Apunteek bi aste ematen dituzte: 2. atalak gernuaren ekoizpena 12. astean hasten dela dio; 1.3 atalak, nefronak 14. astean gutxi gorabehera hasten direla gernua eratzen (eta haren denbora-lerroak, 3. hilabetean).',
         focus: ['giltzurruna', 'gernu-maskuria'],
         exam: 'Gernua: 12. astetik (1.3 atalean, 14. astea). Nefrogenesia: 35. astean amaitzen da.',
@@ -560,13 +612,20 @@ const stagesC: StageDef[] = [
   },
 ];
 
+/**
+ * The play order: one story down the body, each stage reached from the one before by one camera move
+ * (components/scenes/week15/sites.ts). The QA sheets (scripts/quality) read this list.
+ */
+const ORDER = ['sarrera', 'pronefrosa', 'nefrotomak', 'glomeruluak', 'mesonefrosa', 'mesonefros-hodixkak', 'metanefrosa', 'sistema-biltzailea', 'nefrona', 'giltzurrun-igoera', 'giltzurrun-gaineko-guruinak', 'sinu-urogenitala', 'gernu-maskuria', 'uretra', 'zakil-uretra'];
+const inOrder = (list: StageDef[]) => [...list].sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
+
 export const week15: WeekDef = {
   week: 15,
   slug: 'sistema-urogenitala',
   title: 'Sistema urogenitala',
   subtitle: 'Gernu sistema: pronefrosa, mesonefrosa eta metanefrosa; giltzurrunak, giltzurrun gaineko guruinak, sinu urogenitala, gernu maskuria eta uretra',
   dayRange: [22, 266],
-  stages: [...stagesA, ...stages15b.slice(0, 2), ...stagesC, ...stages15b.slice(2)],
+  stages: inOrder([...stagesA, ...stagesC, ...stages15b]),
   structures: structures15,
   quiz: quiz15,
   source: { file: FILE, section: '15. gaia' },

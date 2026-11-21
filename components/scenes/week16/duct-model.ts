@@ -111,18 +111,20 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
   const items: Item3[] = [];
   const pts: Record<string, V3> = {};
   const dim = o.dim;
+  // Unlit parts recede to grey (the stage does it) and stay solid: a faded organ reads as glass. Only the parts
+  // that are see-through on purpose (the bladder, the prostate, the broad ligament: op < 1) fade further.
   const fade = (id: string, groups?: readonly string[]) => (!dim || dim.k <= 0.001 || dim.ids.includes(id) || (groups ?? []).some((g) => dim.ids.includes(g)) ? 1 : 1 - 0.75 * dim.k);
   const tube = (key: string, id: string | undefined, line: V3[], color: string, r: number | ((u: number) => number), op = 1, extra: Partial<Item3> = {}, sides = 12) => {
     if (op <= 0.01 || line.length < 2) return;
-    items.push({ key, id, ...tubeParts(line, { radius: typeof r === 'number' ? () => r : r, ref: [0, 0, 1], sides, capStart: true, capEnd: true }), color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
+    items.push({ key, id, ...tubeParts(line, { radius: typeof r === 'number' ? () => r : r, ref: [0, 0, 1], sides, capStart: true, capEnd: true }), color, deep: darker(color), tissue: 'epithelium', opacity: op * (id && op < 0.99 ? fade(id, extra.groups) : 1), ...extra });
   };
   const ball = (key: string, id: string | undefined, c: V3, r: V3, color: string, op = 1, extra: Partial<Item3> = {}, rings = 12, sides = 16) => {
     if (op <= 0.01) return;
-    items.push({ key, id, ...blobParts({ center: c, radii: r, rings, sides }), color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
+    items.push({ key, id, ...blobParts({ center: c, radii: r, rings, sides }), color, deep: darker(color), tissue: 'epithelium', opacity: op * (id && op < 0.99 ? fade(id, extra.groups) : 1), ...extra });
   };
   const put = (key: string, id: string | undefined, parts: Parts | null, color: string, op = 1, extra: Partial<Item3> = {}) => {
     if (!parts || op <= 0.01) return;
-    items.push({ key, id, ...parts, color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
+    items.push({ key, id, ...parts, color, deep: darker(color), tissue: 'epithelium', opacity: op * (id && op < 0.99 ? fade(id, extra.groups) : 1), ...extra });
   };
   const vess = (key: string, id: string | undefined, line: V3[], color: string, prof: VesselOptions, g = 1, op = 1, extra: Partial<Item3> = {}) =>
     put(key, id, vessel(line, { ref: [0, 0, 1], sides: 12, ...prof }, g), color, op, extra);
@@ -152,7 +154,9 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
     const c = gon(s);
     const r: V3 = [lerp(0.32, 0.42, male), lerp(0.6, 0.55, Math.max(male, female)), lerp(0.28, 0.34, male)];
     const id = male > 0.5 ? 'barrabila' : female > 0.5 ? 'obarioa' : 'gonadak';
-    ball(`gonad${s}`, id, c, r, mixHex(mixHex(GC16.gonad, '#d9f2ee', male), OVARY, female), 0.95, { groups: ['gonadak'], deep: GC16.gonadDeep });
+    // Solid, and light enough on its shaded side to read as an organ (the 3D layer shows a tone about hex^2.2).
+    const gc = mixHex(mixHex(GC16.gonad, '#d9f2ee', male), OVARY, female);
+    ball(`gonad${s}`, id, c, r, gc, 1, { groups: ['gonadak'], deep: mixHex(gc, GC16.gonadDeep, 0.45) }, 16, 22);
     if (s > 0) {
       pts[id] = add(c, [0.3, 0.25, 0.2]);
       pts['gonadak'] = pts[id];
@@ -164,7 +168,7 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
   for (const s of [-1, 1]) {
     const wolff0 = L([X(s, [1.75, 1.75, -0.25]), X(s, [1.72, 0.3, -0.25]), X(s, [1.25, -1.15, -0.15]), X(s, [0.55, -2.0, 0.05]), X(s, [0.15, -2.3, 0.15])], 40);
     // Male: tail of the epididymis down to the prostate — the vas deferens's longer, straighter way.
-    const wolffM = L([X(s, [1.62, 0.4, -0.2]), X(s, [1.75, -0.4, -0.25]), X(s, [1.3, -1.35, -0.35]), X(s, [0.5, -2.0, -0.2]), X(s, [0.15, -2.2, 0.05])], 40);
+    const wolffM = L([X(s, [1.79, 0.42, -0.12]), X(s, [1.8, -0.4, -0.25]), X(s, [1.3, -1.35, -0.35]), X(s, [0.5, -2.0, -0.2]), X(s, [0.15, -2.2, 0.05])], 40);
     const wolff = morph(wolff0, wolffM, pose.epididymis);
     const wid = pose.epididymis > 0.5 ? 'hodi-deferentea' : 'hodi-mesonefrikoa';
     // In the female it thins away (and is gone at the end) rather than fading to glass.
@@ -195,16 +199,22 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
       pts['hodixka-epigenitalak'] = X(1, [1.6, 1.25, 0.05]);
       pts['hodixka-paragenitalak'] = X(1, [1.6, 0.4, 0.05]);
     }
-    // The epididymis: the duct's coiled start along the testis.
+    // The epididymis: the duct's coiled start, packed into a comma-shaped body along the testis's lateral border
+    // (head at the top, body, tail): a solid body whose surface is the coiled duct, a fine ridge wound tight round it.
     const ep = clamp01(pose.epididymis);
     if (ep > 0.01) {
-      const coil = Array.from({ length: 40 }, (_, i): V3 => {
-        const u = i / 39;
-        const a = u * Math.PI * 2 * 7;
-        return X(s, [1.62 + 0.09 * Math.cos(a), lerp(1.55, 0.4, u), -0.2 + 0.09 * Math.sin(a)]);
+      const axis = L([X(s, [1.74, 1.52, -0.1]), X(s, [1.82, 1.25, -0.12]), X(s, [1.8, 0.8, -0.12]), X(s, [1.79, 0.42, -0.12])], 30);
+      const rad = (u: number) => 0.055 + 0.065 * Math.exp(-((u / 0.18) ** 2)) + 0.02 * Math.exp(-(((u - 1) / 0.15) ** 2));
+      tube(`epidB${s}`, 'epididimoa', grown(axis, ep), mixHex(UC.wolff, '#c4b5fd', 0.35), rad, 1, { deep: UC.wolffDeep }, 16);
+      const coil = Array.from({ length: 420 }, (_, i): V3 => {
+        const u = (i / 419) * ep;
+        const q = axis[Math.min(axis.length - 1, Math.round(u * (axis.length - 1)))];
+        const a = u * Math.PI * 2 * 46 + 0.8 * Math.sin(u * 53);
+        const w = rad(u) * 0.97;
+        return [q[0] + s * w * Math.cos(a), q[1] + 0.012 * Math.sin(u * 71), q[2] + w * Math.sin(a)];
       });
-      vess(`epid${s}`, 'epididimoa', coil, UC.wolff, { r0: 0.055, r1: 0.05, sides: 8, n: 120 }, ep, 1, { deep: UC.wolffDeep });
-      if (s > 0) pts['epididimoa'] = X(s, [1.78, 0.95, 0]);
+      vess(`epid${s}`, 'epididimoa', coil, UC.wolff, { r0: 0.017, r1: 0.016, sides: 5, n: 840 }, 1, 1, { deep: UC.wolffDeep });
+      if (s > 0) pts['epididimoa'] = X(s, [1.95, 1.2, 0.05]);
     }
     // The seminal vesicle (a bud of the vas deferens's end) and the ejaculatory duct.
     const ve = clamp01(pose.vesicle);
@@ -346,7 +356,7 @@ export function ductModel(pose: DuctPose, o: DuctOpts = {}) {
   // ———— the semen's way: seminiferous tubules → rete → efferent ductules → epididymis → vas → ejaculatory duct → prostatic urethra ————
   if (pose.semen > 0.01) {
     const s = 1;
-    const way = L([add(gon(s), [0, -0.1, 0.1]), add(gon(s), X(s, [0.25, 0.35, 0])), X(s, [1.6, 1.3, -0.1]), X(s, [1.62, 0.9, -0.2]), X(s, [1.62, 0.45, -0.2]), X(s, [1.75, -0.4, -0.25]), X(s, [1.3, -1.35, -0.35]), X(s, [0.5, -2.0, -0.2]), X(s, [0.15, -2.2, 0.05]), [0, -2.5, 0.3], [0, -3.4, 0.4]], 60);
+    const way = L([add(gon(s), [0, -0.1, 0.1]), add(gon(s), X(s, [0.25, 0.35, 0])), X(s, [1.75, 1.35, -0.1]), X(s, [1.79, 0.9, -0.12]), X(s, [1.79, 0.45, -0.12]), X(s, [1.8, -0.4, -0.25]), X(s, [1.3, -1.35, -0.35]), X(s, [0.5, -2.0, -0.2]), X(s, [0.15, -2.2, 0.05]), [0, -2.5, 0.3], [0, -3.4, 0.4]], 60);
     for (let k = 0; k < 9; k++) {
       const u = (pose.semen * 1.4 + k / 9) % 1;
       const p = way[Math.min(way.length - 1, Math.floor(u * (way.length - 1)))];

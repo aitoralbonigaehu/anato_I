@@ -125,12 +125,12 @@ const SITES: Site[] = [
   { tip: [-0.68, -1.75, 0.05], s: -1, sc: 0.78, branch: L([[0, -2.25, 0], [-0.32, -2.0, 0.03], [-0.68, -1.75, 0.05]], 10) },
 ];
 
-/** The section of cortex the whole scene lies on (its cut face towards the viewer). */
+/** The section of cortex the whole scene lies on (its cut face towards the viewer), larger than the cameras show: the student is inside the kidney, not looking at a card. */
 const SECTION = Array.from({ length: 56 }, (_, i): [number, number] => {
   const a = (i / 56) * Math.PI * 2;
   // A rounded rectangle (superellipse) round the scene.
   const c = Math.cos(a), sn = Math.sin(a);
-  return [0.15 + 3.3 * Math.sign(c) * Math.abs(c) ** 0.4, -0.75 + 3.35 * Math.sign(sn) * Math.abs(sn) ** 0.4];
+  return [0.15 + 12 * Math.sign(c) * Math.abs(c) ** 0.3, -0.75 + 9 * Math.sign(sn) * Math.abs(sn) ** 0.3];
 });
 
 export function nephronModel(pose: NephronPose, o: NephronOpts = {}) {
@@ -146,7 +146,7 @@ export function nephronModel(pose: NephronPose, o: NephronOpts = {}) {
     put(key, id, vessel(line, { ref: [0, 0, 1], ...prof }, g), color, op, extra);
 
   // ———— the ground: a cut face of the cortex (the metanephric tissue the nephrons form in) ————
-  items.push({ key: 'section', id: 'blastema-metanefrikoa', ...plate('nephron-cortex-v1', SECTION, -0.55, -0.8), color: UC.wallCut, deep: UC.wallCutDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
+  items.push({ key: 'section', id: 'blastema-metanefrikoa', ...plate('nephron-cortex-v2', SECTION, -0.55, -0.8), color: UC.wallCut, deep: UC.wallCutDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
   pts['blastema-metanefrikoa'] = [1.75, 2.15, -0.5];
 
   // ———— the collecting tubule: a tapering stem; its branches flare out of it and swell into ampullae ————

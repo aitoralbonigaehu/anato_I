@@ -1,5 +1,6 @@
 import { add, type V3 } from '@/lib/three-d/math';
-import { curve3 } from '@/lib/three-d/mesh';
+import { curve3, grid } from '@/lib/three-d/mesh';
+import { cachedMesh } from '@/lib/three-d/mesh-cache';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
 import { T } from '@/components/scenes/week10/common';
@@ -74,9 +75,38 @@ const ss = (a: number, b: number, x: number) => {
 /** An ellipse's outline (for the section plate). */
 const ELLIPSE = (cx: number, cy: number, rx: number, ry: number, n = 48): [number, number][] => Array.from({ length: n }, (_, i) => [cx + rx * Math.cos((i / n) * Math.PI * 2), cy + ry * Math.sin((i / n) * Math.PI * 2)]);
 
+/** Solid context: greyed when unlit, never faded (see `fade`). */
+const SOLID = new Set(['hodi-neurala', 'somitak', 'aorta-dortsalak']);
+
 /** The three segments' levels (z) in the block, cranial first. */
 export const SEG_Z = [0.7, 0, -0.7] as const;
 const ZH = 1.05;
+
+/**
+ * The block's body wall: a band of tissue round the section (the ellipse the cut plate has, 0.18 thick), along
+ * the block's whole depth. Its outside, its inside and its cranial cut face; built once.
+ */
+const BODY_WALL = (() => {
+  const RX = 2.2, RY = 1.65, CY = 0.1, TH = 0.18;
+  const at = (k: number, a: number): [number, number] => [(RX - k) * Math.sin(a), CY + (RY - k) * Math.cos(a)];
+  const side = (kind: string, k: number, facing: V3) =>
+    cachedMesh(kind, [RX, RY, TH, ZH], () =>
+      grid(72, 3, (u, v) => {
+        const p = at(k, u * Math.PI * 2);
+        return [p[0], p[1], ZH - v * 2 * ZH];
+      }, facing),
+    );
+  // (The patches' middle is the bottom of the ring: the outside faces down there, the inside up to the centre.)
+  const out = side('unit-wall-out-v1', 0, [0, -10, 0]);
+  const inn = side('unit-wall-in-v1', TH, [0, CY, 0]);
+  const cut = cachedMesh('unit-wall-cut-v1', [RX, RY, TH, ZH], () =>
+    grid(72, 2, (u, v) => {
+      const p = at(TH * v, u * Math.PI * 2);
+      return [p[0], p[1], ZH];
+    }, [0, 0, 10]),
+  );
+  return { out, inn, cut };
+})();
 /** Where the unit forms (the intermediate mesoderm), the glomerulus, the duct, in the cut plane. */
 const IM: [number, number] = [1.28, 0.5];
 const GLOM: [number, number] = [0.84, 0.18];
@@ -87,7 +117,9 @@ export function unitModel(pose: UnitPose, o: UnitOpts = {}) {
   const items: Item3[] = [];
   const pts: Record<string, V3> = {};
   const dim = o.dim;
-  const fade = (id: string, groups?: readonly string[]) => (!dim || dim.k <= 0.001 || dim.ids.includes(id) || (groups ?? []).some((g) => dim.ids.includes(g)) ? 1 : 1 - 0.78 * dim.k);
+  // Solid tissue (the neural tube, the somites, the aortas) greys with the unlit parts but never turns see-through:
+  // a faded solid reads as glass (docs/quality/3d-quality-bar.md, "Pitfalls").
+  const fade = (id: string, groups?: readonly string[]) => (SOLID.has(id) || !dim || dim.k <= 0.001 || dim.ids.includes(id) || (groups ?? []).some((g) => dim.ids.includes(g)) ? 1 : 1 - 0.78 * dim.k);
   const tube = (key: string, id: string | undefined, line: V3[], color: string, r: number | ((u: number) => number), op = 1, extra: Partial<Item3> = {}, sides = 12) => {
     if (op <= 0.01 || line.length < 2) return;
     items.push({ key, id, ...tubeParts(line, { radius: typeof r === 'number' ? () => r : r, ref: [0, 1, 0], sides, capStart: true, capEnd: true }), color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
@@ -112,17 +144,22 @@ export function unitModel(pose: UnitPose, o: UnitOpts = {}) {
     const a = (i / 39) * Math.PI * 2;
     return [2.2 * Math.sin(a), 0.1 + 1.65 * Math.cos(a), 0];
   });
-  // The body wall as a see-through ring (ectoderm outside), extruded along the block.
-  for (const z of [ZH, -ZH]) tube(`rim${z}`, undefined, wall.map((p) => [p[0], p[1], z]), T.ecto, 0.022, 0.3, { quiet: true, outline: false }, 6);
+  // The body wall: a solid band round the block (its outside the skin, its inside and its cranial cut the body's
+  // tissue), so the block is a slab cut out of the embryo and not a glass dish; the ectoderm a line round the cut.
+  const W = BODY_WALL;
+  items.push({ key: 'bodyOut', mesh: W.out, hit: W.out, color: UC.wall, deep: UC.wallDeep, tissue: 'skin', opacity: 1, quiet: true, ground: true, outline: false });
+  items.push({ key: 'bodyIn', mesh: W.inn, hit: W.inn, color: UC.wallCut, deep: UC.wallCutDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true, outline: false });
+  items.push({ key: 'bodyCut', mesh: W.cut, hit: W.cut, color: UC.wallCut, deep: UC.wallCutDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true, outline: false });
+  tube(`rim${ZH}`, undefined, wall.map((p) => [p[0], p[1], ZH + 0.005]), T.ecto, 0.03, 1, { quiet: true, ground: true, outline: false }, 6);
   // The block's caudal cut face as a solid plate (the section as the notes draw it: the body's tissue, the coelom
   // cavities dark in it), so what stands in the block has a ground: every duct and vessel ends on it.
   items.push({ key: 'wall', ...plate('unit-section-v1', ELLIPSE(0, 0.1, 2.2, 1.65), -ZH, -ZH - 0.2), color: UC.wallCut, deep: UC.wallCutDeep, tissue: 'mesenchyme', opacity: 1, outline: true, quiet: true, ground: true });
-  for (const s of [-1, 1]) items.push({ key: `coelface${s}`, ...plate(`unit-coelom-v1${s}`, ELLIPSE(s * 1.05, -0.62, 0.7, 0.5), -ZH + 0.006, -ZH - 0.01), color: '#1c2233', deep: '#0b0e16', tissue: 'membrane', opacity: 1, outline: false, quiet: true, ground: true });
-  tube('neural', 'hodi-neurala', along(0, 1.22), T.neural, 0.3, 0.9, { tissue: 'neural', groups: [] });
+  for (const s of [-1, 1]) items.push({ key: `coelface${s}`, ...plate(`unit-coelom-v1${s}`, ELLIPSE(s * 1.05, -0.62, 0.7, 0.5), -ZH + 0.006, -ZH - 0.01), color: UC.cavity, deep: UC.cavityDeep, tissue: 'membrane', opacity: 1, outline: false, quiet: true, ground: true });
+  tube('neural', 'hodi-neurala', along(0, 1.22), T.neural, 0.3, 1, { tissue: 'neural', groups: [] });
   pts['hodi-neurala'] = [0.2, 1.42, ZH];
   tube('noto', undefined, along(0, 0.78), T.noto, 0.07, 0.8, { quiet: true });
   for (const z of SEG_Z)
-    for (const s of [-1, 1]) ball(`som${z}${s}`, 'somitak', X(s, [0.78, 1.08, z]), [0.36, 0.32, 0.27], UC.somite, 0.75, { tissue: 'mesenchyme' }, 10, 12);
+    for (const s of [-1, 1]) ball(`som${z}${s}`, 'somitak', X(s, [0.78, 1.08, z]), [0.36, 0.32, 0.27], UC.somite, 1, { tissue: 'mesenchyme' }, 10, 12);
   pts['somitak'] = X(1, [0.9, 1.25, SEG_Z[0] + 0.2]);
   for (const s of [-1, 1]) tube(`ao${s}`, 'aorta-dortsalak', along(s * 0.32, 0.46), UC.aorta, 0.15, 1, { tissue: 'vessel' });
   pts['aorta-dortsalak'] = X(1, [0.34, 0.5, ZH]);

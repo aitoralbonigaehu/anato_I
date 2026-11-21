@@ -23,7 +23,7 @@ export interface GridCell {
   gone?: boolean;
   /** A real displacement (migrates / moves up). */
   move?: boolean;
-  /** "Aurten emandakoa" mode (topics 16+): the text, and the note (null = none), without the notes' blue part. */
+  /** "Aurten emandakoa" mode (topics 15+): the text, and the note (null = none), without the notes' blue part. */
   plain?: string;
   plainNote?: string | null;
 }

@@ -15,17 +15,18 @@ interface Reading {
   font: number;
   /** Paper or dark sheet; null = follow the app's look (paper in light mode, dark in dark mode). */
   paper: boolean | null;
-  /** Skip the text the original sets in blue (not taught this year): topics 16+. */
+  /** Skip the text the original sets in blue or grey (not taught this year): topics 15+. On by default. */
   skipBlue: boolean;
 }
-const DEFAULT_READING: Reading = { font: 16, paper: null, skipBlue: false };
+const DEFAULT_READING: Reading = { font: 16, paper: null, skipBlue: true };
 const readingListeners = new Set<() => void>();
 let reading: Reading | undefined;
 const readReading = (): Reading => {
   if (!reading) {
     try {
-      const saved = JSON.parse(window.localStorage.getItem(PREFS_KEY) ?? 'null') as Partial<Reading> | null;
-      reading = { font: Math.min(22, Math.max(13, Number(saved?.font) || 16)), paper: typeof saved?.paper === 'boolean' ? saved.paper : null, skipBlue: saved?.skipBlue === true };
+      // Stored as `showBlue` (opt-in to the full text): the old `skipBlue: false` saved with every font change is ignored.
+      const saved = JSON.parse(window.localStorage.getItem(PREFS_KEY) ?? 'null') as (Partial<Omit<Reading, 'skipBlue'>> & { showBlue?: boolean }) | null;
+      reading = { font: Math.min(22, Math.max(13, Number(saved?.font) || 16)), paper: typeof saved?.paper === 'boolean' ? saved.paper : null, skipBlue: saved?.showBlue !== true };
     } catch {
       reading = DEFAULT_READING;
     }
@@ -35,7 +36,8 @@ const readReading = (): Reading => {
 const setReading = (next: Partial<Reading>) => {
   reading = { ...readReading(), ...next };
   try {
-    window.localStorage.setItem(PREFS_KEY, JSON.stringify(reading));
+    const { skipBlue, ...rest } = reading;
+    window.localStorage.setItem(PREFS_KEY, JSON.stringify({ ...rest, showBlue: !skipBlue }));
   } catch {
     // Storage unavailable: the setting lasts for this page only.
   }

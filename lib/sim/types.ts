@@ -121,8 +121,27 @@ export interface MicroQuestion {
   concept?: string;
 }
 
+/** A step's wording for the default "taught this year" mode: replaces fields that state not-taught facts; null drops the field. */
+export interface TaughtWording {
+  text?: string;
+  idea?: string | null;
+  key?: string | null;
+  exam?: string | null;
+  caution?: string | null;
+  more?: string | null;
+  /** The step's question, when it asks about not-taught text (null: no question in the default mode). */
+  ask?: null;
+}
+
 export interface Beat {
   at: number;
+  /**
+   * Topics 15+: the step's point is not-taught (blue/grey) notes text although some of its notes are taught.
+   * Skipped in the default "taught this year" mode, like a step whose notes are all blue.
+   */
+  notTaught?: boolean;
+  /** Topics 15+: taught-only wording shown in the default mode when a field also states not-taught facts. */
+  plain?: TaughtWording;
   /** Explicit resting frame when the animation finishes later than the default reading hold. Must precede the next beat. */
   completeAt?: number;
   /** The age this step shows when it runs ahead of the stage's days (a later stage drawn in advance). Same forms as `ViewDef.age`. */

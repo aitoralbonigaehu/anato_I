@@ -2,6 +2,7 @@ import { add, mix3, norm, type V3 } from '@/lib/three-d/math';
 import { curve3 } from '@/lib/three-d/mesh';
 import type { Item3 } from '@/lib/three-d/scene';
 import { vessel } from '@/lib/three-d/organic';
+import { fieldSurface } from '@/lib/three-d/field-surface';
 import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d';
 
 /**
@@ -19,8 +20,10 @@ import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d
  * Own frame: x towards the embryo's LEFT (on the viewer's right), y towards the tubercle (up in the figure),
  * z towards the viewer (out of the perineum).
  *
- * Built to the quality bar (docs/quality/3d-quality-bar.md): everything grows out of the perineal skin. The swellings
- * are mounds rising from it, the folds ridges that taper into it, the tubercle one shaft flaring from it with an
+ * Built to the quality bar (docs/quality/3d-quality-bar.md): everything grows out of the perineal skin. The skin is
+ * one continuous surface (lib/three-d/field-surface.ts) that runs on past the frame and curves away like the body
+ * it belongs to; the swellings and the perineum are regions of it that rise out of it, so there is no seam where a
+ * mound meets the skin and no edge of a disc floating in the dark. The tubercle is the folds ridges that taper into it, the tubercle one shaft flaring from it with an
  * ovoid glans; unlit parts recede to grey but stay solid (the one see-through part is the fused folds over the
  * penile urethra, so the urethra shows inside).
  */
@@ -53,6 +56,78 @@ const darker = (c: string) => mixHex(c, '#000000', 0.55);
 const L = (kps: readonly V3[], n = 16) => curve3(kps as V3[], n);
 const X = (s: number, p: V3): V3 => [s * p[0], p[1], p[2]];
 
+/** Where the swellings are and how high they rise, for a pose (the skin's field and the raphe both read it). */
+function swellingShape(pose: ExternalPose) {
+  const sw = clamp01(pose.swellings);
+  const sc = clamp01(pose.scrotum);
+  const fem = clamp01(pose.female);
+  return {
+    sw,
+    sc,
+    cx: lerp(0.8, 0.5, sc),
+    cy: lerp(0.0, -0.15, sc),
+    // The footprint (a mound's half-widths) and its height: the scrotum's halves are larger, higher and meet.
+    rx: 1.3 * lerp(0.3, 0.55, sc) * (1 - 0.15 * fem),
+    ry: 1.25 * lerp(0.7, 0.6, sc) * (1 + 0.25 * fem),
+    h: lerp(0.24, 0.74, sc) * (1 + 0.1 * fem),
+  };
+}
+
+/** A full mound: 1 in its middle, falling to 0 with no slope at q = 1 (q: squared distance in footprints). */
+const mound = (q: number) => (q >= 1 ? 0 : (1 - q) * (1 - q) * (1 + 2 * q));
+
+/** Height of the perineal skin at (a, b) for a pose: a dome falling away past the frame, the swellings and the perineum on it. */
+function skinZ(pose: ExternalPose, a: number, b: number): number {
+  const r2 = a * a + b * b;
+  const r = Math.sqrt(r2);
+  let z = -0.05 - 0.035 * r2 - 0.07 * Math.max(0, r - 1.9) ** 2;
+  const S = swellingShape(pose);
+  if (S.sw > 0.01)
+    for (const s of [-1, 1]) {
+      const dx = (a - s * S.cx) / (S.rx * S.sw);
+      const dy = (b - S.cy) / (S.ry * S.sw);
+      z += S.h * S.sw * mound(dx * dx + dy * dy);
+    }
+  // The scrotal raphe: a shallow seam down the middle of the fused sac.
+  if (S.sc > 0.01) z -= 0.05 * S.sc * Math.exp(-((a / 0.06) ** 2)) * mound(((b - S.cy) / (S.ry * 0.9)) ** 2);
+  // The perineum: the low ridge of tissue between the two openings.
+  const d = clamp01(pose.divide);
+  if (d > 0.01) z += 0.06 * d * mound((a / 0.34) ** 2 + ((b + 0.5) / 0.2) ** 2);
+  return z;
+}
+
+/** The perineal skin's regions, cut once in its own (material) coordinates; the skin itself runs on past the frame. */
+const SKIN_R = 8;
+const ell = (cx: number, cy: number, rx: number, ry: number) => (a: number, b: number) => 1 - Math.sqrt(((a - cx) / rx) ** 2 + ((b - cy) / ry) ** 2);
+let skinField: ReturnType<typeof fieldSurface> | null = null;
+const perinealSkin = () =>
+  (skinField ??= fieldSurface({
+    key: 'perineum16',
+    nu: 120,
+    nv: 70,
+    // Polar: fine in the middle where the parts are, coarse towards the edge that curves away out of sight.
+    chart: (u, v) => {
+      const r = SKIN_R * v ** 1.7;
+      const t = u * Math.PI * 2;
+      return [r * Math.cos(t), r * Math.sin(t)];
+    },
+    wrapU: true,
+    poleV0: true,
+    flip: true,
+    regions: [
+      { name: 'skin', weight: () => 0 },
+      // Each swelling's region covers where its mound goes, the scrotum's medial shift included.
+      { name: 'swL', weight: ell(-0.72, -0.07, 0.7, 1.05) },
+      { name: 'swR', weight: ell(0.72, -0.07, 0.7, 1.05) },
+      { name: 'per', weight: ell(0, -0.5, 0.3, 0.19) },
+    ],
+    // As drawn when grown (swellings: 0.75 of the way to their colour; the perineum: its colour), so the melt is exact
+    // then; while they grow, each item's `soft` follows its growth (no melt towards a colour not there yet).
+    colors: { skin: '#f0c9b4', swL: mixHex('#f0c9b4', '#e9b48f', 0.75), swR: mixHex('#f0c9b4', '#e9b48f', 0.75), per: mixHex('#f0c9b4', '#d98a7a', 0.4) },
+    // A wide melt: a region's colour fades into the skin's well before its edge (its mound is smaller than it).
+    soft: 0.5,
+  }));
+
 const SKIN = '#f0c9b4';
 const TUB = '#f29bb0';
 const FOLD = '#f7b6c2';
@@ -82,8 +157,38 @@ export function externalModel(pose: ExternalPose, o: ExternalOpts = {}) {
   const divide = clamp01(pose.divide);
   const groove = clamp01(pose.groove);
 
-  // The perineal skin (the background surface), keeping its colour when the unlit parts recede.
-  ball('skin', undefined, [0, -0.1, -0.35], [2.0, 2.0, 0.3], SKIN, 1, { outline: false, quiet: true, ground: true, deep: '#a07060' }, 14, 22);
+  // The perineal skin: one surface, the swellings and the perineum regions of it (see the file's head). The skin
+  // around them is the ground (it keeps its colour when the unlit parts recede).
+  const S = swellingShape(pose);
+  const skin = perinealSkin().build([pose.swellings, pose.scrotum, pose.female, pose.divide], (a, b, out, at) => {
+    out[at] = a;
+    out[at + 1] = b;
+    out[at + 2] = skinZ(pose, a, b);
+  });
+  items.push({ key: 'skin', ...skin.skin, color: SKIN, deep: '#a07060', tissue: 'skin', opacity: 1, outline: false, quiet: true, ground: true, soft: Math.max(S.sw, divide) });
+  {
+    const id = S.sc > 0.5 ? 'eskrotoa' : fem > 0.5 ? 'ezpain-nagusiak' : divide > 0.5 ? 'tolespen-ezpaineskrotalak' : 'goragune-genitalak';
+    const on = S.sw > 0.05;
+    const SWG = ['goragune-genitalak', 'tolespen-ezpaineskrotalak', 'ezpain-nagusiak', 'eskrotoa'];
+    // Unlit, a swelling melts back towards the skin it rises from and is drawn as the skin is (ground): a skin-coloured
+    // mound, not a brown patch.
+    const swLit = !dim || dim.k <= 0.001 || dim.ids.includes(id) || SWG.some((g) => dim.ids.includes(g));
+    const back = swLit ? 0 : 0.5 * dim!.k;
+    const swC = mixHex(mixHex(SKIN, mixHex(SWELL, '#e3a483', S.sc), 0.75 * S.sw), SKIN, back);
+    for (const side of ['swL', 'swR'] as const)
+      items.push({ key: side, id: on ? id : undefined, ...skin[side], color: swC, deep: mixHex('#a06a50', '#a07060', back), tissue: 'skin', opacity: 1, outline: false, soft: S.sw, quiet: !on, ground: !on || !swLit, calm: true, groups: on ? ['goragune-genitalak', 'tolespen-ezpaineskrotalak', 'ezpain-nagusiak', 'eskrotoa'] : undefined });
+    if (on) {
+      const c: V3 = [S.cx, S.cy, skinZ(pose, S.cx, S.cy)];
+      pts[id] = add(c, [0.35, 0.3, 0.12]);
+      pts['goragune-genitalak'] = pts[id];
+      pts['tolespen-ezpaineskrotalak'] = pts[id];
+      pts['ezpain-nagusiak'] = pts[id];
+      pts['eskrotoa'] = pts[id];
+    }
+    const perOn = divide > 0.3;
+    items.push({ key: 'per', id: perOn ? 'perineoa' : undefined, ...skin.per, color: mixHex(SKIN, mixHex(SKIN, '#d98a7a', 0.4), divide), deep: '#a07060', tissue: 'skin', opacity: 1, outline: false, soft: divide, quiet: !perOn, ground: !perOn || !(!dim || dim.k <= 0.001 || dim.ids.includes('perineoa')), calm: true });
+    if (perOn) pts['perineoa'] = [0.3, -0.5, skinZ(pose, 0, -0.5) + 0.05];
+  }
 
   // ———— the genital tubercle → phallus (male) or the clitoris's glans (female) ————
   if (pose.tubercle > 0.01) {
@@ -117,8 +222,6 @@ export function externalModel(pose: ExternalPose, o: ExternalOpts = {}) {
     pts['mintz-urogenitala'] = [0.12, 0.3, 0.12];
     ball('anm', 'uzki-mintza', [0, -0.85, 0.03], [0.14, 0.14, 0.06], MEM, divide, { tissue: 'membrane', groups: ['kloaka-mintza'] }, 8, 12);
     pts['uzki-mintza'] = [0.15, -0.9, 0.08];
-    ball('per', 'perineoa', [0, -0.5, 0.0], [0.28, 0.13, 0.12], mixHex(SKIN, '#d98a7a', 0.4), divide, {}, 8, 12);
-    pts['perineoa'] = [0.3, -0.5, 0.05];
   }
   // The urogenital groove's way: on the perineum in front of the anal membrane; in the male it runs on along
   // the phallus's underside, short of the glans. It closes from behind forwards (the penile urethra inside).
@@ -186,27 +289,11 @@ export function externalModel(pose: ExternalPose, o: ExternalOpts = {}) {
       }
     }
 
-  // ———— the genital (labioscrotal) swellings → labia majora or the scrotum ————
-  const sw = clamp01(pose.swellings);
-  if (sw > 0.01) {
-    const sc = clamp01(pose.scrotum);
-    for (const s of [-1, 1]) {
-      // A mound rising out of the skin (its base sunk in it); the scrotum's halves swell out further.
-      const c: V3 = X(s, [lerp(0.8, 0.5, sc), lerp(0.0, -0.15, sc), -0.08 + 0.26 * sc]);
-      const id = sc > 0.5 ? 'eskrotoa' : fem > 0.5 ? 'ezpain-nagusiak' : divide > 0.5 ? 'tolespen-ezpaineskrotalak' : 'goragune-genitalak';
-      ball(`sw${s}`, id, c, [lerp(0.3, 0.55, sc) * sw * (1 - 0.15 * fem), lerp(0.7, 0.6, sc) * sw * (1 + 0.25 * fem), lerp(0.24, 0.5, sc) * sw], mixHex(SWELL, '#e3a483', sc), 1, { groups: ['goragune-genitalak', 'tolespen-ezpaineskrotalak', 'ezpain-nagusiak', 'eskrotoa'] });
-      if (s > 0) {
-        pts[id] = add(c, [0.35, 0.3, 0.15]);
-        pts['goragune-genitalak'] = pts[id];
-        pts['tolespen-ezpaineskrotalak'] = pts[id];
-        pts['ezpain-nagusiak'] = pts[id];
-        pts['eskrotoa'] = pts[id];
-      }
-    }
-    if (sc > 0.5) {
-      tube('sraphe', 'eskroto-errafea', L([[0, 0.25, 0.42], [0, -0.15, 0.55], [0, -0.55, 0.42]], 8), '#b06a50', 0.03, ss(0.5, 1, sc), {}, 6);
-      pts['eskroto-errafea'] = [0.1, -0.35, 0.55];
-    }
+  // ———— the genital (labioscrotal) swellings → labia majora or the scrotum: regions of the skin (above); the raphe ————
+  if (S.sw > 0.01 && S.sc > 0.5) {
+    const seam = [0.25, 0.0, -0.2, -0.45, -0.6].map((y): V3 => [0, y, skinZ(pose, 0, y) + 0.012]);
+    tube('sraphe', 'eskroto-errafea', L(seam, 10), '#b06a50', 0.026, ss(0.5, 1, S.sc), {}, 6);
+    pts['eskroto-errafea'] = [0.1, -0.35, skinZ(pose, 0, -0.35) + 0.05];
   }
   // One skin: a part that is not lit steps back without going dark (`Item3.calm`).
   for (const it of items) if (it.id && (it.tissue ?? 'skin') === 'skin') it.calm = true;

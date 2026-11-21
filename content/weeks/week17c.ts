@@ -85,6 +85,9 @@ export const stages17c: StageDef[] = [
         notes: ['w17/2/p4/s5-s6'],
         idea: 'Barnean endodermoa, kanpoan ektodermoa, tartean mesenkima.',
         text: 'Arku bakoitzak barnetik estalki bat dauka, epitelio endodermikoa (horiz), eta kanpoaldetik ektodermozko estalkia edo epitelioa (urdinez). Haien artean, barnealdean, mesenkima dago (marroia).',
+        plain: {
+          caution: 'Apunteen testuak barneko estalkia «endoteliozkoa» dela dio; apunteen irudiak, ordea, «epitelio endodermikoa» dio: endodermoa da.',
+        },
         caution: 'Apunteen testuak barneko estalkia «endoteliozkoa» dela dio; apunteen irudiak, ordea, «epitelio endodermikoa» dio, eta poltsek endodermozko epitelioa dutela ere esaten dute: endodermoa da.',
         focus: ['ektodermoa', 'endodermoa', 'mesenkima'],
         exam: 'Arkua: kanpoan ektodermoa, barnean endodermoa, tartean mesenkima.',
@@ -122,6 +125,11 @@ export const stages17c: StageDef[] = [
         notes: ['w17/2/p4/s11-s12'],
         idea: 'Kanpoan arraildurak, barnean poltsak (endodermozko epitelioa); ez dira «poltsa brankialak».',
         text: 'Kanpotik, arkuen artean, goraguneen artean, arraildura edo ildo batzuk nabaritzen dira: faringe-arraildurak edo arraildura brankialak. Barnekaldean, ildo sakonagoak: faringe-poltsak, endodermozko epitelioarekin. Ez dira poltsa brankialak, barnealdean, faringe mailan, ateratzen direlako.',
+        plain: {
+          idea: 'Kanpoan arraildurak, barnean poltsak; ez dira «poltsa brankialak».',
+          text: 'Kanpotik, arkuen artean, goraguneen artean, arraildura edo ildo batzuk nabaritzen dira: faringe-arraildurak edo arraildura brankialak. Barnekaldean, ildo sakonagoak: faringe-poltsak. Ez dira poltsa brankialak, barnealdean, faringe mailan, ateratzen direlako.',
+          exam: 'Arraildurak kanpoan; poltsak barnean, faringe mailan.',
+        },
         focus: ['faringe-arraildurak', 'faringe-poltsak'],
         exam: 'Arraildurak kanpoan; poltsak barnean, endodermozko epitelioarekin.',
         caution: 'Faringe-poltsak ez dira «poltsa brankialak»: barnealdean, faringe mailan, ateratzen dira.',

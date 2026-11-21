@@ -81,10 +81,11 @@ export const GRID_18: GridScheme[] = [
     rows: [
       r(['4. astea', 'Luzapena faringearen zoruan, erdian hodi tiroglosoa; muturrean guruinaren hasikina', c('Zulo itsuaren mailan, tuberkulu bakoitiaren eta kupularen artean', { plain: 'Mihiaren gorputzaren eta sustraiaren artean' })]),
       r(['Jaistean', c('Hioidea pasatu; hodia itxi eta endekatu', { move: true, plain: 'Beherantz jaitsi; hodia itxi eta endekatu' }), 'Hasierako tokian zulo itsua geratzen da']),
-      r(['7. astea', 'Behin betiko kokapena eta itxura: bi lobulu eta istmoa', c('Krikoide kartilagoaren mailan, aurrean; atzean irekita, paratiroideekin', { plain: 'Laringeko kartilagoen aurrean; atzean irekita, paratiroideekin' })]),
+      r(['7. astea', c('Behin betiko kokapena eta itxura: bi lobulu eta istmoa', { plain: 'Behin betiko kokapena eta itxura' }), c('Krikoide kartilagoaren mailan, aurrean; atzean irekita, paratiroideekin', { plain: 'Lepoan; atzean irekita, paratiroideekin' })]),
       r(['Jaio aurreko 3. hilabetea', 'Funtzionala izaten hasten da', '—']),
     ],
     pitfalls: ['Piramide itxurako lobulua (%50 edo gehiago): hodiaren azken atala ondo endekatzen ez bada. Anomalia da, baina ez du arazorik ematen.'],
+    plainPitfalls: [],
   },
   {
     id: 'aurpegia-matrizea-18',

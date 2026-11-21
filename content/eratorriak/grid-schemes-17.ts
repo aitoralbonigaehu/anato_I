@@ -20,7 +20,7 @@ export const GRID_17: GridScheme[] = [
       { label: 'Nola sortzen da', tone: 'aldaketa', w: 1.2 },
     ],
     rows: [
-      r([c('Neurokraneoa', { span: 2, note: 'garuna inguratu eta babestu' }), 'Atal batzuk (ganga)', c('Mintzezko hezurtzapena', { note: 'hezurren artean josturak eta fontanelak' })]),
+      r([c('Neurokraneoa', { span: 2, note: 'garuna inguratu eta babestu' }), c('Atal batzuk (ganga)', { plain: 'Atal batzuk' }), c('Mintzezko hezurtzapena', { note: 'hezurren artean josturak eta fontanelak' })]),
       r([null, 'Oinaldeko hezur gehienak', 'Hezurtzapen endokondrala']),
       r([c('Errai kraneoa', { note: 'aurpegiko hezurrak' }), 'Ia hezur guztiak', c('Gandor neuraleko zeluletatik', { tone: 'jatorria' })]),
     ],
@@ -82,10 +82,10 @@ export const GRID_17: GridScheme[] = [
       r([null, 'Hezur maxilarra, zigomatikoa, loki hezurraren atal bat (kutxa tinpanikoa)', null, null], ['azalekoak']),
       r([c('II', { span: 2 }), 'Reichert (endekatu): goiko muturrean ointokia', c('VII · aurpegi-nerbioa', { span: 2, note: 'mistoa, batez ere motorra' }), c('Muskulu mimikoak, platisma, digastrikoaren atzeko sabela', { span: 2, note: 'azalekoak' })], ['azalekoak']),
       r([null, 'Beste muturrean estiloide apofisia eta lotailu estilohioideoa; hioidearen adar txikiak eta gorputzaren goiko erdia', null, null], ['azalekoak']),
-      r(['III', c('Hioidearen gorputzaren beheko erdia eta adar nagusiak', { note: 'ez dago I. eta II.aren bezalako kartilagorik' }), c('IX · glosofaringeoa', { note: 'mistoa' }), c('Estilofaringeoa, faringearen goiko ertzatzaileak', { note: 'sakonak · degluzioa' })], ['sakonak']),
+      r(['III', c('Hioidearen gorputzaren beheko erdia eta adar nagusiak', { note: 'ez dago I. eta II.aren bezalako kartilagorik' }), c('IX · glosofaringeoa', { note: 'mistoa' }), c('Estilofaringeoa, faringearen goiko ertzatzaileak', { note: 'sakonak · degluzioa', plainNote: 'sakonak' })], ['sakonak']),
       r(['IV', c('Tiroide kartilagoaren goiko aldea', { note: 'kartilagoa bakarrik' }), c('X · bagoa: goiko laringe nerbioa', { note: 'adarra' }), c('Faringearen tarteko eta beheko ertzatzaileak', { note: 'sakonak' })], ['sakonak']),
       r([c('V', { gone: true }), c('Agertu eta endekatu: ez du eratorririk uzten', { cols: 3, gone: true }), null, null]),
-      r(['VI', c('Tiroide kartilagoaren beheko atala, krikoidea, epiglotisa, aritenoideak, kornikulatuak, kuneiformeak', { note: 'kartilagoak bakarrik' }), c('X · bagoa: laringe nerbio atzerakaria', { note: 'adarra' }), c('Laringe barneko muskulu intrintsekoak', { note: 'sakonak' })], ['sakonak']),
+      r(['VI', c('Tiroide kartilagoaren beheko atala, krikoidea, epiglotisa, aritenoideak, kornikulatuak, kuneiformeak', { note: 'kartilagoak bakarrik' }), c('X · bagoa: laringe nerbio atzerakaria', { note: 'adarra' }), c('Laringe barneko muskulu intrintsekoak', { note: 'sakonak', plain: 'Laringe barneko muskuluak' })], ['sakonak']),
     ],
     filters: [
       { tag: 'azalekoak', label: 'I. eta II. arkuak: azalekoak' },
@@ -98,6 +98,13 @@ export const GRID_17: GridScheme[] = [
       'Hiru ertzatzaile talde: goikoak III. arkutik (IX), tartekoak eta behekoak IV.etik (X).',
       'IV. eta VI. arkuetan ez dago hezurrik ez lotailurik: laringeko kartilagoak bakarrik.',
       'Trakea ez da arku baten eratorria: aurreko hestetik dator.',
+    ],
+    plainPitfalls: [
+      'Meckel eta Reichert endekatu egiten dira; muturretan bakarrik geratzen dira hezurrak. Baraila ez dator Meckeletik: inguruko mesenkimatik, Meckel gida dela.',
+      'Digastrikoak bi jatorri ditu: aurreko sabela I. arkutik (V3), atzeko sabela II.etik (VII).',
+      'Hioideak bi arku ditu: adar txikiak eta gorputzaren goiko erdia II.etik; beheko erdia eta adar nagusiak III.etik.',
+      'Hiru ertzatzaile talde: goikoak III. arkutik (IX), tartekoak eta behekoak IV.etik (X).',
+      'IV. eta VI. arkuetan ez dago hezurrik ez lotailurik: laringeko kartilagoak bakarrik.',
     ],
   },
   {
@@ -126,6 +133,8 @@ export const GRID_17: GridScheme[] = [
     week: 17,
     section: '2.6.1',
     title: 'Nerbio-sistema sailkatzeko bi irizpide, eta bagoa non dagoen',
+    // 2.6.1 p7–p14 is grey in the notes: not taught this year (topic 19 teaches the classification).
+    blue: true,
     lead: 'Bagoa (X) mistoa da, NSZtik (burmuinetik) ateratzen da eta parasinpatiko nagusia da.',
     stage: 'bagoa',
     path: false,

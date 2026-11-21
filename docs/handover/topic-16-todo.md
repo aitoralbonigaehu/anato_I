@@ -1,5 +1,32 @@
 # Topic 16 (genital system): what is left (2026-11-16, late evening)
 
+## State on 2026-11-21 — READ THIS FIRST
+
+A model-polish pass for the 17–18 standard ("better models", "one skin") is done. Nothing is committed.
+
+- **External genitalia (`external-model.ts`): one skin.** The perineal skin is one continuous `fieldSurface` that runs on past the frame and curves away, so the body's caudal end reads as a body and no disc floats in the dark.
+  - The swellings and the perineum are regions of that skin: they rise out of it with no seam.
+  - Unlit, they are drawn exactly like the skin round them.
+  - The three stages frame on the step's subject (`fit: { fill: 0.8, limits: [0.7, 1.25] }`, not the whole ground).
+- **Shared renderer change (`Stage3D.tsx` `grounded`).** A ground item that has an id looks like the plain ground while it is not put forward; when lit, it glows as before.
+- **Shared run-on change (`week14/common.tsx`).** A stage that runs on from a lit stage keeps the rest grey through the change.
+- **Duct views (`duct-model.ts`): solid organs.**
+  - Unlit solids stay opaque and grey; they no longer fade to glass. Only the parts that are see-through on purpose fade further: the bladder, the prostate and the broad ligament.
+  - The gonads are solid and lighter on their shaded side.
+  - The epididymis is a comma-shaped body (head, body, tail) on the testis's lateral border, its surface a fine coiled duct.
+  - The close-up cameras (`LEFTSIDE`, yaw 44–50) turn to the lateral border, where the efferent ductules, the epididymis, the epoophoron and the paroophoron lie.
+- **Shot:**
+  - The external and duct stages at 1440, at 1024×768 and at 768×1024.
+  - Six crossings with `--dwell 5000`: desberdindu-gabea, barrabila, hiloa, jaisketa-emeak, kanpo-genitalak, kanpo-genitalak-emeak. All read as one move.
+
+**Still open:**
+
+1. **Backward crossings** with a `--back` that opens at about 30 % (see below).
+2. **Figure parity** with the official figure file (item 4 below).
+3. **`desberdindu-gabea → muller-hodia`:** at about 0.3 of the flight the slab is still alone; the wall fades in by 0.6.
+4. **`semen-bidea`:** the bladder is a translucent balloon in front of the vesicles. A view from behind would teach "the vesicles on its back wall" better.
+5. **The female vestibule** is a dark pill; it could be a shallow cleft in the skin field.
+
 Written for whoever picks topic 16 up next. Nothing here is committed yet. Read first: `docs/quality/3d-quality-bar.md` (point 8, "Continuity", "QA: the flight sheet", "Pitfalls").
 
 ## Production standard 2026-11: what topic 16 still misses

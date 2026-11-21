@@ -15,7 +15,7 @@ const CAP = 'Hodi genitalak aurretik (3D eredua): enbrioiaren ezkerra zure eskui
 const MALE_END: DuctPose = { ...DP0, male: 1, efferent: 1, epididymis: 1, vesicle: 1, prostate: 1 };
 const FEMALE0: DuctPose = { ...DP0 };
 const CAM = (dist = 10.5, target: [number, number, number] = [0, -0.5, 0], yaw = 0, elev = 6) => FRONT16(dist, target, yaw, elev);
-/** The embryo's left half (its gonad and ducts) close up. */
+/** The embryo's left half close up, turned towards its lateral side: the gonad is solid, and what leaves it (tubules, epididymis) lies on its lateral border. */
 const LEFTSIDE = (dist = 7, target: [number, number, number] = [1.4, 0.6, 0], yaw = 18, elev = 8) => FRONT16(dist, target, yaw, elev);
 
 // ———————————————————————————— 6. Barrabilaren hiloa ————————————————————————————
@@ -32,7 +32,8 @@ const spec6: StageSpec<DuctPose, DuctOpts> = {
   key: KEY16.ducts,
   steps: [
     {
-      cam: LEFTSIDE(7, [1.05, 0.9, 0], 24, 8),
+      // Turned to the testis's lateral border: the efferent ductules leave it there for the epididymis.
+      cam: LEFTSIDE(7, [1.2, 0.9, 0], 50, 8),
       glide: 0.06,
       dim: ['barrabila', 'hodixka-eferenteak', 'epididimoa'],
       half: 1,
@@ -86,7 +87,7 @@ const spec7: StageSpec<DuctPose, DuctOpts> = {
     {
       to: { efferent: 1 },
       run: [0.08, 0.8],
-      cam: LEFTSIDE(6.5, [1.45, 1.0, 0], 24, 8),
+      cam: LEFTSIDE(6.5, [1.55, 1.0, 0], 48, 8),
       glide: 0.05,
       dim: ['hodixka-eferenteak', 'barrabila'],
       half: 1,
@@ -94,16 +95,17 @@ const spec7: StageSpec<DuctPose, DuctOpts> = {
       note: 'Barrabilaren goikaldeko hodixka mesonefrikoak (epigenitalak): hodixka eferenteak, barrabil sarearen eta hodi deferentearen arteko komunikazioa',
     },
     {
-      cam: LEFTSIDE(6, [1.5, 0.45, 0], 30, 8),
+      cam: LEFTSIDE(6, [1.6, 0.45, 0], 46, 8),
       dim: ['paradidimoa'],
       half: 1,
       names: [{ id: 'paradidimoa', text: 'Hodixka paragenitalak → paradidimoa', sub: 'beherago; endekatu: aztarna', from: 0.2 }],
       note: 'Beherago dauden hodixka paragenitalak ez dira rete testisarekin lotzen: endekatu eta aztarna txiki bat uzten dute, paradidimoa (funtzio handirik gabe)',
+      plainNote: 'Beherago dauden hodixka paragenitalak endekatu eta aztarna txiki bat uzten dute: paradidimoa (funtzio handirik gabe)',
     },
     {
       to: { epididymis: 1 },
       run: [0.06, 0.85],
-      cam: LEFTSIDE(6.5, [1.5, 0.7, 0], 34, 8),
+      cam: LEFTSIDE(6.5, [1.6, 0.8, 0], 48, 8),
       glide: 0.05,
       dim: ['epididimoa', 'hodixka-eferenteak'],
       half: 1,
@@ -252,7 +254,7 @@ const spec10: StageSpec<DuctPose, DuctOpts> = {
       note: 'Hodi paramesonefrikoetatik uteroa (gorputza eta lepoa) eta tronpak (goian irekita). Endometrioa hodietatik; miometrioa eta perimetrioa inguruko mesenkimatik',
     },
     {
-      cam: LEFTSIDE(6.5, [1.4, 0.8, 0], 24, 8),
+      cam: LEFTSIDE(6.5, [1.5, 0.8, 0], 44, 8),
       glide: 0.06,
       dim: ['epooforoa', 'paraooforoa', 'obarioa'],
       half: 1,

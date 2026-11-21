@@ -61,6 +61,12 @@ const specLam: StageSpec<ToothPose, ToothOpts> = {
         { id: 'baraila', small: true, from: 0.45 },
       ],
       note: '8. astea: maxilar eta barailaren gaineko epitelioa lodiagotu egiten da, C forman: hortz-laminak',
+      plainNote: '8. astea: maxilar eta barailaren gaineko epitelioa (ektodermoa) lodiagotu egiten da: hortz-laminak',
+      plainNames: [
+        { id: 'hortz-lamina', sub: '8. astea' },
+        { id: 'hezur-maxilarra', small: true, from: 0.3 },
+        { id: 'baraila', small: true, from: 0.45 },
+      ],
     },
     {
       to: { arch: 0 },
@@ -216,6 +222,12 @@ const specLay: StageSpec<ToothPose, ToothOpts> = {
         { id: 'pulpa-nerbioa', text: 'Nerbioa', from: 0.65 },
       ],
       note: 'Dentina loditu ahala, pulpa estutzen da. Bertatik arteria, zain eta nerbioa pasatzen dira',
+      plainNote: 'Hortz-pulpa, papilatik: hasieran zabala, gero estutuz eta luzatuz doa. Bertatik arteria, zain eta nerbioa pasatzen dira',
+      plainNames: [
+        { id: 'hortz-pulpa', sub: 'papilatik · gero estutzen da', from: 0.15 },
+        { id: 'pulpa-hodiak', text: 'Arteria eta zainak', from: 0.5 },
+        { id: 'pulpa-nerbioa', text: 'Nerbioa', from: 0.65 },
+      ],
     },
     {
       to: { root: 1 },

@@ -147,6 +147,9 @@ const spec2: StageSpec<PharynxPose, PharynxOpts> = {
       dim: ['laringe-zuloa'],
       names: [{ id: 'laringe-zuloa', text: 'Laringe zuloa', sub: 'arnas aparatuaren hastapena', from: 0.2 }],
       note: 'Behealdean, faringearen aurreko paretan, laringe zuloa: hemendik ebaginatzen da arnas aparatua. 4. astean hasi, 7. asterako ia garatuta',
+      plainNote: 'Prozesu gehienak 4. astean hasi eta 7. asterako ia garatuta daude',
+      plainNames: [],
+      plainDim: ['faringe-poltsak', 'lehen-poltsa', 'bigarren-poltsa', 'hirugarren-poltsa', 'laugarren-poltsa'],
     },
   ],
 };
@@ -186,6 +189,7 @@ const spec3: StageSpec<PharynxPose, PharynxOpts> = {
       dim: ['hirugarren-poltsa', 'beheko-paratiroidea'],
       names: [{ id: 'beheko-paratiroidea', text: 'Beheko paratiroide guruina', sub: 'alde dortsaletik', from: 0.4 }],
       note: 'Alde dortsaletik beheko paratiroide guruinak: parato hormona ekoizten dute; helduan tiroidearekin batera',
+      plainNote: 'Alde dortsala kimatu eta beheko paratiroide guruina bihurtzen da',
     },
     {
       to: { p3v: 1 },

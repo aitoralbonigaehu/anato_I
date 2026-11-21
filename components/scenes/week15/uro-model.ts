@@ -5,6 +5,7 @@ import { blobParts, mixHex, tubeParts } from '@/components/scenes/week10/model3d
 import { bean, vessel, wallSlab, type VesselOptions } from '@/lib/three-d/organic';
 import { T } from '@/components/scenes/week10/common';
 import { C } from '@/lib/sim/palette';
+import { G16 } from '@/components/scenes/week16/tones';
 
 /**
  * Topic 15's posterior body wall seen from the front (the notes' figures of the three kidney systems and of
@@ -56,11 +57,18 @@ export const UC = {
   neural: '#3a5fd9',
   skin: '#f0c9b4',
   skinDeep: '#a07060',
-  /** The posterior body wall the structures lie on (a dissection's background: quiet, warm, mid-dark) and its cut. */
-  wall: '#7d6660',
-  wallDeep: '#2c1e1f',
-  wallCut: '#a8877c',
-  wallCutDeep: '#4a3430',
+  /**
+   * The posterior body wall the structures lie on and its cut: the urogenital system's one ground (topic 16's
+   * palette, week16/tones.ts), light enough that an unlit part still stands out of it. The 3D layer shows a hex
+   * about hex^2.2 darker: the old '#7d6660' read near black, and an unlit part on it was dark on dark.
+   */
+  wall: G16.wall,
+  wallDeep: G16.wallDeep,
+  wallCut: G16.cut,
+  wallCutDeep: G16.cutDeep,
+  /** A body cavity (the coelom on a section's cut face): a blue-grey recess, never a black hole. */
+  cavity: G16.cavity,
+  cavityDeep: G16.cavityDeep,
 } as const;
 
 export interface UroPose {

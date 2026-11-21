@@ -102,6 +102,9 @@ export const stages19aCord: StageDef[] = [
         notes: ['w19/3/p5/s1-s4'],
         idea: 'Araknoidesa tartean; haren eta pia materraren artean eremu azpiaraknoideoa.',
         text: 'Araknoidesa (armiarma sarearen itxura) tarteko mintza da, nahiko fina. Araknoidesa eta dura materra oso hurbil daude, baina araknoidesaren eta pia materraren artean eremu bat eratzen da: eremu azpiaraknoideoa.',
+        plain: {
+          text: 'Araknoidesa (armiarma sarearen itxura) tarteko mintza da. Araknoidesa eta dura materra oso hurbil daude, baina araknoidesaren eta pia materraren artean eremu bat eratzen da: eremu azpiaraknoideoa.',
+        },
         focus: ['araknoidesa', 'eremu-azpiaraknoideoa'],
         view: '3d',
       },
@@ -110,6 +113,9 @@ export const stages19aCord: StageDef[] = [
         notes: ['w19/3/p6/s1-s3'],
         idea: 'Pia materra: barnekoena, ehunari lotuta.',
         text: 'Pia materra barnekoena da, nahiko fina. Beti ehunari (ornomuinari) lotuta agertzen da, bai garunean bai ornomuinean.',
+        plain: {
+          text: 'Pia materra barnekoena da. Beti ehunari (ornomuinari) lotuta agertzen da, bai garunean bai ornomuinean.',
+        },
         focus: ['pia-materra'],
         view: '3d',
       },

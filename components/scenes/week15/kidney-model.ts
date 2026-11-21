@@ -2,7 +2,7 @@ import { add, mix3, mul, norm, sub, type V3 } from '@/lib/three-d/math';
 import { curve3 } from '@/lib/three-d/mesh';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex } from '@/components/scenes/week10/model3d';
-import { bean as beanParts, branchTree, mergeParts, pointAt, arcLengths, tipsOf, treeGeneration, vesselPieces, type Branch, type Parts } from '@/lib/three-d/organic';
+import { bean as beanParts, branchTree, mergeParts, plate, pointAt, arcLengths, tipsOf, treeGeneration, vesselPieces, type Branch, type Parts } from '@/lib/three-d/organic';
 import { UC } from './uro-model';
 
 /**
@@ -54,6 +54,18 @@ const ss = (a: number, b: number, x: number) => {
   return u * u * (3 - 2 * u);
 };
 
+/**
+ * The posterior body wall behind the kidney (a rounded slab, the same tissue and tone as the wall model's: the
+ * close-up sits where the wall's metanephros is, sites.ts), so the blastema, which is see-through on purpose (the
+ * bud shows inside it), lies on something instead of floating in a void. It is larger than any of the kidney's
+ * cameras show, so its edge never reads as a card.
+ */
+const WALL_OUTLINE: [number, number][] = Array.from({ length: 56 }, (_, i) => {
+  const a = (i / 56) * Math.PI * 2;
+  const c = Math.cos(a), s = Math.sin(a);
+  return [0.1 + 14 * Math.sign(c) * Math.abs(c) ** 0.3, -0.6 + 10 * Math.sign(s) * Math.abs(s) ** 0.3];
+});
+
 /** The hilum (medial: −x) and the pelvis's centre. */
 const HILUM: V3 = [-0.62, -0.05, 0];
 const PELVIS: V3 = [-0.25, 0, 0];
@@ -101,6 +113,8 @@ export function kidneyModel(pose: KidneyPose, o: KidneyOpts = {}) {
     items.push({ key, id: id || undefined, ...blobParts({ center: c, radii: r, rings, sides }), color, deep: darker(color), tissue: 'epithelium', opacity: op * (id ? fade(id, extra.groups) : 1), ...extra });
   };
   const BUD = { groups: ['sistema-biltzailea'], deep: UC.budDeep };
+
+  items.push({ key: 'wall', ...plate('kidney-wall-v2', WALL_OUTLINE, -0.86, -1.1), color: UC.wall, deep: UC.wallDeep, tissue: 'mesenchyme', opacity: 1, quiet: true, ground: true });
 
   // ———— the blastema: a dense cap that wraps the bud's tip, then the kidney's bean (its hilum on the medial side) ————
   const wrap = clamp01(pose.wrap);

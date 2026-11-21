@@ -49,6 +49,11 @@ const specA: StageSpec<ThyroidPose, ThyroidOpts> = {
         { id: 'faringe-hestea', sub: 'zorua, endodermoa', from: 0.55 },
       ],
       note: '4. astea: tiroidea faringe hestearen zoruan eratzen hasten da, estomodeoaren atzean, eta gorago garatzen da beheratu aurretik',
+      plainNames: [
+        { id: 'estomodeoa' },
+        { id: 'mintz-bukofaringeoa', from: 0.3 },
+        { id: 'faringe-hestea', sub: 'zorua', from: 0.55 },
+      ],
     },
     {
       to: { dimple: 1, bud: 0.55 },
@@ -63,6 +68,10 @@ const specA: StageSpec<ThyroidPose, ThyroidOpts> = {
         { id: 'kopula', text: 'Kupula / Kopula', sub: 'atzean', from: 0.5 },
       ],
       note: 'Zoruan, tuberkulu bakoitiaren eta kupularen artean (zulo itsuaren mailan), luzapen bat sartzen da mesenkimarantz',
+      plainNote: 'Faringearen zoruan, mihiaren gorputzaren eta sustraiaren artean, luzapen bat sartzen da mesenkimarantz',
+      plainNames: [
+        { id: 'zulo-itsua', text: 'Luzapena', sub: 'gorputzaren eta sustraiaren artean' },
+      ],
     },
     {
       to: { bud: 1, canal: 1 },
@@ -118,6 +127,12 @@ const specB: StageSpec<ThyroidPose, ThyroidOpts> = {
         { id: 'hioide-hezurra', sub: 'guruina haren aurretik pasatzen da', from: 0.55 },
       ],
       note: 'Guruina beherantz doa, hioide hezurra aurretik pasatuz. Bidean faringearen zoruari lotuta dago: lotura hori hodi tiroglosoa da',
+      plainNote: 'Guruina beherantz doa. Bidean faringearen zoruari lotuta dago: lotura hori hodi tiroglosoa da',
+      plainNames: [
+        { id: 'tiroide-guruina', sub: 'beherantz doa' },
+        { id: 'hodi-tiroglosoa', sub: 'zoruari lotuta jarraitzen du', from: 0.3 },
+      ],
+      plainDim: ['tiroide-guruina', 'hodi-tiroglosoa'],
     },
     {
       cam: SIDE(8, [0, -1.6, 0]),

@@ -400,6 +400,9 @@ const stages: StageDef[] = [
         notes: ['w16/3.2/p4/s1-s3'],
         idea: 'Beherago dauden hodixkak (paragenitalak) endekatu: paradidimoa (aztarna).',
         text: 'Barrabilaren alde kaudalean (beherago) dauden hodixka mesonefrikoak hodixka paragenitalak dira. Ez dira rete testisarekin kontaktuan jartzen; endekatu egiten dira eta aztarna txiki bat uzten dute: paradidimoa. Ez dago argi zein den haren funtzioa (ez du funtzio handirik); epididimoaren eta barrabilaren artean dago.',
+        plain: {
+          text: 'Barrabilaren alde kaudalean (beherago) dauden hodixka mesonefrikoak hodixka paragenitalak dira. Endekatu egiten dira eta aztarna txiki bat uzten dute: paradidimoa. Ez dago argi zein den haren funtzioa (ez du funtzio handirik); epididimoaren eta barrabilaren artean dago.',
+        },
         focus: ['paradidimoa'],
         view: '3d',
       },

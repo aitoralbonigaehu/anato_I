@@ -3,6 +3,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Note, type SceneProps } from '@/components/kit';
 import { GhostContext } from '@/components/kit/context';
+import { TaughtOnly } from '@/lib/sim/taught-context';
 import { Loading3D, heldFlight, RUN_ON_MS, useContinuing, type At3 } from '@/components/kit/three/Stage3D';
 import { ModelView, cameraAt, type CalloutSpec } from '@/components/scenes/week10/Heart3D';
 import { ColourKey } from '@/components/scenes/week12/common';
@@ -87,6 +88,14 @@ export interface Step<P = GutPose, O = GutOpts> {
   glide?: number;
   names?: (string | NameSpec)[];
   note?: string;
+  /**
+   * Topics 15+: the foot note in the default "taught this year" mode, when `note` also states what the notes set in
+   * blue or grey (null: no note then). Kept in step with the beat's `plain` wording.
+   */
+  plainNote?: string | null;
+  /** Topics 15+: the step's names and lit set in the default "taught this year" mode, when the full ones show what the notes set in blue or grey. */
+  plainNames?: (string | NameSpec)[];
+  plainDim?: string[];
   warn?: boolean;
   /** Only these ids or groups at full strength; the rest see-through. */
   dim?: string[];
@@ -188,7 +197,7 @@ function whereAt(W: Where | undefined, t: number, reduced: boolean, end: Camera3
 const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
 
 /** What each topic's posed view last showed (by continuity): the next stage on the same model runs on from it. */
-const lastPosed = new Map<string, { site: string; pose: object; opts: object }>();
+const lastPosed = new Map<string, { site: string; pose: object; opts: object; lit?: readonly string[] | null }>();
 const easeInOut = (x: number) => x * x * x * (x * (x * 6 - 15) + 10);
 /** `to`, with its numbers on the way from `from`'s. */
 function runOn<T extends object>(from: object, to: T, k: number): T {
@@ -295,7 +304,15 @@ export function gutStage(spec: StageSpec) {
  * `continuity`: the topic's camera continuity (topics 15–16 use the same machinery with their own).
  */
 export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: number } | null }>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel, embryo = false, continuity = CONT) {
-  const { S, steps } = spec;
+  const { S } = spec;
+  // The steps as the default "taught this year" mode shows them (topics 15+): plain notes, names and lit sets.
+  const taughtSteps = spec.steps.map((s) => ({
+    ...s,
+    note: s.plainNote !== undefined ? (s.plainNote ?? undefined) : s.note,
+    names: s.plainNames ?? s.names,
+    dim: s.plainDim ?? s.dim,
+  }));
+  const steps = spec.steps;
   // The steps' cameras, fitted once (on first draw) to what each step shows at its end.
   let fitted: Camera3[] | null = null;
   const site = spec.site;
@@ -305,6 +322,8 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
   function View({ t, reduced }: SceneProps) {
     const continuing = useContinuing(continuity);
     const ghost = useContext(GhostContext);
+    const taught = useContext(TaughtOnly);
+    const steps = taught ? taughtSteps : spec.steps;
     const i = stepAt(S, t);
     const st = steps[i];
     const now = poseAt(spec, t);
@@ -334,13 +353,15 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
     const pose = from && ran < 1 ? runOn(from.pose, now.pose as object, easeInOut(ran)) as P : now.pose;
     const opts = from && ran < 1 ? runOn(from.opts, now.opts as object, easeInOut(ran)) as O : now.opts;
     useEffect(() => {
-      if (site && !ghost) lastPosed.set(continuity, { site: site.key, pose: pose as object, opts: opts as object });
+      if (site && !ghost) lastPosed.set(continuity, { site: site.key, pose: pose as object, opts: opts as object, lit: dim && dim.k > 0.5 ? dim.ids : null });
     });
     const span = (k: number) => (S[k + 1] ?? 1) - S[k];
-    // The lit set fades in at the step's start (no flicker when the step before was lit too).
-    const prevDim = i > 0 && !!steps[i - 1].dim;
+    // The lit set fades in at the step's start (no flicker when the step before was lit too). A stage that runs on
+    // from a lit stage keeps the rest grey through the change: it never flashes back to full colour in between.
+    const before = i > 0 ? steps[i - 1].dim : i === 0 && from && ran < 1 ? from.lit : undefined;
+    const prevDim = !!before;
     const dimK = st.dim ? (prevDim ? 1 : seg(t, S[i], S[i] + 0.025)) : prevDim ? 1 - seg(t, S[i], S[i] + 0.025) : 0;
-    const dimIds = st.dim ?? (prevDim ? steps[i - 1].dim! : []);
+    const dimIds = st.dim ?? (prevDim ? before! : []);
     const dim = dimK > 0.001 ? { ids: dimIds, k: dimK } : null;
     const built = build(pose, { ...opts, dim });
     const near = continuity === CONT ? (spec.near ?? 0.82) : 1;
@@ -407,13 +428,14 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
               </>
             )}
             {key && <ColourKey items={[...key]} show={L * flight} title={st.keyTitle ?? spec.keyTitle ?? 'Kolorea'} y={46} />}
-            {steps.map((s, k) =>
-              s.note ? (
+            {steps.map((s, k) => {
+              const note = s.note;
+              return note ? (
                 <Note key={`n${k}`} x={500} y={612} tone={s.warn ? 'warn' : 'accent'} show={vis2(t, S[k], S[k + 1] ?? 2) * L * flight}>
-                  {s.note}
+                  {note}
                 </Note>
-              ) : null,
-            )}
+              ) : null;
+            })}
             {steps.map((s, k) =>
               (s.marks ?? []).map((mk, j) => {
                 const p = typeof mk.p === 'string' ? m.pts[mk.p] : mk.p;
@@ -435,10 +457,13 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
       />
     );
   }
+  // The spec, for guards that read a scene's steps (notes, names, lit sets) against its stage's beats.
+  View.spec = spec as StageSpec<unknown, never>;
   if (!embryo && !spec.where) return View;
   function Scene(props: SceneProps) {
     return useGeoReady([EMBRYO5]) ? <View {...props} /> : <Loading3D />;
   }
   Scene.geo = ['embryo5'];
+  Scene.spec = View.spec;
   return Scene;
 }

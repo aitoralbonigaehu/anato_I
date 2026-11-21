@@ -22,6 +22,7 @@ function withGeo(View: ComponentType<SceneProps> & { geo?: string[] }) {
     return useGeoReady([BODY19_GEO]) ? <View {...props} /> : <Loading3D />;
   }
   Scene.geo = ['body19', ...(View.geo ?? [])];
+  Scene.spec = (View as { spec?: unknown }).spec;
   return Scene;
 }
 const WHOLE = FRONT19(15.5, [0, 0.1, 0], 0, 4);
@@ -163,6 +164,10 @@ const specCuts: StageSpec<BodyPose, BodyOpts> = {
         { p: 'ax-b-vent', text: 'bentrala (behekoa)' },
       ],
       note: 'Makurduraren ondorioz, burmuinean dortsala ez da atzekoa, goikoa baizik; bentrala behekoa da',
+      plainNote: 'Burmuinean dortsala ez da atzekoa, goikoa baizik; bentrala behekoa da',
+      plainNames: [
+        { id: 'entzefaloa', text: 'Burmuina', sub: 'dortsala goian' },
+      ],
       warn: true,
     },
     {
@@ -218,6 +223,7 @@ const specCns: StageSpec<BodyPose, BodyOpts> = {
         { id: 'ornoak', small: true, from: 0.55 },
       ],
       note: 'Erdiko nerbio sistema (zentrala): entzefaloa eta ornomuina, jarraiak, hezurrez babestuta; zelulak ez dira erregeneratzen',
+      plainNote: 'Erdiko nerbio sistema (zentrala): entzefaloa eta ornomuina, jarraiak, hezurrez babestuta',
     },
     {
       cam: TRUNK(12, 1.3),
@@ -317,6 +323,11 @@ const specAuto: StageSpec<BodyPose, BodyOpts> = {
         { id: 'sistema-parasinpatikoa', text: 'Parasinpatikoa: S2–S4', sub: 'alde sakroa', p: [0.12, -0.3, -0.14], from: 0.35 },
       ],
       note: 'Parasinpatikoa (S2–S4 eta entzefaloan): lasaitasunera, egoera basalera itzultzeko; erlaxazioaren sistema',
+      plainNote: 'Parasinpatikoa: lasaitasunera, egoera basalera itzultzeko; erlaxazioaren sistema',
+      plainNames: [
+        { id: 'nerbio-bagoa', text: 'Parasinpatikoa: entzefaloan', sub: 'bagoa (bikote kraneala)' },
+        { id: 'sistema-parasinpatikoa', text: 'Parasinpatikoa: alde sakroa', p: [0.12, -0.3, -0.14], from: 0.35 },
+      ],
     },
     {
       cam: WHOLE,

@@ -161,6 +161,7 @@ export const stages19c: StageDef[] = [
         idea: 'Erreflexuak azkarragoak: ornomuinean prozesatzen dira.',
         key: 'Sentsitiboak: goranzko bideak. Motorrak: beheranzko bideak.',
         text: 'Mugimendu erreflexuak askoz azkarragoak dira borondatezko mugimenduak baino: haien informazio sentsitiboa ez da kortexera heltzen, ornomuinera baizik. Bertan prozesatzen dira eta motor neurona bertatik ateratzen da. Sentsitiboak goranzko bideak dira, motorrak beheranzkoak; sinapsia egitea erreleboa egitea da.',
+        notTaught: true,
         focus: ['ornomuina'],
         view: '3d',
       },
@@ -213,6 +214,9 @@ export const stages19c: StageDef[] = [
         idea: 'Telentzefaloan bi alboko bentrikuluak.',
         key: 'Bi alboko bentrikulu: ez esan "I. eta II. bentrikuluak".',
         text: 'Telentzefaloan, garun hemisferio bakoitzaren barnean bat: 2 alboko bentrikuluak (bentrikulu lateralak), helduetan nahiko handiak, hemisferioak garapenean handitzen baitira. Ez esan I. eta II. bentrikuluak direnik: bata bestearen parean daude.',
+        plain: {
+          text: 'Telentzefaloan, garun hemisferio bakoitzaren barnean bat: 2 alboko bentrikuluak (bentrikulu lateralak). Ez esan I. eta II. bentrikuluak direnik: bata bestearen parean daude.',
+        },
         focus: ['alboko-bentrikuluak'],
         caution: 'Alboko bentrikuluak ez dira "I. eta II. bentrikuluak": bata bestearen parean daude.',
         view: '3d',
@@ -281,6 +285,9 @@ export const stages19c: StageDef[] = [
         idea: 'Sare koroideak bentrikuluen sabaian: ekoizten dute.',
         key: 'Sare koroideak (arteriolak + benulak): alboko, 3. eta 4. bentrikuluen sabaian; likidoa ekoizten dute.',
         text: 'Sare koroideak arteriolez eta benulez eratutako sareak dira. Alboko bentrikuluen, 3. eta 4. bentrikuluen sabaian daude, eta haiek ekoizten dute likido zefalorrakideoa. IV. bentrikuluaren sabaian zerebeloa dago.',
+        plain: {
+          text: 'Sare koroideak arteriolez eta benulez eratutako sareak dira. Alboko bentrikuluen, 3. eta 4. bentrikuluen sabaian daude, eta haiek ekoizten dute likido zefalorrakideoa.',
+        },
         focus: ['sare-koroideak', 'bentrikulu-sistema', 'garuntxoa'],
         view: '3d',
       },

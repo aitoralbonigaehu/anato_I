@@ -140,6 +140,7 @@ const specMen: StageSpec<CordPose, CordOpts> = {
         { id: 'pia-materra', small: true, from: 0.6 },
       ],
       note: 'Araknoidesa: tarteko mintza, fina, dura materretik oso hurbil. Haren eta pia materraren artean eremu azpiaraknoideoa',
+      plainNote: 'Araknoidesa: tarteko mintza, dura materretik oso hurbil. Haren eta pia materraren artean eremu azpiaraknoideoa',
     },
     {
       to: { pia: 1 },
@@ -150,6 +151,7 @@ const specMen: StageSpec<CordPose, CordOpts> = {
       dim: ['pia-materra'],
       names: [{ id: 'pia-materra', text: 'Pia materra', sub: 'barnekoena: ehunari lotuta' }],
       note: 'Pia materra: barnekoena, fina, beti ehunari (ornomuinari) lotuta, bai garunean bai ornomuinean',
+      plainNote: 'Pia materra: barnekoena, beti ehunari (ornomuinari) lotuta, bai garunean bai ornomuinean',
     },
     {
       cam: FACE(10, 18, 26),

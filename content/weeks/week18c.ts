@@ -86,6 +86,9 @@ export const stages18c: StageDef[] = [
         notes: ['w18/4.1/p4/s1', 'w18/4.1/p5/s1', 'w18/4.1/p6/s1'],
         idea: 'Bi ertz: laterala (urdina, tenporala) eta mediala (horia, nasala).',
         text: 'Plakodak gero eta lodiago bihurtzen dira, eta bertan bi ertz daude: ertz laterala edo kanpokoa, tenporala (urdina), eta ertz mediala edo barnekoa, nasala (horia).',
+        plain: {
+          text: 'Plakodetan bi ertz daude: ertz laterala edo kanpokoa, tenporala (urdina), eta ertz mediala edo barnekoa, nasala (horia).',
+        },
         focus: ['sudur-ertz-mediala', 'sudur-ertz-laterala'],
         exam: 'Ertz laterala tenporala da; ertz mediala nasala.',
         view: '3d',

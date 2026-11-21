@@ -58,6 +58,10 @@ export const stages15b: StageDef[] = [
         notes: ['w15/1.3/p8/s4', 'w15/1.3/p8/s5'],
         idea: 'Pelbisa adarkatzen da: kaliza nagusiak (2–3, kopa formakoak).',
         text: 'Hortik aurrera, giltzurrun pelbisa adarkatuz joaten da. Lehenik adar nagusiak ematen ditu: kaliza nagusiak, bi edo hiru, kopa formakoak.',
+        plain: {
+          idea: 'Pelbisa adarkatzen da: kaliza nagusiak (2–3).',
+          text: 'Hortik aurrera, giltzurrun pelbisa adarkatuz joaten da. Lehenik adar nagusiak ematen ditu: kaliza nagusiak, bi edo hiru.',
+        },
         focus: ['kaliza-nagusiak'],
         view: '3d',
       },
@@ -66,6 +70,11 @@ export const stages15b: StageDef[] = [
         notes: ['w15/1.3/p8/s6-s9'],
         idea: 'Kaliza txikiak (7. astea) → hodi biltzaileak (9.–10. astea).',
         text: 'Kaliza nagusi bakoitza adarkatu eta kaliza txikiak ematen ditu (7. asterako; kopa itxurako egitura txikiagoak). Egitura hauek guztiak inbutu formakoak dira. Kaliza txikiak ere adarkatzen dira, hodi finagoak emateko: hodi biltzaileak, luzeak eta finak, benetan gernua biltzen dutenak. 9.–10. asterako sistema guztia garatuta dago, eta blastema giltzurrun itxura hartzen ari da.',
+        plain: {
+          idea: 'Kaliza txikiak → hodi biltzaileak.',
+          text: 'Kaliza nagusi bakoitza adarkatu eta kaliza txikiak ematen ditu: egitura txikiagoak. Egitura hauek guztiak inbutu formakoak dira. Kaliza txikiak ere adarkatzen dira, hodi finagoak emateko: hodi biltzaileak, luzeak eta finak, benetan gernua biltzen dutenak.',
+          exam: 'Pelbisa → kaliza nagusiak (2–3) → kaliza txikiak → hodi biltzaileak.',
+        },
         focus: ['kaliza-txikiak', 'hodi-biltzaileak'],
         exam: 'Pelbisa → kaliza nagusiak (2–3) → kaliza txikiak (7. astea) → hodi biltzaileak (9.–10. astea).',
         ask: {
@@ -82,6 +91,10 @@ export const stages15b: StageDef[] = [
         idea: 'Gernua kontrako norabidean: hodi biltzaileak → kaliza txikiak → nagusiak → pelbisa → ureterra → gernu maskuria.',
         key: 'Adarkaduraren bidea alderantziz irakurrita: gernuaren bidea.',
         text: 'Gernua adarkaduraren kontrako norabidean biltzen da. Nefronetan odola filtratzen da; gernua hodi biltzaileetara pasatzen da, hortik kaliza txikietara, nagusietara, pelbisera eta azkenean ureterraren bidez gernu maskurira. Pelbisa izan ezik, denak blastemaren barnean geratzen dira.',
+        plain: {
+          text: 'Gernua adarkaduraren kontrako norabidean biltzen da. Nefronetan odola filtratzen da; gernua hodi biltzaileetara pasatzen da, hortik kaliza txikietara, nagusietara, pelbisera eta azkenean ureterraren bidez gernu maskurira.',
+          exam: 'Gernuaren bidea: nefronak → hodi biltzaileak → kaliza txikiak → nagusiak → pelbisa → ureterra → gernu maskuria.',
+        },
         focus: ['hodi-biltzaileak', 'kaliza-txikiak', 'kaliza-nagusiak', 'giltzurrun-pelbisa', 'ureterra'],
         exam: 'Gernuaren bidea: nefronak → hodi biltzaileak → kaliza txikiak → nagusiak → pelbisa → ureterra → gernu maskuria. Pelbisa bakarrik blastematik kanpo.',
         view: '3d',
@@ -123,6 +136,10 @@ export const stages15b: StageDef[] = [
         notes: ['w15/1.3/p14/s9'],
         idea: 'Kapsula trinkoa → barrunbea: xixku metanefrikoa.',
         text: 'Hasieran metaketa trinkoa da, baina gero bakuolizatu egiten da: barruan barrunbe bat sortzen da, eta xixku metanefrikoa eratzen da.',
+        // "a cavity forms inside the cluster" is grey in the notes: not taught this year.
+        plain: {
+          text: 'Hasieran metaketa trinkoa da, baina gero bakuolizatu egiten da eta xixku metanefrikoa eratzen da.',
+        },
         focus: ['xixku-metanefrikoa'],
         view: '3d',
       },
@@ -141,6 +158,11 @@ export const stages15b: StageDef[] = [
         notes: ['w15/1.3/p15/s2-s3', 'w15/1.3/p15/s12-s13'],
         idea: 'Beste muturra glomerulurantz: kapsula. Glomerulua + kapsula = korpuskulua; glomeruluak giltzurrun arterietatik.',
         text: 'Beste muturra luzatu eta glomerulurantz doa, txano formako kapsula bat sortuz: glomerulua + kapsula = korpuskulua. Glomeruluan arteriola aferenteak eta eferenteak daude, baina oraingoan glomeruluak ez datoz aortatik zuzenean: giltzurrun arterietatik eta haien adarretatik (sistema kardiobaskularra garatuago dago).',
+        plain: {
+          idea: 'Beste muturra glomerulurantz: kapsula. Glomerulua + kapsula = korpuskulua.',
+          text: 'Beste muturra luzatu eta glomerulurantz doa, txano formako kapsula bat sortuz: glomerulua + kapsula = korpuskulua. Glomerulu hauek giltzurrunetarantz doazen arterietatik sortzen dira.',
+          exam: 'Metanefrosaren glomeruluak giltzurrunetarantz doazen arterietatik sortzen dira.',
+        },
         focus: ['glomeruluak', 'kapsula-glomerularra', 'arteriola-aferentea', 'arteriola-eferentea'],
         exam: 'Metanefrosaren glomeruluak giltzurrun arterien adarretatik (ez aortatik zuzenean, pro- eta mesonefrosean bezala).',
         view: '3d',
@@ -162,6 +184,10 @@ export const stages15b: StageDef[] = [
         notes: ['w15/1.3/p16/s1-s7'],
         idea: 'Nefrona: unitate iraizle funtzionala (blastematik); 14. astetik gutxi gorabehera gernua; hodi biltzaile bakoitzak hainbat nefronaren gernua.',
         text: 'Unitate iraizle funtzionala nefrona da, blastematik garatua: benetan funtzionala, 14. astetik aurrera gernua eratzen du (irudietan arrosaz). Hodi biltzaile batek hainbat adar ditu, eta adar bakoitzera nefrona baten gernua heltzen da. Nefronaren osagaiak: korpuskulua (glomerulua + Bowman kapsula), hodi bihurgunetsuak (proximala eta distala) eta Henle lakioak.',
+        plain: {
+          idea: 'Nefrona: unitate iraizle funtzionala (blastematik); 14. astetik gutxi gorabehera gernua.',
+          text: 'Unitate iraizle funtzionala nefrona da, blastematik garatua: benetan funtzionala, 14. astetik aurrera gernua eratzen du (irudietan arrosaz). Nefronaren osagaiak: korpuskulua (glomerulua + Bowman kapsula), hodi bihurgunetsuak (proximala eta distala) eta Henle lakioak.',
+        },
         focus: ['nefrona', 'hodi-biltzaileak'],
         exam: 'Nefrona = korpuskulua + hodi bihurgunetsu proximala eta distala + Henle lakioa. Gernua 14. astetik.',
         ask: {
@@ -298,6 +324,11 @@ stages15b.push(
         notes: ['w15/2.2/p6/s1-s3', 'w15/2.2/p9/s2-s3'],
         idea: 'Sinuaren eremuan hiru barrunbe, alantoideraino; goian, zabalena: gernu maskuria.',
         text: 'Aurrekaldean, behin-behineko sinu urogenitalaren eremuan, hiru barrunbe agertzen dira, luzatu eta alantoidean amaitzen direnak. Goikoa gernu maskuria da: zabalena, hodia zabaldu eta eratzen dena.',
+        // The primitive bladder as the widened tube is grey in the notes: not taught this year.
+        plain: {
+          idea: 'Sinuaren eremuan hiru barrunbe, alantoideraino; goikoa: gernu maskuria.',
+          text: 'Aurrekaldean, behin-behineko sinu urogenitalaren eremuan, hiru barrunbe agertzen dira, luzatu eta alantoidean amaitzen direnak. Goikoa gernu maskuria da.',
+        },
         focus: ['gernu-maskuria', 'sinu-urogenitala'],
         view: '3d',
       },
@@ -306,6 +337,10 @@ stages15b.push(
         notes: ['w15/2.2/p6/s4-s7'],
         idea: 'Atal pelbianoa: estua, gernu maskuriaren jarraia → uretra.',
         text: 'Hurrengo atala estutu egiten da: atal pelbianoa, gernu maskuriaren jarraia. Hodia izaten jarraitzen du eta uretra bihurtzen da: emeetan mintzezko uretra; arretan mintzezko uretra eta uretraren zati prostatikoa.',
+        plain: {
+          text: 'Hurrengo atala estutu egiten da: atal pelbianoa, gernu maskuriaren jarraia. Hodia izaten jarraitzen du eta uretra bihurtzen da.',
+          exam: 'Atal pelbianoa → uretra.',
+        },
         focus: ['atal-pelbianoa'],
         exam: 'Atal pelbianoa → uretra (emeetan mintzezkoa; arretan mintzezkoa + prostatikoa).',
         view: '3d',
@@ -315,6 +350,10 @@ stages15b.push(
         notes: ['w15/2.2/p6/s3', 'w15/2.2/p8/s1-s3', 'w15/2.2/p9/s6'],
         idea: 'Behin-betiko sinu urogenitala: zapala, gernuaren irteera, mintz urogenitalez estalia; perineoa uzkiaren artean.',
         text: 'Behekoa behin-betiko sinu urogenitala da: hasierako sinuaren atala zapaldu eta barrunbe zapal bat eratzen da, gernuaren irteera, mintz urogenitalez estalia. Emeetan baginaren bestibulua ematen du; arretan zakila hazi eta luzatzen da, uretraren zakil atala eratuz. Haren eta uzkiaren artean eremu muskular bat: perineoa, hasieran oso txikia eta gero zabalagoa. Sinu urogenitala endodermikoa da (atzeko hestearen eratorria).',
+        plain: {
+          idea: 'Behin-betiko sinu urogenitala: gernuaren irteera, mintz urogenitalez estalia; perineoa uzkiaren artean.',
+          text: 'Behekoa behin-betiko sinu urogenitala da: gernuaren irteera, mintz urogenitalez estalia. Emeetan baginaren bestibulua ematen du; arretan zakila hazi eta luzatzen da, uretraren zakil atala eratuz. Haren eta uzkiaren artean eremu muskular bat: perineoa, hasieran oso txikia eta gero zabalagoa. Sinu urogenitala endodermikoa da (atzeko hestearen eratorria).',
+        },
         focus: ['behin-betiko-sinu-urogenitala', 'mintz-urogenitala', 'perineoa'],
         exam: 'Behin-betiko sinu urogenitala → emeetan baginaren bestibulua; arretan uretraren zakil atala. Sinu urogenitala endodermikoa.',
         view: '3d',
@@ -351,6 +390,7 @@ stages15b.push(
         notes: ['w15/2.2/p12/s1-s2'],
         idea: 'Urakoa guztiz ixten ez bada: barrunbeak geratzen dira, fistulak (arazoak jaioberrietan).',
         text: 'Urakoa guztiz ixten ez bada, hau da, soka forma hartzen ez badu, batzuetan barnean barrunbeak geratzen dira: fistulak. Arazoak ematen dituzte jaioberrietan.',
+        notTaught: true,
         focus: ['fistula-urakala', 'urakoa'],
         view: '3d',
       },
@@ -396,6 +436,10 @@ stages15b.push(
         recall: ['ureter-kimua', 'hodi-mesonefrikoa'],
         idea: 'Hodi mesonefrikoa eta ureter kimua batera zeuden; askatu: ureterra gora, hodi mesonefrikoa behera.',
         text: 'Gernu maskuria sinu urogenitalaren goiko zabalgunea da. Hasieran hodi mesonefrikoa eta ureter kimua batera daude, gernu maskuritik gertu (kloakan lotzen dira): ureter kimua hodi mesonefrikoaren adartxo bat zen. Enbrioia luzatzean askatu egiten dira, eta haien kokapena guztiz aldatzen da: ureterra gorantz doa eta hodi mesonefrikoa beherantz.',
+        plain: {
+          idea: 'Hodi mesonefrikoa eta ureter kimua batera zeuden; gero ureterra gora, hodi mesonefrikoa behera.',
+          text: 'Gernu maskuria sinu urogenitalaren goiko zabalgunea da. Hasieran hodi mesonefrikoa eta ureter kimua batera daude, gernu maskuritik gertu. Enbrioia luzatzean haien kokapena guztiz aldatzen da: ureterra gorantz doa eta hodi mesonefrikoa beherantz.',
+        },
         focus: ['ureterra', 'hodi-mesonefrikoa'],
         view: 'saihetsa',
       },
@@ -413,6 +457,10 @@ stages15b.push(
         idea: 'Hodien askapenagatik atzeko horman hirukia: trigonoa (mesodermikoa); gainerako epitelioa endodermikoa.',
         key: 'Trigonoa hodi mesonefrikoen materiala da, gernu maskuriaren hormari erantsia: horregatik da mesodermikoa.',
         text: 'Atzekaldean, hodien askapenaren eta mugimenduaren ondorioz (bata gora, bestea behera), hiruki formako egitura bat sortzen da gernu maskuriaren atzeko horman: trigonoa (morez). Jatorri mesodermikoa du, hodi mesonefrikoek jatorri mesodermikoa dutelako. Gernu maskuriaren gainerako epitelioa endodermikoa da. Trigonoak inerbazio autonomo berezia du, txiza egiterakoan esfinterrak irekitzen parte hartzen duena.',
+        plain: {
+          text: 'Atzekaldean, hodien askapenaren eta mugimenduaren ondorioz (bata gora, bestea behera), hiruki formako egitura bat sortzen da gernu maskuriaren atzeko horman: trigonoa (morez). Jatorri mesodermikoa du, hodi mesonefrikoek jatorri mesodermikoa dutelako. Gernu maskuriaren gainerako epitelioa endodermikoa da.',
+          exam: 'Trigonoa: gernu maskuriaren atzeko horma, jatorri mesodermikoa (hodi mesonefrikoetatik).',
+        },
         focus: ['trigonoa', 'ureterra', 'hodi-mesonefrikoa'],
         exam: 'Trigonoa: gernu maskuriaren atzeko horma, jatorri mesodermikoa (hodi mesonefrikoetatik); inerbazio autonomoa.',
         ask: {
@@ -428,6 +476,12 @@ stages15b.push(
         notes: ['w15/2.3/p11/s1-s6'],
         idea: 'Zelula mesodermikoak endekatu, endodermikoek ordezkatu: helduetan epitelio osoa endodermikoa, hirukiaren aztarna geratzen da.',
         text: 'Garapenean zelula mesodermiko horiek endekatu egiten dira eta inguruko zelula endodermikoek betetzen dute haien tokia. Kanpotik ez da trigonoa ikusten; barnetik, bai. Helduetan epitelio osoak jatorri endodermikoa du, baina hirukiaren aztarna beti geratzen da. Garrantzi kliniko handia du: ureter zuloak trigonoaren goiko mugan daude, erreferentzia kirurgian eta sondak jartzean.',
+        plain: {
+          idea: 'Helduetan hirukiaren aztarna geratzen da; ureter zuloak trigonoaren goiko mugan.',
+          text: 'Helduetan hiruki formaren aztarna beti geratzen da. Garrantzi kliniko handia du: ureter zuloak trigonoaren goiko mugan daude.',
+          exam: 'Helduetan trigonoaren aztarna; ureter zuloak trigonoaren goiko izkinetan.',
+          caution: null,
+        },
         focus: ['trigonoa', 'ureterra'],
         exam: 'Helduetan gernu maskuriaren epitelio osoa endodermikoa (trigonoa endodermoz estalia); ureter zuloak trigonoaren goiko izkinetan.',
         caution: 'Bi esaldi kontrajarri dirudite: trigonoa mesodermikoa da (jatorrian), baina helduetan haren epitelioa endodermikoa da (ordezkatua). Biak zuzenak dira, une desberdinetan.',
@@ -496,6 +550,11 @@ stages15b.push(
         notes: ['w15/2.4/p6/s1-s6'],
         idea: 'Gizona: uretra zakilean; prostatikoa, mintzezkoa, zakil uretra (luzeena); prostata.',
         text: 'Gizonetan uretra zakilaren barnean sartzen da, eta zakila eratzean luzatu egiten da. Hiru atal ditu: uretra prostatikoa (prostata guruina du), mintzezko uretra eta zakil uretra, zakil osoan zehar, zatirik luzeena. 3. hilabetearen bukaeran ebaginazio batetik prostata sortzen da: sistema genitaleko guruinik handiena, uretraren inguruan.',
+        plain: {
+          idea: 'Gizona: uretra zakilean; zakil uretra (luzeena); prostata.',
+          text: 'Gizonetan uretra zakilaren barnean sartzen da, eta zakila eratzean luzatu egiten da. Zakil uretra zakil osoan zehar luzatzen da: zatirik luzeena. 3. hilabetearen bukaeran ebaginazio batetik prostata sortzen da: sistema genitaleko guruinik handiena, uretraren inguruan.',
+          exam: 'Gizona: zakil uretra (luzeena). Prostata 3. hilabetearen bukaeran.',
+        },
         focus: ['uretra-prostatikoa', 'mintzezko-uretra', 'zakil-uretra', 'prostata'],
         tour: ['uretra-prostatikoa', 'mintzezko-uretra', 'zakil-uretra'],
         tourAt: S14[3] + 0.15,

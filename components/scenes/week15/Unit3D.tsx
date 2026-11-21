@@ -3,6 +3,7 @@
 import { BLOCK, KEY15, endPose, poseStage, type StageSpec } from './common';
 import type { V3 } from '@/lib/three-d/math';
 import { BLOCK_AXES, UNIT0, unitModel, type UnitOpts, type UnitPose } from './unit-model';
+import { SITE15 } from './sites';
 
 /**
  * Topic 15's section block (unit-model.ts): how one pronephric unit forms (stage 3) and gets its glomerulus
@@ -20,6 +21,8 @@ export const S3 = [0, 0.25, 0.5, 0.75] as const;
 
 const spec3: StageSpec<UnitPose, UnitOpts> = {
   map: 'pro-unit',
+  site: SITE15.neck,
+  arrive: 'Lepoa zeharka ebaki dugu, nefrotomoen mailan: blokea goitik ikusiko dugu, bizkarra goian',
   where: { th: 1.0, at: [0, 0.1, 0], frame: 'block', scale: 1.8, planes: [-1, 1].map((s) => ({ center: [0, 0.1, s * 1.05] as V3, a: [2.3, 0, 0] as V3, b: [0, 1.75, 0] as V3 })), note: 'Lepoaren mailako zeharkako ebakia: blokea goitik (kranealetik) ikusiko dugu' },
   S: S3,
   pose: UNIT0,
@@ -86,6 +89,8 @@ export const S4 = [0, 0.25, 0.5, 0.76] as const;
 
 const spec4: StageSpec<UnitPose, UnitOpts> = {
   map: 'pro-unit',
+  site: SITE15.neck,
+  arrive: 'Lepoaren mozketa bera, goitik: orain glomeruluak',
   where: { th: 1.0, at: [0, 0.1, 0], frame: 'block', scale: 1.8, planes: [-1, 1].map((s) => ({ center: [0, 0.1, s * 1.05] as V3, a: [2.3, 0, 0] as V3, b: [0, 1.75, 0] as V3 })), note: 'Lepoaren mailako zeharkako ebakia: pronefrosaren glomeruluak' },
   S: S4,
   pose: endPose(spec3).pose,
@@ -104,7 +109,12 @@ const spec4: StageSpec<UnitPose, UnitOpts> = {
         { id: 'aorta-dortsalak', sub: 'adarrak nefrotometarantz' },
         { id: 'glomeruluak', sub: 'arteriola (kapilar) “ovilloak” adarren muturrean', from: 0.45 },
       ],
+      plainNames: [
+        { id: 'aorta-dortsalak', sub: 'adarrak nefrotometarantz' },
+        { id: 'glomeruluak', sub: 'arteriola (kapilar) hariak adarren muturrean', from: 0.45 },
+      ],
       note: 'Aorta dortsaletik adarrak nefrotometarantz; muturretan, arteriolaz (kapilarrez) osatutako “ovillo” formako egiturak: glomeruluak',
+      plainNote: 'Aorta dortsaletik adarrak nefrotometarantz; muturretan, arteriolaz (kapilarrez) osatutako hari formako egiturak: glomeruluak',
     },
     {
       to: { extGlom: 1 },
@@ -147,6 +157,8 @@ const MESO0: UnitPose = { ...UNIT0, mode: 1, ridge: 1, gonadal: 1 };
 
 const spec6: StageSpec<UnitPose, UnitOpts> = {
   map: 'meso-unit',
+  site: SITE15.thorax,
+  arrive: 'Mesonefrosa zeharka ebaki dugu toraxaren mailan: unitate bakar bat nola eratzen den, goitik',
   where: { th: 0.1, at: [0, 0.1, 0], frame: 'block', scale: 1.8, planes: [-1, 1].map((s) => ({ center: [0, 0.1, s * 1.05] as V3, a: [2.3, 0, 0] as V3, b: [0, 1.75, 0] as V3 })), note: 'Toraxaren mailako zeharkako ebakia: mesonefrosaren hodixkak' },
   S: S6,
   pose: MESO0,
@@ -204,7 +216,12 @@ const spec6: StageSpec<UnitPose, UnitOpts> = {
         { id: 'hodixka-mesonefrikoak', sub: 'bihurritua (pronefrikoa zuzena zen)' },
         { id: 'korpuskulua', text: 'Korpuskulua (mesonefrosarena)', sub: 'glomerulua + kapsula', from: 0.4 },
       ],
+      plainNames: [
+        { id: 'hodixka-mesonefrikoak' },
+        { id: 'korpuskulua', text: 'Korpuskulua (mesonefrosarena)', sub: 'glomerulua + kapsula', from: 0.4 },
+      ],
       note: 'Tokia mugatua denez, hodixka mesonefrikoa bihurritu (tolestu) egiten da; hodixka pronefrikoak zuzenak ziren. Glomerulua + kapsula = korpuskulua',
+      plainNote: 'Glomerulua + kapsula: mesonefrosaren korpuskulua',
     },
     {
       to: { arterioles: 1 },
@@ -219,6 +236,10 @@ const spec6: StageSpec<UnitPose, UnitOpts> = {
         { id: 'korpuskulua', small: true },
       ],
       note: 'KONTUZ: apunteek diote mesonefrosak ez duela gernurik egiten (ez funtzionala); beste paragrafo batek, «aurten esan gabea», funtzionala dela (arteriola aferente/eferenteak)',
+      plainNote: 'Mesonefrosa ere primitiboa: ez pronefrosan ez mesonefrosan ez da gernurik eratzen; gernua behin betiko sisteman',
+      // The arterioles (afferent in, efferent out) are the grey paragraph: the taught view keeps the corpuscle only.
+      plainDim: ['korpuskulua'],
+      plainNames: [{ id: 'korpuskulua' }, { id: 'atzeko-bena-kardinalak', small: true, from: 0.5 }],
       warn: true,
     },
   ],
