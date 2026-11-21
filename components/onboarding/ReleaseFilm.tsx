@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, type RefObject } from 'react';
 import type { Item3 } from '@/lib/three-d/scene';
 import type { openProjector, Exhibit } from '../intro-review/renderStudy';
-import { enableStudyMusic, filmAudioChange } from '@/components/shell/StudyMusic';
 import v from './show/show.module.css';
 import s from './release-film.module.css';
 
@@ -101,26 +100,16 @@ export default function ReleaseFilm(props: Props) {
     rail = useRef<HTMLSpanElement>(null),
     instrument = useRef<HTMLDivElement>(null),
     kicker = useRef<HTMLSpanElement>(null),
-    value = useRef<HTMLSpanElement>(null),
-    audio = useRef<HTMLAudioElement>(null);
+    value = useRef<HTMLSpanElement>(null);
   // The clock is in real seconds (the score's); the projector gets film seconds (`filmTime`).
   const playback = useRef({ started: false, paused: false, t: opening ? 0 : FILM_END, frozen: false });
   const [started, setStarted] = useState(false),
-    [paused, setPaused] = useState(false),
-    [sound, setSound] = useState(false);
+    [paused, setPaused] = useState(false);
   const [fallback, setFallback] = useState(false),
     [ready, setReady] = useState(false);
   useEffect(() => {
     latest.current = props;
   }, [props]);
-  // The study music waits while the film plays (the film has its own score, which rings out under the journey).
-  useEffect(() => {
-    if (!opening) return;
-    window.dispatchEvent(new CustomEvent(filmAudioChange, { detail: true }));
-    return () => {
-      window.dispatchEvent(new CustomEvent(filmAudioChange, { detail: false }));
-    };
-  }, [opening]);
   useEffect(() => {
     const el = canvas.current;
     if (!el) return;
@@ -197,10 +186,7 @@ export default function ReleaseFilm(props: Props) {
               id = requestAnimationFrame(tick);
               return;
             }
-            // The score is the clock while it plays; else the frame time.
-            const a = audio.current;
-            if (opening && a && !a.paused && !state.frozen && !state.paused) state.t = a.currentTime;
-            else if (!state.paused && !state.frozen) state.t += Math.min(0.16, dt);
+            if (!state.paused && !state.frozen) state.t += Math.min(0.16, dt);
             if (!opening) {
               state.t = Math.max(FILM_END, state.t);
               state.frozen = false;
@@ -334,8 +320,6 @@ export default function ReleaseFilm(props: Props) {
             }
             if (opening && real >= FILM_END && !ended) {
               ended = true;
-              // The score rings out under the journey; the study music follows it (the sound was wanted).
-              if (a && !a.paused) a.addEventListener('ended', () => enableStudyMusic(), { once: true });
               onFinish();
             }
             id = requestAnimationFrame(tick);
@@ -360,57 +344,15 @@ export default function ReleaseFilm(props: Props) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setStarted(true);
   }, [opening]);
-  // Sound: tried at once (a returning visitor's browser may allow it), else one press away.
-  useEffect(() => {
-    if (!opening || !ready) return;
-    const a = audio.current;
-    if (!a) return;
-    a.volume = 0.9;
-    a.currentTime = playback.current.t;
-    if (playback.current.frozen) return;
-    void a
-      .play()
-      .then(() => setSound(true))
-      .catch(() => setSound(false));
-  }, [opening, ready]);
-  function toggleSound() {
-    const a = audio.current;
-    if (!a) return;
-    if (sound) {
-      a.pause();
-      setSound(false);
-      return;
-    }
-    a.currentTime = playback.current.t;
-    void a
-      .play()
-      .then(() => {
-        setSound(true);
-        if (playback.current.paused) a.pause();
-      })
-      .catch(() => {});
-  }
   function toggle() {
     const p = playback.current;
     p.frozen = false;
     p.paused = !p.paused;
     setPaused(p.paused);
-    const a = audio.current;
-    if (a && sound) {
-      if (p.paused) a.pause();
-      else {
-        a.currentTime = p.t;
-        void a.play().catch(() => {});
-      }
-    }
   }
   return (
     <>
       <canvas ref={canvas} className={s.canvas} hidden={fallback} aria-hidden="true" />
-      <audio ref={audio} preload="auto">
-        <source src="/intro-v2/score.ogg" type="audio/ogg" />
-        <source src="/intro-v2/score.mp3" type="audio/mpeg" />
-      </audio>
       {opening && (
         <section className={s.film} aria-label="EnbrioAtlas V2: sarrera">
           {started && !ready && <p className={s.waiting}>Somitek egitura bilaterala dute…</p>}
@@ -445,15 +387,6 @@ export default function ReleaseFilm(props: Props) {
               <div className={v.rail} aria-hidden="true">
                 <span ref={rail} />
               </div>
-              <button type="button" className={v.sound} data-on={sound} aria-pressed={sound} onClick={toggleSound}>
-                <span className={v.bars} aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                  <i />
-                </span>
-                {sound ? 'Soinua itzali' : 'Piztu soinua'}
-              </button>
             </footer>
           )}
         </section>
