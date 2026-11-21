@@ -68,6 +68,12 @@
   mix-blend-mode: multiply;
 }
 
+/* The rest of the figure while one structure is lit: still there, only fainter. */
+.dimmed {
+  opacity: 0.4;
+  filter: grayscale(0.5);
+}
+
 .isPointing .svg {
   cursor: crosshair;
 }

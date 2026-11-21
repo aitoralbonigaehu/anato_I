@@ -137,7 +137,7 @@ const spec2: StageSpec<FacePose, FaceOpts> = {
       cam: FRONT(7.4, [1.1, -0.65, 0], 34, 4),
       fit: false,
       glide: 0.05,
-      dim: ['ildo-nasolagrimala'],
+      dim: ['ildo-nasolagrimala', 'sudur-ertz-laterala', 'luzapen-maxilarra'],
       names: [
         { id: 'ildo-nasolagrimala', sub: 'ertz laterala ↔ luzapen maxilarra' },
         { id: 'sudur-ertz-laterala', small: true, from: 0.3 },
@@ -239,8 +239,13 @@ const spec4: StageSpec<FacePose, FaceOpts> = {
     {
       cam: FRONT(7.2, [1.1, -0.55, 0], 32, 4),
       fit: false,
-      dim: ['ildo-nasolagrimala'],
-      names: [{ id: 'ildo-nasolagrimala', sub: 'sudur-hegala ↔ luzapen maxilarra' }, { id: 'begia', small: true, from: 0.4 }],
+      dim: ['ildo-nasolagrimala', 'sudur-ertz-laterala', 'sudur-hegalak', 'luzapen-maxilarra'],
+      names: [
+        { id: 'ildo-nasolagrimala', sub: 'sudur-hegala ↔ luzapen maxilarra' },
+        { id: 'sudur-hegalak', text: 'Sudur-hegala', sub: 'ildoaren gainean', small: true, from: 0.25 },
+        { id: 'luzapen-maxilarra', sub: 'ildoaren azpian', small: true, from: 0.4 },
+        { id: 'begia', small: true, from: 0.55 },
+      ],
       note: 'Hasieran, sudur-hegalaren (alboko ertzaren) eta luzapen maxilarraren artean ildo bat: ildo nasolagrimala',
     },
     {

@@ -265,6 +265,21 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
     return [Math.min(st.tw - 30, Math.max(30, tx + dx * d)), Math.min(H - 24, Math.max(24, ty + dy * d))];
   };
 
+  const figureImage = () =>
+    missing ? null : imageTransform && imageId ? (
+      <image
+        key={imageId}
+        href={imgOf(imageId)}
+        width={1}
+        height={1}
+        preserveAspectRatio="none"
+        className={s.img}
+        transform={`matrix(${st.fw * imageTransform[0][0]} ${H * imageTransform[1][0]} ${st.fw * imageTransform[0][1]} ${H * imageTransform[1][1]} ${st.fx + st.fw * imageTransform[0][2]} ${H * imageTransform[1][2]})`}
+      />
+    ) : (
+      <image key={plate.id} href={src ?? imgOf(plate.id)} x={st.fx} width={st.fw} height={H} className={s.img} />
+    );
+
   return (
     <div data-tour={tour} className={`${s.stage}${missing ? ` ${s.isMissing}` : ''}${mode === 'non' && !answered ? ` ${s.isPointing}` : ''}`} style={{ aspectRatio: `${st.tw} / ${H}`, ['--ar' as string]: st.tw / H }}>
       <svg
@@ -294,6 +309,10 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
           <mask id={`${figureId}-isolation`} maskUnits="userSpaceOnUse" x={st.fx} y="0" width={st.fw} height={H}>
             {lit?.area?.map((sh, i) => <path key={i} d={pathOf(st, sh)} fill="#fff" fillRule="evenodd" />)}
           </mask>
+          <mask id={`${figureId}-rest`} maskUnits="userSpaceOnUse" x={st.fx} y="0" width={st.fw} height={H}>
+            <rect x={st.fx} width={st.fw} height={H} fill="#fff" />
+            {lit?.area?.map((sh, i) => <path key={i} d={pathOf(st, sh)} fill="#000" fillRule="evenodd" />)}
+          </mask>
           <marker id="bel-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse" markerUnits="strokeWidth">
             <path d="M0 0 L10 5 L0 10 z" fill="currentColor" />
           </marker>
@@ -303,26 +322,21 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
         <clipPath id={`${figureId}-frame`}>
           <rect x={st.fx} width={st.fw} height={H} />
         </clipPath>
-        <g
-          clipPath={`url(#${figureId}-frame)`}
-          mask={lit ? `url(#${figureId}-isolation)` : undefined}
-          data-belor-isolation={lit?.key}
-        >
-          {!missing && !imageTransform && (
-            <image key={plate.id} href={src ?? imgOf(plate.id)} x={st.fx} width={st.fw} height={H} className={s.img} />
-          )}
-          {!missing && imageTransform && imageId && (
-            <image
-              key={imageId}
-              href={imgOf(imageId)}
-              width={1}
-              height={1}
-              preserveAspectRatio="none"
-              className={s.img}
-              transform={`matrix(${st.fw * imageTransform[0][0]} ${H * imageTransform[1][0]} ${st.fw * imageTransform[0][1]} ${H * imageTransform[1][1]} ${st.fx + st.fw * imageTransform[0][2]} ${H * imageTransform[1][2]})`}
-            />
-          )}
-        </g>
+        {/* With a structure lit, the rest of the figure stays in view, only fainter. */}
+        {lit && !missing && (
+          <g clipPath={`url(#${figureId}-frame)`} mask={lit.area?.length ? `url(#${figureId}-rest)` : undefined} className={s.dimmed}>
+            {figureImage()}
+          </g>
+        )}
+        {(!lit || !!lit.area?.length) && (
+          <g
+            clipPath={`url(#${figureId}-frame)`}
+            mask={lit ? `url(#${figureId}-isolation)` : undefined}
+            data-belor-isolation={lit?.key}
+          >
+            {figureImage()}
+          </g>
+        )}
         {lit?.area?.map((sh, i) => <path key={`${lit.key}-${i}`} className={s.extent} d={pathOf(st, sh)} fillRule="evenodd" />)}
         {lit?.targets.map((target, i) => {
           if (covers(st, lit, target)) return null;

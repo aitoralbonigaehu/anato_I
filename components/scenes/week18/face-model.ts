@@ -31,12 +31,14 @@ export const FACE_COLOR = {
   front: '#efcdb8',
   medial: '#f5d94e',
   lateral: '#86cdf0',
+  /** The lateral nasal prominence's band above the nasolacrimal groove (same blue; it goes to skin as the groove closes). */
+  band: '#86cdf0',
   max: ARCH.i,
   mand: '#ec7f36',
   mouth: '#8e4348',
   membrane: '#e0a6a6',
   eye: '#33242c',
-  groove: '#a84a24',
+  groove: '#7b3a8c',
   pit: '#74393e',
   body: '#dcb7a2',
   back: '#e6c5b1',
@@ -158,13 +160,22 @@ const seg = (px: number, py: number, ax: number, ay: number, bx: number, by: num
 // ———— the regions, in the chart (week 5) ————
 const PIT: [number, number] = [1.0, -0.62];
 const disc = (a: number, b: number) => Math.hypot(Math.abs(a) - PIT[0], b - PIT[1]);
-const top = (A: number) => -1.02 + 0.28 * Math.max(0, A - 1.35);
+/**
+ * The nasolacrimal groove's line: from under the lateral rim up to the eye's medial corner. It is the seam between
+ * the lateral nasal prominence (above) and the maxillary prominence (below), so both regions reach it: the maxillary
+ * one's top edge follows it, and a band of the lateral one runs along its upper side to the eye.
+ */
+const GV = [1.42, -0.86, 2.62, -0.34] as const;
+const gy = (A: number) => GV[1] + ((A - GV[0]) * (GV[3] - GV[1])) / (GV[2] - GV[0]);
+const top = (A: number) => Math.max(-1.02, gy(A));
+const latBand = (A: number, b: number) => { const u = b - gy(A); return Math.min(u, 0.34 - 0.09 * (A - GV[0]) - u, 2.52 - A, A - PIT[0]); };
 const REGIONS: FieldRegion[] = [
   { name: 'front', weight: () => 0.015 },
   { name: 'back', weight: (a) => Math.abs(a) - 3.5 },
   { name: 'body', weight: (_, b) => -2.68 - b },
   { name: 'medial', weight: (a, b) => { const A = Math.abs(a); return Math.max(Math.min(0.52 - disc(a, b), PIT[0] - A), Math.min(1.0 - A, A - 0.42, b + 1.17, -0.62 - b)); } },
   { name: 'lateral', weight: (a, b) => Math.min(0.52 - disc(a, b), Math.abs(a) - PIT[0]) },
+  { name: 'band', weight: (a, b) => latBand(Math.abs(a), b) },
   { name: 'pit', weight: (a, b) => (0.17 - disc(a, b)) * 1.5 },
   { name: 'max', weight: (a, b) => { const A = Math.abs(a); return Math.min(top(A) - b, b + 1.36, 3.5 - A, A - 1.0 + 0.0 * b); } },
   { name: 'mand', weight: (a, b) => Math.min(-1.5 - b, b + 2.32, 3.35 - Math.abs(a)) },
@@ -172,7 +183,7 @@ const REGIONS: FieldRegion[] = [
   { name: 'mouth', weight: (a, b) => (1 - Math.hypot(a / 1.85, (b + 1.42) / 0.24)) * 0.24 },
   { name: 'membrane', weight: (a, b) => (1 - Math.hypot(a / 0.95, (b + 1.42) / 0.1)) * 0.3 },
   { name: 'eye', weight: (a, b) => 0.3 - Math.hypot(Math.abs(a) - 2.9, b + 0.1) },
-  { name: 'groove', weight: (a, b) => 0.03 + 0.05 - seg(Math.abs(a), b, 1.42, -0.86, 2.62, -0.34).d },
+  { name: 'groove', weight: (a, b) => 0.11 - seg(Math.abs(a), b, GV[0], GV[1], GV[2], GV[3]).d },
 ];
 
 const NU = 220;
@@ -395,6 +406,9 @@ export function faceModel(pose: FacePose, o: FaceOpts = {}): PoseModel {
   reg('body', undefined, tone(FACE_COLOR.body), { quiet: true, ground: true });
   reg('medial', 'sudur-ertz-mediala', tone(FACE_COLOR.medial), { groups: ['sudur-plakoda', 'sudurraren-erdiko-atala', 'goiko-ezpainaren-erdiko-atala'] });
   reg('lateral', 'sudur-ertz-laterala', tone(FACE_COLOR.lateral), { groups: ['sudur-plakoda', 'sudur-hegalak'] });
+  // The band along the groove's upper side: the lateral rim's blue while the groove is open, the skin's once it has
+  // closed (weeks 8–10.5), so the finished nose keeps only its alae blue.
+  reg('band', 'sudur-ertz-laterala', mixHex(tone(FACE_COLOR.lateral), tone(FACE_COLOR.front), ss(8, 10.5, age)), { groups: ['sudur-plakoda'] });
   reg('pit', 'sudur-hobitxoa', mixHex(FACE_COLOR.pit, SKIN, 0.15 * (1 - pose.color)), { groups: ['sudur-plakoda'] });
   reg('max', 'luzapen-maxilarra', tone(FACE_COLOR.max), {}, mixHex(tone(FACE_COLOR.max), ARCH_DEEP.i, 0.8));
   reg('mand', 'barail-luzapena', tone(FACE_COLOR.mand), {}, mixHex(tone(FACE_COLOR.mand), ARCH_DEEP.i, 0.8));
