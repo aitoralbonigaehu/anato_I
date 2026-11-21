@@ -1,9 +1,3 @@
-/**
- * Visit collector helpers (server side): what browser, system and kind of device a user agent is, and
- * the IP address shortened so it no longer points at one person (IPv4: last block zeroed; IPv6: the
- * first three groups, a /48 — still enough for country, city and provider).
- */
-
 export interface UaInfo {
   browser: string;
   browserVersion: string;
@@ -46,37 +40,4 @@ export function parseUa(raw: string | null | undefined, touchPoints = 0): UaInfo
     os === 'iPadOS' || /Tablet|iPad/.test(ua) || (os === 'Android' && !/Mobile/.test(ua)) ? 'tablet' : /Mobi|iPhone|iPod|Android/.test(ua) ? 'mobile' : 'desktop';
 
   return { browser, browserVersion, os, osVersion, device, bot };
-}
-
-/** The visitor's IP from the proxy headers (first hop of x-forwarded-for), or null. */
-export function clientIp(h: Headers): string | null {
-  const xff = h.get('x-forwarded-for')?.split(',')[0]?.trim();
-  return xff || h.get('x-real-ip')?.trim() || null;
-}
-
-/** IPv4 → a.b.c.0; IPv6 → first three groups + ::. Anything else → null. */
-export function truncateIp(ip: string | null): string | null {
-  if (!ip) return null;
-  const v4 = ip.replace(/^::ffff:/i, '');
-  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(v4)) return v4.replace(/\.\d{1,3}$/, '.0');
-  if (ip.includes(':')) {
-    const [head] = ip.split('%');
-    const parts = head.split('::');
-    const left = parts[0] ? parts[0].split(':') : [];
-    const right = parts.length > 1 && parts[1] ? parts[1].split(':') : [];
-    const groups = parts.length > 1 ? [...left, ...Array(Math.max(0, 8 - left.length - right.length)).fill('0'), ...right] : left;
-    if (groups.length !== 8 || !groups.every((g) => /^[0-9a-f]{1,4}$/i.test(g))) return null;
-    return `${groups.slice(0, 3).map((g) => g.toLowerCase().replace(/^0+(?=.)/, '')).join(':')}::`;
-  }
-  return null;
-}
-
-/** A referrer reduced to its site (no path or query: those can carry personal data). */
-export function referrerSite(ref: unknown): string | null {
-  if (typeof ref !== 'string' || !ref) return null;
-  try {
-    return new URL(ref).hostname.slice(0, 120) || null;
-  } catch {
-    return null;
-  }
 }

@@ -74,6 +74,9 @@ export function buildIdle(key: string) {
   else setTimeout(run, 200);
 }
 
+/** Every registered slot's key (the mesh guard builds them all). */
+export const geoSlotKeys = () => [...slots.keys()];
+
 /** Has this slot been built (or has it arrived)? */
 export const geoReady = (key: string) => !!slots.get(key)?.value;
 

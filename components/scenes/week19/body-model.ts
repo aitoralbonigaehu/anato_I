@@ -3,6 +3,7 @@ import { curve3 } from '@/lib/three-d/mesh';
 import { geoOf, geoSlot } from '@/lib/three-d/offthread';
 import { mergeParts, plate, vessel, type Parts, type VesselOptions } from '@/lib/three-d/organic';
 import { capsule, ellipsoid, partition, polygon2, prismZ, smin, surfaceMesh, type SDF } from '@/lib/three-d/sdf';
+import { cutSolid, onLattice } from '@/lib/three-d/profile';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex } from '@/components/scenes/week10/model3d';
 import { C19, G19 } from './tones';
@@ -121,45 +122,31 @@ const HALF: [number, number][] = [
   [0.1, -0.9], [0, -0.62],
 ];
 const OUTLINE: [number, number][] = [...HALF, ...HALF.slice(1, -1).reverse().map(([x, y]): [number, number] => [-x, y])];
-const groundF: SDF = (() => {
-  const d2 = polygon2(OUTLINE);
-  return prismZ(d2, BACK_Z, CUT_Z, 0.12);
-})();
-const GROUND = () => G().ground;
-const groundParts = (() => {
-  let p: { cut: Parts; back: Parts } | null = null;
-  return () => {
-    if (!p) {
-      const [cut, back] = partition(GROUND(), (c) => c[2] > CUT_Z - 0.012);
-      p = { cut: { mesh: cut, hit: cut }, back: { mesh: back, hit: back } };
-    }
-    return p;
-  };
-})();
 
 /** The vertebral arches cut through beside the cord (the canal between them), the sacrum below. */
-const columnF: SDF = (x, y, z) => {
-  const ax = Math.abs(x);
-  let d = Infinity;
-  for (const [, top, bot] of VERTS) {
+const columnF: SDF = (() => {
+  const arches = VERTS.map(([, top, bot]) => {
     const h = top - bot;
     // A pedicle-and-lamina block each side; the gap between two is the foramen the nerve leaves by.
     const c = (top + bot) / 2 + 0.005;
-    const b = capsule([0.16, c - h * 0.22, -0.36], [0.16, c + h * 0.22, -0.36], 0.065, 0.065)(ax, y, z);
-    d = Math.min(d, b);
-  }
-  const sac = capsule([0.14, SACRUM_TOP - 0.06, -0.4], [0.05, SACRUM_BOT + 0.04, -0.42], 0.11, 0.05)(ax, y, z);
-  return smin(d, sac, 0.04);
-};
+    return capsule([0.16, c - h * 0.22, -0.36], [0.16, c + h * 0.22, -0.36], 0.065);
+  });
+  const sac = capsule([0.14, SACRUM_TOP - 0.06, -0.4], [0.05, SACRUM_BOT + 0.04, -0.42], 0.11, 0.05);
+  return (x, y, z) => {
+    const ax = Math.abs(x);
+    let d = Infinity;
+    for (const arch of arches) d = Math.min(d, arch(ax, y, z));
+    return smin(d, sac(ax, y, z), 0.04);
+  };
+})();
 const COLUMN = (): Parts => G().column;
 
 /** The skull's back half: a bony bowl behind the brain. */
 const B = ROOT19.brain;
-const skullF: SDF = (x, y, z) => {
-  const outer = ellipsoid([B[0], B[1] + 0.02, B[2] - 0.02], [0.41, 0.37, 0.5])(x, y, z);
-  const inner = ellipsoid([B[0], B[1] + 0.02, B[2] - 0.02], [0.37, 0.33, 0.46])(x, y, z);
-  return smax(smax(outer, -inner, 0.01), z - (B[2] - 0.08), 0.02);
-};
+const skullCenter: V3 = [B[0], B[1] + 0.02, B[2] - 0.02];
+const skullOuter = ellipsoid(skullCenter, [0.41, 0.37, 0.5]);
+const skullInner = ellipsoid(skullCenter, [0.37, 0.33, 0.46]);
+const skullF: SDF = (x, y, z) => Math.max(skullOuter(x, y, z), -skullInner(x, y, z));
 const SKULL = (): Parts => G().skull;
 
 /** The brain: two hemispheres with folds, the cerebellum behind and below, the brainstem down to the foramen. */
@@ -185,14 +172,27 @@ const CEREBELLUM = () => G().cerebellum;
 const STEM = () => G().stem;
 
 /**
- * The body's surfaces from distance fields (1.6 s of work in all): built once, off the main thread in the
+ * The body's surfaces from distance fields: built once, off the main thread in the
  * browser (the scenes wait with `useGeoReady`), here in the tests and on the server.
  */
 function buildGeo() {
+  const groundStep = 0.04;
+  const groundLo: V3 = [-1.4, -4.62, BACK_Z - 0.02], groundHi: V3 = [1.4, 4.62, CUT_Z + 0.02];
+  const outline = polygon2(OUTLINE);
+  const profile = onLattice(outline, [groundLo[0], groundLo[1], 0], [groundHi[0], groundHi[1], 0], groundStep);
+  const ground = prismZ((x, y) => profile(x, y, 0), BACK_Z, CUT_Z, 0.12);
+  const [cut, back] = partition(surfaceMesh(ground, groundLo, groundHi, groundStep), (c) => c[2] > CUT_Z - 0.012);
+  const skull = (step: number) => cutSolid({
+    faces: [{ f: skullOuter }, { f: skullInner, flip: true }],
+    solid: skullF,
+    lo: [-0.45, 3.55, skullCenter[2] - 0.53],
+    hi: [0.45, 4.45, B[2] - 0.08],
+    step, cuts: [{ axis: 2, at: B[2] - 0.08, keep: 1 }], capStep: 0.008,
+  });
   return {
-    ground: surfaceMesh(groundF, [-1.4, -4.62, BACK_Z - 0.02], [1.4, 4.62, CUT_Z + 0.02], 0.035),
-    column: sculpt(columnF, [-0.3, SACRUM_BOT - 0.12, -0.52], [0.3, 3.42, -0.24], 0.02, 0.05),
-    skull: sculpt(skullF, [-0.45, 3.55, -0.55], [0.45, 4.45, -0.05], 0.02, 0.05),
+    ground: { cut: { mesh: cut, hit: cut }, back: { mesh: back, hit: back } },
+    column: sculpt(columnF, [-0.3, SACRUM_BOT - 0.12, -0.52], [0.3, 3.42, -0.24], 0.02, 0.025),
+    skull: { mesh: skull(0.02), hit: skull(0.05) },
     cerebrum: sculpt(cerebrumF, [-0.4, 3.7, -0.46], [0.4, 4.36, 0.45], 0.016),
     cerebellum: sculpt(cerebellumF, [-0.3, 3.56, -0.44], [0.3, 3.84, -0.1], 0.016),
     stem: sculpt(stemF, [-0.1, 3.32, -0.26], [0.1, 3.96, 0.02], 0.014),
@@ -369,7 +369,7 @@ export function bodyModel(pose: BodyPose, o: BodyOpts = {}) {
   const auto = clamp01(pose.auto);
 
   // ———— the ground: the body's back half, cut through the cord ————
-  const g = groundParts();
+  const g = G().ground;
   put('ground-cut', undefined, g.cut, G19.cut, G19.cutDeep, { ground: true, quiet: true, tissue: 'mesenchyme', calm: true });
   put('ground-back', undefined, g.back, G19.body, G19.bodyDeep, { ground: true, quiet: true, tissue: 'skin', calm: true });
 

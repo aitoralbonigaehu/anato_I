@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from 'react';
 import { initializeStudyOwner } from '@/lib/study/storage-scope';
 import { getBackend } from '@/lib/account/backend';
-import { applySnapshot, collectSnapshot, mergeSnapshot, sameSnapshot } from '@/lib/account/snapshot';
+import { applySnapshot, collectSnapshot, isEmptySnapshot, mergeSnapshot, sameSnapshot } from '@/lib/account/snapshot';
 import type { AccountBackend, AccountUser, AuthResult } from '@/lib/account/types';
 
 /**
@@ -48,24 +48,30 @@ let reloading = false;
 let running: Promise<void> | null = null;
 const EVERY = 3 * 60_000;
 
-/** Exercise sync with the mock only until production progress has account isolation and conflict handling. */
 export function syncNow(): Promise<void> {
-  if (reloading || !backend || backend.kind !== 'mock' || state.status !== 'in') return Promise.resolve();
+  const owner = state.user?.id;
+  if (reloading || !backend || state.status !== 'in' || !owner) return Promise.resolve();
   if (running) return running;
   const b = backend;
-  const owner = state.user?.id;
   running = (async () => {
     set({ syncing: true });
     try {
-      const remote = await b.loadProgress();
-      if ((await b.currentUser())?.id !== owner || reloading) return;
-      const local = collectSnapshot();
-      const merged = remote ? mergeSnapshot(local, remote.data) : local;
-      if (!sameSnapshot(merged, local)) applySnapshot(merged);
-      if (!remote || !sameSnapshot(merged, remote.data)) {
-        if (!(await b.saveProgress({ v: 1, savedAt: Date.now(), data: merged }))) return;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        if (reloading) return;
+        const remote = await b.loadProgress(owner);
+        if ((await b.currentUser())?.id !== owner || reloading) return;
+        const local = collectSnapshot();
+        if (!remote && isEmptySnapshot(local)) return;
+        const merged = remote ? mergeSnapshot(local, remote.blob.data) : local;
+        if (!sameSnapshot(merged, local)) applySnapshot(merged);
+        if (!remote || !sameSnapshot(merged, remote.blob.data)) {
+          const result = await b.saveProgress(owner, { v: 1, savedAt: Date.now(), data: merged }, remote?.revision ?? null);
+          if (result === 'conflict') continue;
+          if (result === 'failed') return;
+        }
+        if (!reloading) set({ synced: Date.now() });
+        return;
       }
-      set({ synced: Date.now() });
     } catch {
       // Offline or the backend failed: the next turn tries again.
     } finally {
@@ -102,11 +108,10 @@ export async function startAccounts() {
       void backend?.currentUser().then(changeSession, reloadStudy);
     }
   });
-  if (backend.kind === 'mock') {
-    if (state.status === 'in') void syncNow();
-    window.setInterval(() => !document.hidden && void syncNow(), EVERY);
-    document.addEventListener('visibilitychange', () => document.hidden && void syncNow());
-  }
+  if (state.status === 'in') void syncNow();
+  window.setInterval(() => !document.hidden && void syncNow(), EVERY);
+  document.addEventListener('visibilitychange', () => void syncNow());
+  window.addEventListener('online', () => void syncNow());
 }
 
 function reloadStudy() {

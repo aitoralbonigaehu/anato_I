@@ -8,7 +8,7 @@ let worker: Worker | null | undefined;
 const asked = new Set<string>();
 /** How long a slot may stay unanswered before it is built on the main thread. */
 const LATE_MS = 30000;
-const pending = new Set<string>();
+const pending = new Map<string, ReturnType<typeof setTimeout>>();
 
 function getWorker(): Worker | null {
   if (worker !== undefined) return worker;
@@ -18,6 +18,7 @@ function getWorker(): Worker | null {
     w.onmessage = (e: MessageEvent<{ key: string; data?: unknown; error?: string }>) => {
       if (worker !== w) return;
       const { key, data, error } = e.data;
+      clearTimeout(pending.get(key));
       pending.delete(key);
       if (error) buildIdle(key);
       else adoptGeo(key, data);
@@ -30,7 +31,10 @@ function getWorker(): Worker | null {
       // The worker could not start: whatever is still missing is built here instead.
       w.terminate();
       worker = null;
-      for (const k of pending) if (!geoReady(k)) buildIdle(k);
+      for (const [key, timeout] of pending) {
+        clearTimeout(timeout);
+        if (!geoReady(key)) buildIdle(key);
+      }
       pending.clear();
     };
   } catch {
@@ -47,13 +51,12 @@ export function warmGeo(keys: string[]) {
     asked.add(key);
     const w = getWorker();
     if (w) {
-      pending.add(key);
-      w.postMessage({ key });
       // A worker that never answers (its script still loading on a busy machine) must not leave the view on
       // "3D eredua prestatzen" for ever: after a while the slot is built here instead (a late answer is ignored).
-      window.setTimeout(() => {
+      pending.set(key, setTimeout(() => {
         if (!geoReady(key)) buildIdle(key);
-      }, LATE_MS);
+      }, LATE_MS));
+      w.postMessage({ key });
     } else buildIdle(key);
   }
 }

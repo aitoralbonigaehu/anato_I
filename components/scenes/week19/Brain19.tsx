@@ -4,7 +4,7 @@ import type { ComponentType } from 'react';
 import type { SceneProps } from '@/components/kit';
 import { Loading3D } from '@/components/kit/three/Stage3D';
 import { useGeoReady } from '@/lib/three-d/offthread';
-import { BR0, BRAIN19_GEO, brainModel, type BrainOpts, type BrainPose } from './brain-model';
+import { BR0, BRAIN19_GEO, MENINGES19_GEO, VENTRICLES19_GEO, brainModel, type BrainOpts, type BrainPose } from './brain-model';
 import { KEY19, LEFT19, endPose, poseStage19, type StageSpec } from './common';
 import { SITE19 } from './sites';
 import { C19 } from './tones';
@@ -16,16 +16,18 @@ import { C19 } from './tones';
 
 const CAP = 'Burua erditik moztuta (3D eredua): ezkerretik ikusita, aurpegia zure ezkerrean';
 const build = (pose: BrainPose, opts: BrainOpts) => brainModel(pose, opts);
-function withGeo(View: ComponentType<SceneProps> & { geo?: string[] }) {
+type BrainSlot = typeof BRAIN19_GEO;
+function withGeo(View: ComponentType<SceneProps> & { geo?: string[] }, extra: BrainSlot[]) {
+  const slots = [BRAIN19_GEO, ...extra];
   function Scene(props: SceneProps) {
-    return useGeoReady([BRAIN19_GEO]) ? <View {...props} /> : <Loading3D />;
+    return useGeoReady(slots) ? <View {...props} /> : <Loading3D />;
   }
-  Scene.geo = ['brain19', ...(View.geo ?? [])];
+  Scene.geo = [...slots.map(({ key }) => key), ...(View.geo ?? [])];
   Scene.spec = (View as { spec?: unknown }).spec;
   return Scene;
 }
 const SAG = (dist = 7, y = -0.3, z = 0, yaw = 90, elev = 3) => LEFT19(dist, [0, y, z], yaw, elev);
-const stage = (spec: StageSpec<BrainPose, BrainOpts>) => withGeo(poseStage19(spec, build));
+const stage = (spec: StageSpec<BrainPose, BrainOpts>, ...extra: BrainSlot[]) => withGeo(poseStage19(spec, build), extra);
 
 // ———————————————————————— 7. Garuneko meningeak (3) ————————————————————————
 
@@ -87,7 +89,7 @@ const specBMen: StageSpec<BrainPose, BrainOpts> = {
     },
   ],
 };
-export const BrainMen19 = stage(specBMen);
+export const BrainMen19 = stage(specBMen, MENINGES19_GEO);
 
 // ———————————————————————— 20. Talamoa (10) ————————————————————————
 
@@ -314,7 +316,7 @@ const specVent: StageSpec<BrainPose, BrainOpts> = {
     },
   ],
 };
-export const Ventricles19 = stage(specVent);
+export const Ventricles19 = stage(specVent, VENTRICLES19_GEO);
 
 // ———————————————————————— 23. Likido zefalorrakideoa (13) ————————————————————————
 
@@ -400,4 +402,4 @@ const specCsf: StageSpec<BrainPose, BrainOpts> = {
     },
   ],
 };
-export const Csf19 = stage(specCsf);
+export const Csf19 = stage(specCsf, VENTRICLES19_GEO, MENINGES19_GEO);

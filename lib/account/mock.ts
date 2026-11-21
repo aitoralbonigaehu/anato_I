@@ -82,16 +82,18 @@ export const mockBackend: AccountBackend = {
   async signOut() {
     window.localStorage.removeItem(SESSION);
   },
-  async loadProgress() {
-    const id = session();
-    return id ? (read()[id]?.blob ?? null) : null;
+  async loadProgress(owner) {
+    if (session() !== owner) throw new Error('Study account changed');
+    const blob = read()[owner]?.blob;
+    return blob ? { blob, revision: String(blob.savedAt) } : null;
   },
-  async saveProgress(blob) {
-    const id = session();
+  async saveProgress(owner, blob, revision) {
     const db = read();
-    if (!id || !db[id]) return false;
-    db[id].blob = blob;
+    const row = db[owner];
+    if (session() !== owner || !row) return 'failed';
+    if ((row.blob ? String(row.blob.savedAt) : null) !== revision) return 'conflict';
+    row.blob = blob;
     write(db);
-    return true;
+    return 'saved';
   },
 };

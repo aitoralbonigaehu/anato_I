@@ -128,6 +128,15 @@ p23 · 8-week herniated loop (Langman's figure): ducts in yellow. 6 hepatic duct
   10 Meckel = the bump at the apex. 3 dorsal pancreas has no outline of its own: circle only.
 """
 
+import math
+
+
+def ell(cx, cy, rx, ry=None, n=28):
+    """An ellipse as a polygon (a rounded prominence or pit with no pencil edge of its own)."""
+    ry = rx if ry is None else ry
+    return [(round(cx + rx * math.cos(2 * math.pi * i / n)), round(cy + ry * math.sin(2 * math.pi * i / n))) for i in range(n)]
+
+
 # p08: the heart tube (myocardium round its lumen), traced along its outer edge: the left wall of the
 # truncus, the inner fold, the atrial opening (x 514), the bottom wall's lower edge and, on the right, the
 # middle of the pericardial crescent, which is then carved out (so the cut follows the crescent exactly).
@@ -142,6 +151,106 @@ HEART8 = {'poly': [(503, 396), (508, 384), (516, 376), (540, 375), (549, 379), (
                    'clip': [(556, 380), (600, 392), (662, 440), (668, 540), (640, 566), (600, 470), (560, 400)]}]}
 
 SPEC = {
+    'p06': {
+        # 7 notochord: the green dotted line from its cranial end down round the tail, 8 primitive streak: its
+        # thick caudal end where it turns up again (the 8's arrow); 12 ectoderm: the white outer band along the
+        # back (the 12's arrow); 14 endoderm: the grey layer between the notochord and the gut's lining line
+        7: [{'line': [(630, 242), (560, 237), (480, 257), (420, 292), (378, 335), (359, 370), (337, 410), (315, 450), (302, 490), (296, 530), (286, 570), (284, 650), (284, 730), (279, 810), (270, 890), (263, 970), (267, 1050), (273, 1130), (290, 1210), (315, 1290), (345, 1350), (400, 1403), (440, 1427), (480, 1450), (520, 1476), (560, 1494), (600, 1506), (640, 1511), (685, 1500)], 'w': 26}],
+        8: [{'line': [(690, 1496), (725, 1490), (752, 1470), (765, 1430), (768, 1390), (765, 1350)], 'w': 30}],
+        12: [{'ink': 'white', 'clip': [(136, 320), (161, 320), (166, 1325), (140, 1325)], 'all': True, 'min': 60}],
+        14: [{'line': [(350, 450), (336, 550), (334, 650), (332, 750), (326, 850), (318, 950), (316, 1050), (322, 1150), (338, 1250)], 'w': 44}],
+        # the heart (hand-written names): a aortic sac = the circled top of the tube; b truncus = its left limb
+        # below that; c pericardial cavity = the black crescent the arrow points at; d AV canal = the passage at
+        # the bottom of the tube from the atrium (left) into the ventricle
+        'a': [{'poly': ell(530, 395, 18)}],
+        'b': [{'poly': [(512, 414), (548, 410), (565, 430), (575, 470), (578, 495), (548, 505), (530, 480), (518, 450)], 'grow': 0}],
+        'c': [{'ink': 'shade', 'seeds': [(650, 470), (645, 520)], 'clip': [(560, 378), (668, 385), (684, 470), (680, 585), (640, 600), (612, 520), (580, 440)], 'close': 3}],
+        'd': [{'poly': [(500, 535), (530, 528), (558, 535), (560, 555), (530, 565), (500, 560)], 'grow': 0}],
+        # 9 septum transversum: the mass caudal to the pericardial sac (under its white outline); 10 chorionic
+        # cavity: the white space outside the embryo where the 10's arrow starts; 11 connecting stalk: the tongue
+        # running out from the tail; 13 amniotic cavity: the white space round the tail, under the stalk
+        9: [{'poly': [(475, 660), (560, 668), (640, 650), (700, 615), (720, 640), (720, 700), (690, 720), (600, 725), (520, 720), (475, 700)], 'grow': 0}],
+        10: [{'ink': 'white', 'seeds': [(730, 345)], 'clip': [(660, 300), (800, 300), (800, 395), (660, 395)]}],
+        11: [{'poly': [(600, 1110), (680, 1085), (750, 1080), (900, 1100), (900, 1155), (1045, 1200), (1030, 1240), (990, 1290), (930, 1330), (880, 1300), (820, 1260), (760, 1225), (700, 1215), (650, 1225), (610, 1240), (590, 1200)], 'grow': 0}],
+        13: [{'ink': 'white', 'seeds': [(750, 1275)], 'clip': [(660, 1215), (905, 1215), (905, 1345), (660, 1345)]}],
+    },
+    'p05': {
+        # the coelom horseshoe (yellow): 1 its cranial bulge, 2 the narrow canal down to where it widens,
+        # 4 the caudal part the 4 sits on; 3 the dark open rim along its caudal edge; 6 the column of somites (the paraxial
+        # mesoderm, gaps and all) with its unsegmented tail below them; 5 the grey band between the somites and the yellow;
+        # 12 the blue ectoderm strip
+        1: [{'ink': 'yellow', 'clip': [(450, 90), (880, 90), (880, 450), (450, 450)], 'all': True, 'min': 60}],
+        2: [{'ink': 'yellow', 'clip': [(395, 450), (640, 450), (640, 1000), (395, 1000)], 'all': True, 'min': 60}],
+        4: [{'ink': 'yellow', 'clip': [(430, 1000), (900, 1000), (900, 1420), (600, 1400), (520, 1360), (470, 1290), (440, 1200)], 'all': True, 'min': 60}],
+        3: [{'poly': [(555, 1032), (600, 1070), (690, 1150), (780, 1220), (830, 1270), (842, 1320), (836, 1362), (826, 1352), (815, 1292), (770, 1247), (680, 1177), (595, 1097), (548, 1052)], 'grow': 0}],
+        6: [{'poly': [(296, 228), (380, 228), (383, 450), (385, 700), (390, 900), (398, 1080), (425, 1200), (455, 1300), (520, 1395), (600, 1428), (700, 1440), (720, 1500), (620, 1515), (520, 1505), (470, 1480), (420, 1420), (380, 1330), (345, 1260), (315, 1200), (303, 1050), (300, 800), (298, 500)], 'grow': 0}],
+        5: [{'poly': [(380, 300), (452, 300), (450, 450), (440, 600), (435, 800), (432, 1000), (440, 1150), (470, 1260), (520, 1330), (600, 1380), (700, 1400), (800, 1405), (820, 1425), (760, 1440), (700, 1435), (600, 1428), (520, 1395), (455, 1300), (425, 1200), (400, 1100), (392, 900), (385, 600), (382, 400)], 'grow': 0,
+             'sub': [{'ink': 'brown', 'clip': [(370, 280), (900, 280), (900, 1520), (370, 1520)], 'all': True, 'min': 60, 'grow': 0}]}],
+        12: [{'line': [(274, 222), (276, 400), (279, 600), (283, 800), (288, 1000), (296, 1230)], 'w': 20}],
+    },
+    'p04': {
+        '_nest': [(10, 9)],
+        # head regions over the brain vesicles, front to back along the outline: 1 forehead (forebrain),
+        # 2 crown (midbrain), 3 behind it (cerebellum), 4 back of the head (hindbrain)
+        1: [{'poly': [(760, 280), (1000, 227), (1013, 333), (1027, 440), (1040, 560), (1045, 640), (960, 640), (860, 620), (800, 600), (760, 560), (740, 420)], 'grow': 0}],
+        2: [{'poly': [(640, 60), (800, 45), (905, 78), (955, 135), (1000, 227), (760, 280), (700, 300), (650, 250), (620, 150)], 'grow': 0}],
+        3: [{'poly': [(430, 132), (533, 98), (640, 60), (620, 150), (650, 250), (700, 300), (600, 320), (500, 330), (420, 300), (380, 220)], 'grow': 0}],
+        4: [{'poly': [(325, 178), (430, 132), (380, 220), (420, 300), (500, 330), (480, 450), (400, 520), (300, 560), (165, 560), (140, 507), (178, 400), (245, 285)], 'grow': 0}],
+        # the eye: 10 the eyeball (the oval), 9 the lens inside it; 5 / 6 the folds above (towards the forehead)
+        # and below it; 7 the groove between the eye and the nose; 8 the nose; 11 the ear with its canal
+        10: [{'poly': ell(689, 678, 40, 55)}],
+        9: [{'poly': ell(701, 703, 17)}],
+        5: [{'poly': [(730, 610), (760, 620), (785, 660), (790, 700), (775, 740), (740, 755), (728, 730), (735, 680)], 'grow': 0}],
+        6: [{'poly': [(645, 615), (630, 610), (605, 640), (598, 690), (610, 735), (640, 750), (652, 730), (648, 680)], 'grow': 0}],
+        7: [{'poly': [(722, 748), (750, 742), (772, 768), (762, 790), (736, 792), (720, 775)], 'grow': 0}],
+        8: [{'poly': [(640, 792), (680, 782), (718, 792), (733, 810), (700, 830), (670, 836), (645, 825)], 'grow': 0}],
+        11: [{'poly': ell(492, 599, 26, 66)}],
+        # the arm: 15 shoulder (its root, up and back), 16 elbow (the bend), 17 the back of the hand
+        15: [{'poly': [(340, 800), (370, 780), (410, 778), (440, 790), (455, 830), (445, 870), (410, 890), (370, 890), (345, 860)], 'grow': 0}],
+        16: [{'poly': [(330, 930), (370, 915), (420, 925), (470, 950), (500, 975), (480, 1010), (430, 1022), (385, 1018), (350, 990), (335, 960)], 'grow': 0}],
+        17: [{'poly': [(520, 790), (560, 775), (600, 790), (625, 815), (640, 850), (635, 900), (620, 935), (590, 945), (560, 930), (540, 905), (520, 880), (512, 840)], 'grow': 0}],
+        # 13 the liver bulge under the arm, 14 the cord, 18 knee (the middle of the bent leg), 19 foot
+        13: [{'poly': [(480, 1000), (520, 960), (600, 940), (680, 950), (720, 980), (722, 1050), (700, 1150), (688, 1250), (620, 1268), (540, 1250), (480, 1200), (450, 1120), (460, 1040)], 'grow': 0}],
+        14: [{'poly': [(722, 1060), (800, 1045), (870, 1020), (938, 1012), (942, 1100), (940, 1168), (908, 1220), (830, 1255), (760, 1273), (722, 1268), (702, 1200), (708, 1120)], 'grow': 0}],
+        18: [{'poly': [(560, 1300), (620, 1280), (690, 1270), (725, 1275), (730, 1320), (725, 1400), (700, 1430), (640, 1440), (580, 1430), (555, 1380)], 'grow': 0}],
+        19: [{'poly': [(725, 1275), (760, 1262), (800, 1268), (830, 1290), (842, 1330), (838, 1380), (815, 1420), (780, 1432), (740, 1428), (722, 1400), (728, 1330)], 'grow': 0}],
+    },
+    'p03': {
+        # somites by region, counted bead by bead along the chain (8 cervical, then 12 thoracic from the bead
+        # under the forelimb bud, 5 lumbar from the bead the 7 sits on, sacral from the 8's, coccygeal from where
+        # the 9's arrow points); the yellow beads inside each stretch
+        5: [{'ink': 'yellow', 'clip': [(40, 460), (215, 460), (200, 840), (146, 840), (146, 1062), (40, 1062)], 'all': True, 'min': 60}],
+        6: [{'ink': 'yellow', 'clip': [(40, 1062), (146, 1062), (150, 1118), (200, 1128), (260, 1170), (330, 1260), (400, 1300), (560, 1400), (760, 1420), (760, 1560), (40, 1560)], 'all': True, 'min': 60}],
+        7: [{'ink': 'yellow', 'clip': [(760, 1430), (850, 1440), (950, 1420), (1000, 1385), (1030, 1330), (1160, 1330), (1160, 1560), (760, 1560)], 'all': True, 'min': 60}],
+        8: [{'ink': 'yellow', 'clip': [(1048, 1330), (1160, 1330), (1160, 1090), (1045, 1090)], 'all': True, 'min': 60}],
+        9: [{'ink': 'yellow', 'clip': [(1030, 1090), (1160, 1090), (1160, 960), (1030, 960)], 'all': True, 'min': 60}],
+        # the two small arches behind the second, split on the dark line between them
+        3: [{'poly': [(405, 500), (430, 497), (470, 497), (466, 520), (463, 545), (466, 580), (470, 600), (455, 600), (440, 580), (425, 550), (410, 520)], 'grow': 0}],
+        4: [{'poly': [(372, 515), (395, 500), (405, 500), (410, 520), (425, 550), (440, 580), (430, 582), (405, 565), (385, 555), (372, 540)], 'grow': 0}],
+        # heart prominence: the round ball under the arches; liver prominence: the lobe below and behind it
+        13: [{'poly': [(365, 720), (420, 668), (500, 660), (600, 678), (680, 708), (708, 760), (715, 850), (700, 915), (660, 955), (580, 950), (500, 910), (420, 860), (365, 800)], 'grow': 0}],
+        14: [{'poly': [(365, 800), (420, 860), (500, 910), (580, 950), (660, 955), (640, 1010), (590, 1050), (530, 1080), (470, 1088), (420, 1040), (390, 960), (365, 880)], 'grow': 0}],
+        # the eye (lens pit in the optic cup), the nasal pit
+        11: [{'poly': ell(878, 625, 58)}],
+        12: [{'poly': ell(757, 740, 35, 40)}],
+        # the cord stump, the tail (the hook) and the external cloacal pit (the slit beside the leg bud)
+        15: [{'poly': [(880, 850), (940, 830), (1000, 808), (1040, 796), (1085, 797), (1110, 830), (1140, 880), (1150, 920), (1140, 950), (1090, 945), (1040, 930), (990, 925), (940, 925), (890, 935), (875, 900)], 'grow': 0}],
+        19: [{'poly': [(846, 1020), (852, 990), (875, 960), (910, 940), (960, 932), (1000, 940), (1010, 980), (985, 1010), (950, 1030), (925, 1060), (915, 1040), (930, 1010), (915, 1000), (880, 1010), (860, 1030)], 'grow': 0}],
+        18: [{'line': [(940, 1055), (905, 1090), (870, 1120), (840, 1150), (822, 1175)], 'w': 12}],
+        # brain prominences: rhombic lip along the top, otic vesicle and trigeminal ganglion above the arches,
+        # mesencephalon the dome, diencephalon round the eye, telencephalon along the forebrain's lower margin
+        23: [{'poly': [(560, 175), (600, 140), (700, 112), (800, 100), (870, 112), (880, 170), (800, 185), (700, 195), (600, 212)], 'grow': 0}],
+        25: [{'poly': ell(660, 345, 55, 50)}],
+        24: [{'poly': ell(845, 400, 55, 50)}],
+        22: [{'poly': [(890, 140), (950, 150), (1020, 185), (1090, 225), (1150, 280), (1185, 360), (1195, 450), (1190, 540), (1150, 575), (1080, 585), (1000, 575), (950, 555), (920, 520), (905, 460), (900, 380), (885, 250)], 'grow': 0}],
+        21: [{'poly': [(940, 565), (1000, 580), (1080, 590), (1150, 582), (1185, 592), (1160, 660), (1110, 715), (1060, 745), (1000, 760), (950, 770), (930, 740), (940, 690), (938, 640)], 'grow': 0}],
+        20: [{'poly': [(790, 790), (850, 775), (950, 770), (1000, 760), (1060, 745), (1110, 715), (1150, 682), (1076, 755), (985, 791), (913, 836), (822, 850), (790, 830)], 'grow': 0}],
+    },
+    'p02': {
+        # 3 somites: the column of beads along the back; 11 nephric ridge: the ridge just ventral to it
+        3: [{'poly': [(245, 450), (305, 450), (305, 600), (302, 800), (300, 1000), (304, 1200), (312, 1340), (246, 1340), (230, 1250), (225, 1100), (225, 1000), (232, 800), (238, 600)], 'grow': 0}],
+        11: [{'poly': [(306, 600), (340, 600), (346, 800), (346, 1000), (345, 1150), (340, 1300), (316, 1320), (310, 1200), (304, 1000), (303, 800)], 'grow': 0}],
+    },
     'p11': {
         2: [{'ink': 'blue', 'seeds': [(600, 330), (400, 420), (395, 520)],
              'clip': [(345, 230), (1260, 230), (1260, 480), (450, 480), (440, 548), (345, 548)]}],
@@ -201,7 +310,15 @@ SPEC = {
     },
     'p09': {
         # a whole and a part drawn inside it: both stay whole
-        '_nest': [(1, 4)],
+        '_nest': [(1, 4), (5, 8)],
+        # the small parts the corrected figure names by hand: 8 the venous valves = the dark curved strip in
+        # the sinus lobe (the black line drawn on it); 11 septum primum = the dark wall coming down from the roof
+        # left of the cushion; 12 ostium primum = the gap between its edge and the top of the cushion; 10 right AV
+        # orifice = the opening below-left of the cushion, from the right atrium into the right ventricle
+        8: [{'poly': [(366, 430), (376, 425), (384, 437), (384, 462), (380, 484), (376, 494), (368, 494), (362, 480), (360, 459), (363, 441)], 'grow': 0}],
+        11: [{'poly': [(436, 445), (446, 442), (450, 455), (448, 475), (440, 478), (434, 465)], 'grow': 0}],
+        12: [{'poly': [(460, 438), (480, 435), (492, 443), (488, 452), (470, 452), (460, 448)], 'grow': 0}],
+        10: [{'poly': [(436, 480), (452, 476), (462, 484), (460, 496), (445, 500), (434, 492)], 'grow': 0}],
         5: [{'poly': [(346, 420), (361, 407), (392, 406), (400, 430), (398, 470), (390, 497), (362, 498), (348, 480)]}],
         6: [{'poly': [(394, 404), (445, 400), (452, 425), (446, 450), (430, 476), (402, 480), (399, 440)], 'sub': [{'ink': 'pink', 'all': True, 'min': 30, 'clip': [(380, 385), (500, 385), (500, 460), (380, 460)]}]},
             {'ink': 'blue', 'seeds': [(741, 1003)], 'clip': [(702, 960), (790, 960), (790, 1070), (680, 1070), (680, 1010), (702, 1000)]}],
@@ -216,6 +333,10 @@ SPEC = {
         4: [{'ink': 'notwhite', 'all': True, 'min': 15, 'close': 5, 'clip': [(430, 503), (470, 500), (500, 506), (506, 556), (433, 556)]}],
     },
     'p10': {
+        # the small external heart: the outflow at its top, the two names split across it (1 the pulmonary
+        # trunk on the left, where its number sits; 2 the ascending aorta on the right, where its arrow starts)
+        1: [{'poly': [(742, 1016), (760, 1006), (780, 1004), (790, 1020), (792, 1044), (780, 1056), (756, 1056), (742, 1040)], 'grow': 0}],
+        2: [{'poly': [(792, 1020), (804, 1010), (816, 1016), (830, 1032), (836, 1048), (824, 1058), (804, 1056), (794, 1044)], 'grow': 0}],
         3: [{'ink': 'rose', 'seeds': [(423, 315)], 'clip': [(410, 276), (440, 276), (440, 352), (408, 352)]}],
         4: [{'ink': 'rose', 'seeds': [(382, 345), (356, 300)], 'clip': [(345, 270), (372, 270), (372, 330), (395, 350), (388, 360), (345, 340)]}],
         5: [{'ink': 'rose', 'seeds': [(306, 315), (350, 335)], 'clip': [(290, 268), (318, 268), (318, 322), (380, 330), (385, 348), (300, 348), (290, 330)]}],

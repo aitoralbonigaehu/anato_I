@@ -2,7 +2,8 @@ import type { V3 } from '@/lib/three-d/math';
 import { curve3 } from '@/lib/three-d/mesh';
 import { cachedMesh } from '@/lib/three-d/mesh-cache';
 import { mergeParts, vessel, type Parts } from '@/lib/three-d/organic';
-import { capsule, ellipsoid, partition, prismZ, smin, surfaceMesh, type SDF } from '@/lib/three-d/sdf';
+import { capsule, ellipsoid, smin } from '@/lib/three-d/sdf';
+import { extrudeProfile, type F2 } from '@/lib/three-d/profile';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex } from '@/components/scenes/week10/model3d';
 import { C19, G19 } from './tones';
@@ -65,8 +66,9 @@ const RX = 1.05, RY = 0.88;
 /** White matter's outline: an oval with the anterior median fissure (deep) and the posterior median sulcus. */
 const whiteD2 = (x: number, y: number) => {
   const e = (Math.hypot(x / RX, y / RY) - 1) * Math.min(RX, RY);
-  const fissure = Math.max(Math.abs(x) - 0.045, -(y + 0.42));
-  const sulcus = Math.max(Math.abs(x) - 0.018, y - 0.6);
+  // The fissure from the ventral surface up to y −0.42; the sulcus from the dorsal surface down to y 0.6.
+  const fissure = Math.max(Math.abs(x) - 0.045, y + 0.42);
+  const sulcus = Math.max(Math.abs(x) - 0.018, 0.6 - y);
   return Math.max(e, -fissure, -sulcus);
 };
 /** The grey H: central bar, broad anterior horns, slender posterior horns; the lateral horns when `lat`. */
@@ -91,24 +93,24 @@ const greyD2 = (withLat: boolean) => (x: number, y: number) => {
 };
 /** Regions of the H for the function tint: posterior horn (sensory), anterior horn (motor), lateral horn. */
 const WHITE = (): Parts => {
-  const f = prismZ(whiteD2, -LEN, LEN, 0.03);
-  return { mesh: cachedMesh('cord19-white', [0.03], () => surfaceMesh(f, [-1.12, -0.95, -LEN - 0.05], [1.12, 0.95, LEN + 0.05], 0.03)), hit: cachedMesh('cord19-white-h', [0.08], () => surfaceMesh(f, [-1.12, -0.95, -LEN - 0.05], [1.12, 0.95, LEN + 0.05], 0.08)) };
+  const m = cachedMesh('cord19-white-x', [LEN], () => extrudeProfile(whiteD2, [-1.12, -0.95], [1.12, 0.95], 0.008, -LEN, LEN));
+  return { mesh: m, hit: m };
 };
-const GREY = (lat: boolean) => {
-  const f = prismZ(greyD2(lat), -LEN - 0.012, LEN + 0.012, 0.01);
-  const mesh = cachedMesh(`cord19-grey${lat ? 'L' : ''}`, [0.018], () => surfaceMesh(f, [-0.75, -0.72, -LEN - 0.04], [0.75, 0.85, LEN + 0.04], 0.018));
-  return mesh;
-};
-/** The grey split by function (cached): posterior horns, anterior horns, the rest (bar, lateral horns). */
+/** Split the grey matter before triangulating so the colours follow each region on the cut face. */
 const greyParts = new Map<string, { post: Parts; ant: Parts; mid: Parts }>();
 function greyByFn(lat: boolean) {
   const key = lat ? 'L' : '';
   let g = greyParts.get(key);
   if (!g) {
-    const m = GREY(lat);
-    const [p, rest] = partition(m, (c) => c[1] > 0.12);
-    const [a, mid] = partition(rest, (c) => c[1] < -0.1 && Math.abs(c[0]) < 0.7 && !(lat && Math.abs(c[0]) > 0.6));
-    g = { post: { mesh: p, hit: p }, ant: { mesh: a, hit: a }, mid: { mesh: mid, hit: mid } };
+    const grey = greyD2(lat);
+    const posterior: F2 = (_, y) => 0.12 - y;
+    const anterior: F2 = (x, y) => Math.max(y + 0.1, Math.abs(x) - (lat ? 0.6 : 0.7));
+    const part = (region: F2): Parts => {
+      const field: F2 = (x, y) => Math.max(grey(x, y), region(x, y));
+      const mesh = extrudeProfile(field, [-0.75, -0.72], [0.75, 0.85], 0.006, -LEN - 0.012, LEN + 0.012);
+      return { mesh, hit: mesh };
+    };
+    g = { post: part(posterior), ant: part(anterior), mid: part((x, y) => -Math.min(posterior(x, y), anterior(x, y))) };
     greyParts.set(key, g);
   }
   return g;
@@ -120,10 +122,8 @@ const sleeve = (key: string, rx: number, ry: number, th: number, z0: number, z1:
     const o = (Math.hypot(x / rx, y / ry) - 1) * Math.min(rx, ry);
     return Math.max(o, -(o + th));
   };
-  const f = prismZ(d2, z0, z1, Math.min(0.02, th * 0.4));
-  const lo: V3 = [-rx - 0.05, -ry - 0.05, z0 - 0.03], hi: V3 = [rx + 0.05, ry + 0.05, z1 + 0.03];
-  const step = Math.max(0.018, th * 0.7);
-  return { mesh: cachedMesh(`cord19-${key}`, [step], () => surfaceMesh(f, lo, hi, step)), hit: cachedMesh(`cord19-${key}-h`, [0.08], () => surfaceMesh(f, lo, hi, 0.08)) };
+  const m = cachedMesh(`cord19-${key}-x`, [rx, ry, th, z0, z1], () => extrudeProfile(d2, [-rx - 0.02, -ry - 0.02], [rx + 0.02, ry + 0.02], Math.min(0.01, th / 4), z0, z1));
+  return { mesh: m, hit: m };
 };
 const PIA = () => sleeve('pia', RX + 0.035, RY + 0.035, 0.03, -LEN, LEN - 0.04);
 const ARACH = () => sleeve('arach', 1.5, 1.32, 0.035, -LEN, 0.85);
@@ -138,8 +138,8 @@ const BONE = (): Parts => {
     const i = (Math.hypot(x / 2.15, (y + 0.05) / 1.85) - 1) * 1.85;
     return Math.max(o, -i);
   };
-  const f = prismZ(d2, -LEN, -0.55, 0.06);
-  return { mesh: cachedMesh('cord19-bone', [0.04], () => surfaceMesh(f, [-2.8, -2.55, -LEN - 0.05], [2.8, 2.35, -0.5], 0.04)), hit: cachedMesh('cord19-bone-h', [0.1], () => surfaceMesh(f, [-2.8, -2.55, -LEN - 0.05], [2.8, 2.35, -0.5], 0.1)) };
+  const m = cachedMesh('cord19-bone-x', [LEN], () => extrudeProfile(d2, [-2.75, -2.5], [2.75, 2.3], 0.012, -LEN, -0.55));
+  return { mesh: m, hit: m };
 };
 
 // ———————————————————————— roots, ganglion, nerve, rami (left; the right mirrors) ————————————————————————

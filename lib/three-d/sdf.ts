@@ -87,6 +87,25 @@ export function surfaceAlong(f: SDF, from: V3, dir: V3, maxLen = 3): { p: V3; n:
 }
 
 /**
+ * What the mesh guard (tests/mesh-guard.test.ts) reads from every surface built: how many surface samples sit
+ * in a layer or a slit only one grid cell thick. There the grid is too coarse for the shape: both faces fall in one
+ * cell, and the mesh breaks into dark teeth or holes. Thin layers and flat cuts belong in profile.ts instead.
+ */
+export interface SurfaceAudit {
+  /** Grid samples next to the surface (a neighbour on the other side). */
+  surface: number;
+  /** Of those, the ones with the other side on both sides along one axis: a layer or a gap one sample thick. */
+  thin: number;
+  step: V3;
+  tris: number;
+}
+let auditor: ((a: SurfaceAudit) => void) | null = null;
+/** Listen to every surface built (the guard test); null to stop. */
+export function auditSurfaces(fn: ((a: SurfaceAudit) => void) | null) {
+  auditor = fn;
+}
+
+/**
  * Surface nets: one vertex per grid cell the surface crosses (the mean of its edge crossings, then
  * pulled onto the surface), one quad per crossed grid edge. Smooth normals from the field itself.
  * `step` is the grid spacing, or one per axis: a shape that does not change along an axis (a slice
@@ -115,6 +134,19 @@ export function surfaceMesh(f: SDF, min: V3, max: V3, step: number | V3): Mesh {
         const c = coarse[Math.round(i / B) + cx * (Math.round(j / B) + cy * Math.round(k / B))];
         val[at(i, j, k)] = Math.abs(c) > reach ? c : f(min[0] + i * hx, min[1] + j * hy, min[2] + k * hz);
       }
+  const audit = auditor ? { surface: 0, thin: 0 } : null;
+  if (audit)
+    for (let k = 1; k < nz - 1; k++)
+      for (let j = 1; j < ny - 1; j++)
+        for (let i = 1; i < nx - 1; i++) {
+          const c = val[at(i, j, k)] < 0;
+          const xa = val[at(i - 1, j, k)] < 0, xb = val[at(i + 1, j, k)] < 0;
+          const ya = val[at(i, j - 1, k)] < 0, yb = val[at(i, j + 1, k)] < 0;
+          const za = val[at(i, j, k - 1)] < 0, zb = val[at(i, j, k + 1)] < 0;
+          if (xa === c && xb === c && ya === c && yb === c && za === c && zb === c) continue;
+          audit.surface++;
+          if ((xa !== c && xb !== c) || (ya !== c && yb !== c) || (za !== c && zb !== c)) audit.thin++;
+        }
   const cellVert = new Int32Array(nx * ny * nz).fill(-1);
   const pos: number[] = [];
   const nrm: number[] = [];
@@ -189,6 +221,7 @@ export function surfaceMesh(f: SDF, min: V3, max: V3, step: number | V3): Mesh {
       idx[t + 2] = s;
     }
   }
+  if (audit && auditor) auditor({ ...audit, step: [hx, hy, hz], tris: idx.length / 3 });
   return { pos: P, nrm: N, uv: new Float32Array((P.length / 3) * 2), idx: new Uint32Array(idx) };
 }
 

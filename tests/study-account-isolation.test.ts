@@ -10,6 +10,8 @@ vi.mock('@/lib/account/backend', () => ({
   getBackend: () => ({
     kind: 'supabase',
     currentUser: async () => auth.user,
+    loadProgress: async () => null,
+    saveProgress: async () => 'saved',
     onSessionChange: (listener: typeof auth.listener) => { auth.listener = listener; },
     signOut: async () => { auth.user = null; },
   }),
@@ -28,6 +30,7 @@ it('keeps legacy guest data and each account separate across changes and reloads
   const reload = vi.fn();
   vi.stubGlobal('window', {
     addEventListener: vi.fn(),
+    setInterval: vi.fn(),
     setTimeout: (callback: () => void) => callback(),
     location: { replace: reload },
     localStorage: {
@@ -35,6 +38,7 @@ it('keeps legacy guest data and each account separate across changes and reloads
       setItem: (key: string, value: string) => values.set(key, value),
     },
   });
+  vi.stubGlobal('document', { addEventListener: vi.fn() });
   const ane: AccountUser = { id: '101', name: 'Ane', provider: 'pin' };
   const ion: AccountUser = { id: '102', name: 'Ion', provider: 'pin' };
   async function open(user: AccountUser | null) {

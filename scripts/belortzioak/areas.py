@@ -191,6 +191,13 @@ def colour(lab, name):
         'dark': L < 110,
         'black': L < 45,
         'notwhite': L < 225,
+        # between the pencil outlines (tissue, lumen or paper): a region bounded by the drawing's own lines
+        'light': L >= 150,
+        # the paper-white of a cavity or of a layer drawn white
+        'white': L >= 232,
+        # a saturated leaf-green pencil (not the yellow beside it)
+        'leaf': a <= 116,
+        'shade': L < 140,
     }[name]
     return m.astype(np.uint8) * 255
 

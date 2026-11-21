@@ -1,23 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { clientIp, parseUa, referrerSite, truncateIp } from '@/lib/visits/parse';
+import { parseUa } from '@/lib/visits/parse';
 
 describe('visit collector', () => {
-  it('shortens IPv4 to its /24 and IPv6 to its /48', () => {
-    expect(truncateIp('85.84.12.201')).toBe('85.84.12.0');
-    expect(truncateIp('::ffff:10.1.2.3')).toBe('10.1.2.0');
-    expect(truncateIp('2a02:9130:84a3:1:abcd::17')).toBe('2a02:9130:84a3::');
-    expect(truncateIp('2001:db8::1')).toBe('2001:db8:0::');
-    expect(truncateIp('fe80::1%eth0')).toBe('fe80:0:0::');
-    expect(truncateIp('not-an-ip')).toBeNull();
-    expect(truncateIp(null)).toBeNull();
-  });
-
-  it('takes the first hop of x-forwarded-for', () => {
-    expect(clientIp(new Headers({ 'x-forwarded-for': '85.84.12.201, 10.0.0.1' }))).toBe('85.84.12.201');
-    expect(clientIp(new Headers({ 'x-real-ip': '1.2.3.4' }))).toBe('1.2.3.4');
-    expect(clientIp(new Headers())).toBeNull();
-  });
-
   it('names browser, system and device', () => {
     const win = parseUa('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36');
     expect(win).toMatchObject({ browser: 'Chrome', browserVersion: '141', os: 'Windows', device: 'desktop', bot: false });
@@ -38,15 +22,37 @@ describe('visit collector', () => {
     expect(parseUa('Googlebot/2.1 (+http://www.google.com/bot.html)').bot).toBe(true);
   });
 
-  it('keeps only the site of a referrer', () => {
-    expect(referrerSite('https://www.google.com/search?q=ane+proba')).toBe('www.google.com');
-    expect(referrerSite('nonsense')).toBeNull();
-    expect(referrerSite(42)).toBeNull();
-  });
 });
 
 describe('/api/bisita', () => {
-  it('stores one row with the shortened IP, and nothing without Supabase', async () => {
+  it('requires production opt-in and reports a rejected insert without exposing the key', async () => {
+    const { vi } = await import('vitest');
+    const { POST } = await import('@/app/api/bisita/route');
+    const send = vi.fn().mockResolvedValue(new Response(null, { status: 403 }));
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    vi.stubGlobal('fetch', send);
+    vi.stubEnv('NODE_ENV', 'production');
+    vi.stubEnv('SUPABASE_URL', 'https://proba.supabase.co');
+    vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'sb_secret_proba');
+    vi.stubEnv('VISITS_ENABLED', '0');
+    const req = () => new Request('http://x/api/bisita', { method: 'POST', body: '{}' });
+    try {
+      expect((await POST(req())).status).toBe(204);
+      expect(send).not.toHaveBeenCalled();
+      vi.stubEnv('VISITS_ENABLED', '1');
+      expect((await POST(req())).status).toBe(502);
+      const headers = new Headers(send.mock.calls[0][1].headers);
+      expect(headers.get('apikey')).toBe('sb_secret_proba');
+      expect(headers.has('authorization')).toBe(false);
+      expect(warn).toHaveBeenCalledWith('[visits] Supabase rejected insert', { status: 403 });
+    } finally {
+      warn.mockRestore();
+      vi.unstubAllGlobals();
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it('only writes the categories used by the views, even when a legacy client submits extra data', async () => {
     const { vi } = await import('vitest');
     const { POST } = await import('@/app/api/bisita/route');
     const calls: { url: string; body: Record<string, unknown> }[] = [];
@@ -72,9 +78,10 @@ describe('/api/bisita', () => {
       expect((await POST(req())).status).toBe(204);
       expect(calls).toHaveLength(1);
       expect(calls[0].url).toBe('https://proba.supabase.co/rest/v1/visits');
-      expect(calls[0].body).toMatchObject({ ip_trunc: '85.84.12.0', city: 'Donostia - San Sebastián', browser: 'Chrome', os: 'Windows', device: 'desktop', path: '/astea/7', referrer: 'www.google.com', local_hour: 22, screen_w: 1920, timezone: 'Europe/Madrid', color_scheme: 'dark', signed_in: false });
-      expect(JSON.stringify(calls[0].body)).not.toContain('85.84.12.201');
-      expect(calls[0].body).not.toHaveProperty('evil');
+      expect(calls[0].body).toEqual({ browser: 'Chrome', os: 'Windows', device: 'desktop', is_bot: false });
+      const crossSite = new Request('http://x/api/bisita', { method: 'POST', headers: { 'Sec-Fetch-Site': 'cross-site' } });
+      expect((await POST(crossSite)).status).toBe(403);
+      expect(calls).toHaveLength(1);
     } finally {
       vi.unstubAllGlobals();
       vi.unstubAllEnvs();

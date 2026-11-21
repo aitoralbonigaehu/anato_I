@@ -1,8 +1,7 @@
 /**
  * A student's whole study progress as one JSON document: every store kept in this browser, by its
- * localStorage key. An account saves it to the cloud and merges it back on any device, so progress made
- * on two devices (or before signing in) is never lost: each store merges by its own rule, and merging is
- * idempotent (merge(a, a) = a, merging twice changes nothing).
+ * localStorage key. An account synchronizes its own copy across devices. Each store reconciles
+ * differences according to its data model, including choosing one version for some per-item histories.
  */
 
 import { studyKey } from '@/lib/study/storage-scope';

@@ -37,9 +37,9 @@ export interface AccountBackend {
   signUpWithPin(name: string, pin: string): Promise<AuthResult>;
   signOut(): Promise<void>;
   /** The saved document, or null when no row exists. Throws on errors so sync never overwrites an unread document. */
-  loadProgress(): Promise<ProgressBlob | null>;
-  /** Replaces the saved progress document; false on error (it is retried on the next sync). */
-  saveProgress(blob: ProgressBlob): Promise<boolean>;
+  loadProgress(owner: string): Promise<{ blob: ProgressBlob; revision: string } | null>;
+  /** Saves against the revision just read. Null means the row must still be absent. */
+  saveProgress(owner: string, blob: ProgressBlob, revision: string | null): Promise<'saved' | 'conflict' | 'failed'>;
 }
 
 // ---- the rules for a name and a PIN (client and server share them) ------------------------------

@@ -2,6 +2,7 @@ import geometry from './belortzioak-geometry.json';
 import merge from './belortzioak-merge.json';
 import areas from './belortzioak-areas.json';
 import revisedAreas from './belortzioak-revised-areas.json';
+import tips from './belortzioak-tips.json';
 
 /**
  * Belortzioak: the course's labelled figures (an arrow on a structure → its name), from the skin's
@@ -736,6 +737,8 @@ interface Geo {
 const GEO = geometry as unknown as Record<string, Geo>;
 const AREAS = areas as unknown as Record<string, Pt[][]>;
 const REVISED_AREAS = revisedAreas as unknown as Record<string, Pt[][]>;
+/** Arrow tips carried well inside their traced structure (`scripts/belortzioak/tips.py`), in place of the printed ones. */
+const TIPS = tips as unknown as Record<string, Pt[]>;
 
 export const BEL_PLATES: BelPlate[] = DEFS.map((d) => {
   const g = GEO[d.id];
@@ -743,10 +746,16 @@ export const BEL_PLATES: BelPlate[] = DEFS.map((d) => {
     const raw = d.hand?.[it.id ?? String(it.n)] ?? (it.id ? undefined : d.legend[it.n]);
     if (!raw) return [];
     const e: Entry = typeof raw === 'string' ? { name: raw } : raw;
-    const targets = it.targets.length ? it.targets : [it.label];
+    const printed = it.targets.length ? it.targets : [it.label];
     const key = `${d.id}:${it.id ?? it.n}`;
     const region = REVISED_AREAS[key] ?? AREAS[key];
-    return [{ key, n: it.n, tag: it.tag ?? String(it.n), ink: it.ink, name: e.name, group: e.group, accept: e.accept, label: it.label, targets, marks: it.marks ?? [], arrow: it.targets.length > 0, r: it.r.length ? it.r : [0.05], area: region?.length ? [region] : undefined }];
+    // a tip moved inside its structure carries the hand-written number drawn there with it
+    const targets = TIPS[key]?.length === printed.length ? TIPS[key] : printed;
+    const marks = (it.marks ?? []).map((m) => {
+      const i = printed.findIndex((t) => t[0] === m.at[0] && t[1] === m.at[1]);
+      return i < 0 ? m : { ...m, at: targets[i] };
+    });
+    return [{ key, n: it.n, tag: it.tag ?? String(it.n), ink: it.ink, name: e.name, group: e.group, accept: e.accept, label: it.label, targets, marks, arrow: it.targets.length > 0, r: it.r.length ? it.r : [0.05], area: region?.length ? [region] : undefined }];
   });
   return { id: d.id, system: d.system, title: d.title, sub: d.sub, size: g.size, items };
 });

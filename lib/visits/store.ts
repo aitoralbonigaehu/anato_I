@@ -6,31 +6,10 @@
  */
 
 export interface VisitRow {
-  ip_trunc: string | null;
-  country: string | null;
-  region: string | null;
-  city: string | null;
-  user_agent: string;
   browser: string;
-  browser_version: string;
   os: string;
-  os_version: string;
   device: string;
   is_bot: boolean;
-  language: string | null;
-  languages: string | null;
-  timezone: string | null;
-  local_hour: number | null;
-  screen_w: number | null;
-  screen_h: number | null;
-  viewport_w: number | null;
-  viewport_h: number | null;
-  dpr: number | null;
-  touch_points: number | null;
-  color_scheme: string | null;
-  path: string | null;
-  referrer: string | null;
-  signed_in: boolean;
 }
 
 export const visitsConfigured = () => !!process.env.SUPABASE_URL && !!process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -42,12 +21,20 @@ export async function storeVisit(row: VisitRow): Promise<boolean> {
   try {
     const res = await fetch(`${url.replace(/\/+$/, '')}/rest/v1/visits`, {
       method: 'POST',
-      headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      headers: {
+        apikey: key,
+        ...(key.startsWith('sb_secret_') ? {} : { Authorization: `Bearer ${key}` }),
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal',
+      },
       body: JSON.stringify(row),
       cache: 'no-store',
+      signal: AbortSignal.timeout(8_000),
     });
+    if (!res.ok) console.warn('[visits] Supabase rejected insert', { status: res.status });
     return res.ok;
   } catch {
+    console.warn('[visits] Supabase insert request failed');
     return false;
   }
 }

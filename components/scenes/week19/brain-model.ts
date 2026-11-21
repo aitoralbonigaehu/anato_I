@@ -3,8 +3,9 @@ import { curve3, type Mesh } from '@/lib/three-d/mesh';
 import { cachedBlob } from '@/lib/three-d/mesh-cache';
 import { geoOf, geoSlot } from '@/lib/three-d/offthread';
 import { mergeParts, vessel, type Parts } from '@/lib/three-d/organic';
-import { capsule, ellipsoid, smin, surfaceMesh, type SDF } from '@/lib/three-d/sdf';
-import { STREAM_ROUTE_N, type Item3 } from '@/lib/three-d/scene';
+import { capsule, ellipsoid, smin, surfaceAlong, surfaceMesh, type SDF } from '@/lib/three-d/sdf';
+import { cutSolid, onLattice, type Cut } from '@/lib/three-d/profile';
+import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, routeLength, vesselRouteOf } from '@/components/scenes/week10/model3d';
 import { C19, G19 } from './tones';
 
@@ -47,15 +48,14 @@ export interface BrainOpts {
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
 const L = (kps: readonly V3[], n = 24) => curve3(kps as V3[], n);
 const smax = (a: number, b: number, k: number) => -smin(-a, -b, k);
-/** The right half only: everything is cut at the midline (x = 0) and seen from the left. */
-const half = (d: number, x: number) => Math.max(d, x);
 
 // ———————————————————————— the ventricles (one cavity system) ————————————————————————
 
 const LAT: V3[] = [[-0.3, 0.38, 0.72], [-0.28, 0.54, 0.25], [-0.28, 0.52, -0.38], [-0.34, 0.2, -0.82], [-0.42, -0.2, -0.62], [-0.46, -0.34, -0.15]];
+const latSegments = LAT.slice(1).map((p, i) => capsule(LAT[i], p, i === 0 ? 0.1 : 0.12, i >= 3 ? 0.08 : 0.12));
 const latF: SDF = (x, y, z) => {
   let d = Infinity;
-  for (let i = 0; i + 1 < LAT.length; i++) d = smin(d, capsule(LAT[i], LAT[i + 1], i === 0 ? 0.1 : 0.12, i >= 3 ? 0.08 : 0.12)(x, y, z), 0.06);
+  for (const segment of latSegments) d = smin(d, segment(x, y, z), 0.06);
   return d;
 };
 const MONRO: [V3, V3] = [[-0.27, 0.32, 0.38], [-0.02, 0.2, 0.32]];
@@ -91,48 +91,79 @@ const PARTS: Record<string, { f: SDF; lo: V3; hi: V3 }> = {
     f: (x, y, z) => {
       let d = smax(cerebrumRaw(x, y, z), -(dienRegion(x, y, z) - 0.03), 0.06);
       if (d < 0.06) d += gyri(x, y, z);
-      return half(carve(d, x, y, z), x);
+      return carve(d, x, y, z);
     },
     lo: [-0.95, -0.5, -1.2], hi: [0.02, 1.2, 1.32],
   },
-  thal: { f: (x, y, z) => half(carve(thalF(x, y, z), x, y, z), x), lo: [-0.45, -0.25, -0.46], hi: [0.02, 0.28, 0.36] },
-  hypo: { f: (x, y, z) => half(carve(hypoF(x, y, z), x, y, z), x), lo: [-0.22, -0.48, 0.04], hi: [0.02, -0.12, 0.52] },
-  epi: { f: (x, y, z) => half(epiF(x, y, z), x), lo: [-0.12, 0.06, -0.6], hi: [0.02, 0.24, -0.4] },
-  mid: { f: (x, y, z) => half(carve(midF(x, y, z), x, y, z), x), lo: [-0.3, -0.88, -0.78], hi: [0.02, 0.12, -0.04] },
-  pons: { f: (x, y, z) => half(carve(ponsF(x, y, z), x, y, z), x), lo: [-0.38, -1.14, -0.7], hi: [0.02, -0.54, -0.04] },
-  med: { f: (x, y, z) => half(carve(medF(x, y, z), x, y, z), x), lo: [-0.24, -1.82, -0.94], hi: [0.02, -0.8, -0.32] },
-  cord: { f: (x, y, z) => half(carve(cordF(x, y, z), x, y, z), x), lo: [-0.2, -3.12, -0.98], hi: [0.02, -1.5, -0.5] },
+  thal: { f: (x, y, z) => carve(thalF(x, y, z), x, y, z), lo: [-0.45, -0.25, -0.46], hi: [0.02, 0.28, 0.36] },
+  hypo: { f: (x, y, z) => carve(hypoF(x, y, z), x, y, z), lo: [-0.22, -0.48, 0.04], hi: [0.02, -0.12, 0.52] },
+  epi: { f: epiF, lo: [-0.12, 0.06, -0.6], hi: [0.02, 0.24, -0.4] },
+  mid: {
+    // The thalamus meets the midbrain here. Give them a shared boundary so the cut faces cannot overlap.
+    f: (x, y, z) => carve(Math.max(midF(x, y, z), -thalF(x, y, z)), x, y, z),
+    lo: [-0.3, -0.88, -0.78], hi: [0.02, 0.12, -0.04],
+  },
+  pons: { f: (x, y, z) => carve(ponsF(x, y, z), x, y, z), lo: [-0.38, -1.14, -0.7], hi: [0.02, -0.54, -0.04] },
+  med: { f: (x, y, z) => carve(medF(x, y, z), x, y, z), lo: [-0.24, -1.82, -0.94], hi: [0.02, -0.8, -0.32] },
+  cord: { f: (x, y, z) => carve(cordF(x, y, z), x, y, z), lo: [-0.2, -3.12, -0.98], hi: [0.02, -1.5, -0.5] },
   cbl: {
     f: (x, y, z) => {
       let d = smax(cblF(x, y, z), -(fourthF(x, y, z) + 0.02), 0.03);
       if (d < 0.05) d += 0.012 * Math.sin(48 * y + 9 * z);
-      return half(d, x);
+      return d;
     },
     lo: [-0.96, -1.22, -1.46], hi: [0.02, -0.38, -0.56],
   },
 };
 /** The whole brain, smoothed: the meninges and the skull are shells at given distances from it. */
-const brainU: SDF = (x, y, z) => {
-  let d = smin(cerebrumRaw(x, y, z), cblF(x, y, z), 0.15);
+const envelope = (cerebrum: number, cbl: number, x: number, y: number, z: number) => {
+  let d = smin(cerebrum, cbl, 0.15);
   d = smin(d, ponsF(x, y, z), 0.12);
   d = smin(d, medF(x, y, z), 0.1);
   d = smin(d, cordF(x, y, z), 0.08);
   d = smin(d, midF(x, y, z), 0.1);
   return d;
 };
-const shell = (a: number, b: number, yMin = -9): SDF => (x, y, z) => half(Math.max(a - brainU(x, y, z), brainU(x, y, z) - b, yMin - y), x);
-const SHELLS: Record<string, { f: SDF; step: number }> = {
-  pia: { f: shell(0.0, 0.04), step: 0.04 },
-  sub: { f: shell(0.04, 0.13), step: 0.055 },
-  arach: { f: shell(0.13, 0.17), step: 0.04 },
-  dura: { f: shell(0.17, 0.25), step: 0.05 },
-  skull: { f: shell(0.25, 0.47, -1.05), step: 0.065 },
-  scalp: { f: shell(0.47, 0.56, -0.95), step: 0.07 },
+const brainU: SDF = (x, y, z) => envelope(cerebrumRaw(x, y, z), cblF(x, y, z), x, y, z);
+/**
+ * The brain's own surface, folds and all (the pia lies on it and goes into the sulci). It is never outside a part's
+ * surface (smooth-min ≤ min, the parts' folds added alike), so the pia's cut never lies over a part's cut.
+ */
+const brainG: SDF = (x, y, z) => {
+  let c = cerebrumRaw(x, y, z);
+  if (c < 0.06) c += gyri(x, y, z);
+  let b = cblF(x, y, z);
+  if (b < 0.05) b += 0.012 * Math.sin(48 * y + 9 * z);
+  return envelope(c, b, x, y, z);
 };
-const SHELL_BOX: [V3, V3] = [[-1.5, -3.2, -2.0], [0.02, 1.75, 1.85]];
+/**
+ * A layer at distances a..b from the brain: its outer face (distance b) and inner face (distance a, pushed out a
+ * hair so it never coincides with the layer inside it), each the surface of a thick solid, so the thin layer stays
+ * whole however coarse the grid; cut at the midline (and above yMin for the skull and scalp; at the block's foot).
+ */
+const PUSH = 0.004;
+const shell = (a: number, b: number, yMin = -3.15) => ({ a, b, yMin, onBrain: false });
+const SHELLS: Record<string, { a: number; b: number; yMin: number; onBrain: boolean }> = {
+  pia: { ...shell(0.0, 0.04), onBrain: true },
+  sub: shell(0.04, 0.13),
+  arach: shell(0.13, 0.17),
+  dura: shell(0.17, 0.25),
+  skull: shell(0.25, 0.47, -1.05),
+  scalp: shell(0.47, 0.56, -0.95),
+};
+const SHELL_BOX: [V3, V3] = [[-1.5, -3.3, -2.0], [0.02, 1.75, 1.85]];
+const shellPoint = (d: number, z: number, field = brainU) =>
+  surfaceAlong((x, y, zz) => field(x, y, zz) - d, [0, 0.36, z], [0, 1, 0]).p;
+const meningealPoints = {
+  'pia-materra': shellPoint(0.022, 0.12, brainG),
+  'eremu-azpiaraknoideoa': shellPoint(0.085, -0.5),
+  'araknoidesa': shellPoint(0.15, -0.1),
+  'dura-materra': shellPoint(0.21, 0.3),
+  'neurokraneoa': shellPoint(0.36, 0.6),
+};
 
 /** The ventricles' casts, slightly inside their cavities: one per cavity, so each can be lit and named. */
-const cast = (f: SDF): SDF => (x, y, z) => half(f(x, y, z) + 0.008, x + 0.004);
+const cast = (f: SDF): SDF => (x, y, z) => f(x, y, z) + 0.008;
 const CASTS: Record<string, { f: SDF; lo: V3; hi: V3 }> = {
   lat: { f: cast((x, y, z) => Math.min(latF(x, y, z), monroF(x, y, z))), lo: [-0.62, -0.5, -1.0], hi: [0.02, 0.72, 0.9] },
   third: { f: cast(thirdF), lo: [-0.1, -0.4, -0.45], hi: [0.02, 0.35, 0.52] },
@@ -141,19 +172,76 @@ const CASTS: Record<string, { f: SDF; lo: V3; hi: V3 }> = {
   canal: { f: cast(canalF), lo: [-0.05, -3.1, -0.82], hi: [0.02, -1.0, -0.6] },
 };
 
-function buildGeo() {
-  const m = (f: SDF, lo: V3, hi: V3, s: number) => ({ m: surfaceMesh(f, lo, hi, s), h: surfaceMesh(f, lo, hi, s * 2.6) });
+/** The midline cut: the right half kept (x ≤ 0). The casts sit a hair off it, inside their cavities. */
+const MID: Cut = { axis: 0, at: 0, keep: 1 };
+const CAST_MID: Cut = { axis: 0, at: -0.004, keep: 1 };
+// Adjacent tissues overlap slightly to hide seams when rotating. Stagger their sagittal planes
+// by a fraction of the grid spacing so their overlapping caps have a stable depth order.
+const PART_DEPTH: Record<string, number> = {
+  cerebrum: -0.012, cbl: -0.0105, cord: -0.0095, mid: -0.0085, med: -0.0075,
+  pons: -0.0065, thal: -0.0055, hypo: -0.003, epi: -0.002,
+};
+
+const solid = (f: SDF, lo: V3, hi: V3, step: number, cut: Cut, capStep: number, hitScale = 2.6) => ({
+  m: cutSolid({ faces: [{ f }], solid: f, lo, hi, step, cuts: [cut], capStep }),
+  h: cutSolid({ faces: [{ f }], solid: f, lo, hi, step: step * hitScale, cuts: [cut], capStep: capStep * 3 }),
+});
+
+function buildBrainParts() {
   const parts: Record<string, { m: Mesh; h: Mesh }> = {};
-  for (const [k, p] of Object.entries(PARTS)) parts[k] = m(p.f, p.lo, p.hi, 0.028);
-  const shells: Record<string, { m: Mesh; h: Mesh }> = {};
-  for (const [k, s] of Object.entries(SHELLS)) shells[k] = m(s.f, SHELL_BOX[0], SHELL_BOX[1], s.step);
-  const casts: Record<string, { m: Mesh; h: Mesh }> = {};
-  // The thin ones (aqueduct, canal) keep a fine grid, or they fall through it.
-  for (const [k, c] of Object.entries(CASTS)) casts[k] = m(c.f, c.lo, c.hi, k === 'aq' || k === 'canal' ? 0.012 : 0.02);
-  return { parts, shells, casts };
+  for (const [k, p] of Object.entries(PARTS))
+    parts[k] = solid(p.f, p.lo, p.hi, 0.028, { ...MID, at: PART_DEPTH[k] }, 0.008);
+  return parts;
 }
-/** Built once (off the main thread in the browser; the scenes wait with `useGeoReady`). */
-export const BRAIN19_GEO = geoSlot('brain19', buildGeo);
+
+function buildMeninges() {
+  const shells: Record<string, { m: Mesh; h: Mesh }> = {};
+  // Each distance from the brain is one surface, shared by the layer outside it (its inner face, pushed out a hair)
+  // and the layer inside it (its outer face); the caps share one plane grid, so the brain's field is read once.
+  const STEP = 0.05, CAP = 0.007;
+  const u2 = onLattice(brainU, [0, SHELL_BOX[0][1] - CAP, SHELL_BOX[0][2] - CAP], [0, SHELL_BOX[1][1] + CAP, SHELL_BOX[1][2] + CAP], CAP);
+  const hiPast: V3 = [3 * STEP, SHELL_BOX[1][1], SHELL_BOX[1][2]];
+  // The levels' grids are one lattice (the click meshes' a coarser subset of it): the field is read once per point.
+  const u3 = onLattice(brainU, SHELL_BOX[0], hiPast, STEP);
+  const g3 = onLattice(brainG, SHELL_BOX[0], hiPast, STEP);
+  const g2 = onLattice(brainG, [0, SHELL_BOX[0][1] - CAP, SHELL_BOX[0][2] - CAP], [0, SHELL_BOX[1][1] + CAP, SHELL_BOX[1][2] + CAP], CAP);
+  const levels = new Map<string, { m: Mesh; h: Mesh }>();
+  const level = (field: SDF, d: number, step: number) => {
+    const key = `${field === brainG ? 'g' : 'u'}${d}`;
+    let l = levels.get(key);
+    if (!l) {
+      const lat = field === brainG ? g3 : u3;
+      const f: SDF = (x, y, z) => lat(x, y, z) - d;
+      levels.set(key, (l = { m: surfaceMesh(f, SHELL_BOX[0], hiPast, step), h: surfaceMesh(f, SHELL_BOX[0], hiPast, step * 2) }));
+    }
+    return l;
+  };
+  for (const [k, sh] of Object.entries(SHELLS)) {
+    // The pia's inner face is the brain's folded surface itself, a hair out.
+    const layer: SDF = (x, y, z) => Math.max(u2(x, y, z) - sh.b, sh.onBrain ? PUSH - g2(x, y, z) : sh.a + PUSH - u2(x, y, z));
+    const cuts: Cut[] = [MID, { axis: 1, at: sh.yMin, keep: -1 }];
+    const one = (q: 'm' | 'h', capStep: number) =>
+      cutSolid({
+        faces: [{ mesh: level(brainU, sh.b, STEP)[q] }, sh.onBrain ? { mesh: level(brainG, PUSH, STEP)[q], flip: true } : { mesh: level(brainU, sh.a, STEP)[q], flip: true, push: PUSH }],
+        solid: layer, lo: SHELL_BOX[0], hi: SHELL_BOX[1], step: STEP, cuts, capStep,
+      });
+    shells[k] = { m: one('m', CAP), h: one('h', 0.02) };
+  }
+  return shells;
+}
+
+function buildVentricles() {
+  const casts: Record<string, { m: Mesh; h: Mesh }> = {};
+  // The thin ones keep a fine grid, or they fall through it: the canal is 0.016 across, the aqueduct 0.037, the
+  // third ventricle a slit (tests/mesh-guard.test.ts checks every grid against what it meshes).
+  const CAST_STEP: Record<string, number> = { canal: 0.006, aq: 0.012, third: 0.014 };
+  for (const [k, c] of Object.entries(CASTS)) casts[k] = solid(c.f, c.lo, c.hi, CAST_STEP[k] ?? 0.02, CAST_MID, 0.004, 1.6);
+  return casts;
+}
+/** Request only the anatomy the stage can display. */
+export const BRAIN19_GEO = geoSlot('brain19', buildBrainParts);
+export const MENINGES19_GEO = geoSlot('meninges19', buildMeninges);
+export const VENTRICLES19_GEO = geoSlot('ventricles19', buildVentricles);
 
 // ———————————————————————— paths ————————————————————————
 
@@ -173,6 +261,12 @@ const FLOW_IN: V3[] = [LAT[4], LAT[3], LAT[2], LAT[1], [-0.28, 0.46, 0.4], MONRO
 const FLOW_OUT: V3[] = [[-0.02, -1.24, -1.08], [-0.1, -1.18, -1.48], [-0.12, -0.6, -1.56], [-0.12, 0.2, -1.42], [-0.12, 0.9, -0.95], [-0.08, 1.24, -0.2], [-0.06, 1.24, 0.4]];
 const FLOW_CANAL: V3[] = [[0, -0.92, -0.72], [0, -1.2, -0.68], [0, -2.0, -0.73], [0, -2.9, -0.77]];
 const FLOW_LUSCHKA: V3[] = [[0, -0.86, -0.7], [-0.32, -0.9, -0.66], [-0.5, -0.98, -0.5], [-0.62, -0.62, -0.32]];
+const FLOWS = ([
+  ['in', FLOW_IN, 1.6], ['out', FLOW_OUT, 1.6], ['canal', FLOW_CANAL, 1], ['luschka', FLOW_LUSCHKA, 1.2],
+] as const).map(([key, line, speed]) => {
+  const route = vesselRouteOf(L(line, 60));
+  return { key, route, rate: speed / routeLength(route) };
+});
 
 const cellsOf = (n: number, jit: number) => {
   const cells = new Float32Array(n * 4);
@@ -184,10 +278,9 @@ const cellsOf = (n: number, jit: number) => {
   return { cells, gates };
 };
 const DROPS = cellsOf(18, 0.02);
-void STREAM_ROUTE_N;
 
 export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
-  const G = geoOf(BRAIN19_GEO);
+  const parts = geoOf(BRAIN19_GEO);
   const items: Item3[] = [];
   const pts: Record<string, V3> = {};
   const dim = o.dim && o.dim.k > 0.001 ? o.dim : null;
@@ -206,15 +299,15 @@ export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
   const ENC = ['entzefaloa', 'nerbio-sistema-zentrala'];
 
   // ———— the brain, cut down the middle ————
-  put('cerebrum', 'garun-hemisferioak', P(G.parts.cerebrum), tone(B, C19.tel), BD, { groups: ['telentzefaloa', ...ENC], opacity: brainOp, calm: true });
-  put('thal', 'talamoa', P(G.parts.thal), tone(mixHex(B, '#c99a90', 0.35), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
-  put('hypo', 'hipotalamoa', P(G.parts.hypo), tone(mixHex(B, '#d6a092', 0.4), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
-  put('epi', 'epitalamoa', P(G.parts.epi), tone(mixHex(B, '#b98a80', 0.4), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
-  put('mid', 'mesentzefaloa', P(G.parts.mid), tone(mixHex(B, '#c9a094', 0.3), C19.mes), BD, { groups: ['entzefalo-enborra', ...ENC], opacity: brainOp });
-  put('pons', 'zubia', P(G.parts.pons), tone(mixHex(B, '#d2a898', 0.3), C19.met), BD, { groups: ['metentzefaloa', 'entzefalo-enborra', ...ENC], opacity: brainOp });
-  put('cbl', 'garuntxoa', P(G.parts.cbl), tone(mixHex(B, '#d99a8c', 0.4), C19.met), BD, { groups: ['metentzefaloa', ...ENC], opacity: brainOp });
-  put('med', 'erraboila', P(G.parts.med), tone(mixHex(B, '#c99a90', 0.3), C19.miel), BD, { groups: ['mielentzefaloa', 'entzefalo-enborra', ...ENC], opacity: brainOp });
-  put('cord', 'ornomuina', P(G.parts.cord), B, BD, { groups: ['nerbio-sistema-zentrala', 'hodi-ependimarioa'], opacity: brainOp });
+  put('cerebrum', 'garun-hemisferioak', P(parts.cerebrum), tone(B, C19.tel), BD, { groups: ['telentzefaloa', ...ENC], opacity: brainOp, calm: true });
+  put('thal', 'talamoa', P(parts.thal), tone(mixHex(B, '#c99a90', 0.35), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
+  put('hypo', 'hipotalamoa', P(parts.hypo), tone(mixHex(B, '#d6a092', 0.4), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
+  put('epi', 'epitalamoa', P(parts.epi), tone(mixHex(B, '#b98a80', 0.4), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
+  put('mid', 'mesentzefaloa', P(parts.mid), tone(mixHex(B, '#c9a094', 0.3), C19.mes), BD, { groups: ['entzefalo-enborra', ...ENC], opacity: brainOp });
+  put('pons', 'zubia', P(parts.pons), tone(mixHex(B, '#d2a898', 0.3), C19.met), BD, { groups: ['metentzefaloa', 'entzefalo-enborra', ...ENC], opacity: brainOp });
+  put('cbl', 'garuntxoa', P(parts.cbl), tone(mixHex(B, '#d99a8c', 0.4), C19.met), BD, { groups: ['metentzefaloa', ...ENC], opacity: brainOp });
+  put('med', 'erraboila', P(parts.med), tone(mixHex(B, '#c99a90', 0.3), C19.miel), BD, { groups: ['mielentzefaloa', 'entzefalo-enborra', ...ENC], opacity: brainOp });
+  put('cord', 'ornomuina', P(parts.cord), B, BD, { groups: ['nerbio-sistema-zentrala', 'hodi-ependimarioa'], opacity: brainOp });
   pts['garun-hemisferioak'] = [0, 0.86, 0.5];
   pts['talamoa'] = [-0.07, 0.02, -0.05];
   pts['hipotalamoa'] = [0, -0.3, 0.32];
@@ -234,8 +327,9 @@ export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
   // ———— the ventricles ————
   const vent = clamp01(pose.vent);
   if (vent > 0.01) {
+    const casts = geoOf(VENTRICLES19_GEO);
     const VG = ['bentrikulu-sistema', 'likido-zefalorrakideoa'];
-    const castItem = (k: string, id: string, extra: string[] = []) => put(`cast-${k}`, id, P(G.casts[k]), C19.csf, C19.csfDeep, { groups: [...VG, ...extra], opacity: vent, tissue: 'membrane', calm: true });
+    const castItem = (k: string, id: string, extra: string[] = []) => put(`cast-${k}`, id, P(casts[k]), C19.csf, C19.csfDeep, { groups: [...VG, ...extra], opacity: vent, tissue: 'membrane', calm: true });
     castItem('lat', 'alboko-bentrikuluak', ['monro-zuloak']);
     castItem('third', 'hirugarren-bentrikulua');
     castItem('aq', 'garun-akueduktoa');
@@ -269,34 +363,25 @@ export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
   // ———— the meninges, the fluid, the skull ————
   const men = clamp01(pose.men), csf = clamp01(pose.csf);
   if (men > 0.01) {
+    const shells = geoOf(MENINGES19_GEO);
     const MEN = ['meningeak'];
-    put('pia', 'pia-materra', P(G.shells.pia), C19.pia, C19.piaDeep, { groups: MEN, opacity: 0.9 * men, tissue: 'membrane' });
-    put('sub', 'eremu-azpiaraknoideoa', P(G.shells.sub), C19.csf, C19.csfDeep, { groups: ['likido-zefalorrakideoa'], opacity: 0.45 * csf * men, tissue: 'membrane', outline: false });
-    put('arach', 'araknoidesa', P(G.shells.arach), C19.arach, C19.arachDeep, { groups: MEN, opacity: men, tissue: 'membrane' });
-    put('dura', 'dura-materra', P(G.shells.dura), C19.dura, C19.duraDeep, { groups: MEN, opacity: men, tissue: 'membrane' });
-    put('skull', 'neurokraneoa', P(G.shells.skull), G19.bone, G19.boneDeep, { opacity: men, tissue: 'bone', calm: true });
-    put('scalp', undefined, P(G.shells.scalp), C19.skin, mixHex(C19.skin, '#5a3a2a', 0.5), { opacity: men, tissue: 'skin', ground: true, quiet: true, calm: true });
-    pts['pia-materra'] = [0, 1.19, 0.12];
-    pts['eremu-azpiaraknoideoa'] = [0, 1.25, -0.5];
-    pts['likido-zefalorrakideoa'] = [0, 1.25, -0.5];
-    pts['araknoidesa'] = [0, 1.31, -0.1];
-    pts['dura-materra'] = [0, 1.36, 0.3];
-    pts['neurokraneoa'] = [0, 1.5, 0.6];
-    pts['meningeak'] = [0, 1.31, -0.1];
+    put('pia', 'pia-materra', P(shells.pia), C19.pia, C19.piaDeep, { groups: MEN, opacity: 0.9 * men, tissue: 'membrane' });
+    put('sub', 'eremu-azpiaraknoideoa', P(shells.sub), C19.csf, C19.csfDeep, { groups: ['likido-zefalorrakideoa'], opacity: 0.45 * csf * men, tissue: 'membrane', outline: false });
+    put('arach', 'araknoidesa', P(shells.arach), C19.arach, C19.arachDeep, { groups: MEN, opacity: men, tissue: 'membrane' });
+    put('dura', 'dura-materra', P(shells.dura), C19.dura, C19.duraDeep, { groups: MEN, opacity: men, tissue: 'membrane' });
+    put('skull', 'neurokraneoa', P(shells.skull), G19.bone, G19.boneDeep, { opacity: men, tissue: 'bone', calm: true });
+    put('scalp', undefined, P(shells.scalp), C19.skin, mixHex(C19.skin, '#5a3a2a', 0.5), { opacity: men, tissue: 'skin', ground: true, quiet: true, calm: true });
+    Object.assign(pts, meningealPoints);
+    pts['likido-zefalorrakideoa'] = meningealPoints['eremu-azpiaraknoideoa'];
+    pts['meningeak'] = meningealPoints.araknoidesa;
   }
 
   // ———— the fluid's way ————
   const fs = clamp01(pose.flowShow);
   if (fs > 0.01) {
     const drop = cachedBlob({ center: [0, 0, 0], radii: [0.035, 0.035, 0.035], rings: 6, sides: 8 });
-    const add = (key: string, line: V3[], speed: number) => {
-      const route = vesselRouteOf(L(line, 60));
-      items.push({ key: `flow-${key}`, id: 'likido-zefalorrakideoa', mesh: drop, color: '#bfe8ff', deep: C19.csfDeep, tissue: 'skin', stream: { route, phase: (pose.flow * speed) / routeLength(route), grow: fs, ...DROPS } });
-    };
-    add('in', FLOW_IN, 1.6);
-    add('out', FLOW_OUT, 1.6);
-    add('canal', FLOW_CANAL, 1.0);
-    add('luschka', FLOW_LUSCHKA, 1.2);
+    for (const { key, route, rate } of FLOWS)
+      items.push({ key: `flow-${key}`, id: 'likido-zefalorrakideoa', mesh: drop, color: '#bfe8ff', deep: C19.csfDeep, tissue: 'skin', stream: { route, phase: pose.flow * rate, grow: fs, ...DROPS } });
   }
 
   // ———— signals ————
