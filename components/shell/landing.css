@@ -766,3 +766,95 @@ a.lp-card-in:hover .lp-card-go span {
     padding-bottom: 28px;
   }
 }
+
+/* A returning visitor (no opening: the layout's script marks html[data-intro='seen'] before the first paint): the
+   hero rises in from the first paint instead of waiting for the page's script to hydrate and add `is-ready`, which
+   held the headline back about a second (the page's largest paint). The same moves and timings as the `is-ready`
+   transitions; when hydration switches to `is-ready` there is nothing left to move. */
+@keyframes lp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lp-settle {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lp-line-up {
+  from {
+    transform: translateY(112%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes lp-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-intro='seen'] .landing.is-intro .rv {
+    animation: lp-rise 1.1s var(--ease) both;
+  }
+  html[data-intro='seen'] .landing.is-intro .hero-text .rv:nth-child(2) {
+    animation-delay: 0.08s;
+  }
+  html[data-intro='seen'] .landing.is-intro .hero-text .rv:nth-child(3) {
+    animation-delay: 0.16s;
+  }
+  html[data-intro='seen'] .landing.is-intro .hero-text .rv:nth-child(4) {
+    animation-delay: 0.24s;
+  }
+  html[data-intro='seen'] .landing.is-intro .hero-text .rv:nth-child(5) {
+    animation-delay: 0.32s;
+  }
+  html[data-intro='seen'] .landing.is-intro .hero-visual.rv {
+    animation-name: lp-settle;
+    animation-delay: 0.2s;
+  }
+  html[data-intro='seen'] .landing.is-intro .lp-line > span {
+    animation: lp-line-up 1.2s var(--ease) 0.12s both;
+  }
+  html[data-intro='seen'] .landing.is-intro .lp-line:nth-child(2) > span {
+    animation-delay: 0.26s;
+  }
+  html[data-intro='seen'] .landing.is-intro .lp-aurora {
+    animation:
+      lp-fade 2s ease 0.3s both,
+      lp-drift 24s ease-in-out infinite alternate;
+  }
+  html[data-intro='seen'] .landing.is-intro .land-nav {
+    animation: lp-fade 0.9s var(--ease) 0.1s both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-intro='seen'] .landing.is-intro .rv,
+  html[data-intro='seen'] .landing.is-intro .land-nav,
+  html[data-intro='seen'] .landing.is-intro .lp-aurora {
+    opacity: 1;
+    transform: none;
+  }
+  html[data-intro='seen'] .landing.is-intro .lp-line > span {
+    transform: none;
+  }
+}

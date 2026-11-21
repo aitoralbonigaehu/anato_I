@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Conceptus, ConceptusDefs } from '@/components/scenes/week1/conceptus';
-import { getWeek } from '@/content/registry';
+import { getWeek } from '@/content/registry-lite';
 import { lerp, seg } from '@/lib/sim/anim';
 import { useLastPlace } from '../progress';
 import { cleavageFrame, cleavageStep, ZONA } from './cleavage';

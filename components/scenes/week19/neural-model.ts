@@ -63,6 +63,18 @@ function radius(s: number, three: number, five: number): { r: number; side: numb
   return { r, side };
 }
 
+const centres = new Map<number, { p: V3[]; t: V3[]; n: V3[]; b: V3[] }>();
+/** `centre`, remembered by flexure (the names and the meshes ask for the same line), with the sections' side axis. */
+function centreOf(flex: number) {
+  let c = centres.get(flex);
+  if (!c) {
+    if (centres.size > 64) centres.clear();
+    const l = centre(flex);
+    centres.set(flex, (c = { ...l, b: l.t.map((t, i) => norm(cross(t, l.n[i]))) }));
+  }
+  return c;
+}
+
 /** The centreline: straight, then bent at the cephalic (mesencephalon), cervical (rhomb/cord) and pontine flexures. */
 function centre(flex: number): { p: V3[]; t: V3[]; n: V3[] } {
   const N = 140;
@@ -104,58 +116,71 @@ function ribbon(u: number, w: number, f: number, side: number): [number, number]
 }
 
 const NU = 140, NA = 48;
-function buildMesh(pose: NeuralPose, part: (s: number, u: number) => boolean): { inner: Mesh; outer: Mesh } {
-  const c = centre(pose.flex);
-  const make = (off: number) => {
-    const pos: number[] = [], nrm: number[] = [], uv: number[] = [];
-    const idx: number[] = [];
-    const vi = (i: number, j: number) => i * (NA + 1) + j;
+type Sheet = { pos: Float32Array; nrm: Float32Array; uv: Float32Array; off: number };
+/** The tube's two faces (outer, inner) over the whole (s, u) grid: computed once per pose, shared by every part. */
+function sheets(pose: NeuralPose): { outer: Sheet; inner: Sheet } {
+  const c = centreOf(pose.flex);
+  const make = (off: number): Sheet => {
+    const n = (NU + 1) * (NA + 1);
+    const pos = new Float32Array(n * 3), nrm = new Float32Array(n * 3), uv = new Float32Array(n * 2);
+    let v = 0;
+    const sg = off > 0 ? 1 : -1;
     for (let i = 0; i <= NU; i++) {
       const s = i / NU;
       const ci = Math.round(s * (c.p.length - 1));
-      const P = c.p[ci], T = c.t[ci], Nn = c.n[ci];
-      const Bn = norm(cross(T, Nn));
+      const P = c.p[ci], Nn = c.n[ci], Bn = c.b[ci];
       const { r, side } = radius(s, pose.three, pose.five);
       const w = Math.PI * r;
       const f = foldAt(s, pose.fold, pose.zip);
-      for (let j = 0; j <= NA; j++) {
+      const k = Math.max(1e-4, (f * Math.PI) / w);
+      for (let j = 0; j <= NA; j++, v++) {
         const u = -1 + (2 * j) / NA;
         const [x, y] = ribbon(u, w, f, side);
         // The normal of the curl at u (pointing out of the tube when closed); offset by the wall's half-thickness.
-        const k = Math.max(1e-4, (f * Math.PI) / w);
         const a = u * w * k;
         const nx = -Math.sin(a) * side, ny = Math.cos(a);
         const lx = x - nx * off, ly = y - ny * off;
         // Local x → Bn (the embryo's side), local y → −Nn (dorsal is where the plate opens).
-        const q = add(P, add(mul(Bn, lx), mul(Nn, -ly)));
-        pos.push(q[0], q[1], q[2]);
-        const wn = norm(add(mul(Bn, -nx), mul(Nn, ny)));
-        const sg = off > 0 ? 1 : -1;
-        nrm.push(wn[0] * sg, wn[1] * sg, wn[2] * sg);
-        uv.push(s * 4, u);
+        pos[v * 3] = P[0] + Bn[0] * lx - Nn[0] * ly;
+        pos[v * 3 + 1] = P[1] + Bn[1] * lx - Nn[1] * ly;
+        pos[v * 3 + 2] = P[2] + Bn[2] * lx - Nn[2] * ly;
+        const wx = -Bn[0] * nx + Nn[0] * ny, wy = -Bn[1] * nx + Nn[1] * ny, wz = -Bn[2] * nx + Nn[2] * ny;
+        const l = Math.hypot(wx, wy, wz) || 1;
+        nrm[v * 3] = (wx / l) * sg;
+        nrm[v * 3 + 1] = (wy / l) * sg;
+        nrm[v * 3 + 2] = (wz / l) * sg;
+        uv[v * 2] = s * 4;
+        uv[v * 2 + 1] = u;
       }
     }
-    for (let i = 0; i < NU; i++)
-      for (let j = 0; j < NA; j++) {
-        const sMid = (i + 0.5) / NU, uMid = -1 + (2 * (j + 0.5)) / NA;
-        if (!part(sMid, uMid)) continue;
-        const a = vi(i, j), b = vi(i, j + 1), cc = vi(i + 1, j), d = vi(i + 1, j + 1);
-        if (off > 0) idx.push(a, cc, b, b, cc, d);
-        else idx.push(a, b, cc, b, d, cc);
-      }
-    // Make the winding agree with the normals (front faces are the ones the normals point out of).
-    let agree = 0;
-    for (let t = 0; t < idx.length; t += 3 * 7) {
-      const A = idx[t] * 3, B = idx[t + 1] * 3, C = idx[t + 2] * 3;
-      const ux = pos[B] - pos[A], uy = pos[B + 1] - pos[A + 1], uz = pos[B + 2] - pos[A + 2];
-      const vx = pos[C] - pos[A], vy = pos[C + 1] - pos[A + 1], vz = pos[C + 2] - pos[A + 2];
-      const fx = uy * vz - uz * vy, fy = uz * vx - ux * vz, fz = ux * vy - uy * vx;
-      agree += Math.sign(fx * (nrm[A] + nrm[B] + nrm[C]) + fy * (nrm[A + 1] + nrm[B + 1] + nrm[C + 1]) + fz * (nrm[A + 2] + nrm[B + 2] + nrm[C + 2]));
-    }
-    if (agree < 0) for (let t = 0; t < idx.length; t += 3) [idx[t + 1], idx[t + 2]] = [idx[t + 2], idx[t + 1]];
-    return { pos: new Float32Array(pos), nrm: new Float32Array(nrm), uv: new Float32Array(uv), idx: new Uint32Array(idx) };
+    return { pos, nrm, uv, off };
   };
   return { outer: make(-0.045), inner: make(0.045) };
+}
+/** One part of a face: its own triangles over the shared vertices. */
+function partOf(sh: Sheet, part: (s: number, u: number) => boolean): Mesh {
+  const { pos, nrm, off } = sh;
+  const idx: number[] = [];
+  const vi = (i: number, j: number) => i * (NA + 1) + j;
+  for (let i = 0; i < NU; i++)
+    for (let j = 0; j < NA; j++) {
+      const sMid = (i + 0.5) / NU, uMid = -1 + (2 * (j + 0.5)) / NA;
+      if (!part(sMid, uMid)) continue;
+      const a = vi(i, j), b = vi(i, j + 1), cc = vi(i + 1, j), d = vi(i + 1, j + 1);
+      if (off > 0) idx.push(a, cc, b, b, cc, d);
+      else idx.push(a, b, cc, b, d, cc);
+    }
+  // Make the winding agree with the normals (front faces are the ones the normals point out of).
+  let agree = 0;
+  for (let t = 0; t < idx.length; t += 3 * 7) {
+    const A = idx[t] * 3, B = idx[t + 1] * 3, C = idx[t + 2] * 3;
+    const ux = pos[B] - pos[A], uy = pos[B + 1] - pos[A + 1], uz = pos[B + 2] - pos[A + 2];
+    const vx = pos[C] - pos[A], vy = pos[C + 1] - pos[A + 1], vz = pos[C + 2] - pos[A + 2];
+    const fx = uy * vz - uz * vy, fy = uz * vx - ux * vz, fz = ux * vy - uy * vx;
+    agree += Math.sign(fx * (nrm[A] + nrm[B] + nrm[C]) + fy * (nrm[A + 1] + nrm[B + 1] + nrm[C + 1]) + fz * (nrm[A + 2] + nrm[B + 2] + nrm[C + 2]));
+  }
+  if (agree < 0) for (let t = 0; t < idx.length; t += 3) [idx[t + 1], idx[t + 2]] = [idx[t + 2], idx[t + 1]];
+  return { pos, nrm, uv: sh.uv, idx: new Uint32Array(idx) };
 }
 
 /** Which vesicle a station belongs to (by s), for ids and colours. */
@@ -192,10 +217,11 @@ export function neuralModel(pose: NeuralPose, o: NeuralOpts = {}) {
     for (let i = 0; i < 50; i++) ids.add(regionOf(i / 50, P.three, P.five).id);
     for (const id of ids) groups.set(id, (s, u) => regionOf(s, P.three, P.five).id === id && !(crestEdge(u) && P.zip < 0.999 && foldAt(s, P.fold, P.zip) < 0.995));
     groups.set('gandor-neurala', (s, u) => crestEdge(u) && P.zip < 0.999 && foldAt(s, P.fold, P.zip) < 0.995);
+    const sh = sheets(P);
     for (const [id, fn] of groups) {
-      const m = buildMesh(P, fn);
-      parts[`${id}:o`] = { mesh: m.outer, hit: m.outer };
-      parts[`${id}:i`] = { mesh: m.inner, hit: m.inner };
+      const outer = partOf(sh.outer, fn), inner = partOf(sh.inner, fn);
+      parts[`${id}:o`] = { mesh: outer, hit: outer };
+      parts[`${id}:i`] = { mesh: inner, hit: inner };
     }
     memo.set(key, parts);
   }
@@ -215,7 +241,7 @@ export function neuralModel(pose: NeuralPose, o: NeuralOpts = {}) {
     items.push({ key: `nt-${name}`, id, groups, mesh: p.mesh, hit: p.hit, color: off ? mixHex(color, '#c4bcbb', 0.45 * k) : color, deep: mixHex(color, '#0a1030', 0.55), tissue: 'neural' });
   }
   // Names along the tube.
-  const c = centre(P.flex);
+  const c = centreOf(P.flex);
   const along = (s: number, lift = 0): V3 => {
     const i = Math.round(s * (c.p.length - 1));
     const { r } = radius(s, P.three, P.five);

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { weeks } from '@/content/registry';
+import { weeks } from '@/content/registry-lite';
 import { BrandMark } from './icons';
 import atlasStyles from './structure-atlas.module.css';
 import { SimLink, StudyMenu } from './NavMenu';

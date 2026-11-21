@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Defs } from '@/components/kit/Defs';
 import { SceneContext } from '@/components/kit/context';
-import { getWeek } from '@/content/registry';
+import { useScene } from '@/content/week-loader';
 import { QUIET_CTX } from './HeroFold';
 import { SceneView } from '@/components/kit';
 
@@ -69,12 +69,13 @@ export function TopicShot({ week, hot }: { week: number; hot: boolean }) {
 
 function LiveShot({ week, hot }: { week: number; hot: boolean }) {
   const shot = SHOTS[week];
-  const view = shot ? getWeek(week)?.stages.find((s) => s.id === shot.stage)?.views.find((v) => v.id === shot.view) : undefined;
   const mounted = useSyncExternalStore(subscribeNothing, () => true, () => false);
   const reduced = useSyncExternalStore(subscribeReduced, () => window.matchMedia(REDUCED).matches, () => false);
   const box = useRef<HTMLSpanElement>(null);
   // Scenes are only drawn once the card is near the screen (eight of them at once is wasted work).
   const [near, setNear] = useState(false);
+  // The topic's scene code is fetched with it (the homepage keeps every topic's scenes out of its first load).
+  const Scene = useScene(week, shot?.stage ?? '', shot?.view ?? '', near && !!shot);
   const [t, setT] = useState(shot?.rest ?? 1);
   const cur = useRef(t);
 
@@ -102,8 +103,7 @@ function LiveShot({ week, hot }: { week: number; hot: boolean }) {
     return () => cancelAnimationFrame(raf);
   }, [hot, near, reduced, shot]);
 
-  if (!view) return <span className="lp-shot" ref={box} aria-hidden />;
-  const Scene = view.scene;
+  if (!Scene) return <span className="lp-shot" ref={box} aria-hidden />;
   return (
     <span className="lp-shot" ref={box} aria-hidden>
       {mounted && near && (

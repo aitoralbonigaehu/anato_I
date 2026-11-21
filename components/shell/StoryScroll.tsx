@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { ORDERED, momentOf, periodOf, simHref, whenOf, type Milestone, type SimMoment } from '@/content/chronology';
-import { nameOf } from '@/content/registry';
+import { nameOf } from '@/content/registry-lite';
 import { AgeScene, dayParts } from './Timeline';
 import { hueStyle } from './topicHue';
 import './timeline.css';

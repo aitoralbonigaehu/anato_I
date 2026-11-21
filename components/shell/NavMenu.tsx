@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState, type ComponentProps } from 'react';
 import { openKimu } from '@/components/kimu/store';
-import { weeks } from '@/content/registry';
+import { weeks } from '@/content/registry-lite';
 import { resumeHref, useLastPlace } from './progress';
 
 export type StudySection = 'ikasgela' | 'fitxak' | 'belortzioak' | 'irudiak' | 'eratorriak' | 'egiturak';

@@ -32,7 +32,8 @@ import {
   type SimMoment,
   type SystemId,
 } from '@/content/chronology';
-import { getWeek, isSpace, nameOf, partsOf, structures } from '@/content/registry';
+import { getWeek, isSpace, nameOf, partsOf, structures } from '@/content/registry-lite';
+import { useScene } from '@/content/week-loader';
 import { categoryColor } from '@/lib/sim/palette';
 import { LandFoot, LandNav } from './LandNav';
 import { IconCheck, IconNext, IconPrev, IconRestart } from './icons';
@@ -79,15 +80,23 @@ export function AgeScene({ at, labels = true, className = 'tl-scene' }: { at: Si
   const ref = useRef<SVGSVGElement>(null);
   const [k, setK] = useState(1.3);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [near, setNear] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     // Labels keep their on-screen size when the 1000-wide frame is drawn smaller (as in the simulator).
     const ro = new ResizeObserver(([e]) => setK(Math.min(2, Math.max(1, 1000 / Math.max(1, e.contentRect.width)))));
     ro.observe(el);
-    return () => ro.disconnect();
+    // The topic's scene code is fetched once the picture is near the screen (the homepage keeps it out of its first load).
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && setNear(true), { rootMargin: '800px 0px' });
+    io.observe(el);
+    return () => {
+      ro.disconnect();
+      io.disconnect();
+    };
   }, []);
   const view = at.stage.views.find((v) => v.id === at.view) ?? at.stage.views[0];
+  const Scene = useScene(at.week, at.stage.id, view.id, near);
   const beat = [...at.stage.beats].reverse().find((b) => b.at <= at.une + 1e-6);
   const focus = labels ? (beat?.focus ?? []) : [];
   const ctx: SceneContextValue = {
@@ -107,10 +116,10 @@ export function AgeScene({ at, labels = true, className = 'tl-scene' }: { at: Si
   return (
     <svg ref={ref} viewBox="0 0 1000 640" className={className} role="img" aria-label={`${at.stage.title} · ${view.label}`}>
       <Defs />
-      {hydrated && (
+      {hydrated && Scene && (
         <SceneContext.Provider value={ctx}>
           <LabelScaleContext.Provider value={{ k, left: false, right: false }}>
-            <SceneView key={`${at.week}-${at.stage.id}-${view.id}`} Scene={view.scene} t={at.une} reduced />
+            <SceneView key={`${at.week}-${at.stage.id}-${view.id}`} Scene={Scene} t={at.une} reduced />
           </LabelScaleContext.Provider>
         </SceneContext.Provider>
       )}

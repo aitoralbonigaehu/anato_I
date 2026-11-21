@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { useEffect, useRef, useState, useSyncExternalStore, type PointerEvent } from 'react';
 import { Defs } from '@/components/kit/Defs';
 import { SceneContext } from '@/components/kit/context';
-import { getWeek } from '@/content/registry';
-import type { SceneComponent } from '@/lib/sim/types';
+import { SceneView } from '@/components/kit';
+import { getWeek } from '@/content/registry-lite';
+import { loadWeek, useScene } from '@/content/week-loader';
 import { QUIET_CTX } from './HeroFold';
 import { hueStyle } from './topicHue';
 
@@ -30,7 +31,8 @@ interface Reel {
   title: string;
   label: string;
   day: string;
-  scene: SceneComponent;
+  stage: string;
+  view: number;
   href: string;
 }
 
@@ -39,9 +41,11 @@ const REEL: Reel[] = PICKS.flatMap((p) => {
   const s = w?.stages.find((x) => x.id === p.stage);
   const v = s?.views[p.view];
   if (!w || !s || !v) return [];
-  return [{ week: p.week, n: String(p.week).padStart(2, '0'), topic: w.title, title: s.title, label: p.label, day: s.day, scene: v.scene, href: `/astea/${p.week}?etapa=${p.stage}&ikuspegia=${v.id}` }];
+  return [{ week: p.week, n: String(p.week).padStart(2, '0'), topic: w.title, title: s.title, label: p.label, day: s.day, stage: p.stage, view: p.view, href: `/astea/${p.week}?etapa=${p.stage}&ikuspegia=${v.id}` }];
 });
 const START = Math.max(0, REEL.findIndex((r) => r.week === FIRST_WEEK));
+// The opening scene's topic starts downloading as soon as this runs in the browser, before the page hydrates.
+if (typeof window !== 'undefined' && REEL[START]) void loadWeek(REEL[START].week);
 
 /** Seconds each scene gets: it plays through, rests on its last frame, and dissolves into the next. */
 const HOLD = 9.5;
@@ -148,8 +152,14 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
   };
 
   const cur = REEL[f.i];
-  const Cur = cur.scene;
-  const Prev = f.prev !== null ? REEL[f.prev].scene : null;
+  const Cur = useScene(cur.week, cur.stage, cur.view);
+  const prevReel = f.prev !== null ? REEL[f.prev] : null;
+  const Prev = useScene(prevReel?.week ?? cur.week, prevReel?.stage ?? '', prevReel?.view ?? 0, !!prevReel);
+  // The next scene's topic is fetched while this one plays, so the dissolve never waits for it.
+  const next = REEL[(f.i + 1) % REEL.length];
+  useEffect(() => {
+    if (mounted) void loadWeek(next.week);
+  }, [mounted, next.week]);
   const t = reduced ? 0.9 : ease((f.local - PLAY_FROM) / PLAY_FOR);
   const fadeIn = ease(f.fade);
   // Day counter: the span of the stage, as a clock that advances with the scene.
@@ -163,12 +173,14 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
             <SceneContext.Provider value={QUIET_CTX}>
               {Prev && (
                 <g opacity={1 - fadeIn}>
-                  <Prev t={1} reduced={reduced} />
+                  <SceneView Scene={Prev} t={1} reduced={reduced} />
                 </g>
               )}
-              <g opacity={Prev ? fadeIn : 1}>
-                <Cur t={t} reduced={reduced} />
-              </g>
+              {Cur && (
+                <g opacity={Prev ? fadeIn : 1}>
+                  <SceneView Scene={Cur} t={t} reduced={reduced} />
+                </g>
+              )}
             </SceneContext.Provider>
           )}
         </svg>

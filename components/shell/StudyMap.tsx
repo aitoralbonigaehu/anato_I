@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import { usePool } from './usePool';
-import { weeks } from '@/content/registry';
+import { weeks } from '@/content/registry-lite';
 import { competenceLevel, isDue, useAnswers } from './answers';
 import { useVisitedAll } from './progress';
 import { hueStyle } from './topicHue';

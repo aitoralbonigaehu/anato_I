@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Defs } from '@/components/kit/Defs';
 import { SceneContext, type SceneContextValue } from '@/components/kit/context';
 import { FoldBody, computeFold, foldTiming } from '@/components/scenes/week4/FoldSagittal';
-import { nameOf } from '@/content/registry';
+import { nameOf } from '@/content/registry-lite';
 
 const noop = () => {};
 export const QUIET_CTX: SceneContextValue = { selected: null, hovered: null, focus: [], showLabels: false, quiz: false, quizFlash: null, nameOf, onSelect: noop, onHover: noop };

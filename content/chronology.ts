@@ -9,8 +9,8 @@
  * worded from (`notes`), and says when the notes give only the week, not the day (`approx`).
  */
 
-import { weeks, structures } from './registry';
-import type { StageDef } from '@/lib/sim/types';
+import { weeks, structures } from './registry-lite';
+import type { StageMeta as StageDef } from './registry-lite';
 
 export interface Period {
   id: string;

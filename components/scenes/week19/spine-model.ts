@@ -70,23 +70,18 @@ const SEGS: { name: string; origin: number; vert: string; sacral?: number }[] = 
   { name: 'S5', origin: 0.03, vert: 'S', sacral: 0.86 },
 ];
 
-export function spineModel(pose: SpinePose, o: SpineOpts = {}) {
-  const items: Item3[] = [];
-  const pts: Record<string, V3> = {};
-  const dim = o.dim && o.dim.k > 0.001 ? o.dim : null;
-  const k = dim ? dim.k : 0;
-  const lit = (id: string | undefined, groups?: readonly string[]) => !dim || (!!id && dim.ids.includes(id)) || (groups ?? []).some((g) => dim.ids.includes(g));
-  const put = (key: string, id: string | undefined, parts: Parts | null, color: string, deep: string, extra: Partial<Item3> = {}) => {
-    if (!parts || (extra.opacity ?? 1) <= 0.01) return;
-    const off = !!dim && !!id && !extra.ground && !lit(id, extra.groups);
-    items.push({ key, id, ...parts, color: off ? mixHex(color, '#c4bcbb', 0.45 * k) : color, deep: off ? mixHex(deep, '#7c7472', 0.45 * k) : deep, tissue: 'nerve', ...extra });
-  };
-  const g = clamp01(pose.grow);
+const GROW_STEPS = 80;
+type SpineGeo = { bone: Parts | null; cord: Parts | null; filum: Parts | null; roots: Parts | null; cauda: Parts | null };
+const geoMemo = new Map<number, SpineGeo>();
+/** Everything whose shape depends only on the column's growth: built once per growth step. */
+function spineGeo(g: number): SpineGeo {
+  let m = geoMemo.get(g);
+  if (m) return m;
+  if (geoMemo.size > GROW_STEPS + 1) geoMemo.clear();
   const lv = levels(g);
   const at = (n: string) => lv.find((v) => v.name === n)!;
   const bottom = lv[lv.length - 1].bot;
-
-  // ———— the column, its arches taken away: bodies in front, pedicles beside the canal ————
+  // The column, its arches taken away: bodies in front, pedicles beside the canal.
   const bone: (Parts | null)[] = [];
   for (const v of lv) {
     const h = v.top - v.bot;
@@ -99,21 +94,10 @@ export function spineModel(pose: SpinePose, o: SpineOpts = {}) {
     bone.push(blobParts({ center: [0, c, 0.95], radii: [0.85, h * 0.4, 0.5], rings: 12, sides: 18 }));
     for (const s of [1, -1]) bone.push(blobParts({ center: [s * 0.92, c + h * 0.08, 0.1], radii: [0.17, h * 0.22, 0.42], rings: 8, sides: 12 }));
   }
-  put('bone', 'ornoak', mergeParts(bone), G19.bone, G19.boneDeep, { tissue: 'bone', calm: true });
-  for (const n of ['T12', 'L1', 'L2', 'L3', 'L4', 'L5']) pts[`orno-${n}`] = [-1.25, (at(n).top + at(n).bot) / 2, 0.4];
-  pts['ornoak'] = [-1.1, (at('L3').top + at('L3').bot) / 2, 0.6];
-  pts['sakroa'] = [-0.9, (at('S').top + at('S').bot) / 2, 0.2];
-
-  // ———— the cord (fixed), its conus, the filum terminale to the coccyx ————
+  // The cord (fixed), its conus, the filum terminale to the coccyx.
   const cord = vessel(L([[0, TOP + 0.4, CZ], [0, 1.0, CZ], [0, 0.35, CZ], [0, 0, CZ]], 24), { r0: CORD_R, r1: 0.06, sides: 16, n: 30 });
-  put('cord', 'ornomuina', cord, C19.brain, C19.brainDeep, { tissue: 'neural', groups: ['nerbio-sistema-zentrala', 'ornomuinaren-konoa'] });
-  pts['ornomuina'] = [0.2, 1.3, CZ - 0.32];
-  pts['ornomuinaren-konoa'] = [0.08, 0.15, CZ - 0.2];
   const filum = vessel(L([[0, 0, CZ], [0, lerp(0, bottom, 0.5), CZ - 0.02], [0, bottom + 0.1, 0.0]], 12), { r0: 0.04, r1: 0.03, sides: 8 });
-  put('filum', 'zuntz-terminala', filum, mixHex(C19.brain, '#ffffff', 0.25), C19.brainDeep, { tissue: 'tendon' });
-  pts['zuntz-terminala'] = [0.05, lerp(0, bottom, 0.55), CZ - 0.05];
-
-  // ———— the roots: from their cord level to their own foramen ————
+  // The roots: from their cord level to their own foramen.
   const upper: (Parts | null)[] = [], cauda: (Parts | null)[] = [];
   for (const s of SEGS) {
     const v = at(s.vert);
@@ -130,8 +114,44 @@ export function spineModel(pose: SpinePose, o: SpineOpts = {}) {
       upper.push(vessel(L([f, [side * 1.6, exit - 0.25, CZ + 0.3]], 4), { r0: 0.07, r1: 0.06, sides: 8 }));
     }
   }
-  put('roots', 'nerbio-espinalak', mergeParts(upper), C19.nerve, C19.nerveDeep, {});
-  put('cauda', 'zaldi-buztana', mergeParts(cauda), mixHex(C19.nerve, '#fff2b0', 0.2), C19.nerveDeep, { groups: ['nerbio-espinalak'] });
+  m = { bone: mergeParts(bone), cord, filum, roots: mergeParts(upper), cauda: mergeParts(cauda) };
+  geoMemo.set(g, m);
+  return m;
+}
+
+export function spineModel(pose: SpinePose, o: SpineOpts = {}) {
+  const items: Item3[] = [];
+  const pts: Record<string, V3> = {};
+  const dim = o.dim && o.dim.k > 0.001 ? o.dim : null;
+  const k = dim ? dim.k : 0;
+  const lit = (id: string | undefined, groups?: readonly string[]) => !dim || (!!id && dim.ids.includes(id)) || (groups ?? []).some((g) => dim.ids.includes(g));
+  const put = (key: string, id: string | undefined, parts: Parts | null, color: string, deep: string, extra: Partial<Item3> = {}) => {
+    if (!parts || (extra.opacity ?? 1) <= 0.01) return;
+    const off = !!dim && !!id && !extra.ground && !lit(id, extra.groups);
+    items.push({ key, id, ...parts, color: off ? mixHex(color, '#c4bcbb', 0.45 * k) : color, deep: off ? mixHex(deep, '#7c7472', 0.45 * k) : deep, tissue: 'nerve', ...extra });
+  };
+  // The column's growth in small steps, so a played stage rebuilds its geometry only when a step is crossed.
+  const g = Math.round(clamp01(pose.grow) * GROW_STEPS) / GROW_STEPS;
+  const lv = levels(g);
+  const at = (n: string) => lv.find((v) => v.name === n)!;
+  const bottom = lv[lv.length - 1].bot;
+
+  const geo = spineGeo(g);
+  put('bone', 'ornoak', geo.bone, G19.bone, G19.boneDeep, { tissue: 'bone', calm: true });
+  for (const n of ['T12', 'L1', 'L2', 'L3', 'L4', 'L5']) pts[`orno-${n}`] = [-1.25, (at(n).top + at(n).bot) / 2, 0.4];
+  pts['ornoak'] = [-1.1, (at('L3').top + at('L3').bot) / 2, 0.6];
+  pts['sakroa'] = [-0.9, (at('S').top + at('S').bot) / 2, 0.2];
+
+  // ———— the cord (fixed), its conus, the filum terminale to the coccyx ————
+  put('cord', 'ornomuina', geo.cord, C19.brain, C19.brainDeep, { tissue: 'neural', groups: ['nerbio-sistema-zentrala', 'ornomuinaren-konoa'] });
+  pts['ornomuina'] = [0.2, 1.3, CZ - 0.32];
+  pts['ornomuinaren-konoa'] = [0.08, 0.15, CZ - 0.2];
+  put('filum', 'zuntz-terminala', geo.filum, mixHex(C19.brain, '#ffffff', 0.25), C19.brainDeep, { tissue: 'tendon' });
+  pts['zuntz-terminala'] = [0.05, lerp(0, bottom, 0.55), CZ - 0.05];
+
+  // ———— the roots: from their cord level to their own foramen ————
+  put('roots', 'nerbio-espinalak', geo.roots, C19.nerve, C19.nerveDeep, {});
+  put('cauda', 'zaldi-buztana', geo.cauda, mixHex(C19.nerve, '#fff2b0', 0.2), C19.nerveDeep, { groups: ['nerbio-espinalak'] });
   pts['nerbio-espinalak'] = [1.45, at('T12').bot - 0.15, CZ + 0.2];
   pts['zaldi-buztana'] = [0.2, lerp(0, bottom, 0.3), CZ - 0.1];
 

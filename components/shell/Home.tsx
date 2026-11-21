@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
-import { weeks } from '@/content/registry';
+import { weeks } from '@/content/registry-lite';
 import { compKey } from '@/content/pool-keys';
 import { usePool } from './usePool';
 import { isDue, useAnswers } from './answers';

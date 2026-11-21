@@ -149,26 +149,25 @@ export interface BlobOptions {
   sides?: number;
 }
 
-/** An ellipsoid, optionally deformed: heads, bulges, paddles. */
-export function blob(o: BlobOptions): Mesh {
-  const rings = o.rings ?? 18;
-  const sides = o.sides ?? 24;
-  const [ax, ay, az] = o.axes ?? [
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 0, 1],
-  ];
-  const pos: number[] = [];
+/**
+ * The unit directions, uv and triangles of a blob's sphere at one resolution, made once: a moving or growing
+ * blob is rebuilt every frame, and only its points change.
+ */
+const spheres = new Map<number, { dir: Float64Array; uv: number[]; idx: number[] }>();
+function sphereOf(rings: number, sides: number) {
+  const key = rings * 100003 + sides;
+  let s = spheres.get(key);
+  if (s) return s;
+  const dir = new Float64Array((rings + 1) * (sides + 1) * 3);
   const uv: number[] = [];
+  let k = 0;
   for (let i = 0; i <= rings; i++) {
     const th = (i / rings) * Math.PI;
     for (let j = 0; j <= sides; j++) {
       const ph = (j / sides) * Math.PI * 2;
-      const d: V3 = [Math.sin(th) * Math.cos(ph), Math.cos(th), Math.sin(th) * Math.sin(ph)];
-      const k = o.shape?.(d) ?? 1;
-      const l: V3 = [d[0] * o.radii[0] * k, d[1] * o.radii[1] * k, d[2] * o.radii[2] * k];
-      const p = add(o.center, add(add(mul(ax, l[0]), mul(ay, l[1])), mul(az, l[2])));
-      pos.push(p[0], p[1], p[2]);
+      dir[k++] = Math.sin(th) * Math.cos(ph);
+      dir[k++] = Math.cos(th);
+      dir[k++] = Math.sin(th) * Math.sin(ph);
       uv.push(i / rings, j / sides);
     }
   }
@@ -182,6 +181,29 @@ export function blob(o: BlobOptions): Mesh {
       if (i > 0) idx.push(a, b, c);
       if (i < rings - 1) idx.push(b, d, c);
     }
+  spheres.set(key, (s = { dir, uv, idx }));
+  return s;
+}
+
+/** An ellipsoid, optionally deformed: heads, bulges, paddles. */
+export function blob(o: BlobOptions): Mesh {
+  const { dir, uv, idx } = sphereOf(o.rings ?? 18, o.sides ?? 24);
+  const [ax, ay, az] = o.axes ?? [
+    [1, 0, 0],
+    [0, 1, 0],
+    [0, 0, 1],
+  ];
+  const [r0, r1, r2] = o.radii;
+  const c = o.center;
+  const pos: number[] = new Array(dir.length);
+  // The same arithmetic, in the same order, as centre + ax·l0 + ay·l1 + az·l2 with l = d · radii · shape(d).
+  for (let i = 0; i < dir.length; i += 3) {
+    const k = o.shape ? o.shape([dir[i], dir[i + 1], dir[i + 2]]) : 1;
+    const l0 = dir[i] * r0 * k, l1 = dir[i + 1] * r1 * k, l2 = dir[i + 2] * r2 * k;
+    pos[i] = c[0] + (ax[0] * l0 + ay[0] * l1 + az[0] * l2);
+    pos[i + 1] = c[1] + (ax[1] * l0 + ay[1] * l1 + az[1] * l2);
+    pos[i + 2] = c[2] + (ax[2] * l0 + ay[2] * l1 + az[2] * l2);
+  }
   return finish(pos, uv, idx);
 }
 
@@ -227,18 +249,18 @@ function finish(pos: number[], uv: number[], idx: number[]): Mesh {
   perfCount('meshBuild');
   const p = new Float32Array(pos);
   const n = new Float32Array(pos.length);
+  // Face normals added to their corners (area-weighted); plain numbers, no arrays: this runs for every
+  // triangle of every mesh built while a shape changes.
   for (let i = 0; i < idx.length; i += 3) {
     const a = idx[i] * 3;
     const b = idx[i + 1] * 3;
     const c = idx[i + 2] * 3;
-    const e1: V3 = [p[b] - p[a], p[b + 1] - p[a + 1], p[b + 2] - p[a + 2]];
-    const e2: V3 = [p[c] - p[a], p[c + 1] - p[a + 1], p[c + 2] - p[a + 2]];
-    const f = cross(e1, e2);
-    for (const v of [a, b, c]) {
-      n[v] += f[0];
-      n[v + 1] += f[1];
-      n[v + 2] += f[2];
-    }
+    const ux = p[b] - p[a], uy = p[b + 1] - p[a + 1], uz = p[b + 2] - p[a + 2];
+    const vx = p[c] - p[a], vy = p[c + 1] - p[a + 1], vz = p[c + 2] - p[a + 2];
+    const fx = uy * vz - uz * vy, fy = uz * vx - ux * vz, fz = ux * vy - uy * vx;
+    n[a] += fx; n[a + 1] += fy; n[a + 2] += fz;
+    n[b] += fx; n[b + 1] += fy; n[b + 2] += fz;
+    n[c] += fx; n[c + 1] += fy; n[c + 2] += fz;
   }
   // Coincident vertices (a closed tube's seam, the poles of a blob) share one normal: vertices on the same
   // point of a 1e-4 grid are found through a hash table of the grid's integers (no strings: this runs for

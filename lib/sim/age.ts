@@ -21,4 +21,4 @@ export const ageParts = (day: number): [number, string] =>
   day <= 56 ? [Math.floor(day), '. eguna'] : [Math.min(38, Math.ceil(day / 7)), '. astea'];
 
 /** Span of a topic, long ("22–28. egunak") and short ("22–28"). */
-export const spanOf = (w: WeekDef) => w.span ?? { long: `${w.dayRange[0]}–${w.dayRange[1]}. egunak`, short: `${w.dayRange[0]}–${w.dayRange[1]}` };
+export const spanOf = (w: Pick<WeekDef, 'span' | 'dayRange'>) => w.span ?? { long: `${w.dayRange[0]}–${w.dayRange[1]}. egunak`, short: `${w.dayRange[0]}–${w.dayRange[1]}` };
