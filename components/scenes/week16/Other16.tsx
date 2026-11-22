@@ -26,7 +26,7 @@ const spec12: StageSpec<BroadPose, BroadOpts> = {
   opts: {},
   caption: 'Pelbisa zeharka ebakita (3D blokea, goitik): bizkarra goian',
   key: [
-    { color: UC.muller, text: 'Müller hodiak, uteroa' },
+    { color: UC.muller, text: 'hodi paramesonefrikoak, uteroa' },
     { color: '#f9a8b8', text: 'peritoneoa, lotailu zabala' },
     { color: '#8fb8ff', text: 'zaku-hondoak' },
   ],

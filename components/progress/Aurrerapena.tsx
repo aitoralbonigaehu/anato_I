@@ -17,6 +17,7 @@ import { firstReady, isWip } from '@/components/shell/LandNav';
 import { resumeHref, useLastPlace, useVisitedAll } from '@/components/shell/progress';
 import { hueOf } from '@/components/shell/topicHue';
 import { Glyph } from './glyphs';
+import { SceneMarkReview } from './SceneMarkReview';
 import p from './aurrerapena.module.css';
 
 const TOPICS = weeks.map((w) => ({ week: w.week, title: w.title, ready: !isWip(w), stages: w.stages.map((s) => ({ id: s.id, title: s.title })) }));
@@ -82,20 +83,23 @@ export function Aurrerapena() {
     [now, activity, visited, answers, bel, scheme, qWeek],
   );
 
-  if (!now) return <div className={p.loading} aria-busy="true" />;
-
   return (
     <div className={p.root}>
-      <Hero sum={sum} />
-      <StartGuide sum={sum} />
-      <Tiles sum={sum} />
-      <Next sum={sum} />
-      <div className={p.split}>
-        <Calendar sum={sum} now={now} />
-        <Badges sum={sum} />
-      </div>
-      <Topics sum={sum} />
-      <Cardboxes sum={sum} />
+      {now > 0 && <Hero sum={sum} />}
+      <SceneMarkReview />
+      {now > 0 ? (
+        <>
+          <StartGuide sum={sum} />
+          <Tiles sum={sum} />
+          <Next sum={sum} />
+          <div className={p.split}>
+            <Calendar sum={sum} now={now} />
+            <Badges sum={sum} />
+          </div>
+          <Topics sum={sum} />
+          <Cardboxes sum={sum} />
+        </>
+      ) : <div className={p.loading} aria-busy="true" />}
     </div>
   );
 }

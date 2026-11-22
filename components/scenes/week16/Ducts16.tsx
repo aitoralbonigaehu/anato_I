@@ -248,7 +248,7 @@ const spec10: StageSpec<DuctPose, DuctOpts> = {
       glide: 0.06,
       dim: ['uteroa', 'falopioren-tronpak'],
       names: [
-        { id: 'uteroa', sub: 'gorputza eta lepoa · endometrioa Müllerretik' },
+        { id: 'uteroa', sub: 'endometrioa hodi paramesonefrikoetatik' },
         { id: 'falopioren-tronpak', sub: 'goian irekita (obozitoa hartzeko)', from: 0.3 },
       ],
       note: 'Hodi paramesonefrikoetatik uteroa (gorputza eta lepoa) eta tronpak (goian irekita). Endometrioa hodietatik; miometrioa eta perimetrioa inguruko mesenkimatik',
@@ -334,7 +334,7 @@ const spec11: StageSpec<DuctPose, DuctOpts> = {
       glide: 0.05,
       dim: ['bagina', 'baginaren-fornixa'],
       names: [
-        { id: 'baginaren-fornixa', text: 'Goiko herena', sub: 'Müllerretik: mesodermikoa' },
+        { id: 'baginaren-fornixa', text: 'Goiko herena', sub: 'hodi paramesonefrikoetatik' },
         { id: 'bagina', text: 'Beheko bi herenak', sub: 'erraboil sinubaginaletik: endodermikoa', from: 0.3 },
       ],
       note: 'Baginaren goiko herena hodi paramesonefrikoetatik (mesodermikoa); beheko bi herenak erraboil sinubaginaletik (endodermikoa)',
@@ -409,7 +409,7 @@ const spec13: StageSpec<DuctPose, DuctOpts> = {
       glide: 0.06,
       dim: ['utero-hodia', 'sinu-urogenitala'],
       names: [
-        { id: 'utero-hodia', sub: 'mesodermikoa (Müller ← bitarteko mesodermoa)' },
+        { id: 'utero-hodia', sub: 'bitarteko mesodermotik' },
         { id: 'sinu-urogenitala', sub: 'endodermikoa', from: 0.3 },
       ],
       note: 'Uteroa kanpoarekin baginaren bidez. Baginaren jatorria bikoitza: mesodermikoa (hodi paramesonefrikoak) eta endodermikoa (sinu urogenitala)',

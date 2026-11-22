@@ -196,8 +196,8 @@ export const structures15: StructureDef[] = [
   {
     id: 'hodi-mesonefrikoa',
     name: 'Hodi mesonefrikoa',
-    es: 'Conducto mesonéfrico (de Wolff)',
-    aka: ['Wolff hodia', 'Hodi mesonefrikoak'],
+    es: 'Conducto mesonéfrico',
+    aka: ['Hodi mesonefrikoak'],
     category: 'mesodermoa',
     color: WOLFF,
     definition: 'Gandor bakoitzaren barruko luzetarako hodi biltzailea. Apunteetan more iluna.',

@@ -138,8 +138,9 @@ const spec2: StageSpec<UroPose, UroOpts> = {
     {
       to: { pro: 1, proDuct: 1, proGone: 0.55 },
       run: [0.06, 0.85],
-      // Down the side: the lower units grow as the upper ones go, and the duct runs on caudally.
-      cam: NECK(9, 46, 8),
+      // Nearly from the front: each tubule runs out laterally to the longitudinal duct, which runs on caudally.
+      cam: FRONT(6, [1.2, 3.0, -0.5], 20, 10),
+      half: 1,
       glide: 0.06,
       dim: ['nefrotomak', 'pronefrosa', 'hodixka-pronefrikoak', 'hodi-pronefrikoa'],
       names: [
@@ -190,9 +191,9 @@ const spec5: StageSpec<UroPose, UroOpts> = {
       dim: ['mesonefrosa', 'kordoi-nefrogenoa', 'hodi-mesonefrikoa'],
       names: [
         { id: 'kordoi-nefrogenoa', sub: 'bi gandor trinko, toraxetik sakrora' },
-        { id: 'hodi-mesonefrikoa', text: 'Hodi mesonefrikoa (Wolff hodia)', sub: 'gandor barruan · biltzailea', from: 0.4 },
+        { id: 'hodi-mesonefrikoa', sub: 'gandor barruan · biltzailea', from: 0.4 },
       ],
-      note: 'Bi gandor trinko (eskuinean eta ezkerrean), alde torazikotik sakrora: kordoi nefrogenoak. Bakoitzaren barruan, hodi mesonefrikoa (Wolff hodia)',
+      note: 'Bi gandor trinko (eskuinean eta ezkerrean), alde torazikotik sakrora: kordoi nefrogenoak. Bakoitzaren barruan, hodi mesonefrikoa',
     },
     {
       cam: TRUNK(10, 72, 20, [0, -0.3, -0.35]),
@@ -226,10 +227,10 @@ const spec5: StageSpec<UroPose, UroOpts> = {
       glide: 0.06,
       dim: ['hodi-mesonefrikoa', 'hodi-paramesonefrikoa'],
       names: [
-        { id: 'hodi-mesonefrikoa', text: 'Hodi mesonefrikoa (Wolff)' },
-        { id: 'hodi-paramesonefrikoa', text: 'Hodi paramesonefrikoa (Müller)', sub: 'sistema genitala · 16. gaia', from: 0.3 },
+        { id: 'hodi-mesonefrikoa' },
+        { id: 'hodi-paramesonefrikoa', sub: 'sistema genitala · 16. gaia', from: 0.3 },
       ],
-      note: 'Gandor urogenitalean, goitik behera, bi hodi: hodi mesonefrikoa (Wolff) eta hodi paramesonefrikoa (Müller)',
+      note: 'Gandor urogenitalean, goitik behera, bi hodi: hodi mesonefrikoa eta hodi paramesonefrikoa',
     },
   ],
 };

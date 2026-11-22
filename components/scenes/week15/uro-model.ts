@@ -156,9 +156,12 @@ const WALL = () => wallSlab({ key: 'uro-wall-v2', x: [-3.8, 3.8], y: [-5.35, 4.7
 
 /** Levels (y) of the regions along the posterior wall. */
 export const LV = { neck: 3.0, thorax: 1.0, lumbar: -1.2, sacral: -3.5, cloaca: -4.75 } as const;
-const PRO_Y = Array.from({ length: 8 }, (_, i) => 3.8 - i * 0.24);
+/** The pronephric units' levels: the last one just above the top of the mesonephric duct (y 2.25), which the pronephric duct runs on into. */
+const PRO_Y = Array.from({ length: 8 }, (_, i) => 3.8 - i * 0.2);
 const MESO_Y = Array.from({ length: 12 }, (_, i) => 2.0 - i * 0.4);
 const IM_X = 0.8;
+/** The pronephric duct's line (the tubules' lateral ends), straight on into the mesonephric duct below. */
+const PRO_DX = 1.08;
 const WOLFF_X = 1.1;
 
 /** The mesonephric duct of one side: down the ridge's lateral edge, then medially into the cloaca. */
@@ -243,35 +246,53 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
 
   // ———— pronephros: 7–10 pairs of nephrotomes at the neck → tubules joined laterally into the pronephric duct ————
   const pro = clamp01(pose.pro);
+  const proGone = clamp01(pose.proGone);
+  /** A unit is gone (0..1) as the front passes its level: the cranial ones first. */
+  const unitGone = (i: number) => ss(i / PRO_Y.length - 0.02, (i + 1.6) / PRO_Y.length, proGone);
   if (pro > 0.01) {
     PRO_Y.forEach((y, i) => {
-      // Cranial ones go first; each tubule fades as the gone front passes its level.
-      const gone = ss(i / PRO_Y.length - 0.02, (i + 1.6) / PRO_Y.length, pose.proGone);
-      const op = (1 - gone) * ss(i * 0.06, i * 0.06 + 0.35, pro);
+      // A degenerating unit shrinks as it fades (on the light wall a see-through unit alone read as a dark ghost).
+      const gone = unitGone(i);
+      // Each unit grows out of the cord (solid soon, so it is seen and pointed at as itself, not the cord).
+      const grow = ss(i * 0.06, i * 0.06 + 0.35, pro);
+      const op = (1 - ss(0.35, 1, gone)) * ss(0, 0.25, grow);
       if (op <= 0.01) return;
+      const k = (1 - 0.55 * gone) * lerp(0.45, 1, grow);
       const tub = ss(0.35, 0.85, pro);
       for (const s of [-1, 1]) {
-        ball(`neph${i}${s}`, 'nefrotomak', X(s, [IM_X, y, -0.5]), [lerp(0.11, 0.07, tub), 0.08, 0.1], UC.pro, op, { groups: ['pronefrosa'] }, 8, 10);
+        // The nephrotome: a cell cluster that hollows into a vesicle; it stays a bulge in the middle of the
+        // tubule it elongates into (wider than the tubule, so it is seen and pointed at as itself).
+        ball(`neph${i}${s}`, 'nefrotomak', X(s, [IM_X, y, -0.45]), [0.15 * k, 0.11 * k, 0.13 * k], UC.pro, op, { groups: ['pronefrosa'] }, 10, 12);
         // The medial end opens towards the coelom (a small funnel: the nephrostome), the lateral end runs on to the duct.
-        if (tub > 0.01) vess(`ptub${i}${s}`, 'hodixka-pronefrikoak', L([X(s, [IM_X, y, -0.5]), X(s, [0.62, y - 0.02, -0.28]), X(s, [0.52, y - 0.04, -0.08])], 8), UC.pro, { r0: 0.05, r1: 0.04, flare: 0.4, cup: 0.7 * tub, cupLen: 0.1, bulb: 0.5 * (1 - tub), sides: 8, n: 10 }, tub, op, { groups: ['pronefrosa'] });
-        if (tub > 0.01) vess(`plat${i}${s}`, 'hodixka-pronefrikoak', L([X(s, [IM_X, y, -0.5]), X(s, [0.97, y, -0.48])], 6), UC.pro, { r0: 0.05, r1: 0.042, flare: 0.4, bulb: 0.5 * (1 - tub), sides: 8, n: 8 }, tub, op, { groups: ['pronefrosa'] });
+        if (tub > 0.01) vess(`ptub${i}${s}`, 'hodixka-pronefrikoak', L([X(s, [IM_X, y, -0.5]), X(s, [0.62, y - 0.02, -0.28]), X(s, [0.52, y - 0.04, -0.08])], 8), UC.pro, { r0: 0.05 * k, r1: 0.04 * k, flare: 0.4, cup: 0.7 * tub, cupLen: 0.1, bulb: 0.5 * (1 - tub), sides: 8, n: 10 }, tub, op, { groups: ['pronefrosa'] });
+        if (tub > 0.01) vess(`plat${i}${s}`, 'hodixka-pronefrikoak', L([X(s, [IM_X, y, -0.5]), X(s, [PRO_DX, y, -0.48])], 6), UC.pro, { r0: 0.05 * k, r1: 0.042 * k, flare: 0.4, bulb: 0.5 * (1 - tub), sides: 8, n: 8 }, tub, op, { groups: ['pronefrosa'] });
       }
     });
-    // The names point at what is left: below the gone front (the cranial units go first), gliding down with it.
+    // The names point at what is left: below the gone front (the cranial units go first), going down with it.
     const yAt = (i: number) => PRO_Y[0] - Math.min(7, i) * (PRO_Y[0] - PRO_Y[1]);
-    const front = 8 * clamp01(pose.proGone);
-    pts['nefrotomak'] = X(1, [IM_X, yAt(Math.max(2, front + 0.6)), -0.42]);
-    pts['hodixka-pronefrikoak'] = X(1, [0.6, yAt(Math.max(4, front + 1.6)), -0.24]);
-    pts['pronefrosa'] = X(1, [0.85, yAt(Math.max(3, front + 0.6)), -0.45]);
+    // The first unit still standing, and one `k` below it.
+    const first = PRO_Y.findIndex((_, i) => unitGone(i) < 0.6);
+    const live = (min: number, k: number) => yAt(Math.max(min, (first < 0 ? 7 : first) + k));
+    // Each name on its own part of a unit still standing: the tubule's lateral run at the top, the nephrotome's
+    // bulge lower down (their lines do not cross the duct's, between them), the unit.
+    pts['hodixka-pronefrikoak'] = X(1, [0.97, live(3, 0), -0.48]);
+    pts['nefrotomak'] = X(1, [IM_X, live(2, 2), -0.36]);
+    pts['pronefrosa'] = X(1, [IM_X, live(4, 1), -0.36]);
   }
   if (pose.proDuct > 0.01) {
-    const gone = clamp01(pose.proGone);
+    // The lateral ends of the tubules join one to the next, cranial → caudal: the longitudinal pronephric duct,
+    // running on caudally into the top of the mesonephric (Wolff) duct. Cranially it goes with its units.
+    const topLeft = PRO_Y.findIndex((_, i) => unitGone(i) < 0.6);
+    const yTop = topLeft < 0 ? PRO_Y[7] : PRO_Y[topLeft] + 0.06;
+    const op = 1 - ss(0.82, 1, proGone);
     for (const s of [-1, 1]) {
-      const line = L([X(s, [0.97, PRO_Y[0], -0.48]), X(s, [0.99, PRO_Y[7], -0.46]), X(s, [WOLFF_X, 2.25, -0.42])], 16);
-      const keep = line.slice(Math.floor(line.length * 0.85 * gone));
-      vess(`pduct${s}`, 'hodi-pronefrikoa', keep, UC.pro, { r0: 0.06, r1: 0.055, bulb: 0.45 * (1 - ss(0.85, 1, pose.proDuct)), sides: 10, n: 18 }, pose.proDuct, 1 - 0.85 * gone, { groups: ['pronefrosa'] });
+      const line = L([X(s, [PRO_DX, PRO_Y[0] + 0.06, -0.48]), X(s, [PRO_DX, 3.0, -0.48]), X(s, [PRO_DX + 0.01, PRO_Y[7], -0.46]), X(s, [WOLFF_X, 2.25, -0.42])], 30);
+      const keep = line.filter((q) => q[1] <= yTop);
+      if (keep.length >= 2) vess(`pduct${s}`, 'hodi-pronefrikoa', keep, UC.pro, { r0: 0.065, r1: 0.06, bulb: 0.45 * (1 - ss(0.85, 1, pose.proDuct)), sides: 12, n: 24 }, pose.proDuct, op, { groups: ['pronefrosa'] });
     }
-    pts['hodi-pronefrikoa'] = X(1, [0.99, PRO_Y[5], -0.46]);
+    // On the duct between two units (not at a tubule's end, where the name would land on the tubule).
+    const mid = Math.min(6, Math.max(topLeft < 0 ? 6 : topLeft, 4));
+    pts['hodi-pronefrikoa'] = X(1, [PRO_DX, (PRO_Y[mid] + PRO_Y[mid + 1]) / 2, -0.44]);
   }
 
   // ———— mesonephros: the nephrogenic cords (urogenital ridges), their tubules, glomeruli and duct ————
@@ -318,7 +339,8 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
       const line = wolffLine(s);
       // Growing caudally to the cloaca: its tip leads, a little swollen, and it widens where it opens into the cloaca.
       vess(`wolff${s}`, 'hodi-mesonefrikoa', line, UC.wolff, { r0: 0.068, r1: 0.06, bulb: 0.4 * (1 - ss(0.9, 1, pose.wolff)), bulbLen: 0.25, cup: 0.5 * ss(0.95, 1, pose.wolff), cupLen: 0.25, sides: 12, n: 40 }, pose.wolff, 1, { deep: UC.wolffDeep });
-      if (s > 0) pts['hodi-mesonefrikoa'] = line[22];
+      // Named high on its course, between two tubules (lower down it met the metanephros' name and blastema).
+      if (s > 0) pts['hodi-mesonefrikoa'] = line.reduce((a, b) => (Math.abs(b[1] - (MESO_Y[4] + MESO_Y[5]) / 2) < Math.abs(a[1] - (MESO_Y[4] + MESO_Y[5]) / 2) ? b : a));
     }
 
   // The gonadal ridge: medial to the urinary ridge (the genital part of the urogenital ridge); later the gonads go down.

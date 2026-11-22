@@ -340,8 +340,8 @@ export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
     pts['hirugarren-bentrikulua'] = [0, -0.06, 0.18];
     pts['garun-akueduktoa'] = [0, -0.42, -0.45];
     pts['laugarren-bentrikulua'] = [0, -0.84, -0.72];
-    // On the recess where the cut shows it (the aperture itself lies on the far, lateral side).
-    pts['luschka-zuloak'] = [-0.1, -0.87, -0.69];
+    // Out along the lateral recess, towards its aperture (nearer the middle it shared the fourth ventricle's dot).
+    pts['luschka-zuloak'] = [-0.3, -0.89, -0.67];
     pts['magendie-zuloa'] = [0, -1.04, -0.84];
     pts['hodi-ependimarioa'] = [0, -2.0, -0.73];
     pts['bentrikulu-sistema'] = [0, -0.06, 0.18];

@@ -769,7 +769,7 @@ function Stage3DView({ scene, children, orbit = true, axes, continuity, place, h
         return (
           <Part key={it.key} id={it.id} groups={it.groups} quiet={it.quiet} show={it.show ?? 1}>
             {flatEl}
-            <path className="stage3d-hit" d={pr.d} />
+            <path className="stage3d-hit" d={pr.d} pointerEvents={flat ? undefined : 'none'} />
           </Part>
         );
       })}

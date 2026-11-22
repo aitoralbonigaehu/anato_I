@@ -171,8 +171,9 @@ export function unitModel(pose: UnitPose, o: UnitOpts = {}) {
 
   // The intermediate mesoderm: where the units form, along the block on both sides.
   const imOp = 1 - 0.65 * ss(0.2, 0.9, pose.vesicle);
-  for (const s of [-1, 1]) tube(`im${s}`, 'bitarteko-mesodermoa', along(s * IM[0], IM[1]), UC.inter, 0.2, 0.32 * imOp, { tissue: 'mesenchyme', outline: false });
-  pts['bitarteko-mesodermoa'] = X(1, [IM[0] + 0.12, IM[1] + 0.16, ZH]);
+  // A little wider than the units that form inside it (seen, and pointed at, round them).
+  for (const s of [-1, 1]) tube(`im${s}`, 'bitarteko-mesodermoa', along(s * IM[0], IM[1]), UC.inter, 0.27, 0.32 * imOp, { tissue: 'mesenchyme', outline: false });
+  pts['bitarteko-mesodermoa'] = X(1, [IM[0] + 0.2, IM[1] + 0.12, ZH]);
 
   // The mesonephric ridge bulging into the coelom; medially, the gonadal ridge.
   if (pose.ridge > 0.01)

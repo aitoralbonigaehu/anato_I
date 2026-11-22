@@ -81,7 +81,7 @@ function stageWith<P, O extends Dim>(continuity: string, spec: StageSpec<P, O>, 
   if (continuity === CONT17 && rest.site && !rest.where && WHERE17[rest.site.key]) rest.where = WHERE17[rest.site.key];
   // "Non gaude?" in the corner of every view (it hides with the names during the fly-in).
   const section = rest.section ?? (map ? () => ({ show: 1, node: <HeadMap focus={map} />, left: MAP_LEFT }) : undefined);
-  return poseStage14({ right: [236, 540], look: LOOK_V2, fit: {}, ...rest, section }, build, false, continuity);
+  return poseStage14({ right: [236, 540], look: LOOK_V2, fit: {}, strictAnchors: true, ...rest, section }, build, false, continuity);
 }
 
 export const poseStage17 = <P, O extends Dim>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel) => stageWith(CONT17, spec, build);

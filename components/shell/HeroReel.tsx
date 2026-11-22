@@ -2,27 +2,24 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState, useSyncExternalStore, type PointerEvent } from 'react';
-import { Defs } from '@/components/kit/Defs';
-import { SceneContext } from '@/components/kit/context';
-import { SceneView } from '@/components/kit';
 import { getWeek } from '@/content/registry-lite';
-import { loadWeek, useScene } from '@/content/week-loader';
-import { QUIET_CTX } from './HeroFold';
 import { hueStyle } from './topicHue';
 
 /**
- * The simulator's own scenes, played back to back as a showreel: what the app does, shown rather than
- * told. Each has a name written for this strip (one or two words, never cut); it opens on topic 7.
- * A new topic joins with one line here.
+ * The simulator's own 3D, played back to back as a showreel: what the app does, shown rather than told. Each
+ * clip is a stage's overview recorded on the real GPU (scripts/quality/reel-clips.mjs → public/reel/): a live
+ * WebGL model here would cost the homepage seconds of startup. Each has a name written for this strip (short
+ * enough for six on one line at 1280 px; the stage's full title is its tooltip). A new clip joins with one line
+ * here and one in the script's CLIPS.
  */
-const PICKS: { week: number; stage: string; view: number; label: string }[] = [
-  { week: 3, stage: 'gastrulazioa', view: 3, label: 'Gastrulazioa' },
-  { week: 4, stage: 'tolespenak', view: 0, label: 'Tolespenak' },
-  { week: 7, stage: 'diafragma-eraketa', view: 0, label: 'Diafragma' },
-  { week: 8, stage: 'hezurtzapena', view: 0, label: 'Hezurtzapena' },
-  { week: 9, stage: 'muskulu-motak', view: 0, label: 'Muskuluak' },
+const PICKS: { week: number; stage: string; label: string }[] = [
+  { week: 18, stage: 'aurpegi-fusioa', label: 'Aurpegia' },
+  { week: 17, stage: 'lehen-arkua-kartilagoak', label: 'Meckel' },
+  { week: 19, stage: 'gandor-neurala', label: 'Gandorra' },
+  { week: 18, stage: 'aho-sabai-gandorrak', label: 'Aho sabaia' },
+  { week: 17, stage: 'faringe-arkuak', label: 'Arkuak' },
+  { week: 18, stage: 'txano-kanpai', label: 'Hortzak' },
 ];
-const FIRST_WEEK = 7;
 
 interface Reel {
   week: number;
@@ -31,28 +28,25 @@ interface Reel {
   title: string;
   label: string;
   day: string;
-  stage: string;
-  view: number;
+  clip: string;
   href: string;
 }
 
-const REEL: Reel[] = PICKS.flatMap((p) => {
+export const REEL: Reel[] = PICKS.flatMap((p) => {
   const w = getWeek(p.week);
   const s = w?.stages.find((x) => x.id === p.stage);
-  const v = s?.views[p.view];
+  const v = s?.views[0];
   if (!w || !s || !v) return [];
-  return [{ week: p.week, n: String(p.week).padStart(2, '0'), topic: w.title, title: s.title, label: p.label, day: s.day, stage: p.stage, view: p.view, href: `/astea/${p.week}?etapa=${p.stage}&ikuspegia=${v.id}` }];
+  return [{ week: p.week, n: String(p.week).padStart(2, '0'), topic: w.title, title: s.title, label: p.label, day: s.day, clip: `${p.week}-${p.stage}`, href: `/astea/${p.week}?etapa=${p.stage}&ikuspegia=${v.id}` }];
 });
-const START = Math.max(0, REEL.findIndex((r) => r.week === FIRST_WEEK));
-// The opening scene's topic starts downloading as soon as this runs in the browser, before the page hydrates.
-if (typeof window !== 'undefined' && REEL[START]) void loadWeek(REEL[START].week);
 
-/** Seconds each scene gets: it plays through, rests on its last frame, and dissolves into the next. */
-const HOLD = 9.5;
-const PLAY_FROM = 0.5;
-const PLAY_FOR = 7;
+/** The clips' length (seconds), then a rest on the last frame and a dissolve into the next. */
+const CLIP = 8.2;
+const HOLD = 9.4;
 const FADE = 1;
 const FPS = 30;
+/** A clip that has not started after this long (a slow network) is passed over rather than waited for. */
+const STALL = 4;
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 const ease = (v: number) => {
@@ -69,22 +63,46 @@ const subscribe = (cb: () => void) => {
 
 interface Frame {
   i: number;
-  /** Seconds into the current scene, and into the dissolve from the previous one (null when none). */
+  /** Seconds into the current clip, and into the dissolve from the previous one (null when none). */
   local: number;
   prev: number | null;
   fade: number;
 }
 
-/** The hero's viewfinder: real scenes of the simulator, with a camera frame, a slow tilt that follows the pointer and a chapter strip. */
+/** The hero's viewfinder: real 3D of the simulator, with a camera frame, a slow tilt that follows the pointer and a chapter strip. */
 export function HeroReel({ playing = true }: { playing?: boolean }) {
   const reduced = useSyncExternalStore(subscribe, () => window.matchMedia(REDUCED).matches, () => false);
   const mounted = useSyncExternalStore(subscribe, () => true, () => false);
-  const [f, setF] = useState<Frame>({ i: START, local: PLAY_FROM + PLAY_FOR * 0.62, prev: null, fade: 1 });
+  const [f, setF] = useState<Frame>({ i: 0, local: 0, prev: null, fade: 1 });
   const box = useRef<HTMLElement>(null);
-  const live = useRef({ i: START, local: PLAY_FROM + PLAY_FOR * 0.62, prev: null as number | null, fade: 1 });
+  const live = useRef({ i: 0, local: 0, prev: null as number | null, fade: 1, wait: 0 });
+  const vids = useRef(new Map<string, HTMLVideoElement>());
+
+  /** To clip k from its start: the clip left dissolves away over it. */
+  const cut = (k: number) => {
+    const s = live.current;
+    if (k !== s.i) {
+      vids.current.get(REEL[s.i].clip)?.pause();
+      s.prev = s.i;
+      s.i = k;
+      s.fade = 0;
+    }
+    s.local = 0;
+    s.wait = 0;
+    const v = vids.current.get(REEL[k].clip);
+    if (v) v.currentTime = 0;
+  };
+  const cutRef = useRef(cut);
+  useEffect(() => {
+    cutRef.current = cut;
+  });
 
   useEffect(() => {
-    if (reduced || !playing) return;
+    const all = vids.current;
+    if (reduced || !playing) {
+      all.forEach((v) => v.pause());
+      return;
+    }
     let raf = 0;
     let visible = true;
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
@@ -95,20 +113,24 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
       raf = requestAnimationFrame(step);
       const dt = Math.max(0, Math.min(0.1, (now - last) / 1000));
       last = now;
-      if (!visible || document.hidden) return;
       const s = live.current;
-      s.local += dt;
+      const v = all.get(REEL[s.i].clip);
+      if (!visible || document.hidden) {
+        if (v && !v.paused) v.pause();
+        return;
+      }
+      // The clock follows the clip while it plays (a clip still loading holds the reel, up to STALL), then runs on.
+      if (v && !v.error && !v.ended && s.local < CLIP - 0.05 && s.wait < STALL) {
+        if (v.paused) void v.play().catch(() => {});
+        if (v.readyState >= 2 && v.currentTime > 0) s.local = Math.max(s.local, v.currentTime);
+        else s.wait += dt;
+      } else s.local += dt;
       if (s.prev !== null) s.fade += dt / FADE;
       if (s.fade >= 1) {
         s.prev = null;
         s.fade = 1;
       }
-      if (s.local >= HOLD) {
-        s.prev = s.i;
-        s.i = (s.i + 1) % REEL.length;
-        s.local = 0;
-        s.fade = 0;
-      }
+      if (s.local >= HOLD) cutRef.current((s.i + 1) % REEL.length);
       acc += dt;
       if (acc < 1 / FPS) return;
       acc = 0;
@@ -118,19 +140,13 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
     return () => {
       cancelAnimationFrame(raf);
       io.disconnect();
+      all.forEach((v) => v.pause());
     };
   }, [reduced, playing]);
 
   const go = (k: number) => {
+    cut(k);
     const s = live.current;
-    if (k === s.i) {
-      s.local = 0;
-    } else {
-      s.prev = s.i;
-      s.i = k;
-      s.local = 0;
-      s.fade = 0;
-    }
     setF({ i: s.i, local: s.local, prev: s.prev, fade: s.fade });
   };
 
@@ -152,38 +168,49 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
   };
 
   const cur = REEL[f.i];
-  const Cur = useScene(cur.week, cur.stage, cur.view);
-  const prevReel = f.prev !== null ? REEL[f.prev] : null;
-  const Prev = useScene(prevReel?.week ?? cur.week, prevReel?.stage ?? '', prevReel?.view ?? 0, !!prevReel);
-  // The next scene's topic is fetched while this one plays, so the dissolve never waits for it.
-  const next = REEL[(f.i + 1) % REEL.length];
-  useEffect(() => {
-    if (mounted) void loadWeek(next.week);
-  }, [mounted, next.week]);
-  const t = reduced ? 0.9 : ease((f.local - PLAY_FROM) / PLAY_FOR);
+  const t = reduced ? 1 : clamp(f.local / CLIP);
   const fadeIn = ease(f.fade);
-  // Day counter: the span of the stage, as a clock that advances with the scene.
+  // On the page: the clip playing, the one dissolving away, and the next once this one is under way (so it is
+  // loaded when its turn comes, without competing with the first clip while the homepage opens).
+  const next = (f.i + 1) % REEL.length;
+  const shown = [...new Set([f.i, ...(f.prev !== null ? [f.prev] : []), ...(f.local > 2 ? [next] : [])])];
   return (
     <figure className="lp-reel" ref={box} onPointerMove={tilt} onPointerLeave={untilt} style={hueStyle(cur.week)}>
       <div className="lp-reel-tilt theme-stage">
         <div className="lp-reel-glow" aria-hidden />
-        <svg viewBox="0 0 1000 640" role="img" aria-label={`${cur.topic}: ${cur.title}`} className="lp-reel-svg">
-          <Defs />
-          {mounted && (
-            <SceneContext.Provider value={QUIET_CTX}>
-              {Prev && (
-                <g opacity={1 - fadeIn}>
-                  <SceneView Scene={Prev} t={1} reduced={reduced} />
-                </g>
-              )}
-              {Cur && (
-                <g opacity={Prev ? fadeIn : 1}>
-                  <SceneView Scene={Cur} t={t} reduced={reduced} />
-                </g>
-              )}
-            </SceneContext.Provider>
+        <div className="lp-reel-media" role="img" aria-label={`${cur.topic}: ${cur.title}`}>
+          {/* The first clip's opening frame, in the page from the server: the frame is never empty while it loads. */}
+          {!reduced && f.i === 0 && f.prev === null && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={`/reel/${REEL[0].clip}.first.webp`} alt="" />
           )}
-        </svg>
+          {mounted &&
+            (reduced ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={`/reel/${cur.clip}.webp`} alt="" />
+            ) : (
+              shown.map((k) => {
+                const r = REEL[k];
+                const role = k === f.i ? 'cur' : k === f.prev ? 'prev' : 'next';
+                return (
+                  <video
+                    key={r.clip}
+                    ref={(el) => {
+                      if (el) vids.current.set(r.clip, el);
+                      else vids.current.delete(r.clip);
+                    }}
+                    src={`/reel/${r.clip}.mp4`}
+                    muted
+                    playsInline
+                    preload="auto"
+                    disablePictureInPicture
+                    aria-hidden
+                    style={{ opacity: role === 'cur' ? 1 : role === 'prev' ? 1 - fadeIn : 0, zIndex: role === 'prev' ? 1 : 0 }}
+                  />
+                );
+              })
+            ))}
+        </div>
         <span className="vf vf-tl" />
         <span className="vf vf-tr" />
         <span className="vf vf-bl" />

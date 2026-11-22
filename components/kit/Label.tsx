@@ -1,8 +1,8 @@
 'use client';
 
-import { useContext, useId, useLayoutEffect, useSyncExternalStore, type CSSProperties, type MouseEvent as ReactMouseEvent } from 'react';
+import { useContext, useId, useLayoutEffect, useSyncExternalStore, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type MouseEvent as ReactMouseEvent } from 'react';
 import { OnTop } from './OnTop';
-import { LabelCollectorContext, PaneContext, partState, useLabelScale, useScene, type Box, type LabelScale } from './context';
+import { GhostContext, LabelCollectorContext, PaneContext, partState, useLabelScale, useScene, type Box, type LabelScale } from './context';
 
 /** Semibold text width per character at 1px font size (13.5px ≈ 7.1 frame units per character). */
 const CHAR_W = 7.1 / 13.5;
@@ -189,6 +189,35 @@ function bracket([[x1, y1], [x2, y2]]: [[number, number], [number, number]], fro
   return `M${r(x1 + nx * 4)},${r(y1 + ny * 4)}L${r(x1)},${r(y1)}L${r(x2)},${r(y2)}L${r(x2 + nx * 4)},${r(y2 + ny * 4)}`;
 }
 
+/** Shared review interaction for named structure callouts and table entries. */
+export function useReviewLabel(id: string, name?: string, visible = true) {
+  const ctx = useScene();
+  const ghost = useContext(GhostContext);
+  const markLabel = ctx.onMarkLabel;
+  if (!markLabel || ghost || !visible || !ctx.showLabels || ctx.quiz || ctx.numberOf) return undefined;
+  const label = name ?? ctx.nameOf(id);
+  const mark = ctx.reviewMark?.(id);
+  const action = mark === 'red' ? 'Gorriz markatuta. Markatu laranjaz' : mark === 'orange' ? 'Laranjaz markatuta. Kendu marka' : 'Markatu gorriz';
+  return {
+    role: 'button',
+    tabIndex: 0,
+    'aria-label': `${label}. ${action}`,
+    'data-review-label': '',
+    'data-review-mark': mark ?? undefined,
+    onClick: (e: ReactMouseEvent) => {
+      e.stopPropagation();
+      markLabel(id, label);
+    },
+    onDoubleClick: (e: ReactMouseEvent) => e.stopPropagation(),
+    onKeyDown: (e: ReactKeyboardEvent) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      e.stopPropagation();
+      if (!e.repeat) markLabel(id, label);
+    },
+  };
+}
+
 /** Draws one label where its props say (the label layer calls it with the laid-out position). */
 export function LabelDraw({ id, x, y, ax, ay, align, show = 1, text, sub, small, span, moved }: LabelProps) {
   const ctx = useScene();
@@ -196,6 +225,8 @@ export function LabelDraw({ id, x, y, ax, ay, align, show = 1, text, sub, small,
   const measured = useMeasured();
   // A name left inside a dual view's pane would shrink with it: the dual lifts and sets the pane's names.
   const inPane = useContext(PaneContext);
+  const name = text ?? ctx.nameOf(id);
+  const review = useReviewLabel(id, name, show > 0.02);
   if (ctx.numberOf) return show > 0.5 && !inPane ? <NumberDraw {...{ id, x, y, ax, ay, align, small, span, text }} /> : null;
   if (!ctx.showLabels || ctx.quiz || show <= 0.02 || inPane) return null;
   const state = partState(ctx, id);
@@ -203,7 +234,6 @@ export function LabelDraw({ id, x, y, ax, ay, align, show = 1, text, sub, small,
   const unnamed = !!ctx.named && state !== 'focus' && state !== 'spot' && state !== 'active' && !ctx.named(id);
   if (unnamed && !ctx.spotKeep) return null;
   const space = !!ctx.isSpace?.(id);
-  const name = text ?? ctx.nameOf(id);
   const size = unnamed ? labelSize('focus', small) : labelSize(state, small);
   const weight = unnamed || state === 'spot' || state === 'focus' ? 700 : 550;
   const { anchor, k, fs, plate, leader: pts } = labelGeom({ x, y, ax, ay, align, small, sub }, name.length, size, scale, (f) => textWidth(name, f, weight, space, measured));
@@ -254,8 +284,12 @@ export function LabelDraw({ id, x, y, ax, ay, align, show = 1, text, sub, small,
         </g>
       )}
       <OnTop>
-        <g {...group}>
+        <g {...group} {...review}>
+          {review && <title>{review['aria-label']}</title>}
           <rect className="label-plate" x={plate.x} y={plate.y} width={plate.w} height={plate.h} rx={plate.h * 0.3} />
+          {review?.['data-review-mark'] && (
+            <rect className="label-review-stripe" x={plate.x + fs * 0.12} y={y - fs * 0.3} width={fs * 0.13} height={fs * 0.6} rx={fs * 0.065} aria-hidden />
+          )}
           <text x={x} y={y} dy="0.35em" textAnchor={anchor} className="label-text" style={k > 1 ? { fontSize: `${fs.toFixed(2)}px` } : undefined}>
             {name}
           </text>

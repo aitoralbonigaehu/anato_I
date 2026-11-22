@@ -221,9 +221,11 @@ export function pelvisModel(pose: PelvisPose, o: PelvisOpts = {}) {
     const col = mixHex(mixHex(UC.endo, '#d8c08a', ura), LIGAMENT, lig);
     // Narrowing towards the navel, flared where it leaves the bladder; thinner as it loses its lumen.
     vess('allantois', id, al, col, { r0: lerp(0.15, 0.08, ura), r1: lerp(0.09, 0.05, ura), flare: 0.6, flareLen: 0.3, sides: 14 }, 1, 1, { groups: ['alantoidea', 'urakoa', 'erdiko-zilbor-lotailua'], deep: darker(col) });
-    pts[id] = add(al[10], [0.18, 0, 0.12]);
-    pts['alantoidea'] = pts[id];
-    pts['urakoa'] = pts[id];
+    // On the cord itself (the old point floated beside it, all three names on one dot): its three names spread
+    // along it, the allantois near the bladder, the urachus in the middle, the ligament towards the navel.
+    pts['alantoidea'] = add(al[5], [0, 0, 0.03]);
+    pts['urakoa'] = add(al[9], [0, 0, 0.03]);
+    pts['erdiko-zilbor-lotailua'] = add(al[13], [0, 0, 0.03]);
     // A fistula: cavities left along the urachus (it did not close completely).
     if (pose.fistula > 0.01)
       [0.35, 0.6].forEach((u, k) => {

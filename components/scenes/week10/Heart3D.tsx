@@ -5,7 +5,7 @@ import { Stage3D, type At3, type Handover } from '@/components/kit/three/Stage3D
 import { blendCamera } from '@/lib/three-d/aim';
 import { add, deg, norm, sub, type Camera3, type M4, type V3, type View3 } from '@/lib/three-d/math';
 import type { Scene3 } from '@/lib/three-d/scene';
-import { ownCentre, visibleAnchor } from '@/lib/three-d/occlusion';
+import { coverOf, ownCentre, seenOwn, visibleAnchor } from '@/lib/three-d/occlusion';
 import { seg } from '@/lib/sim/anim';
 import { vis } from './common';
 import { POSE0, centreline, caudal, heartModel, type HeartOpts, type HeartPose } from './model3d';
@@ -218,7 +218,8 @@ export function ModelView({
   look,
   place,
   handover,
-}: ViewProps & { model: { items: Scene3['items']; pts: Record<string, V3> }; continuity: string; look?: Scene3['look']; place?: M4; handover?: Handover }) {
+  strictAnchors = false,
+}: ViewProps & { model: { items: Scene3['items']; pts: Record<string, V3> }; continuity: string; look?: Scene3['look']; place?: M4; handover?: Handover; strictAnchors?: boolean }) {
   const scene: Scene3 = { camera, items: model.items, look };
   const { mentioned, partsOf } = useScene();
   return (
@@ -241,7 +242,9 @@ export function ModelView({
             const p = typeof n.p === 'string' ? model.pts[n.p] : n.p;
             if (!p) continue;
             // A dot behind another structure would sit on that one: it moves to the part of its own the eye sees.
-            const q = at(typeof n.p === 'string' ? visibleAnchor(model.items, view.eye, p, n.id, inFrame) : p);
+            // A point written by hand stays (held to the hover rule: while the pointer on it lights its structure).
+            const solve = typeof n.p === 'string' || (strictAnchors && !(inFrame(p) && seenOwn(model.items, view.eye, p, n.id) && !coverOf(model.items, view.eye, p, n.id)));
+            const q = at(solve ? visibleAnchor(model.items, view.eye, p, n.id, inFrame, 48, strictAnchors) : p);
             items.push({ id: n.id, at: q, show: n.show * said, small: n.small, text: n.text, sub: n.sub, key: n.key });
           }
           // What the step's text says is named too, when the model draws it in the frame, even where the
@@ -252,7 +255,7 @@ export function ModelView({
             // or else at its biggest piece.
             const own = [id, ...(partsOf?.(id) ?? [])].find((o) => ownCentre(model.items, o));
             if (!own) continue;
-            const q = visibleAnchor(model.items, view.eye, model.pts[id] ?? model.pts[own] ?? ownCentre(model.items, own)!, own, inFrame);
+            const q = visibleAnchor(model.items, view.eye, model.pts[id] ?? model.pts[own] ?? ownCentre(model.items, own)!, own, inFrame, 48, strictAnchors);
             if (!inFrame(q)) continue;
             items.push({ id, key: `${id}-said`, at: at(q), show: said, small: true });
           }

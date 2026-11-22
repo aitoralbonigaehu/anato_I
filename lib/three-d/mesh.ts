@@ -72,9 +72,6 @@ export function tube(path: readonly V3[], o: TubeOptions): Mesh {
   const whole = a1 - a0 >= Math.PI * 2 - 1e-6;
   const sides = o.sides ?? 18;
   const cols = whole ? sides : sides + 1;
-  const pos: number[] = [];
-  const uv: number[] = [];
-  const rows: V3[][] = [];
   const capRows = 4;
   // Where the path bends tighter than the tube is thick, neighbouring rings would cross on the inside of
   // the bend and the wall fold through itself (a dark crease where its outline shows through). The inner
@@ -85,54 +82,74 @@ export function tube(path: readonly V3[], o: TubeOptions): Mesh {
     const ds = Math.hypot(b.p[0] - a.p[0], b.p[1] - a.p[1], b.p[2] - a.p[2]);
     return ds > 1e-9 ? mul(sub(b.t, a.t), 1 / ds) : [0, 0, 0];
   });
+  // Each column's angle, cosine and sine, once (not once per ring).
+  const ang = new Float64Array(cols);
+  const cs = new Float64Array(cols);
+  const sn = new Float64Array(cols);
+  for (let j = 0; j < cols; j++) {
+    ang[j] = a0 + ((a1 - a0) * j) / sides;
+    cs[j] = Math.cos(ang[j]);
+    sn[j] = Math.sin(ang[j]);
+  }
+  const caps = o.capStart && whole ? capRows : 0;
+  const capsEnd = o.capEnd && whole ? capRows : 0;
+  const nRows = caps + fr.length + capsEnd;
+  const pos = new Float32Array(nRows * cols * 3);
+  const uv = new Float32Array(nRows * cols * 2);
+  let w = 0;
+  let wu = 0;
+  // One ring of points written straight into the arrays (plain numbers: this runs for every vertex of every
+  // tube rebuilt while a shape changes). The arithmetic is the vector form's, in the same order.
   const ring = (f: Frame, u: number, scale: number, push: number, kv: V3) => {
     const r = o.radius(u) * scale;
-    const pts: V3[] = [];
+    const [nx, ny, nz] = f.n;
+    const [bx, by, bz] = f.b;
+    const tx = f.t[0] * push, ty = f.t[1] * push, tz = f.t[2] * push;
     for (let j = 0; j < cols; j++) {
-      const a = a0 + ((a1 - a0) * j) / sides;
-      const k = o.around?.(a, u) ?? 1;
-      let d = add(mul(f.n, Math.cos(a) * r * k), mul(f.b, Math.sin(a) * r * k));
+      const k = o.around?.(ang[j], u) ?? 1;
+      const cr = cs[j] * r * k, sr = sn[j] * r * k;
+      let dx = nx * cr + bx * sr, dy = ny * cr + by * sr, dz = nz * cr + bz * sr;
       // How far towards the bend's centre, as a share of the bend's radius (1 = reaching it).
-      const x = d[0] * kv[0] + d[1] * kv[1] + d[2] * kv[2];
-      if (x > 0.7) d = mul(d, (0.7 + 0.25 * Math.tanh((x - 0.7) / 0.25)) / x);
-      pts.push(add(add(f.p, d), mul(f.t, push)));
+      const x = dx * kv[0] + dy * kv[1] + dz * kv[2];
+      if (x > 0.7) {
+        const s = (0.7 + 0.25 * Math.tanh((x - 0.7) / 0.25)) / x;
+        dx *= s;
+        dy *= s;
+        dz *= s;
+      }
+      pos[w++] = f.p[0] + dx + tx;
+      pos[w++] = f.p[1] + dy + ty;
+      pos[w++] = f.p[2] + dz + tz;
+      uv[wu++] = u;
+      uv[wu++] = j / sides;
     }
-    return pts;
   };
-  const us: number[] = [];
-  if (o.capStart && whole)
-    for (let c = capRows; c >= 1; c--) {
-      const th = (c / capRows) * (Math.PI / 2);
-      rows.push(ring(fr[0], 0, Math.cos(th), -Math.sin(th) * o.radius(0), bend[0]));
-      us.push(0);
-    }
-  fr.forEach((f, i) => {
-    const u = i / (fr.length - 1);
-    rows.push(ring(f, u, 1, 0, bend[i]));
-    us.push(u);
-  });
-  if (o.capEnd && whole)
-    for (let c = 1; c <= capRows; c++) {
-      const th = (c / capRows) * (Math.PI / 2);
-      rows.push(ring(fr[fr.length - 1], 1, Math.max(0.02, Math.cos(th)), Math.sin(th) * o.radius(1), bend[fr.length - 1]));
-      us.push(1);
-    }
-  rows.forEach((r, i) =>
-    r.forEach((p, j) => {
-      pos.push(p[0], p[1], p[2]);
-      uv.push(us[i], j / sides);
-    }),
-  );
-  const idx: number[] = [];
-  for (let i = 0; i < rows.length - 1; i++)
-    for (let j = 0; j < (whole ? cols : cols - 1); j++) {
+  for (let c = caps; c >= 1; c--) {
+    const th = (c / capRows) * (Math.PI / 2);
+    ring(fr[0], 0, Math.cos(th), -Math.sin(th) * o.radius(0), bend[0]);
+  }
+  for (let i = 0; i < fr.length; i++) ring(fr[i], i / (fr.length - 1), 1, 0, bend[i]);
+  for (let c = 1; c <= capsEnd; c++) {
+    const th = (c / capRows) * (Math.PI / 2);
+    ring(fr[fr.length - 1], 1, Math.max(0.02, Math.cos(th)), Math.sin(th) * o.radius(1), bend[fr.length - 1]);
+  }
+  const span = whole ? cols : cols - 1;
+  const idx = new Uint32Array(Math.max(0, nRows - 1) * span * 6);
+  let wi = 0;
+  for (let i = 0; i < nRows - 1; i++)
+    for (let j = 0; j < span; j++) {
       const j1 = (j + 1) % cols;
       const a = i * cols + j;
       const b = i * cols + j1;
       const c = (i + 1) * cols + j;
       const d = (i + 1) * cols + j1;
       // Counter-clockwise seen from outside: around (b = t × n) × along gives the outward normal.
-      idx.push(a, b, c, b, d, c);
+      idx[wi++] = a;
+      idx[wi++] = b;
+      idx[wi++] = c;
+      idx[wi++] = b;
+      idx[wi++] = d;
+      idx[wi++] = c;
     }
   return finish(pos, uv, idx);
 }
@@ -244,10 +261,34 @@ export function grid(nu: number, nv: number, at: (u: number, v: number) => V3, f
   return finish(pos, uv, idx);
 }
 
+/** finish's scratch tables, grown as needed and reused (a stamp per hash slot marks the slots of the current call). */
+const W0 = { q: new Int32Array(0), table: new Int32Array(0), stamp: new Uint32Array(0), group: new Int32Array(0), acc: new Float64Array(0), gen: 0 };
+function weld(n: number, size: number) {
+  if (W0.q.length < n * 3) {
+    const cap = Math.max(n * 3, W0.q.length * 2);
+    W0.q = new Int32Array(cap);
+    W0.acc = new Float64Array(cap);
+    W0.group = new Int32Array(cap / 3 + 1);
+  }
+  if (W0.stamp.length < size) {
+    W0.table = new Int32Array(size);
+    W0.stamp = new Uint32Array(size);
+    W0.gen = 0;
+  }
+  W0.gen = (W0.gen + 1) >>> 0;
+  if (W0.gen === 0) {
+    W0.stamp.fill(0);
+    W0.gen = 1;
+  }
+  return W0;
+}
+
 /** Smooth vertex normals from the triangles (seams of open parts keep their own). */
-function finish(pos: number[], uv: number[], idx: number[]): Mesh {
+function finish(pos: number[] | Float32Array, uv: number[] | Float32Array, idx: number[] | Uint32Array): Mesh {
   perfCount('meshBuild');
-  const p = new Float32Array(pos);
+  perfCount('meshVerts', pos.length / 3);
+  // Typed arrays a builder filled for this mesh alone are kept as they are (no copy).
+  const p = pos instanceof Float32Array ? pos : new Float32Array(pos);
   const n = new Float32Array(pos.length);
   // Face normals added to their corners (area-weighted); plain numbers, no arrays: this runs for every
   // triangle of every mesh built while a shape changes.
@@ -264,35 +305,39 @@ function finish(pos: number[], uv: number[], idx: number[]): Mesh {
   }
   // Coincident vertices (a closed tube's seam, the poles of a blob) share one normal: vertices on the same
   // point of a 1e-4 grid are found through a hash table of the grid's integers (no strings: this runs for
-  // every vertex of every mesh built while a shape changes).
+  // every vertex of every mesh built while a shape changes). The tables are kept between calls, and a slot
+  // counts as empty unless it was written in this call (no clearing).
   const N = p.length / 3;
-  const q = new Int32Array(p.length);
-  for (let i = 0; i < p.length; i++) q[i] = Math.round(p[i] * 1e4);
   let size = 1;
   while (size < N * 2) size <<= 1;
-  const table = new Int32Array(size).fill(-1);
-  const group = new Int32Array(N);
-  const acc = new Float64Array(p.length);
+  const W = weld(N, size);
+  const { q, table, stamp, group, acc } = W;
+  const gen = W.gen;
+  for (let i = 0; i < p.length; i++) q[i] = Math.round(p[i] * 1e4);
   for (let v = 0; v < N; v++) {
     const i = v * 3;
     let h = (Math.imul(q[i], 73856093) ^ Math.imul(q[i + 1], 19349663) ^ Math.imul(q[i + 2], 83492791)) & (size - 1);
     for (;;) {
-      const w = table[h];
-      if (w < 0) {
+      if (stamp[h] !== gen) {
+        stamp[h] = gen;
         table[h] = v;
         group[v] = v;
+        acc[i] = n[i];
+        acc[i + 1] = n[i + 1];
+        acc[i + 2] = n[i + 2];
         break;
       }
+      const w = table[h];
       if (q[w * 3] === q[i] && q[w * 3 + 1] === q[i + 1] && q[w * 3 + 2] === q[i + 2]) {
         group[v] = w;
+        const g = w * 3;
+        acc[g] += n[i];
+        acc[g + 1] += n[i + 1];
+        acc[g + 2] += n[i + 2];
         break;
       }
       h = (h + 1) & (size - 1);
     }
-    const g = group[v] * 3;
-    acc[g] += n[i];
-    acc[g + 1] += n[i + 1];
-    acc[g + 2] += n[i + 2];
   }
   for (let v = 0; v < N; v++) {
     const i = v * 3;
@@ -302,7 +347,7 @@ function finish(pos: number[], uv: number[], idx: number[]): Mesh {
     n[i + 1] = acc[g + 1] / l;
     n[i + 2] = acc[g + 2] / l;
   }
-  return { pos: p, nrm: n, uv: new Float32Array(uv), idx: new Uint32Array(idx) };
+  return { pos: p, nrm: n, uv: uv instanceof Float32Array ? uv : new Float32Array(uv), idx: idx instanceof Uint32Array ? idx : new Uint32Array(idx) };
 }
 
 /** Points of a smooth path through key points (Catmull-Rom), n samples. */

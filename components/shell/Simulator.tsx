@@ -1,6 +1,8 @@
 'use client';
 
 import { studyKey } from '@/lib/study/storage-scope';
+import { cycleSceneMark, sceneMarkKey, useSceneMarks } from '@/lib/study/scene-marks';
+import { requestProgressSync } from '@/components/account/account';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
@@ -274,11 +276,15 @@ function readDeepLink(week: WeekDef) {
   const eg = params.get('egitura');
   const une = Number(params.get('une'));
   const idx = sid ? week.stages.findIndex((s) => s.id === sid) : -1;
+  const namesReview = idx >= 0 && params.get('izenak') === '1';
+  const taught = params.get('ikasgaia');
   const reviewed = formationOf(params.get('eraketa'));
   const formation = reviewed?.week === week.week && reviewed.stage === sid ? reviewed : undefined;
   return {
     stageIndex: idx >= 0 ? idx : null,
     viewId: formation?.view ?? (idx >= 0 ? vid : null),
+    namesReview,
+    taughtOnly: namesReview && (taught === '1' || taught === '0') ? taught === '1' : undefined,
     structure: !formation && eg && structures.has(eg) ? eg : null,
     t: formation?.start ?? (idx >= 0 && une > 0 && une <= 1 ? une : 0),
     play: !!formation || (idx >= 0 && params.get('jolastu') === '1'),
@@ -369,6 +375,7 @@ function saidIn(text: string, ids: readonly string[]) {
 
 export function Simulator({ weekNumber }: { weekNumber: number }) {
   const week = getWeek(weekNumber) ?? weeks[0];
+  const sceneMarks = useSceneMarks();
   const router = useRouter();
   const reduced = usePrefersReducedMotion();
   const svgRef = useRef<SVGSVGElement>(null);
@@ -467,6 +474,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
   // Deep links are applied once per week, on the first client render (the server can't see the query).
   // The URL-sync effect below waits for this, so it can't rewrite the query before it has been read.
   const [linkedWeek, setLinkedWeek] = useState<number | null>(null);
+  const [reviewFrame, setReviewFrame] = useState<(Pos & { week: number; view: string | null; taughtOnly?: boolean }) | null>(null);
   // A "play" deep link hands its position to the loop before the loop's first frame.
   const [linkPos, setLinkPos] = useState<Pos | null>(null);
   // Where a link opened the topic: the class offers to start at the chunk that teaches it.
@@ -490,6 +498,10 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
       setPos({ i: link.stageIndex, t: link.t });
       const sid = week.stages[link.stageIndex].id;
       const vid = link.viewId;
+      if (link.namesReview) {
+        setLabelMode('guztiak');
+        setReviewFrame({ week: week.week, i: link.stageIndex, t: link.t, view: vid, taughtOnly: link.taughtOnly });
+      }
       if (vid) {
         setViewByStage((m) => ({ ...m, [sid]: vid }));
         setManualView((m) => ({ ...m, [sid]: true }));
@@ -534,6 +546,9 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
   // "Skip blue" (notes panel, topics 15+, the default): playback and the step/stage keys pass over steps whose notes
   // are all blue or grey, and a step shows its taught-only wording (its question too).
   const skipBlue = useSkipBlue(week.week);
+  const reviewingFrame = reviewFrame?.week === week.week && reviewFrame.i === pos.i && reviewFrame.t === pos.t && (!reviewFrame.view || reviewFrame.view === view.id);
+  if (reviewFrame && !reviewingFrame) setReviewFrame(null);
+  const sceneTaughtOnly = (reviewingFrame ? reviewFrame.taughtOnly : undefined) ?? skipBlue;
   const beat = skipBlue && stage.beats[activeBeat] ? taughtBeat(stage.beats[activeBeat]) : stage.beats[activeBeat];
   const skipBlueRef = useRef(skipBlue);
   useEffect(() => {
@@ -627,10 +642,11 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
     url.searchParams.set('ikuspegia', view.id);
     if (getPref('notes')) url.searchParams.set('apunteak', '1');
     else url.searchParams.delete('apunteak');
-    for (const k of ['egitura', 'une', 'jolastu', 'eraketa', 'galderak']) url.searchParams.delete(k);
+    for (const k of ['egitura', 'jolastu', 'eraketa', 'galderak']) url.searchParams.delete(k);
+    if (!reviewingFrame) for (const k of ['une', 'izenak', 'ikasgaia']) url.searchParams.delete(k);
     window.history.replaceState(null, '', url);
     markVisited(week.week, stage.id);
-  }, [linkedWeek, week.week, stage.id, view.id]);
+  }, [linkedWeek, week.week, stage.id, view.id, reviewingFrame]);
 
   // While paused, the loop's position follows the committed one (deep links, scrubbing). While
   // playing, the loop owns it and every other move goes through `place`, so a late commit can't
@@ -1700,6 +1716,11 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
     partsOf,
     onSelect,
     onHover: hoverScene,
+    reviewMark: (id) => sceneMarks[sceneMarkKey({ week: week.week, id })]?.state,
+    onMarkLabel: travel ? undefined : (id, name) => {
+      cycleSceneMark({ week: week.week, stage: stage.id, view: view.id, t: pos.t, id, name, taughtOnly: sceneTaughtOnly });
+      requestProgressSync();
+    },
   };
 
   // Rings for step structures drawn too small to notice: the tour's current one, else the selection, else the step's.
@@ -1832,7 +1853,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
 
   return (
     // The default "taught this year" mode reaches the scenes (drawn here, beside the player) and the player.
-    <TaughtOnly.Provider value={skipBlue}>
+    <TaughtOnly.Provider value={sceneTaughtOnly}>
     <div ref={appRef} className={`app${focusMode ? ' is-focus' : ''}${voice ? ' is-narrated' : ''}`} style={hueStyle(week.week)}>
       <header className="topbar">
         <Link href="/" className="tb-brand" title="Hasiera">
@@ -1862,6 +1883,9 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
                 <button role="menuitem" onClick={() => { close(); if (find) setFind(null); else startFind(); }}>
                   <IconTarget size={16} /> {find ? 'Aurkitu amaitu' : 'Aurkitu'} <small>egitura irudian klikatu</small>
                 </button>
+                <Link role="menuitem" href="/aurrerapena#izenak-errepasatu" onClick={close}>
+                  <IconTag size={16} /> Izenak errepasatu <small>eszenan markatutakoak</small>
+                </Link>
               </div>
             )}
           </Popover>
@@ -1894,6 +1918,9 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
                 <button className="mobile-menu-item" role="menuitem" onClick={() => { close(); setQuestionsConcept(undefined); setQuestionsOpen(true); }}>
                   <IconQuiz size={16} /> Galderak
                 </button>
+                <Link className="mobile-menu-item" role="menuitem" href="/aurrerapena#izenak-errepasatu" onClick={close}>
+                  <IconTag size={16} /> Izenak errepasatu
+                </Link>
                 <button className="mobile-menu-item" role="menuitem" onClick={() => { close(); toggleNotes(); }}>
                   <IconNotes size={16} /> Apunteak
                 </button>

@@ -2,6 +2,7 @@
 
 import type { MouseEvent as ReactMouseEvent } from 'react';
 import { Label, Note, Part, clamp, rand, seg, smoothPath, useScene, type Pt, type SceneProps } from '@/components/kit';
+import { useReviewLabel } from '@/components/kit/Label';
 import { partState } from '@/components/kit/context';
 import { E6, somiteClose, somiteLips } from '@/components/scenes/week4-meso/Stage3Somite';
 import { NOTO, SOMITE, TUBE, band, placer, skinIn, trunkGeom } from '@/components/scenes/week4-meso/trunk';
@@ -228,8 +229,9 @@ function nameStyle(state: ReturnType<typeof partState>) {
   } as const;
 }
 
-function useEntry(id: string) {
+function useEntry(id: string, text: string, show: number) {
   const ctx = useScene();
+  const review = useReviewLabel(id, text, show > 0.02);
   const state = partState(ctx, id);
   const on = {
     onClick: (e: ReactMouseEvent) => {
@@ -239,12 +241,12 @@ function useEntry(id: string) {
     onPointerEnter: () => ctx.onHover(id),
     onPointerLeave: () => ctx.onHover(null),
   };
-  return { state, on, labels: ctx.showLabels && !ctx.quiz };
+  return { state, on: { ...on, ...review }, labels: ctx.showLabels && !ctx.quiz };
 }
 
 /** One row of a cell: the dot (the structure) and its name. */
 function Entry({ id, text, x, y, color, show }: { id: string; text: string; x: number; y: number; color: string; show: number }) {
-  const { state, on, labels } = useEntry(id);
+  const { state, on, labels } = useEntry(id, text, show);
   return (
     <g opacity={show}>
       <Part id={id}>
@@ -252,7 +254,7 @@ function Entry({ id, text, x, y, color, show }: { id: string; text: string; x: n
       </Part>
       {labels && (
         <g data-label={id} className="label" {...on}>
-          <text x={f1(x + 13)} y={f1(y)} dy="0.35em" fontSize={FS} style={nameStyle(state)}>
+          <text className="label-review-text" x={f1(x + 13)} y={f1(y)} dy="0.35em" fontSize={FS} {...nameStyle(state)}>
             {text}
           </text>
         </g>
@@ -263,7 +265,7 @@ function Entry({ id, text, x, y, color, show }: { id: string; text: string; x: n
 
 /** A part of the line above (the abdominal muscles): a smaller dot and name, sharing one line. */
 function SubEntry({ id, text, x, y, color, show }: { id: string; text: string; x: number; y: number; color: string; show: number }) {
-  const { state, on, labels } = useEntry(id);
+  const { state, on, labels } = useEntry(id, text, show);
   return (
     <g opacity={show}>
       <Part id={id}>
@@ -271,7 +273,7 @@ function SubEntry({ id, text, x, y, color, show }: { id: string; text: string; x
       </Part>
       {labels && (
         <g data-label={id} className="label" {...on}>
-          <text x={f1(x + 9)} y={f1(y)} dy="0.35em" fontSize={SUB_FS} style={nameStyle(state)}>
+          <text className="label-review-text" x={f1(x + 9)} y={f1(y)} dy="0.35em" fontSize={SUB_FS} {...nameStyle(state)}>
             {text}
           </text>
         </g>
@@ -322,7 +324,7 @@ function Cell({ items, x, y, color, show }: { items: Item[]; x: number; y: numbe
 
 /** A column head: the domain itself (its colour fills the box), its name inside. */
 function Head({ id, x, w, color, text, show }: { id: string; x: number; w: number; color: string; text: string; show: number }) {
-  const { state, on, labels } = useEntry(id);
+  const { state, on, labels } = useEntry(id, text, show);
   return (
     <g opacity={show}>
       <Part id={id}>
@@ -330,7 +332,7 @@ function Head({ id, x, w, color, text, show }: { id: string; x: number; w: numbe
       </Part>
       {labels && (
         <g data-label={id} className="label" {...on}>
-          <text x={x + w / 2} y={HEAD_Y + HEAD_H / 2} dy="0.35em" textAnchor="middle" fontSize={16} fontWeight={700} fill="#ffffff" opacity={nameStyle(state).opacity}>
+          <text className="label-review-text" x={x + w / 2} y={HEAD_Y + HEAD_H / 2} dy="0.35em" textAnchor="middle" fontSize={16} fontWeight={700} fill="#ffffff" opacity={nameStyle(state).opacity}>
             {text}
           </text>
         </g>

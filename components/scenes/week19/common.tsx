@@ -24,7 +24,7 @@ export const WHERE19: Record<string, Where> = {
 
 export function poseStage19<P, O extends Dim>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel) {
   const where = spec.where ?? (spec.site ? WHERE19[spec.site.key] : undefined);
-  return poseStage14({ right: [236, 540], look: LOOK_V2, fit: {}, where, ...spec }, build, false, CONT19);
+  return poseStage14({ right: [236, 540], look: LOOK_V2, fit: {}, strictAnchors: true, where, ...spec }, build, false, CONT19);
 }
 
 /** From the front (the body's left on the viewer's right). */

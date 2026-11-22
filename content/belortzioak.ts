@@ -533,7 +533,7 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
       2: 'Korpuskulu mesonefrikoa',
       2.1: 'Glomerulu mesonefrikoa',
       2.2: { name: 'Bowmanen kapsula', accept: ['glomerulu-kapsula'] },
-      3: { name: 'Hodi mesonefrikoa (Wolff)', accept: ['Wolffen hodia'] },
+      3: { name: 'Hodi mesonefrikoa', accept: ['Wolffen hodia'] },
       4: { name: 'Ureter-kimua', group: 'Metanefrosa' },
       5: { name: 'Blastema metanefrikoa', group: 'Metanefrosa' },
       6: 'Hodixka mesonefrikoa',
@@ -545,7 +545,7 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
     id: 'p25', system: 'urogenital', title: 'Sistema urogenitala eta bizkarrezurra', sub: '3. enbrioia',
     legend: {
       1: { name: 'Hodi mesonefrikoa', group: 'Mesonefrosa', accept: ['Wolffen hodia'] },
-      3: { name: 'Hodi paramesonefrikoa (Müller)', group: 'Mesonefrosa', accept: ['Müllerren hodia'] },
+      3: { name: 'Hodi paramesonefrikoa', group: 'Mesonefrosa', accept: ['Müllerren hodia'] },
       4: { name: 'Giltzurruna', group: 'Metanefrosa' },
       5: { name: 'Giltzurrun-pelbisa', group: 'Metanefrosa' },
       6: { name: 'Ureterra', group: 'Metanefrosa' },

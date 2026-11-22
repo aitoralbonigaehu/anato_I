@@ -9681,7 +9681,7 @@ button.tp-switch:hover {
     font-size: 13px;
   }
   .tb-tools .tool span { display: inline; }
-  .menu > button.mobile-menu-item { display: flex; }
+  .menu > :is(button, a).mobile-menu-item { display: flex; }
   .menu > hr.mobile-menu-item { display: block; }
   .tb-tools .menu > button,
   .tb-tools .menu > a { min-height: 44px; }
@@ -16564,3 +16564,42 @@ kbd {
 .mg-b[data-lit] > .mg-edge .mg-line::after { border-left-color: var(--signal); }
 .mg-b[data-lit] > .mg-edge .mg-via { color: var(--ink-signal); }
 .mg-chip, .mg-line, .mg-via { transition: opacity var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out); }
+
+.label[data-review-mark="red"] {
+  --label-review-ink: #ff8391;
+  --label-review-plate: #3a1420;
+}
+
+.label[data-review-mark="orange"] {
+  --label-review-ink: #ffb06a;
+  --label-review-plate: #40200e;
+}
+
+.label[data-review-mark] { opacity: var(--show, 1); }
+
+.label[data-review-mark] > .label-plate,
+.label[data-review-mark] > .label-review-background {
+  fill: var(--label-review-plate);
+  stroke: var(--label-review-ink);
+  stroke-width: 1.75;
+  stroke-dasharray: none;
+  filter: none;
+}
+
+.label[data-review-mark] > .label-text,
+.label[data-review-mark] > .label-review-stripe {
+  fill: var(--label-review-ink);
+}
+
+.label[data-review-mark] > .label-review-text {
+  fill: var(--label-review-ink);
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.label-review-stripe { pointer-events: none; }
+
+.label[data-review-label]:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}

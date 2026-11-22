@@ -25,7 +25,7 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
   // of every view (it hides with the names during the fly-in, which shows the whole embryo itself).
   const section = rest.section ?? (map ? () => ({ show: 1, node: <UroMap focus={map} />, left: MAP_LEFT }) : undefined);
   // Names keep above the camera keys (bottom right of the frame; the column also stops above them by itself).
-  return poseStage14({ right: [236, 540], look: LOOK_V2, fit: {}, ...rest, section }, build, false, CONT15);
+  return poseStage14({ right: [236, 540], look: LOOK_V2, fit: {}, strictAnchors: true, ...rest, section }, build, false, CONT15);
 }
 
 /** Front view of the posterior wall: yaw 0 = from the front (the embryo's left on the viewer's right). */
@@ -39,7 +39,7 @@ export const KEY15 = {
   three: [
     { color: UC.pro, text: 'pronefrosa' },
     { color: UC.meso, text: 'mesonefrosa' },
-    { color: UC.wolff, text: 'Wolff hodia' },
+    { color: UC.wolff, text: 'hodi mesonefrikoa' },
     { color: UC.blast, text: 'metanefrosa' },
   ],
   pro: [
@@ -49,12 +49,12 @@ export const KEY15 = {
   ],
   meso: [
     { color: UC.meso, text: 'hodixkak' },
-    { color: UC.wolff, text: 'Wolff hodia' },
+    { color: UC.wolff, text: 'hodi mesonefrikoa' },
     { color: UC.aorta, text: 'glomeruluak' },
     { color: UC.gonad, text: 'gonada g.' },
   ],
   meta: [
-    { color: UC.wolff, text: 'Wolff hodia' },
+    { color: UC.wolff, text: 'hodi mesonefrikoa' },
     { color: UC.bud, text: 'ureter kimua' },
     { color: UC.blast, text: 'blastema' },
   ],

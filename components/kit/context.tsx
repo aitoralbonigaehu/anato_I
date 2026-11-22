@@ -44,6 +44,9 @@ export interface SceneContextValue {
   isSpace?: (id: string) => boolean;
   /** A whole's drawn members: pointing at the whole lights them too. */
   partsOf?: (id: string) => readonly string[];
+  reviewMark?: (id: string) => 'red' | 'orange' | null | undefined;
+  /** Cycles the review mark when the name plate itself is activated. */
+  onMarkLabel?: (id: string, name: string) => void;
   onSelect: (id: string) => void;
   onHover: (id: string | null) => void;
 }

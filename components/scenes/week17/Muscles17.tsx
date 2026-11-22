@@ -1,6 +1,8 @@
 'use client';
 
 import './HeadMap'; // first: common.tsx and HeadMap.tsx import each other, and HeadMap needs ARCH at load
+import type { ReactNode } from 'react';
+import { useReviewLabel } from '@/components/kit/Label';
 import { ARCH, KEY_ARCH, endPose, orbit, poseStage17, type StageSpec } from './common';
 import { MP0, muscleModel, type MuscleOpts, type MusclePose } from './muscle-model';
 import { SITE17C } from './sites-c';
@@ -230,6 +232,15 @@ const LH = 17.4;
 const PAD = 30;
 const ramp = (t: number, a: number, b: number) => Math.min(1, Math.max(0, (t - a) / (b - a)));
 
+function MapLabel({ id, visible, children }: { id: string; visible: boolean; children: ReactNode }) {
+  const review = useReviewLabel(id, undefined, visible);
+  return (
+    <g className={review ? 'label' : undefined} pointerEvents={review ? 'visiblePainted' : undefined} {...review}>
+      {children}
+    </g>
+  );
+}
+
 /** The table: arch → nerve → cartilages and bones → muscles, each row filling as its parts light up on the head. */
 function MapTable({ t, pose }: { t: number; pose: MusclePose }) {
   let y = 82;
@@ -252,11 +263,11 @@ function MapTable({ t, pose }: { t: number; pose: MusclePose }) {
         // The row being told is full; the ones already told step back a little, and all return at the end.
         const o = v < 0.02 ? 0.16 : (0.16 + 0.84 * Math.min(1, v * 1.6)) * (k === current ? 1 : 0.62 + 0.38 * all);
         const shared = SHARED[row.r];
-        const cell = (x: number, ls: string[], fill: string, weight = 500) =>
+        const cell = (x: number, ls: string[], fill: string, weight = 500, className?: string) =>
           ls.map((line, i) => {
             const two = all > 0 && shared.test(line);
             return (
-              <text key={i} x={x} y={top + PAD / 2 + 13 + i * LH} fontSize={12.8} fontWeight={two ? 800 : weight} fill={two ? '#ffffff' : fill}>
+              <text key={i} className={className} x={x} y={top + PAD / 2 + 13 + i * LH} fontSize={12.8} fontWeight={two ? 800 : weight} fill={two ? '#ffffff' : fill}>
                 {line}
               </text>
             );
@@ -265,11 +276,15 @@ function MapTable({ t, pose }: { t: number; pose: MusclePose }) {
           <g key={row.r} opacity={o} data-part={row.id} data-label={row.id}>
             <line x1={TX + 10} x2={TX + TW - 10} y1={top} y2={top} stroke="rgba(255,255,255,0.14)" />
             {k === current && all < 0.5 && <rect x={TX + 4} y={top + 3} width={TW - 8} height={h - 6} rx={7} fill={row.c} opacity={0.13} />}
-            <rect x={TX + 10} y={top + 8} width={28} height={h - 16} rx={5} fill={row.c} />
-            <text x={TX + 24} y={top + h / 2 + 5} textAnchor="middle" fontSize={13.5} fontWeight={800} fill="#10131c">
-              {row.r}
-            </text>
-            <g data-part={row.nerve} data-label={row.nerve}>{cell(COLS[1], row.n, '#ffffff', 600)}</g>
+            <MapLabel id={row.id} visible={v >= 0.02}>
+              <rect className="label-review-background" x={TX + 10} y={top + 8} width={28} height={h - 16} rx={5} fill={row.c} />
+              <text className="label-review-text" x={TX + 24} y={top + h / 2 + 5} textAnchor="middle" fontSize={13.5} fontWeight={800} fill="#10131c">
+                {row.r}
+              </text>
+            </MapLabel>
+            <g data-part={row.nerve} data-label={row.nerve}>
+              <MapLabel id={row.nerve} visible={v >= 0.02}>{cell(COLS[1], row.n, '#ffffff', 600, 'label-review-text')}</MapLabel>
+            </g>
             {cell(COLS[2], row.b, '#e9edf5')}
             {cell(COLS[3], row.m, row.c, 600)}
           </g>

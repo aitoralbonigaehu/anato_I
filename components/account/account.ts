@@ -46,7 +46,37 @@ let started = false;
 let ready = false;
 let reloading = false;
 let running: Promise<void> | null = null;
+let progressChangedDuringSync = false;
 const EVERY = 3 * 60_000;
+
+/** Persists a local edit made even while an earlier cloud save is pending. */
+export function requestProgressSync() {
+  if (running) progressChangedDuringSync = true;
+  else void syncNow();
+}
+
+async function syncProgress(b: AccountBackend, owner: string) {
+  try {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (reloading) return;
+      const remote = await b.loadProgress(owner);
+      if ((await b.currentUser())?.id !== owner || reloading) return;
+      const local = collectSnapshot();
+      if (!remote && isEmptySnapshot(local)) return;
+      const merged = remote ? mergeSnapshot(local, remote.blob.data) : local;
+      if (!sameSnapshot(merged, local)) applySnapshot(merged);
+      if (!remote || !sameSnapshot(merged, remote.blob.data)) {
+        const result = await b.saveProgress(owner, { v: 1, savedAt: Date.now(), data: merged }, remote?.revision ?? null);
+        if (result === 'conflict') continue;
+        if (result === 'failed') return;
+      }
+      if (!reloading) set({ synced: Date.now() });
+      return;
+    }
+  } catch {
+    // Offline or the backend failed: the next turn tries again.
+  }
+}
 
 export function syncNow(): Promise<void> {
   const owner = state.user?.id;
@@ -56,27 +86,13 @@ export function syncNow(): Promise<void> {
   running = (async () => {
     set({ syncing: true });
     try {
-      for (let attempt = 0; attempt < 3; attempt++) {
-        if (reloading) return;
-        const remote = await b.loadProgress(owner);
-        if ((await b.currentUser())?.id !== owner || reloading) return;
-        const local = collectSnapshot();
-        if (!remote && isEmptySnapshot(local)) return;
-        const merged = remote ? mergeSnapshot(local, remote.blob.data) : local;
-        if (!sameSnapshot(merged, local)) applySnapshot(merged);
-        if (!remote || !sameSnapshot(merged, remote.blob.data)) {
-          const result = await b.saveProgress(owner, { v: 1, savedAt: Date.now(), data: merged }, remote?.revision ?? null);
-          if (result === 'conflict') continue;
-          if (result === 'failed') return;
-        }
-        if (!reloading) set({ synced: Date.now() });
-        return;
-      }
-    } catch {
-      // Offline or the backend failed: the next turn tries again.
+      do {
+        progressChangedDuringSync = false;
+        await syncProgress(b, owner);
+      } while (progressChangedDuringSync && !reloading);
     } finally {
-      set({ syncing: false });
       running = null;
+      set({ syncing: false });
     }
   })();
   return running;

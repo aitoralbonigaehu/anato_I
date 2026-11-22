@@ -147,10 +147,11 @@ export function kidneyModel(pose: KidneyPose, o: KidneyOpts = {}) {
   pts['ureterra'] = stalk[9];
   if (amp > 0.01) {
     put('pelvis', endId, end, UC.bud, 1, { groups: ['sistema-biltzailea', 'giltzurrun-pelbisa', 'metanefros-hasikina'], deep: UC.budDeep });
-    pts[endId] = add(tip, [-0.12, 0.3 + 0.2 * pel, 0.22]);
-    pts['metanefros-hasikina'] = pts[endId];
-    pts['giltzurrun-pelbisa'] = pts[endId];
-  } else put('pelvis', urId, end, UC.bud, 1, { groups: ['ureter-kimua', 'sistema-biltzailea'], deep: UC.budDeep });
+    // On the swelling itself, in front (the old point floated half a unit above it, over the blastema): the
+    // expanded tip at its far end, the funnel it becomes a little back towards the ureter.
+    const n = stalk.length - 1;
+    pts['metanefros-hasikina'] = add(mix3(stalk[n], stalk[n - 2], 0.5), [0, 0.04, 0.12]);
+    pts['giltzurrun-pelbisa'] = add(mix3(stalk[n - 3], stalk[n - 5], 0.5), [0, 0, 0.12]);  } else put('pelvis', urId, end, UC.bud, 1, { groups: ['ureter-kimua', 'sistema-biltzailea'], deep: UC.budDeep });
 
   // ———— branching: major calyces → minor calyces → collecting tubules (one item per generation) ————
   const g0 = clamp01(pose.major);

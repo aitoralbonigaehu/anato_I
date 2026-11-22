@@ -574,7 +574,8 @@ export const Viewport = forwardRef<SVGSVGElement, ViewportProps>(function Viewpo
         viewBox={`0 0 ${W} ${H}`}
         preserveAspectRatio="xMidYMid meet"
         onClick={onBackgroundClick}
-        role="img"
+        role="group"
+        aria-label="Eszena"
       >
         <Defs />
         <g transform={`translate(${z.x} ${z.y}) scale(${z.k})`}>

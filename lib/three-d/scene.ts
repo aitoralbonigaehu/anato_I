@@ -155,7 +155,7 @@ export const LOOK_V2: Look3 = { ao: 1, aoReach: 0.06 };
 export const KEY_LIGHT: V3 = norm([-0.5, 0.7, 0.55]);
 
 export interface Projected {
-  /** Front-facing triangles as one SVG path (frame units), for pointing. */
+  /** Front-facing triangles as one SVG path (frame units), for pointing; with WebGL up, only their box. */
   d: string;
   /** The same triangles split by how lit they are (3 bands), for the flat fallback. */
   bands: [string, string, string];
@@ -168,7 +168,7 @@ const f1 = (v: number) => (Math.round(v * 10) / 10).toString();
 
 /**
  * Project an item's coarse mesh: its visible triangles and how lit each is. Without `flat` (WebGL draws
- * the tissue) only the pointing outline is made: the lit bands are left empty.
+ * the tissue) only the box of its facing triangles is made (the same extent as the outline): no bands.
  */
 export function projectItem(item: Item3, v: View3, light: V3, flat = true): Projected {
   perfCount('project');
@@ -197,6 +197,10 @@ export function projectItem(item: Item3, v: View3, light: V3, flat = true): Proj
   }
   const parts: string[] = [];
   const bands: [string[], string[], string[]] = [[], [], []];
+  // With WebGL drawing the picture (and pointing by pixel), the outline is read only for its box (zooming
+  // onto a part, framing the anatomy): the box of the facing triangles, as one rectangle. Writing every
+  // triangle out cost the main thread most of a big model's playback (tens of thousands, every 100 ms).
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
   for (let t = 0; t < mesh.idx.length; t += 3) {
     const a = mesh.idx[t];
     const b = mesh.idx[t + 1];
@@ -206,9 +210,15 @@ export function projectItem(item: Item3, v: View3, light: V3, flat = true): Proj
     // Counter-clockwise in WebGL (y up) is clockwise in the frame (y down): negative area = facing us.
     const area = (sx[b] - sx[a]) * (sy[c] - sy[a]) - (sx[c] - sx[a]) * (sy[b] - sy[a]);
     if (area >= 0) continue;
+    if (!flat) {
+      x0 = Math.min(x0, sx[a], sx[b], sx[c]);
+      x1 = Math.max(x1, sx[a], sx[b], sx[c]);
+      y0 = Math.min(y0, sy[a], sy[b], sy[c]);
+      y1 = Math.max(y1, sy[a], sy[b], sy[c]);
+      continue;
+    }
     const tri = `M${f1(sx[a])},${f1(sy[a])}L${f1(sx[b])},${f1(sy[b])}L${f1(sx[c])},${f1(sy[c])}Z`;
     parts.push(tri);
-    if (!flat) continue;
     // Lit band from the face normal in camera space.
     const nx = mesh.nrm[a * 3] + mesh.nrm[b * 3] + mesh.nrm[c * 3];
     const ny = mesh.nrm[a * 3 + 1] + mesh.nrm[b * 3 + 1] + mesh.nrm[c * 3 + 1];
@@ -216,6 +226,11 @@ export function projectItem(item: Item3, v: View3, light: V3, flat = true): Proj
     const vn = norm([mv[0] * nx + mv[4] * ny + mv[8] * nz, mv[1] * nx + mv[5] * ny + mv[9] * nz, mv[2] * nx + mv[6] * ny + mv[10] * nz]);
     const k = dot(vn, light);
     bands[k > 0.45 ? 2 : k > 0 ? 1 : 0].push(tri);
+  }
+  if (!flat) {
+    const any = x0 <= x1;
+    const d = any ? `M${f1(x0)},${f1(y0)}H${f1(x1)}V${f1(y1)}H${f1(x0)}Z` : '';
+    return { d, bands: ['', '', ''], depth: depth / Math.max(1, n), any };
   }
   return { d: parts.join(''), bands: [bands[0].join(''), bands[1].join(''), bands[2].join('')], depth: depth / Math.max(1, n), any: parts.length > 0 };
 }

@@ -14,7 +14,7 @@ export const ORIENT15 = { top: 'Kraneala', bottom: 'Kaudala' };
  * block's own frame has y dorsal and z cranial. Each view's description says which side is which.
  */
 export const WALL =
-  'Atzeko pareta 3D, aurretik ikusita (apunteetako irudiak bezala): burua goian, enbrioiaren ezkerra zure eskuinean. Erdian aorta (gorria) eta bizkarrean somitak; alde bietan bitarteko mesodermoa (koral kolorea). Pronefrosa arrosa, mesonefrosa laranja, hodi mesonefrikoa (Wolff) more iluna, ureter kimua eta bere eratorriak lila, blastema metanefrikoa eta giltzurruna magenta, endodermoa (kloaka, gernu maskuria) horia. Arrastatu biratzeko.';
+  'Atzeko pareta 3D, aurretik ikusita (apunteetako irudiak bezala): burua goian, enbrioiaren ezkerra zure eskuinean. Erdian aorta (gorria) eta bizkarrean somitak; alde bietan bitarteko mesodermoa (koral kolorea). Pronefrosa arrosa, mesonefrosa laranja, hodi mesonefrikoa more iluna, ureter kimua eta bere eratorriak lila, blastema metanefrikoa eta giltzurruna magenta, endodermoa (kloaka, gernu maskuria) horia. Arrastatu biratzeko.';
 export const BLOCK15 =
   'Zeharkako mozketa 3D bloke batean (hiru segmentu lodi): ebaketa-aurpegia apunteetako irudia da. Bizkarra goian (hodi neurala, somitak), sabela behean (hestea); burutik begira, enbrioiaren ezkerra zure eskuinean. Bitarteko mesodermoa koral, pronefrosa arrosa, mesonefrosa laranja, hodi mesonefrikoa more iluna, aorta eta glomeruluak gorriak, zeloma urdin gardena. Arrastatu biratzeko.';
 
@@ -291,8 +291,8 @@ const stagesA: StageDef[] = [
     day: '4. astea',
     dayRange: [24, 30],
     title: 'Mesonefrosa eta gandor urogenitala',
-    subtitle: 'Kordoi nefrogenoak, Wolff hodia, eta gandor bakarretik bi: gernu gandorra eta gonada gandorra',
-    intro: 'Mesonefrosa pronefrosa baino kaudalerago eta garatuago dago. Atzeko paretan bi gandor trinko eratzen dira, toraxetik sakrora (kordoi nefrogenoak), bakoitza bere hodi mesonefrikoarekin (Wolff). Gernu osagaia eta osagai genitala agertzean gandor urogenitalak dira, eta bitan banatzen dira. Gandorrean bi hodi daude: Wolff eta Müller.',
+    subtitle: 'Kordoi nefrogenoak, hodi mesonefrikoa eta gandor bakarretik bi: gernu gandorra eta gonada gandorra',
+    intro: 'Mesonefrosa pronefrosa baino kaudalerago eta garatuago dago. Atzeko paretan bi gandor trinko eratzen dira, toraxetik sakrora (kordoi nefrogenoak), bakoitza bere hodi mesonefrikoarekin. Gernu osagaia eta osagai genitala agertzean gandor urogenitalak dira, eta bitan banatzen dira. Gandorrean bi hodi daude: hodi mesonefrikoa eta hodi paramesonefrikoa.',
     duration: 46,
     source: src15('1.2. Mesonefrosa'),
     views: wallView(Meso15),
@@ -315,10 +315,10 @@ const stagesA: StageDef[] = [
         at: S5[1],
         notes: ['w15/1.2/p4/s1-s2'],
         recall: ['kordoi-nefrogenoa'],
-        idea: 'Bi gandor trinko (kordoi nefrogenoak), toraxetik sakrora, bakoitza bere hodi mesonefrikoarekin (Wolff).',
-        text: 'Kamera biratzen da gandorrak ikusteko. Mesonefrosa atzeko pareta abdominalean dago, alde torazikotik sakrora, goitik behera eratzen diren bi gandor trinkotan (eskuinean eta ezkerrean): kordoi nefrogenoak. Bakoitzaren barruan luzetarako hodi bat dago: hodi mesonefrikoa edo Wolff hodia, hodi biltzailea.',
+        idea: 'Bi gandor trinko (kordoi nefrogenoak), toraxetik sakrora, bakoitza bere hodi mesonefrikoarekin.',
+        text: 'Kamera biratzen da gandorrak ikusteko. Mesonefrosa atzeko pareta abdominalean dago, alde torazikotik sakrora, goitik behera eratzen diren bi gandor trinkotan (eskuinean eta ezkerrean): kordoi nefrogenoak. Bakoitzaren barruan luzetarako hodi bat dago: hodi mesonefrikoa, hodi biltzailea.',
         focus: ['kordoi-nefrogenoa', 'hodi-mesonefrikoa'],
-        exam: 'Kordoi nefrogenoak: bi gandor trinko, toraxetik sakrora; barruan hodi mesonefrikoa (Wolff hodia).',
+        exam: 'Kordoi nefrogenoak: bi gandor trinko, toraxetik sakrora; barruan hodi mesonefrikoa.',
         view: '3d',
       },
       {
@@ -351,20 +351,20 @@ const stagesA: StageDef[] = [
       {
         at: S5[4],
         notes: ['w15/1.2/p13/s1', 'w15/1.2/p14/s1', 'w15/1.2/p15/s1'],
-        idea: 'Gandor urogenitalean, goitik behera, bi hodi: hodi mesonefrikoa (Wolff) eta hodi paramesonefrikoa (Müller).',
-        text: 'Gandor urogenitalean, hasieratik, goitik behera bi hodi daude: hodi mesonefrikoa edo Wolff hodia (more iluna), eta haren ondoan hodi paramesonefrikoa edo Müller hodia, sistema genitalarena. Müller hodiaren patua 16. gaian ikusiko dugu.',
+        idea: 'Gandor urogenitalean, goitik behera, bi hodi: hodi mesonefrikoa eta hodi paramesonefrikoa.',
+        text: 'Gandor urogenitalean, hasieratik, goitik behera bi hodi daude: hodi mesonefrikoa (more iluna), eta haren ondoan hodi paramesonefrikoa, sistema genitalarena. Hodi paramesonefrikoaren patua 16. gaian ikusiko dugu.',
         focus: ['hodi-mesonefrikoa', 'hodi-paramesonefrikoa'],
-        exam: 'Gandor urogenitalean bi hodi, goitik behera: hodi mesonefrikoa (Wolff) eta hodi paramesonefrikoa (Müller).',
+        exam: 'Gandor urogenitalean bi hodi, goitik behera: hodi mesonefrikoa eta hodi paramesonefrikoa.',
         view: '3d',
       },
     ],
     structures: ['mesonefrosa', 'pronefrosa', 'kordoi-nefrogenoa', 'hodi-mesonefrikoa', 'gandor-urogenitala', 'hodixka-mesonefrikoak', 'gernu-gandorra', 'gonada-gandorra', 'hodi-paramesonefrikoa'],
     keyPoints: [
       'Mesonefrosa: pronefrosa baino kaudalerago eta garatuago; 4. astean sortu, amaierarako ia endekatu; ez funtzionala.',
-      'Bi gandor trinko, toraxetik sakrora: kordoi nefrogenoak; barruan hodi mesonefrikoa (Wolff).',
+      'Bi gandor trinko, toraxetik sakrora: kordoi nefrogenoak; barruan hodi mesonefrikoa.',
       'Gernu osagaia + osagai genitala → gandor urogenitala.',
       'Gandor urogenitala bitan: gernu gandorra (alboan) eta gonada gandorra (erdialdean).',
-      'Gandor urogenitalean bi hodi: hodi mesonefrikoa (Wolff) eta hodi paramesonefrikoa (Müller).',
+      'Gandor urogenitalean bi hodi: hodi mesonefrikoa eta hodi paramesonefrikoa.',
     ],
   },
 
@@ -374,7 +374,7 @@ const stagesA: StageDef[] = [
     day: '4. astea',
     dayRange: [24, 30],
     title: 'Hodixka mesonefrikoak',
-    subtitle: 'Xixkutik hodixkara: alboa Wolff hodian, erdikoa Bowman kapsula; bihurriak',
+    subtitle: 'Xixkutik hodixkara: alboa hodi mesonefrikoan, erdikoa Bowman kapsula; bihurriak',
     intro: 'Torax mailako mozketan ikusten dugu unitate mesonefriko bat: gernu gandorrean zelula metaketa bat hustu eta xixku bihurtzen da, luzatu eta hodixka mesonefrikoa ematen du. Alboko muturra hodi mesonefrikoan irekitzen da; erdikoak glomerulua inguratzen du (Bowman kapsula). Hodixka bihurritu egiten da.',
     duration: 52,
     source: src15('1.2. Mesonefrosa'),
@@ -451,7 +451,7 @@ const stagesA: StageDef[] = [
     structures: ['mesonefrosa', 'gonada-gandorra', 'gernu-gandorra', 'xixku-mesonefrikoa', 'hodixka-mesonefrikoak', 'hodi-mesonefrikoa', 'kapsula-glomerularra', 'glomeruluak', 'korpuskulua', 'arteriola-aferentea', 'arteriola-eferentea', 'atzeko-bena-kardinalak'],
     keyPoints: [
       'Gernu osagaian zelula metaketa → hustu → xixku mesonefrikoa → luzatu → hodixka mesonefrikoa.',
-      'Alboko muturra hodi mesonefrikoan (Wolff) irekita; erdikoak glomerulua inguratzen du: Bowman kapsula (kontaktuan, ez fusionatuta).',
+      'Alboko muturra hodi mesonefrikoan irekita; erdikoak glomerulua inguratzen du: Bowman kapsula (kontaktuan, ez fusionatuta).',
       'Hodixka bihurritu egiten da (tokia mugatua); pronefrikoak zuzenak ziren.',
       'Glomeruluak + kapsulak = korpuskuluak. Mesonefrosa ez da funtzionala: gernua behin betiko sisteman.',
     ],

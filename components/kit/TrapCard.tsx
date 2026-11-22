@@ -2,6 +2,7 @@
 
 import type { MouseEvent as ReactMouseEvent } from 'react';
 import { partState, useScene } from './context';
+import { useReviewLabel } from './Label';
 
 export interface TrapRow {
   /** The structure the row names (hover, click and the step's focus light it like a label). */
@@ -91,6 +92,7 @@ export function TrapCard({
 
 function Row({ row, x, y, w, z }: { row: TrapRow; x: number; y: number; w: number; z: Size }) {
   const ctx = useScene();
+  const review = useReviewLabel(row.id, row.name);
   const state = partState(ctx, row.id);
   const lit = state === 'focus' || state === 'spot' || state === 'active';
   const mid = y + 10;
@@ -110,9 +112,11 @@ function Row({ row, x, y, w, z }: { row: TrapRow; x: number; y: number; w: numbe
       {/* The vessel as drawn: a pale wall round its coloured lumen. */}
       <path d={`M${x + 3},${mid} H${x + z.swatch - 3}`} stroke="#f2d9d2" strokeWidth={9} strokeLinecap="round" />
       <path d={`M${x + 3},${mid} H${x + z.swatch - 3}`} stroke={row.swatch} strokeWidth={5.5} strokeLinecap="round" />
-      <text x={x + z.text} y={mid} dy="0.35em" fontSize={z.name} fontWeight={lit ? 800 : 700} fill={lit ? 'var(--focus)' : '#ffffff'}>
-        {row.name}
-      </text>
+      <g className="label" {...review}>
+        <text className="label-review-text" x={x + z.text} y={mid} dy="0.35em" fontSize={z.name} fontWeight={lit ? 800 : 700} fill={lit ? 'var(--focus)' : '#ffffff'}>
+          {row.name}
+        </text>
+      </g>
       {linesOf(row.detail).map((s, i) => (
         <text key={i} x={x + z.text} y={mid + 18 + i * z.line} dy="0.35em" fontSize={z.detail} fill="#efe6d8">
           {s}

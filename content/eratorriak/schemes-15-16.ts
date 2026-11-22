@@ -159,7 +159,7 @@ export const SCHEMES_16: MigrationTopic = {
     },
     {
       id: 'wolff-eratorriak',
-      title: 'Hodi mesonefrikoa (Wolff): arretan hodi genitalak',
+      title: 'Hodi mesonefrikoa: arretan hodi genitalak',
       lead: 'Testosteronak mantentzen du; emeetan endekatu eta aztarnak uzten ditu.',
       stage: 'hodi-genitalak-arrak',
       roots: [
@@ -175,7 +175,7 @@ export const SCHEMES_16: MigrationTopic = {
     },
     {
       id: 'muller-eratorriak',
-      title: 'Hodi paramesonefrikoa (Müller): emeetan hodi genitalak',
+      title: 'Hodi paramesonefrikoa: emeetan hodi genitalak',
       lead: 'Hormona antimüllerianoak endekatzen du arretan (bi aztarna); emeetan mantentzen da.',
       stage: 'hodi-genitalak-emeak',
       roots: [

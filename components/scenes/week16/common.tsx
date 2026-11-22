@@ -28,7 +28,7 @@ export const WHERE16: Record<string, Where> = {
 };
 
 export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: number } | null }>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel) {
-  return poseStage14({ right: [236, 468], look: LOOK_V2, fit: {}, where: spec.site ? WHERE16[spec.site.key] : undefined, ...spec }, build, false, CONT16);
+  return poseStage14({ right: [236, 468], look: LOOK_V2, fit: {}, strictAnchors: true, where: spec.site ? WHERE16[spec.site.key] : undefined, ...spec }, build, false, CONT16);
 }
 
 /** From the front (the embryo's left on the viewer's right). */
@@ -42,8 +42,8 @@ export const BLOCK16 = (dist = 9, target: V3 = [0, 0, 0], yaw = 10, elev = 10, s
 export const KEY16 = {
   ducts: [
     { color: UC.gonad, text: 'gonada' },
-    { color: UC.wolff, text: 'Wolff hodia' },
-    { color: UC.muller, text: 'Müller hodia' },
+    { color: UC.wolff, text: 'hodi mesonefrikoa' },
+    { color: UC.muller, text: 'hodi paramesonefrikoa' },
     { color: UC.endo, text: 'sinu urogenitala' },
   ],
   germ: [
@@ -54,14 +54,14 @@ export const KEY16 = {
   gonad: [
     { color: UC.germ, text: 'hozi zelulak' },
     { color: GC16.cord, text: 'sexu kordoiak' },
-    { color: UC.wolff, text: 'Wolff hodia' },
-    { color: UC.muller, text: 'Müller hodia' },
+    { color: UC.wolff, text: 'hodi mesonefrikoa' },
+    { color: UC.muller, text: 'hodi paramesonefrikoa' },
   ],
   testis: [
     { color: GC16.testisCord, text: 'barrabil kordoiak' },
     { color: GC16.leydig, text: 'Leydig' },
-    { color: UC.wolff, text: 'Wolff hodia' },
-    { color: UC.muller, text: 'Müller hodia' },
+    { color: UC.wolff, text: 'hodi mesonefrikoa' },
+    { color: UC.muller, text: 'hodi paramesonefrikoa' },
   ],
   ovary: [
     { color: GC16.cord, text: 'kortex kordoiak' },
@@ -75,7 +75,7 @@ export const KEY16 = {
     { color: '#c9c1b2', text: 'lotailuak' },
   ],
   vagina: [
-    { color: UC.muller, text: 'Müller (mesodermoa)' },
+    { color: UC.muller, text: 'hodi paramesonefrikoak (mesodermoa)' },
     { color: UC.endo, text: 'sinua (endodermoa)' },
   ],
 } as const;

@@ -659,7 +659,8 @@ export function baseModel(pose: BasePose, o: BaseOpts = {}) {
     );
     if (p.anchors !== false) pts[p.bone] = [p.B.c[0], p.B.c[1], skullFloor(...p.B.c) + h + 0.04];
   }
-  pts['kondrokraneoa'] = [0.32, -0.42, skullFloor(0.32, -0.42) + 0.21];
+  // The whole on a part none of its own names points at (on the parachordal one, its name and the part's shared a dot).
+  pts['kondrokraneoa'] = [0.3, 2.6, skullFloor(0.3, 2.6) + 0.21];
 
   // ———— the occipital squama: no cartilage before it, grown out of the membrane on both sides ————
   const sq = clamp01(pose.squama);

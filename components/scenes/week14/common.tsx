@@ -126,6 +126,11 @@ export interface StageSpec<P = GutPose, O = GutOpts> {
   axes?: React.ComponentProps<typeof ModelView>['axes'];
   /** The right name column's span (top, bottom), to keep it above the camera keys. */
   right?: [number, number];
+  /**
+   * Name dots held to the hover rule (topics 15 on): the pointer on a dot lights its own structure, with its own
+   * surface a few pixels round it (lib/three-d/occlusion.ts `visibleAnchor`, audited by tests/anchors3d).
+   */
+  strictAnchors?: boolean;
   /** Topic 14: how much closer than its specs the cameras sit (default 0.82; 1 keeps them as written). */
   near?: number;
   /**
@@ -412,6 +417,7 @@ export function poseStage<P, O extends { dim?: { ids: readonly string[]; k: numb
         look={spec.look}
         place={place}
         handover={handover}
+        strictAnchors={spec.strictAnchors}
         over={(at, _asked, flight) => (
           <>
             {F && F.where > 0.01 && (

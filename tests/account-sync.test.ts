@@ -53,3 +53,28 @@ it('re-reads and merges Supabase progress when another device wins the first wri
   expect(mocks.saveProgress).toHaveBeenNthCalledWith(1, 'user-1', expect.objectContaining({ data: local }), null);
   expect(mocks.saveProgress).toHaveBeenNthCalledWith(2, 'user-1', expect.objectContaining({ data: merged }), 'r1');
 });
+
+it('finishes syncing an edit made while the preceding write was pending', async () => {
+  vi.resetModules();
+  vi.clearAllMocks();
+  vi.stubGlobal('window', { setInterval: vi.fn(), addEventListener: vi.fn() });
+  vi.stubGlobal('document', { addEventListener: vi.fn() });
+  const initial = { marks: 'red' };
+  const final = { marks: null };
+  mocks.collectSnapshot.mockReturnValueOnce(initial).mockReturnValueOnce(final);
+  mocks.loadProgress.mockResolvedValueOnce(null).mockResolvedValueOnce({ blob: { data: initial }, revision: 'r1' });
+  mocks.mergeSnapshot.mockReturnValueOnce(final);
+
+  let completeFirstWrite!: (result: 'saved') => void;
+  const firstWrite = new Promise<'saved'>((resolve) => { completeFirstWrite = resolve; });
+  mocks.saveProgress.mockReturnValueOnce(firstWrite).mockResolvedValueOnce('saved');
+  const { requestProgressSync, startAccounts, syncNow } = await import('@/components/account/account');
+  await startAccounts();
+  await vi.waitFor(() => expect(mocks.saveProgress).toHaveBeenCalledTimes(1));
+
+  requestProgressSync();
+  const syncing = syncNow();
+  completeFirstWrite('saved');
+  await syncing;
+  expect(mocks.saveProgress).toHaveBeenNthCalledWith(2, 'user-1', expect.objectContaining({ data: final }), 'r1');
+});

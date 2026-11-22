@@ -188,7 +188,7 @@ const spec6: StageSpec<UnitPose, UnitOpts> = {
       dim: ['hodixka-mesonefrikoak', 'hodi-mesonefrikoa'],
       names: [
         { id: 'hodixka-mesonefrikoak', sub: 'xixkua luzatuz', from: 0.2 },
-        { id: 'hodi-mesonefrikoa', sub: 'more iluna (Wolff)', from: 0.45 },
+        { id: 'hodi-mesonefrikoa', sub: 'more iluna', from: 0.45 },
       ],
       note: 'Xixkua luzatu eta hodixka mesonefrikoa bihurtzen da. KONTUZ: apunteetako esaldi batek «hodi mesonefrikoa» dio; hodixka da',
       warn: true,

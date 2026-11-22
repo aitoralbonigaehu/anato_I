@@ -20,7 +20,7 @@ export const quiz16: QuizQuestion[] = [
   },
   {
     id: 'w16-q-muller-kokapena',
-    question: 'Non dago hodi paramesonefrikoa (Müller) hodi mesonefrikoarekiko?',
+    question: 'Non dago hodi paramesonefrikoa hodi mesonefrikoarekiko?',
     options: ['Aurre-alboan; behean haren gainetik erdialdera pasatzen da', 'Atzean, beti alboan', 'Barruan', 'Giltzurrunaren ondoan'],
     answer: 0,
     explanation: 'Mesonefrosan, hodi mesonefrikoaren aurre-alboan; mesonefrikoen gainetik pasatzen da eta sinuaren atzeko horman amaitzen da, bestearekin batera (fusionatu gabe).',
@@ -39,7 +39,7 @@ export const quiz16: QuizQuestion[] = [
     question: 'Zergatik endekatzen da hodi paramesonefrikoa gizonezkoetan?',
     options: ['Sertoli zelulen hormona antimüllerianoagatik (testosteronarekin batera)', 'Estrogenoengatik', 'Gubernakuluak tiratzen duelako', 'Mesonefrosa endekatzen delako'],
     answer: 0,
-    explanation: '8. astean Leydig zelulek testosterona eta Sertoli zelulek hormona antimüllerianoa: Müller endekatu, Wolff mantendu eta garatu.',
+    explanation: '8. astean Leydig zelulek testosterona eta Sertoli zelulek hormona antimüllerianoa: hodi paramesonefrikoa endekatu, eta hodi mesonefrikoa mantendu eta garatu.',
     stageId: 'hodi-genitalak-arrak',
   },
   {
@@ -79,7 +79,7 @@ export const quiz16: QuizQuestion[] = [
     question: 'Zein da baginaren goiko herenaren (fornixaren) jatorria?',
     options: ['Hodi paramesonefrikoak (mesodermikoa)', 'Erraboil sinubaginala (endodermikoa)', 'Ektodermoa', 'Hodi mesonefrikoa'],
     answer: 0,
-    explanation: 'Goiko herena mesodermikoa (Müller), umetokia bezala; beheko bi herenak endodermikoak (erraboil sinubaginala, sinu urogenitala).',
+    explanation: 'Goiko herena mesodermikoa (hodi paramesonefrikotik), umetokia bezala; beheko bi herenak endodermikoak (erraboil sinubaginala, sinu urogenitala).',
     stageId: 'bagina',
   },
   {

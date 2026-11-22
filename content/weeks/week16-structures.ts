@@ -7,8 +7,8 @@ import type { StructureDef } from '@/lib/sim/types';
  * kanpoko uretra-zuloa, kloaka mintza, mintz urogenitala, uzki mintza, perineoa, alantoidea, atzeko hestea,
  * bitelo zakua, hodi onfalomesenterikoa, ondestea, paretako peritoneoa.
  *
- * Colours as the scenes draw them (components/scenes/week16): the paramesonephric (Müller) duct and its
- * derivatives orange (the notes draw its vestiges orange), the mesonephric (Wolff) duct and its derivatives
+ * Colours as the scenes draw them (components/scenes/week16): the paramesonephric duct and its
+ * derivatives orange (the notes draw its vestiges orange), the mesonephric duct and its derivatives
  * purple (topic 15's colour), gonads teal, germ cells yellow.
  */
 
@@ -66,21 +66,21 @@ export const structures16: StructureDef[] = [
   {
     id: 'hodi-paramesonefrikoa',
     name: 'Hodi paramesonefrikoa',
-    es: 'Conducto paramesonéfrico (de Müller)',
-    aka: ['Müller hodia', 'Hodi paramesonefrikoak'],
+    es: 'Conducto paramesonéfrico',
+    aka: ['Hodi paramesonefrikoak'],
     category: 'mesodermoa',
     color: MULLER,
     definition: 'Mesonefrosan, hodi mesonefrikoaren aurre-alboan dagoen hodi bilaterala, sistema genitalekoa (ez gernu sistemakoa). Goian barneko zelomara irekita; behean, bi aldeetakoak erdialderantz doaz eta sinu urogenitalaren atzeko horman batera amaitzen dira, fusionatu gabe.',
     location: 'Mesonefrosan, hodi mesonefrikoaren aurre-alboan; behean, haren gainetik erdialdera.',
     origin: 'Bitarteko mesodermoa.',
     fate: 'Emeetan: Falopioren tronpak, uteroa (gorputza eta lepoa) eta baginaren goiko herena. Arretan endekatu: barrabil apendizea eta prostataren utrikulua.',
-    caution: 'Apunteetako irudi batean paramesonefrikoa urdinez eta mesonefrikoa gorriz; beste batean aztarnak laranjaz (paramesonefrikoa) eta urdinez (mesonefrikoa). Simulazioan: Müller laranja, Wolff more iluna (15. gaian bezala).',
+    caution: 'Apunteetako irudi batean paramesonefrikoa urdinez eta mesonefrikoa gorriz; beste batean aztarnak laranjaz (paramesonefrikoa) eta urdinez (mesonefrikoa). Simulazioan: hodi paramesonefrikoa laranja, eta hodi mesonefrikoa more iluna (15. gaian bezala).',
     related: ['hodi-mesonefrikoa', 'falopioren-tronpak', 'uteroa', 'tuberkulu-paramesonefrikoa'],
   },
   {
     id: 'tuberkulu-paramesonefrikoa',
     name: 'Tuberkulu paramesonefrikoa',
-    es: 'Tubérculo paramesonéfrico (de Müller)',
+    es: 'Tubérculo paramesonéfrico',
     aka: ['Goragune urogenitala', 'Tuberkulu sinubaginala', 'Erraboil sinubaginala'],
     category: 'endodermoa',
     color: ENDO,
@@ -145,7 +145,7 @@ export const structures16: StructureDef[] = [
     aka: ['Sertoliren euspen zelulak', 'Barrabilaren euspen zelulak', 'Sertoli'],
     category: 'mesodermoa',
     color: '#ccfbf1',
-    definition: 'Barrabil kordoietatik 4. hilabeterako sortzen diren zelulak: euspen zelulak eta espermatozoideen ekoizpenaren erregulatzaileak. Hormona antimüllerianoa ekoizten dute (Müller hodia endekatu).',
+    definition: 'Barrabil kordoietatik 4. hilabeterako sortzen diren zelulak: euspen zelulak eta espermatozoideen ekoizpenaren erregulatzaileak. Hormona antimüllerianoa ekoizten dute (hodi paramesonefrikoa endekatzen du).',
     location: 'Barrabil kordoien barruan.',
     related: ['barrabil-kordoiak', 'leydig-zelulak', 'hodi-paramesonefrikoa'],
   },

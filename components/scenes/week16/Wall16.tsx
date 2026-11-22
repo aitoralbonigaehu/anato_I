@@ -48,11 +48,11 @@ const spec1: StageSpec<UroPose, UroOpts> = {
       glide: 0.05,
       dim: ['hodi-mesonefrikoa', 'hodi-paramesonefrikoa'],
       names: [
-        { id: 'hodi-mesonefrikoa', sub: 'Wolff' },
+        { id: 'hodi-mesonefrikoa' },
         // Named at its cranial end, where it starts (it grows down from there).
-        { id: 'hodi-paramesonefrikoa', p: 'muller-sarrera', sub: 'Müller · goitik behera hazten' },
+        { id: 'hodi-paramesonefrikoa', p: 'muller-sarrera', sub: 'goitik behera hazten' },
       ],
-      note: 'Ondoren hodi urogenitalak: hodi mesonefrikoa (Wolff) eta hodi paramesonefrikoa (Müller)',
+      note: 'Ondoren hodi urogenitalak: hodi mesonefrikoa eta hodi paramesonefrikoa',
     },
     {
       to: { gonadDown: 1 },
@@ -140,10 +140,10 @@ const spec4: StageSpec<UroPose, UroOpts> = {
       glide: 0.06,
       dim: ['hodi-paramesonefrikoa', 'hodi-mesonefrikoa', 'mesonefrosa'],
       names: [
-        { id: 'hodi-paramesonefrikoa', sub: 'Wolff hodiaren aurre-alboan', from: 0.2 },
+        { id: 'hodi-paramesonefrikoa', sub: 'hodi mesonefrikoaren aurre-alboan', from: 0.2 },
         { id: 'hodi-mesonefrikoa', small: true },
       ],
-      note: 'Hodi paramesonefrikoa (Müller) mesonefrosan, hodi mesonefrikoaren aurre-alboan. Ez du gernu sisteman parte hartzen: sistema genitalean bai',
+      note: 'Hodi paramesonefrikoa mesonefrosan, hodi mesonefrikoaren aurre-alboan. Ez du gernu sisteman parte hartzen: sistema genitalean bai',
     },
     {
       to: { muller: 0.85, mesoGone: 0.6 },

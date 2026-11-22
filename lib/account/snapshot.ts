@@ -6,6 +6,7 @@
 
 import { studyKey } from '@/lib/study/storage-scope';
 import { ACTIVITY_KEY, mergeActivity, parseActivity } from '@/lib/study/activity';
+import { mergeSceneMarks, SCENE_MARKS_KEY } from '@/lib/study/scene-marks';
 
 export type Snapshot = Record<string, unknown>;
 
@@ -18,6 +19,7 @@ export interface ProgressBlob {
 /** Everything that is progress (not preferences: theme, speed, voice stay per device). */
 export const SYNC_KEYS = [
   ACTIVITY_KEY,
+  SCENE_MARKS_KEY,
   'enbrioatlas:visited',
   'enbrioatlas:places',
   'enbrioatlas:last',
@@ -44,6 +46,7 @@ const lastTry = (v: unknown) => (isObj(v) && Array.isArray(v.hist) && v.hist.len
 
 const MERGE: Record<string, (local: unknown, remote: unknown) => unknown> = {
   [ACTIVITY_KEY]: (a, b) => mergeActivity(parseActivity(a), parseActivity(b)),
+  [SCENE_MARKS_KEY]: mergeSceneMarks,
   // Stages opened per topic: the union, in the order first seen.
   'enbrioatlas:visited': (a, b) =>
     byEntry(a, b, (x, y) => {
