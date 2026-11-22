@@ -1,9 +1,9 @@
 'use client';
 
 import { studyKey } from '@/lib/study/storage-scope';
-import { useEffect, useMemo, useState } from 'react';
-import type { BelItem, BelPlate } from '@/content/belortzioak';
-import { Figure, type Marks as BelMarks } from './Belortzioak';
+import { useEffect, useState } from 'react';
+import legacyPanels from '@/content/course-figure-panels-legacy.json';
+import recentPanels from '@/content/course-figure-panels-recent.json';
 import styles from './CourseFigures.module.css';
 
 /** `file` is the image-name prefix when it is not the list position (topic-numbered figures). */
@@ -25,7 +25,19 @@ const documents: { title: string; pages: number; file?: string }[] = [
 ];
 type Line = { text: string; x: number; y: number; w: number; h: number };
 type Marks = Record<string, 1 | 2>;
-const key = 'irudiak-pdf-marks-v1';
+const markKey = 'irudiak-pdf-marks-v1';
+const panelsByPage: Record<string, number[][]> = { ...legacyPanels, ...recentPanels };
+const fullPage = [[0, 0, 1, 1]];
+
+function pageId(doc: number, page: number) {
+  return `${documents[doc].file ?? doc + 1}-${page}`;
+}
+
+function panelsFor(id: string) {
+  return panelsByPage[id] ?? fullPage;
+}
+
+const percent = (fraction: number) => `${fraction * 100}%`;
 
 /** Join short, closely aligned OCR lines, such as “Hodi” / “neurala”. */
 function groupLines(lines: Line[]): Line[] {
@@ -55,47 +67,110 @@ function groupLines(lines: Line[]): Line[] {
   return grouped;
 }
 
-export function CourseFigures() {
-  const [doc, setDoc] = useState(0);
-  const [page, setPage] = useState(1);
-  const [pageLines, setPageLines] = useState<{ id: string; lines: Line[] }>({ id: '', lines: [] });
-  const [marks, setMarks] = useState<Marks>(() => {
-    try { return typeof window === 'undefined' ? {} : JSON.parse(localStorage.getItem(studyKey(key)) || '{}'); } catch { return {}; }
-  });
-  const [available, setAvailable] = useState(true);
-  const id = `${documents[doc].file ?? doc + 1}-${page}`;
-  const [size, setSize] = useState<{ id: string; wh: [number, number] } | null>(null);
-  const [active, setActive] = useState<string | null>(null);
-
-  // The drawing's own size, so the Belortzioak stage keeps its aspect ratio.
+/** The crop and the OCR hit areas share the source page's coordinates. */
+function CourseFigure({ id, title, crop, marks, onMark }: {
+  id: string;
+  title: string;
+  crop: number[];
+  marks: Marks;
+  onMark: (index: number) => void;
+}) {
+  const [lines, setLines] = useState<Line[]>([]);
+  const [imageSize, setImageSize] = useState<[number, number] | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+  const src = `/irudiak-pdf/${id}.jpg`;
   useEffect(() => {
-    const img = new Image();
-    img.onload = () => setSize({ id, wh: [img.naturalWidth || 1, img.naturalHeight || 1] });
-    img.src = `/irudiak-pdf/${id}.jpg`;
-  }, [id]);
-
-  const lines = useMemo(() => (pageLines.id === id ? pageLines.lines : []), [pageLines, id]);
-  // Each detected name becomes a Belortzioak item: its name in a side column, a leader to where it sits on the drawing.
-  const plate = useMemo<BelPlate | null>(() => {
-    if (!size || size.id !== id) return null;
-    const items: BelItem[] = lines.map((l, i) => {
-      const c: [number, number] = [l.x + l.w / 2, l.y + l.h / 2];
-      return { key: `${id}:${i}`, n: i + 1, tag: String(i + 1), name: l.text, label: c, targets: [c], marks: [], arrow: true, r: [Math.max(0.03, l.w / 2)] };
-    });
-    return { id: `pdf-${id}`, system: 'fusio', title: `${documents[doc].title}, ${page}. orria`, sub: '', size: size.wh, items };
-  }, [size, id, lines, doc, page]);
-  const belMarks = useMemo<BelMarks>(() => Object.fromEntries(lines.flatMap((_, i) => (marks[`${id}-${i}`] ? [[`${id}:${i}`, marks[`${id}-${i}`]]] : []))), [lines, marks, id]);
-  const pick = (key: string) => mark(Number(key.split(':')[1]));
-
-  useEffect(() => {
-    let active = true;
-    fetch(`/irudiak-pdf/${id}.jpg.json`).then(r => {
+    const request = new AbortController();
+    fetch(`${src}.json`, { signal: request.signal }).then(r => {
       if (!r.ok) throw new Error('unavailable');
       return r.json();
-    }).then(data => { if (active) { setPageLines({ id, lines: Array.isArray(data.lines) ? groupLines(data.lines) : [] }); setAvailable(true); } })
-      .catch(() => { if (active) { setPageLines({ id, lines: [] }); setAvailable(false); } });
-    return () => { active = false; };
-  }, [id]);
+    }).then(data => {
+      if (!request.signal.aborted && Array.isArray(data?.lines)) setLines(groupLines(data.lines));
+    }).catch(() => { /* The illustration is still usable without OCR. */ });
+    return () => request.abort();
+  }, [src]);
+
+  const [left, top, right, bottom] = crop;
+  const width = right - left;
+  const height = bottom - top;
+  const ratio = imageSize ? (imageSize[0] * width) / (imageSize[1] * height) : 1.42 * width / height;
+  if (failed) {
+    return (
+      <div className={styles.message}>
+        <p role="status">Irudia ezin izan da kargatu.</p>
+        <button type="button" className={styles.control} onClick={() => { setAttempt(value => value + 1); setFailed(false); }}>
+          Saiatu berriro
+        </button>
+      </div>
+    );
+  }
+  return (
+    <div className={styles.stage}>
+      <figure className={styles.figure} style={{ aspectRatio: ratio }} aria-busy={!imageSize}>
+        {/* The original PDF raster contains both the illustration and the printed annotations. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={attempt ? `${src}?retry=${attempt}` : src}
+          alt={title}
+          draggable={false}
+          style={{ width: percent(1 / width), left: percent(-left / width), top: percent(-top / height) }}
+          onLoad={event => setImageSize([event.currentTarget.naturalWidth, event.currentTarget.naturalHeight])}
+          onError={() => setFailed(true)}
+        />
+        {!imageSize && <span className={styles.loading} role="status">Irudia kargatzen…</span>}
+        {imageSize && lines.map((line, index) => {
+          const x = line.x + line.w / 2;
+          const y = line.y + line.h / 2;
+          if (x < left || x >= right || y < top || y >= bottom) return null;
+          const x0 = Math.max(line.x, left);
+          const y0 = Math.max(line.y, top);
+          const mark = marks[`${id}-${index}`];
+          return (
+            <button
+              type="button"
+              key={index}
+              className={styles.spot}
+              data-mark={mark}
+              aria-label={mark ? `${line.text} (${mark === 1 ? 'gorriz markatuta' : 'laranjaz markatuta'})` : line.text}
+              aria-pressed={Boolean(mark)}
+              style={{
+                left: percent((x0 - left) / width),
+                top: percent((y0 - top) / height),
+                width: percent((Math.min(line.x + line.w, right) - x0) / width),
+                height: percent((Math.min(line.y + line.h, bottom) - y0) / height),
+              }}
+              onClick={() => onMark(index)}
+            />
+          );
+        })}
+      </figure>
+    </div>
+  );
+}
+
+export function CourseFigures() {
+  const [{ doc, page, panel }, setSelection] = useState({ doc: 0, page: 1, panel: 0 });
+  const [marks, setMarks] = useState<Marks>(() => {
+    try { return typeof window === 'undefined' ? {} : JSON.parse(localStorage.getItem(studyKey(markKey)) || '{}') ?? {}; } catch { return {}; }
+  });
+  const document = documents[doc];
+  const id = pageId(doc, page);
+  const panels = panelsFor(id);
+  const first = page === 1 && panel === 0;
+  const last = page === document.pages && panel === panels.length - 1;
+
+  function step(direction: -1 | 1) {
+    const nextPanel = panel + direction;
+    if (nextPanel >= 0 && nextPanel < panels.length) {
+      setSelection({ doc, page, panel: nextPanel });
+      return;
+    }
+    const nextPage = page + direction;
+    if (nextPage < 1 || nextPage > document.pages) return;
+    setSelection({ doc, page: nextPage, panel: direction > 0 ? 0 : panelsFor(pageId(doc, nextPage)).length - 1 });
+  }
+
   function mark(index: number) {
     const markId = `${id}-${index}`;
     setMarks(current => {
@@ -103,24 +178,44 @@ export function CourseFigures() {
       if (!next[markId]) next[markId] = 1;
       else if (next[markId] === 1) next[markId] = 2;
       else delete next[markId];
-      try { localStorage.setItem(studyKey(key), JSON.stringify(next)); } catch { /* storage unavailable */ }
+      try { localStorage.setItem(studyKey(markKey), JSON.stringify(next)); } catch { /* storage unavailable */ }
       return next;
     });
   }
-  return <div className={styles.root}>
-    <p>Irudia geziekin eta izenekin, Belortzioak bezala. Izenak sakatu: <strong>gorria → laranja → kendu</strong>. Markak gailu honetan gordetzen dira.</p>
-    <p className={styles.note}>Testua automatikoki detektatu da; baliteke izen batzuk ez antzematea.</p>
-    <label htmlFor="figure-doc">Dokumentua</label>{' '}
-    <select id="figure-doc" value={doc} onChange={e => { setDoc(Number(e.target.value)); setPage(1); }}>
-      {documents.map((d, i) => <option key={d.title} value={i}>{d.title}</option>)}
-    </select>
-    <div className={styles.paging}>
-      <button type="button" disabled={page === 1} onClick={() => setPage(page - 1)}>← Aurrekoa</button>
-      <span>{page} / {documents[doc].pages}</span>
-      <button type="button" disabled={page === documents[doc].pages} onClick={() => setPage(page + 1)}>Hurrengoa →</button>
+  return (
+    <div className={styles.root}>
+      <div className={styles.filters}>
+        <label>
+          Dokumentua
+          <select className={styles.control} value={doc} onChange={event => setSelection({ doc: Number(event.target.value), page: 1, panel: 0 })}>
+            {documents.map((item, index) => <option key={item.title} value={index}>{item.title}</option>)}
+          </select>
+        </label>
+        <label>
+          PDFko orria
+          <select className={styles.control} value={page} onChange={event => setSelection({ doc, page: Number(event.target.value), panel: 0 })}>
+            {Array.from({ length: document.pages }, (_, index) => <option key={index + 1} value={index + 1}>{index + 1}</option>)}
+          </select>
+        </label>
+      </div>
+      <nav className={styles.paging} aria-label="PDFetako irudien nabigazioa">
+        <button type="button" className={styles.control} disabled={first} onClick={() => step(-1)}>
+          <span aria-hidden="true">←</span> Aurrekoa
+        </button>
+        <span className={styles.position} aria-live="polite" aria-atomic="true">{page}. orria · {panel + 1}/{panels.length} irudia</span>
+        <button type="button" className={styles.control} disabled={last} onClick={() => step(1)}>
+          Hurrengoa <span aria-hidden="true">→</span>
+        </button>
+      </nav>
+      <CourseFigure
+        key={id}
+        id={id}
+        title={`${document.title}, ${page}. orria, ${panel + 1}. irudia`}
+        crop={panels[panel]}
+        marks={marks}
+        onMark={mark}
+      />
+      <p className={styles.note}>Sakatu automatikoki antzemandako izenak markatzeko: <strong>gorria → laranja → kendu</strong>. Markak gailu honetan gordetzen dira.</p>
     </div>
-    {available ? <div className={styles.figure}>
-      {plate ? <Figure plate={plate} src={`/irudiak-pdf/${id}.jpg`} mode="esploratu" numbers={false} covered={() => false} active={active} onHover={setActive} onPick={pick} marks={belMarks} onMark={pick} asked={null} answered={false} tap={null} onTap={() => {}} missing={false} /> : <p>Kargatzen…</p>}
-    </div> : <p>Irudia ezin izan da kargatu. Saiatu berriro.</p>}
-  </div>;
+  );
 }
