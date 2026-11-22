@@ -705,7 +705,7 @@ export function ImageLab() {
         )}
       </section>
       <LandFoot>
-        <p>«Atlaseko irudiak» gure eszenak dira; «PDFetako irudiak» hautatutako zazpi dokumentuetako orriak dira. Gainerako irudi pribatuak zure ordenagailuan bakarrik kargatzen dira, «Ikasgaiko irudiak» fitxan.</p>
+        <p>«Atlaseko irudiak» gure eszenak dira; «PDFetako irudiak» hautatutako dokumentuetako orriak dira. Gainerako irudi pribatuak zure ordenagailuan bakarrik kargatzen dira, «Ikasgaiko irudiak» fitxan.</p>
       </LandFoot>
     </div>
   );

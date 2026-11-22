@@ -252,19 +252,62 @@ export function coverOf(items: Item3[], eye: V3, p: V3, id: string, margin = 0.3
  * it (`seenOwn`), with its own surface a few pixels round it. Otherwise (topics 10–14, laid out with it) it
  * only must not be hidden by another solid structure.
  */
-export function visibleAnchor(items: Item3[], eye: V3, p: V3, id: string, inFrame: (q: V3) => boolean = () => true, tries = 48, strict = false): V3 {
+export function visibleAnchor(
+  items: Item3[],
+  eye: V3,
+  p: V3,
+  id: string,
+  inFrame: (q: V3) => boolean = () => true,
+  tries = 48,
+  strict = false,
+  settle = false,
+): V3 {
   // While the camera turns, an answer holds until the eye has moved a little: one search per name, not per frame.
   let memo = memos.get(items);
   if (!memo) memos.set(items, (memo = new Map()));
   const key = `${strict ? 's' : 'c'}|${id}|${p[0]},${p[1]},${p[2]}`;
   const was = memo.get(key);
-  if (was && inFrame(was.q) && Math.hypot(eye[0] - was.eye[0], eye[1] - was.eye[1], eye[2] - was.eye[2]) < 0.08) return was.q;
-  const q = strict ? search(items, eye, p, id, inFrame, tries) : searchUncovered(items, eye, p, id, inFrame, tries);
-  memo.set(key, { eye: [eye[0], eye[1], eye[2]], q });
-  return q;
+  const near = (e: V3) => Math.hypot(eye[0] - e[0], eye[1] - e[1], eye[2] - e[2]) < 0.08;
+  if (was && !(settle && was.resumed) && inFrame(was.q) && near(was.eye)) {
+    if (was.resumed) resumedUsed = true;
+    return was.q;
+  }
+  if (!strict) {
+    const q = searchUncovered(items, eye, p, id, inFrame, tries);
+    memo.set(key, { eye: [eye[0], eye[1], eye[2]], q });
+    return q;
+  }
+  // While anything moves (a model rebuilt every frame as a layer grows, the camera gliding or dragged) the memo
+  // above does not hold, and a full search per name per frame cost ~100–300 ms in topic 18's tooth. Then the
+  // search resumes where it last succeeded, last frame's point first: a name whose every point lies on a seam
+  // (a thin ligament, a layer on a layer) proved that once, not each frame. Such an answer may be a step below
+  // the best: once the picture holds still, the view asks again with `settle` and gets the full search
+  // (ModelView), the dot the hover tests check.
+  const resume = settle ? undefined : lastAnswer.get(id);
+  const r = search(items, eye, p, id, inFrame, tries, resume);
+  memo.set(key, { eye: [eye[0], eye[1], eye[2]], q: r.q, resumed: !!resume });
+  if (resume) resumedUsed = true;
+  if (lastAnswer.size > 2000) lastAnswer.clear();
+  lastAnswer.set(id, r);
+  return r.q;
 }
 
-const memos = new WeakMap<Item3[], Map<string, { eye: V3; q: V3 }>>();
+/** Whether a name was placed by a resumed (playback) search since the last call: the view then settles. */
+export function takeResumed(): boolean {
+  const r = resumedUsed;
+  resumedUsed = false;
+  return r;
+}
+
+/** Forgets the answers searches resume from (each next search is a full one, as on a still picture). */
+export function forgetResume(): void {
+  lastAnswer.clear();
+}
+
+let resumedUsed = false;
+const memos = new WeakMap<Item3[], Map<string, { eye: V3; q: V3; resumed?: boolean }>>();
+/** The latest strict answer per name: where it was found and by which pass. */
+const lastAnswer = new Map<string, Answer>();
 
 /** The dot only must not be hidden by another solid structure (the rule topics 10–14 were laid out with). */
 function searchUncovered(items: Item3[], eye: V3, p: V3, id: string, inFrame: (q: V3) => boolean, tries: number): V3 {
@@ -319,26 +362,36 @@ function rimOf(eye: V3, p: V3): V3[] {
   return [right, up].flatMap((a) => [1, -1].map((k): V3 => [p[0] + a[0] * k * r, p[1] + a[1] * k * r, p[2] + a[2] * k * r]));
 }
 
-function search(items: Item3[], eye: V3, p: V3, id: string, inFrame: (q: V3) => boolean, tries: number): V3 {
+/**
+ * Passes, best first: 0 the written point with a clean rim or a point of it with room and a clean rim, 1 room
+ * all round, 2 lit at its pixel, 3 nothing else in front, 4 none (the written point). `resume` (last frame's
+ * answer, the eye unmoved) starts at the pass that answered then, its point tried first.
+ */
+function search(items: Item3[], eye: V3, p: V3, id: string, inFrame: (q: V3) => boolean, tries: number, resume?: Answer): Answer {
   // Seen and inside the picture, with its own surface a few pixels all round: it stays. Cut off by the frame's
   // edge, it looks for a part in the picture too. Seen = the pointer on the dot lights this structure: a cover
   // a hair in front (a tubule round the nephrotome it grew from, a sheet over another) moves it as surely as a
   // far one, and so does a dot on its very edge (a few pixels off, the pointer lights the neighbour).
-  const pLit = inFrame(p) && seenOwn(items, eye, p, id) && !coverOf(items, eye, p, id);
+  const shown = (q: V3) => inFrame(q) && seenOwn(items, eye, q, id) && !coverOf(items, eye, q, id);
   // (One of the four points round it may light a neighbour for the written point; none for a moved one.)
-  if (pLit && rimOf(eye, p).filter((r) => litOther(items, eye, r, id)).length <= 1) return p;
-  const cand: { q: V3; d: number }[] = [];
-  for (const it of items) {
-    // Its own drawn pieces, glassy ones included (a cartilage is seen through, yet it is where the name points).
-    if (!isOwn(it, id) || it.stream || (it.opacity ?? 1) * (it.show ?? 1) < 0.05) continue;
-    const b = boundOf(it);
-    // Every other vertex is plenty (rings of a tube are close together) and halves the sort.
-    for (let i = 0; i < b.pos.length; i += 6) {
-      const q: V3 = [b.pos[i], b.pos[i + 1], b.pos[i + 2]];
-      cand.push({ q, d: (q[0] - p[0]) ** 2 + (q[1] - p[1]) ** 2 + (q[2] - p[2]) ** 2 });
+  const written = (q: V3) => shown(q) && rimOf(eye, q).filter((r) => litOther(items, eye, r, id)).length <= 1;
+  // Its own vertices, nearest first: built only when last frame's point no longer answers (a big bone has thousands).
+  let cand: { q: V3; d: number }[] | null = null;
+  const cands = () => {
+    if (cand) return cand;
+    cand = [];
+    for (const it of items) {
+      // Its own drawn pieces, glassy ones included (a cartilage is seen through, yet it is where the name points).
+      if (!isOwn(it, id) || it.stream || (it.opacity ?? 1) * (it.show ?? 1) < 0.05) continue;
+      const b = boundOf(it);
+      // Every other vertex is plenty (rings of a tube are close together) and halves the sort.
+      for (let i = 0; i < b.pos.length; i += 6) {
+        const q: V3 = [b.pos[i], b.pos[i + 1], b.pos[i + 2]];
+        cand.push({ q, d: (q[0] - p[0]) ** 2 + (q[1] - p[1]) ** 2 + (q[2] - p[2]) ** 2 });
+      }
     }
-  }
-  cand.sort((a, b) => a.d - b.d);
+    return cand.sort((a, b) => a.d - b.d);
+  };
   // Seen with a little room round it: a point just past another vessel's edge would still read as on that one.
   const f: V3 = [p[0] - eye[0], p[1] - eye[1], p[2] - eye[2]];
   const fl = Math.hypot(f[0], f[1], f[2]) || 1;
@@ -364,7 +417,8 @@ function search(items: Item3[], eye: V3, p: V3, id: string, inFrame: (q: V3) => 
   // Nothing else named a few pixels round it: the pointer near the dot (not only on its exact pixel) lights it, or nothing.
   // The ring round a lit point is looked at for the nearest few only: a thin nerve on a named bone has no
   // point with a clear ring, and trying them all cost a frame.
-  let rings = 48;
+  // (Resumed with the eye unmoved, a few: the full look already failed on a frame of this same view.)
+  let rings = resume ? 8 : 48;
   const inside = (q: V3) => inFrame(q) && lit(q) && rings-- > 0 && !rimOf(eye, q).some((r) => litOther(items, eye, r, id)) && ok(q);
   // Nearest first; farther along, the rest sampled sparsely. A thin thing lying on another (a slit along a
   // seam) never has room round it: then any point of it in sight beats a dot on what covers it.
@@ -377,17 +431,32 @@ function search(items: Item3[], eye: V3, p: V3, id: string, inFrame: (q: V3) => 
   };
   // Nothing of it lit anywhere (a thin thing inside another): at least a point nothing else hides.
   const clear = (q: V3) => inFrame(q) && !coverOf(items, eye, q, id, 0.12);
-  for (const pass of [inside, ok, tight, clear]) {
+  const passes = [inside, ok, tight, clear];
+  // Resumed: last frame's answer by the same test that found it, before anything else (the common case).
+  if (resume) {
+    // Nothing of it was found from here last frame: not looked for again until the eye moves.
+    if (resume.level >= passes.length) return { q: p, level: resume.level, kept: true };
+    if (resume.kept) {
+      if (resume.level === 0 ? written(p) : shown(p)) return { q: p, level: resume.level, kept: true };
+    } else if (passes[resume.level](resume.q)) return { q: resume.q, level: resume.level, kept: false };
+  }
+  const pLit = shown(p);
+  if (pLit && rimOf(eye, p).filter((r) => litOther(items, eye, r, id)).length <= 1) return { q: p, level: 0, kept: true };
+  for (let level = resume?.level ?? 0; level < passes.length; level++) {
+    const pass = passes[level];
     // No point of it has room all round (a thin thing): its own written point, if the pointer lights it there.
-    if (pass === ok && pLit) return p;
-    for (let i = 0; i < Math.min(tries, cand.length); i++) {
-      const r = take(pass, cand[i].q);
-      if (r) return r;
+    if (pass === ok && pLit) return { q: p, level, kept: true };
+    const c = cands();
+    for (let i = 0; i < Math.min(tries, c.length); i++) {
+      const r = take(pass, c[i].q);
+      if (r) return { q: r, level, kept: false };
     }
-    for (let i = tries; i < cand.length; i += Math.max(1, Math.floor(cand.length / 64))) {
-      const r = take(pass, cand[i].q);
-      if (r) return r;
+    for (let i = tries; i < c.length; i += Math.max(1, Math.floor(c.length / 64))) {
+      const r = take(pass, c[i].q);
+      if (r) return { q: r, level, kept: false };
     }
   }
-  return p;
+  return { q: p, level: passes.length, kept: true };
 }
+
+type Answer = { q: V3; level: number; kept: boolean };

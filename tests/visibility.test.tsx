@@ -111,6 +111,7 @@ const MENTION_ONLY: Record<string, string> = {
   '16/jaisketa-arrak/1/iztai-hodia': 'kokapena: iztai hodia 5. urratsean eratzen da',
   '16/jaisketa-arrak/5/gubernakulua': 'urrats honetan desagertzen da',
   '16/jaisketa-emeak/2/gubernakulua': 'urrats honetan endekatu eta bi lotailu bihurtzen da',
+  '16/hodi-genitalak-emeak/5/hodi-mesonefrikoa': 'aurreko urratsean endekatu da: haren aztarnak (epooforoa, paraooforoa) izendatzen dira',
   '16/kanpo-genitalak/4/mintz-urogenitala': 'urrats honetan apurtzen da: ildo urogenitala',
   '15/metanefrosa/1/metanefrosa': 'sarrera: ureter kimua eta blastema hurrengo bi urratsetan eratzen dira (metanefrosa bera)',
   '15/sinu-urogenitala/2/kloaka': 'urrats honetan trenkadatzen da: hasieran marraztuta, bukaeran bi atal',

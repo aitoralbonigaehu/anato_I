@@ -5,7 +5,8 @@ import { Stage3D, type At3, type Handover } from '@/components/kit/three/Stage3D
 import { blendCamera } from '@/lib/three-d/aim';
 import { add, deg, norm, sub, type Camera3, type M4, type V3, type View3 } from '@/lib/three-d/math';
 import type { Scene3 } from '@/lib/three-d/scene';
-import { coverOf, ownCentre, seenOwn, visibleAnchor } from '@/lib/three-d/occlusion';
+import { coverOf, ownCentre, seenOwn, takeResumed, visibleAnchor } from '@/lib/three-d/occlusion';
+import { useEffect, useRef, useState } from 'react';
 import { seg } from '@/lib/sim/anim';
 import { vis } from './common';
 import { POSE0, centreline, caudal, heartModel, type HeartOpts, type HeartPose } from './model3d';
@@ -222,11 +223,24 @@ export function ModelView({
 }: ViewProps & { model: { items: Scene3['items']; pts: Record<string, V3> }; continuity: string; look?: Scene3['look']; place?: M4; handover?: Handover; strictAnchors?: boolean }) {
   const scene: Scene3 = { camera, items: model.items, look };
   const { mentioned, partsOf } = useScene();
+  // While the model changes every frame (playback), the name dots come from quick resumed searches; once the
+  // picture holds still for a moment, one render asks for the full search (the dot the pointer is tested on).
+  const [, setSettled] = useState(0);
+  const settleNext = useRef(false);
+  const settleTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  // Only a mounted view plays: a still render (the first one, a static one) always gets the full search.
+  const live = useRef(false);
+  useEffect(() => {
+    live.current = true;
+    return () => clearTimeout(settleTimer.current);
+  }, []);
   return (
     <g>
       <rect x={0} y={0} width={1000} height={640} fill="none" />
       <Stage3D scene={scene} axes={axes} continuity={continuity} place={place} handover={handover}>
         {(at, view, flight = 1) => {
+          const settle = settleNext.current || !live.current;
+          settleNext.current = false;
           // While a flight from another model ends, the names and notes come in with it.
           const said = labels * flight;
           // Directional captions describe the step's reference camera. After a turn, label that
@@ -244,7 +258,7 @@ export function ModelView({
             // A dot behind another structure would sit on that one: it moves to the part of its own the eye sees.
             // A point written by hand stays (held to the hover rule: while the pointer on it lights its structure).
             const solve = typeof n.p === 'string' || (strictAnchors && !(inFrame(p) && seenOwn(model.items, view.eye, p, n.id) && !coverOf(model.items, view.eye, p, n.id)));
-            const q = at(solve ? visibleAnchor(model.items, view.eye, p, n.id, inFrame, 48, strictAnchors) : p);
+            const q = at(solve ? visibleAnchor(model.items, view.eye, p, n.id, inFrame, 48, strictAnchors, settle) : p);
             items.push({ id: n.id, at: q, show: n.show * said, small: n.small, text: n.text, sub: n.sub, key: n.key });
           }
           // What the step's text says is named too, when the model draws it in the frame, even where the
@@ -255,9 +269,16 @@ export function ModelView({
             // or else at its biggest piece.
             const own = [id, ...(partsOf?.(id) ?? [])].find((o) => ownCentre(model.items, o));
             if (!own) continue;
-            const q = visibleAnchor(model.items, view.eye, model.pts[id] ?? model.pts[own] ?? ownCentre(model.items, own)!, own, inFrame, 48, strictAnchors);
+            const q = visibleAnchor(model.items, view.eye, model.pts[id] ?? model.pts[own] ?? ownCentre(model.items, own)!, own, inFrame, 48, strictAnchors, settle);
             if (!inFrame(q)) continue;
             items.push({ id, key: `${id}-said`, at: at(q), show: said, small: true });
+          }
+          if (takeResumed()) {
+            clearTimeout(settleTimer.current);
+            settleTimer.current = setTimeout(() => {
+              settleNext.current = true;
+              setSettled((k) => k + 1);
+            }, 160);
           }
           return (
             <>

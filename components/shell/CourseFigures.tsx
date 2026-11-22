@@ -7,7 +7,7 @@ import { Figure, type Marks as BelMarks } from './Belortzioak';
 import styles from './CourseFigures.module.css';
 
 /** `file` is the image-name prefix when it is not the list position (topic-numbered figures). */
-const documents: { title: string; pages: number; file?: number }[] = [
+const documents: { title: string; pages: number; file?: string }[] = [
   { title: 'Hezur-sistema', pages: 4 },
   { title: 'Muskulu-sistema', pages: 3 },
   { title: 'Enbriologia · muskulu-sistema', pages: 2 },
@@ -15,8 +15,13 @@ const documents: { title: string; pages: number; file?: number }[] = [
   { title: 'Enbriologia · gorputz-barrunbeak', pages: 4 },
   { title: 'Enbriologia · liseri-aparatua', pages: 8 },
   { title: 'Enbriologia · zirkulazio-sistema', pages: 13 },
-  { title: 'Enbriologia · burua eta lepoa (I)', pages: 11, file: 17 },
-  { title: 'Enbriologia · burua eta lepoa (II)', pages: 22, file: 18 },
+  { title: 'Enbriologia · gernu-sistema', pages: 5, file: 'gernu-sistema' },
+  { title: 'Enbriologia · sistema genitala', pages: 6, file: 'sistema-genitala' },
+  { title: 'Enbriologia · burua eta lepoa (I)', pages: 11, file: '17' },
+  { title: 'Enbriologia · burua eta lepoa (II)', pages: 22, file: '18' },
+  { title: 'Enbriologia · burua eta lepoa (2026–27)', pages: 7, file: 'burua-lepoa-26-27' },
+  { title: 'Enbriologia · nerbio-sistema (I)', pages: 6, file: 'nerbio-sistema-i' },
+  { title: 'Enbriologia · nerbio-sistema (I), irudi osagarriak', pages: 4, file: 'nerbio-sistema-i-osagarriak' },
 ];
 type Line = { text: string; x: number; y: number; w: number; h: number };
 type Marks = Record<string, 1 | 2>;
