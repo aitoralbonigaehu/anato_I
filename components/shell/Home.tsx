@@ -227,7 +227,7 @@ export function Home() {
 
       <section className="hm-hero">
         <div className="lp-aurora" aria-hidden />
-        <div className="hm-hero-grid">
+        <div className="hm-top">
           <div className="hero-text hm-copy">
             <p className="hm-course rv">
               Enbriologia <span>Giza Anatomia I</span>
@@ -240,6 +240,8 @@ export function Home() {
                 <span>zelulaz zelula.</span>
               </span>
             </h1>
+          </div>
+          <div className="hero-text hm-side">
             <p className="hero-lead rv">Ernalkuntzatik gorputzaren sistemak eratu arte: prozesu bakoitza animatuta, zure apunteetako izen guztiekin, euskaraz. Eten, atzera egin, mozketa aldatu eta egitura bakoitza klikatu.</p>
             <div className="hero-cta rv">
               <ContinueCta />
@@ -253,9 +255,9 @@ export function Home() {
               <Link href="#garapena">garapena egunez egun</Link>
             </p>
           </div>
-          <div className="hero-visual hm-visual rv">
-            <HeroReel playing={ready} />
-          </div>
+        </div>
+        <div className="hero-visual hm-visual rv">
+          <HeroReel playing={ready} />
         </div>
         <TopicRuler />
       </section>

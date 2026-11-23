@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState, useSyncExternalStore, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { getWeek } from '@/content/registry-lite';
 import { hueStyle } from './topicHue';
 
@@ -45,9 +45,6 @@ const CLIP = 8.2;
 const HOLD = 9.4;
 const FADE = 1;
 const FPS = 30;
-/** The ring around the glass: one arc per clip (degrees), with a gap between arcs. */
-const SEG = 360 / PICKS.length;
-const GAP = 5;
 /** A clip that has not started after this long (a slow network) is passed over rather than waited for. */
 const STALL = 4;
 
@@ -72,7 +69,7 @@ interface Frame {
   fade: number;
 }
 
-/** The hero's lens: real 3D of the simulator seen through a round glass, with the reel's scenes as arcs on its rim and a strip of their names. */
+/** The hero's screen: real 3D of the simulator on a wide dark lightbox, and under it the reel's scenes, each with how far it has played. */
 export function HeroReel({ playing = true }: { playing?: boolean }) {
   const reduced = useSyncExternalStore(subscribe, () => window.matchMedia(REDUCED).matches, () => false);
   const mounted = useSyncExternalStore(subscribe, () => true, () => false);
@@ -153,15 +150,6 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
     setF({ i: s.i, local: s.local, prev: s.prev, fade: s.fade });
   };
 
-  /** The glass catches the light where the pointer is. */
-  const glint = (e: PointerEvent<HTMLElement>) => {
-    const el = box.current;
-    if (!el || reduced || e.pointerType === 'touch') return;
-    const r = el.getBoundingClientRect();
-    el.style.setProperty('--gx', `${(((e.clientX - r.left) / r.width) * 100).toFixed(1)}%`);
-    el.style.setProperty('--gy', `${(((e.clientY - r.top) / r.height) * 100).toFixed(1)}%`);
-  };
-
   const cur = REEL[f.i];
   const fadeIn = ease(f.fade);
   // On the page: the clip playing, the one dissolving away, and the next once this one is under way (so it is
@@ -169,25 +157,10 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
   const next = (f.i + 1) % REEL.length;
   const shown = [...new Set([f.i, ...(f.prev !== null ? [f.prev] : []), ...(f.local > 2 ? [next] : [])])];
   return (
-    <figure className="lens" ref={box} onPointerMove={glint} style={hueStyle(cur.week)}>
-      <div className="lens-eye">
-        {/* The reel's six scenes as six arcs around the glass: the one playing fills as it runs. */}
-        <svg className="lens-ring" viewBox="0 0 200 200" aria-hidden>
-          <g transform="rotate(-90 100 100)">
-            {REEL.map((r, k) => {
-              const part = k === f.i ? clamp(f.local / HOLD) : k < f.i ? 1 : 0;
-              return (
-                <g key={r.clip} className={k === f.i ? 'is-on' : undefined} style={hueStyle(r.week)}>
-                  <circle className="lens-ring-track" cx="100" cy="100" r="98" pathLength={360} strokeDasharray={`${SEG - GAP} ${360 - SEG + GAP}`} strokeDashoffset={-(k * SEG + GAP / 2)} />
-                  {part > 0 && <circle className="lens-ring-fill" cx="100" cy="100" r="98" pathLength={360} strokeDasharray={`${Math.max(0.6, (SEG - GAP) * part)} 360`} strokeDashoffset={-(k * SEG + GAP / 2)} />}
-                </g>
-              );
-            })}
-          </g>
-        </svg>
-        <div className="lens-glass theme-stage">
-          <div className="lp-reel-media" role="img" aria-label={`${cur.topic}: ${cur.title}`}>
-          {/* The first clip's opening frame, in the page from the server: the frame is never empty while it loads. */}
+    <figure className="scr" ref={box} style={hueStyle(cur.week)}>
+      <div className="scr-glass theme-stage">
+        <div className="lp-reel-media" role="img" aria-label={`${cur.topic}: ${cur.title}`}>
+          {/* The first clip's opening frame, in the page from the server: the screen is never empty while it loads. */}
           {!reduced && f.i === 0 && f.prev === null && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={`/reel/${REEL[0].clip}.first.webp`} alt="" />
@@ -218,26 +191,33 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
                 );
               })
             ))}
-          </div>
-          <span className="lens-reticle" aria-hidden />
         </div>
-      </div>
-      <figcaption className="lens-cap" key={f.i}>
-        <b>{cur.title}</b>
-        <small>
-          <i>{cur.week}. gaia</i>, {cur.day}
-        </small>
-      </figcaption>
-
-      <nav className="lens-strip" aria-label="Simulagailuko eszenak">
-        {REEL.map((r, k) => (
-          <button key={r.n + r.title} style={hueStyle(r.week)} className={k === f.i ? 'is-on' : ''} onClick={() => go(k)} aria-current={k === f.i ? 'true' : undefined} aria-label={`${r.week}. gaia: ${r.title}`} title={`${r.week}. gaia · ${r.title}`}>
-            {r.label}
-          </button>
-        ))}
-        <Link className="lens-open" href={cur.href}>
+        <figcaption className="scr-cap" key={f.i}>
+          <small>
+            <i>{cur.week}. gaia</i> {cur.topic}
+          </small>
+          <b>{cur.title}</b>
+        </figcaption>
+        <Link className="scr-open" href={cur.href}>
           Ireki eszena hau
         </Link>
+      </div>
+
+      <nav className="scr-strip" aria-label="Simulagailuko eszenak">
+        {REEL.map((r, k) => {
+          const part = k === f.i ? clamp(f.local / HOLD) : 0;
+          return (
+            <button key={r.n + r.title} style={hueStyle(r.week)} className={k === f.i ? 'is-on' : ''} onClick={() => go(k)} aria-current={k === f.i ? 'true' : undefined} aria-label={`${r.week}. gaia: ${r.title}`} title={`${r.week}. gaia · ${r.title}`}>
+              <i aria-hidden>
+                <b style={{ transform: `scaleX(${part})` }} />
+              </i>
+              <span>
+                <em>{r.week}</em>
+                {r.label}
+              </span>
+            </button>
+          );
+        })}
       </nav>
     </figure>
   );

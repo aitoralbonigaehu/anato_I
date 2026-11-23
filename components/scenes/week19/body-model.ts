@@ -458,8 +458,9 @@ export function bodyModel(pose: BodyPose, o: BodyOpts = {}) {
     put('n-lumb', 'nerbio-sareak', spinal('lumb', 'nerve'), somatic(yel), yelD, { groups: [...SP, 'gongoil-errakideoak'], opacity: op });
     put('n-sacr', 'nerbio-sareak', spinal('sacr', 'nerve'), somatic(yel), yelD, { groups: SP, opacity: op });
     put('sciatic', 'nerbio-ziatikoa', SCIATIC_PARTS(), somatic(yel), yelD, { groups: ['nerbio-sareak', ...SP], opacity: op });
-    for (const c of CRANIAL)
-      for (const s of [1, -1]) put(`cn-${c.id}-${c.line[0][1]}-${s}`, c.id, vessel(L(c.line.map((q) => X(s, q)), 10), NERVE), somatic(yel), yelD, { groups: ['nerbio-kranialak', ...PNS], opacity: op });
+    // One key per branch: the trigeminal's branches share a start point, so the start alone repeated keys.
+    for (const [k, c] of CRANIAL.entries())
+      for (const s of [1, -1]) put(`cn-${c.id}-${k}-${s}`, c.id, vessel(L(c.line.map((q) => X(s, q)), 10), NERVE), somatic(yel), yelD, { groups: ['nerbio-kranialak', ...PNS], opacity: op });
     const vagC = mixHex(yel, C19.para, auto);
     for (const s of [1, -1]) put(`vagus${s}`, 'nerbio-bagoa', vessel(L(VAGUS.map((q) => X(s, q)), 30), { r0: 0.02, r1: 0.016, sides: 8 }), vagC, mixHex(yelD, C19.paraDeep, auto), { groups: ['nerbio-kranialak', 'sistema-parasinpatikoa', ...PNS], opacity: op });
     pts['nerbio-sistema-periferikoa'] = [0.6, 2.15, NZ + 0.03];

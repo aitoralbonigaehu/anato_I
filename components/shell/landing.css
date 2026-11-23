@@ -1,4 +1,4 @@
-/* ——— Landing: the lens, the topic ruler, the plates, scroll reveal ——— */
+/* ——— Landing: the screen, the topic ruler, the plates, scroll reveal ——— */
 
 /* Scroll reveal: armed from script (data-armed), so nothing is hidden without it. */
 [data-rv] {
@@ -10,30 +10,29 @@
   transform: translateY(28px);
 }
 
-/* ——— First screen: words on the left, the specimen under glass on the right, every topic on a ruler below ——— */
+/* ——— First screen: the title and the way in on one line, the simulator's own screen under them, every topic
+   on a ruler below ——— */
 
 .hm-hero {
   position: relative;
   isolation: isolate;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  min-height: min(860px, calc(100svh - 60px));
   padding: 0 var(--gutter);
 }
 
-.hm-hero-grid {
+.hm-top {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: clamp(28px, 5vw, 88px);
-  padding: 20px 0 22px;
+  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 1fr);
+  align-items: end;
+  gap: 24px clamp(36px, 5vw, 88px);
+  padding: clamp(28px, 6vh, 68px) 0 clamp(26px, 4vh, 42px);
 }
 
-.hm-copy {
-  max-width: 620px;
+.hm-copy,
+.hm-side {
+  min-width: 0;
 }
 
-/* A warm room behind the glass, a cooler one behind the words. */
+/* A warm room behind the screen, a cooler one behind the words. */
 .lp-aurora {
   position: absolute;
   inset: -10% -18% -6%;
@@ -41,8 +40,8 @@
   pointer-events: none;
   opacity: 0;
   background:
-    radial-gradient(34% 48% at 78% 44%, rgba(241, 150, 96, 0.13), transparent 70%),
-    radial-gradient(30% 40% at 62% 82%, rgba(150, 110, 220, 0.07), transparent 72%),
+    radial-gradient(40% 36% at 50% 66%, rgba(241, 150, 96, 0.11), transparent 70%),
+    radial-gradient(30% 40% at 84% 30%, rgba(150, 110, 220, 0.06), transparent 72%),
     radial-gradient(34% 46% at 4% 6%, rgba(241, 173, 118, 0.05), transparent 70%);
   transition: opacity 2s ease 0.3s;
 }
@@ -72,9 +71,9 @@
 
 /* The title, drawn line by line out of a mask. */
 .landing .lp-h1 {
-  margin: 22px 0 26px;
+  margin: 18px 0 0;
   font-family: var(--font-display);
-  font-size: clamp(46px, 6.3vw, 98px);
+  font-size: clamp(46px, 5.7vw, 90px);
   font-weight: 380;
   font-variation-settings: 'SOFT' 100;
   line-height: 0.98;
@@ -103,90 +102,79 @@
   transform: none;
 }
 
-.landing .hm-copy .hero-lead {
+.landing .hm-side .hero-lead {
   max-width: 46ch;
-  font-size: 17px;
-  line-height: 1.62;
+  margin: 0;
+  font-size: 16.5px;
+  line-height: 1.6;
 }
 
-.landing .hm-copy .hero-cta {
+.landing .hm-side .hero-cta {
   gap: 12px 14px;
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
-/* ——— The lens: the simulator's own scenes through a round glass ——— */
+.landing .hm-side .hero-more {
+  margin-top: 16px;
+}
 
-.lens {
-  --d: clamp(280px, min(38vw, calc(100svh - 430px)), 540px);
-  --gx: 30%;
-  --gy: 20%;
-  display: grid;
-  justify-items: center;
-  gap: 14px;
-  width: calc(var(--d) + 36px);
+/* ——— The screen: the simulator's scenes on a wide lightbox, as they look in the app ——— */
+
+.landing .hm-visual {
+  width: 100%;
+  max-width: none;
   margin: 0;
 }
 
-.lens-eye {
+.scr {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+}
+
+.scr-glass {
   position: relative;
-  width: var(--d);
-  aspect-ratio: 1;
-  margin: 18px;
-}
-
-/* A dial of fine marks around the eyepiece. */
-.lens-eye::before {
-  content: '';
-  position: absolute;
-  inset: -18px;
-  border-radius: 50%;
-  background: repeating-conic-gradient(from -0.35deg, rgb(var(--fg-rgb) / 0.34) 0 0.7deg, transparent 0.7deg 6deg);
-  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
-  mask: radial-gradient(closest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
-  opacity: 0.55;
-}
-
-.lens-ring {
-  position: absolute;
-  inset: -7px;
-  width: calc(100% + 14px);
-  height: calc(100% + 14px);
-  overflow: visible;
-}
-
-.lens-ring circle {
-  fill: none;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
-}
-
-.lens-ring-track {
-  stroke: rgb(var(--fg-rgb) / 0.13);
-}
-
-.lens-ring-fill {
-  stroke: var(--topic);
-}
-
-.lens-glass {
-  position: absolute;
-  inset: 0;
+  height: clamp(320px, calc(100svh - 480px), 620px);
   overflow: hidden;
-  border-radius: 50%;
-  background: #0c0b0d;
+  border-radius: 26px;
+  background: #0f0d0f;
   box-shadow:
-    0 0 0 1px rgb(255 255 255 / 0.09),
-    0 44px 110px -34px rgb(var(--shade-rgb) / calc(0.95 * var(--shade-k))),
-    0 0 110px -28px var(--topic-glow);
+    0 0 0 1px rgb(255 255 255 / 0.07),
+    0 50px 120px -54px rgb(var(--shade-rgb) / calc(0.95 * var(--shade-k))),
+    0 0 160px -70px var(--topic-glow);
   /* Safari clips a video to a rounded box only inside its own layer. */
   transform: translateZ(0);
 }
 
-.lens-glass .lp-reel-media {
+/* The clip keeps its own shape (16:10), full height and centred; all four edges fade into the screen's ground (the
+   clips are recorded on that same near-black, so the join does not show, and a model framed close, like the face,
+   dissolves at the top instead of being sliced by the edge). A layer over the picture, not a mask on it: a mask on
+   the moving picture cost a masked repaint each frame. */
+.scr-glass .lp-reel-media {
   position: absolute;
   inset: 0;
   display: block;
+  width: auto;
+  height: 100%;
+  aspect-ratio: 1120 / 716;
+  margin-inline: auto;
+}
+
+/* Reaches a few pixels past the clip: a video layer can leave its edge pixel showing just outside its box. */
+.scr-glass .lp-reel-media::after {
+  content: '';
+  position: absolute;
+  inset: 0 -4px;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, #0f0d0f 0%, #0f0d0f 3%, rgb(15 13 15 / 0.6) 9%, rgb(15 13 15 / 0) 21%, rgb(15 13 15 / 0) 79%, rgb(15 13 15 / 0.6) 91%, #0f0d0f 97%, #0f0d0f 100%),
+    linear-gradient(180deg, #0f0d0f 0%, rgb(15 13 15 / 0.55) 6%, rgb(15 13 15 / 0) 22%, rgb(15 13 15 / 0) 66%, rgb(15 13 15 / 0.75) 92%, #0f0d0f 100%);
+}
+
+/* The ruler of topics stands apart from the screen's scene names. */
+.hm-hero > .rul {
+  margin-top: clamp(30px, 4.5vh, 52px);
 }
 
 /* The clips stacked: the one leaving dissolves over the one arriving. */
@@ -200,116 +188,136 @@
   object-fit: cover;
 }
 
-/* The glass itself: darker towards the rim, a soft light where the pointer is. A layer over the picture, not a
-   mask on it (a mask on the moving picture cost a masked repaint each frame). */
-.lens-glass::after {
-  content: '';
+/* What is on the screen now, in its lower left corner (the scene is in the middle). */
+.scr-cap {
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background:
-    radial-gradient(46% 40% at var(--gx) var(--gy), rgb(255 255 255 / 0.1), rgb(255 255 255 / 0) 70%),
-    radial-gradient(circle at 50% 50%, rgb(12 11 13 / 0) 58%, rgb(12 11 13 / 0.82) 100%);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06), inset 0 2px 30px rgb(0 0 0 / 0.6);
-}
-
-/* The eyepiece's cross hairs: two hairlines, broken at the middle so they never cross the specimen. */
-.lens-reticle {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.5;
-  background:
-    linear-gradient(90deg, rgb(255 255 255 / 0.3) 0 9%, transparent 9% 91%, rgb(255 255 255 / 0.3) 91%) center / 100% 1px no-repeat,
-    linear-gradient(180deg, rgb(255 255 255 / 0.3) 0 9%, transparent 9% 91%, rgb(255 255 255 / 0.3) 91%) center / 1px 100% no-repeat;
-}
-
-/* What is under the glass now. */
-.lens-cap {
+  left: 30px;
+  bottom: 26px;
+  z-index: 3;
   display: grid;
-  justify-items: center;
-  gap: 3px;
-  max-width: var(--d);
-  text-align: center;
-  animation: lens-cap 0.7s var(--ease) both;
+  gap: 6px;
+  max-width: min(42ch, 34%);
+  color: #f7eee0;
+  animation: scr-cap 0.7s var(--ease) both;
 }
 
-@keyframes lens-cap {
+@keyframes scr-cap {
   from {
     opacity: 0;
-    transform: translateY(5px);
+    transform: translateY(6px);
   }
 }
 
-.lens-cap b {
+.scr-cap small {
+  font-size: 13px;
+  line-height: 1.35;
+  color: rgb(247 238 224 / 0.62);
+}
+
+.scr-cap small i {
+  margin-right: 4px;
+  font-style: normal;
+  font-weight: 600;
+  color: var(--topic-ink);
+}
+
+.scr-cap b {
   font-family: var(--font-display);
-  font-size: 21px;
+  font-size: clamp(21px, 1.9vw, 28px);
   font-weight: 420;
   font-variation-settings: 'SOFT' 100;
-  line-height: 1.2;
-  letter-spacing: -0.018em;
-  color: var(--text);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
-.lens-cap small {
-  font-size: 13px;
-  color: var(--text-3);
-}
-
-.lens-cap small i {
-  font-style: normal;
-  color: var(--topic-ink);
-}
-
-.lens-strip {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  max-width: calc(var(--d) + 36px);
-}
-
-.lens-strip button {
-  height: 30px;
-  padding: 0 10px;
-  border-radius: var(--r-pill);
-  font-size: 13px;
-  white-space: nowrap;
-  color: var(--text-3);
-  transition: color 0.2s, background-color 0.2s;
-}
-
-.lens-strip button:hover {
-  color: var(--text);
-}
-
-.lens-strip button.is-on {
-  background: var(--topic-soft);
-  color: var(--topic-ink);
-}
-
-.lens-open {
+.scr-open {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
-  height: 30px;
-  margin-left: 6px;
-  padding: 0 12px;
+  height: 40px;
+  padding: 0 18px;
   border-radius: var(--r-pill);
-  box-shadow: inset 0 0 0 1px var(--line-2);
-  font-size: 13px;
+  background: rgb(255 255 255 / 0.08);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-size: 13.5px;
   font-weight: 600;
   white-space: nowrap;
-  color: var(--text);
-  transition: box-shadow 0.2s, background-color 0.2s;
+  color: #f7eee0;
+  transition: background-color 0.2s, box-shadow 0.2s;
 }
 
-.lens-open:hover {
-  background: rgb(var(--fg-rgb) / 0.06);
-  box-shadow: inset 0 0 0 1px var(--line-3);
+.scr-open:hover {
+  background: rgb(255 255 255 / 0.15);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.24);
+}
+
+/* The six scenes under the screen: the one playing fills its line as it runs. */
+.scr-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.scr-strip button {
+  display: grid;
+  gap: 10px;
+  padding: 0 0 4px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-3);
+  transition: color 0.2s;
+}
+
+.scr-strip button i {
+  display: block;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgb(var(--fg-rgb) / 0.14);
+}
+
+.scr-strip button i b {
+  display: block;
+  height: 100%;
+  background: var(--topic);
+  transform-origin: left;
+}
+
+.scr-strip button span {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.scr-strip button em {
+  font: 400 17px / 1 var(--font-display);
+  font-style: normal;
+  font-variation-settings: 'SOFT' 100;
+  font-variant-numeric: lining-nums;
+  color: var(--text-4);
+  transition: color 0.2s;
+}
+
+.scr-strip button:hover {
+  color: var(--text);
+}
+
+.scr-strip button.is-on {
+  color: var(--text);
+}
+
+.scr-strip button.is-on em,
+.scr-strip button:hover em {
+  color: var(--topic-ink);
 }
 
 /* ——— The ruler: every topic, in the order of development, one click from the first screen ——— */
@@ -722,20 +730,32 @@ a.pl-in:focus-visible .pl-go {
 }
 
 @media (max-width: 960px) {
-  .hm-hero {
-    min-height: 0;
-  }
-  .hm-hero-grid {
+  .hm-top {
     grid-template-columns: minmax(0, 1fr);
-    justify-items: start;
-    gap: 34px;
-    padding: 30px 0 28px;
+    align-items: start;
+    gap: 22px;
+    padding: 32px 0 30px;
   }
-  .hm-visual {
-    justify-self: center;
+  .landing .hm-side .hero-lead {
+    max-width: 60ch;
   }
-  .lens {
-    --d: clamp(280px, min(62vw, 46svh), 460px);
+  .scr-glass {
+    height: clamp(300px, 52vw, 460px);
+  }
+  .scr-cap {
+    left: 22px;
+    bottom: 20px;
+    max-width: 46%;
+  }
+  .scr-open {
+    right: 18px;
+    bottom: 18px;
+  }
+  .scr-strip {
+    gap: 10px;
+  }
+  .scr-strip button {
+    font-size: 13px;
   }
 }
 
@@ -784,7 +804,7 @@ a.pl-in:focus-visible .pl-go {
   .rul-bar i,
   .lp-shot svg,
   .lp-shot.is-poster img,
-  .lens-cap {
+  .scr-cap {
     transition: none;
     animation: none;
   }

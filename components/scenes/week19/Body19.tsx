@@ -25,7 +25,9 @@ function withGeo(View: ComponentType<SceneProps> & { geo?: string[] }) {
   Scene.spec = (View as { spec?: unknown }).spec;
   return Scene;
 }
-const WHOLE = FRONT19(15.5, [0, 0.1, 0], 0, 4);
+// The whole body with room above the head (caption, key) and below the feet (the step's note): at 15.5 the
+// head sat under the top edge and the feet under the dock.
+const WHOLE = FRONT19(19.5, [0, 0, 0], 0, 4);
 const HEAD = (dist = 3.4, yaw = 0, elev = 6) => FRONT19(dist, [0, 3.98, -0.02], yaw, elev);
 const FACE = (dist = 3, yaw = 24, elev = 6) => FRONT19(dist, [0, 3.74, 0.1], yaw, elev);
 const TRUNK = (dist = 8, y = 1.6, yaw = 0, elev = 4) => FRONT19(dist, [0, y, -0.1], yaw, elev);
@@ -67,7 +69,7 @@ const specIntro: StageSpec<BodyPose, BodyOpts> = {
       note: 'Anatomikoki: erdiko nerbio sistema eta nerbio sistema periferikoa',
     },
     {
-      cam: TRUNK(10, 1.2),
+      cam: TRUNK(13, 1.6),
       fit: false,
       glide: 0.06,
       dim: ['nerbio-espinalak', 'nerbio-bagoa'],
