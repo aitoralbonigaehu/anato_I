@@ -127,3 +127,22 @@ las cuentas estén desactivadas.
    `select * from visits` y `pin_accounts` no devuelven nada.
 
 `migrations/0001_progress.sql` (el diseño antiguo, nunca aplicado) se ha eliminado: no lo busques.
+
+## Tiempo de uso diario por cuenta
+
+La migración [20261123142419_daily_study_usage.sql](migrations/20261123142419_daily_study_usage.sql)
+prepara una tabla privada con el total por cuenta y día (`Europe/Madrid`). La app no ofrece esta
+medición ni envía datos de duración a esta tabla. Si se incorpora más adelante, habrá que informar
+sobre el tratamiento y ofrecer controles para activarlo y retirarlo.
+
+Consulta interna en el SQL Editor de Supabase:
+
+```sql
+select usage.day,
+       usage.user_id,
+       accounts.name,
+       round(usage.active_ms / 60000.0, 2) as active_minutes
+from study_analytics.daily_usage as usage
+left join public.pin_accounts as accounts on accounts.user_id = usage.user_id
+order by usage.day desc, usage.active_ms desc;
+```

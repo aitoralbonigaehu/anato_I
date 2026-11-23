@@ -78,6 +78,78 @@
   line-height: 1.35;
 }
 
+.markingBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .45rem .8rem;
+  padding: .5rem .65rem;
+  border: 1px solid var(--line);
+  border-top: 0;
+  background: var(--surface);
+  font-size: var(--t-sm);
+}
+
+.markingToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  font-weight: 600;
+}
+
+.markingToggle > span {
+  width: .65rem;
+  height: .65rem;
+  border: 1px solid var(--text-3);
+  border-radius: 50%;
+}
+
+.markingToggle[aria-pressed="true"] {
+  border-color: var(--focus);
+  background: var(--focus-soft);
+}
+
+.markingToggle[aria-pressed="true"] > span {
+  border-color: var(--focus);
+  background: var(--focus);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .2rem .45rem;
+  margin: 0;
+  color: var(--text-2);
+}
+
+.legend > span:first-child {
+  margin-inline-end: .25rem;
+}
+
+.legendSequence {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  white-space: nowrap;
+}
+
+.legendStep {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+}
+
+.legendStep i {
+  width: .65rem;
+  height: .65rem;
+  border: 1px solid rgb(0 0 0 / .16);
+  border-radius: 50%;
+}
+
+.red { background: #ef4a4d; }
+.yellow { background: #ffe24a; }
+
 .stage,
 .message {
   display: grid;
@@ -147,16 +219,19 @@
 }
 
 .spot[data-mark="1"] { background: rgb(239 74 77 / .46); }
-.spot[data-mark="2"] { background: rgb(255 157 47 / .52); }
+.spot[data-mark="2"] { background: rgb(255 226 74 / .68); }
+
+@media (pointer: coarse) {
+  .spot::before {
+    position: absolute;
+    inset: 0 -3px;
+    content: "";
+  }
+}
 
 .note {
   margin: .75rem 0 0;
   font-size: var(--t-sm);
   line-height: 1.55;
   color: var(--text-3);
-}
-
-.note strong {
-  font-weight: 600;
-  color: var(--text-2);
 }

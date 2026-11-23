@@ -10,9 +10,9 @@ import { quiz19b } from './week19b-quiz';
 import { quiz19c } from './week19c-quiz';
 
 /**
- * Topic 19, the nervous system (docs/handover/topic-19-plan.md). Three parts built side by side: 19a (the adult
- * system: sections 1–5; agent 19-A), 19b (its development: sections 6–9; agent 19-B) and 19c (thalamus, cortex,
- * ventricles and CSF: sections 10–13; agent 19-C).
+ * Topic 19, the nervous system, from the notes of 2026-11-23 (11 sections). Three parts: 19a (the adult system:
+ * sections 1–3, plus the spinal meninges of 5.1 from week19d), 19b (the development: sections 4–6) and 19c (the
+ * brain: ventricles, CSF, meninges, the parts of the brain and the cranial pairs: sections 7–11).
  */
 
 /** The first definition of a structure wins (both parts may name the same thing). */
@@ -20,10 +20,12 @@ const once = (lists: StructureDef[][]) => [...new Map(lists.flat().reverse().map
 
 /** The stages come from three files; the topic keeps the notes' order (content/notes.ts). */
 const ORDER = [
-  'sarrera', 'mozketak-ardatzak', 'zentrala-periferikoa', 'somatikoa-autonomoa', 'sustraiak-gongoila',
-  'meningeak', 'garuneko-meningeak', 'gai-grisa-zuria', 'borondatezko-mugimenduak', 'aktu-erreflexua',
-  'gandor-neurala', 'gandor-eratorriak', 'ornomuin-geruzak', 'ornomuin-plakak', 'ornomuinaren-igoera', 'puntzioa-epidurala',
-  'plaka-neurala', 'hiru-xixkuak', 'bost-xixkuak', 'talamoa', 'kortexa', 'bentrikuluak', 'likido-zefalorrakideoa',
+  'sarrera', 'mozketak-ardatzak', 'zentrala-periferikoa', 'somatikoa-autonomoa', 'gai-grisa-zuria', 'sustraiak-gongoila',
+  'aktu-erreflexua', 'borondatezko-mugimenduak', 'mugimendu-automatikoak',
+  'plaka-neurala', 'gandor-neurala', 'gandor-eratorriak', 'ornomuin-geruzak', 'ornomuin-plakak',
+  'ornomuinaren-igoera', 'puntzioa-epidurala', 'meningeak',
+  'hiru-xixkuak', 'bost-xixkuak', 'bentrikuluak', 'likido-zefalorrakideoa', 'garuneko-meningeak',
+  'erraboila', 'metentzefaloa', 'mesentzefaloa', 'talamoa', 'hipofisia', 'bikote-kranealak',
 ];
 
 const inOrder = (list: StageDef[]) => [...list].sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
@@ -37,6 +39,6 @@ export const week19: WeekDef = {
   stages: inOrder([...stages19a, ...stages19b, ...stages19c]),
   structures: once([structures19a, structures19b, structures19c]),
   quiz: [...quiz19a, ...quiz19b, ...quiz19c],
-  source: { file: '19. GAIA. NERBIO SISTEMA (zuzendu gabe).docx', section: '19. gaia' },
+  source: { file: '19. gaia_ Nerbio sistema (ZUZENDU GABE).pdf', section: '19. gaia' },
   inPreparation: true,
 };

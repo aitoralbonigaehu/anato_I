@@ -1,0 +1,301 @@
+/* The look: home. Loaded after every other global sheet. */
+
+/* ——— The first screen's keys: one warm pill that leads, a quiet one beside it ——— */
+
+.landing .hero-cta .btn.lg {
+  height: 54px;
+  padding: 0 24px 0 20px;
+  border-radius: var(--r-pill);
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.landing .hero-cta .btn.lg.cta-continue {
+  height: auto;
+  min-height: 54px;
+  padding-block: 9px;
+}
+
+/* On the dark ground the lead key takes the opening film's peach. */
+:root:not([data-theme='light']) .landing .hero-cta .btn-light,
+:root:not([data-theme='light']) .landing .hero-cta .btn-light:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ffe7cb, #f6d2a8);
+  color: #2a1c14;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.55),
+    0 1px 2px rgb(0 0 0 / 0.4),
+    0 14px 34px -14px rgb(241 150 96 / 0.55);
+}
+
+:root:not([data-theme='light']) .landing .hero-cta .btn-light:hover:not(:disabled) {
+  background: linear-gradient(180deg, #fff0db, #fbdcb6);
+  transform: translateY(-1px);
+}
+
+.landing .hero-cta .cta-review {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+
+.landing .hero-cta .cta-review:hover:not(:disabled) {
+  background: rgb(var(--fg-rgb) / 0.05);
+  box-shadow: inset 0 0 0 1px var(--line-3);
+}
+
+.landing .hero-cta .cta-review small {
+  font-family: var(--font-ui);
+}
+
+.landing .hero-more {
+  gap: 4px 16px;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--text-3);
+}
+
+.landing .hero-more a {
+  font-weight: 500;
+  text-decoration-color: var(--line-2);
+}
+
+.landing .hero-more a:hover {
+  text-decoration-color: var(--warm);
+}
+
+/* ——— Section labels: said in a sentence's voice, not in capitals ——— */
+
+.landing .kicker {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 550;
+  letter-spacing: -0.005em;
+  text-transform: none;
+  color: var(--warm);
+}
+
+.landing .section-head .kicker::before {
+  background: currentColor;
+  opacity: 0.6;
+}
+
+html:root:root .landing .section-head h2 {
+  margin: 12px 0 14px;
+  font-size: clamp(32px, 3.7vw, 52px);
+  line-height: 1.04;
+}
+
+html:root:root .landing .story-head h2 {
+  font-size: clamp(28px, 3.2vw, 46px);
+  line-height: 1.06;
+}
+
+/* ——— Development, day by day: the day is the biggest thing on the page, in the display face ——— */
+
+.landing .story-day {
+  font-family: var(--font-display);
+  font-weight: 340;
+  font-variation-settings: var(--display-soft);
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: -0.05em;
+}
+
+.landing .story-day small {
+  font-family: var(--font-ui);
+}
+
+.landing .story-text h3 {
+  font-family: var(--font-display);
+  font-weight: 420;
+  font-variation-settings: var(--display-soft);
+  letter-spacing: -0.022em;
+}
+
+.landing .story-period {
+  font: 600 12px / 1.2 var(--font-ui);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ——— Study route: six steps along one line ——— */
+
+.landing .route-n {
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-soft);
+}
+
+.landing .route-card b {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 420;
+  font-variation-settings: var(--display-soft);
+  letter-spacing: -0.02em;
+}
+
+.landing .route-state {
+  font-family: var(--font-ui);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ——— The site bar on the home: no glass until the page moves under it ——— */
+
+.landing .land-nav {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-scrolled] .landing .land-nav {
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  backdrop-filter: blur(20px) saturate(1.4);
+}
+
+/* ——— Portrait tablet: the whole site bar fits (it ran past the right edge at 768 px) ——— */
+@media (min-width: 641px) and (max-width: 860px) {
+  html body .land-nav {
+    padding-inline: 14px;
+  }
+  html body .land-nav nav {
+    gap: 4px;
+  }
+  html body .land-nav nav > a:not(.btn),
+  html body .land-nav nav .nav-menu-key {
+    padding-inline: 6px;
+    font-size: 12.5px;
+  }
+  html body .land-nav nav > .nav-sep {
+    display: none;
+  }
+  html body .land-nav nav > .btn.small {
+    margin-left: 4px;
+    padding: 0 9px;
+    font-size: 12.5px;
+  }
+}
+
+/* The six steps of the route are a real sequence: the number of the step leads, large, in the display face;
+   its icon sits bare at the other end (no tile). */
+.landing .route-top {
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.landing .route-n {
+  font-size: 40px;
+  font-weight: 340;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-variant-numeric: lining-nums;
+  color: var(--warm);
+}
+
+.landing .route-icon,
+.landing .route-card:hover .route-icon {
+  width: auto;
+  height: 24px;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--text-4);
+  transition: color var(--dur-2) var(--ease);
+}
+
+.landing .route-card:hover .route-icon {
+  color: var(--warm);
+}
+
+.landing .route-meter i {
+  background: var(--warm);
+}
+
+/* ——— Day by day: the periods and days of the rail in the text face ——— */
+
+.landing .story-rail-period {
+  font: 600 11.5px / 1.2 var(--font-ui);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-3);
+}
+
+.landing .story-rail-dot small {
+  font: 500 11px / 1 var(--font-ui);
+  font-variant-numeric: tabular-nums;
+}
+
+.landing .story-more {
+  font: 500 12.5px / 1 var(--font-ui);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ——— Footer: column heads in sentence case ——— */
+
+html .site-foot .foot-col > p {
+  font: 600 13px / 1.2 var(--font-ui);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text);
+}
+
+/* The step number stands alone (an older rule drew it inside a small ring). */
+html:root .landing .route-n {
+  display: block;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  font-family: var(--font-display);
+}
+
+/* ——— The 20-second map: one numeral per topic in its ink, the title in the display face ——— */
+
+.landing .map-card {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 8px 12px;
+}
+
+.landing .map-card > b,
+.landing .map-card > .map-chain {
+  grid-column: 1 / -1;
+}
+
+html:root .landing .map-card .map-n {
+  font: 380 30px / 1 var(--font-display);
+  font-variation-settings: var(--display-soft);
+  font-variant-numeric: lining-nums;
+  letter-spacing: -0.03em;
+  color: var(--topic-ink);
+}
+
+.landing .map-card .map-days {
+  font: 500 12.5px / 1.3 var(--font-ui);
+  letter-spacing: 0;
+  text-align: right;
+  color: var(--text-3);
+}
+
+.landing .map-card > b {
+  margin-top: 4px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 420;
+  font-variation-settings: var(--display-soft);
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+}
+
+/* One hairline in the topic's colour along the top of every card (two older rules fought over this
+   pseudo-element: an arrow between cards and the hairline). */
+html:root .landing .map-row li .map-card::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--topic), transparent 70%);
+  opacity: 0.7;
+}

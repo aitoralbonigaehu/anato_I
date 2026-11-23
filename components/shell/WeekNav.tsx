@@ -152,7 +152,7 @@ export function TopicList({ current, stageId, visited, onPick }: { current: Week
                       onClick={onPick}
                       title={w.subtitle}
                     >
-                      <span className="tsw-item-n">{String(w.week).padStart(2, '0')}</span>
+                      <span className="tsw-item-n">{w.week}</span>
                       <span className="tsw-item-body">
                         <b>{w.title}</b>
                         <span className="tsw-item-meta">

@@ -42,7 +42,7 @@ export interface CordPose {
   /** The skin and the muscle at the two ends of the arc shown (0..1). */
   ends?: number;
 }
-export const CP0: CordPose = { roots: 1, rami: 1, dura: 0, arach: 0, pia: 0, csf: 0, bone: 0, fn: 0, lat: 0, tracts: 0, sens: 0, inter: 0, motor: 0 };
+export const CP0: CordPose = { roots: 1, rami: 1, dura: 0, arach: 0, pia: 0, csf: 0, bone: 0, fn: 0, lat: 0, tracts: 0, sens: 0, inter: 0, motor: 0, ends: 0 };
 
 export interface CordOpts {
   dim?: { ids: readonly string[]; k: number } | null;
@@ -223,14 +223,19 @@ export function cordModel(pose: CordPose, o: CordOpts = {}) {
   if (roots > 0.01) {
     const yel = C19.nerve, yelD = C19.nerveDeep;
     const pr: (Parts | null)[] = [], ar: (Parts | null)[] = [], gg: (Parts | null)[] = [], nv: (Parts | null)[] = [];
+    const plets: (Parts | null)[] = [], alets: (Parts | null)[] = [];
+    // The rootlets come out first (3/p6/s1), then gather into the roots (s2), then the ganglion swells (p7).
+    const rl = clamp01(roots / 0.4), rr = clamp01((roots - 0.4) / 0.25);
     for (const s of [1, -1]) {
-      for (const l of rootlets('post')) pr.push(vessel(l.map((q) => X(s, q)), { r0: 0.035, r1: 0.05, sides: 8 }, roots));
-      for (const l of rootlets('ant')) ar.push(vessel(l.map((q) => X(s, q)), { r0: 0.035, r1: 0.05, sides: 8 }, roots));
-      pr.push(vessel(L(POST_ROOT, 12).map((q) => X(s, q)), { r0: 0.12, r1: 0.13, sides: 12 }, roots));
-      ar.push(vessel(L(ANT_ROOT, 12).map((q) => X(s, q)), { r0: 0.11, r1: 0.12, sides: 12 }, roots));
+      for (const l of rootlets('post')) plets.push(vessel(l.map((q) => X(s, q)), { r0: 0.035, r1: 0.05, sides: 8 }, rl));
+      for (const l of rootlets('ant')) alets.push(vessel(l.map((q) => X(s, q)), { r0: 0.035, r1: 0.05, sides: 8 }, rl));
+      if (rr > 0.001) pr.push(vessel(L(POST_ROOT, 12).map((q) => X(s, q)), { r0: 0.12, r1: 0.13, sides: 12 }, rr));
+      if (rr > 0.001) ar.push(vessel(L(ANT_ROOT, 12).map((q) => X(s, q)), { r0: 0.11, r1: 0.12, sides: 12 }, rr));
       if (roots > 0.6) gg.push(blobParts({ center: X(s, GANG), radii: [0.42 * gk(roots), 0.3 * gk(roots), 0.3 * gk(roots)], rings: 12, sides: 16 }));
       if (roots > 0.8) nv.push(vessel(L([[GANG[0] + 0.3, GANG[1] - 0.15, RZ], JOIN, NERVE_END], 10).map((q) => X(s, q)), { r0: 0.15, r1: 0.17, sides: 14 }, (roots - 0.8) / 0.2));
     }
+    put('post-lets', 'sustraitxoak', mergeParts(plets), mixHex(yel, C19.sens, 0.45 * fn), yelD, { tissue: 'nerve', groups: ['atzeko-sustraia'] });
+    put('ant-lets', 'sustraitxoak', mergeParts(alets), mixHex(yel, C19.motor, 0.45 * fn), yelD, { tissue: 'nerve', groups: ['aurreko-sustraia'] });
     put('post-root', 'atzeko-sustraia', mergeParts(pr), mixHex(yel, C19.sens, 0.45 * fn), yelD, { tissue: 'nerve' });
     put('ant-root', 'aurreko-sustraia', mergeParts(ar), mixHex(yel, C19.motor, 0.45 * fn), yelD, { tissue: 'nerve' });
     put('ganglion', 'gongoil-errakideoak', mergeParts(gg), C19.ganglion, yelD, { tissue: 'nerve' });
@@ -253,7 +258,7 @@ export function cordModel(pose: CordPose, o: CordOpts = {}) {
   const dura = clamp01(pose.dura), arach = clamp01(pose.arach), pia = clamp01(pose.pia), csf = clamp01(pose.csf), bone = clamp01(pose.bone);
   const MEN = ['meningeak'];
   put('pia', 'pia-materra', PIA(), C19.pia, C19.piaDeep, { groups: MEN, opacity: 0.85 * pia, tissue: 'membrane' });
-  put('csf', 'likido-zefalorrakideoa', CSF(), C19.csf, C19.csfDeep, { groups: ['eremu-azpiaraknoideoa'], opacity: 0.38 * csf, tissue: 'membrane', outline: false });
+  put('csf', 'likido-zefalorrakideoa', CSF(), C19.csf, C19.csfDeep, { groups: ['eremu-azpiaraknoideoa'], opacity: 0.5 * csf, tissue: 'membrane', outline: false });
   put('arach', 'araknoidesa', ARACH(), C19.arach, C19.arachDeep, { groups: MEN, opacity: 0.9 * arach, tissue: 'membrane' });
   put('dura', 'dura-materra', DURA(), C19.dura, C19.duraDeep, { groups: MEN, opacity: dura, tissue: 'membrane' });
   put('bone', 'ornoak', BONE(), G19.bone, G19.boneDeep, { opacity: bone, tissue: 'bone', calm: true });
@@ -261,8 +266,9 @@ export function cordModel(pose: CordPose, o: CordOpts = {}) {
   put('epi', 'eremu-epidurala', EPI(), '#f2d79a', '#8a6a2a', { opacity: 0.55 * bone, tissue: 'mesenchyme', outline: false });
   pts['pia-materra'] = [-0.66, 0.74, LEN - 0.2];
   pts['araknoidesa'] = [-1.06, 0.98, 0.7];
-  pts['eremu-azpiaraknoideoa'] = [-1.15, -0.55, 0.75];
-  pts['likido-zefalorrakideoa'] = [-1.15, -0.55, 0.75];
+  // Two places on the fluid's cut ring (mid-thickness, on its end face): the space and the fluid that fills it.
+  pts['eremu-azpiaraknoideoa'] = [-0.8, -0.84, 0.84];
+  pts['likido-zefalorrakideoa'] = [-1.17, -0.375, 0.84];
   pts['dura-materra'] = [-1.3, 1.02, 0.1];
   pts['eremu-epidurala'] = [-1.95, 0.55, -0.6];
   pts['ornoak'] = [-2.3, 1.2, -0.6];

@@ -22,9 +22,24 @@ export const WHERE19: Record<string, Where> = {
   neural: { th: 0.2, at: [0, 0.6, -0.3], scale: 0.8, note: 'Enbrioiaren bizkarraldea: nerbio sistema osoa hodi neuraletik dator' },
 };
 
+/**
+ * The models in the block frame (x the body's left, y dorsal, z cranial): the cord block, the embryo's section on it
+ * and the brainstem blocks. Their frame pills must name dorsal up, or a camera turned to look from above (the
+ * hindbrain's dorsal view) would still say "dortsala" at the top.
+ */
+const BLOCK_SITES = new Set(['cord', 'section', 'medulla', 'hind', 'midbrain']);
+export const BLOCK_AXES19 = {
+  up: 'dortsala',
+  front: 'kraneala',
+  side: 'ezkerra',
+  sideDir: [1, 0, 0] as V3,
+  edges: { up: 'Dortsala', down: 'Bentrala', front: 'Kraneala', back: 'Kaudala', side: 'Ezkerra', otherSide: 'Eskuina' },
+};
+
 export function poseStage19<P, O extends Dim>(spec: StageSpec<P, O>, build: (pose: P, opts: O) => PoseModel) {
   const where = spec.where ?? (spec.site ? WHERE19[spec.site.key] : undefined);
-  return poseStage14({ right: [236, 540], look: LOOK_V2, fit: {}, strictAnchors: true, where, ...spec }, build, false, CONT19);
+  const axes = spec.site && BLOCK_SITES.has(spec.site.key) ? BLOCK_AXES19 : undefined;
+  return poseStage14({ right: [236, 540], look: LOOK_V2, fit: {}, strictAnchors: true, where, axes, ...spec }, build, false, CONT19);
 }
 
 /** From the front (the body's left on the viewer's right). */

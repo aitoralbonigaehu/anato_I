@@ -1,5 +1,64 @@
 # Topic 19 (nervous system): what is left (2026-11-16, 20:25)
 
+## State on 2026-11-23 — READ THIS FIRST (supersedes everything below where they disagree)
+
+**New notes.** The owner sent new notes: `19. gaia_ Nerbio sistema (ZUZENDU GABE).pdf`, with 11 sections and no blue text. They replace the old DOCX. `content/notes-text/w19.ts` was re-extracted (34 370 characters, pinned in `tests/notes.test.ts`). There is no topic 20. The topic was rebuilt to these notes: 28 stages in the notes' order (`content/weeks/week19.ts` ORDER, TOC in `content/notes.ts`).
+
+- **Sections 1–3** (`week19a.ts`, `week19d.ts`): orientation, the two classifications, cord basics, the reflex arc, voluntary movement, and the new stage `mugimendu-automatikoak` (3.3–3.4).
+- **Sections 4–6** (`week19b.ts`): every beat re-cited to the new sentence ids. The old `kortexa` stage is gone: its content is now in sections 3.1–3.2.
+- **Sections 7–11** (`week19c.ts`): bentrikuluak, likido-zefalorrakideoa, garuneko-meningeak, then new stages: erraboila (10.1), metentzefaloa (10.2), mesentzefaloa (10.3), talamoa = Dientzefaloa (10.4), hipofisia (10.4.1), bikote-kranealak (11).
+- **New 3D model** `stem-model.ts` + `Stem19.tsx`, with three blocks tied to the head (`SITE19B.medulla / hind / midbrain`, `STEM_AT` in `sites-b.ts`, pinned in `tests/sites19.test.ts`):
+  - the medulla: pyramids with motor drops going down, dorsal sensory paths going up, the cord below to compare;
+  - the hindbrain: the tube opens into the IV ventricle (sensory moves lateral, motor stays medial), the pons, the rhombic lips fuse into the cerebellum and cover the ventricle;
+  - the midbrain: 6th → 12th → 16th week, aqueduct, peduncles, substantia nigra → basal nuclei dopamine, Parkinson.
+- **brain-model.ts** gained:
+  - a whole-brain mirror (`whole`), used for the lateral ventricles and the dorsal/ventral views;
+  - `stem` fade (cerebrum see-through);
+  - the 12 cranial nerves (`nerves` 0..12; trigeminal ganglion with 3 branches; IV leaves dorsally);
+  - hypophysis development (`hyp`): stomodeum, Rathke's pouch rising and detaching, infundibulum; lobes and hormone drops;
+  - the pineal gland.
+- **Typos in the notes are taught as KONTUZ**:
+  - Schwann cells placed in the CNS;
+  - substantia nigra "in the metencephalon";
+  - 3rd pair called "ikusmen";
+  - pia "attached to bone";
+  - the pupil remark (kept "apunteen arabera").
+- Eratorriak schemes (`content/eratorriak/schemes-19.ts`) rewritten from the new notes. Learning maps (`learning-maps.ts`) regrouped. Topic 19 is no longer a blue topic (`tests/eratorriak-taught.test.ts`).
+- Quizzes: 34 questions (`week19a/b/c-quiz.ts`), from the notes' wording only.
+
+**Fixed in the same pass:**
+- Optional pose fields missing from the zero poses made the poses NaN, so those parts were never drawn:
+  - `face`, `plex`, `cbl` in `BP0`: the face glands and ganglia, the visceral plexuses, the cerebellar circuit;
+  - `ends` in `CP0`: the reflex arc's skin.
+  - Every optional pose field now has a 0 default.
+- Frame pills:
+  - the brain stages use brain axes (`BRAIN_AXES` in Brain19: Goikoa (dortsala) / Behekoa (bentrala) / Aurrekoa (rostrala) / Atzekoa (okzipitala)), as notes 1.1 says;
+  - the block-frame models (cord, section, medulla, hind, midbrain) use `BLOCK_AXES19` (common.tsx), so turned views name dorsal correctly.
+- The sulcus limitans is drawn in the hindbrain (it was only a point).
+- The stomodeum stays while the pouch detaches.
+- Visibility for topic 19 is all green:
+  - names added where the text names a structure;
+  - `MENTION_ONLY` / `GONE` entries with reasons for "usaimen erraboila", erronbentzefaloa, the lips → cerebellum, and kortex motorra out of frame.
+
+- Name dots (`tests/anchors3d`): all 28 topic 19 stages pass. Topic 19's `HOVER_KNOWN` went from 26 entries to 2: barneko-mintz and puntzioa-epidurala, both kept as they were. How:
+  - names got `p` points found on their own mesh (pick + rim + 9 px spacing, both sampled frames);
+  - the flexures are bends, not pieces: the wall stretch at each bend carries the flexure's name as a group (neural-model `flexAt`), and the dots sit on the wall;
+  - the chromaffin cells reach the adrenal gland's cut face;
+  - the fluid layers (brain `sub`, cord `csf`) are at 0.5 opacity, so they are solid for the pointer. Below 0.5 is glass, and the pointer went through to the pia;
+  - the ventricles view uses glass 0.86, so the tissue is under 0.5 and the pointer reaches the casts;
+  - the voluntary path turns the cerebrum to glass while the signal rises (`glass` in `BodyPose`, 0 in `BP0`), so the thalamus synapse shows;
+  - nerve III in the body model ran inside the frontal lobe. It now runs under it, into the orbit;
+  - IX is a little thicker (r 0.02);
+  - the view from below names some pairs at `<id>:below` points (`CN_BELOW`). These are set only once the nerve has grown.
+
+**Open:**
+- Tablet shots (768/1024) and flight sheets for the new stem stages.
+- Kimu class (Klasea) for topic 19 not written.
+- `inPreparation` still set.
+- Already failing before this work and unrelated: notes test topic 7 (`w7/2/p8/s1` outside 2.1) and the 7/8 figure caption checks.
+- Nothing is committed.
+
+
 Written for whoever builds topic 19, from the final reports of 19-A (foundation + sections 1–5), 19-B (sections 6–9) and 19-C (sections 10–13), who all stopped at 20:00. **No stage and no 3D model exists yet.** What exists: the notes text, the plan, the palette, the root landmarks, empty content stubs, and two detailed preparation files. Nothing is committed. `/astea/19` returns 404 (not registered, on purpose).
 
 **Production standard:** build every model and stage to `docs/quality/3d-quality-bar.md`, section "Production standard 2026-11", from the start: one root body with as few separate models as possible, sites measured from a shared landmark and pinned by `tests/sites19*.test.ts`, `site` + `arrive` + `where` on every stage, run-ons from `endPose`, heavy models in `geo-registry.ts` + `.geo`, the neural tube's closing surface carried as a flow (no folds), whole-topic triage then flight sheets with `--dwell`, and a dated "State on <date>" section at the top of this file.

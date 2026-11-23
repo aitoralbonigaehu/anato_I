@@ -32,11 +32,19 @@ export interface BodyPose {
   axes: number;
   /** The voluntary path: the sensory signal up (0..1), the motor order down (0..1). */
   sens: number;
+  /** The cerebrum turned to glass (0..1): the signal's synapses inside it show. */
+  glass?: number;
   motor: number;
   /** The hand's skin, the forearm's muscle and the cortex areas shown (the voluntary path's two ends). */
   hand?: number;
+  /** The cranial parasympathetic outflow to the face (2/p18–p20): ganglia, glands and the eye's pupil (0..1). */
+  face?: number;
+  /** The plexuses the autonomic nerves make in front of the organs (2/p16) (0..1). */
+  plex?: number;
+  /** Automatic movements (3.3): the loop through the cerebellum, grown (0..1). */
+  cbl?: number;
 }
-export const BP0: BodyPose = { pns: 1, auto: 0, cor: 0, hor: 0, sag: 0, axes: 0, sens: 0, motor: 0, hand: 0 };
+export const BP0: BodyPose = { pns: 1, auto: 0, cor: 0, hor: 0, sag: 0, axes: 0, sens: 0, motor: 0, hand: 0, face: 0, plex: 0, cbl: 0, glass: 0 };
 
 export interface BodyOpts {
   dim?: { ids: readonly string[]; k: number } | null;
@@ -354,6 +362,34 @@ export const MOTOR_PATH: V3[] = L(
 );
 const MUSCLE_C: V3 = [1.08, 0.82, NZ + 0.04];
 
+// ———————————————————————— the cranial parasympathetic outflow (2/p14, p18–p20) ————————————————————————
+
+/** Its ganglia (their neurons, 2/p18) and the glands and the eye they reach (2/p19–p20); left side, mirrored. */
+const FACE_GANGLIA: V3[] = [[0.11, 3.8, 0.24], [0.17, 3.75, 0.13], [0.2, 3.47, 0.17], [0.27, 3.6, 0.0]];
+const GLANDS: { id: string; c: V3; r: V3 }[] = [
+  { id: 'malko-guruina', c: [0.25, 4.04, 0.33], r: [0.04, 0.022, 0.032] },
+  { id: 'listu-guruinak', c: [0.33, 3.62, 0.05], r: [0.045, 0.075, 0.04] },
+  { id: 'listu-guruinak', c: [0.2, 3.42, 0.24], r: [0.045, 0.03, 0.04] },
+];
+/** III to the eye (the pupil), VII to the lacrimal and the submandibular gland, IX to the parotid. */
+const FACE_PARA: { id: string; line: V3[] }[] = [
+  // Under the frontal lobe (its floor is at y ≈ 3.79–3.86 here), forward into the orbit and up to the eye.
+  { id: 'nerbio-begi-eragilea', line: [[0.03, 3.74, -0.03], [0.07, 3.75, 0.12], [0.11, 3.8, 0.24], [0.14, 3.93, 0.32]] },
+  { id: 'aurpegi-nerbioa', line: [[0.07, 3.64, -0.1], [0.14, 3.7, 0.04], [0.17, 3.75, 0.13], [0.22, 3.92, 0.26], [0.24, 4.02, 0.31]] },
+  { id: 'aurpegi-nerbioa', line: [[0.07, 3.64, -0.1], [0.15, 3.56, 0.06], [0.2, 3.47, 0.17], [0.2, 3.43, 0.22]] },
+  { id: 'nerbio-glosofaringeoa', line: [[0.06, 3.56, -0.12], [0.17, 3.57, -0.06], [0.27, 3.6, 0.0], [0.31, 3.61, 0.03]] },
+];
+/** The autonomic plexuses in front of the organs (2/p16): the cardiac and the oesophageal. */
+const PLEX_C: V3[] = [[0.08, 2.05, 0.2], [0.0, 2.42, -0.06]];
+
+// ———————————————————————— automatic movements (3.3): the cerebellum takes part ————————————————————————
+
+/** From the motor cortex down to the pons, across into the cerebellum, and back up to the cortex by the thalamus. */
+export const CBL_PATH: V3[] = L(
+  [[0.23, 4.24, 0.05], [0.14, 4.06, 0.02], [0.07, 3.82, -0.04], [0.09, 3.7, -0.12], [0.2, 3.68, -0.22], [0.16, 3.78, -0.16], [0.08, ROOT19.thalamus[1], ROOT19.thalamus[2] - 0.02], [0.16, 4.12, -0.02], [0.23, 4.24, 0.05]],
+  100,
+);
+
 export function bodyModel(pose: BodyPose, o: BodyOpts = {}) {
   const items: Item3[] = [];
   const pts: Record<string, V3> = {};
@@ -382,7 +418,8 @@ export function bodyModel(pose: BodyPose, o: BodyOpts = {}) {
 
   // ———— the central nervous system ————
   const brainC = C19.brain, brainD = C19.brainDeep;
-  put('cerebrum', 'garun-hemisferioak', CEREBRUM(), brainC, brainD, { groups: ['entzefaloa', ...CNS], tissue: 'neural' });
+  const glass = clamp01(pose.glass ?? 0);
+  put('cerebrum', 'garun-hemisferioak', CEREBRUM(), brainC, brainD, { groups: ['entzefaloa', ...CNS], tissue: 'neural', ...(glass > 0.001 ? { opacity: 1 - 0.6 * glass } : {}) });
   put('cerebellum', 'garuntxoa', CEREBELLUM(), mixHex(brainC, '#d99a8c', 0.4), brainD, { groups: ['entzefaloa', ...CNS], tissue: 'neural' });
   // The brainstem carries the cranial parasympathetic outflow: violet while the autonomic system is told.
   put('stem', 'entzefalo-enborra', STEM(), mixHex(mixHex(brainC, '#c99a90', 0.5), C19.para, 0.55 * auto), brainD, { groups: ['entzefaloa', ...CNS], tissue: 'neural' });
@@ -462,6 +499,44 @@ export function bodyModel(pose: BodyPose, o: BodyOpts = {}) {
     pts['urdaila'] = [0.3, 1.3, 0.12];
     pts['gernu-maskuria'] = [0.04, -0.4, 0.11];
     pts['begia'] = [0.16, 3.98, 0.42];
+  }
+
+  // ———— the cranial parasympathetic outflow to the face (violet) ————
+  const face = clamp01(pose.face ?? 0);
+  if (face > 0.01) {
+    const PA = ['sistema-parasinpatikoa', 'nerbio-sistema-begetatiboa'];
+    for (const f of FACE_PARA)
+      for (const s of [1, -1]) put(`fp-${f.id}-${f.line[1][1]}-${s}`, f.id, vessel(L(f.line.map((q) => X(s, q)), 14), { r0: 0.014, r1: 0.011, sides: 8 }, face), C19.para, C19.paraDeep, { groups: ['nerbio-kranialak', ...PA] });
+    const gg = mergeParts(FACE_GANGLIA.flatMap((c) => [1, -1].map((s) => blobParts({ center: X(s, c), radii: [0.022, 0.022, 0.022], rings: 8, sides: 10 }))));
+    put('face-ganglia', 'buruko-gongoil-parasinpatikoak', gg, mixHex(C19.para, '#ffffff', 0.25), C19.paraDeep, { groups: PA, opacity: face });
+    for (const [i, g] of GLANDS.entries())
+      for (const s of [1, -1]) put(`gland${i}${s}`, g.id, blobParts({ center: X(s, g.c), radii: g.r, rings: 10, sides: 12 }), '#e9a8c0', '#7a3a52', { tissue: 'mesenchyme', opacity: face, calm: true });
+    for (const s of [1, -1]) put(`eye${s}`, 'begia', blobParts({ center: [s * 0.15, 3.98, 0.36], radii: [0.06, 0.06, 0.06], rings: 12, sides: 16 }), '#f2f2f4', '#7a7a80', { tissue: 'mesenchyme', opacity: face * (1 - auto), calm: true });
+    pts['nerbio-begi-eragilea'] = [0.08, 3.755, 0.15];
+    pts['malko-guruina'] = [0.26, 4.05, 0.34];
+    pts['listu-guruinak'] = [0.34, 3.62, 0.07];
+    pts['buruko-gongoil-parasinpatikoak'] = [0.17, 3.75, 0.14];
+    pts['begia'] = [0.16, 3.98, 0.42];
+  }
+  // ———— the autonomic plexuses in front of the organs ————
+  const plex = clamp01(pose.plex ?? 0) * auto;
+  if (plex > 0.01) {
+    const net: (Parts | null)[] = [];
+    for (const [ci, c] of PLEX_C.entries()) {
+      const r = ci === 0 ? 0.13 : 0.06, h = ci === 0 ? 0.12 : 0.3;
+      for (let i = 0; i < 5; i++) {
+        const a = (i / 5) * Math.PI * 2;
+        net.push(vessel(L([[c[0] + r * Math.cos(a), c[1] + h, c[2] + 0.06 * Math.sin(a)], [c[0] + r * Math.cos(a + 1.3), c[1], c[2] + 0.06 * Math.sin(a + 1.3)], [c[0] + r * Math.cos(a + 2.4), c[1] - h, c[2] + 0.06 * Math.sin(a + 2.4)]], 10), { r0: 0.008, r1: 0.008, sides: 6 }, plex));
+      }
+    }
+    put('plexus', 'errai-sareak', mergeParts(net), mixHex(C19.symp, C19.para, 0.5), C19.sympDeep, { groups: ['nerbio-sistema-begetatiboa'] });
+    pts['errai-sareak'] = [0.18, 2.12, 0.24];
+  }
+  // ———— automatic movements: the loop through the cerebellum ————
+  const cbl = clamp01(pose.cbl ?? 0);
+  if (cbl > 0.001) {
+    put('cbl-loop', 'garuntxo-zirkuitua', vessel(CBL_PATH, { r0: 0.02, r1: 0.02, bulb: 0.9, bulbLen: 0.06, sides: 10, n: 100 }, cbl), C19.inter, mixHex(C19.inter, '#000000', 0.5), { groups: ['garuntxoa'] });
+    pts['garuntxo-zirkuitua'] = CBL_PATH[Math.max(1, Math.round(Math.min(cbl, 0.55) * (CBL_PATH.length - 1)))];
   }
 
   // ———— the brain's cutting planes ————

@@ -1,4 +1,101 @@
 import type { QuizQuestion } from '@/lib/sim/types';
 
-/** Topic 19, part c (agent 19-C): worded from the notes. */
-export const quiz19c: QuizQuestion[] = [];
+/** Topic 19, sections 7–11 (ventricles, CSF, meninges, brain parts, cranial pairs), worded from the notes of 2026-11-23. */
+export const quiz19c: QuizQuestion[] = [
+  {
+    id: 'w19-q-mesentzefalo-barrunbea',
+    question: 'Zer barrunbe du mesentzefaloak?',
+    options: ['Garun akueduktoa (Silvio), bentrikulurik ez', 'Hirugarren bentrikulua', 'Laugarren bentrikulua', 'Alboko bentrikuluak'],
+    answer: 0,
+    explanation: 'Mesentzefaloaren pareta lodia da eta hodia estu geratzen da: akueduktoak III. eta IV. bentrikuluak lotzen ditu.',
+    stageId: 'bentrikuluak',
+  },
+  {
+    id: 'w19-q-likidoa-ekoizpena',
+    question: 'Zerk ekoizten du likido zefalorrakideoa?',
+    options: ['Sare koroideek, bentrikuluen sabaian', 'Araknoideak', 'Pia materrak', 'Dura materrak'],
+    answer: 0,
+    explanation: 'Sare koroideek (arteriolak) ekoizten dute, 5. astetik aurrera eta etengabe. Hezurrak eremua mugatzen duenez, xurgatu egin behar da.',
+    stageId: 'likido-zefalorrakideoa',
+  },
+  {
+    id: 'w19-q-luschka-magendie',
+    question: 'IV. bentrikulutik eremu azpiaraknoideora, zein zulotatik ateratzen da likidoa?',
+    options: ['Bi Luschka zuloetatik (albokoak) eta Magendie zulotik (erdikoa)', 'Monro zuloetatik', 'Garun akueduktotik', 'Hodi ependimariotik bakarrik'],
+    answer: 0,
+    explanation: 'Parte batek ependimotik jarraitzen du; bestea hiru zulotatik ateratzen da: bi Luschka albokoak eta Magendie erdikoa.',
+    stageId: 'likido-zefalorrakideoa',
+  },
+  {
+    id: 'w19-q-epidurala-garunean',
+    question: 'Zergatik ez dago eremu epiduralik garunean?',
+    options: ['Dura materra hezurrari itsatsita dagoelako', 'Araknoidea hezurrari lotuta dagoelako', 'Pia materrik ez dagoelako', 'Likido zefalorrakideorik ez dagoelako'],
+    answer: 0,
+    explanation: 'Garunean dura hezurrari itsatsita dago. Ornomuinean, berriz, dura ez dago hezurrari lotuta, eta tartean eremu epidurala dago.',
+    stageId: 'garuneko-meningeak',
+  },
+  {
+    id: 'w19-q-piramideak',
+    question: 'Erraboilan, zer daude piramideetan?',
+    options: ['Beherantz doazen axoi motorrak', 'Goranzko bide sentsitiboak', 'Neuronen somak', 'Hodi ependimarioa'],
+    answer: 0,
+    explanation: 'Piramideak alde bentralean daude, axoi motorrekin; goranzko bideak (sentsitiboak) dortsalean.',
+    stageId: 'erraboila',
+  },
+  {
+    id: 'w19-q-iv-irekiera',
+    question: 'Metentzefaloan hodia irekitzean, nola geratzen dira eremuak?',
+    options: ['Motorra bentralean eta erdian; sentikorrak dortsalean eta alboetan', 'Sentikorrak erdian; motorra alboetan', 'Motorra dortsalean; sentikorrak bentralean', 'Ez dira aldatzen'],
+    answer: 0,
+    explanation: 'Sabai plaka zabaldu eta hodia goitik irekitzen da (IV. bentrikulua): hegal plakak alboratu egiten dira.',
+    stageId: 'metentzefaloa',
+  },
+  {
+    id: 'w19-q-zerebeloa-jatorria',
+    question: 'Nondik sortzen da garuntxoa (zerebeloa)?',
+    options: ['Ezpain erronboideetatik, erdian fusionatuta', 'Oinalde plaketatik', 'Zoru plakatik', 'Mesentzefalotik'],
+    answer: 0,
+    explanation: 'Hegal plaken eremu dortsala lodituz ezpain erronboideak sortzen dira; erdian fusionatu eta zerebeloak IV. bentrikulua estaltzen du.',
+    stageId: 'metentzefaloa',
+  },
+  {
+    id: 'w19-q-parkinson',
+    question: 'Parkinsonean, zer gertatzen da?',
+    options: ['Gai beltzeko neurona dopaminergikoak hiltzen dira', 'Zerebeloa ez da fusionatzen', 'Akueduktoa ixten da', 'Talamoak usaimena jasotzen du'],
+    answer: 0,
+    explanation: 'Gai beltzak dopamina bidaltzen die oinaldeko nukleoei. Neuronak hiltzean, mugimendu automatikoak agertzen dira geldirik daudenean.',
+    stageId: 'mesentzefaloa',
+  },
+  {
+    id: 'w19-q-talamoa',
+    question: 'Zein informazio EZ da talamotik pasatzen?',
+    options: ['Usaimena', 'Ikusmena', 'Ukimena', 'Mina'],
+    answer: 0,
+    explanation: 'Talamoa errelebo-zentroa da: dena talamotik pasatzen da, usaimena izan ezik.',
+    stageId: 'talamoa',
+  },
+  {
+    id: 'w19-q-neurohipofisia',
+    question: 'Nondik sortzen da neurohipofisia?',
+    options: ['Hipotalamotik, infundibuluaren bidez', 'Estomodeotik, Rathkeren poltsaren bidez', 'Gandor neuraletik', 'Epitalamotik'],
+    answer: 0,
+    explanation: 'Hipofisiak bi jatorri ditu: adenohipofisia estomodeotik (hipofisi poltsa) eta neurohipofisia hipotalamotik (infundibulua).',
+    stageId: 'hipofisia',
+  },
+  {
+    id: 'w19-q-troklearra',
+    question: 'Zein bikote kraneal ateratzen da alde dortsaletik?',
+    options: ['IV. troklearra', 'III. begi-eragilea', 'VI. aldentzailea', 'XII. hipoglosoa'],
+    answer: 0,
+    explanation: 'IV.a da alde dortsaletik ateratzen den bakarra. III., IV. eta VI. bikoteek begiaren mugimenduak eragiten dituzte.',
+    stageId: 'bikote-kranealak',
+  },
+  {
+    id: 'w19-q-bagoa',
+    question: 'Zein da gorputz osoko nerbio parasinpatikorik handiena?',
+    options: ['X. bagoa', 'VII. aurpegi-nerbioa', 'IX. glosofaringeoa', 'XI. osagarria'],
+    answer: 0,
+    explanation: 'Bagoa (X) da nerbio parasinpatikorik handiena.',
+    stageId: 'bikote-kranealak',
+  },
+];

@@ -32,6 +32,7 @@ const ctx: SceneContextValue = {
  * step), so by the tour and finished frames they are gone or not yet named. `week/stage/step/id` → why.
  */
 const GONE: Record<string, string> = {
+  '19/metentzefaloa/6/ezpain-erronboideak': 'erdian fusionatu eta garuntxo bihurtzen dira urrats honetan (hasieran izendatuta)',
   '17/josturak-fontanelak/4/atzeko-fontanela': 'urrats honetan ixten da (hasieran izendatuta)',
   '17/josturak-fontanelak/5/aurreko-fontanela': 'urrats honetan ixten da (hasieran izendatuta)',
   '17/faringe-arkuak/3/bosgarren-arkua': 'agertu eta endekatzen da urrats honetan (bira-irudian izendatuta)',
@@ -73,6 +74,11 @@ const GONE: Record<string, string> = {
 const MENTION_ONLY: Record<string, string> = {
   '19/garuneko-meningeak/2/ornomuina': 'garuna eta ornomuina alderatzen dira: ornomuineko meningeak 6. etapan ikusi dira',
   '19/garuneko-meningeak/4/ornomuina': '"bai garunean bai ornomuinean": ornomuina 6. etapan ikusi da',
+  '19/borondatezko-mugimenduak/5/kortex-motorra': 'kortex motorra aurreko urratsean izendatu da; hemen bere axoiaren bidea jarraitzen da ornomuinean behera, kortexa irudiaz kanpo dagoela',
+  '19/aktu-erreflexua/4/motoneurona': 'interneuronek neurona motorrak aktibatzen dituztela esaten da: neurona motorra eta haren axoia hurrengo urratsean pizten dira',
+  '19/bentrikuluak/6/erronbentzefaloa': 'xixkuaren izena (erronbentzefaloa) bentrikuluaren jatorria esateko: helduaren garunean bere eratorriak daude (zubia, garuntxoa, erraboila), ez xixkua',
+  '19/bikote-kranealak/2/erraboila': '"usaimen erraboila" esaten da, ez mielentzefaloaren erraboila: usaimen nerbioaren puntan izendatuta dago',
+  '19/bikote-kranealak/3/erraboila': '"usaimen erraboila" (aurreko urratsekoa) aipatzen da, ez mielentzefaloaren erraboila',
   '17/lehen-arkua-kartilagoak/1/baraila': '"barail luzapena" aipatzen da: baraila 2. urratsean eratzen da',
   '17/lehen-arkua-kartilagoak/7/baraila': '"barail prozesutik": luzapena da (beste liburuen bertsioa), ez hezurra; hemen hezurtxoak dira gaia',
   '17/lehen-arkua-kartilagoak/6/meckel-kartilagoa': 'jada endekatuta (3. urratsa): haren goiko muturra dira mailua eta ingudea, marraztuta',

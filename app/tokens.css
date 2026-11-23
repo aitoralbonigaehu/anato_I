@@ -13,15 +13,15 @@
 .intro,
 .app .stage-bar {
   /* Ground and surfaces */
-  --bg: #0a0a0b;
-  --bg-1: #0f0f11;
-  --surface: #131315;
-  --surface-2: #19191c;
-  --surface-3: #232327;
+  --bg: #0d0b0d;
+  --bg-1: #121012;
+  --surface: #161316;
+  --surface-2: #1c181b;
+  --surface-3: #272125;
   /* Foreground as a channel triple: rgb(var(--fg-rgb) / .08) is a hairline in either theme. */
   --fg-rgb: 255 255 255;
-  --text-rgb: 245 242 236;
-  --surface-rgb: 19 19 21;
+  --text-rgb: 247 238 224;
+  --surface-rgb: 22 19 22;
   --shade-rgb: 0 0 0;
   --shade-k: 1;
   /* Lines */
@@ -29,10 +29,10 @@
   --line-2: rgb(var(--fg-rgb) / 0.14);
   --line-3: rgb(var(--fg-rgb) / 0.24);
   /* Text, strongest to quietest */
-  --text: #f5f2ec;
-  --text-2: #cfcbc2;
-  --text-3: #aaa69d;
-  --text-4: #928e85;
+  --text: #f7eee0;
+  --text-2: #d4cabb;
+  --text-3: #aca295;
+  --text-4: #93897d;
   /* Inverse: the one solid light key on dark (and dark key on light) */
   --inverse: var(--text);
   --inverse-hover: #ffffff;
@@ -42,6 +42,9 @@
   --signal-hover: #ff7f57;
   --signal-soft: rgba(255, 106, 61, 0.14);
   --on-signal: #ffffff;
+  /* The warm second voice (the opening film's peach): display accents, the reader's own place. */
+  --warm: #f1ad76;
+  --warm-soft: rgba(241, 173, 118, 0.13);
   --focus: #ffb86b;
   --focus-soft: rgba(255, 184, 107, 0.14);
   --ok: #7ed492;
@@ -77,8 +80,8 @@
   --well: inset 0 1px 2px rgb(0 0 0 / 0.4), inset 0 0 0 1px rgb(255 255 255 / 0.05);
   --thumb: var(--surface-3);
   --sheen: linear-gradient(180deg, rgb(255 255 255 / 0.035), rgb(255 255 255 / 0) 42%);
-  --float: #151518;
-  --frame: #111114;
+  --float: #181417;
+  --frame: #131013;
   --float-shadow: 0 1px 0 rgb(var(--fg-rgb) / 0.05) inset, 0 22px 56px -18px rgb(var(--shade-rgb) / 0.9), 0 2px 8px rgb(var(--shade-rgb) / 0.35);
   color-scheme: dark;
 }
@@ -156,6 +159,8 @@
   --signal-hover: #ab3c15;
   --signal-soft: rgba(196, 70, 26, 0.1);
   --on-signal: #ffffff;
+  --warm: #9a4f14;
+  --warm-soft: rgba(154, 79, 20, 0.09);
   --focus: #a35a00;
   --focus-soft: rgba(163, 90, 0, 0.1);
   --ok: #1f7a3f;

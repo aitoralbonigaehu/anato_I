@@ -5,7 +5,7 @@ import { NP0, neuralModel } from '@/components/scenes/week19/neural-model';
 import { SP0, sectionModel } from '@/components/scenes/week19/section-model';
 import { SPP0, spineModel } from '@/components/scenes/week19/spine-model';
 import { CORD_CANAL, HEAD_THALAMUS, ROOT19, SITE19 } from '@/components/scenes/week19/sites';
-import { NEURAL_DIEN, SITE19B, SPINE_CONUS } from '@/components/scenes/week19/sites-b';
+import { NEURAL_DIEN, SITE19B, SPINE_CONUS, STEM_AT } from '@/components/scenes/week19/sites-b';
 import type { M4, V3 } from '@/lib/three-d/math';
 import { invSim } from '@/lib/three-d/place';
 
@@ -74,5 +74,15 @@ describe('topic 19: the models in the one body', () => {
     // The cord ends at L1–L2 once the column has grown: the conus lies between L1's and L2's middles.
     expect(sp['ornomuinaren-konoa'][1]).toBeLessThan(sp['orno-L1'][1]);
     expect(sp['ornomuinaren-konoa'][1]).toBeGreaterThan(sp['orno-L2'][1]);
+  });
+
+  test('each brainstem block (medulla, hindbrain, midbrain) sits at its own level of the head', () => {
+    for (const k of ['medulla', 'hind', 'midbrain'] as const) {
+      const at = STEM_AT[k];
+      expect(dist(toRoot(SITE19B[k].place, [0, 0, 0]), toRoot(SITE19.head.place, at)), k).toBeLessThan(1e-6);
+    }
+    // Caudal to cranial: the medulla lowest, the midbrain highest, so moving between them is one short flight.
+    expect(STEM_AT.medulla[1]).toBeLessThan(STEM_AT.hind[1]);
+    expect(STEM_AT.hind[1]).toBeLessThan(STEM_AT.midbrain[1]);
   });
 });

@@ -8,25 +8,21 @@ import { usePool } from './usePool';
 import { isDue, useAnswers } from './answers';
 import { StoryScroll } from './StoryScroll';
 import { HeroReel } from './HeroReel';
-import { TopicMap, countWord, shelfCols, useStudyRoute, type RouteIcon } from './StudyMap';
+import { TopicMap, countWord, useStudyRoute, type RouteIcon } from './StudyMap';
 import { INTRO_KEY, Intro } from './intro/Intro';
 import { LandFoot, LandNav, firstReady, inPrep, isWip } from './LandNav';
 import { IconCheck, IconClock, IconImage, IconPlay, IconQuiz, IconTree } from './icons';
-import { resumeHref, useLastPlace, usePlace, useVisited } from './progress';
+import { resumeHref, useLastPlace, usePlace, useVisited, useVisitedAll } from './progress';
 import { TopicShot } from './TopicShot';
 import { GuideButton, TourHost } from './tour/TourHost';
-import { CountUp, useReveal } from './landing-fx';
+import { useReveal } from './landing-fx';
 import './landing.css';
 import { spanOf } from '@/lib/sim/age';
 import { hueStyle } from './topicHue';
 import { Ring } from './Ring';
 
 const stageCount = weeks.reduce((n, w) => n + w.stages.filter((s) => !s.views.every((v) => v.description === 'Prestatzen')).length, 0);
-const viewCount = weeks.reduce((n, w) => n + w.stages.reduce((m, s) => m + s.views.filter((v) => v.description !== 'Prestatzen').length, 0), 0);
 
-const pad = (n: number) => String(n).padStart(2, '0');
-
-const NEWEST = 7;
 const SHELF_KEY = 'enbrioatlas:home-shelf';
 
 /** Cursor-following light on a card (CSS variables the stylesheet reads). */
@@ -36,63 +32,114 @@ const spot = (e: PointerEvent<HTMLElement>) => {
   e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
 };
 
-/** One topic on the home shelf: a frame of its own scene, span, title, progress and the next step. */
-function TopicCard({ w, i }: { w: (typeof weeks)[number]; i: number }) {
+/** One topic on the home shelf, as an atlas plate: its own scene, the number it goes by, title, span, progress and the next step. */
+function TopicCard({ w }: { w: (typeof weeks)[number] }) {
   const visited = useVisited(w.week);
   const saved = usePlace(w.week);
   const [hot, setHot] = useState(false);
   const days = spanOf(w).long;
   const wip = isWip(w);
+  const prep = !wip && inPrep(w);
   const done = w.stages.filter((s) => visited.includes(s.id)).length;
+  const started = done > 0 || !!saved;
   const href = resumeHref(w.week, w.stages, saved, visited);
   const inner = (
     <>
-      <span className="lp-card-fig">
+      <span className="pl-fig">
         <TopicShot week={w.week} hot={hot} />
-        <span className="lp-card-n">{pad(w.week)}</span>
-        {!wip && inPrep(w) ? <span className="lp-card-new is-prep">Prestatzen</span> : w.week >= NEWEST && !wip && <span className="lp-card-new">Berria</span>}
+        <span className="pl-n" aria-hidden>
+          {w.week}
+        </span>
+        {(wip || prep) && <span className="pl-flag">Prestatzen</span>}
+        {!wip && (
+          <span className="pl-go" aria-hidden>
+            <IconPlay size={11} /> {started ? 'Jarraitu' : 'Hasi'}
+          </span>
+        )}
       </span>
-      <span className="lp-card-body">
-        <span className="lp-card-days">{days}</span>
-        <b>{w.title}</b>
+      <span className="pl-body">
+        <b>
+          <span className="sr-only">{w.week}. gaia: </span>
+          {w.title}
+        </b>
         <small>{w.subtitle}</small>
       </span>
-      <span className="lp-card-foot">
-        {wip ? (
-          <span className="lp-card-state">Prestatzen</span>
-        ) : (
-          <>
-            <span className="lp-card-prog" aria-label={`${done}/${w.stages.length} etapa ikusita`}>
-              <Ring part={w.stages.length ? done / w.stages.length : 0} />
-              <small>{done > 0 ? `${done}/${w.stages.length} etapa` : `${w.stages.length} etapa`}</small>
-            </span>
-            <span className="lp-card-go">
-              {done === 0 && !saved ? 'Hasi' : 'Jarraitu'} <span aria-hidden>→</span>
-            </span>
-          </>
+      <span className="pl-foot">
+        <span className="pl-days">{days}</span>
+        {!wip && (
+          <span className="pl-prog" aria-label={`${done}/${w.stages.length} etapa ikusita`}>
+            <Ring part={w.stages.length ? done / w.stages.length : 0} />
+            <small>{done > 0 ? `${done}/${w.stages.length}` : `${w.stages.length} etapa`}</small>
+          </span>
         )}
       </span>
     </>
   );
-  const style = hueStyle(w.week, { '--d': `${(i % 4) * 80}ms` } as CSSProperties);
   return (
-    <li className={`lp-card${wip ? ' is-wip' : ''}`} data-rv style={style}>
+    <li className={`pl${wip ? ' is-wip' : ''}${started ? ' is-started' : ''}`} data-rv style={hueStyle(w.week)}>
       {wip ? (
-        <span className="lp-card-in">{inner}</span>
+        <span className="pl-in">{inner}</span>
       ) : (
-        <Link
-          href={href}
-          className="lp-card-in"
-          onPointerEnter={() => setHot(true)}
-          onPointerLeave={() => setHot(false)}
-          onFocus={() => setHot(true)}
-          onBlur={() => setHot(false)}
-          onPointerMove={spot}
-        >
+        <Link href={href} className="pl-in" onPointerEnter={() => setHot(true)} onPointerLeave={() => setHot(false)} onFocus={() => setHot(true)} onBlur={() => setHot(false)}>
           {inner}
         </Link>
       )}
     </li>
+  );
+}
+
+/** One topic on the first screen's ruler: its number, how much of it has been seen, and its name on hover. */
+function RulerTick({ w, here }: { w: (typeof weeks)[number]; here: boolean }) {
+  const visited = useVisited(w.week);
+  const saved = usePlace(w.week);
+  const wip = isWip(w);
+  const done = w.stages.filter((s) => visited.includes(s.id)).length;
+  const part = w.stages.length ? done / w.stages.length : 0;
+  const inner = (
+    <>
+      <span className="rul-n">{w.week}</span>
+      <span className="rul-bar" aria-hidden>
+        <i style={{ transform: `scaleX(${part})` }} />
+      </span>
+      <span className="rul-tip" aria-hidden>
+        <b>{w.title}</b>
+        <small>{wip ? 'Prestatzen' : `${spanOf(w).long}, ${done}/${w.stages.length} etapa`}</small>
+      </span>
+    </>
+  );
+  const cls = [here && 'is-here', wip && 'is-wip', part >= 1 && 'is-done'].filter(Boolean).join(' ');
+  return (
+    <li className={cls || undefined} style={hueStyle(w.week)}>
+      {wip ? (
+        <span className="rul-tick">{inner}</span>
+      ) : (
+        <Link className="rul-tick" href={resumeHref(w.week, w.stages, saved, visited)} aria-label={`${w.week}. gaia: ${w.title}, ${done}/${w.stages.length} etapa ikusita`} aria-current={here ? 'true' : undefined}>
+          {inner}
+        </Link>
+      )}
+    </li>
+  );
+}
+
+/** Every topic one click away from the first screen: a ruler in the order of development, filled with what the student has seen. */
+function TopicRuler() {
+  const last = useLastPlace();
+  const all = useVisitedAll();
+  const seen = weeks.reduce((n, w) => n + w.stages.filter((s) => all[w.week]?.includes(s.id)).length, 0);
+  return (
+    <nav className="rul rv" aria-label="Gaiak, garapenaren ordenan">
+      <p className="rul-head">
+        <span>
+          <b>{weeks.length} gai</b>, garapenaren ordenan
+        </span>
+        <span className="rul-seen">{seen > 0 ? `${seen}/${stageCount} etapa ikusita` : `${stageCount} etapa`}</span>
+      </p>
+      <ol>
+        {weeks.map((w) => (
+          <RulerTick key={w.week} w={w} here={last?.week === w.week} />
+        ))}
+      </ol>
+    </nav>
   );
 }
 
@@ -178,73 +225,46 @@ export function Home() {
       <LandNav help={<GuideButton tour="home" />} />
       <TourHost tour="home" ready={ready} />
 
-      <section className="hero lp-hero">
+      <section className="hm-hero">
         <div className="lp-aurora" aria-hidden />
-        <div className="hero-text">
-          <p className="kicker rv">
-            <span className="lp-live" aria-hidden /> Giza Anatomia I — Enbriologia
-          </p>
-          <h1 className="rv lp-h1">
-            <span className="lp-line">
-              <span>Giza garapena,</span>
-            </span>
-            <span className="lp-line">
-              <span>zelulaz zelula.</span>
-            </span>
-          </h1>
-          <p className="hero-lead rv">
-            Ernalkuntzatik gorputzaren sistemak eratu arte (barrunbeak, hezurrak, muskuluak…): prozesu bakoitza animatuta eta zure apunteetako izen guztiekin, euskaraz. Eten, atzera egin, mozketa aldatu eta egitura bakoitza klikatu.
-          </p>
-          <div className="hero-cta rv">
-            <ContinueCta />
-            <ReviewCta />
+        <div className="hm-hero-grid">
+          <div className="hero-text hm-copy">
+            <p className="hm-course rv">
+              Enbriologia <span>Giza Anatomia I</span>
+            </p>
+            <h1 className="rv lp-h1">
+              <span className="lp-line">
+                <span>Giza garapena,</span>
+              </span>
+              <span className="lp-line">
+                <span>zelulaz zelula.</span>
+              </span>
+            </h1>
+            <p className="hero-lead rv">Ernalkuntzatik gorputzaren sistemak eratu arte: prozesu bakoitza animatuta, zure apunteetako izen guztiekin, euskaraz. Eten, atzera egin, mozketa aldatu eta egitura bakoitza klikatu.</p>
+            <div className="hero-cta rv">
+              <ContinueCta />
+              <ReviewCta />
+            </div>
+            <p className="hero-more rv">
+              <span>Edo ikusi</span>
+              <Link href="#gaiak" onClick={() => chooseView('mapa')}>
+                gai osoa 20 segundotan
+              </Link>
+              <Link href="#garapena">garapena egunez egun</Link>
+            </p>
           </div>
-          <p className="hero-more rv">
-            <span>Edo ikusi:</span>
-            <Link href="#gaiak" onClick={() => chooseView('mapa')}>
-              gai osoa 20 segundotan
-            </Link>
-            <i aria-hidden>·</i>
-            <Link href="#garapena">garapena egunez egun</Link>
-          </p>
-          <dl className="lp-stats rv">
-            <div>
-              <dt>gai</dt>
-              <dd>
-                <CountUp to={weeks.length} go={ready} delay={500} />
-              </dd>
-            </div>
-            <div>
-              <dt>etapa</dt>
-              <dd>
-                <CountUp to={stageCount} go={ready} delay={600} />
-              </dd>
-            </div>
-            <div>
-              <dt>ikuspegi</dt>
-              <dd>
-                <CountUp to={viewCount} go={ready} delay={700} />
-              </dd>
-            </div>
-            <div>
-              <dt>hizkuntza</dt>
-              <dd className="is-word">euskara</dd>
-            </div>
-          </dl>
+          <div className="hero-visual hm-visual rv">
+            <HeroReel playing={ready} />
+          </div>
         </div>
-        <div className="hero-visual rv">
-          <HeroReel playing={ready} />
-        </div>
+        <TopicRuler />
       </section>
 
-      <section id="gaiak" className="shelf lp-shelf" aria-labelledby="shelf-h">
-        <header className="lp-shelf-head" data-rv>
+      <section id="gaiak" className="shelf hm-topics" aria-labelledby="shelf-h">
+        <header className="hm-head" data-rv>
           <div>
-            <p className="kicker" id="shelf-h">
-              Gaiak · aukeratu nondik hasi
-            </p>
-            <h2>{countWord(weeks.length)} gai, garapenaren ordenan</h2>
-            <p className="shelf-note">{shelfView === 'mapa' ? 'Gai bakoitza urrats-kate labur batean: hau buruan izanda, xehetasun bakoitzak badu bere lekua.' : 'Etapatan banatuta, bakoitza bere eszenarekin. Pasatu sagua gainetik eta ikusiko duzu mugitzen.'}</p>
+            <h2 id="shelf-h">{weeks.length <= 12 ? `${countWord(weeks.length)} gai` : `${weeks.length} gai`}, bakoitza bere eszenarekin</h2>
+            <p className="shelf-note">{shelfView === 'mapa' ? 'Gai bakoitza urrats-kate labur batean: hau buruan izanda, xehetasun bakoitzak badu bere lekua.' : 'Etapatan banatuta. Pasatu sagua gainetik eta ikusiko duzu mugitzen.'}</p>
           </div>
           <div className="seg" role="tablist" aria-label="Gaien ikuspegia">
             <button type="button" role="tab" aria-selected={shelfView === 'eszenak'} className={shelfView === 'eszenak' ? 'is-on' : ''} onClick={() => chooseView('eszenak')}>
@@ -259,9 +279,9 @@ export function Home() {
           {shelfView === 'mapa' ? (
             <TopicMap />
           ) : (
-            <ol className="lp-cards" data-tour="gaiak" style={{ '--cols': shelfCols(weeks.length) } as CSSProperties}>
-              {weeks.map((w, i) => (
-                <TopicCard key={w.week} w={w} i={i} />
+            <ol className="pls" data-tour="gaiak">
+              {weeks.map((w) => (
+                <TopicCard key={w.week} w={w} />
               ))}
             </ol>
           )}
@@ -308,7 +328,7 @@ function StudyRoute() {
                 <span className="route-icon" aria-hidden>
                   {ROUTE_ICON[r.icon]}
                 </span>
-                <span className="route-n">{r.n.padStart(2, '0')}</span>
+                <span className="route-n">{r.n}</span>
               </span>
               <b>{r.title}</b>
               <span className="route-text">{r.text}</span>

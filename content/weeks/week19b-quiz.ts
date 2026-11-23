@@ -1,4 +1,93 @@
 import type { QuizQuestion } from '@/lib/sim/types';
 
-/** Topic 19, part b (agent 19-B): worded from the notes. */
-export const quiz19b: QuizQuestion[] = [];
+/** Topic 19, sections 4–6 (neural plate and crest, cord development and growth, the vesicles), worded from the notes of 2026-11-23. */
+export const quiz19b: QuizQuestion[] = [
+  {
+    id: 'w19-q-fusioa-hasi',
+    question: 'Non hasten da gandor neuralen fusioa hodi neurala ixtean?',
+    options: ['Erdi mailan', 'Mutur kranealean', 'Mutur kaudalean', 'Bi muturretan batera'],
+    answer: 0,
+    explanation: 'Fusioa erdian hasten da eta bi aldeetara zabaltzen da: muturretan neuroporoak geratzen dira, aurrekoa (25. eguna) eta atzekoa (27./28. eguna).',
+    stageId: 'plaka-neurala',
+  },
+  {
+    id: 'w19-q-gandor-gongoilak',
+    question: 'Zein gongoiletako neuronak datoz gandor neuraletik?',
+    options: ['Guztietakoak: espinalak, sinpatikoak eta parasinpatikoak', 'Espinaletakoak bakarrik', 'Sinpatikoetakoak bakarrik', 'Bat ere ez: denak hodi neuraletik'],
+    answer: 0,
+    explanation: 'Gongoil guztietako neuronak gandorretik datoz, katean edo sarean egon.',
+    stageId: 'gandor-eratorriak',
+  },
+  {
+    id: 'w19-q-kromafinak',
+    question: 'Giltzurrun gaineko guruinean, zerk du jatorria gandor neuralean?',
+    options: ['Muineko zelula kromafinek bakarrik', 'Kortexak bakarrik', 'Guruin osoak', 'Kapsulak'],
+    answer: 0,
+    explanation: 'Guruinak kortexa eta muina ditu, baina muineko zelula kromafinak bakarrik datoz gandorretik (adrenalina eta noradrenalina).',
+    stageId: 'gandor-eratorriak',
+  },
+  {
+    id: 'w19-q-manto',
+    question: 'Zer bihurtzen da manto geruza ornomuin helduan?',
+    options: ['Gai grisa', 'Gai zuria', 'Pia materra', 'Ependimoa'],
+    answer: 0,
+    explanation: 'Manto geruzan neuroblastoen somak daude: gai grisa. Geruza marginalean axoiak: gai zuria.',
+    stageId: 'ornomuin-geruzak',
+  },
+  {
+    id: 'w19-q-kanpoko-mintza',
+    question: 'Zer bihurtzen da kanpoko mintz mugatzailea?',
+    options: ['Pia materra', 'Dura materra', 'Ependimo geruza', 'Neuroepitelioa'],
+    answer: 0,
+    explanation: 'Kanpoko mintz mugatzailea pia zelulek osatzen dute, eta gero pia materra bihurtzen da.',
+    stageId: 'ornomuin-geruzak',
+  },
+  {
+    id: 'w19-q-hegal-plaka',
+    question: 'Nolakoa da hegal plaka?',
+    options: ['Dortsala eta sentsitiboa', 'Bentrala eta motorra', 'Dortsala eta motorra', 'Bentrala eta sentsitiboa'],
+    answer: 0,
+    explanation: 'Ildo mugatzaileak bi plaka banatzen ditu: dortsalean hegal plaka (sentsitiboa), bentralean oinalde plaka (motorra).',
+    stageId: 'ornomuin-plakak',
+  },
+  {
+    id: 'w19-q-sabai-zoru',
+    question: 'Zer dago sabai eta zoru plaketan?',
+    options: ['Axoiak bakarrik (geruza marginala)', 'Gai grisa', 'Neurona sinpatikoak', 'Gongoilak'],
+    answer: 0,
+    explanation: 'Sabai eta zoru plaketan ez dago manto geruzarik ez gai grisik: geruza marginala bakarrik, axoiekin.',
+    stageId: 'ornomuin-plakak',
+  },
+  {
+    id: 'w19-q-alboko-adarra',
+    question: 'Mozketa batean alboko adarrak (neurona sinpatikoak) ikusten badira, zein mailatakoa da?',
+    options: ['T1/T2 eta L2 artekoa', 'Lepokoa', 'Sakrokoa', 'Edozein mailatakoa'],
+    answer: 0,
+    explanation: 'Alboko adarrak T1/T2–L2 artean bakarrik daude, neurona sinpatikoekin.',
+    stageId: 'ornomuin-plakak',
+  },
+  {
+    id: 'w19-q-filum',
+    question: 'Zer da filum terminale (zuntz terminala)?',
+    options: ['Pia materraren luzapena', 'Dura materraren zakua', 'Nerbio espinal multzoa', 'Ornomuinaren loditzea'],
+    answer: 0,
+    explanation: 'Ornomuina konoan amaitzen da (L1/L2), eta handik pia materraren luzapena jarraitzen du: filum terminale.',
+    stageId: 'ornomuinaren-igoera',
+  },
+  {
+    id: 'w19-q-istmoa',
+    question: 'Zer da istmoa?',
+    options: ['Mesentzefaloaren eta metentzefaloaren arteko estutasuna', 'Dientzefaloaren eta telentzefaloaren arteko muga', 'Erraboilaren eta ornomuinaren arteko tolespena', 'Bentrikulu arteko zuloa'],
+    answer: 0,
+    explanation: '5. astean, xixkuak banatzen direnean, mesentzefaloaren eta metentzefaloaren artean estutasun bat geratzen da: istmoa.',
+    stageId: 'bost-xixkuak',
+  },
+  {
+    id: 'w19-q-mesentzefaloa-berdin',
+    question: 'Hiru xixkuetatik, zein geratzen da banatu gabe?',
+    options: ['Mesentzefaloa', 'Prosentzefaloa', 'Erronbentzefaloa', 'Hirurak banatzen dira'],
+    answer: 0,
+    explanation: 'Prosentzefaloa telentzefalo eta dientzefalo bihurtzen da; erronbentzefaloa metentzefalo eta mielentzefalo. Mesentzefaloa beti berdin geratzen da.',
+    stageId: 'hiru-xixkuak',
+  },
+];

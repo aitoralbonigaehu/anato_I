@@ -5,7 +5,7 @@ import { auditSurfaces, type SurfaceAudit } from '@/lib/three-d/sdf';
 import { cutSolid, extrudeProfile } from '@/lib/three-d/profile';
 import { buildForTransfer, geoSlotKeys } from '@/lib/three-d/offthread';
 import '@/lib/three-d/geo-registry';
-import { BrainMen19, Cortex19, Csf19, Thalamus19, Ventricles19 } from '@/components/scenes/week19/Brain19';
+import { BrainMen19, Cranial19, Csf19, Hypophysis19, Thalamus19, Ventricles19 } from '@/components/scenes/week19/Brain19';
 import { BR0, brainModel } from '@/components/scenes/week19/brain-model';
 import { BP0, bodyModel } from '@/components/scenes/week19/body-model';
 import { cordModel, CP0 } from '@/components/scenes/week19/cord-model';
@@ -118,9 +118,10 @@ test('flat cuts preserve a thin ring and its hole with outward-facing caps', () 
 });
 
 test('head stages only wait for geometry they can display', () => {
-  expect(Thalamus19.geo).toEqual(['brain19']);
-  expect(Cortex19.geo).toEqual(['brain19']);
-  expect(BrainMen19.geo).toEqual(['brain19', 'meninges19']);
+  expect(Thalamus19.geo).toEqual(['brain19', 'ventricles19']);
+  expect(Hypophysis19.geo).toEqual(['brain19']);
+  expect(Cranial19.geo).toEqual(['brain19']);
+  expect(BrainMen19.geo).toEqual(['brain19', 'meninges19', 'ventricles19']);
   expect(Ventricles19.geo).toEqual(['brain19', 'ventricles19']);
   expect(Csf19.geo).toEqual(['brain19', 'ventricles19', 'meninges19']);
 });

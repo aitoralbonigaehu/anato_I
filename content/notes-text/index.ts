@@ -85,7 +85,7 @@ for (const week of weeks) for (const stage of week.stages) stage.beats.forEach((
 
 /** Audited exceptions where a scene teaches detail absent from this ORIGINAL PDF. */
 export const NOTES_EXCEPTIONS: Record<string, { sections?: string[]; reason: string }> = {
-  '19/bost-xixkuak': { sections: ['5.1'], reason: 'Apunteek tolespenen paragrafoa (5. asteko irudia, alboko ikuspegia) 11. atalaren barruko "5.1" azpiatalean ematen dute; 9. ataleko tolespenen etapan erakusten da.' },
+  '19/erraboila/0': { sections: ['10'], reason: '10. atalaren izenburuak (burmuinaren atalak, mutur kaudaletik; gai grisa kanpoan, gai zuria barnean) 10.1eko lehen urratsa irekitzen du; 10. atalak ez du bere etaparik.' },
   '17/sarrera': { sections: ['intro', '2'], reason: 'Apunteen sarrera zenbakirik gabea da, 1. atalaren aurretik; gaiaren lehen etapak irakurtzen du, aurkibideko 2. atalaren izenburuarekin batera (gaiaren bi zatiak aurkezteko).' },
   '17/arkuen-mapa': { sections: ['2', '2.2.1', '2.2.2', '2.2.3', '2.3.1', '2.3.2', '2.3.3', '2.4.1', '2.4.2', '2.4.3', '2.5', '2.6.1', '2.6.2', '2.6.3'], reason: '2. ataleko azken laburpena: arku bakoitzaren nerbioa, kartilagoak eta muskuluak batera, beren ataletatik.' },
   '18/mihiaren-gorputza/0': { sections: ['2'], reason: '2. atalaren sarrerak (mihiaren jatorria) 2.1eko lehen urratsa irekitzen du; 2. atalak ez du bere etaparik.' },

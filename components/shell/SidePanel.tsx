@@ -10,7 +10,6 @@ import { IconCalendar, IconCheck, IconChevron, IconClose, IconList, IconWarn } f
 import { stageExamDates } from '@/content/examDates';
 import { StageLineage, branchOf } from './StageLineage';
 
-const pad = (n: number) => String(n).padStart(2, '0');
 
 /** Sidebar glyph: a panel with an arrow pointing the way it will move. */
 export function IconRail({ open, side = 'left' }: { open: boolean; side?: 'left' | 'right' }) {
@@ -395,7 +394,7 @@ export function StageInfo({ week, stage, activeBeat, onSeek, onSelect, onHover, 
               <ol className="keypoints">
                 {stage.keyPoints.map((k, i) => (
                   <li key={i}>
-                    <span>{pad(i + 1)}</span>
+                    <span>{i + 1}</span>
                     <p>{k}</p>
                   </li>
                 ))}

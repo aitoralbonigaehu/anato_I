@@ -1,7 +1,7 @@
 'use client';
 
 import { studyKey } from '@/lib/study/storage-scope';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import legacyPanels from '@/content/course-figure-panels-legacy.json';
 import recentPanels from '@/content/course-figure-panels-recent.json';
 import styles from './CourseFigures.module.css';
@@ -28,6 +28,17 @@ type Marks = Record<string, 1 | 2>;
 const markKey = 'irudiak-pdf-marks-v1';
 const panelsByPage: Record<string, number[][]> = { ...legacyPanels, ...recentPanels };
 const fullPage = [[0, 0, 1, 1]];
+
+function readMarks(): Marks | null {
+  try {
+    const stored: unknown = JSON.parse(window.localStorage.getItem(studyKey(markKey)) ?? '{}');
+    if (stored && typeof stored === 'object' && !Array.isArray(stored) &&
+      Object.values(stored).every(value => value === 1 || value === 2)) {
+      return stored as Marks;
+    }
+  } catch { /* storage unavailable */ }
+  return null;
+}
 
 function pageId(doc: number, page: number) {
   return `${documents[doc].file ?? doc + 1}-${page}`;
@@ -68,11 +79,12 @@ function groupLines(lines: Line[]): Line[] {
 }
 
 /** The crop and the OCR hit areas share the source page's coordinates. */
-function CourseFigure({ id, title, crop, marks, onMark }: {
+function CourseFigure({ id, title, crop, marks, markingEnabled, onMark }: {
   id: string;
   title: string;
   crop: number[];
   marks: Marks;
+  markingEnabled: boolean;
   onMark: (index: number) => void;
 }) {
   const [lines, setLines] = useState<Line[]>([]);
@@ -119,7 +131,7 @@ function CourseFigure({ id, title, crop, marks, onMark }: {
           onError={() => setFailed(true)}
         />
         {!imageSize && <span className={styles.loading} role="status">Irudia kargatzen…</span>}
-        {imageSize && lines.map((line, index) => {
+        {markingEnabled && imageSize && lines.map((line, index) => {
           const x = line.x + line.w / 2;
           const y = line.y + line.h / 2;
           if (x < left || x >= right || y < top || y >= bottom) return null;
@@ -132,7 +144,7 @@ function CourseFigure({ id, title, crop, marks, onMark }: {
               key={index}
               className={styles.spot}
               data-mark={mark}
-              aria-label={mark ? `${line.text} (${mark === 1 ? 'gorriz markatuta' : 'laranjaz markatuta'})` : line.text}
+              aria-label={mark ? `${line.text} (${mark === 1 ? 'gorriz markatuta' : 'horiz markatuta'})` : line.text}
               aria-pressed={Boolean(mark)}
               style={{
                 left: percent((x0 - left) / width),
@@ -151,9 +163,21 @@ function CourseFigure({ id, title, crop, marks, onMark }: {
 
 export function CourseFigures() {
   const [{ doc, page, panel }, setSelection] = useState({ doc: 0, page: 1, panel: 0 });
-  const [marks, setMarks] = useState<Marks>(() => {
-    try { return typeof window === 'undefined' ? {} : JSON.parse(localStorage.getItem(studyKey(markKey)) || '{}') ?? {}; } catch { return {}; }
-  });
+  const [markingEnabled, setMarkingEnabled] = useState(true);
+  const [marks, setMarks] = useState<Marks>(() => typeof window === 'undefined' ? {} : readMarks() ?? {});
+  const unsavedMarks = useRef<Marks | null>(null);
+
+  useEffect(() => {
+    const onStorage = (event: StorageEvent) => {
+      if (event.key !== null && event.key !== studyKey(markKey)) return;
+      if (unsavedMarks.current) return;
+      const stored = readMarks();
+      if (stored) setMarks(stored);
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
   const document = documents[doc];
   const id = pageId(doc, page);
   const panels = panelsFor(id);
@@ -173,14 +197,17 @@ export function CourseFigures() {
 
   function mark(index: number) {
     const markId = `${id}-${index}`;
-    setMarks(current => {
-      const next = { ...current };
-      if (!next[markId]) next[markId] = 1;
-      else if (next[markId] === 1) next[markId] = 2;
-      else delete next[markId];
-      try { localStorage.setItem(studyKey(markKey), JSON.stringify(next)); } catch { /* storage unavailable */ }
-      return next;
-    });
+    const next = { ...(unsavedMarks.current ?? readMarks() ?? marks) };
+    if (!next[markId]) next[markId] = 1;
+    else if (next[markId] === 1) next[markId] = 2;
+    else delete next[markId];
+    try {
+      window.localStorage.setItem(studyKey(markKey), JSON.stringify(next));
+      unsavedMarks.current = null;
+    } catch {
+      unsavedMarks.current = next;
+    }
+    setMarks(next);
   }
   return (
     <div className={styles.root}>
@@ -207,15 +234,37 @@ export function CourseFigures() {
           Hurrengoa <span aria-hidden="true">→</span>
         </button>
       </nav>
+      <div className={styles.markingBar}>
+        <button
+          type="button"
+          className={`${styles.control} ${styles.markingToggle}`}
+          aria-pressed={markingEnabled}
+          onClick={() => setMarkingEnabled(enabled => !enabled)}
+        >
+          <span aria-hidden="true" />
+          Markatu izenak
+        </button>
+        {markingEnabled && <p className={styles.legend}>
+          <span>Sakatu irudiko izena</span>
+          <span className={styles.legendSequence}>
+            <span className={styles.legendStep}><i className={styles.red} aria-hidden="true" /> Ez dakit</span>
+            <span aria-hidden="true">→</span>
+            <span className={styles.legendStep}><i className={styles.yellow} aria-hidden="true" /> Zalantzan</span>
+            <span aria-hidden="true">→</span>
+            <span>Kendu</span>
+          </span>
+        </p>}
+      </div>
       <CourseFigure
         key={id}
         id={id}
         title={`${document.title}, ${page}. orria, ${panel + 1}. irudia`}
         crop={panels[panel]}
         marks={marks}
+        markingEnabled={markingEnabled}
         onMark={mark}
       />
-      <p className={styles.note}>Sakatu automatikoki antzemandako izenak markatzeko: <strong>gorria → laranja → kendu</strong>. Markak gailu honetan gordetzen dira.</p>
+      <p className={styles.note}>Markak gailu honetan gordetzen dira.</p>
     </div>
   );
 }

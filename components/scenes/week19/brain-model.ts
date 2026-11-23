@@ -3,7 +3,7 @@ import { curve3, type Mesh } from '@/lib/three-d/mesh';
 import { cachedBlob } from '@/lib/three-d/mesh-cache';
 import { geoOf, geoSlot } from '@/lib/three-d/offthread';
 import { mergeParts, vessel, type Parts } from '@/lib/three-d/organic';
-import { capsule, ellipsoid, smin, surfaceAlong, surfaceMesh, type SDF } from '@/lib/three-d/sdf';
+import { capsule, ellipsoid, mirrorX, smin, surfaceAlong, surfaceMesh, type SDF } from '@/lib/three-d/sdf';
 import { cutSolid, onLattice, type Cut } from '@/lib/three-d/profile';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex, routeLength, vesselRouteOf } from '@/components/scenes/week10/model3d';
@@ -38,14 +38,27 @@ export interface BrainPose {
   sens: number;
   motor: number;
   smell: number;
+  /** The other half (mirrored), for the whole brain seen from below or above (0..1). */
+  whole: number;
+  /** The cerebrum and cerebellum faded, to see the brainstem (0..1). */
+  stem: number;
+  /** The cranial pairs grown, in order (0..12). */
+  nerves: number;
+  /** The hypophysis developing (0..1: infundibulum and pouch, they meet, the pouch lets go, the two lobes); lobes told apart (0..1); hormones (0..1). */
+  hyp: number;
+  lobes: number;
+  horm: number;
+  /** The pineal gland in the epithalamus (0..1). */
+  pineal: number;
 }
-export const BR0: BrainPose = { men: 0, csf: 0, origin: 0, vent: 0, glass: 0, plex: 0, flow: 0, flowShow: 0, sens: 0, motor: 0, smell: 0 };
+export const BR0: BrainPose = { men: 0, csf: 0, origin: 0, vent: 0, glass: 0, plex: 0, flow: 0, flowShow: 0, sens: 0, motor: 0, smell: 0, whole: 0, stem: 0, nerves: 0, hyp: 0, lobes: 0, horm: 0, pineal: 0 };
 
 export interface BrainOpts {
   dim?: { ids: readonly string[]; k: number } | null;
 }
 
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
+const lerpN = (a: number, b: number, k: number) => a + (b - a) * k;
 const L = (kps: readonly V3[], n = 24) => curve3(kps as V3[], n);
 const smax = (a: number, b: number, k: number) => -smin(-a, -b, k);
 
@@ -279,6 +292,84 @@ const cellsOf = (n: number, jit: number) => {
 };
 const DROPS = cellsOf(18, 0.02);
 
+const mirrored = new WeakMap<Mesh, Mesh>();
+const mirror = (m: Mesh) => {
+  let r = mirrored.get(m);
+  if (!r) mirrored.set(m, (r = mirrorX(m)));
+  return r;
+};
+const ss = (a: number, b: number, x: number) => {
+  const u = clamp01((x - a) / (b - a));
+  return u * u * (3 - 2 * u);
+};
+
+// ———————————————————————— the cranial pairs (11): the right side; the left is its mirror ————————————————————————
+
+/** Each pair, front to back: its id, its way out of the brain (from where it leaves), its thickness. */
+const CRANIAL: { n: number; id: string; line: V3[]; r: number }[] = [
+  { n: 1, id: 'usaimen-nerbioa', line: L([[-0.15, -0.44, 0.4], [-0.14, -0.37, 0.68], [-0.13, -0.3, 0.86]], 16), r: 0.018 },
+  { n: 2, id: 'nerbio-optikoa', line: L([[-0.28, -0.3, 0.0], [-0.18, -0.44, 0.24], [-0.04, -0.5, 0.45], [-0.12, -0.48, 0.62], [-0.22, -0.46, 0.78]], 24), r: 0.026 },
+  { n: 3, id: 'nerbio-begi-eragilea', line: L([[-0.07, -0.5, -0.2], [-0.15, -0.53, 0.05], [-0.24, -0.5, 0.4]], 16), r: 0.02 },
+  { n: 4, id: 'nerbio-troklearra', line: L([[-0.05, -0.62, -0.72], [-0.22, -0.62, -0.62], [-0.31, -0.58, -0.35], [-0.31, -0.56, -0.05], [-0.3, -0.52, 0.35]], 28), r: 0.012 },
+  { n: 5, id: 'nerbio-trigeminoa', line: L([[-0.31, -0.8, -0.3], [-0.45, -0.79, -0.22], [-0.55, -0.78, -0.15]], 12), r: 0.04 },
+  { n: 6, id: 'nerbio-aldentzailea', line: L([[-0.07, -1.08, -0.34], [-0.12, -1.0, -0.1], [-0.18, -0.86, 0.25]], 16), r: 0.016 },
+  { n: 7, id: 'aurpegi-nerbioa', line: L([[-0.29, -1.02, -0.42], [-0.5, -1.0, -0.36], [-0.68, -0.99, -0.26]], 14), r: 0.022 },
+  { n: 8, id: 'nerbio-estatoakustikoa', line: L([[-0.31, -1.07, -0.5], [-0.52, -1.07, -0.44], [-0.68, -1.1, -0.36]], 14), r: 0.026 },
+  { n: 9, id: 'nerbio-glosofaringeoa', line: L([[-0.19, -1.18, -0.53], [-0.4, -1.2, -0.5], [-0.6, -1.25, -0.42]], 14), r: 0.02 },
+  { n: 10, id: 'nerbio-bagoa', line: L([[-0.19, -1.28, -0.57], [-0.42, -1.32, -0.55], [-0.62, -1.44, -0.46]], 14), r: 0.026 },
+  { n: 11, id: 'nerbio-osagarria', line: L([[-0.17, -2.15, -0.76], [-0.2, -1.75, -0.74], [-0.22, -1.46, -0.66], [-0.44, -1.47, -0.6], [-0.62, -1.6, -0.5]], 28), r: 0.016 },
+  { n: 12, id: 'nerbio-hipoglosoa', line: L([[-0.09, -1.3, -0.44], [-0.25, -1.33, -0.25], [-0.4, -1.37, 0.0]], 14), r: 0.02 },
+];
+/** The trigeminal ganglion and its three branches (ophthalmic, maxillary, mandibular). */
+const TRIG_GANGLION: V3 = [-0.57, -0.78, -0.13];
+const TRIG_BRANCHES: V3[][] = [
+  L([TRIG_GANGLION, [-0.6, -0.72, 0.05], [-0.6, -0.66, 0.24]], 10),
+  L([TRIG_GANGLION, [-0.62, -0.8, 0.08], [-0.63, -0.82, 0.26]], 10),
+  L([TRIG_GANGLION, [-0.61, -0.9, -0.02], [-0.62, -1.02, 0.14]], 10),
+];
+const OLF_BULB: V3 = [-0.13, -0.27, 0.95];
+const CHIASM: V3 = [-0.035, -0.5, 0.46];
+/** In the whole view from below, a few names sit further along their nerve (clear of the brain behind and of each other). */
+const CN_BELOW: Record<string, V3> = {
+  'nerbio-begi-eragilea': [-0.117, -0.501, -0.083],
+  'nerbio-troklearra': [-0.304, -0.569, -0.177],
+  'nerbio-aldentzailea': [-0.112, -1.012, -0.096],
+  'nerbio-glosofaringeoa': [-0.36, -1.196, -0.505],
+};
+/** Where each pair's name points: a little out from where it leaves the brain (the bulb for the first). */
+const CN_PT: Record<string, V3> = {
+  'usaimen-nerbioa': OLF_BULB,
+  'nerbio-optikoa': [-0.14, -0.475, 0.65],
+  'nerbio-begi-eragilea': [-0.17, -0.53, 0.12],
+  'nerbio-troklearra': [-0.31, -0.57, -0.2],
+  'nerbio-trigeminoa': TRIG_GANGLION,
+  'nerbio-aldentzailea': [-0.13, -0.98, -0.05],
+  'aurpegi-nerbioa': [-0.55, -1.0, -0.33],
+  'nerbio-estatoakustikoa': [-0.58, -1.08, -0.42],
+  'nerbio-glosofaringeoa': [-0.47, -1.21, -0.48],
+  'nerbio-bagoa': [-0.5, -1.36, -0.52],
+  'nerbio-osagarria': [-0.2, -1.8, -0.74],
+  'nerbio-hipoglosoa': [-0.3, -1.34, -0.17],
+};
+
+// ———————————————————————— the hypophysis (10.4.1) ————————————————————————
+
+const INFUND: V3[] = L([[0, -0.42, 0.3], [0, -0.52, 0.29], [0, -0.63, 0.26]], 14);
+const ORAL: V3 = [0, -1.0, 0.42];
+const POUCH: V3[] = L([[0, -0.98, 0.4], [0, -0.84, 0.39], [0, -0.68, 0.36]], 14);
+const NEURO: V3 = [0, -0.67, 0.25];
+const ADENO: V3 = [0, -0.68, 0.36];
+const HORM_DOWN = (() => {
+  const route = vesselRouteOf(L([[0, -0.3, 0.3], [0, -0.45, 0.3], [0, -0.6, 0.27], [0, -0.7, 0.25], [0, -0.86, 0.24]], 30));
+  return { route, rate: 0.6 / routeLength(route) };
+})();
+const HORM_ADENO = (() => {
+  const route = vesselRouteOf(L([[0, -0.66, 0.37], [0, -0.74, 0.38], [0, -0.9, 0.4]], 20));
+  return { route, rate: 0.5 / routeLength(route) };
+})();
+const PINEAL: V3 = [0, 0.1, -0.6];
+const HDROPS = cellsOf(10, 0.012);
+
 export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
   const parts = geoOf(BRAIN19_GEO);
   const items: Item3[] = [];
@@ -297,17 +388,25 @@ export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
   const brainOp = 1 - 0.6 * glass;
   const B = C19.brain, BD = C19.brainDeep;
   const ENC = ['entzefaloa', 'nerbio-sistema-zentrala'];
+  const whole = clamp01(pose.whole), stemK = clamp01(pose.stem);
+  const fadeOp = brainOp * (1 - 0.88 * stemK);
+  const PM = (g: { m: Mesh; h: Mesh }): Parts => ({ mesh: mirror(g.m), hit: mirror(g.h) });
+  /** A part of the brain, and its mirror image (the other half) when the whole brain shows. */
+  const half = (key: string, id: string, g: { m: Mesh; h: Mesh }, color: string, deep: string, extra: Partial<Item3>) => {
+    put(key, id, P(g), color, deep, extra);
+    if (whole > 0.01) put(`${key}-L`, id, PM(g), color, deep, { ...extra, opacity: (extra.opacity ?? 1) * whole });
+  };
 
   // ———— the brain, cut down the middle ————
-  put('cerebrum', 'garun-hemisferioak', P(parts.cerebrum), tone(B, C19.tel), BD, { groups: ['telentzefaloa', ...ENC], opacity: brainOp, calm: true });
-  put('thal', 'talamoa', P(parts.thal), tone(mixHex(B, '#c99a90', 0.35), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
-  put('hypo', 'hipotalamoa', P(parts.hypo), tone(mixHex(B, '#d6a092', 0.4), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
-  put('epi', 'epitalamoa', P(parts.epi), tone(mixHex(B, '#b98a80', 0.4), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
-  put('mid', 'mesentzefaloa', P(parts.mid), tone(mixHex(B, '#c9a094', 0.3), C19.mes), BD, { groups: ['entzefalo-enborra', ...ENC], opacity: brainOp });
-  put('pons', 'zubia', P(parts.pons), tone(mixHex(B, '#d2a898', 0.3), C19.met), BD, { groups: ['metentzefaloa', 'entzefalo-enborra', ...ENC], opacity: brainOp });
-  put('cbl', 'garuntxoa', P(parts.cbl), tone(mixHex(B, '#d99a8c', 0.4), C19.met), BD, { groups: ['metentzefaloa', ...ENC], opacity: brainOp });
-  put('med', 'erraboila', P(parts.med), tone(mixHex(B, '#c99a90', 0.3), C19.miel), BD, { groups: ['mielentzefaloa', 'entzefalo-enborra', ...ENC], opacity: brainOp });
-  put('cord', 'ornomuina', P(parts.cord), B, BD, { groups: ['nerbio-sistema-zentrala', 'hodi-ependimarioa'], opacity: brainOp });
+  half('cerebrum', 'garun-hemisferioak', parts.cerebrum, tone(B, C19.tel), BD, { groups: ['telentzefaloa', ...ENC], opacity: fadeOp, calm: true });
+  half('thal', 'talamoa', parts.thal, tone(mixHex(B, '#c99a90', 0.35), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
+  half('hypo', 'hipotalamoa', parts.hypo, tone(mixHex(B, '#d6a092', 0.4), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
+  half('epi', 'epitalamoa', parts.epi, tone(mixHex(B, '#b98a80', 0.4), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
+  half('mid', 'mesentzefaloa', parts.mid, tone(mixHex(B, '#c9a094', 0.3), C19.mes), BD, { groups: ['entzefalo-enborra', ...ENC], opacity: brainOp });
+  half('pons', 'zubia', parts.pons, tone(mixHex(B, '#d2a898', 0.3), C19.met), BD, { groups: ['metentzefaloa', 'entzefalo-enborra', ...ENC], opacity: brainOp });
+  half('cbl', 'garuntxoa', parts.cbl, tone(mixHex(B, '#d99a8c', 0.4), C19.met), BD, { groups: ['metentzefaloa', ...ENC], opacity: fadeOp });
+  half('med', 'erraboila', parts.med, tone(mixHex(B, '#c99a90', 0.3), C19.miel), BD, { groups: ['mielentzefaloa', 'entzefalo-enborra', ...ENC], opacity: brainOp });
+  half('cord', 'ornomuina', parts.cord, B, BD, { groups: ['nerbio-sistema-zentrala', 'hodi-ependimarioa'], opacity: brainOp });
   pts['garun-hemisferioak'] = [0, 0.86, 0.5];
   pts['talamoa'] = [-0.07, 0.02, -0.05];
   pts['hipotalamoa'] = [0, -0.3, 0.32];
@@ -329,7 +428,7 @@ export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
   if (vent > 0.01) {
     const casts = geoOf(VENTRICLES19_GEO);
     const VG = ['bentrikulu-sistema', 'likido-zefalorrakideoa'];
-    const castItem = (k: string, id: string, extra: string[] = []) => put(`cast-${k}`, id, P(casts[k]), C19.csf, C19.csfDeep, { groups: [...VG, ...extra], opacity: vent, tissue: 'membrane', calm: true });
+    const castItem = (k: string, id: string, extra: string[] = []) => half(`cast-${k}`, id, casts[k], C19.csf, C19.csfDeep, { groups: [...VG, ...extra], opacity: vent, tissue: 'membrane', calm: true });
     castItem('lat', 'alboko-bentrikuluak', ['monro-zuloak']);
     castItem('third', 'hirugarren-bentrikulua');
     castItem('aq', 'garun-akueduktoa');
@@ -366,7 +465,7 @@ export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
     const shells = geoOf(MENINGES19_GEO);
     const MEN = ['meningeak'];
     put('pia', 'pia-materra', P(shells.pia), C19.pia, C19.piaDeep, { groups: MEN, opacity: 0.9 * men, tissue: 'membrane' });
-    put('sub', 'eremu-azpiaraknoideoa', P(shells.sub), C19.csf, C19.csfDeep, { groups: ['likido-zefalorrakideoa'], opacity: 0.45 * csf * men, tissue: 'membrane', outline: false });
+    put('sub', 'eremu-azpiaraknoideoa', P(shells.sub), C19.csf, C19.csfDeep, { groups: ['likido-zefalorrakideoa'], opacity: 0.5 * csf * men, tissue: 'membrane', outline: false });
     put('arach', 'araknoidesa', P(shells.arach), C19.arach, C19.arachDeep, { groups: MEN, opacity: men, tissue: 'membrane' });
     put('dura', 'dura-materra', P(shells.dura), C19.dura, C19.duraDeep, { groups: MEN, opacity: men, tissue: 'membrane' });
     put('skull', 'neurokraneoa', P(shells.skull), G19.bone, G19.boneDeep, { opacity: men, tissue: 'bone', calm: true });
@@ -382,6 +481,76 @@ export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
     const drop = cachedBlob({ center: [0, 0, 0], radii: [0.035, 0.035, 0.035], rings: 6, sides: 8 });
     for (const { key, route, rate } of FLOWS)
       items.push({ key: `flow-${key}`, id: 'likido-zefalorrakideoa', mesh: drop, color: '#bfe8ff', deep: C19.csfDeep, tissue: 'skin', stream: { route, phase: pose.flow * rate, grow: fs, ...DROPS } });
+  }
+
+  // ———— the cranial pairs, the right side and (whole brain) the left ————
+  const nerves = Math.max(0, Math.min(12, pose.nerves));
+  if (nerves > 0.001) {
+    const NV = C19.nerve, ND = C19.nerveDeep;
+    for (const c of CRANIAL) {
+      const g = clamp01(nerves - (c.n - 1));
+      if (g <= 0.001) continue;
+      const pieces: (Parts | null)[] = [vessel(c.line, { r0: c.r, r1: c.r * 0.85, sides: 10, n: c.line.length }, g)];
+      if (c.n === 1) pieces.push(blobParts({ center: OLF_BULB, radii: [0.045, 0.035, 0.11 * g + 0.01], rings: 10, sides: 12 }));
+      if (c.n === 2) pieces.push(blobParts({ center: CHIASM, radii: [0.04 * g + 0.005, 0.022, 0.04], rings: 8, sides: 10 }));
+      if (c.n === 5 && g > 0.5) {
+        const b = ss(0.5, 1, g);
+        pieces.push(blobParts({ center: TRIG_GANGLION, radii: [0.04 * b, 0.05 * b, 0.07 * b], rings: 8, sides: 10 }));
+        for (const br of TRIG_BRANCHES) pieces.push(vessel(br, { r0: 0.022, r1: 0.016, sides: 8, n: br.length }, b));
+      }
+      const parts = mergeParts(pieces);
+      if (!parts) continue;
+      put(`cn-${c.n}`, c.id, parts, NV, ND, { groups: ['bikote-kranealak'], tissue: 'nerve' });
+      if (whole > 0.01) put(`cn-${c.n}-L`, c.id, { mesh: mirror(parts.mesh), hit: mirror(parts.hit) }, NV, ND, { groups: ['bikote-kranealak'], tissue: 'nerve', opacity: whole });
+      if (g > 0.3) {
+        pts[c.id] = CN_PT[c.id];
+        pts[`${c.id}:below`] = CN_BELOW[c.id] ?? CN_PT[c.id];
+      }
+    }
+    pts['bikote-kranealak'] = CN_PT['nerbio-trigeminoa'];
+  }
+
+  // ———— the hypophysis: the infundibulum down from the hypothalamus, the pouch up from the stomodeum's roof ————
+  const hyp = clamp01(pose.hyp);
+  if (hyp > 0.001) {
+    const inf = ss(0, 0.45, hyp), pouch = ss(0.05, 0.5, hyp), detach = ss(0.5, 0.75, hyp), mature = ss(0.72, 1, hyp);
+    const lobes = clamp01(pose.lobes);
+    const neuroC = mixHex(mixHex(B, '#d6a092', 0.4), C19.dien, 0.6 * lobes), adenoC = mixHex('#eab08e', '#e07a4e', 0.6 * lobes);
+    // The stomodeum's roof stays while the pouch is said to come away from it (step 3), and goes as the lobes mature.
+    const oral = 1 - ss(0.78, 0.97, hyp);
+    if (oral > 0.01) {
+      put('oral', 'estomodeoa', blobParts({ center: ORAL, radii: [0.24, 0.025, 0.42], rings: 10, sides: 16 }), C19.ecto, '#2a4a8a', { opacity: oral, tissue: 'skin' });
+      pts['estomodeoa'] = [0, -1.0, 0.62];
+    }
+    const neuroR = 0.015 + 0.05 * ss(0.3, 1, hyp);
+    put('infund', 'hipofisi-infundibulua', vessel(INFUND, { r0: 0.035, r1: 0.03, sides: 10, n: INFUND.length }, inf), neuroC, BD, { groups: ['hipofisia', 'neurohipofisia'] });
+    if (inf > 0.6) put('neuro', 'neurohipofisia', blobParts({ center: NEURO, radii: [neuroR, neuroR * 1.1, neuroR], rings: 10, sides: 12 }), neuroC, BD, { groups: ['hipofisia'] });
+    const adenoR = 0.02 + 0.06 * ss(0.3, 1, hyp);
+    if (pouch > 0.01) {
+      // The pouch: a tube up from the oral roof, its top a cup that becomes the adenohypophysis; its stalk thins and goes.
+      const stalk = vessel(POUCH, { r0: lerpN(0.04, 0.004, detach), r1: lerpN(0.045, 0.006, detach), sides: 10, n: POUCH.length }, pouch);
+      if (detach < 0.98) put('pouch', 'rathke-poltsa', stalk, adenoC, '#7a3a1e', { opacity: 1 - detach, groups: ['adenohipofisia'] });
+      if (pouch > 0.6) put('adeno', mature > 0.3 ? 'adenohipofisia' : 'rathke-poltsa', blobParts({ center: ADENO, radii: [adenoR * 1.1, adenoR, adenoR * 1.05], rings: 10, sides: 12 }), adenoC, '#7a3a1e', { groups: ['hipofisia', 'adenohipofisia', 'rathke-poltsa'] });
+      pts['rathke-poltsa'] = detach < 0.5 ? [0, -0.84, 0.39] : ADENO;
+    }
+    pts['hipofisi-infundibulua'] = [0, -0.53, 0.29];
+    if (inf > 0.6) pts['neurohipofisia'] = NEURO;
+    if (pouch > 0.6) pts['adenohipofisia'] = ADENO;
+    pts['hipofisia'] = [0, -0.68, 0.31];
+    const horm = clamp01(pose.horm);
+    if (horm > 0.01) {
+      const drop = cachedBlob({ center: [0, 0, 0], radii: [0.016, 0.016, 0.016], rings: 5, sides: 8 });
+      items.push({ key: 'horm-n', id: 'neurohipofisia', mesh: drop, color: '#f6d365', deep: '#6a5410', tissue: 'skin', stream: { route: HORM_DOWN.route, phase: pose.flow * HORM_DOWN.rate, grow: horm, ...HDROPS } });
+      items.push({ key: 'horm-a', id: 'adenohipofisia', mesh: drop, color: '#9be08a', deep: '#245a1a', tissue: 'skin', stream: { route: HORM_ADENO.route, phase: pose.flow * HORM_ADENO.rate, grow: horm, ...HDROPS } });
+    }
+  }
+
+  // ———— the pineal gland, in the epithalamus ————
+  const pin = clamp01(pose.pineal);
+  if (pin > 0.01) {
+    const kk = 0.4 + 0.6 * pin;
+    put('pineal', 'guruin-pineala', blobParts({ center: PINEAL, radii: [0.04 * kk, 0.045 * kk, 0.06 * kk], rings: 10, sides: 12 }), '#d98fb0', '#6a2848', { groups: ['epitalamoa'] });
+    pts['guruin-pineala'] = [0, 0.1, -0.62];
   }
 
   // ———— signals ————

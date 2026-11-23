@@ -45,6 +45,9 @@ const CLIP = 8.2;
 const HOLD = 9.4;
 const FADE = 1;
 const FPS = 30;
+/** The ring around the glass: one arc per clip (degrees), with a gap between arcs. */
+const SEG = 360 / PICKS.length;
+const GAP = 5;
 /** A clip that has not started after this long (a slow network) is passed over rather than waited for. */
 const STALL = 4;
 
@@ -69,7 +72,7 @@ interface Frame {
   fade: number;
 }
 
-/** The hero's viewfinder: real 3D of the simulator, with a camera frame, a slow tilt that follows the pointer and a chapter strip. */
+/** The hero's lens: real 3D of the simulator seen through a round glass, with the reel's scenes as arcs on its rim and a strip of their names. */
 export function HeroReel({ playing = true }: { playing?: boolean }) {
   const reduced = useSyncExternalStore(subscribe, () => window.matchMedia(REDUCED).matches, () => false);
   const mounted = useSyncExternalStore(subscribe, () => true, () => false);
@@ -150,35 +153,40 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
     setF({ i: s.i, local: s.local, prev: s.prev, fade: s.fade });
   };
 
-  const tilt = (e: PointerEvent<HTMLElement>) => {
+  /** The glass catches the light where the pointer is. */
+  const glint = (e: PointerEvent<HTMLElement>) => {
     const el = box.current;
     if (!el || reduced || e.pointerType === 'touch') return;
     const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    el.style.setProperty('--rx', `${(-y * 3.2).toFixed(2)}deg`);
-    el.style.setProperty('--ry', `${(x * 4.4).toFixed(2)}deg`);
-    el.style.setProperty('--gx', `${((x + 0.5) * 100).toFixed(1)}%`);
-    el.style.setProperty('--gy', `${((y + 0.5) * 100).toFixed(1)}%`);
-  };
-  const untilt = () => {
-    const el = box.current;
-    if (!el) return;
-    for (const k of ['--rx', '--ry']) el.style.removeProperty(k);
+    el.style.setProperty('--gx', `${(((e.clientX - r.left) / r.width) * 100).toFixed(1)}%`);
+    el.style.setProperty('--gy', `${(((e.clientY - r.top) / r.height) * 100).toFixed(1)}%`);
   };
 
   const cur = REEL[f.i];
-  const t = reduced ? 1 : clamp(f.local / CLIP);
   const fadeIn = ease(f.fade);
   // On the page: the clip playing, the one dissolving away, and the next once this one is under way (so it is
   // loaded when its turn comes, without competing with the first clip while the homepage opens).
   const next = (f.i + 1) % REEL.length;
   const shown = [...new Set([f.i, ...(f.prev !== null ? [f.prev] : []), ...(f.local > 2 ? [next] : [])])];
   return (
-    <figure className="lp-reel" ref={box} onPointerMove={tilt} onPointerLeave={untilt} style={hueStyle(cur.week)}>
-      <div className="lp-reel-tilt theme-stage">
-        <div className="lp-reel-glow" aria-hidden />
-        <div className="lp-reel-media" role="img" aria-label={`${cur.topic}: ${cur.title}`}>
+    <figure className="lens" ref={box} onPointerMove={glint} style={hueStyle(cur.week)}>
+      <div className="lens-eye">
+        {/* The reel's six scenes as six arcs around the glass: the one playing fills as it runs. */}
+        <svg className="lens-ring" viewBox="0 0 200 200" aria-hidden>
+          <g transform="rotate(-90 100 100)">
+            {REEL.map((r, k) => {
+              const part = k === f.i ? clamp(f.local / HOLD) : k < f.i ? 1 : 0;
+              return (
+                <g key={r.clip} className={k === f.i ? 'is-on' : undefined} style={hueStyle(r.week)}>
+                  <circle className="lens-ring-track" cx="100" cy="100" r="98" pathLength={360} strokeDasharray={`${SEG - GAP} ${360 - SEG + GAP}`} strokeDashoffset={-(k * SEG + GAP / 2)} />
+                  {part > 0 && <circle className="lens-ring-fill" cx="100" cy="100" r="98" pathLength={360} strokeDasharray={`${Math.max(0.6, (SEG - GAP) * part)} 360`} strokeDashoffset={-(k * SEG + GAP / 2)} />}
+                </g>
+              );
+            })}
+          </g>
+        </svg>
+        <div className="lens-glass theme-stage">
+          <div className="lp-reel-media" role="img" aria-label={`${cur.topic}: ${cur.title}`}>
           {/* The first clip's opening frame, in the page from the server: the frame is never empty while it loads. */}
           {!reduced && f.i === 0 && f.prev === null && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -210,37 +218,25 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
                 );
               })
             ))}
-        </div>
-        <span className="vf vf-tl" />
-        <span className="vf vf-tr" />
-        <span className="vf vf-bl" />
-        <span className="vf vf-br" />
-        <figcaption className="lp-reel-hud" key={f.i}>
-          <span className="rec" />
-          <span className="lp-reel-day">{cur.day}</span>
-          {/* The topic's name where the frame has room for it; its number always. */}
-          <span className="lp-reel-cap" title={cur.topic}>
-            <b>{cur.n}</b> <span className="lp-reel-topic">{cur.topic}</span>
-            <span className="lp-reel-gaia">gaia</span>
-          </span>
-        </figcaption>
-        <div className="hv-scrub" aria-hidden>
-          <span style={{ transform: `scaleX(${t})` }} />
+          </div>
+          <span className="lens-reticle" aria-hidden />
         </div>
       </div>
+      <figcaption className="lens-cap" key={f.i}>
+        <b>{cur.title}</b>
+        <small>
+          <i>{cur.week}. gaia</i>, {cur.day}
+        </small>
+      </figcaption>
 
-      <nav className="lp-reel-strip" aria-label="Simulagailuko eszenak">
+      <nav className="lens-strip" aria-label="Simulagailuko eszenak">
         {REEL.map((r, k) => (
           <button key={r.n + r.title} style={hueStyle(r.week)} className={k === f.i ? 'is-on' : ''} onClick={() => go(k)} aria-current={k === f.i ? 'true' : undefined} aria-label={`${r.week}. gaia: ${r.title}`} title={`${r.week}. gaia · ${r.title}`}>
-            <i aria-hidden>
-              <span style={{ transform: `scaleX(${k === f.i ? clamp(f.local / HOLD) : k < f.i ? 1 : 0})` }} />
-            </i>
-            <small>{r.n}</small>
-            <span>{r.label}</span>
+            {r.label}
           </button>
         ))}
-        <Link className="lp-reel-open" href={cur.href}>
-          Ireki simulagailuan <span aria-hidden>→</span>
+        <Link className="lens-open" href={cur.href}>
+          Ireki eszena hau
         </Link>
       </nav>
     </figure>

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Fraunces, Geist, Geist_Mono } from 'next/font/google';
 import './tokens.css';
 import './globals.css';
 import './ui.css';
@@ -16,6 +16,9 @@ import './polish/plates.css';
 import './polish/egiturak.css';
 import './polish/site.css';
 import './polish/onboarding.css';
+import './polish/look.css';
+import './polish/look-home.css';
+import './polish/look-sim.css';
 import { Kimu } from '@/components/kimu/Kimu';
 import { KimuCheer } from '@/components/kimu/KimuCheer';
 import { CommandBar } from '@/components/shell/CommandBar';
@@ -30,6 +33,8 @@ import { demoScript } from '@/lib/demo/demo-script';
 
 const sans = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' });
 const mono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono', display: 'swap' });
+// The display face: a soft old-style serif (its SOFT axis rounds the terminals), for titles and numerals.
+const display = Fraunces({ subsets: ['latin'], style: ['normal', 'italic'], axes: ['SOFT', 'opsz'], variable: '--font-fraunces', display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'EnbrioAtlas — Giza garapena, zelulaz zelula',
@@ -39,7 +44,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#f7f5f1' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0b' },
+    { media: '(prefers-color-scheme: dark)', color: '#0d0b0d' },
   ],
 };
 
@@ -56,7 +61,7 @@ const introFlag = `try {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="eu" className={`${sans.variable} ${mono.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="eu" className={`${sans.variable} ${mono.variable} ${display.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: demoScript + themeScript + introFlag }} />
       </head>

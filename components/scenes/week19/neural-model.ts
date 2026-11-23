@@ -9,7 +9,7 @@ import { C19 } from './tones';
  * Topic 19, section 9: the neural plate → tube → three vesicles → five vesicles with the flexures, as one surface.
  * Each cross-section is the plate's ribbon curling by the same rule as section-model's (each half an arc whose
  * curvature grows until the two edges meet): the tube closes in the middle first and zips towards both ends, leaving
- * the neuropores; the caudal one closes first (day 25), the cranial one later (day 28). Then the cranial end swells
+ * the neuropores; the cranial one closes first (day 25), the caudal one later (day 27/28). Then the cranial end swells
  * into the vesicles (prosencephalon, mesencephalon, rhombencephalon; then telencephalon, diencephalon, mesencephalon,
  * metencephalon, myelencephalon) while the centreline bends at the cephalic, cervical and pontine flexures; the caudal
  * part stays a tube (the future cord).
@@ -21,7 +21,7 @@ import { C19 } from './tones';
 export interface NeuralPose {
   /** The plate folding (0 flat … 1 every section able to close). */
   fold: number;
-  /** The closure zipping from the middle: 0 nothing closed, 1 closed to both ends (caudal first). */
+  /** The closure zipping from the middle: 0 nothing closed, 1 closed to both ends (cranial first). */
   zip: number;
   /** Three vesicles (0..1), then five (0..1); the flexures (0..1). */
   three: number;
@@ -95,11 +95,12 @@ function centre(flex: number): { p: V3[]; t: V3[]; n: V3[] } {
   return { p, t, n };
 }
 
-/** How far each section is folded, given the plate's fold and the zip (closing from the middle, caudal end first). */
+/** How far each section is folded, given the plate's fold and the zip (closing from the middle, cranial end first). */
 function foldAt(s: number, fold: number, zip: number): number {
   const fromMid = Math.abs(s - 0.5) * 2;
-  // The caudal half zips a little faster than the cranial (the caudal neuropore closes first).
-  const reach = zip * (s < 0.5 ? 1.12 : 0.98);
+  // The cranial half zips a little faster than the caudal (4/p3/s4: the anterior neuropore closes on day 25, the
+  // posterior on day 27/28).
+  const reach = zip * (s < 0.5 ? 0.98 : 1.12);
   const closed = ss(fromMid - 0.12, fromMid, reach * 1.08);
   return Math.min(1, fold * (0.9 + 0.1 * closed) + 0.1 * closed);
 }
@@ -231,11 +232,16 @@ export function neuralModel(pose: NeuralPose, o: NeuralOpts = {}) {
   const k = dim ? dim.k : 0;
   const lit = (id: string, groups?: readonly string[]) => !dim || dim.ids.includes(id) || (groups ?? []).some((g) => dim.ids.includes(g));
   const tint = clamp01(pose.tint);
+  // The flexures are bends of the tube, not pieces of it: the stretch of wall at each bend carries its name (hover, dim).
+  const flexAt: Record<string, string[]> = {};
+  if (P.flex > 0.05)
+    for (const [fid, s] of [['tolespen-zefalikoa', AT.mes], ['tolespen-zerbikala', 0.64], ['zubi-tolespena', 0.72]] as const)
+      (flexAt[regionOf(s, P.three, P.five).id] ??= []).push(fid);
   for (const [name, p] of Object.entries(parts)) {
     const [id, side] = name.split(':');
     if (!p.mesh.idx.length) continue;
     const reg = { color: id === 'gandor-neurala' ? C19.crest : mixHex(C19.tube, colorOf(id), tint) };
-    const groups = id === 'gandor-neurala' ? ['tolesdura-neuralak'] : ['hodi-neurala', 'plaka-neurala', 'tolesdura-neuralak', 'neuroporo-kraneala', 'neuroporo-kaudala', ...(['telentzefaloa', 'dientzefaloa'].includes(id) ? ['prosentzefaloa'] : []), ...(['metentzefaloa', 'mielentzefaloa'].includes(id) ? ['erronbentzefaloa'] : []), ...(id === 'ornomuina' ? [] : ['entzefaloa'])];
+    const groups = id === 'gandor-neurala' ? ['tolesdura-neuralak'] : ['hodi-neurala', 'plaka-neurala', 'tolesdura-neuralak', 'neuroporo-kraneala', 'neuroporo-kaudala', ...(['telentzefaloa', 'dientzefaloa'].includes(id) ? ['prosentzefaloa'] : []), ...(['metentzefaloa', 'mielentzefaloa'].includes(id) ? ['erronbentzefaloa'] : []), ...(id === 'ornomuina' ? [] : ['entzefaloa']), ...(flexAt[id] ?? [])];
     const off = !!dim && !lit(id, groups);
     const color = side === 'i' ? mixHex(reg.color, '#1a2550', 0.35) : reg.color;
     items.push({ key: `nt-${name}`, id, groups, mesh: p.mesh, hit: p.hit, color: off ? mixHex(color, '#c4bcbb', 0.45 * k) : color, deep: mixHex(color, '#0a1030', 0.55), tissue: 'neural' });
@@ -262,8 +268,8 @@ export function neuralModel(pose: NeuralPose, o: NeuralOpts = {}) {
   pts['metentzefaloa'] = along(AT.met, 0.02);
   pts['mielentzefaloa'] = along(0.68, 0.02);
   pts['istmoa-entzefaloa'] = along(AT.isth, 0.02);
-  pts['tolespen-zefalikoa'] = along(AT.mes, 0.1);
-  pts['tolespen-zerbikala'] = along(0.62, 0.1);
+  pts['tolespen-zefalikoa'] = along(AT.mes + 0.006, 0.02);
+  pts['tolespen-zerbikala'] = along(0.64, 0.02);
   const ventral = (s: number): V3 => {
     const i = Math.round(s * (c.p.length - 1));
     return add(c.p[i], mul(c.n[i], radius(s, P.three, P.five).r + 0.02));

@@ -454,17 +454,17 @@ export function sectionModel(pose: SectionPose, o: SectionOpts = {}) {
   }
 
   // ———— the derivatives, one by one ————
-  const derivative = (key: string, id: string, to: V3, via: V3, g: number, color: string, deep: string, r: V3, pin: V3) => {
+  const derivative = (key: string, id: string, to: V3, via: V3, g: number, color: string, deep: string, r: V3, pin: V3, zr = 0.6) => {
     if (g <= 0.01) return;
     const tracks = mergeParts([1, -1].map((s) => vessel(ROUTE(to, via).map((q) => X(s, q)), { r0: 0.035, r1: 0.035, sides: 8 }, Math.min(1, g * 1.4))));
     put(`${key}-track`, 'gandor-neurala', tracks, C19.crest, C19.crestDeep, { opacity: 0.55 * (1 - ss(0.8, 1, g)) });
-    const cl = mergeParts([1, -1].map((s) => blobParts({ center: X(s, to), radii: [r[0] * ss(0.4, 1, g), r[1] * ss(0.4, 1, g), H * 0.6], rings: 10, sides: 12 })));
+    const cl = mergeParts([1, -1].map((s) => blobParts({ center: X(s, to), radii: [r[0] * ss(0.4, 1, g), r[1] * ss(0.4, 1, g), H * zr], rings: 10, sides: 12 })));
     put(key, id, cl, mixHex(C19.crest, color, ss(0.6, 1, g)), deep, { groups: ['gandor-neurala'] });
     pts[id] = pin;
   };
   derivative('chain', 'gongoil-sinpatikoak', CHAIN, [1.1, -0.6, 0], pose.chain, C19.symp, C19.sympDeep, [0.17, 0.17, 0], [CHAIN[0], CHAIN[1], H]);
   derivative('preao', 'aorta-aurreko-gongoilak', [0.2, PREAORTIC[1], 0], [1.0, -1.6, 0], pose.preaortic, C19.symp, C19.sympDeep, [0.14, 0.12, 0], [0.2, PREAORTIC[1], H]);
-  derivative('adrenal', 'zelula-kromafinak', ADRENAL, [1.35, -1.2, 0], pose.adrenal, '#e9b44c', '#7a5410', [0.2, 0.18, 0], [ADRENAL[0], ADRENAL[1], H]);
+  derivative('adrenal', 'zelula-kromafinak', ADRENAL, [1.35, -1.2, 0], pose.adrenal, '#e9b44c', '#7a5410', [0.2, 0.18, 0], [ADRENAL[0], ADRENAL[1], H], 1.06); // the medulla cells show through the gland's cut face
   derivative('melano', 'melanozitoak', MELANO, [1.6, 0.9, 0], pose.melano, '#7a4a2c', '#2a160a', [0.1, 0.07, 0], [MELANO[0], MELANO[1], H]);
   const adrenalShow = ss(0, 0.5, pose.adrenal);
   if (adrenalShow > 0.01) {

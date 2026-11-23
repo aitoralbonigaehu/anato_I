@@ -1,4 +1,4 @@
-/* ——— Landing: hero showreel, topic cards, scroll reveal ——— */
+/* ——— Landing: the lens, the topic ruler, the plates, scroll reveal ——— */
 
 /* Scroll reveal: armed from script (data-armed), so nothing is hidden without it. */
 [data-rv] {
@@ -10,28 +10,40 @@
   transform: translateY(28px);
 }
 
-/* ——— Hero ——— */
+/* ——— First screen: words on the left, the specimen under glass on the right, every topic on a ruler below ——— */
 
-.landing .lp-hero {
+.hm-hero {
   position: relative;
   isolation: isolate;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-  gap: 48px;
-  min-height: calc(100svh - 60px);
-  padding: 40px var(--gutter) 56px;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: min(860px, calc(100svh - 60px));
+  padding: 0 var(--gutter);
 }
 
+.hm-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(28px, 5vw, 88px);
+  padding: 20px 0 22px;
+}
+
+.hm-copy {
+  max-width: 620px;
+}
+
+/* A warm room behind the glass, a cooler one behind the words. */
 .lp-aurora {
   position: absolute;
-  inset: -12% -18% -8%;
+  inset: -10% -18% -6%;
   z-index: -1;
   pointer-events: none;
   opacity: 0;
   background:
-    radial-gradient(38% 46% at 76% 40%, rgba(255, 106, 61, 0.11), transparent 70%),
-    radial-gradient(34% 44% at 60% 74%, rgba(96, 142, 255, 0.09), transparent 72%),
-    radial-gradient(30% 40% at 6% 4%, rgba(255, 184, 107, 0.06), transparent 70%);
-  animation: lp-drift 24s ease-in-out infinite alternate;
+    radial-gradient(34% 48% at 78% 44%, rgba(241, 150, 96, 0.13), transparent 70%),
+    radial-gradient(30% 40% at 62% 82%, rgba(150, 110, 220, 0.07), transparent 72%),
+    radial-gradient(34% 46% at 4% 6%, rgba(241, 173, 118, 0.05), transparent 70%);
   transition: opacity 2s ease 0.3s;
 }
 
@@ -39,58 +51,42 @@
   opacity: 1;
 }
 
-@keyframes lp-drift {
-  to {
-    transform: translate3d(-3%, 2.5%, 0) scale(1.06);
-  }
-}
-
-.landing .lp-hero .kicker {
+/* What this is, said once and plainly. */
+.hm-course {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 550;
+  letter-spacing: -0.005em;
+  color: var(--warm);
 }
 
-.lp-live {
-  position: relative;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--signal);
+.hm-course span {
+  padding-left: 12px;
+  border-left: 1px solid var(--line-3);
+  font-weight: 450;
+  color: var(--text-3);
 }
 
-.lp-live::after {
-  content: "";
-  position: absolute;
-  inset: -5px;
-  border-radius: 50%;
-  border: 1px solid var(--signal);
-  opacity: 0;
-  animation: lp-ping 2.6s ease-out infinite;
-}
-
-@keyframes lp-ping {
-  0% {
-    transform: scale(0.4);
-    opacity: 0.7;
-  }
-  80%,
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-}
-
-/* The title is drawn line by line out of a mask. */
+/* The title, drawn line by line out of a mask. */
 .landing .lp-h1 {
-  font-size: clamp(46px, 5.1vw, 82px);
+  margin: 22px 0 26px;
+  font-family: var(--font-display);
+  font-size: clamp(46px, 6.3vw, 98px);
+  font-weight: 380;
+  font-variation-settings: 'SOFT' 100;
+  line-height: 0.98;
+  letter-spacing: -0.038em;
+  color: var(--text);
 }
 
 .lp-line {
   display: block;
   overflow: hidden;
-  padding: 0.02em 0.06em 0.12em;
-  margin: 0 -0.06em -0.1em;
+  padding: 0.04em 0.06em 0.16em;
+  margin: 0 -0.06em -0.14em;
 }
 
 .lp-line > span {
@@ -107,106 +103,90 @@
   transform: none;
 }
 
-.landing .hero-lead {
-  max-width: 500px;
+.landing .hm-copy .hero-lead {
+  max-width: 46ch;
+  font-size: 17px;
+  line-height: 1.62;
 }
 
-/* Numbers that count up */
-.lp-stats {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 40px 0 0;
-  padding: 0;
+.landing .hm-copy .hero-cta {
+  gap: 12px 14px;
+  margin-top: 32px;
 }
 
-.lp-stats > div {
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: flex-end;
-  gap: 8px;
-  padding: 0 28px;
-  border-left: 1px solid var(--line-2);
-}
+/* ——— The lens: the simulator's own scenes through a round glass ——— */
 
-.lp-stats > div:first-child {
-  padding-left: 0;
-  border-left: 0;
-}
-
-.lp-stats dd {
+.lens {
+  --d: clamp(280px, min(38vw, calc(100svh - 430px)), 540px);
+  --gx: 30%;
+  --gy: 20%;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: calc(var(--d) + 36px);
   margin: 0;
-  font-size: 36px;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.045em;
-  font-variant-numeric: tabular-nums;
-  color: var(--text);
 }
 
-.lp-stats dd.is-word {
-  font-size: 22px;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 36px;
-  color: var(--focus);
-}
-
-.lp-stats dt {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-3);
-}
-
-/* ——— Showreel: the simulator's own scenes in a camera frame ——— */
-
-.lp-reel {
-  --rx: 0deg;
-  --ry: 0deg;
-  --gx: 50%;
-  --gy: 35%;
+.lens-eye {
   position: relative;
-  margin: 0;
-  perspective: 1800px;
+  width: var(--d);
+  aspect-ratio: 1;
+  margin: 18px;
 }
 
-.lp-reel-tilt {
-  position: relative;
-  border: 1px solid var(--line-2);
-  border-radius: var(--r-2xl);
-  background:
-    radial-gradient(90% 80% at var(--gx) var(--gy), rgb(var(--fg-rgb) / 0.055), rgb(var(--fg-rgb) / 0) 60%),
-    #0c0c0e;
-  box-shadow: 0 50px 120px -40px rgb(var(--shade-rgb) / calc(0.9 * var(--shade-k))), 0 0 0 1px rgb(var(--fg-rgb) / 0.015) inset, 0 0 90px -30px rgba(255, 106, 61, 0.22);
-  transform: rotateX(var(--rx)) rotateY(var(--ry));
-  transition: transform 0.7s var(--ease);
-  will-change: transform;
+/* A dial of fine marks around the eyepiece. */
+.lens-eye::before {
+  content: '';
+  position: absolute;
+  inset: -18px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from -0.35deg, rgb(var(--fg-rgb) / 0.34) 0 0.7deg, transparent 0.7deg 6deg);
+  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+  mask: radial-gradient(closest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+  opacity: 0.55;
 }
 
-.lp-reel-tilt::before {
-  content: "";
+.lens-ring {
+  position: absolute;
+  inset: -7px;
+  width: calc(100% + 14px);
+  height: calc(100% + 14px);
+  overflow: visible;
+}
+
+.lens-ring circle {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.lens-ring-track {
+  stroke: rgb(var(--fg-rgb) / 0.13);
+}
+
+.lens-ring-fill {
+  stroke: var(--topic);
+}
+
+.lens-glass {
   position: absolute;
   inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgb(var(--fg-rgb) / 0.07), rgb(var(--fg-rgb) / 0) 22%);
-  -webkit-mask: linear-gradient(#000, transparent 30%);
-  mask: linear-gradient(#000, transparent 30%);
-  opacity: 0.5;
-}
-
-.lp-reel-glow {
-  display: none;
-}
-
-.lp-reel-media {
-  position: relative;
-  display: block;
-  width: 100%;
-  aspect-ratio: 1000 / 640;
   overflow: hidden;
-  border-radius: inherit;
+  border-radius: 50%;
+  background: #0c0b0d;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.09),
+    0 44px 110px -34px rgb(var(--shade-rgb) / calc(0.95 * var(--shade-k))),
+    0 0 110px -28px var(--topic-glow);
+  /* Safari clips a video to a rounded box only inside its own layer. */
+  transform: translateZ(0);
+}
+
+.lens-glass .lp-reel-media {
+  position: absolute;
+  inset: 0;
+  display: block;
 }
 
 /* The clips stacked: the one leaving dissolves over the one arriving. */
@@ -214,247 +194,345 @@
 .lp-reel-media img {
   position: absolute;
   inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
-/* The clip's edges fade into the frame. A vignette over it, not a mask on it: a mask on the moving picture
-   cost a masked repaint each frame (dropped frames while Home opens). */
-.lp-reel-tilt::after {
-  content: "";
+/* The glass itself: darker towards the rim, a soft light where the pointer is. A layer over the picture, not a
+   mask on it (a mask on the moving picture cost a masked repaint each frame). */
+.lens-glass::after {
+  content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  background: radial-gradient(ellipse 78% 76% at 50% 50%, rgb(12 12 14 / 0) 60%, #0c0c0e 100%);
+  background:
+    radial-gradient(46% 40% at var(--gx) var(--gy), rgb(255 255 255 / 0.1), rgb(255 255 255 / 0) 70%),
+    radial-gradient(circle at 50% 50%, rgb(12 11 13 / 0) 58%, rgb(12 11 13 / 0.82) 100%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06), inset 0 2px 30px rgb(0 0 0 / 0.6);
 }
 
-.lp-reel-hud,
-.lp-reel-tilt .vf,
-.lp-reel-tilt .hv-scrub {
-  z-index: 1;
-}
-
-
-.lp-reel-tilt .vf {
-  width: 20px;
-  height: 20px;
-  margin: 12px;
-  border-color: var(--text-3);
-}
-
-.lp-reel-hud {
+/* The eyepiece's cross hairs: two hairlines, broken at the middle so they never cross the specimen. */
+.lens-reticle {
   position: absolute;
-  top: 20px;
-  left: 24px;
-  right: 24px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  animation: lp-hud 0.8s var(--ease) both;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5;
+  background:
+    linear-gradient(90deg, rgb(255 255 255 / 0.3) 0 9%, transparent 9% 91%, rgb(255 255 255 / 0.3) 91%) center / 100% 1px no-repeat,
+    linear-gradient(180deg, rgb(255 255 255 / 0.3) 0 9%, transparent 9% 91%, rgb(255 255 255 / 0.3) 91%) center / 1px 100% no-repeat;
 }
 
-@keyframes lp-hud {
+/* What is under the glass now. */
+.lens-cap {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  max-width: var(--d);
+  text-align: center;
+  animation: lens-cap 0.7s var(--ease) both;
+}
+
+@keyframes lens-cap {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(5px);
   }
 }
 
-.lp-reel-day {
+.lens-cap b {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 420;
+  font-variation-settings: 'SOFT' 100;
+  line-height: 1.2;
+  letter-spacing: -0.018em;
   color: var(--text);
-  font-variant-numeric: tabular-nums;
-}
-
-.lp-reel-cap {
-  margin-left: auto;
-  text-align: right;
-}
-
-.lp-reel-cap b {
-  color: var(--text);
-  font-weight: 500;
-}
-
-.lp-reel-tilt .hv-scrub {
-  left: 24px;
-  right: 24px;
-  bottom: 20px;
-}
-
-.lp-reel-strip {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  margin-top: 18px;
-}
-
-.lp-reel-strip button {
-  position: relative;
-  flex: 1 1 0;
-  min-width: 0;
-  display: grid;
-  gap: 3px;
-  padding-top: 11px;
-  text-align: left;
-  color: var(--text-3);
-  transition: color 0.25s;
-}
-
-.lp-reel-strip button:hover,
-.lp-reel-strip button.is-on {
-  color: var(--text);
-}
-
-.lp-reel-strip button i {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  overflow: hidden;
-  border-radius: var(--r-2xs);
-  background: var(--line-2);
-}
-
-.lp-reel-strip button i span {
-  display: block;
-  height: 100%;
-  background: var(--text);
-  transform-origin: left;
-}
-
-.lp-reel-strip button small {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.08em;
-  color: var(--text-4);
-}
-
-.lp-reel-strip button.is-on small {
-  color: var(--signal);
-}
-
-.lp-reel-strip button > span {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  font-size: 12.5px;
-  line-height: 1.3;
   text-wrap: balance;
 }
 
-.lp-reel-open {
-  flex: none;
-  align-self: center;
+.lens-cap small {
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+.lens-cap small i {
+  font-style: normal;
+  color: var(--topic-ink);
+}
+
+.lens-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  max-width: calc(var(--d) + 36px);
+}
+
+.lens-strip button {
+  height: 30px;
+  padding: 0 10px;
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  white-space: nowrap;
+  color: var(--text-3);
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.lens-strip button:hover {
+  color: var(--text);
+}
+
+.lens-strip button.is-on {
+  background: var(--topic-soft);
+  color: var(--topic-ink);
+}
+
+.lens-open {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
   margin-left: 6px;
-  padding-top: 11px;
+  padding: 0 12px;
+  border-radius: var(--r-pill);
+  box-shadow: inset 0 0 0 1px var(--line-2);
   font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
   color: var(--text);
+  transition: box-shadow 0.2s, background-color 0.2s;
 }
 
-.lp-reel-open span {
-  display: inline-block;
-  transition: transform 0.25s var(--ease);
+.lens-open:hover {
+  background: rgb(var(--fg-rgb) / 0.06);
+  box-shadow: inset 0 0 0 1px var(--line-3);
 }
 
-.lp-reel-open:hover span {
-  transform: translateX(4px);
+/* ——— The ruler: every topic, in the order of development, one click from the first screen ——— */
+
+.rul {
+  /* Clear of the floating «Galdetu» key in the bottom-right corner. */
+  padding: 16px 0 62px;
+  border-top: 1px solid var(--line);
 }
 
-/* ——— Topics ——— */
-
-.landing .lp-shelf {
-  padding: 64px var(--gutter) 32px;
+.rul-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: var(--text-3);
 }
 
-.lp-shelf-head {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
-  align-items: end;
-  gap: 16px 56px;
-  margin-bottom: 30px;
-}
-
-.lp-shelf-head h2 {
-  margin: 14px 0 0;
-  font-size: clamp(30px, 3.4vw, 48px);
+.rul-head b {
   font-weight: 600;
-  letter-spacing: -0.045em;
-  line-height: 1;
+  color: var(--text);
 }
 
-.lp-shelf-head .shelf-note {
-  font-size: 13.5px;
-  line-height: 1.6;
+.rul-seen {
+  font-variant-numeric: tabular-nums;
 }
 
-.lp-cards {
+.rul ol {
   display: grid;
-  grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
-  gap: 18px;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 6px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.lp-card-in {
+.rul li {
+  position: relative;
+}
+
+.rul-tick {
+  display: grid;
+  gap: 9px;
+  padding: 8px 0 2px;
+  border-radius: var(--r-sm);
+  color: var(--text-3);
+}
+
+.rul-n {
+  font-family: var(--font-display);
+  font-size: clamp(17px, 1.7vw, 24px);
+  font-variation-settings: 'SOFT' 100;
+  font-variant-numeric: lining-nums;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  transform-origin: left bottom;
+  transition: color 0.2s, transform 0.3s var(--ease);
+}
+
+.rul-bar {
+  display: block;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: rgb(var(--fg-rgb) / 0.13);
+  transition: background-color 0.2s;
+}
+
+.rul-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--topic);
+  transform-origin: left;
+  transition: transform 0.9s var(--ease) 0.4s;
+}
+
+a.rul-tick:hover .rul-n,
+a.rul-tick:focus-visible .rul-n {
+  color: var(--text);
+  transform: scale(1.22);
+}
+
+a.rul-tick:hover .rul-bar,
+a.rul-tick:focus-visible .rul-bar {
+  background: var(--topic-line);
+}
+
+/* Where the student left off. */
+.rul li.is-here .rul-n {
+  color: var(--topic-ink);
+}
+
+.rul li.is-here .rul-bar {
+  box-shadow: 0 0 0 1px var(--topic-line);
+}
+
+.rul li.is-wip .rul-tick {
+  opacity: 0.4;
+}
+
+/* The topic's name, above its number. */
+.rul-tip {
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 0;
+  z-index: 3;
+  display: grid;
+  gap: 2px;
+  width: max-content;
+  max-width: 280px;
+  padding: 10px 13px 11px;
+  border-radius: var(--r-md);
+  background: var(--float);
+  box-shadow: 0 0 0 1px var(--line-2), var(--float-shadow);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(5px);
+  transition: opacity 0.16s, transform 0.25s var(--ease);
+}
+
+.rul li:nth-last-child(-n + 6) .rul-tip {
+  right: 0;
+  left: auto;
+}
+
+.rul-tip b {
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.rul-tip small {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.rul-tick:hover .rul-tip,
+a.rul-tick:focus-visible .rul-tip {
+  opacity: 1;
+  transform: none;
+}
+
+/* ——— Topics: plates of an atlas, not cards ——— */
+
+.landing .hm-topics {
+  padding: 72px var(--gutter) 40px;
+}
+
+.hm-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px 40px;
+  margin-bottom: 40px;
+}
+
+.hm-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(30px, 3.5vw, 50px);
+  font-weight: 380;
+  font-variation-settings: 'SOFT' 100;
+  line-height: 1.04;
+  letter-spacing: -0.032em;
+  color: var(--text);
+}
+
+.landing .hm-head .shelf-note {
+  max-width: 56ch;
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-3);
+}
+
+.pls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 46px 26px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pl-in {
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr auto;
   height: 100%;
-  overflow: hidden;
-  border: 1px solid var(--edge);
-  border-radius: var(--r-2xl);
-  background: var(--surface);
   color: var(--text-2);
-  box-shadow: var(--shadow-1);
-  transition: border-color 0.25s, transform 0.4s var(--ease), box-shadow 0.4s;
 }
 
-a.lp-card-in:hover {
-  border-color: var(--line-3);
-  transform: translateY(-4px);
-  box-shadow: 0 30px 70px -28px rgb(var(--shade-rgb) / calc(0.85 * var(--shade-k))), 0 0 60px -26px rgba(255, 106, 61, 0.35);
-}
-
-a.lp-card-in:active {
-  transform: translateY(-1px) scale(0.995);
-}
-
-/* A light that follows the pointer across the card. */
-.lp-card-in::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgb(var(--fg-rgb) / 0.075), transparent 70%);
-  transition: opacity 0.3s;
-}
-
-a.lp-card-in:hover::before {
-  opacity: 1;
-}
-
-.lp-card-fig {
+/* The picture: a small lightbox, dark in both themes, tinted with the topic's own colour. */
+.pl-fig {
   position: relative;
   display: block;
   aspect-ratio: 860 / 550;
   overflow: hidden;
-  border-bottom: 1px solid var(--line);
-  background: radial-gradient(100% 90% at 50% 40%, #131316, #0b0b0d);
+  border-radius: var(--r-xl);
+  background:
+    radial-gradient(70% 60% at 50% 108%, var(--topic-glow), transparent 70%),
+    radial-gradient(100% 90% at 50% 40%, #171418, #0b0a0c);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.07), var(--shadow-md);
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+}
+
+a.pl-in:hover .pl-fig,
+a.pl-in:focus-visible .pl-fig {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 1px var(--topic-line),
+    0 28px 60px -26px rgb(var(--shade-rgb) / calc(0.9 * var(--shade-k))),
+    0 0 70px -24px var(--topic-glow);
+}
+
+a.pl-in:active .pl-fig {
+  transform: translateY(-1px) scale(0.995);
 }
 
 .lp-shot {
@@ -463,7 +541,8 @@ a.lp-card-in:hover::before {
   height: 100%;
 }
 
-.lp-shot svg {
+.lp-shot svg,
+.lp-shot.is-poster img {
   display: block;
   width: 100%;
   height: 100%;
@@ -471,6 +550,10 @@ a.lp-card-in:hover::before {
   transition: transform 1.2s var(--ease);
   -webkit-mask-image: radial-gradient(ellipse 78% 76% at 50% 50%, #000 62%, transparent 100%);
   mask-image: radial-gradient(ellipse 78% 76% at 50% 50%, #000 62%, transparent 100%);
+}
+
+.lp-shot.is-poster img {
+  object-fit: cover;
 }
 
 @keyframes lp-shot-in {
@@ -480,152 +563,133 @@ a.lp-card-in:hover::before {
   }
 }
 
-a.lp-card-in:hover .lp-shot svg {
+a.pl-in:hover .lp-shot svg,
+a.pl-in:hover .lp-shot.is-poster img {
   transform: scale(1.06);
 }
 
-/* A 3D topic's poster (public/topic-shots): the same entrance, mask and hover as a live scene. */
-.lp-shot.is-poster img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  animation: lp-shot-in 0.9s var(--ease) both;
-  transition: transform 1.2s var(--ease);
-  -webkit-mask-image: radial-gradient(ellipse 78% 76% at 50% 50%, #000 62%, transparent 100%);
-  mask-image: radial-gradient(ellipse 78% 76% at 50% 50%, #000 62%, transparent 100%);
-}
-a.lp-card-in:hover .lp-shot.is-poster img {
-  transform: scale(1.06);
+/* The number the topic goes by, set large in the plate's corner (always on the dark picture). */
+.pl-n {
+  position: absolute;
+  left: 15px;
+  bottom: 9px;
+  font-family: var(--font-display);
+  font-size: clamp(34px, 3.3vw, 46px);
+  font-weight: 380;
+  font-variation-settings: 'SOFT' 100;
+  font-variant-numeric: lining-nums;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #f7eee0;
+  text-shadow: 0 1px 14px rgb(8 6 8 / 0.9);
+  transition: color 0.3s;
 }
 
-.lp-card-n,
-.lp-card-new {
+a.pl-in:hover .pl-n {
+  color: oklch(0.86 0.11 var(--th));
+}
+
+.pl-flag {
   position: absolute;
   top: 12px;
-  z-index: 1;
-  padding: 3px 8px;
-  border-radius: 99px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  font-variant-numeric: tabular-nums;
-  backdrop-filter: blur(8px);
-}
-
-.lp-card-n {
-  left: 12px;
-  border: 1px solid var(--line-2);
-  background: rgb(var(--surface-rgb) / 0.62);
-  color: var(--text);
-}
-
-.lp-card-new {
   right: 12px;
-  border: 1px solid rgba(255, 106, 61, 0.45);
-  background: rgba(255, 106, 61, 0.16);
-  color: var(--ink-signal);
-  text-transform: uppercase;
-  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: rgb(20 17 20 / 0.78);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16);
+  font-size: 12px;
+  font-weight: 550;
+  color: #d4cabb;
 }
 
-.lp-card-body {
+/* The way in, named on the picture: always for a topic already begun, on hover for the rest. */
+.pl-go {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 11px 0 9px;
+  border-radius: var(--r-pill);
+  background: #f7eee0;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: #1a1410;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.35s var(--ease);
+}
+
+.pl.is-started .pl-go,
+a.pl-in:hover .pl-go,
+a.pl-in:focus-visible .pl-go {
+  opacity: 1;
+  transform: none;
+}
+
+.pl-body {
   display: grid;
   align-content: start;
   gap: 6px;
-  padding: 16px 18px 6px;
+  padding: 16px 2px 0;
 }
 
-.lp-card-days {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-4);
-}
-
-.lp-card-body b {
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.2;
+.pl-body b {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 420;
+  font-variation-settings: 'SOFT' 100;
+  line-height: 1.16;
   letter-spacing: -0.02em;
   color: var(--text);
   text-wrap: balance;
 }
 
-.lp-card-body small {
+.pl-body small {
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  font-size: 12.5px;
+  font-size: 13.5px;
   line-height: 1.5;
   color: var(--text-3);
 }
 
-.lp-card-foot {
+.pl-foot {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px 12px;
-  margin: 8px 18px 0;
-  padding: 12px 0 16px;
+  margin: 14px 2px 0;
+  padding-top: 11px;
   border-top: 1px solid var(--line);
+  font-size: 12.5px;
+  color: var(--text-3);
 }
 
-.lp-card-prog {
+.pl-prog {
   display: flex;
+  flex: none;
   align-items: center;
-  gap: 8px;
-  min-width: 0;
+  gap: 7px;
 }
 
-.lp-card-prog .toc-ticks {
-  flex-wrap: wrap;
-  gap: 2px;
-}
-
-.lp-card-prog .toc-ticks i {
-  width: 6px;
-}
-
-.lp-card-prog small {
-  font: 500 11px/1 var(--font-mono);
+.pl-prog small {
+  font-size: 12.5px;
   font-variant-numeric: tabular-nums;
   color: var(--text-3);
 }
 
-.lp-card-go {
-  font-size: 13px;
-  font-weight: 600;
-  white-space: nowrap;
-  color: var(--text-2);
-  transition: color 0.2s;
+/* Not ready reads as not ready: a grey picture, legible words. */
+.pl.is-wip .lp-shot {
+  filter: grayscale(1);
+  opacity: 0.4;
 }
 
-.lp-card-go span {
-  display: inline-block;
-  transition: transform 0.3s var(--ease);
-}
-
-a.lp-card-in:hover .lp-card-go {
-  color: var(--text);
-}
-
-a.lp-card-in:hover .lp-card-go span {
-  transform: translateX(4px);
-}
-
-.lp-card-state {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-3);
-}
-
-.lp-card.is-wip .lp-card-in {
-  opacity: 0.5;
+.pl.is-wip .pl-in {
+  cursor: default;
 }
 
 /* ——— Map: the phases in full rows (the count decides the columns) ——— */
@@ -634,16 +698,6 @@ a.lp-card-in:hover .lp-card-go span {
   .landing .map-row {
     grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
     gap: 16px;
-  }
-  /* The arrow leads along a row; the row's last phase has none (the next row starts below). */
-  .landing .map-row li .map-card::after {
-    display: block;
-  }
-  .landing .map-row li.is-row-end .map-card::after {
-    display: none;
-  }
-  .landing .map-row li:last-child .map-card::after {
-    display: none;
   }
 }
 
@@ -655,47 +709,68 @@ a.lp-card-in:hover .lp-card-go span {
 
 .landing .map-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 26px 60px -30px rgb(var(--shade-rgb) / calc(0.85 * var(--shade-k))), 0 0 50px -28px rgba(255, 106, 61, 0.3);
+  box-shadow: 0 26px 60px -30px rgb(var(--shade-rgb) / calc(0.85 * var(--shade-k))), 0 0 50px -28px var(--topic-glow);
 }
 
-/* ——— Smaller screens (tablet) ——— */
+/* ——— Narrower screens (tablet) ——— */
 
 @media (max-width: 1180px) {
-  .lp-cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  /* An odd last card sits centred under the pair above it, not stranded on the left. */
-  .lp-cards > li:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-    justify-self: center;
-    width: calc(50% - 9px);
-  }
-  .lp-shelf-head {
-    grid-template-columns: 1fr;
+  .pls {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px 22px;
   }
 }
 
 @media (max-width: 960px) {
-  .landing .lp-hero {
-    grid-template-columns: minmax(0, 1fr);
+  .hm-hero {
     min-height: 0;
-    gap: 40px;
   }
-  .lp-reel-strip button > span {
-    -webkit-line-clamp: 1;
+  .hm-hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+    gap: 34px;
+    padding: 30px 0 28px;
+  }
+  .hm-visual {
+    justify-self: center;
+  }
+  .lens {
+    --d: clamp(280px, min(62vw, 46svh), 460px);
+  }
+}
+
+@media (max-width: 860px) {
+  .pls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* Nineteen numbers in two rows rather than nineteen slivers. */
+  .rul ol {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 8px 6px;
+  }
+  .rul li:nth-child(10n + 1) .rul-tip,
+  .rul li:nth-child(10n + 2) .rul-tip,
+  .rul li:nth-child(10n + 3) .rul-tip,
+  .rul li:nth-child(10n + 4) .rul-tip {
+    right: auto;
+    left: 0;
+  }
+  .rul li:nth-child(10n + 7) .rul-tip,
+  .rul li:nth-child(10n + 8) .rul-tip,
+  .rul li:nth-child(10n + 9) .rul-tip,
+  .rul li:nth-child(10n) .rul-tip {
+    right: 0;
+    left: auto;
   }
 }
 
 @media (max-width: 560px) {
-  .lp-cards {
+  .pls {
     grid-template-columns: minmax(0, 1fr);
   }
-  .lp-cards > li:last-child:nth-child(odd) {
-    grid-column: auto;
-    width: auto;
-  }
-  .lp-stats > div {
-    padding: 0 18px;
+  .hm-course {
+    flex-wrap: wrap;
   }
 }
 
@@ -703,76 +778,15 @@ a.lp-card-in:hover .lp-card-go span {
   [data-rv],
   .lp-line > span,
   .lp-aurora,
-  .lp-reel-tilt,
-  .lp-card-in,
+  .pl-fig,
+  .pl-go,
+  .rul-n,
+  .rul-bar i,
   .lp-shot svg,
-  .lp-shot.is-poster img {
+  .lp-shot.is-poster img,
+  .lens-cap {
     transition: none;
     animation: none;
-  }
-  .lp-live::after,
-  .lp-reel-hud {
-    animation: none;
-  }
-}
-
-/* ——— Showreel, fitted: the frame's line and the strip never cut a word ——— */
-
-.lp-reel {
-  container: reel / inline-size;
-}
-
-/* Clear of the corner brackets (20px, 12px in) on both sides. */
-.lp-reel-hud {
-  left: 44px;
-  right: 44px;
-  white-space: nowrap;
-}
-
-.lp-reel-gaia {
-  display: none;
-}
-
-/* Every strip name is a short one written for it: one line, whole. */
-.lp-reel-strip button > span {
-  display: block;
-  overflow: visible;
-  white-space: nowrap;
-  -webkit-line-clamp: none;
-}
-
-@container reel (max-width: 600px) {
-  /* The frame line keeps the day and the topic number. */
-  .lp-reel-topic {
-    display: none;
-  }
-  .lp-reel-gaia {
-    display: inline;
-  }
-}
-
-@container reel (max-width: 620px) {
-  /* Narrow frame: the current scene keeps its name, the others their number. */
-  .lp-reel-strip {
-    gap: 10px;
-  }
-  .lp-reel-strip button {
-    flex: 0 0 auto;
-    min-width: 30px;
-  }
-  .lp-reel-strip button.is-on {
-    flex: 1 1 auto;
-  }
-  .lp-reel-strip button:not(.is-on) > span {
-    display: none;
-  }
-}
-
-/* The first screen ends on the start of the topics (their heading peeks in), not on empty space. */
-@media (min-width: 961px) {
-  .landing .lp-hero {
-    min-height: min(820px, calc(100svh - 60px - 120px));
-    padding-bottom: 28px;
   }
 }
 
@@ -836,6 +850,9 @@ a.lp-card-in:hover .lp-card-go span {
   html[data-intro='seen'] .landing.is-intro .hero-text .rv:nth-child(5) {
     animation-delay: 0.32s;
   }
+  html[data-intro='seen'] .landing.is-intro .rul.rv {
+    animation-delay: 0.42s;
+  }
   html[data-intro='seen'] .landing.is-intro .hero-visual.rv {
     animation-name: lp-settle;
     animation-delay: 0.2s;
@@ -847,9 +864,7 @@ a.lp-card-in:hover .lp-card-go span {
     animation-delay: 0.26s;
   }
   html[data-intro='seen'] .landing.is-intro .lp-aurora {
-    animation:
-      lp-fade 2s ease 0.3s both,
-      lp-drift 24s ease-in-out infinite alternate;
+    animation: lp-fade 2s ease 0.3s both;
   }
   html[data-intro='seen'] .landing.is-intro .land-nav {
     animation: lp-fade 0.9s var(--ease) 0.1s both;

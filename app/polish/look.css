@@ -1,0 +1,32 @@
+/* The look, shared: one display face and one warm voice across the site and the simulator.
+   Loaded after every other global sheet. */
+
+:root {
+  /* Titles and numerals: a soft old-style serif (Fraunces, its SOFT axis fully round), the same family of
+     gesture as the opening film's titles. Text and controls stay in the sans. */
+  --font-display: var(--font-fraunces), 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --display-soft: 'SOFT' 100;
+}
+
+/* Page titles and section titles, wherever the site bar is: flat ink in the display face (no gradient fill). */
+html:root:root .landing :is(h1, .section-head h2, .story-head h2) {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: currentColor;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-variation-settings: var(--display-soft);
+  letter-spacing: -0.032em;
+}
+
+/* The home title's lines are filled by their own spans. */
+html:root:root .landing .lp-h1 .lp-line > span {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+::selection {
+  background: rgb(241 173 118 / 0.34);
+}

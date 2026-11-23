@@ -22,7 +22,7 @@ const anyBlue = (nodes: MNode[]): boolean => nodes.some((n) => n.blue || anyBlue
 
 describe('Eratorriak: taught this year', () => {
   it('only topics 15+ have blue content', () => {
-    for (let w = 1; w <= 19; w++) expect(hasBlueContent(w), `topic ${w}`).toBe([15, 17, 18, 19].includes(w));
+    for (let w = 1; w <= 19; w++) expect(hasBlueContent(w), `topic ${w}`).toBe([15, 17, 18].includes(w));
   });
 
   it('drops blue nodes and lifts their taught children', () => {

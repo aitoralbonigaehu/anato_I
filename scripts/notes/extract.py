@@ -38,8 +38,8 @@ FILES = [
     '16 GAIA_SISTEMA UROGENITALA (GONADAK) (zuzenduta) fitxategiaren kopia fitxategiaren kopia.pdf',
     '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA) fitxategiaren kopia (1).pdf',
     '18. GAIA. Burua eta lepoa ll (Zuzenduta).docx.pdf',
-    # Topic 19 came as DOCX only: exported to PDF with Word (same name + .pdf), text unchanged.
-    '19. GAIA. NERBIO SISTEMA (zuzendu gabe).docx.pdf',
+    # Topic 19: the owner's new notes of 2026-11-23 (PDF, 11 sections; they replace the first DOCX of 13 sections).
+    '19. gaia_ Nerbio sistema (ZUZENDU GABE).pdf',
 ]
 
 # First topic whose blue (supplementary) text is marked for the "skip blue" reading mode.
@@ -66,7 +66,7 @@ def block_text(block):
 def furniture(line, page):
     text = norm(''.join(s['text'] for s in line['spans']))
     y = line['bbox'][1]
-    return (y < 65 and bool(re.search(r'GIZA ANATOMIA|ANATOMIA I|MEDIKUNTZA 1|RAFAEL SARRIA|31 TALDEA', text, re.I)) or (y < 90 and bool(re.fullmatch(r'31\. TALDEA \d{4}/\d\d/\d\d', text))) or (y < 65 and bool(re.fullmatch(r'3\. taldea', text)))) or (y > page.rect.height - 65 and bool(re.fullmatch(r'\d+', text)))
+    return (y < 65 and bool(re.search(r'GIZA ANATOMIA|ANATOMIA I|MEDIKUNTZA 1|RAFAEL SARRIA|31 TALDEA', text, re.I)) or (y < 90 and bool(re.fullmatch(r'31\. TALDEA \d{4}/\d\d/\d\d', text))) or (y < 65 and bool(re.fullmatch(r'3\. taldea', text))) or (y < 65 and bool(re.search(r'32\. Taldea|^_{20,}$', text)))) or (y > page.rect.height - 65 and bool(re.fullmatch(r'\d+', text)))
 
 
 # The teacher's remarks about what will or will not be asked, or about names not to use, never reach the app
@@ -86,6 +86,11 @@ REMARKS = [
     (re.compile(r'HAU EZ DA IKASI BEHAR:\s*'), ''),
     (re.compile(r'EZ DU AIPATU\s+'), ''),
     (re.compile(r'\s*Oraindik ez dago dena zuzenduta'), ''),
+    # Topic 19's new notes (2026-11-23): where the class stopped, what need not be known, and the word "exam".
+    (re.compile(r'\s*\(HEMEN BUKATU DU 20/11 an\)'), ''),
+    (re.compile(r'\s*\(ez dago detaileak jakin beharrik\)'), ''),
+    (re.compile(r'KONTUZ AZTERKETAN'), 'KONTUZ'),
+    (re.compile(r'\s+azterketan(?= TXARTO DAGO)'), ''),
 ]
 
 

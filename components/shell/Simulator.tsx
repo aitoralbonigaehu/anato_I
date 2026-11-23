@@ -1989,6 +1989,10 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
             )}
           </Popover>
         </div>
+        {/* How far through the topic: a hairline in the topic's colour along the bar's foot. */}
+        <span className="tb-progress" aria-hidden>
+          <i style={{ transform: `scaleX(${(pos.i + Math.min(1, Math.max(0, pos.t))) / Math.max(1, week.stages.length)})` }} />
+        </span>
       </header>
 
       <div className={`workspace${classActive ? ' klasea' : notesOpen ? ' notes-mode' : ''}${panelOpen ? ' panel-open' : ''}${outlineShown && !classActive ? '' : ' no-outline'}${classActive || infoOpen || notesOpen ? '' : ' no-info'}${selected ? ' has-sel' : ''}`}>

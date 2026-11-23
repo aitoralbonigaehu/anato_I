@@ -137,38 +137,8 @@ const HOVER_KNOWN = new Set<string>([
   '18|lehen-poltsa|0|lehen-poltsa:0|rim', // → lehen-arraildura
   '18|maxilar-arteko-segmentua|3|aho-sabaiko-errafea:3|rim', // → aho-sabai-gandorrak
   '18|mihiaren-sustraia|2|ildo-terminala:2|rim', // → kupula, mihiaren-gorputza
-  '19|aktu-erreflexua|1|neurona-sentsitiboa:1|rim', // → nerbio-espinalak
-  '19|bentrikuluak|3|alboko-bentrikuluak:3|pick', // → hirugarren-bentrikulua
-  '19|bentrikuluak|4|alboko-bentrikuluak:4|pick', // → hirugarren-bentrikulua
-  '19|borondatezko-mugimenduak|2|neurona-sentsitiboa:2|rim', // → ornomuina
-  '19|bost-xixkuak|0|tolespen-zefalikoa:0|pick', // → ezer ez
-  '19|bost-xixkuak|0|tolespen-zerbikala:0|pick', // → ezer ez
-  '19|bost-xixkuak|2|zubi-tolespena:2|pick', // → metentzefaloa
-  '19|gai-grisa-zuria|4|neurona-sentsitiboa:4|rim', // → nerbio-espinalak
-  '19|gandor-eratorriak|3|zelula-kromafinak:3|pick', // → giltzurrun-gaineko-muina
-  '19|garuneko-meningeak|2|eremu-azpiaraknoideoa:2|pick', // → pia-materra
-  '19|kortexa|0|kortex-sentsitiboa:0|rim', // → garun-hemisferioak
-  '19|kortexa|1|kortex-motorra:1|rim', // → garun-hemisferioak
-  '19|kortexa|1|motoneurona:1|pick', // → neurona-sentsitiboa
-  '19|kortexa|1|motoneurona:1|rim', // → ornomuina
-  '19|kortexa|2|kortex-motorra:2|rim', // → garun-hemisferioak
-  '19|kortexa|2|kortex-sentsitiboa:2|rim', // → garun-hemisferioak
-  '19|likido-zefalorrakideoa|0|eremu-azpiaraknoideoa:0|pick', // → pia-materra
-  '19|likido-zefalorrakideoa|4|eremu-azpiaraknoideoa:4|pick', // → pia-materra
-  '19|mozketak-ardatzak|1|plano-horizontala:1|pick', // → neurokraneoa
   '19|ornomuin-geruzak|1|barneko-mintz-mugatzailea:1|pick', // → neuroepitelioa
-  '19|ornomuin-plakak|1|ildo-mugatzailea:1|rim', // → zoru-plaka, hegal-plaka, oinalde-plaka
   '19|puntzioa-epidurala|0|likido-zefalorrakideoa:0|pick', // → ornoak
-  '19|puntzioa-epidurala|1|likido-zefalorrakideoa:1|pick', // → ornoak
-  '19|somatikoa-autonomoa|2|sistema-sinpatikoa:2|rim', // → birikak
-  '19|somatikoa-autonomoa|3|nerbio-bagoa:3|rim', // → ornoak
-  '19|somatikoa-autonomoa|4|sistema-parasinpatikoa:4|rim', // → ornoak
-  '19|somatikoa-autonomoa|4|sistema-sinpatikoa:4|rim', // → birikak
-  '19|sustraiak-gongoila|3|neurona-sentsitiboa:3|rim', // → nerbio-espinalak
-  '19|talamoa|1|neurona-sentsitiboa:1|rim', // → erraboila
-  '19|talamoa|1|neurona-sentsitiboa:1|rim', // → erraboila, ornomuina
-  '19|zentrala-periferikoa|0|nerbio-bagoa:0|rim', // → ornoak
-  '19|zentrala-periferikoa|1|neurokraneoa:1|pick', // → ezer ez
 ]);
 
 for (const [w, week] of weeks.entries()) {

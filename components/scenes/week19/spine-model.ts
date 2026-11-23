@@ -26,8 +26,10 @@ export interface SpinePose {
   needle: number;
   drops: number;
   epiNeedle: number;
+  /** The cauda equina's nerves pushed aside round the puncture needle (5.1/p10/s4) (0..1). */
+  aside?: number;
 }
-export const SPP0: SpinePose = { grow: 0, sac: 0, epi: 0, needle: 0, drops: 0, epiNeedle: 0 };
+export const SPP0: SpinePose = { grow: 0, sac: 0, epi: 0, needle: 0, drops: 0, epiNeedle: 0, aside: 0 };
 
 export interface SpineOpts {
   dim?: { ids: readonly string[]; k: number } | null;
@@ -71,7 +73,7 @@ const SEGS: { name: string; origin: number; vert: string; sacral?: number }[] = 
 ];
 
 const GROW_STEPS = 80;
-type SpineGeo = { bone: Parts | null; cord: Parts | null; filum: Parts | null; roots: Parts | null; cauda: Parts | null };
+type SpineGeo = { bone: Parts | null; cord: Parts | null; filum: Parts | null; roots: Parts | null; cauda: Parts | null; caudaLines: V3[][] };
 const geoMemo = new Map<number, SpineGeo>();
 /** Everything whose shape depends only on the column's growth: built once per growth step. */
 function spineGeo(g: number): SpineGeo {
@@ -95,10 +97,14 @@ function spineGeo(g: number): SpineGeo {
     for (const s of [1, -1]) bone.push(blobParts({ center: [s * 0.92, c + h * 0.08, 0.1], radii: [0.17, h * 0.22, 0.42], rings: 8, sides: 12 }));
   }
   // The cord (fixed), its conus, the filum terminale to the coccyx.
-  const cord = vessel(L([[0, TOP + 0.4, CZ], [0, 1.0, CZ], [0, 0.35, CZ], [0, 0, CZ]], 24), { r0: CORD_R, r1: 0.06, sides: 16, n: 30 });
+  // The thoracolumbar enlargement just above the conus (5.1/p7), then the cone.
+  const cord = mergeParts([
+    vessel(L([[0, TOP + 0.4, CZ], [0, 1.25, CZ]], 12), { r0: CORD_R, r1: CORD_R * 1.28, sides: 16, n: 14 }),
+    vessel(L([[0, 1.25, CZ], [0, 0.6, CZ], [0, 0, CZ]], 16), { r0: CORD_R * 1.28, r1: 0.06, sides: 16, n: 18 }),
+  ]);
   const filum = vessel(L([[0, 0, CZ], [0, lerp(0, bottom, 0.5), CZ - 0.02], [0, bottom + 0.1, 0.0]], 12), { r0: 0.04, r1: 0.03, sides: 8 });
   // The roots: from their cord level to their own foramen.
-  const upper: (Parts | null)[] = [], cauda: (Parts | null)[] = [];
+  const upper: (Parts | null)[] = [], cauda: (Parts | null)[] = [], caudaLines: V3[][] = [];
   for (const s of SEGS) {
     const v = at(s.vert);
     const exit = s.sacral !== undefined ? lerp(v.top, v.bot, s.sacral) : v.bot + 0.04;
@@ -108,14 +114,39 @@ function spineGeo(g: number): SpineGeo {
       const long = s.origin - exit;
       const line = long < 0.3 ? L([o, [side * 0.7, (s.origin + exit) / 2, CZ + 0.05], f], 10) : L([o, [side * (0.12 + 0.04 * Math.abs(SEGS.indexOf(s) - 6)), s.origin - 0.3, CZ], [side * 0.26, lerp(s.origin, exit, 0.75), CZ], [side * 0.62, exit + 0.12, CZ + 0.05], f], 22);
       const p = vessel(line, { r0: 0.05, r1: 0.045, sides: 8 });
-      (s.origin < 0.3 && g > 0.3 ? cauda : upper).push(p);
+      const inCauda = s.origin < 0.3 && g > 0.3;
+      (inCauda ? cauda : upper).push(p);
+      if (inCauda) caudaLines.push(line);
       // The ganglion at the foramen and the nerve going out.
       upper.push(blobParts({ center: [side * 1.0, exit, CZ + 0.14], radii: [0.12, 0.09, 0.09], rings: 6, sides: 8 }));
       upper.push(vessel(L([f, [side * 1.6, exit - 0.25, CZ + 0.3]], 4), { r0: 0.07, r1: 0.06, sides: 8 }));
     }
   }
-  m = { bone: mergeParts(bone), cord, filum, roots: mergeParts(upper), cauda: mergeParts(cauda) };
+  m = { bone: mergeParts(bone), cord, filum, roots: mergeParts(upper), cauda: mergeParts(cauda), caudaLines };
   geoMemo.set(g, m);
+  return m;
+}
+
+/** The cauda's nerves bent away from the needle at height `y` (x ≈ 0): `k` 0..1, in tenths (memoised). */
+const asideMemo = new Map<string, Parts | null>();
+function caudaAside(geo: SpineGeo, g: number, y: number, k: number): Parts | null {
+  const key = `${g},${k}`;
+  let m = asideMemo.get(key);
+  if (m !== undefined) return m;
+  if (asideMemo.size > 24) asideMemo.clear();
+  m = mergeParts(
+    geo.caudaLines.map((line) =>
+      vessel(
+        line.map(([x, yy, z]): V3 => {
+          const fall = Math.exp(-(((yy - y) / 0.45) ** 2));
+          const sx = x >= 0.05 ? 1 : -1;
+          return [x + sx * 0.22 * k * fall * Math.max(0, 1 - Math.abs(x - 0.05) / 0.5), yy, z];
+        }),
+        { r0: 0.05, r1: 0.045, sides: 8 },
+      ),
+    ),
+  );
+  asideMemo.set(key, m);
   return m;
 }
 
@@ -151,7 +182,9 @@ export function spineModel(pose: SpinePose, o: SpineOpts = {}) {
 
   // ———— the roots: from their cord level to their own foramen ————
   put('roots', 'nerbio-espinalak', geo.roots, C19.nerve, C19.nerveDeep, {});
-  put('cauda', 'zaldi-buztana', geo.cauda, mixHex(C19.nerve, '#fff2b0', 0.2), C19.nerveDeep, { groups: ['nerbio-espinalak'] });
+  const ak = Math.round(clamp01(pose.aside ?? 0) * 10) / 10;
+  const l2c = (at('L2').top + at('L2').bot) / 2 - 0.15;
+  put('cauda', 'zaldi-buztana', ak > 0 ? caudaAside(geo, g, l2c, ak) : geo.cauda, mixHex(C19.nerve, '#fff2b0', 0.2), C19.nerveDeep, { groups: ['nerbio-espinalak'] });
   pts['nerbio-espinalak'] = [1.45, at('T12').bot - 0.15, CZ + 0.2];
   pts['zaldi-buztana'] = [0.2, lerp(0, bottom, 0.3), CZ - 0.1];
 

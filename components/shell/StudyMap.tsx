@@ -135,7 +135,7 @@ export function TopicMap() {
       {MAP.map((m, k) => (
         <li key={m.title} className={(k + 1) % cols === 0 ? 'is-row-end' : undefined} style={{ '--d': `${(k % cols) * 60}ms` } as CSSProperties}>
           <Link href={m.href} className="map-card" style={hueStyle(Number(m.href.split('/').pop()) || 1)}>
-            <span className="map-n">{String(k + 1).padStart(2, '0')}</span>
+            <span className="map-n">{k + 1}</span>
             <span className="map-days">{m.days}</span>
             <b>{m.title}</b>
             <span className="map-chain" title={m.idea}>

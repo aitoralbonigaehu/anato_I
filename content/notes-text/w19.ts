@@ -59,8 +59,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/1.1/p1/s1",
         "parts": [
           {
-            "text": "1.1. Mozketa motak",
-            "i": true
+            "text": "1.1 Mozketa motak",
+            "b": true
           }
         ]
       }
@@ -75,7 +75,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p1/s1",
         "parts": [
           {
-            "text": "2. Nerbio sistema (orokortasunak)",
+            "text": "2. Nerbio sistema",
             "b": true
           }
         ]
@@ -91,7 +91,71 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p1/s1",
         "parts": [
           {
-            "text": "3. Meningeak",
+            "text": "3. Ornomuinaren orokortasunak",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "3.1",
+    "id": "w19/3.1/p1",
+    "sentences": [
+      {
+        "id": "w19/3.1/p1/s1",
+        "parts": [
+          {
+            "text": "3.1 Nola heltzen da sentisbilitatea?",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "3.2",
+    "id": "w19/3.2/p1",
+    "sentences": [
+      {
+        "id": "w19/3.2/p1/s1",
+        "parts": [
+          {
+            "text": "3.2 Nola ematen da erantzun motorra?",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "3.3",
+    "id": "w19/3.3/p1",
+    "sentences": [
+      {
+        "id": "w19/3.3/p1/s1",
+        "parts": [
+          {
+            "text": "3.3 Mugimendu automatikoak",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "3.4",
+    "id": "w19/3.4/p1",
+    "sentences": [
+      {
+        "id": "w19/3.4/p1/s1",
+        "parts": [
+          {
+            "text": "3.4 Erreflexuak ez diren mugimendu oso arinak",
             "b": true
           }
         ]
@@ -107,7 +171,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/4/p1/s1",
         "parts": [
           {
-            "text": "4. Borondatezko mugimenduak",
+            "text": "4. Plaka neurala",
             "b": true
           }
         ]
@@ -123,7 +187,23 @@ export const w19: NotesBlock[] = [
         "id": "w19/5/p1/s1",
         "parts": [
           {
-            "text": "5. Aktu erreflexua",
+            "text": "5. Ornomuinaren garapena",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "5.1",
+    "id": "w19/5.1/p1",
+    "sentences": [
+      {
+        "id": "w19/5.1/p1/s1",
+        "parts": [
+          {
+            "text": "5.1 Bizkarezurraren aldaketak",
             "b": true
           }
         ]
@@ -139,7 +219,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p1/s1",
         "parts": [
           {
-            "text": "6. Gandor neuraleko eratorriak",
+            "text": "6. Burmuina",
             "b": true
           }
         ]
@@ -155,7 +235,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p1/s1",
         "parts": [
           {
-            "text": "7. Ornomuinaren garapena",
+            "text": "7. Sistema bentrikularra eta ependimo hodia",
             "b": true
           }
         ]
@@ -171,7 +251,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/8/p1/s1",
         "parts": [
           {
-            "text": "8. Bizkarrezur-muinaren aldaketak",
+            "text": "8. Likido zefalorrakideoa",
             "b": true
           }
         ]
@@ -187,7 +267,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p1/s1",
         "parts": [
           {
-            "text": "9. Plaka neurala",
+            "text": "9. Meningeak",
             "b": true
           }
         ]
@@ -203,9 +283,120 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p1/s1",
         "parts": [
           {
-            "text": "10. Talamoa",
-            "b": true,
-            "u": true
+            "text": "10. Burmuinaren atalak",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "10.1",
+    "id": "w19/10.1/p1",
+    "sentences": [
+      {
+        "id": "w19/10.1/p1/s1",
+        "parts": [
+          {
+            "text": "10.1 Bizkarrezur erraboila",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "10.2",
+    "id": "w19/10.2/p1",
+    "sentences": [
+      {
+        "id": "w19/10.2/p1/s1",
+        "parts": [
+          {
+            "text": "10.2 Metentzefaloa",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "10.2.1",
+    "id": "w19/10.2.1/p1",
+    "sentences": [
+      {
+        "id": "w19/10.2.1/p1/s1",
+        "parts": [
+          {
+            "text": "10.2.1 Zubia / Garuntxoa",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "10.2.2",
+    "id": "w19/10.2.2/p1",
+    "sentences": [
+      {
+        "id": "w19/10.2.2/p1/s1",
+        "parts": [
+          {
+            "text": "10.2.2 Zerebeloa",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "10.3",
+    "id": "w19/10.3/p1",
+    "sentences": [
+      {
+        "id": "w19/10.3/p1/s1",
+        "parts": [
+          {
+            "text": "10.3 Mesentzefaloa",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "10.4",
+    "id": "w19/10.4/p1",
+    "sentences": [
+      {
+        "id": "w19/10.4/p1/s1",
+        "parts": [
+          {
+            "text": "10.4 Dientzefaloa",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "toc",
+    "section": "10.4.1",
+    "id": "w19/10.4.1/p1",
+    "sentences": [
+      {
+        "id": "w19/10.4.1/p1/s1",
+        "parts": [
+          {
+            "text": "10.4.1 Hipofisia",
+            "b": true
           }
         ]
       }
@@ -220,40 +411,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/11/p1/s1",
         "parts": [
           {
-            "text": "11.Kortexa",
-            "b": true,
-            "u": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "12",
-    "id": "w19/12/p1",
-    "sentences": [
-      {
-        "id": "w19/12/p1/s1",
-        "parts": [
-          {
-            "text": "12. Bentrikulu sistema",
-            "b": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "toc",
-    "section": "13",
-    "id": "w19/13/p1",
-    "sentences": [
-      {
-        "id": "w19/13/p1/s1",
-        "parts": [
-          {
-            "text": "13. Likido zefalorrakideoaren ekoizpena",
+            "text": "11. Bikote kranealak",
             "b": true
           }
         ]
@@ -298,12 +456,12 @@ export const w19: NotesBlock[] = [
             "u": true
           },
           {
-            "text": "erdiko nerbio-sistema",
+            "text": "erdiko nerbio-sistema ",
             "b": true,
             "u": true
           },
           {
-            "text": " eta ",
+            "text": "eta ",
             "u": true
           },
           {
@@ -354,7 +512,7 @@ export const w19: NotesBlock[] = [
             "u": true
           },
           {
-            "text": ", azkenengo honek erraiak inerbatuko ditu eta bere barnean sistema sinpatiko eta parasinpatiko egongo dira).",
+            "text": ", azkenengo honek erraiak inerbatuko ditu eta bere barnean sistema sinpatiko eta parasinpatiko egondo dira).",
             "u": true
           }
         ]
@@ -370,9 +528,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/1.1/p2/s1",
         "parts": [
           {
-            "text": "1.1. Mozketa motak",
-            "b": true,
-            "i": true
+            "text": "1.1. MOZKETA MOTAK",
+            "b": true
           }
         ]
       }
@@ -387,7 +544,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/1.1/p3/s1",
         "parts": [
           {
-            "text": "Gure nerbio sistema osoa ez dago berdin kokatuta. "
+            "text": "Orokorrean nerbio sisteman zeharkako mozketa ez da erabiltzen, baizik eta horizontala. "
           }
         ]
       },
@@ -395,7 +552,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/1.1/p3/s2",
         "parts": [
           {
-            "text": "Hasieran, enbrioian, guztia luzetara kokatuta dago; helduetan, aldiz, orno-muinea bertikalki (luzetara) dago eta gure burmuina horizontalki. "
+            "text": "Ornomuinean berriz, zeharkakoak. "
           }
         ]
       },
@@ -403,7 +560,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/1.1/p3/s3",
         "parts": [
           {
-            "text": "NSZeko buruimaren mozketei dagokionez, frontala edo koronala, horizontala/zeharkakoa eta sagitala izango genituzke."
+            "text": "Nerbio sisteman erabiltzen diren mozketak hurrengo hauek dira:"
           }
         ]
       }
@@ -418,15 +575,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/1.1/p4/s1",
         "parts": [
           {
-            "text": "● Horizontala (lurrareiko pareleloak/ horizontalki). "
-          }
-        ]
-      },
-      {
-        "id": "w19/1.1/p4/s2",
-        "parts": [
+            "text": "- "
+          },
           {
-            "text": "Gainerako gorputzean ematen den zeharkako mozketaren baliokidea da."
+            "text": "Horizontala ",
+            "b": true
+          },
+          {
+            "text": "(zoruarekin horizontalki)"
           }
         ]
       }
@@ -441,7 +597,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/1.1/p5/s1",
         "parts": [
           {
-            "text": "● Frontala edo Koronala (ezkerretik eskuinera)."
+            "text": "- "
+          },
+          {
+            "text": "Koronala ",
+            "b": true
+          },
+          {
+            "text": "(ezkerretik eskuinera)"
           }
         ]
       }
@@ -456,99 +619,30 @@ export const w19: NotesBlock[] = [
         "id": "w19/1.1/p6/s1",
         "parts": [
           {
-            "text": "● Sagitala (aurretik atzera, bertikalki ematen dana)."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "h2",
-    "section": "1.2.1",
-    "id": "w19/1.2.1/p1",
-    "sentences": [
-      {
-        "id": "w19/1.2.1/p1/s1",
-        "parts": [
-          {
-            "text": "1.2.1.Ikuspegi aldaketak",
-            "b": true,
-            "i": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "1.2.1",
-    "id": "w19/1.2.1/p2",
-    "sentences": [
-      {
-        "id": "w19/1.2.1/p2/s1",
-        "parts": [
-          {
-            "text": "Orno muinean ez da hori gertatzen, zeharkako mozketak erabiltzen dira ez dira horizontalak izaten. "
-          }
-        ]
-      },
-      {
-        "id": "w19/1.2.1/p2/s2",
-        "parts": [
-          {
-            "text": "Nerbio-sistema ",
-            "u": true
+            "text": "- "
           },
           {
-            "text": "makurtuta ",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": "egongo da, hori dela eta, ",
-            "u": true
-          },
-          {
-            "text": "ornomuina bertikalki dago, aldiz burmuina horizontalizatu egiten da. "
-          }
-        ]
-      },
-      {
-        "id": "w19/1.2.1/p2/s3",
-        "parts": [
-          {
-            "text": "Orain arte bentrala eta aurreko berdinak ziren eta atzekoa eta dortsala ere. "
-          }
-        ]
-      },
-      {
-        "id": "w19/1.2.1/p2/s4",
-        "parts": [
-          {
-            "text": "Makurdura dela eta ordea",
-            "u": true
-          },
-          {
-            "text": ", burmuinean "
-          },
-          {
-            "text": "dortsala ",
+            "text": "Sagitala ",
             "b": true
           },
           {
-            "text": "ez da atzekoa, baizik eta goikoa. "
+            "text": "(aurretik atzera) Orain arte bentrala eta aurreko berdinak ziren eta atzekoa eta dortsala ere. "
           }
         ]
       },
       {
-        "id": "w19/1.2.1/p2/s5",
+        "id": "w19/1.1/p6/s2",
         "parts": [
           {
-            "text": "Bentrala ",
-            "b": true
-          },
+            "text": "Baina erdiko nerbio sisteman garuna horizontalizatuta dago, eta orno muinak bertikalki jarraitzen du. "
+          }
+        ]
+      },
+      {
+        "id": "w19/1.1/p6/s3",
+        "parts": [
           {
-            "text": "ordea, behekoa izango da."
+            "text": "Kasu honetan, dortsala ez da atzekoa baizik eta goikoa eta bentrala behekoa izango da."
           }
         ]
       }
@@ -556,93 +650,132 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "1.2.1",
-    "id": "w19/1.2.1/p3",
+    "section": "1.1",
+    "id": "w19/1.1/p7",
     "sentences": [
       {
-        "id": "w19/1.2.1/p3/s1",
+        "id": "w19/1.1/p7/s1",
         "parts": [
           {
-            "text": "Laburbilduz burmuinean: → Alde dortsal eta goiko aldea ○ HORIZONTALKI: Alde"
-          },
-          {
-            "text": " dortsala eta goiko aldea berdinak",
-            "b": true
-          },
-          {
-            "text": " ○ BERTIKALKI: ■ ORNOMUINEAN"
-          },
-          {
-            "text": ": alde dortsala eta atzeko aldea",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "berdinak",
-            "b": true
-          },
-          {
-            "text": " izango dira. "
+            "text": "Laburbilduz:",
+            "u": true
           }
         ]
-      },
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "1.1",
+    "id": "w19/1.1/p8",
+    "sentences": [
       {
-        "id": "w19/1.2.1/p3/s2",
+        "id": "w19/1.1/p8/s1",
         "parts": [
           {
-            "text": "■ BURMUINEAN: Dortsala eta goikoa berdinak → Alde bentral eta beheko aldea ○ HORIZONTALKI: Alde"
+            "text": "- Garunaren atal ",
+            "u": true
           },
           {
-            "text": " bentrala eta beheko aldea berdinak",
-            "b": true
+            "text": "dortsala, goiko aldea",
+            "b": true,
+            "u": true
           },
           {
-            "text": " ○ BERTIKALKI: ■ ORNOMUINEAN: "
+            "text": " izango da eta ",
+            "u": true
           },
           {
-            "text": "bentrala eta aurreko",
-            "b": true
+            "text": "bentrala, behekoa",
+            "b": true,
+            "u": true
           },
           {
-            "text": " aldea berdinak izango dira. "
+            "text": ".",
+            "u": true
           }
         ]
-      },
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "1.1",
+    "id": "w19/1.1/p9",
+    "sentences": [
       {
-        "id": "w19/1.2.1/p3/s3",
+        "id": "w19/1.1/p9/s1",
         "parts": [
           {
-            "text": "■ BURMUINEAN (burmuinaren oinaldea): Bentrala eta behekoa "
+            "text": "- Ornomuinean (bertikalki) berriz ",
+            "u": true
           },
           {
-            "text": "Atal",
-            "b": true
+            "text": "bentrala eta aurreko ",
+            "b": true,
+            "u": true
           },
           {
-            "text": " "
+            "text": "aldea berdinak izango dira eta ",
+            "u": true
           },
           {
-            "text": "Rostrala",
-            "b": true
+            "text": "dortsala, atzekoaren",
+            "b": true,
+            "u": true
           },
           {
-            "text": " (Garunean frontala ere erabiltzen da)→ Aurrekaldekoa "
+            "text": " berdina.",
+            "u": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "1.1",
+    "id": "w19/1.1/p10",
+    "sentences": [
+      {
+        "id": "w19/1.1/p10/s1",
+        "parts": [
+          {
+            "text": "- "
           },
           {
-            "text": "Atal Okzipitala",
-            "b": true
+            "text": "Rostrala ",
+            "b": true,
+            "u": true
           },
           {
-            "text": "→"
+            "text": "(Garunean frontala ere erabiltzen da)→ Aurrekaldekoa",
+            "u": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "1.1",
+    "id": "w19/1.1/p11",
+    "sentences": [
+      {
+        "id": "w19/1.1/p11/s1",
+        "parts": [
+          {
+            "text": "- ",
+            "u": true
           },
           {
-            "text": " ",
-            "b": true
+            "text": "Okzipitala",
+            "b": true,
+            "u": true
           },
           {
-            "text": "Atzealdekoa (kaudala ez deitu)"
+            "text": "→ Atzealdekoa",
+            "u": true
           }
         ]
       }
@@ -657,7 +790,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p2/s1",
         "parts": [
           {
-            "text": "2. NERBIO SISTEMA (OROKORTASUNAK)",
+            "text": "2. NERBIO SISTEMA",
             "b": true
           }
         ]
@@ -673,14 +806,15 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p3/s1",
         "parts": [
           {
-            "text": "Ezin dira batu hurrengo bi sailkapen hauek (hau da, periferikoan eta zentralearen barnean badaude sistema somatiko eta autonomo.): Sistema berari buruz hitz egiten dugu, baina sailkapena ezberdinak daude."
+            "text": "A. Kokapen bidezko sailkapena",
+            "b": true
           }
         ]
       }
     ]
   },
   {
-    "kind": "p",
+    "kind": "li",
     "section": "2",
     "id": "w19/2/p4",
     "sentences": [
@@ -688,179 +822,29 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p4/s1",
         "parts": [
           {
-            "text": "KOKAPEN bidezko sailkapena (nerbio somatiko eta nerbio autonomoak daude):"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "2",
-    "id": "w19/2/p5",
-    "sentences": [
-      {
-        "id": "w19/2/p5/s1",
-        "parts": [
-          {
-            "text": "- Erdiko nerbio sistema/ Nerbio sistema "
-          },
-          {
-            "text": "ZENTRALA",
-            "b": true
-          },
-          {
-            "text": ": Erdian dagoen sistema da. "
+            "text": "● Erdiko nerbio sistema/ Nerbio sistema zentrala: Hezurrez babestuta daude. "
           }
         ]
       },
       {
-        "id": "w19/2/p5/s2",
-        "parts": [
-          {
-            "text": "Hezurrez babestuta dago (kraneoa eta bizkarrezur-ornoak). "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p5/s3",
+        "id": "w19/2/p4/s2",
         "parts": [
           {
             "text": "Honen osagaiak "
           },
           {
-            "text": "entzefaloa",
+            "text": "entzefaloa ",
             "b": true
           },
           {
-            "text": " (garezurraren barruan) eta bizkar muina/"
+            "text": "(garezurraren barruan) eta bizkar muina/"
           },
           {
-            "text": "ornomuina",
+            "text": "ornomuina ",
             "b": true
           },
           {
-            "text": " (bizkarrezurraren barruan) dira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p5/s4",
-        "parts": [
-          {
-            "text": "Kokapenaren arabera hartzen du izen hau, gorputzaren erdian dagoelako. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p5/s5",
-        "parts": [
-          {
-            "text": "Zelulak ez dira erregeneratzen",
-            "u": true
-          },
-          {
-            "text": ", orduan oso ondo babestuta egon behar da (hezurrez inguratuta). "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p5/s6",
-        "parts": [
-          {
-            "text": "Bi hauek konektatuta daude, hau da, egitura jarraiak izango dira (irudian berdez). "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p5/s7",
-        "parts": [
-          {
-            "text": "Nerbio sistema zentralean somatikoa eta autonomoa kokatzen dira."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "2",
-    "id": "w19/2/p6",
-    "sentences": [
-      {
-        "id": "w19/2/p6/s1",
-        "parts": [
-          {
-            "text": "- Nerbio sistema "
-          },
-          {
-            "text": "PERIFERIKOA",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "(irudian",
-            "i": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "arrosez dagoena):",
-            "i": true
-          },
-          {
-            "text": " Nerbioak. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p6/s2",
-        "parts": [
-          {
-            "text": "Geldintzen den gainerako zatia. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p6/s3",
-        "parts": [
-          {
-            "text": "Kanpoan dagoen sistema, orokorrean hezurrez babestuta ez dauden nerbio guztiak. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p6/s4",
-        "parts": [
-          {
-            "text": "Erdiko nerbio sistemarekin erlazionatuta dauden nerbioak (kanporantz ateratzen diren guztiak) nerbio sistema periferikoa osatuko dute. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p6/s5",
-        "parts": [
-          {
-            "text": "Kraneotik kanporatzen diren nerbioak, nerbio/bikote kranealak dira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p6/s6",
-        "parts": [
-          {
-            "text": "Bizkarrezurretik (ornomuinetik) ateratzen direnak nerbio espinalak izango dira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p6/s7",
-        "parts": [
-          {
-            "text": "Azken hauek hasieran bikoteka (eskuinera eta ezkerrera) ateratzen dira eta gorputz osotik adarkatuko dira."
+            "text": "(bizkarrezurraren barruan) dira."
           }
         ]
       }
@@ -869,13 +853,61 @@ export const w19: NotesBlock[] = [
   {
     "kind": "p",
     "section": "2",
+    "id": "w19/2/p5",
+    "sentences": [
+      {
+        "id": "w19/2/p5/s1",
+        "parts": [
+          {
+            "text": "Kokapenaren arabera hartzen du izen hau, gorputzaren erdian dagoelako."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2",
+    "id": "w19/2/p6",
+    "sentences": [
+      {
+        "id": "w19/2/p6/s1",
+        "parts": [
+          {
+            "text": "Bi hauek konektatuta daude, hau da, egitura jarraiak izango dira; "
+          },
+          {
+            "text": "nerbio sistema zentralean,",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "somatikoa eta",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "autonomoa kokatzen dira.",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "2",
     "id": "w19/2/p7",
     "sentences": [
       {
         "id": "w19/2/p7/s1",
         "parts": [
           {
-            "text": "(muina: hezurrez inguratuta dagoena, nerbioak ez baina burMUINA eta bizkarMUINA bai)"
+            "text": "● Nerbio sistema periferikoa: Erdiko nerbio sistemarekin erlazionatuta dauden nerbioak (kanporantz ateratzen diren guztiak) nerbio sistema periferikoa osatuko dute."
           }
         ]
       }
@@ -890,48 +922,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p8/s1",
         "parts": [
           {
-            "text": "Banan-banan ateratzen dira eta gune batzuetan adarrak nahastu egiten dira sareak osatuz (fusionatu inoiz ez). "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p8/s2",
-        "parts": [
-          {
-            "text": "Sare nagusiak",
-            "b": true
-          },
-          {
-            "text": ": Gorago, sare zerbikala lepo mailan eta sare "
-          },
-          {
-            "text": "brankiala ",
-            "b": true
-          },
-          {
-            "text": "goiko gorputz adarra inerbatzeko. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p8/s3",
-        "parts": [
-          {
-            "text": "Beherago, gernu mailan, sare lunbarra eta sare sakroa daude, gero bi hauek nahastu eta sare "
-          },
-          {
-            "text": "lunbosakroa ",
-            "b": true
-          },
-          {
-            "text": "(nerbio sare sakro eta nerbio sare lunbarra)"
-          },
-          {
-            "text": " ",
-            "b": true
-          },
-          {
-            "text": "osatuko dute beheko gorputz adarra inerbatzeko (adb; nerbio ziatikoa bertatik atera) Nerbio sistema somatikoa eta autonomoa kokatzen dira."
+            "text": "Sareak ateratzen dituzte, adibidez; sare zerbikala (lepokoa), nerbio sare brakiala (besokoa) eta lunbar/sakroan nerbio sare lunbarra eta sakroa (gero batzen dira, eta bat bezala agertuko dira; nerbio sare lunbosakroa)."
           }
         ]
       }
@@ -946,14 +937,15 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p9/s1",
         "parts": [
           {
-            "text": "Sailkapen FUNTZIONALA(=FISIOLOGIKOA):"
+            "text": "Nerbio sistema somatikoa eta autonomoa kokatzen dira.",
+            "b": true
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "2",
     "id": "w19/2/p10",
     "sentences": [
@@ -961,22 +953,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p10/s1",
         "parts": [
           {
-            "text": "- Nerbio sistema "
-          },
-          {
-            "text": "somatikoa ",
+            "text": "B. Sailkapen funtzionala:",
             "b": true
-          },
-          {
-            "text": "→ gauzak borondatez mugitzeko daukagun nerbio-sistema. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p10/s2",
-        "parts": [
-          {
-            "text": "Adb.: Goiko eta beheko gorputz adarrak, lepoa, burua…"
           }
         ]
       }
@@ -991,22 +969,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p11/s1",
         "parts": [
           {
-            "text": "- Nerbio sistema "
-          },
-          {
-            "text": "autonomoa/begetatiboa",
-            "b": true
-          },
-          {
-            "text": "→ berak bakarrik egiten ditu gauzak→ ez borondatezko mugimenduak eragiten ditu, gure borondatetik kanpoko ekintzak. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p11/s2",
-        "parts": [
-          {
-            "text": "Erraiak mugitzeko (nerbioak ateratzen dira)."
+            "text": "● Nerbio sistema somatikoa: Borondatezko mugimenduak bideratzen dituen nerbio sistema da."
           }
         ]
       }
@@ -1021,56 +984,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p12/s1",
         "parts": [
           {
-            "text": "● "
-          },
-          {
-            "text": "Sinpatikoa",
-            "b": true
-          },
-          {
-            "text": " (T1-T12, eremu toraxikoan): ",
-            "u": true
-          },
-          {
-            "text": "Estresaren",
-            "b": true
-          },
-          {
-            "text": " sistema da. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p12/s2",
-        "parts": [
-          {
-            "text": "Estresatuta gaudenean, ihes egiteko egoeran, gorputzak nebio-sistema sinpatikoa jartzen du martxan. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p12/s3",
-        "parts": [
-          {
-            "text": "Emergentziaren ",
-            "b": true
-          },
-          {
-            "text": "sistema da, urduri gaudenean aktibatzen"
-          },
-          {
-            "text": " ",
-            "b": true
-          },
-          {
-            "text": "da (bihotzaren erritmoa arindu (takikardia), arnasa asko eta arin hartu behar da, bronkodilatazioa (bronkioak zabaldu), izerdi guruinak aktibatu, begi-niniaren dilatazioa, esfinterrak ixten ditu, ahoa lehortu, komunera joateko gogorik ez, digestioan peristaltismoa jaistea…)."
+            "text": "● Nerbio sistema autonomoa/ begetatiboa: Ez borondatezko mugimenduak (Esfinter batzuk (pupilarena), hestearen mugimendu peristaltikoak, birikak…) Erraiak mugitzeko (nerbioak ateratzen dira)."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "2",
     "id": "w19/2/p13",
     "sentences": [
@@ -1078,18 +999,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p13/s1",
         "parts": [
           {
-            "text": "● "
+            "text": "○ Sinpatikoa "
           },
           {
-            "text": "Parasinpatikoa",
-            "b": true
-          },
-          {
-            "text": " (S2-S4 eta entzefaloan):",
+            "text": "(T1-T12, eremu torazikoan)",
             "u": true
           },
           {
-            "text": " lasaitasunera heltzeko, berriro egoera basalera bueltatzeko, arriskua amaitutakoan aktibatzen da. "
+            "text": ": estresaren sistema da. "
           }
         ]
       },
@@ -1097,14 +1014,30 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p13/s2",
         "parts": [
           {
-            "text": "(bihotzaren erritmoa jaitsi, esfinterrak zabaldu, bronkokonstrikzioa, digestioan peristaltismo normala berriro bueltatu eta gosea eman…) → "
+            "text": "Urduri gaudenean aktibatzen da (bihotzaren erritmoa arindu, arnasa asko eta arin hartu behar da, izerdi guruinak aktibatu…). "
+          }
+        ]
+      },
+      {
+        "id": "w19/2/p13/s3",
+        "parts": [
+          {
+            "text": "○ Parasinpatikoa "
           },
           {
-            "text": "Erlaxazioaren",
-            "b": true
+            "text": "(S2-S4 eta entzefaloan)",
+            "u": true
           },
           {
-            "text": " sistema."
+            "text": ": Lasaitasunera heltzeko erabiltzen da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/2/p13/s4",
+        "parts": [
+          {
+            "text": "Sistema sinpatikoak eragindako aldaketa fisiologikoak berriro haien egoera basalera bueltatzeko (bihotzaren erritmoa jaitsi, esfinterrak zabaldu…) erablitzen da"
           }
         ]
       }
@@ -1119,7 +1052,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p14/s1",
         "parts": [
           {
-            "text": "Soilik sistema autonomoaren bikote kraneal guztiak parasinpatikoak dira. "
+            "text": "Sistema parasinpatikoa "
+          },
+          {
+            "text": "nerbio sistema zentralean (NSZ) ",
+            "b": true
+          },
+          {
+            "text": "alde batetik garunean egongo da. "
           }
         ]
       },
@@ -1127,20 +1067,29 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p14/s2",
         "parts": [
           {
-            "text": "Hala ere, bikote kraneal guztiak ez dira parasinpatikoak: "
+            "text": "Bikote kraneal baten nerbioak osagai autonomoa badauka, osagai hori "
           },
           {
-            "text": "adibidez, ",
-            "u": true
+            "text": "beti ",
+            "b": true
           },
           {
-            "text": "bagoa",
-            "b": true,
-            "u": true
+            "text": "parasinpatikoa izango da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/2/p14/s3",
+        "parts": [
+          {
+            "text": "Adibidez, "
           },
           {
-            "text": ", parasinpatikoa da edo parasinpatiko sakroa (S2, S4 mailetan dagoelako).",
-            "u": true
+            "text": "bagoa eta faziala ",
+            "b": true
+          },
+          {
+            "text": "parasinpatikoak dira."
           }
         ]
       }
@@ -1155,48 +1104,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p15/s1",
         "parts": [
           {
-            "text": "Kokapenari dagokionez, "
-          },
-          {
-            "text": "Nerbio Sistema Zentralean (NSZ)",
-            "b": true
-          },
-          {
-            "text": " biak konplementarioak/osagarriak dira, periferikoan baita, bere sailkapena fisiologikoa baita ez kokapenekoa (sinpatiko eta parasinpatikoa): Sistema parasinpatikoa NSZ-an batez ere "
-          },
-          {
-            "text": "garunean",
-            "b": true
-          },
-          {
-            "text": " egongo da (bikote kranealak dira). "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p15/s2",
-        "parts": [
-          {
-            "text": "Beste aldetik, behekaldean, "
-          },
-          {
-            "text": "ornomuinaren alde sakroan,",
-            "b": true
-          },
-          {
-            "text": " badaude ere nerbio parasinpatikoak. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p15/s3",
-        "parts": [
-          {
-            "text": "Ornomuina",
-            "b": true
-          },
-          {
-            "text": "ren gainerako neuronak, aldiz, sinpatikoak izango dira."
+            "text": "Nerbio sistema sinpatikoa (T1- L2ra gutxi gora behera) eta parasinpatikoa (bi muturretan) guztiz konplementarioak dira."
           }
         ]
       }
@@ -1211,53 +1119,43 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p16/s1",
         "parts": [
           {
-            "text": "Ornomuinan",
-            "b": true
-          },
-          {
-            "text": " badaude sustrai batzuk, bi sustrai daude: "
-          },
-          {
-            "text": "atzeko sustraia",
-            "b": true
-          },
-          {
-            "text": " (dortsala)eta"
-          },
-          {
-            "text": " aurreko",
-            "b": true
+            "text": "Egitura berde horiek sareak dira, sistema",
+            "i": true
           },
           {
             "text": " "
           },
           {
-            "text": "sustraia (bentrala). ",
-            "b": true
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p16/s2",
-        "parts": [
+            "text": "parasinpatiko eta sinpatikoko nerbioek ere",
+            "i": true
+          },
           {
-            "text": "Eta atzeko sustraian, gongoil bat, neurona sensitiboaren soma (gorputza) beti egongo da atzeko sustraiaren gongoian. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p16/s3",
-        "parts": [
+            "text": " "
+          },
           {
-            "text": "Neurona honek bi adarkadura izango ditu: bata gorputzerantz ornomuinerantz eta beste adarra kanporantz. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p16/s4",
-        "parts": [
+            "text": "sareak eratzen dituzte eta sare hauek",
+            "i": true
+          },
           {
-            "text": "Ornomuinean bi atal aurkituko ditugu, barnean gai grisa (somak/ gorputzak) eta kanpoan gai zuria (axoiak)."
+            "text": " "
+          },
+          {
+            "text": "orokorrean errailean aurrekaldean edo",
+            "i": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "hauek inguratuz agertzen dira( esofago",
+            "i": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "sarea, bihotz sarea… adibidez)",
+            "i": true
           }
         ]
       }
@@ -1272,173 +1170,61 @@ export const w19: NotesBlock[] = [
         "id": "w19/2/p17/s1",
         "parts": [
           {
-            "text": "Nola hartzen dira estimuluak kanpotik eta nola heltzen dira estimulu horiek NSZ-era: "
-          },
+            "text": "*Geroago azalduko dira",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2",
+    "id": "w19/2/p18",
+    "sentences": [
+      {
+        "id": "w19/2/p18/s1",
+        "parts": [
           {
-            "text": "Estimulua",
-            "b": true
-          },
+            "text": "Parasinpatikoaren beheko muturrean, neurona parasinpatikoak orno muinean bertan kokatzen dira eta goiko muturrean gara nerbioetako gongoiletan."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2",
+    "id": "w19/2/p19",
+    "sentences": [
+      {
+        "id": "w19/2/p19/s1",
+        "parts": [
           {
-            "text": " "
-          },
+            "text": "Inerbazio parasinpatiko hau (gara nerbioetatik ateratzen dena) aurpegiko egitura ezberdinak parasinpatikoki inerbatzera helduko da (ia guztiak guruinak izango dira), hala nola, malko guruina, karotida guruina, listu guruinak…"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "2",
+    "id": "w19/2/p20",
+    "sentences": [
+      {
+        "id": "w19/2/p20/s1",
+        "parts": [
           {
-            "text": "kanpotik",
-            "b": true
-          },
-          {
-            "text": " hartzen dugu (sentsibilitatea), eta ornomuinera sartu behar da. "
+            "text": "3. gara nerbiotik datorrena izan ezik (Begi nerbio eragilea). "
           }
         ]
       },
       {
-        "id": "w19/2/p17/s2",
+        "id": "w19/2/p20/s2",
         "parts": [
           {
-            "text": "Estimulu horiek ("
-          },
-          {
-            "text": "informazioa) atzeko sustraieko gongoilera ",
-            "b": true
-          },
-          {
-            "text": "iritsiko dira (larruazaleko nerbioen ondorioz), eta beste adarretik ("
-          },
-          {
-            "text": "atzeko sustraia) ornomuinera sartuko",
-            "b": true
-          },
-          {
-            "text": " da. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p17/s3",
-        "parts": [
-          {
-            "text": "Sustantzia grisean, sinapsia emango da eta "
-          },
-          {
-            "text": "informazioa pasako dio beste neurona bati",
-            "b": true
-          },
-          {
-            "text": ". "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p17/s4",
-        "parts": [
-          {
-            "text": "Informazio hori, gai zuritik goratz "
-          },
-          {
-            "text": "burmuinerantz eramango",
-            "b": true
-          },
-          {
-            "text": " da (sentsibilitatea burmuinera eramango du). "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p17/s5",
-        "parts": [
-          {
-            "text": "Informazioa,"
-          },
-          {
-            "text": " kortex",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "sentsitiboetara",
-            "b": true
-          },
-          {
-            "text": " iritsiko da, eta hauek "
-          },
-          {
-            "text": "kortex motorrera",
-            "b": true
-          },
-          {
-            "text": " bidaliko dute informazioa. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p17/s6",
-        "parts": [
-          {
-            "text": "Bertan informazioa prozesatuko da, eta bertan dagoen "
-          },
-          {
-            "text": "axoiak informazioa bidali",
-            "b": true
-          },
-          {
-            "text": "ko du ornomuinean beherantz "
-          },
-          {
-            "text": "gai zuritik",
-            "b": true
-          },
-          {
-            "text": ". "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p17/s7",
-        "parts": [
-          {
-            "text": "Onomuinean nahi den mailara iristean, "
-          },
-          {
-            "text": "neurona motorrak",
-            "b": true
-          },
-          {
-            "text": " eragingo du kortexetik datorren erantzuna eta infotmazio hori"
-          },
-          {
-            "text": " aurreko sustraitik aterako ",
-            "b": true
-          },
-          {
-            "text": "da, muskuluetara iritsiko da eta bertan mugimendua emango da. "
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p17/s8",
-        "parts": [
-          {
-            "text": "Ondorioz, bi sistema hauek NSZ-an osagarriak direla esaten da parasinpatikoa bi muturretan eta sinpatikoa tartean kokatzen delako (irudian ikus daiteke). ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p17/s9",
-        "parts": [
-          {
-            "text": "Gero, neurona horietatik adarrak aterako dira eta nerbio periferikoak (sinpatikoena eta parasinpatikoena) buru eta erraietara helduko dira. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/2/p17/s10",
-        "parts": [
-          {
-            "text": "Nerbio periferiko hauek autonomoak izango dira.",
-            "u": true
+            "text": "Hau begi ninia dilatatzeko helduko da."
           }
         ]
       }
@@ -1453,7 +1239,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p2/s1",
         "parts": [
           {
-            "text": "3. MENINGEAK",
+            "text": "3. ORNOMUINAREN OROKORTASUNAK",
             "b": true
           }
         ]
@@ -1469,15 +1255,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p3/s1",
         "parts": [
           {
-            "text": "Nerbio sistema zentrala babesteko hiru mintz ditugu, meningeak, 25.-35. egunetan (5-8.astean) eratzen direnak. "
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p3/s2",
-        "parts": [
-          {
-            "text": "Kanpotik barnera antolaturik (izenak latinez):"
+            "text": "Ornomuin helduan eta garatzen ari den bitartean aurkituko dugu beti:"
           }
         ]
       }
@@ -1492,14 +1270,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p4/s1",
         "parts": [
           {
-            "text": "- "
+            "text": "●​"
           },
           {
-            "text": "Dura materra",
+            "text": " Gai grisa",
             "b": true
           },
           {
-            "text": ": Kanpoan aurkitzen dena. "
+            "text": ": (Barnean). "
           }
         ]
       },
@@ -1507,7 +1285,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p4/s2",
         "parts": [
           {
-            "text": "Gogorrena (“dura”) da eta erdiko nerbio sistema gehien babesten du. "
+            "text": "Bertan eta gongoiletan"
+          },
+          {
+            "text": " neuronen somak",
+            "b": true
+          },
+          {
+            "text": " egongo dira. "
           }
         ]
       },
@@ -1515,14 +1300,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p4/s3",
         "parts": [
           {
-            "text": "Garunean hezurrari ("
-          },
-          {
-            "text": "kraneoari) itsatsita",
-            "b": true
-          },
-          {
-            "text": " egongo da; baina ez dago bizkarrezurrari (ornomiunari) lotuta (horien artean eremu epidurala dago, aurrerago azalduta). "
+            "text": "Tximeleta edo H forma hartzen du, 4 adarrekin: 2 aurreko adarrak(bentralak) neurona motorrekin eta 2 atzeko adarrak(dortsalak) neurona sentsitiboekin. "
           }
         ]
       },
@@ -1530,15 +1308,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p4/s4",
         "parts": [
           {
-            "text": "Jatorri mesodermikoa. "
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p4/s5",
-        "parts": [
-          {
-            "text": "*Garunean ez dago eremu epiduralik"
+            "text": "Aurreko eta atzeko adarrak lotzen dituzten neuronak INTERNEURONAK izango dira."
           }
         ]
       }
@@ -1553,14 +1323,21 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p5/s1",
         "parts": [
           {
-            "text": "- "
+            "text": "●​"
           },
           {
-            "text": "Araknoidesa (armiarma sarearen itxura)",
+            "text": " Gai zuria",
             "b": true
           },
           {
-            "text": ": Tarteko mintza. "
+            "text": ": (Kanpokaldean) Gai zuritik eta nerbioetatik luzatuko dira "
+          },
+          {
+            "text": "neuronen axoiak (neuronen zuntzak)",
+            "b": true
+          },
+          {
+            "text": ". "
           }
         ]
       },
@@ -1568,40 +1345,15 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p5/s2",
         "parts": [
           {
-            "text": "Araknoidesa eta Dura materra oso hurbil daude, baina araknoidesa eta Pia materraren artean eremu bat eratzen da, eremu azpiaraknoideoa (kanpoaldean). "
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p5/s3",
-        "parts": [
-          {
-            "text": "Nahiko fina da. ",
+            "text": "Bertan goranzko (sentsitiboak) eta beheranzko (motorrak) bideak edo traktuak daude.",
             "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p5/s4",
-        "parts": [
-          {
-            "text": "IMMA: Pia Materrari itsatsia Hemendik barneragoko eremuari, eremu azpiaraknoideoa deritzo. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p5/s5",
-        "parts": [
-          {
-            "text": "Garndor neuraletik dator."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "3",
     "id": "w19/3/p6",
     "sentences": [
@@ -1609,14 +1361,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p6/s1",
         "parts": [
           {
-            "text": "- "
-          },
-          {
-            "text": "Pia materra",
-            "b": true
-          },
-          {
-            "text": ": Barnekoena. "
+            "text": "Gai grisean, atzeko adarrekin komunikatuta ornomuinetik sustraitxoak aterako dira, aurrekoak eta atzekoak. "
           }
         ]
       },
@@ -1624,28 +1369,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p6/s2",
         "parts": [
           {
-            "text": "Beti ehunari (ornomuinari) lotuta agertuko da, bai garunean baita ornomuinean ere"
-          },
-          {
-            "text": ". ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p6/s3",
-        "parts": [
-          {
-            "text": "Nahiko fina da. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p6/s4",
-        "parts": [
-          {
-            "text": "gandor neuraletik dator."
+            "text": "Aurreko sustraitxoak elkartu eta aurreko sustraia eratzen dute eta atzeko sustraitxoak elkartu eta atzeko sustraia eratzen dute."
           }
         ]
       }
@@ -1660,18 +1384,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p7/s1",
         "parts": [
           {
-            "text": "Neuroblastoetatik ",
-            "b": true
-          },
-          {
-            "text": "neuronak aterako dira (batzuk motorrak eta beste batzuk sentsitiboak) Erdiko hodian, ependimoa inguratuz (helduen ornomuinean), "
-          },
-          {
-            "text": "gai grisa",
-            "b": true
-          },
-          {
-            "text": " aurkitzen da (manto geruzatik dator) eta bertan neuronen somak egongo dira (baita gongoiletan ere). "
+            "text": "Atzeko sustraian gongoil bat dago (atzeko sustrai-gongoila) eta bertan ere neuronen somak aurkituko ditugu. "
           }
         ]
       },
@@ -1679,7 +1392,23 @@ export const w19: NotesBlock[] = [
         "id": "w19/3/p7/s2",
         "parts": [
           {
-            "text": "H forma hartzen du: aurreko adarrak motor neuronekin eta atzeko adarrak neurona sentsitiboekin."
+            "text": "Neurona hauek bereziak dira (neurona bipolarrak), bi luzapen berezi baitituzte, bat ornomuinerantz (luzapen zentripetoa edo zentrala) eta bestea ornomuinetik periferiarantz, larruazalerantz (luzapen zentrifugoa)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "3.1",
+    "id": "w19/3.1/p2",
+    "sentences": [
+      {
+        "id": "w19/3.1/p2/s1",
+        "parts": [
+          {
+            "text": "3.1 NOLA HELTZEN DA SENTSIBILITATEA?",
+            "b": true
           }
         ]
       }
@@ -1687,14 +1416,22 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "3",
-    "id": "w19/3/p8",
+    "section": "3.1",
+    "id": "w19/3.1/p3",
     "sentences": [
       {
-        "id": "w19/3/p8/s1",
+        "id": "w19/3.1/p3/s1",
         "parts": [
           {
-            "text": "*T1: lehenengo orno torazikoa *L2: bigarren orno lunbarra"
+            "text": "Guk ingurunetik sentsazio ezberdinak hartzen ditugu zentzumen organoetatik(ikusmena, dastamena, entzumena…), baita larruazalaren bidez ere, ukimena, beroa… sentituz. "
+          }
+        ]
+      },
+      {
+        "id": "w19/3.1/p3/s2",
+        "parts": [
+          {
+            "text": "Azken honi sentsibilitate orokorra deritzo."
           }
         ]
       }
@@ -1702,52 +1439,30 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "3",
-    "id": "w19/3/p9",
+    "section": "3.1",
+    "id": "w19/3.1/p4",
     "sentences": [
       {
-        "id": "w19/3/p9/s1",
+        "id": "w19/3.1/p4/s1",
         "parts": [
           {
-            "text": "Gainera, T1tik T12(L2)ra "
-          },
-          {
-            "text": "alboko adar",
-            "b": true
-          },
-          {
-            "text": " batzuk (edo aldar lateralak) agertuko dira gai grisean, horietan neurona sinpatikoen somak/gorputzak kokatuko dira, BAKARRIK MAILA HONETAN. "
+            "text": "Adibidez, eskuarekin zerbait beroa edo sua ukitzen badugu, larruazaleko hartzaileek beroa eta mina hautematen dituzte. "
           }
         ]
       },
       {
-        "id": "w19/3/p9/s2",
+        "id": "w19/3.1/p4/s2",
         "parts": [
           {
-            "text": "T1- k lehenengo orno torazikoa esan nahi du, eta L2-k berriz bigarren orno lumbarra. "
+            "text": "Informazio hori neurona sentsitiboen luzapen periferikotik(zentrifugoa) igarotzen da. "
           }
         ]
       },
       {
-        "id": "w19/3/p9/s3",
+        "id": "w19/3.1/p4/s3",
         "parts": [
           {
-            "text": "Kanpoaldetik, "
-          },
-          {
-            "text": "gai zuria",
-            "b": true
-          },
-          {
-            "text": " aurkitzen da, axoiez osatuta, mielinak emango dio kolore hori (neuroblastoen axoiak mielinizatuta). "
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p9/s4",
-        "parts": [
-          {
-            "text": "Bertan goranzko (sentsitiboak) eta beheranzko (motorrak) bideak edo traktuak daude."
+            "text": "Izan ere, nahiz eta luzapena larruazalerantz joan, informazioa kontrako norantzan transmititzen da, hau da, larruazaletik neurona sentsitiboen somarantz."
           }
         ]
       }
@@ -1755,105 +1470,14 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "3",
-    "id": "w19/3/p10",
+    "section": "3.1",
+    "id": "w19/3.1/p5",
     "sentences": [
       {
-        "id": "w19/3/p10/s1",
+        "id": "w19/3.1/p5/s1",
         "parts": [
           {
-            "text": "Kanpoko egitura azaldu baino lehen, "
-          },
-          {
-            "text": "somatosentsibilitatea",
-            "b": true
-          },
-          {
-            "text": ": sentsazio bat antzematean, ikuitzean mina egiten didan ala ez, tenperatura, testura etab. larruazaletik hartzen ditugu, hauek denak sentsazio sentikor orokorrar dira, sentsibilitate orokorra. "
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p10/s2",
-        "parts": [
-          {
-            "text": "Sentsibilitate bereziak usaimena, dastamena… dira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p10/s3",
-        "parts": [
-          {
-            "text": "*Nerbioak “kableak” bezala dira, barruan axoi ehundaka dituztelarik “kable fin-finak”. "
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p10/s4",
-        "parts": [
-          {
-            "text": "Larruazaletik sentsazio bat hartzen dugunean, sentsazio hori axoi batetik igaro eta nerbio errakideo/espinal baten gongoileraino igaroko da. "
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p10/s5",
-        "parts": [
-          {
-            "text": "Bertan, atzeko sustraiaren gongoilean, neurona sentsitiboen somak aurkitzen dira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/3/p10/s6",
-        "parts": [
-          {
-            "text": "Neurona hauek bi luzapen dituzte:"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "3",
-    "id": "w19/3/p11",
-    "sentences": [
-      {
-        "id": "w19/3/p11/s1",
-        "parts": [
-          {
-            "text": "- "
-          },
-          {
-            "text": "Luzapen zentripetoa",
-            "b": true
-          },
-          {
-            "text": ": ornomuinerantz abiatzen dena, zentrorantz doana."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "3",
-    "id": "w19/3/p12",
-    "sentences": [
-      {
-        "id": "w19/3/p12/s1",
-        "parts": [
-          {
-            "text": "- "
-          },
-          {
-            "text": "Luzapen zentrifugoa:",
-            "b": true
-          },
-          {
-            "text": " nerbiotik periferiara doana."
+            "text": "Gero, atzeko sustrai gongoilean dauden neuronen somara helduko da eta ondoren, luzapen zentraletik (zentripetoa) bizkarrezur-muinera bideratzen da, atzeko sustrai eta sustraitxoetatik sartuz."
           }
         ]
       }
@@ -1861,30 +1485,322 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "3",
-    "id": "w19/3/p13",
+    "section": "3.1",
+    "id": "w19/3.1/p6",
     "sentences": [
       {
-        "id": "w19/3/p13/s1",
+        "id": "w19/3.1/p6/s1",
         "parts": [
           {
-            "text": "Sensatzioa beti kanpotik, periferiatik, ornomuinera joango da. "
+            "text": "Beraz, informazio sentsitiboa beti nerbio espinalen atzeko sustraietatik eta sustraitxoetatik sartuko da bizkarrezur muinera."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "3.2",
+    "id": "w19/3.2/p2",
+    "sentences": [
+      {
+        "id": "w19/3.2/p2/s1",
+        "parts": [
+          {
+            "text": "3.2 NOLA EMATEN DA ERANTZUN MOTORRA?",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3.2",
+    "id": "w19/3.2/p3",
+    "sentences": [
+      {
+        "id": "w19/3.2/p3/s1",
+        "parts": [
+          {
+            "text": "Nerbio espinalak mixtoak dira, hau da, axoi sentsitibo eta motorrak dituzte."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3.2",
+    "id": "w19/3.2/p4",
+    "sentences": [
+      {
+        "id": "w19/3.2/p4/s1",
+        "parts": [
+          {
+            "text": "Hori dela eta, informazio sentsitiboa bizkarrezur-muinera iristen denean, sinapsi baten bidez interneuronetara transmititzen da, eta hauek, beste sinapsi baten bidez, neurona motorrak aktibatzen dituzte. "
           }
         ]
       },
       {
-        "id": "w19/3/p13/s2",
+        "id": "w19/3.2/p4/s2",
         "parts": [
           {
-            "text": "Posible da sentsazio horrek borondatezko agindu bat eragitea eta orduan burmuineraino heldu behar izatea, edo sentsazio horrek eragin erreflexu bat izatea (oso arinak dira, adibidez, erreflexu erretulianoa, belaunean ematen dena), hauek ez dira borondatezkoak. "
+            "text": "Horrela, erantzun motor bat sortzen da, eta neurona motorrek aurreko sustraitetatik ateratzen diren axoien bidez muskuluetara eramaten dute agindua."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3.2",
+    "id": "w19/3.2/p5",
+    "sentences": [
+      {
+        "id": "w19/3.2/p5/s1",
+        "parts": [
+          {
+            "text": "Orain arte azaldutako kasua ordea, informazioa burmuinera iritsi gabe erantzun motor bat ematen denean, ARKU ERREFLEXUA deitzen diogu. "
           }
         ]
       },
       {
-        "id": "w19/3/p13/s3",
+        "id": "w19/3.2/p5/s2",
         "parts": [
           {
-            "text": "Kasu honetan, sentsazio hori ornomuinean sartu eta bertan informazioa prozesatuko da; sistema sentsitiboak informazioa pasako dio sistema motorrari, eta neurona motore horrek bidaliko du agindua muskulura hanka mugitzeko."
+            "text": "Hauek mugimendu automatikoak dira eta ezagunena erreflexu rotulianoa da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3.2",
+    "id": "w19/3.2/p6",
+    "sentences": [
+      {
+        "id": "w19/3.2/p6/s1",
+        "parts": [
+          {
+            "text": "Kontuan izan behar da mugimenduaren eragina borondatezkoa bada, informazio sentsitiboa burmuineraino eraman behar dela. "
+          }
+        ]
+      },
+      {
+        "id": "w19/3.2/p6/s2",
+        "parts": [
+          {
+            "text": "Bertan informazioa prozesatzen da eta erantzun motorra sortzeko aginduak ematen dira. "
+          }
+        ]
+      },
+      {
+        "id": "w19/3.2/p6/s3",
+        "parts": [
+          {
+            "text": "Mugimendu horiek nerbio sistema somatikoaren bidez kontrolatzen dira."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3.2",
+    "id": "w19/3.2/p7",
+    "sentences": [
+      {
+        "id": "w19/3.2/p7/s1",
+        "parts": [
+          {
+            "text": "Kasu honetan, neurona sentsitiboen bidez jasotako informazioa garunera iristeko hainbat bide daude. "
+          }
+        ]
+      },
+      {
+        "id": "w19/3.2/p7/s2",
+        "parts": [
+          {
+            "text": "Oro har, neurona sentsitiboaren luzapen zentralak bizkarrezur muinean sartzen da, eta handik informazioa beste neurona batzuei transmitizen die sinapsien bidez. "
+          }
+        ]
+      },
+      {
+        "id": "w19/3.2/p7/s3",
+        "parts": [
+          {
+            "text": "Beste neurona horien axoiek informazioa gorantz eramaten dute garunera. "
+          }
+        ]
+      },
+      {
+        "id": "w19/3.2/p7/s4",
+        "parts": [
+          {
+            "text": "Baina batzuetan, gongoileko neuronaren axoia zuzenean burmuinera heltzen da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3.2",
+    "id": "w19/3.2/p8",
+    "sentences": [
+      {
+        "id": "w19/3.2/p8/s1",
+        "parts": [
+          {
+            "text": "Burmuinean hainbat sinapsi egin ondoren, "
+          },
+          {
+            "text": "kortex",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "sentsitibora ",
+            "b": true
+          },
+          {
+            "text": "helduko da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/3.2/p8/s2",
+        "parts": [
+          {
+            "text": "Bertan informazioa prozesatu, konturatuko gara zer sentitzen ari garen eta gero, kortex sentsitiboko neurona batek informazio hori "
+          },
+          {
+            "text": "kortex motorrera",
+            "b": true
+          },
+          {
+            "text": " pasatuko du, honek erantzuna emateko. "
+          }
+        ]
+      },
+      {
+        "id": "w19/3.2/p8/s3",
+        "parts": [
+          {
+            "text": "Honen axoia beherantzko bideetatik jaitsiko da bere helmugara(batzuetan sinapsiak egiten ditu bidean)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "3.3",
+    "id": "w19/3.3/p2",
+    "sentences": [
+      {
+        "id": "w19/3.3/p2/s1",
+        "parts": [
+          {
+            "text": "3.3 MUGIMENDU AUTOMATIKOAK",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3.3",
+    "id": "w19/3.3/p3",
+    "sentences": [
+      {
+        "id": "w19/3.3/p3/s1",
+        "parts": [
+          {
+            "text": "Hauek muskulu somatikoek eragindakoak dira, eta hauetan zerebeloak hartzen du parte. "
+          }
+        ]
+      },
+      {
+        "id": "w19/3.3/p3/s2",
+        "parts": [
+          {
+            "text": "Hauek ondo ikasita ditugun mugimenduak dira eta ondorioz, automatikoki egiten ditugu, hala nola, bizikletan ibili, gidatu… Hauetan, hasteko borondatea behar dugu baina gero automatikoki jarraitzen dugu egiten."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "3.4",
+    "id": "w19/3.4/p2",
+    "sentences": [
+      {
+        "id": "w19/3.4/p2/s1",
+        "parts": [
+          {
+            "text": "3.4 MUGIMENDU ARINAK",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3.4",
+    "id": "w19/3.4/p3",
+    "sentences": [
+      {
+        "id": "w19/3.4/p3/s1",
+        "parts": [
+          {
+            "text": "Adibidez, haurrak erortzen direnean, buruan hartzen dituzte kolpeak. "
+          }
+        ]
+      },
+      {
+        "id": "w19/3.4/p3/s2",
+        "parts": [
+          {
+            "text": "Izan ere, haurretan, gorputzarekin alderatuta, burua oso handia eta pisutsua da eta beraz, grabitatearen ondorioz, erortzerakoan lurra lehenengo jotzen duen gorputzeko atala burua izango da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "3.4",
+    "id": "w19/3.4/p4",
+    "sentences": [
+      {
+        "id": "w19/3.4/p4/s1",
+        "parts": [
+          {
+            "text": "Hau eskuak jartzen ikasi arte gertatuko da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/3.4/p4/s2",
+        "parts": [
+          {
+            "text": "Eskuak jartzen ikasi izan hori izango da mugimendu arina, hau da, ikasitako izango da baina oso arin egingo dira. "
+          }
+        ]
+      },
+      {
+        "id": "w19/3.4/p4/s3",
+        "parts": [
+          {
+            "text": "Hala ere, mugimendu horiek egiteko zirkuito osoa bete beharko da nerbio sisteman."
           }
         ]
       }
@@ -1899,7 +1815,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/4/p2/s1",
         "parts": [
           {
-            "text": "4. BORONDATEZKO MUGIMENDUAK",
+            "text": "4. PLAKA NEURALA",
             "b": true
           }
         ]
@@ -1915,7 +1831,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/4/p3/s1",
         "parts": [
           {
-            "text": "Boronodatezko erreflexuak/mugimenduak egiten, ikasi egiten da (ez dira innatoak, ia automatikoak izan arren, esaterako, umeek erretzen direnean eskua kendu behar dela ikasten dute). "
+            "text": "Hasieran plaka zapal bat da, baina garapenarekin, bi goragune sortzen dira. "
           }
         ]
       },
@@ -1923,7 +1839,53 @@ export const w19: NotesBlock[] = [
         "id": "w19/4/p3/s2",
         "parts": [
           {
-            "text": "Larruazaleko nerbiotik sartu, bertatik, orno muinera iritsi ondoren burmuinera bidali beharko da; burmuinean, konsziente egingo da (gu konturatuko gara adibidez erretzen ari garela) eta orduan, burmuineko neurona sentsitiboak neurona motorrari agindua bidaliko dio eta nerbio motoreak muskuluari agindua bidaliko dio, kasu honetan eskua kentzeko (hau dena milisegundutan)."
+            "text": "Hauen muturrak gerturatzen doaz (kontuan izan muturrean gandor neuralak izango ditugula) plakaren erdikaldean fusionatu arte. "
+          }
+        ]
+      },
+      {
+        "id": "w19/4/p3/s3",
+        "parts": [
+          {
+            "text": "Fusio hau erdi mailan hasiko da, atzean eta aurrean "
+          },
+          {
+            "text": "neuroporoak",
+            "b": true
+          },
+          {
+            "text": " utziz. "
+          }
+        ]
+      },
+      {
+        "id": "w19/4/p3/s4",
+        "parts": [
+          {
+            "text": "Aurreko neuroporoa 25. egunean ixten dena eta atzeko neuroporoa 27/28. egunean. "
+          }
+        ]
+      },
+      {
+        "id": "w19/4/p3/s5",
+        "parts": [
+          {
+            "text": "Ondorioz, "
+          },
+          {
+            "text": "hodi neurala ",
+            "b": true
+          },
+          {
+            "text": "sortuko da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/4/p3/s6",
+        "parts": [
+          {
+            "text": "Tolestean, muturretan beste zelulak bereizten dira gandor neurala sortzeko."
           }
         ]
       }
@@ -1938,7 +1900,15 @@ export const w19: NotesBlock[] = [
         "id": "w19/4/p4/s1",
         "parts": [
           {
-            "text": "Sentsazioak atzeko sustraietatik heltzen dira, sentsitiboak bakarrik direlako (atzeko sustraitxoen multzoak) eta agindu motorra aurreko sustraitik ateratzen da, motorra bakarra delako (aurreko sustraitxoen multzoak)."
+            "text": "Hasieran gandor neurala geratuko da ornomuin eta ektodermoaren artean. "
+          }
+        ]
+      },
+      {
+        "id": "w19/4/p4/s2",
+        "parts": [
+          {
+            "text": "Gero, gandor neuraleko zelulak askatu eta bereiztu egiten dira eta egitura desberdinak eratuko dituzte."
           }
         ]
       }
@@ -1953,8 +1923,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/4/p5/s1",
         "parts": [
           {
-            "text": "* Sustraitxoak multzatuta sustrai bakar bat sortuko dute.",
-            "i": true
+            "text": "GANDOR NEURALETAKO ERATORRIAK:",
+            "b": true
           }
         ]
       }
@@ -1969,7 +1939,15 @@ export const w19: NotesBlock[] = [
         "id": "w19/4/p6/s1",
         "parts": [
           {
-            "text": "Nerbio espinaletan axoi sentsitiboak eta motorrak batzen dira (ez fusionatu). "
+            "text": "❖​"
+          },
+          {
+            "text": " Gongoil espinalak, sinpatikoak eta parasinpatikoak (neuronak): ",
+            "b": true
+          },
+          {
+            "text": "Neuronen somak aurkituko dira hemen, erraietara doazen neuronenak, erraien inguruan sareak sortzen baitira. ",
+            "u": true
           }
         ]
       },
@@ -1977,15 +1955,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/4/p6/s2",
         "parts": [
           {
-            "text": "Ondorioz, nerbio espinala nerbio mistoa izango da (osagai sentsitibio eta motorra), nerbio periferiko guztietan gertatzen dena. "
-          }
-        ]
-      },
-      {
-        "id": "w19/4/p6/s3",
-        "parts": [
-          {
-            "text": "Gongoileko neuronak sentsitiboak bakarrik dira, gongoila atzeko sustraian bakarik dagoelako."
+            "text": "Kokapenak berdin du: berdin da katean egon, sarean egon… Gongoil gutzietako neuronak gandor neuraletik aterako dira."
           }
         ]
       }
@@ -2000,7 +1970,11 @@ export const w19: NotesBlock[] = [
         "id": "w19/4/p7/s1",
         "parts": [
           {
-            "text": "Hortaz, sentsazioa burmuineraino heldu behar bada, neurona sentsitiboa ornomuinean sartzen da, baina baliteke hor sinaptatu ordez, bere axoia luzatuz burmuineraino iristea. "
+            "text": "❖​"
+          },
+          {
+            "text": " Zelula kromafinak. ",
+            "b": true
           }
         ]
       },
@@ -2008,14 +1982,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/4/p7/s2",
         "parts": [
           {
-            "text": "Bertan, goikaldean burmuinean edo erraboilean egiten ditu sinapsiak eta informazioa kortexera iristen da, "
-          },
-          {
-            "text": "kortex somatosentsitibora",
-            "b": true
-          },
-          {
-            "text": ", hor nabaritzen baitira sentsazioak. "
+            "text": "Giltzurrun gaineko guruinetan daude eta gandor urogenitalaren erdikaldean eratzen dira. "
           }
         ]
       },
@@ -2023,31 +1990,185 @@ export const w19: NotesBlock[] = [
         "id": "w19/4/p7/s3",
         "parts": [
           {
-            "text": "Horra heltzen direnean nabaritzen dugu informazioa, hots sentsazioa. "
+            "text": "2 atal dituzte (soilik muineko zelula kromafinak izango dute jatorria gandor neuraletako zeluletan)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "4",
+    "id": "w19/4/p8",
+    "sentences": [
+      {
+        "id": "w19/4/p8/s1",
+        "parts": [
+          {
+            "text": "-​ Kortexa"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "4",
+    "id": "w19/4/p9",
+    "sentences": [
+      {
+        "id": "w19/4/p9/s1",
+        "parts": [
+          {
+            "text": "-​ Muina → hemen dauden noradrenalina eta adrenalina gandor neuraletako eratorriak dira"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "4",
+    "id": "w19/4/p10",
+    "sentences": [
+      {
+        "id": "w19/4/p10/s1",
+        "parts": [
+          {
+            "text": "❖​ 1., 2. eta 3. arkuetatik ateratzen diren hezur eta kartilago guztiak. "
           }
         ]
       },
       {
-        "id": "w19/4/p7/s4",
+        "id": "w19/4/p10/s2",
         "parts": [
           {
-            "text": "Informazioa ez bada horra iristen ez dugu sentsazioa nabarituko. "
+            "text": "Hauetan anomaliaren bat egonez gero, ez da aurpegiko hezurrik eratuko."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "4",
+    "id": "w19/4/p11",
+    "sentences": [
+      {
+        "id": "w19/4/p11/s1",
+        "parts": [
+          {
+            "text": "❖​"
+          },
+          {
+            "text": " Meningetako zelulak",
+            "b": true
+          },
+          {
+            "text": ": Meningeak nerbio sistema estaltzeko ditugun mintz sistema da, hiru estalki dira (aurrerago ikusi). "
           }
         ]
       },
       {
-        "id": "w19/4/p7/s5",
+        "id": "w19/4/p11/s2",
         "parts": [
           {
-            "text": "Kortex somatosentsitiboko neuronek, kortex motorreko neuronei informazioa helarazten die eta hauek, informazioa beraien axoiek bidaltzen dute agindu motorren bitartez. "
+            "text": "Piamaterra eta araknoideoa gandor neuraleko zeluletatik, BESTEA EZ (duramaterra)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "4",
+    "id": "w19/4/p12",
+    "sentences": [
+      {
+        "id": "w19/4/p12/s1",
+        "parts": [
+          {
+            "text": "❖​"
+          },
+          {
+            "text": " Schwann zelulak",
+            "b": true
+          },
+          {
+            "text": ": Nerbio sistema perfierikoan ditugun zelulak, mielina ekoizten dituztenak nerbio sistema zentralean. "
           }
         ]
       },
       {
-        "id": "w19/4/p7/s6",
+        "id": "w19/4/p12/s2",
         "parts": [
           {
-            "text": "Agindua goiko gorputz adarretara eraman behar bada, axoia motzagoa izango da eta beheko gorputz adarretara helarazi behar bada ordea, luzeagoa."
+            "text": "(Nerbio sistema zentralean, aldiz, oligodendrozitoak sortu mielina) "
+          },
+          {
+            "text": "Neuronen axoiak mielinizatzeko beharrezkoa dena.",
+            "u": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "4",
+    "id": "w19/4/p13",
+    "sentences": [
+      {
+        "id": "w19/4/p13/s1",
+        "parts": [
+          {
+            "text": "❖​"
+          },
+          {
+            "text": " Melanozitoak ",
+            "b": true
+          },
+          {
+            "text": "(larruazalaren eta ilearen pigmentazioa): gure larruazalari eta ileari kolorea ematen dieten zelulak. "
+          }
+        ]
+      },
+      {
+        "id": "w19/4/p13/s2",
+        "parts": [
+          {
+            "text": "Guztiak gandor neuraletik. "
+          }
+        ]
+      },
+      {
+        "id": "w19/4/p13/s3",
+        "parts": [
+          {
+            "text": "."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "4",
+    "id": "w19/4/p14",
+    "sentences": [
+      {
+        "id": "w19/4/p14/s1",
+        "parts": [
+          {
+            "text": "Gandor neuraletako eratorrien zeluletan anomaliak baldin badaude (ez direlako ondo bereizi edo ez direlako joan beharreko kokapenera iritsi) beren funtzioa ez dute ongi betetzen. "
+          }
+        ]
+      },
+      {
+        "id": "w19/4/p14/s2",
+        "parts": [
+          {
+            "text": "Jaioberrietan ikusten diren malformazio edo anomalia kongenitoetatik herena gandor neuraletako zeluletan akatsak egoteagatik sortu egiten dira."
           }
         ]
       }
@@ -2062,7 +2183,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/5/p2/s1",
         "parts": [
           {
-            "text": "5. AKTU ERREFLEXUA",
+            "text": "5. ORNOMUINAREN GARAPENA (barnetik kanpora)",
             "b": true
           }
         ]
@@ -2078,14 +2199,78 @@ export const w19: NotesBlock[] = [
         "id": "w19/5/p3/s1",
         "parts": [
           {
-            "text": "Aktu erreflexuan, ornomuinean bertan ematen da erantzuna, estimulua ez da burmuineraino garraiatzen."
+            "text": "Garapena hasi 5. astean"
+          },
+          {
+            "text": " eta 3. hilabetean amaitu. ",
+            "u": true
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p3/s2",
+        "parts": [
+          {
+            "text": "Hodi neurala hasiera batean hodi bat da, eta ornomuinak hodi forma mantenduko du. ",
+            "u": true
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p3/s3",
+        "parts": [
+          {
+            "text": "Hodi neuralaren barnean ependimoa agertzen da, hasieran zabal-zabala, baina garapenarekin pixkanaka estuago bihurtzen da eta borobildu egiten da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p3/s4",
+        "parts": [
+          {
+            "text": "Hasieran "
+          },
+          {
+            "text": "hodi",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "ependimarioaren ",
+            "b": true
+          },
+          {
+            "text": "ertzetan bi mintz agertuko dira: batetik, "
+          },
+          {
+            "text": "barneko mintz mugatzailea",
+            "b": true
+          },
+          {
+            "text": " (goitik behera hedatu eta ependimoa mugatzen duena), eta, bestetik, "
+          },
+          {
+            "text": "kanpoko mintz",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "mugatzailea ",
+            "b": true
+          },
+          {
+            "text": "(hemen Pia zelulak aurkitu, dena estaliz) geroago meningean bihurtuko da (piamaterra)."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "5",
     "id": "w19/5/p4",
     "sentences": [
@@ -2093,14 +2278,114 @@ export const w19: NotesBlock[] = [
         "id": "w19/5/p4/s1",
         "parts": [
           {
-            "text": "- Larruazaleko nerbioek estimulua sentitzen dute (ukimena), eta estimulu hori ornomuinera bideratzen da neurona sentsitiboen bidez (adibidez medikuak mailuarekin belauna kolpatzea)"
+            "text": "BARNEKO MINTZ MUGATZAILEA",
+            "b": true
+          },
+          {
+            "text": " Barneko mintz mugatzaileari lotuta "
+          },
+          {
+            "text": "zelula neuroepitelialak ",
+            "b": true
+          },
+          {
+            "text": "daude (kanporantz begira). "
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p4/s2",
+        "parts": [
+          {
+            "text": "Hauek "
+          },
+          {
+            "text": "neuroepitelioa",
+            "b": true
+          },
+          {
+            "text": " osatuko duten zelulak dira. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p4/s3",
+        "parts": [
+          {
+            "text": "Zelula neuroepitelialak bereiztuz joango dira eta "
+          },
+          {
+            "text": "neuroblastoak ",
+            "b": true
+          },
+          {
+            "text": "emango dituzte. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p4/s4",
+        "parts": [
+          {
+            "text": "Neuroblastoak askatu eta garatzen direnean, bereiztu egingo dira eta ornomuinean dauden neuronak sortuko dituzte. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p4/s5",
+        "parts": [
+          {
+            "text": "Hasieran neuroplastoen somak (gorputza) kokatzen diren geruzari "
+          },
+          {
+            "text": "manto geruza ",
+            "b": true
+          },
+          {
+            "text": "deitzen zaio, gero "
+          },
+          {
+            "text": "gai grisa ",
+            "b": true
+          },
+          {
+            "text": "izango dena. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p4/s6",
+        "parts": [
+          {
+            "text": "Axoiak aurkitzen ditugun geruzari hasieran "
+          },
+          {
+            "text": "geruza",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "marginala ",
+            "b": true
+          },
+          {
+            "text": "deitzen zaio, baina gero "
+          },
+          {
+            "text": "gai zuria ",
+            "b": true
+          },
+          {
+            "text": "izango da."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "5",
     "id": "w19/5/p5",
     "sentences": [
@@ -2108,7 +2393,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/5/p5/s1",
         "parts": [
           {
-            "text": "- Sistema sentsitiboak informazioa sistema motorrari pasatzen dio"
+            "text": "Beraz,"
           }
         ]
       }
@@ -2123,7 +2408,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/5/p6/s1",
         "parts": [
           {
-            "text": "- Neurona motorrak agindua bidaliko du muskulura (adibidez hanka mugitzeko)"
+            "text": "- Neuroblastoen gorputzak manto geruzan → neuronen gorputzak (somak) gai grisan"
           }
         ]
       }
@@ -2138,8 +2423,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/5/p7/s1",
         "parts": [
           {
-            "text": "- Neurona sentsitibo primarioaren soma, gongoiletan (gandor neuraleko eratorria) egongo da eta beste luzapen bat izango du ornomuinerantz (hemen beste neurona sentsitibo batzuen somak egongo dira).",
-            "u": true
+            "text": "- Neuroblastoen axoiak geruza marginalean → neuronen axoiak gai zurian"
           }
         ]
       }
@@ -2154,7 +2438,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/5/p8/s1",
         "parts": [
           {
-            "text": "*Sentsazioak atzeko sustraietatik heltzen dira (atzeko sustraitxoen multzoak) eta agindu motorra aurreko sustraitik ateratzen da (aurreko sustraitxoen multzoak). "
+            "text": "Neuroepitelioa bereizten denean neuroblastoetan etab., bertan geratzen diren zelulek "
+          },
+          {
+            "text": "ependimo geruza",
+            "b": true
+          },
+          {
+            "text": " eratuko dute. "
           }
         ]
       },
@@ -2162,24 +2453,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/5/p8/s2",
         "parts": [
           {
-            "text": "Nerbioan espinalean axoi sentsitiboak eta motorrak batzen dira (ez fusionatu). "
-          }
-        ]
-      },
-      {
-        "id": "w19/5/p8/s3",
-        "parts": [
-          {
-            "text": "Ondorioz, nerbio espinala nerbio mistoa izango da (osagai sentsitbio eta motorra). "
-          }
-        ]
-      },
-      {
-        "id": "w19/5/p8/s4",
-        "parts": [
-          {
-            "text": "(nerbioak = neuronen axoi multzoak).",
-            "b": true
+            "text": "Ependimoa hasieran luzetarako hodia izango da, gero estutu eta borobilduko dena (barrunbe luzanga bat)"
           }
         ]
       }
@@ -2194,15 +2468,811 @@ export const w19: NotesBlock[] = [
         "id": "w19/5/p9/s1",
         "parts": [
           {
-            "text": "Benetazko ornomuinaren argazkian estalkia moztuta dago eta plastiko itxurazko egitura gogorra dura materra da. "
+            "text": "Garapenean,"
+          },
+          {
+            "text": " ornomuinak bi plaka ",
+            "b": true
+          },
+          {
+            "text": "nagusi ditu:"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "5",
+    "id": "w19/5/p10",
+    "sentences": [
+      {
+        "id": "w19/5/p10/s1",
+        "parts": [
+          {
+            "text": "- Aurrekaldean/bentralean "
+          },
+          {
+            "text": "oinalde-plaka",
+            "b": true
+          },
+          {
+            "text": ", motorra izango dena → alde bentralean neurona motorrak baitaude. "
           }
         ]
       },
       {
-        "id": "w19/5/p9/s2",
+        "id": "w19/5/p10/s2",
         "parts": [
           {
-            "text": "Ornomuina ikusteko dura materra moztu eta zabaldu egin behar da."
+            "text": "Bertan, nerbio espinalen aurreko sustraiak antolatu."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "5",
+    "id": "w19/5/p11",
+    "sentences": [
+      {
+        "id": "w19/5/p11/s1",
+        "parts": [
+          {
+            "text": "- Atzekaldea/dortsalean, "
+          },
+          {
+            "text": "hegal-plaka, ",
+            "b": true
+          },
+          {
+            "text": "sentsitiboa dena → alde dortsala delako. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p11/s2",
+        "parts": [
+          {
+            "text": "Bertan antolatuko dira nerbio espinalen atzeko sustraiak edo sustrai dortsalak."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5",
+    "id": "w19/5/p12",
+    "sentences": [
+      {
+        "id": "w19/5/p12/s1",
+        "parts": [
+          {
+            "text": "Hegal plaka eta oinalde plakaren artean, anatomikoki/fisikoki ez dago mugarik baina, ornomuina fisiologikoki banatuta dagoenez, muga birtual bat dago, "
+          },
+          {
+            "text": "ildo mugatzailea",
+            "b": true
+          },
+          {
+            "text": ". "
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p12/s2",
+        "parts": [
+          {
+            "text": "Ildo mugatzailea, ornomuinaren alde dortsala eta bentrala banatzen ditu."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5",
+    "id": "w19/5/p13",
+    "sentences": [
+      {
+        "id": "w19/5/p13/s1",
+        "parts": [
+          {
+            "text": "Ornomuinaren atzekaldeko muturrean "
+          },
+          {
+            "text": "sabai plaka ",
+            "b": true
+          },
+          {
+            "text": "eta alde bentralearen muturrean "
+          },
+          {
+            "text": "zoru-plaka ",
+            "b": true
+          },
+          {
+            "text": "daude. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p13/s2",
+        "parts": [
+          {
+            "text": "Plaka hauetan soilik geruza marginala egongo da, "
+          },
+          {
+            "text": "ez dago mantu",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "geruzarik ezta gai grisik",
+            "b": true
+          },
+          {
+            "text": "; bertan soilik axoiak aurkitzen dira, ez neuronak (konexio geruzak diren heinean)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5",
+    "id": "w19/5/p14",
+    "sentences": [
+      {
+        "id": "w19/5/p14/s1",
+        "parts": [
+          {
+            "text": "Heltzean ornomuina (ornomuin garatuan): bi ildo agertzen dira: atzeko eta aurreko ildoak. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p14/s2",
+        "parts": [
+          {
+            "text": "Aurreko ildoa askoz sakonagoa eta nabarmenagoa izango da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p14/s3",
+        "parts": [
+          {
+            "text": "(hurrengo egiturak ere aurki ditzakegu: gai zuria kanpotik, gai grisa barnean H formarekin, atzeko adar sentsitiboak, aurreko adar motorrak + BI ILDOAK) "
+          },
+          {
+            "text": "KONTUZ (IZENAK ALDATU GARAPENAREN ARABERA)",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "5",
+    "id": "w19/5/p15",
+    "sentences": [
+      {
+        "id": "w19/5/p15/s1",
+        "parts": [
+          {
+            "text": "● Hegal plaka sentsitibo → eremu sentsitiboa"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "5",
+    "id": "w19/5/p16",
+    "sentences": [
+      {
+        "id": "w19/5/p16/s1",
+        "parts": [
+          {
+            "text": "● Oinalde-plaka motorra → eremu motorra"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "5",
+    "id": "w19/5/p17",
+    "sentences": [
+      {
+        "id": "w19/5/p17/s1",
+        "parts": [
+          {
+            "text": "● Gainera, ependimoa askoz estututa dago eta hemen alboko adarrak agertzen dira (alde motorrean). "
+          }
+        ]
+      },
+      {
+        "id": "w19/5/p17/s2",
+        "parts": [
+          {
+            "text": "Hemen neurona sinpatikoen somak egonen dira, ondorioz adarrak agertzen badira, T1/T2 eta L2-ren arteko mozketa izango da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5",
+    "id": "w19/5/p18",
+    "sentences": [
+      {
+        "id": "w19/5/p18/s1",
+        "parts": [
+          {
+            "text": "Neurona sinpatikoak neurona motor bereziak dira, mugimendu berezia eratzen dutelako",
+            "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "5.1",
+    "id": "w19/5.1/p2",
+    "sentences": [
+      {
+        "id": "w19/5.1/p2/s1",
+        "parts": [
+          {
+            "text": "5.1 BIZKARREZUR-MUINAREN HAZKUNTZAREN ALDAKETAK",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p3",
+    "sentences": [
+      {
+        "id": "w19/5.1/p3/s1",
+        "parts": [
+          {
+            "text": "Ornomuinaren garapenarekin batera, enbrioia hazten doa. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p3/s2",
+        "parts": [
+          {
+            "text": "Hasieran, enbrioia eta ornomuina tamaina aldetik berdinak dira. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p3/s3",
+        "parts": [
+          {
+            "text": "Baina enbrioia hazten den heinean, bizkarrezurra askoz azkarrago hazten da ornomuinarekin alderatuta. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p3/s4",
+        "parts": [
+          {
+            "text": "."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p4",
+    "sentences": [
+      {
+        "id": "w19/5.1/p4/s1",
+        "parts": [
+          {
+            "text": "Gogoratzeko* ornoen atalak: ornogorputza eta orno arkuak (hau eratzeko apofisi ezberdinak; jada emanda). "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p4/s2",
+        "parts": [
+          {
+            "text": "Aurrean ornogorputza eta atzekaldean arantza apofisia."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p5",
+    "sentences": [
+      {
+        "id": "w19/5.1/p5/s1",
+        "parts": [
+          {
+            "text": "Orno muinetik nerbio espinalak ateratzen dira, eta bizkarrezurrak zuloak izan behar ditu nerbio horiek ateratzeko, orno zuloak badu ya zulo hori. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p5/s2",
+        "parts": [
+          {
+            "text": "Nerbio bakoitzak parean aurkituko du bere zuloa hasieran (jaio aurreko 3. hilabetean). "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p5/s3",
+        "parts": [
+          {
+            "text": "Baina 20.astean, ornomuina txikiagoa da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p5/s4",
+        "parts": [
+          {
+            "text": "Jaioberrietan askoz ere murriztuagoa, eta helduetan ornomuina askoz ere txikiagoa da bizkarrezurra baino."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p6",
+    "sentences": [
+      {
+        "id": "w19/5.1/p6/s1",
+        "parts": [
+          {
+            "text": "Ondorioz",
+            "b": true
+          },
+          {
+            "text": ": hasieran, nerbio espinalak ornomuinetik ateratzen dira, eta bizkarrezurretik pasatzen dira dagokien pareko zuloetatik. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p6/s2",
+        "parts": [
+          {
+            "text": "Baina garapenean bizkarrezurra ornomuina baino gehiago luzatzen denez, zuloak beheruntz mugitu egin dira bizkarra luzatu egin delako. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p6/s3",
+        "parts": [
+          {
+            "text": "Ondorioz nerbioak zulo berdinetatik aterako dira baina zuloak desplazatuta egongo dira, beraz, helduetan nerbioak ez dira pareko zuloetatik aterako, baizik eta beherago dauden zuloetatik (nahiz eta hasieran pareko zuloetatik ateratzen diren). "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p6/s4",
+        "parts": [
+          {
+            "text": "Honen "
+          },
+          {
+            "text": "eragina ",
+            "b": true
+          },
+          {
+            "text": "da bizkarrezur osoaren barnean ez dugula ornomuina aurkituko. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p6/s5",
+        "parts": [
+          {
+            "text": "Ornomuina egitura trinko bezala amaituko da gutxi gora behera L1/L2 mailetan, gure bizkarrezurra sakroraino doa. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p6/s6",
+        "parts": [
+          {
+            "text": "Ornomuinetik beherantz, hau da, L1-L2tik beherako mailetan, soilik nerbio multzo batzuk garatuko dira, eta ez daude loturik egongo. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p6/s7",
+        "parts": [
+          {
+            "text": "Nerbio multzo horiek: "
+          },
+          {
+            "text": "zaldi",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "buztana ",
+            "b": true
+          },
+          {
+            "text": "deitzen dira (hemen ya ez dago orno-muina egiura trinkorik)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p7",
+    "sentences": [
+      {
+        "id": "w19/5.1/p7/s1",
+        "parts": [
+          {
+            "text": "Ornomuina lepo mailan eta amaiera toraziko/lunbarrean pixka bat loditzen da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p8",
+    "sentences": [
+      {
+        "id": "w19/5.1/p8/s1",
+        "parts": [
+          {
+            "text": "Anestesia epidurala zaldi buztanean ematen da; eremu epidurala, hezurra eta 1. meningearen (",
+            "u": true
+          },
+          {
+            "text": "dura materra",
+            "i": true,
+            "u": true
+          },
+          {
+            "text": ") artean gelditzen den eremua da. ",
+            "u": true
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p8/s2",
+        "parts": [
+          {
+            "text": "Eremu hori odol hodiz eta gantzez beteta dago. ",
+            "u": true
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p8/s3",
+        "parts": [
+          {
+            "text": "Anestesia eremu honetan ematen da, eta ez bakarrik anestesia: Nerbio Sistema Zentrala babesteko ere balio du.",
+            "u": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p9",
+    "sentences": [
+      {
+        "id": "w19/5.1/p9/s1",
+        "parts": [
+          {
+            "text": "Likido zefalorrakideoa:",
+            "b": true
+          },
+          {
+            "text": " duramaterrak zakua eratu, eta LZR zakuaren barnean eratu. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p9/s2",
+        "parts": [
+          {
+            "text": "Meningeen artean dabil, nerbio sistemaren osagai guztiak inguratzen ditu. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p9/s3",
+        "parts": [
+          {
+            "text": "Ornomuina eta garunaren kanpotik dago, eta barruko barrunbeetatik (ad. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p9/s4",
+        "parts": [
+          {
+            "text": "ependimo hodietatik)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p10",
+    "sentences": [
+      {
+        "id": "w19/5.1/p10/s1",
+        "parts": [
+          {
+            "text": "Infekzio bat badago erdiko nerbio sisteman, LZR-ez ikusi daiteke, lagin bat ateraz. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p10/s2",
+        "parts": [
+          {
+            "text": "Likido zefalorrakideoaren lagin bat ateratzeko, zaldi buztana dagoen eremutik hartuko da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p10/s3",
+        "parts": [
+          {
+            "text": "Lagina ateratzeko orratza likido zefalorrakideoraino iritsi behar da, zaldi buztanetik sartu egiten da ornomuina/nerbioak ez lesionatzeko. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p10/s4",
+        "parts": [
+          {
+            "text": "Orratza zaldi buztanean sartzean, nerbioak apartatu egiten dira, beraz, ez da lesiorik gertatzen."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p11",
+    "sentences": [
+      {
+        "id": "w19/5.1/p11/s1",
+        "parts": [
+          {
+            "text": "Sustraitxoak batu eta sustraiak sortzen dira. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p11/s2",
+        "parts": [
+          {
+            "text": "Sustraietatik nerbioak kanporatzen dira, maila ezberdinetan. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p11/s3",
+        "parts": [
+          {
+            "text": "Parte gogorrena/lodiena Dura materra da (meninge guztietatik gogorrena da)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p12",
+    "sentences": [
+      {
+        "id": "w19/5.1/p12/s1",
+        "parts": [
+          {
+            "text": "3 meninge: (kanpotik - barnera)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "5.1",
+    "id": "w19/5.1/p13",
+    "sentences": [
+      {
+        "id": "w19/5.1/p13/s1",
+        "parts": [
+          {
+            "text": "● "
+          },
+          {
+            "text": "Dura materra ",
+            "b": true
+          },
+          {
+            "text": "(Kraneoan hezurrari lotuta; bizkarrezurrean ez dago hezurrari lotuta). "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p13/s2",
+        "parts": [
+          {
+            "text": "Funtzioa",
+            "i": true
+          },
+          {
+            "text": ": Nerbio Sistema Zentrala babestea."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "5.1",
+    "id": "w19/5.1/p14",
+    "sentences": [
+      {
+        "id": "w19/5.1/p14/s1",
+        "parts": [
+          {
+            "text": "● "
+          },
+          {
+            "text": "Araknoidea ",
+            "b": true
+          },
+          {
+            "text": "(Armiarma sarearen itxura)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "5.1",
+    "id": "w19/5.1/p15",
+    "sentences": [
+      {
+        "id": "w19/5.1/p15/s1",
+        "parts": [
+          {
+            "text": "● "
+          },
+          {
+            "text": "Pia materra ",
+            "b": true
+          },
+          {
+            "text": "(Hezurrari lotuta dago, horregatik zakua askoz luzeagoa da, bizkarrezurrarekin hazten delako, honek tiratzen du.)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p16",
+    "sentences": [
+      {
+        "id": "w19/5.1/p16/s1",
+        "parts": [
+          {
+            "text": "Ezberdintzapen bakarra: ",
+            "i": true
+          },
+          {
+            "text": "Ornomuina eta burmuina babesteko, Dura materra burmuinean kraneoari lotuta dago, eta bizkarrezurrean ez dago hezurrari lotuta (hezurra eta Dura materraren artean: gantza, nerbioak eta odol hodiak daude)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p17",
+    "sentences": [
+      {
+        "id": "w19/5.1/p17/s1",
+        "parts": [
+          {
+            "text": "FILUM TERMINALE",
+            "b": true
+          },
+          {
+            "text": ": zaldi buztanaren erdian agertzen da, eta pia materraren luzapen bat da, egitura luzanga nabariago bat. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p17/s2",
+        "parts": [
+          {
+            "text": "Bizkarrezur-muinaren beheko muturrean dagoen "
+          },
+          {
+            "text": "ehun",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "konektibozko hari mehe bat",
+            "b": true
+          },
+          {
+            "text": " da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "5.1",
+    "id": "w19/5.1/p18",
+    "sentences": [
+      {
+        "id": "w19/5.1/p18/s1",
+        "parts": [
+          {
+            "text": "Burmuinean EZ dago eremu epiduralik. "
+          }
+        ]
+      },
+      {
+        "id": "w19/5.1/p18/s2",
+        "parts": [
+          {
+            "text": "Ornomuinak amaierako atalean kono forma hartzen du."
           }
         ]
       }
@@ -2217,7 +3287,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p2/s1",
         "parts": [
           {
-            "text": "6. GANDOR NEURALEKO ERATORRIAK",
+            "text": "6. BURMUINA",
             "b": true
           }
         ]
@@ -2233,7 +3303,15 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p3/s1",
         "parts": [
           {
-            "text": "Hodi neurala ektodermotik askatzean hasieran plaka bezala gelditzen dira gandor neuraleko zelulak eta gero banatu egiten dira hodiaren alde bietarantz, gandor zelula metaketak eratuz (gero ornomuina izango den atze-alboetan metatu —> atzeko sustraietako gongoilak eratu), honela gandor neuralaren zenbait eratorri agertuko dira:"
+            "text": "Hodi neurala, atzekaldean, lepotik alde kaudalera ornomuina ixten da eta hodi bat eratzen du: hodi neurala. "
+          }
+        ]
+      },
+      {
+        "id": "w19/6/p3/s2",
+        "parts": [
+          {
+            "text": "Alde kranealean, hasieran hodi neurala zabaldu eta 3 xixku/zabalkuntza sortuko ditu:"
           }
         ]
       }
@@ -2248,30 +3326,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p4/s1",
         "parts": [
           {
-            "text": "- "
+            "text": "● Aurreko xixkua: "
           },
           {
-            "text": "Gongoil espinalak, sinpatikoak eta parasinpatikoak (neuronak): ",
+            "text": "Prosentzefaloa ",
             "b": true
           },
           {
-            "text": "Neuronen somak aurkituko dira hemen, erraietara doazen neuronenak, erraien inguruan sareak sortzen baitira (bertan ere gongoilak egoten dira). "
-          }
-        ]
-      },
-      {
-        "id": "w19/6/p4/s2",
-        "parts": [
-          {
-            "text": "Katzuk kate (orno) sinpatikoan kokatuta egongo dira, katearen gongoiletan dauden neurona sinpatikoak gandorretik datoz. "
-          }
-        ]
-      },
-      {
-        "id": "w19/6/p4/s3",
-        "parts": [
-          {
-            "text": "Bestalde, erraien aurrean edo inguruan nerbio sareak eratzen dira, eta nerbio sare horietan ere gongoilak egoten dira (esaterako, aorta aurreko sarea), gongoil horiek ere sinpatikoak direnez, horietako neuronak ere gandorretatik datoz."
+            "text": "(pro = aurretik)"
           }
         ]
       }
@@ -2286,16 +3348,11 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p5/s1",
         "parts": [
           {
-            "text": "- "
+            "text": "● Tarteko xixkua: "
           },
           {
-            "text": "Bikote kranealen gongoilak (parasinpatikoak)",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " (aurpegiko nerbioaren gongoil genikulatua…)",
-            "u": true
+            "text": "Mesentzefaloa",
+            "b": true
           }
         ]
       }
@@ -2310,37 +3367,21 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p6/s1",
         "parts": [
           {
-            "text": "- "
+            "text": "● Azken xixkua: "
           },
           {
-            "text": "Schwann zelulak",
+            "text": "Erronbentzefaloa ",
             "b": true
           },
           {
-            "text": ": Mielina ekoizten dute nerbio sistema periferikoan soilik. "
-          }
-        ]
-      },
-      {
-        "id": "w19/6/p6/s2",
-        "parts": [
-          {
-            "text": "Neuronen axoiak mielinizatzeko beharrezkoa dena. "
-          }
-        ]
-      },
-      {
-        "id": "w19/6/p6/s3",
-        "parts": [
-          {
-            "text": "(Nerbio sistema zentralean oligodendrozitoek sortuko dute mielina)."
+            "text": "(erronbo formakoa)"
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "6",
     "id": "w19/6/p7",
     "sentences": [
@@ -2348,29 +3389,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p7/s1",
         "parts": [
           {
-            "text": "- "
-          },
-          {
-            "text": "Meningetako zelulak: ",
-            "b": true
-          },
-          {
-            "text": "Meningetako zelulak, hiru estalki dira burmuin eta ornomuinaren inguruan eta nerbio sistema zentrala estaltzea da beraien funtzioa. "
-          }
-        ]
-      },
-      {
-        "id": "w19/6/p7/s2",
-        "parts": [
-          {
-            "text": "Meningeetako 2 (araknoidea eta pia materra) gandor zeluletatik datoz."
+            "text": "Garatzean konplexutasun handiagoa hartzen du, eta xixkuetatik beste xixku batzuk ateratzen dira."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "6",
     "id": "w19/6/p8",
     "sentences": [
@@ -2378,22 +3404,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p8/s1",
         "parts": [
           {
-            "text": "- "
-          },
-          {
-            "text": "1., 2. eta 3. faringe-arkuetatik sortzen diren hezurrak eta kartilagoak.",
-            "b": true
-          },
-          {
-            "text": " "
-          }
-        ]
-      },
-      {
-        "id": "w19/6/p8/s2",
-        "parts": [
-          {
-            "text": "Hauetan anomaliaren bat badago, ez da aurpegiko hezurrik eratuko."
+            "text": "Prosentzefalotik (2 xixku):"
           }
         ]
       }
@@ -2408,14 +3419,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p9/s1",
         "parts": [
           {
-            "text": "- "
+            "text": "● "
           },
           {
-            "text": "Giltzurrun gaineko guruinen muinean dauden zelula kromafinak:",
+            "text": "Telentzefaloa",
             "b": true
           },
           {
-            "text": " gandorretik zelula batzuk askatu eta bereizi egiten dira. "
+            "text": ": xixkuak luzatu eta handitu, Dientzefaloaren gainetik pasa eta estaliko dute. "
           }
         ]
       },
@@ -2423,7 +3434,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p9/s2",
         "parts": [
           {
-            "text": "Giltzurrun gaineko guruinen muinen barruan sartzen dira."
+            "text": "Azkenean, Telentzefalotik: ○ Garun hemisferioak aterako dira (gainean dauden egiturak, bihurriak, zirkunbulizioekin)."
           }
         ]
       }
@@ -2438,21 +3449,53 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p10/s1",
         "parts": [
           {
-            "text": "- "
+            "text": "● "
           },
           {
-            "text": "Melanozitoak:",
+            "text": "Dientzefaloa ",
             "b": true
           },
           {
-            "text": " gure larruazalari eta ileari kolorea ematen dietenak."
+            "text": "(erdian geratzen da); egitura ezberdinak aterako dira (dortsaletik bentralera): ○ Epitalamoa: hemen aurkitzen da guruin pineala (pimearra). "
+          }
+        ]
+      },
+      {
+        "id": "w19/6/p10/s2",
+        "parts": [
+          {
+            "text": "○ Talamoa (garrantzitsuena). "
+          }
+        ]
+      },
+      {
+        "id": "w19/6/p10/s3",
+        "parts": [
+          {
+            "text": "○ Hipotalamoa: hormonak ekoiztu eta beste egiturek sortzen dituzten hormonen kontrola/erregulazioa egiten du = funtzio hormonala. "
+          }
+        ]
+      },
+      {
+        "id": "w19/6/p10/s4",
+        "parts": [
+          {
+            "text": "Adibidez: barrabilen funtzioaren erregulazioa, guruin suprarrenalen hormonak ekoiztea, beste hormona batzuen ekoizpena… kontrolatu eta erregulatu. "
+          }
+        ]
+      },
+      {
+        "id": "w19/6/p10/s5",
+        "parts": [
+          {
+            "text": "○ Azpitalamoa (garrantzi txikiena)."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "6",
     "id": "w19/6/p11",
     "sentences": [
@@ -2460,7 +3503,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p11/s1",
         "parts": [
           {
-            "text": "➔ Gandor neuraletako eratorrien zeluletan anomaliak (ez direlako ondo bereizi edo ez direlako joan beharreko kokapenera iritsi) baldin badaude beren funtzioa ez dute ongi betetzen: ez da mielina ekoiztuko, ez dira aurpegiko hezurrak eratzen… Izan ere, jaioberrietan aurkitzen diren malformazio kongenitoen %30 gandor neuraleko anomalien ondorioz gertatzen dira."
+            "text": "Mesentzefaloa BETI berdin geratzen da."
           }
         ]
       }
@@ -2475,15 +3518,51 @@ export const w19: NotesBlock[] = [
         "id": "w19/6/p12/s1",
         "parts": [
           {
-            "text": "Nerbio sisteman ez daude bakarrik neuronak, zelula mota gehiago daude. "
+            "text": "Erronbentzefalotik, bi xixku nagusi:"
           }
         ]
-      },
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "6",
+    "id": "w19/6/p13",
+    "sentences": [
       {
-        "id": "w19/6/p12/s2",
+        "id": "w19/6/p13/s1",
         "parts": [
           {
-            "text": "Nerbio zelula gehienak neuronak eta glia dira."
+            "text": "● "
+          },
+          {
+            "text": "Metentzefaloa ",
+            "b": true
+          },
+          {
+            "text": "(dortsala): ○ Zubia (alde bentralean) ○ Garuntxoa / zerebeloa (dortsalean)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "6",
+    "id": "w19/6/p14",
+    "sentences": [
+      {
+        "id": "w19/6/p14/s1",
+        "parts": [
+          {
+            "text": "● "
+          },
+          {
+            "text": "Mielentzefaloa",
+            "b": true
+          },
+          {
+            "text": ":"
           }
         ]
       }
@@ -2492,23 +3571,249 @@ export const w19: NotesBlock[] = [
   {
     "kind": "p",
     "section": "6",
-    "id": "w19/6/p13",
+    "id": "w19/6/p15",
     "sentences": [
       {
-        "id": "w19/6/p13/s1",
+        "id": "w19/6/p15/s1",
         "parts": [
           {
-            "text": "Kontuz!! ",
-            "i": true
+            "text": "○ Erraboila (bulboa): azken atala. "
           }
         ]
       },
       {
-        "id": "w19/6/p13/s2",
+        "id": "w19/6/p15/s2",
         "parts": [
           {
-            "text": "4. astean oraindik hodi neurala existitzen da, ez da ornomuina!!",
+            "text": "Hemendik ornomuina luzatuko da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/6/p15/s3",
+        "parts": [
+          {
+            "text": "Burmuina eta ornomuina arteko lotura da, konektatzen dituena = KONEXIOA (lotura-eremua)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "6",
+    "id": "w19/6/p16",
+    "sentences": [
+      {
+        "id": "w19/6/p16/s1",
+        "parts": [
+          {
+            "text": "aurretik atzera izendatuta daude. "
+          }
+        ]
+      },
+      {
+        "id": "w19/6/p16/s2",
+        "parts": [
+          {
+            "text": "Egituraz, ornomuinaren antzekoa da.",
             "i": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "6",
+    "id": "w19/6/p17",
+    "sentences": [
+      {
+        "id": "w19/6/p17/s1",
+        "parts": [
+          {
+            "text": "Enbrioia tolesten hasten da, eta 2 tolespen nagusi garatzen dira nerbio sistema zentralaren edo burmuinaren mailan: (28. Eguna)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "6",
+    "id": "w19/6/p18",
+    "sentences": [
+      {
+        "id": "w19/6/p18/s1",
+        "parts": [
+          {
+            "text": "● "
+          },
+          {
+            "text": "Tolespen",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "zefalikoa",
+            "b": true
+          },
+          {
+            "text": " (mesentzefaloaren inguruan)",
+            "u": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "6",
+    "id": "w19/6/p19",
+    "sentences": [
+      {
+        "id": "w19/6/p19/s1",
+        "parts": [
+          {
+            "text": "● Lepoko tolespena/"
+          },
+          {
+            "text": "tolespen zerbikala",
+            "b": true
+          },
+          {
+            "text": " (erronbentzefaloaren eta ornomuinaren mugan)",
+            "u": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "6",
+    "id": "w19/6/p20",
+    "sentences": [
+      {
+        "id": "w19/6/p20/s1",
+        "parts": [
+          {
+            "text": "5. astean, enbrioia garatuago eta makurtuago dago. "
+          }
+        ]
+      },
+      {
+        "id": "w19/6/p20/s2",
+        "parts": [
+          {
+            "text": "Aurreko atalean adierazi bezala, prosentzefalotik jada telentzefaloa (horia) eta dientzefaloa (marroia) atera dira. "
+          }
+        ]
+      },
+      {
+        "id": "w19/6/p20/s3",
+        "parts": [
+          {
+            "text": "Hasieran, dientzefaloa handiagoa da, nahiz eta geroago telentzefaloa askoz handiago bihurtu."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "6",
+    "id": "w19/6/p21",
+    "sentences": [
+      {
+        "id": "w19/6/p21/s1",
+        "parts": [
+          {
+            "text": "Mesentzefaloa berdin mantentzen da, eta erronbentzefalotik metentzefaloa eta mielentzefaloa garatzen dira (mielentzefaloak ornomuina lotuko du). "
+          }
+        ]
+      },
+      {
+        "id": "w19/6/p21/s2",
+        "parts": [
+          {
+            "text": "Irudian ikus daitekeen bezala, metentzefaloaren atzeko aldean zerebeloaren irtengunea hasten da agertzen."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "6",
+    "id": "w19/6/p22",
+    "sentences": [
+      {
+        "id": "w19/6/p22/s1",
+        "parts": [
+          {
+            "text": "Mesentzefaloaren eta metentzefaloaren artean "
+          },
+          {
+            "text": "istmoa ",
+            "b": true
+          },
+          {
+            "text": "sortzen da (estutasun bat)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "6",
+    "id": "w19/6/p23",
+    "sentences": [
+      {
+        "id": "w19/6/p23/s1",
+        "parts": [
+          {
+            "text": "Garapenarekin, tolespen berri bat agertzen da: "
+          },
+          {
+            "text": "zubi tolespena",
+            "b": true
+          },
+          {
+            "text": ", hemen zubia eratuko"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "6",
+    "id": "w19/6/p24",
+    "sentences": [
+      {
+        "id": "w19/6/p24/s1",
+        "parts": [
+          {
+            "text": "da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "6",
+    "id": "w19/6/p25",
+    "sentences": [
+      {
+        "id": "w19/6/p25/s1",
+        "parts": [
+          {
+            "text": "Tolespen zefalikoa eta tolespen zerbikala mantendu egiten dira mesentzefaloaren eta erraboilaren mailetan."
           }
         ]
       }
@@ -2523,7 +3828,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p2/s1",
         "parts": [
           {
-            "text": "7. ORNOMUINAREN GARAPENA",
+            "text": "7. SISTEMA BENTRIKULARRA ETA EPENDIMO HODIA",
             "b": true
           }
         ]
@@ -2539,8 +3844,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p3/s1",
         "parts": [
           {
-            "text": "Garapena 5. astean hasi eta 3. hilabetean amaitu. ",
-            "u": true
+            "text": "Erdiko nerbio zentral osoa hasiera batean hodi neuraletik garatzen da. "
           }
         ]
       },
@@ -2548,8 +3852,52 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p3/s2",
         "parts": [
           {
-            "text": "Hodi neurala hasiera batean hodi bat da, eta ornomuinak hodi forma mantenduko du.",
-            "u": true
+            "text": "Hodi formako itxura dauka "
+          },
+          {
+            "text": "hodi neurala ",
+            "b": true
+          },
+          {
+            "text": "eta erdian hodi formako gune bat agertzen da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/7/p3/s3",
+        "parts": [
+          {
+            "text": "Ornomuinea garatzean, hodi forma ez da aldatzen eta erdian luzetarako barrunbe bat sortzen da: "
+          },
+          {
+            "text": "ependimoa",
+            "b": true
+          },
+          {
+            "text": ". "
+          }
+        ]
+      },
+      {
+        "id": "w19/7/p3/s4",
+        "parts": [
+          {
+            "text": "Garunean ez da hodi forman mantentzen eremu guztietan zeren eta garunean xixkuak eratzen dira hodia eraldatuz. "
+          }
+        ]
+      },
+      {
+        "id": "w19/7/p3/s5",
+        "parts": [
+          {
+            "text": "Xixku bat eratzen den tokian, xixkuaren barrunbea zabaltzen da eta "
+          },
+          {
+            "text": "bentrikulua ",
+            "b": true
+          },
+          {
+            "text": "deitzen da."
           }
         ]
       }
@@ -2564,25 +3912,35 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p4/s1",
         "parts": [
           {
-            "text": "Ependimoa",
+            "text": "Hodia zabaltzen bada, barrunbea zabalduko da eta horren ondorioz, telentzefaloaren barruan "
+          },
+          {
+            "text": "2 bentrikuluak ",
             "b": true
           },
           {
-            "text": ", hasieran egitura zapal bat da eta barnetik mugatuta dago"
+            "text": "agertuko dira: "
           },
           {
-            "text": " barneko mintz",
+            "text": "alboko bentrikuluak ",
             "b": true
           },
           {
-            "text": " "
+            "text": "(bata "
           },
           {
-            "text": "mugatzailea",
+            "text": "ezker hemisferioan ",
             "b": true
           },
           {
-            "text": "ren bidez (5. astean). "
+            "text": "eta bestea "
+          },
+          {
+            "text": "eskuin hemisferioan",
+            "b": true
+          },
+          {
+            "text": "). "
           }
         ]
       },
@@ -2590,37 +3948,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p4/s2",
         "parts": [
           {
-            "text": "Horren ostean barnerantz lehengo zelula motak zelula neuroepiteliarrak dira "
-          },
-          {
-            "text": "neuroepitelioa ",
-            "b": true
-          },
-          {
-            "text": "eratuz. "
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p4/s3",
-        "parts": [
-          {
-            "text": "Zelula horiek bereizi egiten dira eta zelula mota desberdinak sortzen dituzte, nagusienak, "
-          },
-          {
-            "text": "neuroblastoak",
-            "b": true
-          },
-          {
-            "text": ". "
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p4/s4",
-        "parts": [
-          {
-            "text": "Garapenean neuroblastoak garatu bitartean neuronak sortzen dira haietatik."
+            "text": "Tamainaz nagusienak izango dira."
           }
         ]
       }
@@ -2635,21 +3963,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p5/s1",
         "parts": [
           {
-            "text": "Neuroblastoaren geruzari "
+            "text": "Telentzefaloaren jarraian "
           },
           {
-            "text": "manto geruza ",
+            "text": "dientzefaloa ",
             "b": true
           },
           {
-            "text": "(ondoren gai grusa izango da)"
-          },
-          {
-            "text": " ",
-            "b": true
-          },
-          {
-            "text": "esaten zaio, bertan neuroblastoen somak (zelulen groputzak) aurkitzen dira. "
+            "text": "kokatzen da (telentzefalo xixkuen artean geldituko da, xixkuak asko hasten direnean beraien bentrikuluak ere asko hasten dira eta dientzefaloa estaltzen dute kanpotik, dientzefaloa barnean geratuz). "
           }
         ]
       },
@@ -2657,36 +3978,21 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p5/s2",
         "parts": [
           {
-            "text": "Neuroblastoen axoiak berriz, kanporantz "
+            "text": "Dientzefaloaren barnean "
           },
           {
-            "text": "geruza marginala ",
+            "text": "hirugarren",
             "b": true
           },
           {
-            "text": "(ondoren gai zuria izango dena) sortuz (horixka). "
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p5/s3",
-        "parts": [
-          {
-            "text": "Kanpoko muga hasieran"
+            "text": " "
           },
           {
-            "text": " kanpoko mintz mugatzailea",
+            "text": "bentrikulua (III bentrikulua) ",
             "b": true
           },
           {
-            "text": " izango da, eta bertan"
-          },
-          {
-            "text": " pia materra",
-            "b": true
-          },
-          {
-            "text": " eratuko da), ehunari lotuta dagoena."
+            "text": "sortzen da."
           }
         ]
       }
@@ -2701,7 +4007,35 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p6/s1",
         "parts": [
           {
-            "text": "Aurretik esan bezala, alde dortsalean neurona sentsitiboak daude eta alde bentralean berrriz, neurona motorrak. "
+            "text": "Jarraian "
+          },
+          {
+            "text": "mesentzefaloa ",
+            "b": true
+          },
+          {
+            "text": "kokatzen da, pareta asko loditzen da eta erdiko hodia estutu egiten da "
+          },
+          {
+            "text": "akueduktua ",
+            "b": true
+          },
+          {
+            "text": "eratuz ("
+          },
+          {
+            "text": "mesentzefalo akueduktua ",
+            "b": true
+          },
+          {
+            "text": "/"
+          },
+          {
+            "text": "Silvio ",
+            "b": true
+          },
+          {
+            "text": "akueduktua deitzen zaio baita ere). "
           }
         ]
       },
@@ -2709,14 +4043,50 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p6/s2",
         "parts": [
           {
-            "text": "Hasieran 2 plaka nagusi egongo dira:"
+            "text": "Jarraian beste egitura bat dago: "
+          },
+          {
+            "text": "erronbentzefaloa ",
+            "b": true
+          },
+          {
+            "text": "(hemendik sortzen dira "
+          },
+          {
+            "text": "mielentzefalo ",
+            "b": true
+          },
+          {
+            "text": "eta "
+          },
+          {
+            "text": "metentzefaloa",
+            "b": true
+          },
+          {
+            "text": "). "
+          }
+        ]
+      },
+      {
+        "id": "w19/7/p6/s3",
+        "parts": [
+          {
+            "text": "Erronbentzefalotik sortuko den bentrikulu hori erronbo forma mantenduko du eta "
+          },
+          {
+            "text": "IV bentrikulua ",
+            "b": true
+          },
+          {
+            "text": "izango da."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "7",
     "id": "w19/7/p7",
     "sentences": [
@@ -2724,21 +4094,39 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p7/s1",
         "parts": [
           {
-            "text": "● Alde bentralean "
-          },
-          {
-            "text": "oinalde plaka",
+            "text": "KONTUZ!",
             "b": true
           },
           {
-            "text": ", motorra."
+            "text": ": Esaten badugu "
+          },
+          {
+            "text": "I edo II bentrikulua",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "TXARTO ",
+            "b": true
+          },
+          {
+            "text": "DAGO, "
+          },
+          {
+            "text": "ALBOKOAK",
+            "b": true
+          },
+          {
+            "text": " DEITZEN DIRA."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "caption",
     "section": "7",
     "id": "w19/7/p8",
     "sentences": [
@@ -2746,256 +4134,15 @@ export const w19: NotesBlock[] = [
         "id": "w19/7/p8/s1",
         "parts": [
           {
-            "text": "● Alde dortsalean "
-          },
-          {
-            "text": "hegal plaka",
-            "b": true
-          },
-          {
-            "text": ", sentsitiboa."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "7",
-    "id": "w19/7/p9",
-    "sentences": [
-      {
-        "id": "w19/7/p9/s1",
-        "parts": [
-          {
-            "text": "Bien artean anatomikoki ez dago mugarik baina fisiologikoki bai, "
-          },
-          {
-            "text": "ildo mugatzailea.",
-            "b": true
+            "text": "atzekaldetik ikusita dago argazki hau (ikuspegi",
+            "i": true
           },
           {
             "text": " "
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p9/s2",
-        "parts": [
-          {
-            "text": "Alde dortsaleko muturrean "
           },
           {
-            "text": "sabai plaka",
-            "b": true
-          },
-          {
-            "text": " eta alde bentralekoan"
-          },
-          {
-            "text": " zoru plaka",
-            "b": true
-          },
-          {
-            "text": ". "
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p9/s3",
-        "parts": [
-          {
-            "text": "Bertan axoiak pasatzen dira alde batetik bestera eta eremu hauetan ez dago manto geruzarik, "
-          },
-          {
-            "text": "soilik geruza marginala",
-            "b": true
-          },
-          {
-            "text": " dago. "
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p9/s4",
-        "parts": [
-          {
-            "text": "Ependimo pareta eratzen gelditu diren neuroepitelioko zelulek "
-          },
-          {
-            "text": "ependimo geruza",
-            "b": true
-          },
-          {
-            "text": " eratuko dute, eta barnerago geratu diren zelulek (neuroblastoetatik eratorriak) "
-          },
-          {
-            "text": "neuronak",
-            "b": true
-          },
-          {
-            "text": " emango dituzte: hauek gai grisa eratuko dute eta hauen axoiak kanporantz geratuko dira eta gai zuria osatuko dute. "
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p9/s5",
-        "parts": [
-          {
-            "text": "Azkenean meningea, pia materra, eratuz."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "7",
-    "id": "w19/7/p10",
-    "sentences": [
-      {
-        "id": "w19/7/p10/s1",
-        "parts": [
-          {
-            "text": "Ornomuina jada garatuta dagoenean"
-          },
-          {
-            "text": " plakak desagertu",
-            "b": true
-          },
-          {
-            "text": " egiten dira eta ez dira horrela deitzen: hegal plaka ornomuinaren"
-          },
-          {
-            "text": " eremu sentsitiboa",
-            "b": true
-          },
-          {
-            "text": " deituko da eta oinalde plaka ornomuinaren "
-          },
-          {
-            "text": "eremu motorra",
-            "b": true
-          },
-          {
-            "text": ". "
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p10/s2",
-        "parts": [
-          {
-            "text": "2 idor bata aurrean (askoz sakonagoa) bestea atzean, barnean gai grisa H forma hartuz, kanpoan gai zuria atzeko adarrak sentsitiboak eta aurreko adarrak motorrak, tartean alboko adartxo sinpatikoak agertzen direnean T1 etik L 2 ra."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "7",
-    "id": "w19/7/p11",
-    "sentences": [
-      {
-        "id": "w19/7/p11/s1",
-        "parts": [
-          {
-            "text": "Bizkar hezurra ornoumina baino gehiago hazten da enbrioia garatzen doan heinean baina ornomiuna ez da hainbeste hazten. "
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p11/s2",
-        "parts": [
-          {
-            "text": "Hodiaren bi muturretan, goikaldean sabai-plaka eta behekaldean zoru-plaka izango dugu. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p11/s3",
-        "parts": [
-          {
-            "text": "Bi plaka horietan ez daude ia neuronarik (ez dagoelako manto geruzarik, bakarrik geruza marginala), axoiak bakarrik aurkitzen dira. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p11/s4",
-        "parts": [
-          {
-            "text": "Plaka hauek ezker eta eskuin aldeak komunikatzeko daude, axoiez eratuta daude. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p11/s5",
-        "parts": [
-          {
-            "text": "Hegal-plaka eta oinaldeko-plaken artean ildo bat agertuko da, ",
-            "u": true
-          },
-          {
-            "text": "ildo mugatzailea",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": ", bi plakak mugatzen baititu. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p11/s6",
-        "parts": [
-          {
-            "text": "Barnean, ependimoa dago, hasieran neuroepitelio bat izango du, horren zelula neuroepitelialak glioblastoetatik garatuko dira. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p11/s7",
-        "parts": [
-          {
-            "text": "Gero (behin jaiota) ependimoan, zelula ependimarioak egongo dira.",
-            "u": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "7",
-    "id": "w19/7/p12",
-    "sentences": [
-      {
-        "id": "w19/7/p12/s1",
-        "parts": [
-          {
-            "text": "Kontuz! "
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p12/s2",
-        "parts": [
-          {
-            "text": "3.hilabetean jada ez dago plakarik! "
-          }
-        ]
-      },
-      {
-        "id": "w19/7/p12/s3",
-        "parts": [
-          {
-            "text": "Ornomuinaren eremu sentsitiboa eta motorra daude."
+            "text": "dortsala)",
+            "i": true
           }
         ]
       }
@@ -3010,7 +4157,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/8/p2/s1",
         "parts": [
           {
-            "text": "8. BIZKARREZUR-MUINAREN ALDAKETAK",
+            "text": "8. LIKIDO ZEFALORRAKIDEOA",
             "b": true
           }
         ]
@@ -3026,7 +4173,21 @@ export const w19: NotesBlock[] = [
         "id": "w19/8/p3/s1",
         "parts": [
           {
-            "text": "Bizkarrezurra ornomuina baino gehiago hazten (luzatzen) da. "
+            "text": "Likido zefalorrakideoa "
+          },
+          {
+            "text": "erdiko nerbio sistemaren ",
+            "b": true
+          },
+          {
+            "text": "barnean garraiatzen den likido "
+          },
+          {
+            "text": "amortiguatzailea ",
+            "b": true
+          },
+          {
+            "text": "da (kolpeak hain indartsuak ez sentitzeko, batez ere burmuinean). "
           }
         ]
       },
@@ -3034,53 +4195,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/8/p3/s2",
         "parts": [
           {
-            "text": "Bizkarrezurra egitura metamerikoa da (errepikatu egiten da). "
-          }
-        ]
-      },
-      {
-        "id": "w19/8/p3/s3",
-        "parts": [
-          {
-            "text": "Ornoen artean zuloak daude, horietatik, "
+            "text": "Ornomuinaren barnetik garraiatzen da "
           },
           {
-            "text": "nerbio",
+            "text": "ependimo ",
             "b": true
           },
           {
-            "text": " "
-          },
-          {
-            "text": "espinalak",
-            "b": true
-          },
-          {
-            "text": " pasatzen dira (pareko zuloetatik), ornomuinetik kanporatu ahal izateko (nerbio espinalak). "
-          }
-        ]
-      },
-      {
-        "id": "w19/8/p3/s4",
-        "parts": [
-          {
-            "text": "Bizkarrezurra eta ornomuina tamainaz berdinak direnean (parean daudenean), nerbio bikote pare bakoitza (eskuinekoa eta ezkerrekoa) beraien parean dauden zuloetatik irteten dira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/8/p3/s5",
-        "parts": [
-          {
-            "text": "Nerbioak zuloetatik irteten direnean, sistema eratuta dago, beraz, bizkarezurra hazten denean, zuloak dauden lekutik mugitzen dira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/8/p3/s6",
-        "parts": [
-          {
-            "text": "Bizkarra luzatzean, nerbioa horrekin batera luzatzen da (zuloetatik pasatzen baita)."
+            "text": "hodiaren bidez eta bentrikuluen barruan ere aurkitzen da."
           }
         ]
       }
@@ -3095,7 +4217,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/8/p4/s1",
         "parts": [
           {
-            "text": "4. hilabetearen ondoren, batez ere enbrioiaren hazkuntza eman behar da. "
+            "text": "Likido hau "
+          },
+          {
+            "text": "5. astean ",
+            "b": true
+          },
+          {
+            "text": "hasten da eratzen. "
           }
         ]
       },
@@ -3103,21 +4232,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/8/p4/s2",
         "parts": [
           {
-            "text": "Hazkuntzaren ondorioz, "
-          },
-          {
-            "text": "ornomuina",
-            "b": true
-          },
-          {
-            "text": " (trinkoa) ez da bizkarrezuraren amaierararte iritsiko (sakrorarte), gutxigorabehera "
-          },
-          {
-            "text": "L1-T12/L2 mailetara ",
-            "b": true
-          },
-          {
-            "text": " bakarrik iritsiko da. "
+            "text": "Gainera, likido zefalorrakideoaren ekoizpena jarraia/etengabekoa izango da. "
           }
         ]
       },
@@ -3125,52 +4240,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/8/p4/s3",
         "parts": [
           {
-            "text": "Hortik behera, bizkarrezur barnean nerbio solteak bakarrik aurkituko ditugu, ez ornomuina egitura trinko bezala. "
-          }
-        ]
-      },
-      {
-        "id": "w19/8/p4/s4",
-        "parts": [
-          {
-            "text": "L2tik aurrera aurkitzen diren nerbio solte multzoari,"
-          },
-          {
-            "text": " zaldi buztana",
-            "b": true
-          },
-          {
-            "text": " deritzo. "
-          }
-        ]
-      },
-      {
-        "id": "w19/8/p4/s5",
-        "parts": [
-          {
-            "text": "Buztaneko nerbioak,"
-          },
-          {
-            "text": " likido",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "zefaloerrakideoz",
-            "b": true
-          },
-          {
-            "text": " beteriko poltsa batean aurkitzen dira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/8/p4/s6",
-        "parts": [
-          {
-            "text": "Poltsa hori dura mater (kanpoko meningea, gogorrena, kraneoari lotuta) eta araknoidesaren (tarteko meningea) artean eratzen da."
+            "text": "Eremua mugatua bada, hezurrak eremua mugatu egiten duelako ekoizten den bitartean xurgatu egin behar da eremuan sartzeko."
           }
         ]
       }
@@ -3185,11 +4255,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/8/p5/s1",
         "parts": [
           {
-            "text": "Ornomuinaren konoa:",
+            "text": "Non ekoizten da? ",
             "b": true
-          },
-          {
-            "text": " ornomuiunaren amaierak forma hori baitu. "
           }
         ]
       },
@@ -3197,7 +4264,11 @@ export const w19: NotesBlock[] = [
         "id": "w19/8/p5/s2",
         "parts": [
           {
-            "text": "Hortik beherantz zaldi buztana bakarrik dago, nerbio solteak. "
+            "text": "Sare koroideetan",
+            "b": true
+          },
+          {
+            "text": ": Sare formako egiturak dira arteriolaz eratuta daudenak. "
           }
         ]
       },
@@ -3205,7 +4276,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/8/p5/s3",
         "parts": [
           {
-            "text": "Konotik aurrera lotailu bat aurkituko dugu euspen funtzioa duena."
+            "text": "Sare hauek bentrikuluen "
+          },
+          {
+            "text": "sabaian ",
+            "b": true
+          },
+          {
+            "text": "kokatuta daude, ondoren likidoa bentrikuluetara dreinatzeko."
           }
         ]
       }
@@ -3220,68 +4298,21 @@ export const w19: NotesBlock[] = [
         "id": "w19/8/p6/s1",
         "parts": [
           {
-            "text": "*"
+            "text": "Alboko bentrikuluetan dagoen likidoa III bentrikulura pasatu behar da "
           },
           {
-            "text": "Puntzioak",
+            "text": "Monroe",
             "b": true
           },
           {
-            "text": " (puntzio lunbarrak/gerrikoak): likido zefaloerrakideoaren lagintxoak lortzeko erabiltzen dira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/8/p6/s2",
-        "parts": [
-          {
-            "text": "Likido zefaloerrakideoa, nerbio-sistema zentralaren kanpotik eta barrutik dabilena. "
-          }
-        ]
-      },
-      {
-        "id": "w19/8/p6/s3",
-        "parts": [
-          {
-            "text": "Likido zefaloerrakdieoaren funtzio nagusia golpeak "
+            "text": " zuloa/"
           },
           {
-            "text": "amortiguatzea",
+            "text": "bentrikulu arteko zuloaren ",
             "b": true
           },
           {
-            "text": " da. "
-          }
-        ]
-      },
-      {
-        "id": "w19/8/p6/s4",
-        "parts": [
-          {
-            "text": "Meningitis eta beste gaixotasun batzuekin, likido zefaloerrakideo horretan markatzaile bereziak (aztarnak) agertzen dira eta horretarako egiten dira puntzioak (markatzaile horiek dauden jakiteko). "
-          }
-        ]
-      },
-      {
-        "id": "w19/8/p6/s5",
-        "parts": [
-          {
-            "text": "Puntzioak, orokorrean L2 mailan egiten dira, zaldi buztan eremuan (ez dagoelako ornomuin trinkorik, bestela lesioak eratzea errazagoa izango litzateke)."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "8",
-    "id": "w19/8/p7",
-    "sentences": [
-      {
-        "id": "w19/8/p7/s1",
-        "parts": [
-          {
-            "text": "- Likido zefaloerrakideoa, aurrerago sakonago azalduta."
+            "text": "bidez (alboko bentrikuluak eta III bentrikulua komunikatu)."
           }
         ]
       }
@@ -3290,20 +4321,50 @@ export const w19: NotesBlock[] = [
   {
     "kind": "p",
     "section": "8",
-    "id": "w19/8/p8",
+    "id": "w19/8/p7",
     "sentences": [
       {
-        "id": "w19/8/p8/s1",
+        "id": "w19/8/p7/s1",
         "parts": [
           {
-            "text": "*"
+            "text": "III bentrikulutik IV bentrikulura "
           },
           {
-            "text": "Anestesia epidurala ",
+            "text": "akueduktotik ",
             "b": true
           },
           {
-            "text": "(erditzean edo beheko gorputz adarretako kirurgiaren bat egitean erabiltzen da): dura mater (meningeetako bat, kanpokoa) eta bizkar hezurraren artean epidurala dago (batez ere gantzez, nerbioz eta odol hodiz osatuta) eta anestesia geruza horretan ematen da, zaldi buztaneko nerbioak lokartzeko (beheko gorputz adarretako eta barrunbe pelbianoko nerebioak)."
+            "text": "pasatuko da eta bertan gehiago ekoiztuko da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/8/p7/s2",
+        "parts": [
+          {
+            "text": "IV bentrikulutik likido zefalorrakideoaren parte bat jarraituko du ependimotik eta beste parte bat aterako da eradiko nerbio sistematik, ingurutik ibiltzeko, erdiko nerbio sistema ingurutik babesteko. "
+          }
+        ]
+      },
+      {
+        "id": "w19/8/p7/s3",
+        "parts": [
+          {
+            "text": "Likidoa IV. bentrikulutik atera egingo da 3 zuloren bitartez: "
+          },
+          {
+            "text": "bi albokoak",
+            "b": true
+          },
+          {
+            "text": " (Luschka zuloak) eta "
+          },
+          {
+            "text": "bata erdikoa edo mediala ",
+            "b": true
+          },
+          {
+            "text": "(Magendie)."
           }
         ]
       }
@@ -3318,7 +4379,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p2/s1",
         "parts": [
           {
-            "text": "9. PLAKA NEURALA (nerbio sistemaren garapena)",
+            "text": "9. MENINGEAK",
             "b": true
           }
         ]
@@ -3334,7 +4395,7 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p3/s1",
         "parts": [
           {
-            "text": "Hasieran plaka bat da, plakaren aldeak tolestu egiten dira erdikaldean fusionatu arte. "
+            "text": "Likido zefalorrakideoa meningeetan xurgatzen da. "
           }
         ]
       },
@@ -3342,51 +4403,11 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p3/s2",
         "parts": [
           {
-            "text": "Fusio hau erdi mailan hasiko da, atzean eta aurrean "
+            "text": "Meningeak garatzen dira "
           },
           {
-            "text": "neuroporoak ",
+            "text": "5. astetik 8.",
             "b": true
-          },
-          {
-            "text": "utziz. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p3/s3",
-        "parts": [
-          {
-            "text": "Atzeko neuroporoa 25. egunean ixten da eta aurreko neuroporoa 28. egunean. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p3/s4",
-        "parts": [
-          {
-            "text": "Gainera tolespen gandorren muturretan zelula bereziak eratzen dira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p3/s5",
-        "parts": [
-          {
-            "text": "Gandor neuraleko zelulak, ",
-            "b": true
-          },
-          {
-            "text": "hain zuzen, batzuk migratu egoten dute eta beste batzuk ez. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p3/s6",
-        "parts": [
-          {
-            "text": "Atzeko neuroporoa ixten da aurrekoa baino arinago."
           }
         ]
       }
@@ -3401,7 +4422,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p4/s1",
         "parts": [
           {
-            "text": "Garapenean, alde kranealean hodi neuralak, hodi forma galdu eta xixkuak eratzen dira, barrunbe forma hartuz. "
+            "text": "astera. ",
+            "b": true
           }
         ]
       },
@@ -3409,67 +4431,14 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p4/s2",
         "parts": [
           {
-            "text": "Hasieran 3 xixku edo zabalgune (zakuak, "
+            "text": "Erdiko nerbio sistema inguratzen dauden mintz batzuk eratzen dituzte meningeak (gogorrak edo finak izan daitezke) hiruren funtzioa "
           },
           {
-            "text": "likido zefalorrakideoa",
+            "text": "erdiko nerbio sistema babestea ",
             "b": true
           },
           {
-            "text": " bertan dago) daude, zeinetatik garapenean hurrengo xixkuak ematen dituzten, xixku bakoitzetik egitura desberdinak eratzen direlarik:"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "9",
-    "id": "w19/9/p5",
-    "sentences": [
-      {
-        "id": "w19/9/p5/s1",
-        "parts": [
-          {
-            "text": "● "
-          },
-          {
-            "text": "PROSENTZEFALOA: ",
-            "b": true
-          },
-          {
-            "text": "Aurrekoa; zefalikoena. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p5/s2",
-        "parts": [
-          {
-            "text": "○ "
-          },
-          {
-            "text": "Telentzefaloa:",
-            "b": true
-          },
-          {
-            "text": " ■ Garun kortexa (hemisferioak) aterako dira ondoren hemendik. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p5/s3",
-        "parts": [
-          {
-            "text": "Eremu bihurgunetsua. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p5/s4",
-        "parts": [
-          {
-            "text": "Tamainaz gehien hazi eta dientzefaloa inguratzen duena."
+            "text": "da."
           }
         ]
       }
@@ -3478,63 +4447,61 @@ export const w19: NotesBlock[] = [
   {
     "kind": "p",
     "section": "9",
+    "id": "w19/9/p5",
+    "sentences": [
+      {
+        "id": "w19/9/p5/s1",
+        "parts": [
+          {
+            "text": "Kanpoan "
+          },
+          {
+            "text": "dura materra",
+            "b": true
+          },
+          {
+            "text": ". "
+          }
+        ]
+      },
+      {
+        "id": "w19/9/p5/s2",
+        "parts": [
+          {
+            "text": "Dura materraren barnean "
+          },
+          {
+            "text": "araknoidea ",
+            "b": true
+          },
+          {
+            "text": "eta gero pia materra (ehunari lotuta)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "9",
     "id": "w19/9/p6",
     "sentences": [
       {
         "id": "w19/9/p6/s1",
         "parts": [
           {
-            "text": "○ "
+            "text": "● Pia materra eta araknoidesa jatorri berdina dute: gandor neurala, hau da, "
           },
           {
-            "text": "Dientzefaloa:",
+            "text": "jatorri",
             "b": true
           },
           {
-            "text": " (barnean baina oinaldean); tamainaz ez da handia, baina oso garrantzitsua da. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p6/s2",
-        "parts": [
-          {
-            "text": "■ Epitalamoa (talamoaren goikaldean) KONTUZ!! "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p6/s3",
-        "parts": [
-          {
-            "text": "irudian ez da ageri ■ "
+            "text": " "
           },
           {
-            "text": "Talamoa",
-            "i": true
-          },
-          {
-            "text": " (egiturarik nagusiena, erdian dagoelako): sentsazioak ez badira hemendik pasatzen ez ditugu nabaritzen testurak, mina, tenperatura, ikusmena, entzumena… ez dugu ezer nabarituko. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p6/s4",
-        "parts": [
-          {
-            "text": "■ Hipotalamoa (talamoaren behekaldean): hormonen arduradun nagusia, hormonak eratu eta beste erraietan eratzen diren hormonen ekoizpena erregulatzen duena. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p6/s5",
-        "parts": [
-          {
-            "text": "(Gosearen zentroa, loaren zentroa…) ",
-            "u": true
-          },
-          {
-            "text": "■ Azpitalamoa"
+            "text": "ektodermikoa.",
+            "b": true
           }
         ]
       }
@@ -3549,47 +4516,21 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p7/s1",
         "parts": [
           {
-            "text": "● "
+            "text": "● Dura materra, ordea, jatorri "
           },
           {
-            "text": "MESENTZEFALOA",
+            "text": "mesodermikoa ",
             "b": true
           },
           {
-            "text": ": Tartekoa. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p7/s2",
-        "parts": [
-          {
-            "text": "Mensentzefaloak mesentzefaloa izaten jarraituko du, ez da ezer eratuko bertatik. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p7/s3",
-        "parts": [
-          {
-            "text": "Hasierako zatian handia gero txikitu eta bukaerako zatian nahiko txikia. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p7/s4",
-        "parts": [
-          {
-            "text": "Nagusietan ere mesentzefaloa deritzo.",
-            "u": true
+            "text": "dauka."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "9",
     "id": "w19/9/p8",
     "sentences": [
@@ -3597,21 +4538,29 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p8/s1",
         "parts": [
           {
-            "text": "● "
+            "text": "Garunean, dura materra zuzenean hezurrari itsatsita dago, eta pia materra zuzenean garuneko ehunari atxikita dago. "
+          }
+        ]
+      },
+      {
+        "id": "w19/9/p8/s2",
+        "parts": [
+          {
+            "text": "Hori dela eta, "
           },
           {
-            "text": "ERRONBENTZEFALOA: ",
+            "text": "ez dago espazio epiduralik ",
             "b": true
           },
           {
-            "text": "Erronbo forma duena."
+            "text": "garunean."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "9",
     "id": "w19/9/p9",
     "sentences": [
@@ -3619,18 +4568,21 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p9/s1",
         "parts": [
           {
-            "text": "- "
+            "text": "Orno-muinean, berriz, dura materra ez dago zuzenean hezurrarekin lotuta; hezurra eta duramaterraren artean "
           },
           {
-            "text": "Metentzefaloa",
+            "text": "espazio epidurala ",
             "b": true
+          },
+          {
+            "text": "sortzen da, eta espazio horretan gantza, zain txikiak eta nerbioak aurki daitezke."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "9",
     "id": "w19/9/p10",
     "sentences": [
@@ -3638,14 +4590,29 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p10/s1",
         "parts": [
           {
-            "text": "- Zubia erraboila eta mesentzefaloaren artean."
+            "text": "Dura mater barruan aurkitzen da araknoidesa, eta horrek armiarmaren antzeko sare bat osatzen du. "
+          }
+        ]
+      },
+      {
+        "id": "w19/9/p10/s2",
+        "parts": [
+          {
+            "text": "Araknoidesa eta pia materra ez daude zuzenean lotuta; bien artean eremu "
+          },
+          {
+            "text": "azpi-araknoidea ",
+            "b": true
+          },
+          {
+            "text": "dago."
           }
         ]
       }
     ]
   },
   {
-    "kind": "li",
+    "kind": "p",
     "section": "9",
     "id": "w19/9/p11",
     "sentences": [
@@ -3653,218 +4620,15 @@ export const w19: NotesBlock[] = [
         "id": "w19/9/p11/s1",
         "parts": [
           {
-            "text": "- Garuntxoa (zerebeloa), atzean dago."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "9",
-    "id": "w19/9/p12",
-    "sentences": [
-      {
-        "id": "w19/9/p12/s1",
-        "parts": [
-          {
-            "text": "- "
-          },
-          {
-            "text": "Mielentzefaloa",
-            "b": true
-          },
-          {
-            "text": " (kontaktu zuzenean ornomuinearekin, kaudalena)"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "9",
-    "id": "w19/9/p13",
-    "sentences": [
-      {
-        "id": "w19/9/p13/s1",
-        "parts": [
-          {
-            "text": "- Erraboila: hemendik ornomuina luzatuko da. "
+            "text": "Eremu azpi-araknoide honetan likido zefalorrakideoa (LCR) garraiatzen da, garuneko eta kanpoaldeko inguruneen artean. "
           }
         ]
       },
       {
-        "id": "w19/9/p13/s2",
+        "id": "w19/9/p11/s2",
         "parts": [
           {
-            "text": "Garuna eta ornomuinaren arteko lotura edo konexioa izango da (erraboia=bulbo, potoloa)."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "9",
-    "id": "w19/9/p14",
-    "sentences": [
-      {
-        "id": "w19/9/p14/s1",
-        "parts": [
-          {
-            "text": "*egitura hauek aurretik atzera izendatuta daude"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "9",
-    "id": "w19/9/p15",
-    "sentences": [
-      {
-        "id": "w19/9/p15/s1",
-        "parts": [
-          {
-            "text": "Hauek dira hasierako 3 xixku horietatik ateratzen diren egiturak eta "
-          },
-          {
-            "text": "3 xixkuak alde zefalikoan",
-            "b": true
-          },
-          {
-            "text": " bakarrik eratzen dira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p15/s2",
-        "parts": [
-          {
-            "text": "Alde kaudalean (gero ornomuina garatuko den tokian) hodia ez da eraldatzen eta hodi izaten jarraitzen du."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "9",
-    "id": "w19/9/p16",
-    "sentences": [
-      {
-        "id": "w19/9/p16/s1",
-        "parts": [
-          {
-            "text": "28. egunean 3 xixkuak iada erlatiboki erdieratuta daude eta euren artean bi tolespen ematen dira, bata mesentzefalo mailan,"
-          },
-          {
-            "text": " tolespen zefalikoa",
-            "b": true
-          },
-          {
-            "text": ", eta bestea gutxigora behera erronbentzefalo mailan,"
-          },
-          {
-            "text": " tolespen zerbikala edo lepoko tolespena",
-            "b": true
-          },
-          {
-            "text": ". "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p16/s2",
-        "parts": [
-          {
-            "text": "5. astean prosentzefaloan atera dira beste bi xixkuak: telentzefaloa eta dientzefaloa. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p16/s3",
-        "parts": [
-          {
-            "text": "Mesentzefaloa mesentzefalo izaten jarraituko du eta atzean erronbentzefalotik atera dira metentzefaloa eta mielentzefaloa. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p16/s4",
-        "parts": [
-          {
-            "text": "Horrela garuntxoa ia eratzen hasia dago eta honen aurrean zubia dago. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p16/s5",
-        "parts": [
-          {
-            "text": "Tolespen eta egitura hauen agerpenen ondorioz beste tolespen batzuk agertuko dira; zubian (metentzefalo mailan)"
-          },
-          {
-            "text": " zubi tolespena ",
-            "b": true
-          },
-          {
-            "text": "emango da. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p16/s6",
-        "parts": [
-          {
-            "text": "Mesentzefalo eta metentzefaloaren arteko muga estutu egiten da, "
-          },
-          {
-            "text": "istmoa ",
-            "b": true
-          },
-          {
-            "text": "eratuz, genetikoki oso garrantzitsua da garuna antolatzeko gene asko istomtik garatzen direlako."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "9",
-    "id": "w19/9/p17",
-    "sentences": [
-      {
-        "id": "w19/9/p17/s1",
-        "parts": [
-          {
-            "text": "Barneko egiturak handitzen badira baina espazio limitatua badugu egitura horiek bihurri edo tolestu egin beharko dira."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "p",
-    "section": "9",
-    "id": "w19/9/p18",
-    "sentences": [
-      {
-        "id": "w19/9/p18/s1",
-        "parts": [
-          {
-            "text": "Xixkuak (prosentzefalo, mesentzefalo eta erronbentzefalo) teorikoki barnea hutsik dute, xixkuak gutxi gorabehera zakuak baitira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/9/p18/s2",
-        "parts": [
-          {
-            "text": "Hala ere, ez dago hutsik, barrunbea badute, baina xixku eta ornomuinaren barnetik (xixkuaren eta ornomuinaren barneko eremuak komunikatuta daude) likido zefalorrakideoz beteta egongo dira (likido zefalorrakideoan epidurala sartu)."
+            "text": "LCR honek zain-sistemara pasatzen da espazio azpi-araknoidean zehar, eta horrela xurgatzen da berriro organismoan."
           }
         ]
       }
@@ -3879,17 +4643,34 @@ export const w19: NotesBlock[] = [
         "id": "w19/10/p2/s1",
         "parts": [
           {
-            "text": "10.",
-            "b": true,
-            "u": true
+            "text": "10. BURMUINAREN ATALAK (mutur kaudaletik zefalikora) gai grisa",
+            "b": true
           },
           {
             "text": " "
           },
           {
-            "text": "TALAMOA",
-            "b": true,
-            "u": true
+            "text": "kanpotik gai zuria barnean ",
+            "b": true
+          },
+          {
+            "text": "(axoia)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "10.1",
+    "id": "w19/10.1/p2",
+    "sentences": [
+      {
+        "id": "w19/10.1/p2/s1",
+        "parts": [
+          {
+            "text": "10.1 MIELENTZEFALOA: ERRABOILA",
+            "b": true
           }
         ]
       }
@@ -3897,136 +4678,22 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "10",
-    "id": "w19/10/p3",
+    "section": "10.1",
+    "id": "w19/10.1/p3",
     "sentences": [
       {
-        "id": "w19/10/p3/s1",
+        "id": "w19/10.1/p3/s1",
         "parts": [
           {
-            "text": "Eskema honetan nerbio sistemak nola funtzionatzen duen azaldu. ",
-            "u": true
+            "text": "Garunean aurkitzen dugun lehenengo egitura erraboila da, mielentzefaloaren eratorria dena. "
           }
         ]
       },
       {
-        "id": "w19/10/p3/s2",
+        "id": "w19/10.1/p3/s2",
         "parts": [
           {
-            "text": "Hasieran nerbio sistema da ingurumenarekin erlazionatzeko daukagun sistema nagusiena (endokrinoak ere ditugu). ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/10/p3/s3",
-        "parts": [
-          {
-            "text": "Izan ere inguruneko estimulu guztiak (ikusi, usaindu, ukitu, mina, temperatura…) nerbio sistematik hartuko dugu. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/10/p3/s4",
-        "parts": [
-          {
-            "text": "Hasieran estimulu guzti hauek ",
-            "u": true
-          },
-          {
-            "text": "neurona sentsitibo batek ",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": "hartuko ditu eta ",
-            "u": true
-          },
-          {
-            "text": "garunerantz ",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": "bideratuko du. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/10/p3/s5",
-        "parts": [
-          {
-            "text": "Batzuetan ",
-            "u": true
-          },
-          {
-            "text": "ornomuinean sinapsia",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " emango da beste neurona sentsitibo bati informazioa pasatuz. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/10/p3/s6",
-        "parts": [
-          {
-            "text": "Ornomuinean egiten ez badu, ",
-            "u": true
-          },
-          {
-            "text": "entzefaloan",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " egingo du lehenengo sinapsia. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/10/p3/s7",
-        "parts": [
-          {
-            "text": "Baina informazioa ",
-            "u": true
-          },
-          {
-            "text": "garun kortexera",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " heldu aurretik ",
-            "u": true
-          },
-          {
-            "text": "sinapsiak eman behar",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "dira. ",
-            "b": true,
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/10/p3/s8",
-        "parts": [
-          {
-            "text": "Sinapsi garrantzitsuena TALAMOAN ematen dena da.",
-            "u": true
+            "text": "Erraboilaren eginkizun nagusia burmuina eta ornomuina lotzea da eta bere egitura ornomuineko egituraren antzekoa da, nahiz eta apur bat lodiagoa eta zabalagoa izan."
           }
         ]
       }
@@ -4034,47 +4701,913 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "10",
-    "id": "w19/10/p4",
+    "section": "10.1",
+    "id": "w19/10.1/p4",
     "sentences": [
       {
-        "id": "w19/10/p4/s1",
+        "id": "w19/10.1/p4/s1",
         "parts": [
           {
-            "text": "TALAMOA",
-            "b": true,
-            "u": true
+            "text": "Erraboilaren mailan, hodi ependimarioa edo hodi zentrala agertzen da, eta ornomuinaren izen bera mantentzen du."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "10.1",
+    "id": "w19/10.1/p5",
+    "sentences": [
+      {
+        "id": "w19/10.1/p5/s1",
+        "parts": [
+          {
+            "text": "● "
           },
           {
-            "text": ": entzefalo osoko egitura sensitibo nagusiena (osagai motorrak ere baditu). ",
-            "u": true
+            "text": "Alde bentralean",
+            "b": true
+          },
+          {
+            "text": ", piramideak aurkitzen dira: burmuinetik ornomuinera jaisten diren axoi motorrez osatutako egiturak."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "10.1",
+    "id": "w19/10.1/p6",
+    "sentences": [
+      {
+        "id": "w19/10.1/p6/s1",
+        "parts": [
+          {
+            "text": "● "
+          },
+          {
+            "text": "Alde dortsalean",
+            "b": true
+          },
+          {
+            "text": ", berriz, goranzko bideak daude: sentsitiboak dira, eta axoiez eratutako bideak osatzen dituzte."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.1",
+    "id": "w19/10.1/p7",
+    "sentences": [
+      {
+        "id": "w19/10.1/p7/s1",
+        "parts": [
+          {
+            "text": "Gogoratu: zuntza = axoia, eta beti nerbio-sisteman erabiltzen den terminoa da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "10.2",
+    "id": "w19/10.2/p2",
+    "sentences": [
+      {
+        "id": "w19/10.2/p2/s1",
+        "parts": [
+          {
+            "text": "10.2 METENTZEFALOA",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.2",
+    "id": "w19/10.2/p3",
+    "sentences": [
+      {
+        "id": "w19/10.2/p3/s1",
+        "parts": [
+          {
+            "text": "Garunaren garapenean, "
+          },
+          {
+            "text": "sabai-plaka ",
+            "b": true
+          },
+          {
+            "text": "eta "
+          },
+          {
+            "text": "zoru-plaka ",
+            "b": true
+          },
+          {
+            "text": "bi plaka fin dira, eta hasieran axoiak bakarrik pasatzen dira bertatik."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.2",
+    "id": "w19/10.2/p4",
+    "sentences": [
+      {
+        "id": "w19/10.2/p4/s1",
+        "parts": [
+          {
+            "text": "Gero, sabai-plaka zabaldu egiten da eta hodi ependimarioa goitik irekitzen da, horren ondorioz zabalgune bat sortzen da, hau da, "
+          },
+          {
+            "text": "IV. bentrikulua. ",
+            "b": true
           }
         ]
       },
       {
-        "id": "w19/10/p4/s2",
+        "id": "w19/10.2/p4/s2",
         "parts": [
           {
-            "text": "Gainera, berezitasun handia dauka: sentsazioak ez badute sinapsia talamoan egiten ez gara kontziente sentsazio hori daukagunik. ",
-            "u": true
+            "text": "Garapena horrela gertatzen denean, hegal-plakako egitura sentikorrak alboratzen dira, eta egitura motorrak alde bentralean gelditzen dira, gainera medialki hurbiltzen dira."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.2",
+    "id": "w19/10.2/p5",
+    "sentences": [
+      {
+        "id": "w19/10.2/p5/s1",
+        "parts": [
+          {
+            "text": "Ondorioz, eremu motorra alde bentralean eta erdikaldean kokatzen da, eta eremu sentikorrak berriz, alde dortsalean eta alboetan, batez ere, geratzen dira."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "10.2.1",
+    "id": "w19/10.2.1/p2",
+    "sentences": [
+      {
+        "id": "w19/10.2.1/p2/s1",
+        "parts": [
+          {
+            "text": "10.2.1 ZUBIA - IV. BENTRIKULUA",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.2.1",
+    "id": "w19/10.2.1/p3",
+    "sentences": [
+      {
+        "id": "w19/10.2.1/p3/s1",
+        "parts": [
+          {
+            "text": "Mesentzefalora heltzean, hodi-egitura berriro antolatzen da: IV. bentrikuluaren zoruan egitura trinko bat eratuko da, eta egitura hori "
+          },
+          {
+            "text": "zubi ",
+            "b": true
+          },
+          {
+            "text": "izena izango du, hemendik pasatuko baitira bide guztiak, bai goranzkoak bai beheranzkoak."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.2.1",
+    "id": "w19/10.2.1/p4",
+    "sentences": [
+      {
+        "id": "w19/10.2.1/p4/s1",
+        "parts": [
+          {
+            "text": "Egitura hau lodia eta trinkoa da, eta "
+          },
+          {
+            "text": "axoi sentsitibo eta motorrez osatuta dago",
+            "b": true
+          },
+          {
+            "text": "; hortaz, zubitik igarotzen diren axoi guztiak bide trinko horretan elkartzen dira."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "10.2.2",
+    "id": "w19/10.2.2/p2",
+    "sentences": [
+      {
+        "id": "w19/10.2.2/p2/s1",
+        "parts": [
+          {
+            "text": "10.2.2 ZEREBELOA / GARUNTXOA",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.2.2",
+    "id": "w19/10.2.2/p3",
+    "sentences": [
+      {
+        "id": "w19/10.2.2/p3/s1",
+        "parts": [
+          {
+            "text": "IV. bentrikuluaren sabaian "
+          },
+          {
+            "text": "zerebeloa / garuntxoa ",
+            "b": true
+          },
+          {
+            "text": "eratzen da. "
           }
         ]
       },
       {
-        "id": "w19/10/p4/s3",
+        "id": "w19/10.2.2/p3/s2",
         "parts": [
           {
-            "text": "SENTSAZIO GUZTIETAN USAIMENEAN izan ezik. ",
-            "u": true
+            "text": "Hegal plaken eremu dortsala loditu egiten da, eta hasieran "
+          },
+          {
+            "text": "ezpain erronboideak ",
+            "b": true
+          },
+          {
+            "text": "agertzen dira. "
           }
         ]
       },
       {
-        "id": "w19/10/p4/s4",
+        "id": "w19/10.2.2/p3/s3",
         "parts": [
           {
-            "text": "Izan ere, usaimena zuzenean sudurretik kortexera doa (primitiboena delako).",
-            "u": true
+            "text": "Gero, egituren loditzea jarraitzen du eta "
+          },
+          {
+            "text": "zerebelo hasikina ",
+            "b": true
+          },
+          {
+            "text": "izeneko egitura sortzen da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.2.2/p3/s4",
+        "parts": [
+          {
+            "text": "Ezpain erronboide hauek erdiko lerroaren aldera hurbiltzen dira, eta fusionatu arte elkartzen dira. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.2.2/p3/s5",
+        "parts": [
+          {
+            "text": "Bitartean, enbrioa tolesten da eta zubi mailan "
+          },
+          {
+            "text": "zubi tolespena ",
+            "b": true
+          },
+          {
+            "text": "agertzen da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.2.2",
+    "id": "w19/10.2.2/p4",
+    "sentences": [
+      {
+        "id": "w19/10.2.2/p4/s1",
+        "parts": [
+          {
+            "text": "Erronbo formako mutur biek (kraneala eta kaudala) elkar hurbildu egiten dira, eta hegal plakak erronboaren aurreko aldean (kranealean) bakarrik garatzen dira. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.2.2/p4/s2",
+        "parts": [
+          {
+            "text": "Bi aldeetako plakak fusionatu ondoren, zerebeloa osatuta dago baina garatzen jarraituko du IV. bentrikulu osoa estaltzeko."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.2.2",
+    "id": "w19/10.2.2/p5",
+    "sentences": [
+      {
+        "id": "w19/10.2.2/p5/s1",
+        "parts": [
+          {
+            "text": "*Ikuspegi"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.2.2",
+    "id": "w19/10.2.2/p6",
+    "sentences": [
+      {
+        "id": "w19/10.2.2/p6/s1",
+        "parts": [
+          {
+            "text": "dortsala"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "10.3",
+    "id": "w19/10.3/p2",
+    "sentences": [
+      {
+        "id": "w19/10.3/p2/s1",
+        "parts": [
+          {
+            "text": "10.3 MESENTZEFALOA (Metentzefalo gainetik)",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.3",
+    "id": "w19/10.3/p3",
+    "sentences": [
+      {
+        "id": "w19/10.3/p3/s1",
+        "parts": [
+          {
+            "text": "6. astean hodi forma du, ornomuin baten antzekoa, eta antolaketa hori mantentzen da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.3/p3/s2",
+        "parts": [
+          {
+            "text": "12. asteara arte non antolaketa eraldatzen den hurrengo moduan: erdiko zuloa askoz estuagoa bihurtzen da, eta gai zuri asko (axoiak) batzen da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.3",
+    "id": "w19/10.3/p4",
+    "sentences": [
+      {
+        "id": "w19/10.3/p4/s1",
+        "parts": [
+          {
+            "text": "16. astean, alde dortsalean egitura sentikorrak mantentzen dira, eta alde bentralean egitura motorrak. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.3/p4/s2",
+        "parts": [
+          {
+            "text": "Baina mutur bentralean bi lodigune agertzen dira, "
+          },
+          {
+            "text": "garun pedunkuluak",
+            "b": true
+          },
+          {
+            "text": ". "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.3/p4/s3",
+        "parts": [
+          {
+            "text": "Garun pedunkuluak garunaren azpian daude, eta handik igarotzen dira gorantz (garunerantz) eta beherantz (zentrorantz) doazen axoi edo nerbio zuntz guztiak."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.3",
+    "id": "w19/10.3/p5",
+    "sentences": [
+      {
+        "id": "w19/10.3/p5/s1",
+        "parts": [
+          {
+            "text": "Estutu egiten den hodia "
+          },
+          {
+            "text": "akueduktua ",
+            "b": true
+          },
+          {
+            "text": "bihurtzen da, eta honek III. eta IV. bentrikuluak elkartzen ditu."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.3",
+    "id": "w19/10.3/p6",
+    "sentences": [
+      {
+        "id": "w19/10.3/p6/s1",
+        "parts": [
+          {
+            "text": "Metentzefaloaren barruan beste egitura garrantzitsu bat agertzen da: "
+          },
+          {
+            "text": "gai beltza",
+            "b": true
+          },
+          {
+            "text": ". "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.3/p6/s2",
+        "parts": [
+          {
+            "text": "Gai beltza ez dago tindatuta; bere zelulek pigmentu beltza dute, eta horregatik ikusten da beltz. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.3/p6/s3",
+        "parts": [
+          {
+            "text": "Garrantzia kliniko handia du izan ere, egitura honek zelula dopaminergikoak ditu, hau da, dopamina ekoizten duten neurona bereziak. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.3/p6/s4",
+        "parts": [
+          {
+            "text": "Zelula horiek beren axoiak proiektatzen dituzte telentzefaloko zenbait zonaldetara, batez ere oinaldeko nukleoetara. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.3/p6/s5",
+        "parts": [
+          {
+            "text": "Axoien bidez, gai beltzeko zelula dopaminergikoek ekoiztutako dopamina bidaltzen dute oinaldeko nukleoetara."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.3",
+    "id": "w19/10.3/p7",
+    "sentences": [
+      {
+        "id": "w19/10.3/p7/s1",
+        "parts": [
+          {
+            "text": "Parkinson gaixotasunean, neurona dopaminergiko hauek hil egiten dira, eta ondorioz dopamina ez da heltzen oinaldeko nukleoetara. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.3/p7/s2",
+        "parts": [
+          {
+            "text": "Hori dela eta, Parkinson gaixoek borondatezkoak ez diren mugimendu automatikoak egiten dituzte, batez ere geldirik daudenean. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.3/p7/s3",
+        "parts": [
+          {
+            "text": "Mugimendu-nahasmendu horien arrazoia da oinaldeko nukleoetara ez dela"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.3",
+    "id": "w19/10.3/p8",
+    "sentences": [
+      {
+        "id": "w19/10.3/p8/s1",
+        "parts": [
+          {
+            "text": "dopamina iristen, neurona dopaminergikoak hil direlako. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.3/p8/s2",
+        "parts": [
+          {
+            "text": "Dopamina maila nahikoa ez dagoenean, gainera, neuronen heriotza areagotu egiten da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "10.4",
+    "id": "w19/10.4/p2",
+    "sentences": [
+      {
+        "id": "w19/10.4/p2/s1",
+        "parts": [
+          {
+            "text": "10.4 DIENTZEFALO",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.4",
+    "id": "w19/10.4/p3",
+    "sentences": [
+      {
+        "id": "w19/10.4/p3/s1",
+        "parts": [
+          {
+            "text": "Dientzefaloaren inguruan, xixku telentzefalikoak hazten dira; hauek dientzefaloa estaltzen dute, eta hura erdialdean kokatuta geratzen da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.4/p3/s2",
+        "parts": [
+          {
+            "text": "Dientzefaloaren barruan III. bentrikulua eta sare koroideak aurkitzen dira."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.4",
+    "id": "w19/10.4/p4",
+    "sentences": [
+      {
+        "id": "w19/10.4/p4/s1",
+        "parts": [
+          {
+            "text": "Dientzefaloaren egitura nagusia "
+          },
+          {
+            "text": "talamoa ",
+            "b": true
+          },
+          {
+            "text": "da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.4/p4/s2",
+        "parts": [
+          {
+            "text": "Talamoaren funtzio nagusia errelebo-zentroa izatea da: ornomuinetik, belarritik, ahotik, gibeletik… heltzen diren sentsazio gehienak talamotik pasatzen dira, eta hemen neuronek sinapsiak egiten dituzte beste neurona batzuekin, informazioa transmitituz (“erreleboa”)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.4",
+    "id": "w19/10.4/p5",
+    "sentences": [
+      {
+        "id": "w19/10.4/p5/s1",
+        "parts": [
+          {
+            "text": "Sentsazio bat ez bada talamotik pasatzen ez gara konsziente izango (entzuten, ikusten…) DENA pasatuko da talamotik "
+          },
+          {
+            "text": "usaimena izan ezik, ",
+            "b": true
+          },
+          {
+            "text": "izan ere zentzumen primitiboena da eta honen informazioa zuzenean usaimen kortexera/telentzefalora joaten da talamotik pasatu gabe."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.4",
+    "id": "w19/10.4/p6",
+    "sentences": [
+      {
+        "id": "w19/10.4/p6/s1",
+        "parts": [
+          {
+            "text": "Talamoaren beheko aldean "
+          },
+          {
+            "text": "hipotalamoa ",
+            "b": true
+          },
+          {
+            "text": "aurkitzen da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.4/p6/s2",
+        "parts": [
+          {
+            "text": "Egitura honek hormonak ekoizteko eta horien erregulazioa kontrolatzeko funtzioak betetzen ditu."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.4",
+    "id": "w19/10.4/p7",
+    "sentences": [
+      {
+        "id": "w19/10.4/p7/s1",
+        "parts": [
+          {
+            "text": "Talamoaren goiko aldean "
+          },
+          {
+            "text": "epitalamoa ",
+            "b": true
+          },
+          {
+            "text": "kokatzen da. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.4/p7/s2",
+        "parts": [
+          {
+            "text": "Epitalamoaren barruan guruin pineala edo epifisia dago, eta honek loaldi-esnaldi zikloak kontrolatzen ditu, melatonina ekoizten duelako."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "h2",
+    "section": "10.4.1",
+    "id": "w19/10.4.1/p2",
+    "sentences": [
+      {
+        "id": "w19/10.4.1/p2/s1",
+        "parts": [
+          {
+            "text": "10.4.1 HIPOFISIA",
+            "b": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.4.1",
+    "id": "w19/10.4.1/p3",
+    "sentences": [
+      {
+        "id": "w19/10.4.1/p3/s1",
+        "parts": [
+          {
+            "text": "Hipofisia egitura hormonala da, hormonak ekoizten dituena. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.4.1/p3/s2",
+        "parts": [
+          {
+            "text": "Hipotalamotik eskegita dago, eta bi egituren arteko loturari "
+          },
+          {
+            "text": "infundibulua ",
+            "b": true
+          },
+          {
+            "text": "deitzen zaio. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.4.1/p3/s3",
+        "parts": [
+          {
+            "text": "Hipofisiak bi atal ditu, bi jatorri desberdin dituelako: alde batetik, hasieran hipotalamoan luzapen bat agertzen da (infundibulua), eta hau beherantz hazten da; bestetik, estomodeoaren sabaitik gorantz beste luzapen bat hazten da, "
+          },
+          {
+            "text": "hipofisi-poltsa ",
+            "b": true
+          },
+          {
+            "text": "edo "
+          },
+          {
+            "text": "Rathke",
+            "b": true
+          },
+          {
+            "text": " "
+          },
+          {
+            "text": "poltsa",
+            "b": true
+          },
+          {
+            "text": " deiturikoa. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.4.1/p3/s4",
+        "parts": [
+          {
+            "text": "Bi egitura horiek elkartzean osatzen da hipofisia."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.4.1",
+    "id": "w19/10.4.1/p4",
+    "sentences": [
+      {
+        "id": "w19/10.4.1/p4/s1",
+        "parts": [
+          {
+            "text": "Bi luzapen horiek (bat gorantz hazten dena eta bestea beherantz) elkartu egiten dira."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "10.4.1",
+    "id": "w19/10.4.1/p5",
+    "sentences": [
+      {
+        "id": "w19/10.4.1/p5/s1",
+        "parts": [
+          {
+            "text": "● Alde batetik, hipofisi poltsa estomodeotik askatuko da (estomodearekin zuen lotura galduz) eta honetik "
+          },
+          {
+            "text": "adenohipofisia ",
+            "b": true
+          },
+          {
+            "text": "garatuko da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "li",
+    "section": "10.4.1",
+    "id": "w19/10.4.1/p6",
+    "sentences": [
+      {
+        "id": "w19/10.4.1/p6/s1",
+        "parts": [
+          {
+            "text": "● Bestetik, infundibulua hipotalamoarekin lotuta mantenduko da eta infundibulutik "
+          },
+          {
+            "text": "neurohipofisia ",
+            "b": true
+          },
+          {
+            "text": "eratuko da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.4.1",
+    "id": "w19/10.4.1/p7",
+    "sentences": [
+      {
+        "id": "w19/10.4.1/p7/s1",
+        "parts": [
+          {
+            "text": "Adenohipofisiak hormonak ekoizteko gaitasuna du (adb, somatotropina eta prolaktina), eta neurohipofisiak hipotalamoan sortutako hormonak askatzeko funtzioa du (adb, oxitozina eta basopresina)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "10.4.1",
+    "id": "w19/10.4.1/p8",
+    "sentences": [
+      {
+        "id": "w19/10.4.1/p8/s1",
+        "parts": [
+          {
+            "text": "Azkenik, bi luzapenak "
+          },
+          {
+            "text": "3. astean ",
+            "b": true
+          },
+          {
+            "text": "hasten dira sortzen, eta prozesu honek aurrera jarraitzen du bi hilabete inguru. "
+          }
+        ]
+      },
+      {
+        "id": "w19/10.4.1/p8/s2",
+        "parts": [
+          {
+            "text": "2. hilabetearen bukaeran",
+            "b": true
+          },
+          {
+            "text": ", hipofisia guztiz eraturik dago, bi atalekin ondo bereizita: adenohipofisia eta neurohipofisia."
           }
         ]
       }
@@ -4089,17 +5622,8 @@ export const w19: NotesBlock[] = [
         "id": "w19/11/p2/s1",
         "parts": [
           {
-            "text": "11.",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "KORTEXA",
-            "b": true,
-            "u": true
+            "text": "11. BIKOTE KRANEALAK",
+            "b": true
           }
         ]
       }
@@ -4114,134 +5638,112 @@ export const w19: NotesBlock[] = [
         "id": "w19/11/p3/s1",
         "parts": [
           {
-            "text": "Kortexean prozesatuko da informazioa. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/11/p3/s2",
-        "parts": [
-          {
-            "text": "Kortex",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "sentsitiboak",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " informazioa ",
-            "u": true
-          },
-          {
-            "text": "kortex",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "motoreari",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " pasatuko dio eta hor ",
-            "u": true
-          },
-          {
-            "text": "neurona motoreak ",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": "egongo dira. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/11/p3/s3",
-        "parts": [
-          {
-            "text": "Eta bertan dagoen neurona bidaliko du axoiaren bidez informazioa ornomuinean gai zuritik berantz, heltzen den informazio hori hona ornomuinaren maila batera eta hemen dagoen neurona motorrak eragingo du kortexetik datorren erantzuna eta informazio hori aterako da aurreko sustraitik helduko da muskuluetara eta muskulua mugituko dugu. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/11/p3/s4",
-        "parts": [
-          {
-            "text": "Hauek informazioa prozesatuko dute ",
-            "u": true
-          },
-          {
-            "text": "erantzun",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "motore",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " bat agintzeko. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/11/p3/s5",
-        "parts": [
-          {
-            "text": "Agindu motorea muskuluko esku eta besoetara heldu behar da. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/11/p3/s6",
-        "parts": [
-          {
-            "text": "Goitik hasita beheranzko bideetatik sinapsi batzuk egin ondoren azkenengo moto neurona muskuluetara heldu eta bertan ekintza egingo da. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/11/p3/s7",
-        "parts": [
-          {
-            "text": "Guzti hau milisegundutan emango da (mina badaukagu eskua kentzea).",
-            "u": true
+            "text": "12 bikote kranealak (aurretik atzera):"
           }
         ]
       }
     ]
   },
   {
-    "kind": "h2",
-    "section": "5.1",
-    "id": "w19/5.1/p1",
+    "kind": "p",
+    "section": "11",
+    "id": "w19/11/p4",
     "sentences": [
       {
-        "id": "w19/5.1/p1/s1",
+        "id": "w19/11/p4/s1",
         "parts": [
           {
-            "text": "5.1 Mugimendu erreflexuak",
-            "b": true,
+            "text": "1. Usaimen nerbioa",
+            "b": true
+          },
+          {
+            "text": ": Ez da nerbio trinko bakar bat, nerbio txiki askok osatzen dute. "
+          }
+        ]
+      },
+      {
+        "id": "w19/11/p4/s2",
+        "parts": [
+          {
+            "text": "Sudur-barrunbearen sabaiko epitelioan hainbat nerbio-zuntz daude, eta horiek guztiek osatzen dute lehen bikote kraneala: usaimen-nerbioa. "
+          }
+        ]
+      },
+      {
+        "id": "w19/11/p4/s3",
+        "parts": [
+          {
+            "text": "Ikuspegi bentraletik goialdean agertzen diren egiturak usaimen-erraboilak dira; horietara heltzen dira nerbio-zuntzak, eta handik pasatzen da informazioa burmuinera."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "11",
+    "id": "w19/11/p5",
+    "sentences": [
+      {
+        "id": "w19/11/p5/s1",
+        "parts": [
+          {
+            "text": "2. Ikusmen-nerbioa: ",
+            "b": true
+          },
+          {
+            "text": "begietatik burmuinera doan nerbioa da, ikusmen-informazioa eramaten duena. "
+          }
+        ]
+      },
+      {
+        "id": "w19/11/p5/s2",
+        "parts": [
+          {
+            "text": "Burmuinean atal txiki bat ikus daiteke nerbio honi dagokiona. "
+          }
+        ]
+      },
+      {
+        "id": "w19/11/p5/s3",
+        "parts": [
+          {
+            "text": "Burmuina ateratzeko orduan, nerbio hau moztu beharra dago, begiak kraneoaren barruan geratzen direlako. "
+          }
+        ]
+      },
+      {
+        "id": "w19/11/p5/s4",
+        "parts": [
+          {
+            "text": "Horregatik, preparatu anatomikoetan beti moztuta agertzen da."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "11",
+    "id": "w19/11/p6",
+    "sentences": [
+      {
+        "id": "w19/11/p6/s1",
+        "parts": [
+          {
+            "text": "3., 4., 6. ",
+            "b": true
+          },
+          {
+            "text": "Guztiak begiko mugimenduak eragiteko, hain zuzen, borondatzeko mugimenduak. "
+          }
+        ]
+      },
+      {
+        "id": "w19/11/p6/s2",
+        "parts": [
+          {
+            "text": "(3.ikusmen-nerbioa 4. troklearra 6. aldentzailea)",
             "u": true
           }
         ]
@@ -4250,64 +5752,26 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "5.1",
-    "id": "w19/5.1/p2",
+    "section": "11",
+    "id": "w19/11/p7",
     "sentences": [
       {
-        "id": "w19/5.1/p2/s1",
+        "id": "w19/11/p7/s1",
         "parts": [
           {
-            "text": "Badaude beste mugimendu batzuk, ",
-            "u": true
+            "text": "5. trigemino: ",
+            "b": true
           },
           {
-            "text": "erreflexuak",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": ", hauek askoz azkarragoak dira borondatezko mugimenduak baino. ",
-            "u": true
+            "text": "aurpegiaren sentsazio nagusiaren arduraduna da. "
           }
         ]
       },
       {
-        "id": "w19/5.1/p2/s2",
+        "id": "w19/11/p7/s2",
         "parts": [
           {
-            "text": "izan ere, hauen informazio sentsitiboa ez da kortexera heltzen, baizik eta ",
-            "u": true
-          },
-          {
-            "text": "ornomuinera",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": ". ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/5.1/p2/s3",
-        "parts": [
-          {
-            "text": "Bertan prozesatzen dira eta motor neurona bertatik aterako da. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/5.1/p2/s4",
-        "parts": [
-          {
-            "text": "**sentsitiboak: goranzko bideak / motoreak: beheranzko bideak **sinapsia egitea = erreleboa egin ** neurona motorea = moto neurona ",
-            "u": true
-          },
-          {
-            "text": "(alboko ikuspegia)",
-            "i": true
+            "text": "Hiru adar ditu (oftalmikoa, maxilarra eta mandibularra), eta horien bidez aurpegiko azala, ahoa eta hortzak inerbatu egiten ditu."
           }
         ]
       }
@@ -4315,98 +5779,18 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "5.1",
-    "id": "w19/5.1/p3",
+    "section": "11",
+    "id": "w19/11/p8",
     "sentences": [
       {
-        "id": "w19/5.1/p3/s1",
+        "id": "w19/11/p8/s1",
         "parts": [
           {
-            "text": "Nerbio sistema tolestu egiten da, horrela mesentzefaloan tolespen zefalikoa eta erronbentzefalo eta ornomuin muga artean ",
-            "u": true
-          },
-          {
-            "text": "tolespen zerbikala/lepo tolespena",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": ". ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/5.1/p3/s2",
-        "parts": [
-          {
-            "text": "5. astean bihurriago eta garatuago dago nerbio sistema eta entzefaloa, beste tolespen bat, ",
-            "u": true
-          },
-          {
-            "text": "zubi",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "tolespena",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": ", alde bentralean. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/5.1/p3/s3",
-        "parts": [
-          {
-            "text": "Gainera metentzefalo eta mesentzefalo arteko muga estutu egiten da, istmo izena hartuz. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/5.1/p3/s4",
-        "parts": [
-          {
-            "text": "itsmoa",
-            "b": true,
-            "i": true,
-            "u": true
-          },
-          {
-            "text": "=estutze (hau azalpenean gehitu)",
-            "i": true,
-            "u": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "h1",
-    "section": "12",
-    "id": "w19/12/p2",
-    "sentences": [
-      {
-        "id": "w19/12/p2/s1",
-        "parts": [
-          {
-            "text": "12.",
+            "text": "7. faziala ",
             "b": true
           },
           {
-            "text": " "
-          },
-          {
-            "text": "BENTRIKULU SISTEMA",
-            "b": true
+            "text": "edo aurpegi nerbio: aurpegiko adierazpen-muskuluen mugimendua kontrolatzen duen nerbio motor nagusia da."
           }
         ]
       }
@@ -4414,46 +5798,34 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "12",
-    "id": "w19/12/p3",
+    "section": "11",
+    "id": "w19/11/p9",
     "sentences": [
       {
-        "id": "w19/12/p3/s1",
+        "id": "w19/11/p9/s1",
         "parts": [
           {
-            "text": "Nerbio sistema zentral osoa hodi neuraletik dator. "
+            "text": "8. estatoakustiko: ",
+            "b": true
+          },
+          {
+            "text": "“Estato” oreka eta “akustiko” entzumenarekin lotuta dago. "
           }
         ]
       },
       {
-        "id": "w19/12/p3/s2",
+        "id": "w19/11/p9/s2",
         "parts": [
           {
-            "text": "Hodi neuralak ornomuin atalean beti hodi formarekin mantentzen da baina garunean, alegia, alde kranealean hodia eraldatu (zabaldu, estutu) eta horregatik xixkuak ateratzen dira. "
+            "text": "Belarritik burmuinera doan nerbioa da, oreka eta entzumenaren informazioa eramaten duena. "
           }
         ]
       },
       {
-        "id": "w19/12/p3/s3",
+        "id": "w19/11/p9/s3",
         "parts": [
           {
-            "text": "Hodi bat izan denez, barnetik utzik egon behar da (espazio bat izan behar du). "
-          }
-        ]
-      },
-      {
-        "id": "w19/12/p3/s4",
-        "parts": [
-          {
-            "text": "Ornomuinean eremu hori ependimoa edo hodi ependimarioa da. "
-          }
-        ]
-      },
-      {
-        "id": "w19/12/p3/s5",
-        "parts": [
-          {
-            "text": "Garunean, ordea, xixkuak eratzen direnean barneko hutsune horiek zabaldu egiten dira eta bentrikuluak sortzen dira (xixkuen barnean)."
+            "text": "Bere bi adar nagusiak daude: bestibularra (oreka) eta koklearra (entzumen)."
           }
         ]
       }
@@ -4461,233 +5833,18 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "12",
-    "id": "w19/12/p4",
+    "section": "11",
+    "id": "w19/11/p10",
     "sentences": [
       {
-        "id": "w19/12/p4/s1",
+        "id": "w19/11/p10/s1",
         "parts": [
           {
-            "text": "Xixkuak, barrunbeak dira, baina hauek ez dira hutsik egongo, ",
-            "u": true
-          },
-          {
-            "text": "likido zefalorrakideoa",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " dabil bertatik. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/12/p4/s2",
-        "parts": [
-          {
-            "text": "Horretarako, xixkuen barrunbe guztiak komunikaturik egon behar dira, hau da, hauen artean jarraiturik edo komunikaturik egongo dira. ",
-            "u": true
-          }
-        ]
-      },
-      {
-        "id": "w19/12/p4/s3",
-        "parts": [
-          {
-            "text": "Orokorrean, barrunbe hauek, ",
-            "u": true
-          },
-          {
-            "text": "bentrikulu",
-            "b": true,
-            "u": true
-          },
-          {
-            "text": " izena hartzen dute.",
-            "u": true
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "12",
-    "id": "w19/12/p5",
-    "sentences": [
-      {
-        "id": "w19/12/p5/s1",
-        "parts": [
-          {
-            "text": "- "
-          },
-          {
-            "text": "Telentzefaloan",
+            "text": "9. glosofaringeo: ",
             "b": true
           },
           {
-            "text": " (garun hemisferioren barnean, xixku bakoitzean 1*) → 2 alboko bentrikuluak/bentrikulu lateralak "
-          },
-          {
-            "text": "(helduetan nahiko handiak, hemisferiak garapenean handitzen baitira)",
-            "u": true
-          },
-          {
-            "text": " *EZ esan I. eta II. bentrikuluak direla, bata bestearen parean baitaude."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "12",
-    "id": "w19/12/p6",
-    "sentences": [
-      {
-        "id": "w19/12/p6/s1",
-        "parts": [
-          {
-            "text": "- "
-          },
-          {
-            "text": "Dientzefaloan",
-            "b": true
-          },
-          {
-            "text": " (talamoaren mailan)→"
-          },
-          {
-            "text": "III. bentrikulua (hau III.ena deitzen da pixkabat",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "atzerago dagoelako)",
-            "b": true
-          },
-          {
-            "text": " Alboko bentrikuluak eta III. bentrikulua komunikatzeko, "
-          },
-          {
-            "text": "bentrikulu arteko zuloak",
-            "b": true
-          },
-          {
-            "text": " daude (Monro-ren zuloak)"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "12",
-    "id": "w19/12/p7",
-    "sentences": [
-      {
-        "id": "w19/12/p7/s1",
-        "parts": [
-          {
-            "text": "- "
-          },
-          {
-            "text": "Mesentzefaloan",
-            "b": true
-          },
-          {
-            "text": ": ez du hodi forma galtzen eta garatuz doan bitartean hodia estutu egiten da (ez du hodi forma galtzen), hortaz, akuedukto deitzen zaio, "
-          },
-          {
-            "text": "garun akueduktoa",
-            "b": true
-          },
-          {
-            "text": " edo"
-          },
-          {
-            "text": " mesentzefalo akueduktoa",
-            "b": true
-          },
-          {
-            "text": " hain zuzen ere."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "12",
-    "id": "w19/12/p8",
-    "sentences": [
-      {
-        "id": "w19/12/p8/s1",
-        "parts": [
-          {
-            "text": "- "
-          },
-          {
-            "text": "Erronbentzefaloan",
-            "b": true
-          },
-          {
-            "text": " (erronbo forma, metentzefalo eta mielentzefalo parean aurkitu):"
-          },
-          {
-            "text": " IV.",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "bentrikulua",
-            "b": true
-          },
-          {
-            "text": " eratzeko eta honek erronbo forma mantentzen du."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "li",
-    "section": "12",
-    "id": "w19/12/p9",
-    "sentences": [
-      {
-        "id": "w19/12/p9/s1",
-        "parts": [
-          {
-            "text": "- 3 zulo izango ditu: 2 alboko zulo (lateralak, Luschka zuloak), eta erdiko zuloa (mediala, Magendie)."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "kind": "h1",
-    "section": "13",
-    "id": "w19/13/p2",
-    "sentences": [
-      {
-        "id": "w19/13/p2/s1",
-        "parts": [
-          {
-            "text": "13.",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "LIKIDO ZEFALORRAKIDEOAREN EKOIZPENA",
-            "b": true
+            "text": "ahoaren atzeko zatia eta faringearen sentsazioak eramaten ditu."
           }
         ]
       }
@@ -4695,76 +5852,26 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "13",
-    "id": "w19/13/p3",
+    "section": "11",
+    "id": "w19/11/p11",
     "sentences": [
       {
-        "id": "w19/13/p3/s1",
+        "id": "w19/11/p11/s1",
         "parts": [
           {
-            "text": "Likido zefalorrakidea 5. astean ekoizten hasten da. "
-          }
-        ]
-      },
-      {
-        "id": "w19/13/p3/s2",
-        "parts": [
-          {
-            "text": "Likido hau erdiko nerbio-sistemaren egituretatik (ependimo, bentrikulu…) barneko xixku eta hodietatik banatzen da eta baita nerbio-sistema zentral kanpotik ere, bere funtzio nagusia "
-          },
-          {
-            "text": "nerbio-sistema",
+            "text": "10. bago",
             "b": true
           },
           {
-            "text": " "
-          },
-          {
-            "text": "zentrala",
-            "b": true
-          },
-          {
-            "text": " "
-          },
-          {
-            "text": "babestea",
-            "b": true
-          },
-          {
-            "text": " baita (amortiguatzailea); garunak kolpe handiak ez izateko. "
+            "text": ". "
           }
         ]
       },
       {
-        "id": "w19/13/p3/s3",
+        "id": "w19/11/p11/s2",
         "parts": [
           {
-            "text": "Likido zefalorrakideoak ekoizpen jarraia dauka (etengabe ekoizi), baina espazioa mugatua bada, eremu finko batean mantentzen denez, jarraian drenatu/berxurgatu ere egin behar da (eremu horretatik irten behar da). "
-          }
-        ]
-      },
-      {
-        "id": "w19/13/p3/s4",
-        "parts": [
-          {
-            "text": "Sare koroideak arteriolaz eta benulaz eratutako sareak dira. "
-          }
-        ]
-      },
-      {
-        "id": "w19/13/p3/s5",
-        "parts": [
-          {
-            "text": "Horiek alboko bentrikuluen, 3. eta 4. bentrikuluen sabaian aurkitzen dira eta sare horiek dira likido zefaloerrakideoa ekoizten dutenak. "
-          }
-        ]
-      },
-      {
-        "id": "w19/13/p3/s6",
-        "parts": [
-          {
-            "text": "IV. bentrikuluaren sabaian, zerebeloa aurkitzen da.",
-            "u": true
+            "text": "Garrantzi handiko bikote kraneala, izan ere gorputz osoko nerbio parasinpatikorik handiena da."
           }
         ]
       }
@@ -4772,30 +5879,26 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "13",
-    "id": "w19/13/p4",
+    "section": "11",
+    "id": "w19/11/p12",
     "sentences": [
       {
-        "id": "w19/13/p4/s1",
+        "id": "w19/11/p12/s1",
         "parts": [
           {
-            "text": "Bentrikulu eta hodi guztiak komunikatuta daude: likidoa bentrikulu lateraletatatik (bien artean) eta 3. bentrikuluarekin daukaten komunikabideetatik pasatuko da (bentrikulu arteko zuloa/Monro zuloa), 3.bentrikulura iritsi, akueduktutik pasatu eta 4. bentrikulura iritsiko da. "
+            "text": "11. osagarria / laguntzailea / espinal (accesorio)",
+            "b": true
+          },
+          {
+            "text": ": ataltxo bat burmuinetik ateratzen da baina beste atala ornomuinetik ateratzen da. "
           }
         ]
       },
       {
-        "id": "w19/13/p4/s2",
+        "id": "w19/11/p12/s2",
         "parts": [
           {
-            "text": "4.bentrikuluan, sistematik (barneko eremuetatik) kanporatzeko 3 zulo aurkitzen dira: 2 alboko zulo/lateralak (Luschka zuloak) eta erdiko bat (Magendie zuloa). "
-          }
-        ]
-      },
-      {
-        "id": "w19/13/p4/s3",
-        "parts": [
-          {
-            "text": "Horrela, likidoa sistema bentrikularretik kanporatzen da."
+            "text": "Lepo eta burua mugitzeko nerbioa da (esternokleidomastoideo, trapezioa… inerbatzen dituen nerbioa)"
           }
         ]
       }
@@ -4803,38 +5906,70 @@ export const w19: NotesBlock[] = [
   },
   {
     "kind": "p",
-    "section": "13",
-    "id": "w19/13/p5",
+    "section": "11",
+    "id": "w19/11/p13",
     "sentences": [
       {
-        "id": "w19/13/p5/s1",
+        "id": "w19/11/p13/s1",
         "parts": [
           {
-            "text": "Dena den, likido zefaloerrakideoa barnetik pasatzen jarraituko da, 4.bentrikulua zuzenean komunikatuta baitago ependimoarekin. "
+            "text": "12. Hipoglosoa",
+            "b": true
+          },
+          {
+            "text": ": mihiko muskuluak inerbatzeko luzatzen den nerbioa da, mihiaren mugimentuaren arduraduna."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "11",
+    "id": "w19/11/p14",
+    "sentences": [
+      {
+        "id": "w19/11/p14/s1",
+        "parts": [
+          {
+            "text": "* Lehenengo eta bigarren bikote kranealak ez dira ikusten (soilik ikusten da usaimen erraboila)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "p",
+    "section": "11",
+    "id": "w19/11/p15",
+    "sentences": [
+      {
+        "id": "w19/11/p15/s1",
+        "parts": [
+          {
+            "text": "* 4. BIKOTE KRANEALA: "
+          },
+          {
+            "text": "alde dortsalean ",
+            "b": true
+          },
+          {
+            "text": "agertzen den bikote "
+          },
+          {
+            "text": "bakarra da eta ",
+            "b": true
+          },
+          {
+            "text": "istmoa inguratuz alde bentralerantz pasatzen da. "
           }
         ]
       },
       {
-        "id": "w19/13/p5/s2",
+        "id": "w19/11/p15/s2",
         "parts": [
           {
-            "text": "Beraz, likidoa 4.bentrikulura iristean zati batek hodi ependimarioaren barnetik jarraituko du eta bestea 3 zulo horietatik irtengo da nerbio-sistema zentrala inguratzeko. "
-          }
-        ]
-      },
-      {
-        "id": "w19/13/p5/s3",
-        "parts": [
-          {
-            "text": "Erdiko nerbio-sistema osoa kanpoaldetik inguratu duenean, kraneoko egitura berezi batzuetatik zain-sistemara pasatuko da (zain-sistemak berxurgatzen du). "
-          }
-        ]
-      },
-      {
-        "id": "w19/13/p5/s4",
-        "parts": [
-          {
-            "text": "Likidoa, erdiko nerbio-sistemaren kanpoaldetik eremu azpiaraknoideotik (Pia mater eta araknoidesaren artean) joango da."
+            "text": "Beste bikote kraneal guztiak alde bentralean agertzen dira."
           }
         ]
       }

@@ -1,4 +1,93 @@
 import type { QuizQuestion } from '@/lib/sim/types';
 
-/** Topic 19, part a (agent 19-A): worded from the notes. */
-export const quiz19a: QuizQuestion[] = [];
+/** Topic 19, sections 1–3 (orientation, classifications, cord basics, pathways), worded from the notes of 2026-11-23. */
+export const quiz19a: QuizQuestion[] = [
+  {
+    id: 'w19-q-ornomuin-mozketa',
+    question: 'Zer mozketa erabiltzen da ornomuina aztertzeko?',
+    options: ['Zeharkakoa', 'Sagitala', 'Koronala', 'Horizontala bakarrik'],
+    answer: 0,
+    explanation: 'Nerbio sisteman orokorrean mozketa horizontala erabiltzen da, baina ornomuina bertikala denez, zeharkako mozketak egiten dira.',
+    stageId: 'mozketak-ardatzak',
+  },
+  {
+    id: 'w19-q-ornomuin-dortsala',
+    question: 'Ornomuinean, zer da alde dortsala?',
+    options: ['Atzekoa', 'Goikoa', 'Aurrekoa', 'Behekoa'],
+    answer: 0,
+    explanation: 'Ornomuina bertikalki dago: dortsala atzekoa da eta bentrala aurrekoa. Garunean, horizontalizatuta dagoenez, dortsala goikoa da.',
+    stageId: 'mozketak-ardatzak',
+  },
+  {
+    id: 'w19-q-zentrala',
+    question: 'Zerk osatzen du erdiko nerbio sistema?',
+    options: ['Entzefaloak eta ornomuinak', 'Ornomuinak eta nerbio espinalek', 'Entzefaloak eta bikote kranealek', 'Sare brakialak eta lunbarrak'],
+    answer: 0,
+    explanation: 'Hezurrez babestuta dagoena da zentrala: garezurraren barruko entzefaloa eta bizkarrezurraren barruko ornomuina. Hortik kanporantz ateratzen diren nerbioak periferikoak dira.',
+    stageId: 'zentrala-periferikoa',
+  },
+  {
+    id: 'w19-q-sinpatikoa-maila',
+    question: 'Zein mailatan dago sistema sinpatikoa ornomuinean?',
+    options: ['Torax mailan (T1–L2 gutxi gorabehera)', 'S2–S4 mailan', 'Lepoan bakarrik', 'Entzefaloan bakarrik'],
+    answer: 0,
+    explanation: 'Sinpatikoa torax mailan dago. Parasinpatikoa, berriz, bi muturretan: sakroan (S2–S4) eta entzefaloan.',
+    stageId: 'somatikoa-autonomoa',
+  },
+  {
+    id: 'w19-q-parasinpatikoa',
+    question: 'Zer eragiten du sistema parasinpatikoak?',
+    options: ['Egoera basalera itzultzea: bihotz-erritmoa jaitsi', 'Bihotz-erritmoa arindu eta izerdia', 'Arnasa asko eta arin', 'Borondatezko mugimenduak'],
+    answer: 0,
+    explanation: 'Sinpatikoa estresaren sistema da; parasinpatikoa lasaitasunera itzultzeko: bihotzaren erritmoa jaitsi eta esfinterrak zabaldu.',
+    stageId: 'somatikoa-autonomoa',
+  },
+  {
+    id: 'w19-q-gai-grisa',
+    question: 'Ornomuinean, non dago gai grisa?',
+    options: ['Barnean, H forman (neuronen somak)', 'Kanpoan (axoiak)', 'Gongoilean bakarrik', 'Ependimoaren barruan'],
+    answer: 0,
+    explanation: 'Ornomuinean beti gai grisa barnean dago, H forman, eta gai zuria kanpoan. Aurreko adarrak motorrak dira; atzekoak sentsitiboak.',
+    stageId: 'gai-grisa-zuria',
+  },
+  {
+    id: 'w19-q-gongoila',
+    question: 'Zer neurona daude atzeko sustraiko gongoilean?',
+    options: ['Neurona bipolarrak, luzapen zentripeto eta zentrifugoarekin', 'Motoneuronak', 'Interneuronak', 'Neurona sinpatikoak bakarrik'],
+    answer: 0,
+    explanation: 'Gongoileko neuronak bipolarrak dira: luzapen bat ornomuinera doa (zentripetoa) eta bestea periferiara (zentrifugoa).',
+    stageId: 'sustraiak-gongoila',
+  },
+  {
+    id: 'w19-q-sentsibilitatea-sarrera',
+    question: 'Nondik sartzen da informazio sentsitiboa ornomuinera?',
+    options: ['Beti atzeko sustraietatik', 'Beti aurreko sustraietatik', 'Alboko adarretatik', 'Aurreko zein atzeko sustraietatik'],
+    answer: 0,
+    explanation: 'Larruazaletik somara iritsi ondoren, luzapen zentralak informazioa ornomuinera sartzen du, beti atzeko sustraietatik eta sustraitxoetatik.',
+    stageId: 'aktu-erreflexua',
+  },
+  {
+    id: 'w19-q-arku-erreflexua',
+    question: 'Zer ezaugarri du arku erreflexuak?',
+    options: ['Burmuinera iritsi gabe erantzuten da', 'Kortex motorrak agintzen du', 'Atzeko sustraietatik ateratzen da erantzuna', 'Nerbio sistema autonomoak bakarrik egiten du'],
+    answer: 0,
+    explanation: 'Neurona sentsitiboak interneuronarekin eta motoneuronarekin egiten du sinapsia ornomuinean bertan; axoiak aurreko sustraitik ateratzen dira. Adibidea: erreflexu rotulianoa.',
+    stageId: 'aktu-erreflexua',
+  },
+  {
+    id: 'w19-q-borondatezkoa',
+    question: 'Borondatezko mugimenduan, non konturatzen gara zer sentitzen dugun?',
+    options: ['Kortex sentsitiboan', 'Kortex motorrean', 'Gongoilean', 'Ornomuineko interneuronan'],
+    answer: 0,
+    explanation: 'Informazioa goranzko bideetatik garunera iristen da; kortex sentsitiboan konturatu, kortex motorrera pasa, eta agindua beheranzko bideetatik jaisten da.',
+    stageId: 'borondatezko-mugimenduak',
+  },
+  {
+    id: 'w19-q-automatikoak',
+    question: 'Zein egiturak hartzen du parte mugimendu automatikoetan (bizikletan ibili, gidatu)?',
+    options: ['Garuntxoak (zerebeloak)', 'Talamoak', 'Hipofisiak', 'Sistema parasinpatikoak'],
+    answer: 0,
+    explanation: 'Ondo ikasitako mugimenduak automatikoki egiten ditugu, eta zerebeloak hartzen du parte. Muskulu somatikoek eragindakoak dira.',
+    stageId: 'mugimendu-automatikoak',
+  },
+];
