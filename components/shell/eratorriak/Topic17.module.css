@@ -1,0 +1,265 @@
+/* Topic 17 Ikasgela: aligned with EnbrioAtlas design tokens (topic hue, surfaces, radii, ok/bad). */
+
+.drill {
+  margin-top: 16px;
+  padding: 22px 24px;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--line-2);
+  background: var(--sheen), var(--surface);
+}
+
+@media (max-width: 640px) {
+  .drill {
+    padding: 16px;
+  }
+}
+
+.drillTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font: 500 12px/1.2 var(--font-mono);
+  color: var(--text-4);
+}
+
+.stats b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.prompt {
+  padding: 22px 24px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%);
+  text-align: center;
+}
+
+.kind {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--topic-line, var(--line-2));
+  background: var(--topic-soft, var(--signal-soft));
+  font: 600 11px/1.4 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--topic, var(--signal));
+}
+
+.item {
+  margin: 0 auto;
+  max-width: 34ch;
+  font-size: clamp(20px, 2.2vw, 25px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--text);
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+}
+
+@media (max-width: 640px) {
+  .choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font: 600 14.5px/1.2 inherit;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-1, 0.15s) var(--ease-out, ease),
+    background-color var(--dur-1, 0.15s) var(--ease-out, ease),
+    transform var(--dur-1, 0.15s) var(--ease-out, ease);
+}
+
+.choice:hover:not(:disabled) {
+  border-color: var(--topic-line, var(--signal));
+  background: var(--topic-soft, var(--surface-2));
+  transform: translateY(-1px);
+}
+
+.choice:disabled {
+  cursor: default;
+  opacity: 0.62;
+}
+
+.choice small {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--r-xs);
+  background: var(--surface-3);
+  font: 500 11px/1 var(--font-mono);
+  color: var(--text-4);
+}
+
+.choiceOk {
+  opacity: 1 !important;
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 14%, var(--surface));
+  color: var(--ok);
+}
+
+.choiceBad {
+  opacity: 1 !important;
+  border-color: var(--bad);
+  background: color-mix(in srgb, var(--bad) 14%, var(--surface));
+  color: var(--bad);
+}
+
+.feedback {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: var(--bg-1, var(--surface-2));
+}
+
+.feedbackOk {
+  border-color: color-mix(in srgb, var(--ok) 55%, var(--line));
+}
+
+.feedbackBad {
+  border-color: color-mix(in srgb, var(--bad) 55%, var(--line));
+}
+
+.verdict {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.verdictOk {
+  color: var(--ok);
+  font-size: 15px;
+}
+
+.verdictBad {
+  color: var(--bad);
+  font-size: 15px;
+}
+
+.contrast {
+  margin: 0 0 12px;
+  padding: 10px 13px;
+  border-radius: var(--r-sm);
+  border-left: 3px solid var(--topic, var(--signal));
+  background: var(--topic-soft, var(--signal-soft));
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.familyList {
+  display: grid;
+  gap: 8px;
+}
+
+.familyCard {
+  padding: 11px 13px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  text-align: left;
+}
+
+/* Inside Flashcards .cardFig (which already has border + --bg-1): avoid double-boxed borders. */
+.familyCompact {
+  gap: 0;
+  padding: 4px 0;
+}
+
+.familyCompact .familyCard {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 8px 12px;
+}
+
+.familyCompact .familyCard + .familyCard {
+  border-top: 1px solid var(--line);
+}
+
+.familyHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.familyHead strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--topic, var(--signal));
+}
+
+.familyHead span {
+  font: 500 11px/1.2 var(--font-mono);
+  color: var(--text-4);
+}
+
+.familyRows {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--text-2);
+}
+
+.familyRows b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.doneBox {
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.doneBox b {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.doneBox p {
+  margin: 0 0 14px;
+  color: var(--text-2);
+  font-size: 14px;
+}

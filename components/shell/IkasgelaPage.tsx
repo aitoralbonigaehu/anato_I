@@ -13,6 +13,7 @@ import { Topic10Study } from './eratorriak/Topic10';
 import { Topic11Study } from './eratorriak/Topic11';
 import { Topic12Study } from './eratorriak/Topic12';
 import { Topic13Study } from './eratorriak/Topic13';
+import { Topic17Study } from './eratorriak/Topic17';
 import { hueStyle } from './topicHue';
 
 const ROOMS: Record<number, () => ReactNode> = {
@@ -23,6 +24,7 @@ const ROOMS: Record<number, () => ReactNode> = {
   11: () => <Topic11Study />,
   12: () => <Topic12Study />,
   13: () => <Topic13Study />,
+  17: () => <Topic17Study />,
 };
 
 const nameOf = (week: number) => MIGRATIONS.find((t) => t.week === week)?.short ?? getWeek(week)?.title ?? `${week}. gaia`;
