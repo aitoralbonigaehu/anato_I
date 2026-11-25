@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { BEL_ITEMS, BEL_KINDS, BEL_MERGED, BEL_PLATES, BEL_SYSTEMS, matchesName, normalizeName, sameKey } from '@/content/belortzioak';
 import mergeJson from '@/content/belortzioak-merge.json';
 import { arrange, H } from '@/lib/belortzioakLayout';
+import { evaluateBelLocation } from '@/components/shell/Belortzioak';
 
 const inUnit = ([x, y]: [number, number]) => x >= 0 && x <= 1 && y >= 0 && y <= 1;
 
@@ -93,6 +94,37 @@ describe('belortzioak: the figure set', () => {
     expect(at('p07:16')!.targets.length).toBe(2);
   });
 
+  it('preserves source readings that have no distinct locator on that plate', () => {
+    const plate = BEL_PLATES.find((p) => p.id === 'p12')!;
+    for (const key of ['p12:r5', 'p12:r6', 'p12:12', 'p12:19']) expect(plate.items.some((it) => it.key === key)).toBe(false);
+    for (const [tag, term] of [['5', 'Septum primum'], ['6', 'Ostium secundum'], ['11', 'Birika-zain komun primitiboa'], ['12', 'Beheko arteria mesenterikoa']]) {
+      expect(plate.unlocated?.some((entry) => entry.tag === tag && entry.name.includes(term)), term).toBe(true);
+    }
+    const neuralTube = BEL_PLATES.find((p) => p.id === 'p29')!;
+    expect(neuralTube.items.some((it) => it.n === 2 || it.n === 3)).toBe(false);
+    expect(neuralTube.unlocated).toEqual([
+      { tag: '2', name: 'Aurreko neuroporoa' }, { tag: '3', name: 'Atzeko neuroporoa' },
+    ]);
+    expect(BEL_PLATES.find((p) => p.id === 'p21')?.unlocated).toContainEqual({ tag: '17', name: 'Kolona' });
+  });
+
+  it('uses the audited anatomical landmarks in both drawings and removes extraneous leaders', () => {
+    const at = (key: string) => BEL_ITEMS.find(({ item }) => item.key === key)!.item;
+    // Tip of the PDF vector in the native p02 crop, independently measured before rounding.
+    expect(at('p02:8').targets).toEqual([[0.4469, 0.1941]]);
+    expect(at('p25:8').name).toBe('Gernu-maskuria');
+    expect(at('p25:8').targets).not.toEqual(at('p25:9').targets);
+    expect(at('p27:14.1').name).toBe('Loki-hezurraren ezkata');
+    expect(at('p27:14.2').name).toBe('Loki-hezurraren harkaitza');
+    expect(at('p27:17').name).toBe('Sudur-kartilagoa');
+    for (const key of ['p25:3', 'p25:4', 'p25:6', 'p28:16']) expect(at(key).targets, key).toHaveLength(1);
+    for (const key of ['p29:4', 'p29:5', 'p29:6']) {
+      const { targets } = at(key);
+      expect(targets, key).toHaveLength(2);
+      expect(targets[1][0] - targets[0][0], key).toBeGreaterThan(0.15);
+    }
+  });
+
   it('links the same structure across figures', () => {
     const sinus = BEL_ITEMS.filter((x) => sameKey(x.item.name) === sameKey('Kloaka'));
     expect(sinus.map((x) => x.plate.id).sort()).toEqual(['p19', 'p20', 'p24']);
@@ -109,6 +141,17 @@ describe('belortzioak: typed answers', () => {
     expect(matchesName('mesodermo paraxiala', item('Mesodermo paraxiala'))).toBe(true);
     expect(matchesName('hestegorria', item('Hodi tiroglosoa, hestegorria', ['hodi tiroglosoa', 'hestegorria']))).toBe(true);
     expect(matchesName('Rathke poltsa', item('Rathke poltsa (adenohipofisia)'))).toBe(true);
+  });
+
+  it('gives an exact anatomical name priority over a similar spelling', () => {
+    for (const [first, second] of [['Atal epaxiala', 'Atal hipaxiala'], ['Endodermoa', 'Ektodermoa'], ['Laringea', 'Faringea']]) {
+      expect(matchesName(first, item(second))).toBe(false);
+      expect(matchesName(second, item(first))).toBe(false);
+      expect(matchesName(first, item(first))).toBe(true);
+    }
+    expect(matchesName('epaxiala atal', item('Atal hipaxiala'))).toBe(false);
+    expect(matchesName('laringea', item('Laringea (3. enbrioia)'))).toBe(true);
+    expect(matchesName('larinhea', item('Laringea'))).toBe(true);
   });
 
   it('does not pass a sibling for the asked structure', () => {
@@ -149,6 +192,32 @@ describe('belortzioak: name columns', () => {
   });
 });
 
+describe('belortzioak: identifying the tissue at a tap', () => {
+  it('distinguishes the sinus venosus from the adjacent right atrium in the cardiac section', () => {
+    const plate = BEL_PLATES.find((p) => p.id === 'p09')!;
+    const sinus = plate.items.find((it) => it.key === 'p09:5')!;
+    const atrium = plate.items.find((it) => it.key === 'p09:6')!;
+    expect(atrium.targets.length).toBe(2);
+    for (const tip of atrium.targets) {
+      expect(evaluateBelLocation(plate, atrium, tip).right).toBe(true);
+      expect(evaluateBelLocation(plate, sinus, tip)).toEqual({ right: false, other: atrium.key });
+    }
+    expect(evaluateBelLocation(plate, atrium, sinus.targets[0]).right).toBe(false);
+    expect(evaluateBelLocation(plate, sinus, sinus.targets[0]).right).toBe(true);
+  });
+
+  it('accepts the glomerulus as part of the mesonephric corpuscle and distinguishes its capsule', () => {
+    const plate = BEL_PLATES.find((p) => p.id === 'p24')!;
+    const get = (n: number) => plate.items.find((it) => it.n === n)!;
+    const corpuscle = get(2), glomerulus = get(2.1), capsule = get(2.2);
+    for (const part of [glomerulus, capsule]) {
+      expect(evaluateBelLocation(plate, corpuscle, part.targets[0]).right).toBe(true);
+      expect(evaluateBelLocation(plate, part, part.targets[0]).right).toBe(true);
+    }
+    expect(evaluateBelLocation(plate, glomerulus, capsule.targets[0]).right).toBe(false);
+  });
+});
+
 describe('belortzioak: merged figures (one drawing, the names of all its copies)', () => {
   const members = (id: string) => Object.keys((mergeJson as Record<string, { members: Record<string, unknown> }>)[id].members);
 
@@ -184,29 +253,35 @@ describe('belortzioak: merged figures (one drawing, the names of all its copies)
     }
     const kindOf = (g: string, name: string) => BEL_MERGED.find((x) => x.id === g)!.all.items.find((it) => it.name === name)?.kind;
     expect(kindOf('f-3', 'Zain sinua')).toBe('bihotza');
-    expect(kindOf('f-3', 'Birika-zain komun primitiboa eta eskuineko birika-zainak')).toBe('zainak');
+    expect(kindOf('f-3', 'Goiko kaba zaina')).toBe('zainak');
     expect(kindOf('f-2', 'Barea')).toBe('linfa');
     expect(kindOf('f-1', 'Bitelo-zainak')).toBe('zainak');
     expect(kindOf('f-1', '1. aorta-arkua')).toBe('arteriak');
   });
 
-  it('lays the copies onto each other: one structure named in two copies points at one spot', () => {
-    // Different copies put their arrows on the same structure; once aligned, the nearest tips of the
-    // two must agree within a few % of the figure (an arrow touches the structure, not one pixel).
-    const M = mergeJson as unknown as Record<string, { members: Record<string, number[][]> }>;
-    const map = (m: number[][], [x, y]: number[]) => [m[0][0] * x + m[0][1] * y + m[0][2], m[1][0] * x + m[1][1] * y + m[1][2]];
-    const seen: string[] = [];
-    for (const g of BEL_MERGED) {
-      const placed = members(g.id).flatMap((pid) => BEL_PLATES.find((p) => p.id === pid)!.items.map((it) => ({ pid, it, at: it.targets.map((t) => map(M[g.id].members[pid], t)) })));
-      for (let i = 0; i < placed.length; i++)
-        for (let j = i + 1; j < placed.length; j++) {
-          const [a, b] = [placed[i], placed[j]];
-          if (a.pid === b.pid || sameKey(a.it.name) !== sameKey(b.it.name)) continue;
-          const d = Math.min(...a.at.flatMap((p) => b.at.map((q) => Math.hypot(p[0] - q[0], p[1] - q[1]))));
-          seen.push(`${a.it.key}~${b.it.key}`);
-          expect(d, `${g.id}: ${a.it.key} ${b.it.key} ${a.it.name}`).toBeLessThan(0.06);
+  it('keeps every merged target and mask registered to the image of its source', () => {
+    type Pt = [number, number];
+    const rounded = ([x, y]: Pt) => [Number(x.toFixed(8)), Number(y.toFixed(8))];
+    for (const group of BEL_MERGED) {
+      for (const plate of [group.all, ...group.kinds.map((k) => k.plate)]) {
+        for (const item of plate.items) {
+          const matrix = plate.imgTransforms![item.from!];
+          const map = ([x, y]: Pt): Pt => [
+            matrix[0][0] * x + matrix[0][1] * y + matrix[0][2],
+            matrix[1][0] * x + matrix[1][1] * y + matrix[1][2],
+          ];
+          const names = new Set([item.name, ...(item.accept ?? [])].map(sameKey));
+          const source = BEL_PLATES.find((p) => p.id === item.from)!.items.find((other) => names.has(sameKey(other.name)))!;
+          const id = `${plate.id} ${item.key}`;
+          expect(source, id).toBeDefined();
+          expect(item.targets.map(rounded), id).toEqual(source.targets.map((p) => rounded(map(p))));
+          expect(item.marks.map((m) => rounded(m.at)), id).toEqual(source.marks.map((m) => rounded(map(m.at))));
+          expect(item.arrow, id).toBe(source.arrow);
+          expect(item.area?.map((shape) => shape.map((ring) => ring.map(rounded))), id).toEqual(
+            source.area?.map((shape) => shape.map((ring) => ring.map((p) => rounded(map(p))))),
+          );
         }
+      }
     }
-    expect(seen.length).toBeGreaterThan(0);
-});
+  });
 });

@@ -1,6 +1,7 @@
 'use client';
 
 import { BACK, FRONT, TISSUE, poseStage18, type StageSpec } from '@/components/scenes/week17/common';
+import { HeadMap, MAP_LEFT } from '@/components/scenes/week17/HeadMap';
 import { END_SINUS } from './Clefts18';
 import type { PharynxBOpts } from './pharynx-b';
 import { pharynxD } from './pharynx-d';
@@ -23,7 +24,6 @@ const KEY = [
   { color: POUCH.p4, text: '4. poltsatik' },
   { color: TISSUE.cartilage, text: 'kartilagoak' },
 ];
-const CAP_BACK = 'Faringe hestea eta lepoa atzetik, hormak kenduta (3D eredua): enbrioiaren ezkerra zure ezkerrean';
 const CAP_FRONT = 'Lepoa aurretik eta atzetik (3D eredua)';
 
 // ———————————————————————————— Guruinen jaisketa (1.2) ————————————————————————————
@@ -31,12 +31,12 @@ const CAP_FRONT = 'Lepoa aurretik eta atzetik (3D eredua)';
 // fourth pouches (seen budding two stages ago) go down, the neck growing longer under them.
 
 export const SD = [0, 0.26, 0.6, 0.8] as const;
-const down = (dist: number, y: number, yaw = 182, elev = 8, x = 0) => BACK(dist, [x, y, 0.35], yaw, elev);
+// One posterior frame includes both pouch origins, the thyroid bed and the descending thymus.
+// Keep it through the three reading holds so a camera move never looks like a gland moving.
+const descentCamera = BACK(15, [0, -3.15, 0.3], 180, 4);
 const KEY_DOWN = [
   { color: POUCH.p3, text: '3. poltsatik' },
   { color: POUCH.p4, text: '4. poltsatik' },
-  { color: '#d98068', text: 'tiroidea' },
-  { color: TISSUE.endo, text: 'endodermoa' },
 ];
 
 const specDown: StageSpec<PharynxPose, PharynxBOpts> = {
@@ -46,52 +46,52 @@ const specDown: StageSpec<PharynxPose, PharynxBOpts> = {
   S: SD,
   pose: END_SINUS.pose,
   opts: END_SINUS.opts,
-  caption: CAP_BACK,
+  caption: 'Faringea eta lepoa atzetik · burua goian',
   key: KEY_DOWN,
-  map: 'neck',
+  section: (t) => t < SD[1] ? { show: Math.min(1, (SD[1] - t) / 0.02), node: <HeadMap focus="neck" />, left: MAP_LEFT } : null,
   steps: [
     {
       // Run on from the persistent sinus: its needle and fluid go at once (first quarter), with the walls.
       to: { persist: 0, fluid: 0, needle: 0, peelL: 1, peelR: 1 },
       run: [0, 0.25],
-      cam: down(10.5, -1.5),
+      cam: descentCamera,
       fit: false,
       glide: 0.06,
       dim: ['hirugarren-poltsa', 'laugarren-poltsa', 'timoa', 'beheko-paratiroidea', 'goiko-paratiroidea'],
       names: [
         { id: 'faringea', small: true, from: 0.2 },
         { id: 'timoa', sub: '3. poltsa', from: 0.35 },
-        { id: 'beheko-paratiroidea', sub: '3. poltsa: goian hasten da', from: 0.45 },
-        { id: 'goiko-paratiroidea', sub: '4. poltsa: behean hasten da', from: 0.55 },
+        { id: 'beheko-paratiroidea', text: '3. poltsako paratiroidea', sub: 'goian hasten da', from: 0.45 },
+        { id: 'goiko-paratiroidea', text: '4. poltsako paratiroidea', sub: 'beherago hasten da', from: 0.55 },
       ],
-      note: 'Hasieran 3. poltsakoa GORAGO dago: timoa eta beheko paratiroidea. 4. poltsakoa, goiko paratiroidea, beherago',
+      note: 'Hasieran, 3. poltsako paratiroidea 4. poltsakoa baino gorago dago.',
     },
     {
       to: { neck: 1, descend: 0.72, thyroid: 1 },
-      run: [0.06, 0.94],
-      cam: down(14, -2.9),
+      run: [0.06, 0.84],
+      cam: descentCamera,
       fit: false,
       glide: 0.08,
       dim: ['timoa', 'beheko-paratiroidea', 'goiko-paratiroidea'],
       names: [
         { id: 'timoa', sub: 'behera eta erdialdera', from: 0.1 },
-        { id: 'beheko-paratiroidea', sub: 'timoak arrastatzen du', from: 0.3 },
-        { id: 'goiko-paratiroidea', sub: 'ia ez da mugitzen', from: 0.5 },
+        { id: 'beheko-paratiroidea', text: '3. poltsako paratiroidea', sub: 'timoarekin batera', from: 0.3 },
+        { id: 'goiko-paratiroidea', text: '4. poltsako paratiroidea', sub: 'gutxiago jaisten da', from: 0.5 },
       ],
-      note: 'Timoa bi aldeetan eratzen da eta erdialdera jaisten da: 3. poltsako paratiroidea berekin darama, 4. poltsakoaren ondotik pasatuz',
+      note: 'Timoak 3. poltsako paratiroidea berekin darama.',
     },
     {
       to: { descend: 1, meet: 1 },
       run: [0.05, 0.75],
-      cam: down(9.5, -3.9, 186),
+      cam: descentCamera,
       fit: false,
       glide: 0.06,
-      dim: ['beheko-paratiroidea', 'goiko-paratiroidea', 'tiroide-guruina', 'tiroide-lobuluak'],
+      dim: ['timoa', 'beheko-paratiroidea', 'goiko-paratiroidea', 'tiroide-guruina', 'tiroide-lobuluak'],
       names: [
         { id: 'goiko-paratiroidea', text: 'Goiko paratiroidea', sub: '4. poltsatik' },
         { id: 'beheko-paratiroidea', text: 'Beheko paratiroidea', sub: '3. poltsatik', from: 0.3 },
       ],
-      note: 'Gurutzatu dira: 3. poltsakoa azpian geratu da, 4. poltsakoa gainean. Izena amaierako lekutik dator, ez jatorritik',
+      note: 'Amaieran, 3. poltsakoa behean dago eta 4. poltsakoa goian.',
       warn: true,
     },
     {

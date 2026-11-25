@@ -1,7 +1,7 @@
 'use client';
 
 import { studyKey } from '@/lib/study/storage-scope';
-import { Fragment, useEffect, useId, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { Fragment, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { BEL_ITEMS, BEL_KINDS, BEL_MERGED, BEL_MERGED_PLATES, BEL_PLATES, BEL_SYSTEMS, matchesName, sameKey, type BelItem, type BelKind, type BelMerged, type BelPlate, type BelSystem } from '@/content/belortzioak';
 import { LandFoot, LandNav } from './LandNav';
 import { arrange, H, type Placed } from '@/lib/belortzioakLayout';
@@ -106,14 +106,11 @@ interface Stage {
   fx: number;
   /** Figure fraction → stage units. */
   at: (p: Pt) => Pt;
-  /** Quiz hit tolerance in stage units. */
-  rad: (r: number) => number;
 }
 const stageOf = (plate: BelPlate): Stage => {
   const fw = (H * plate.size[0]) / plate.size[1];
   const fx = COL + GAP;
-  const side = Math.max(fw, H);
-  return { fw, tw: fw + 2 * (COL + GAP), fx, at: ([x, y]) => [fx + x * fw, y * H], rad: (r) => Math.max(34, r * side) };
+  return { fw, tw: fw + 2 * (COL + GAP), fx, at: ([x, y]) => [fx + x * fw, y * H] };
 };
 
 // ---- a structure's extent: hit tests and outlines ----------------------------------------------------
@@ -148,31 +145,69 @@ const edgeDist = (st: Stage, shape: Pt[][], p: Pt) => {
     }
   return best;
 };
-/** Whether an arrow tip already sits in the lit extent (on it, or touching its edge): then it needs no circle of its own. */
-const covers = (st: Stage, it: BelItem, t: Pt) => !!it.area?.some((sh) => inShape(sh, t) || edgeDist(st, sh, t) < 16);
 const pathOf = (st: Stage, shape: Pt[][]) =>
-  shape.map((ring) => `M${ring.map((p) => st.at(p).map((v) => v.toFixed(1)).join(' ')).join('L')}Z`).join('');
+  shape.map((ring) => `M${ring.map((p) => st.at(p).join(' ')).join('L')}Z`).join('');
 
-/**
- * Allow for imprecise taps when checking an answer in the location quiz.
- */
-const structureAt = (plate: BelPlate, st: Stage, p: Pt, reach: number, skip?: string): string | null => {
-  const [bx, by] = st.at(p);
-  let tip: { key: string; d: number; k: number } | null = null;
-  for (const it of plate.items) {
-    if (it.key === skip) continue;
-    it.targets.forEach((t, i) => {
-      const [ax, ay] = st.at(t);
-      const d = Math.hypot(ax - bx, ay - by);
-      const k = d / st.rad(it.r[i] ?? 0.05);
-      if (k <= reach && (!tip || d < tip.d)) tip = { key: it.key, d, k };
-    });
+const POINT_RADIUS = 5;
+const distanceTo = (st: Stage, a: Pt, b: Pt) => Math.hypot((a[0] - b[0]) * st.fw, (a[1] - b[1]) * H);
+
+/** A separate documented occurrence may lack a contour even when another occurrence has one. */
+const pointOnly = (st: Stage, it: BelItem, t: Pt) =>
+  !it.area?.length || (it.targets.length > 1 && it.area.every((shape) =>
+    !shape.some((ring) => inShape([ring], t)) && edgeDist(st, shape, t) > POINT_RADIUS));
+
+const structureAt = (items: BelItem[], st: Stage, p: Pt, dots = false): string | null => {
+  const direct = items.map((it) => ({
+    key: it.key,
+    distance: Math.min(...it.targets.map((t) => distanceTo(st, p, t))),
+  })).filter((it) => it.distance <= 1).sort((a, b) => a.distance - b.distance);
+  if (direct.length) return direct[1] && direct[1].distance - direct[0].distance < 0.001 ? null : direct[0].key;
+  const inside = dots ? undefined : items.filter((it) => inArea(it, p)).sort((a, b) => areaSize(a) - areaSize(b))[0];
+  let closest = POINT_RADIUS;
+  let key: string | null = null;
+  for (const it of items) {
+    for (const t of it.targets) {
+      const distance = distanceTo(st, p, t);
+      if (distance > closest || (!dots && !pointOnly(st, it, t))) continue;
+      // A documented point may lie on a larger structure. A tap across its outline
+      // belongs to the tissue under the pointer, even if the point is nearby.
+      if (inside && !inArea(inside, t)) continue;
+      if (distance === closest && key !== it.key) {
+        key = null;
+      } else {
+        closest = distance;
+        key = it.key;
+      }
+    }
   }
-  const t = tip as { key: string; d: number; k: number } | null;
-  if (t && t.k <= 0.45) return t.key;
-  const inside = plate.items.filter((it) => it.key !== skip && inArea(it, p)).sort((a, b) => areaSize(a) - areaSize(b));
-  return inside[0]?.key ?? t?.key ?? null;
+  return key ?? inside?.key ?? null;
 };
+
+/** A target-only annotation can identify a smaller structure drawn inside the named organ. */
+const pointPartOf = (whole: BelItem, part: BelItem) =>
+  (whole.key === 'p09:5' && part.key === 'p09:8') ||
+  (['p17:8', 'p17:9', 'p17:10'].includes(whole.key) && ['p17:6', 'p17:7'].includes(part.key));
+
+/** A smaller traced structure can be an answer for its containing organ in this view.
+ * Check the ring at this occurrence; a second view of the same structure is elsewhere. */
+const containedAt = (st: Stage, whole: BelItem, part: BelItem, p: Pt) => {
+  if (pointPartOf(whole, part)) return true;
+  const onWhole = (vertex: Pt) => inArea(whole, vertex) || whole.area!.some((shape) => edgeDist(st, shape, vertex) <= 1);
+  return !!part.area?.some((shape) => inShape(shape, p) && shape.some((ring) =>
+    inShape([ring], p) && ring.every(onWhole)));
+};
+
+export function evaluateBelLocation(plate: BelPlate, asked: BelItem, p: Pt) {
+  const st = stageOf(plate);
+  const key = structureAt(plate.items, st, p);
+  const hit = key ? itemOf(plate, key) : undefined;
+  // Each of two genuinely coincident PDF endpoints is correct for its own question.
+  const distance = Math.min(...asked.targets.map((t) => distanceTo(st, t, p)));
+  const atTip = distance <= 1 && (!hit || hit.key === asked.key ||
+    hit.targets.every((t) => distance <= distanceTo(st, t, p) + 0.001));
+  const right = atTip || key === asked.key || (inArea(asked, p) && (!hit || containedAt(st, asked, hit, p)));
+  return { right, other: right ? null : key };
+}
 
 // ---- the figure ------------------------------------------------------------------------------------
 
@@ -204,7 +239,8 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
   const figureId = useId();
   const explore = mode === 'esploratu';
   const lit = explore ? (active ? itemOf(plate, active) : undefined) : answered ? (asked ?? undefined) : undefined;
-  const imageId = lit?.area && lit.from ? lit.from : plate.img;
+  const imageId = (explore ? lit : asked)?.from ?? plate.img;
+  const arrowhead = `url(#${figureId}-head)`;
   const imageTransform = imageId ? plate.imgTransforms?.[imageId] ?? plate.imgM : undefined;
   // A crowded merged figure with every kind: coloured dots, and only the name pointed at in its column.
   const dots = explore && !numbers && !!plate.merge && !plate.merge.kind && plate.items.length > CROWDED;
@@ -212,39 +248,21 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
   const pct = (u: number, of: number) => `${(u / of) * 100}%`;
 
   // Figure hover uses the traced boundary or the visible target marker.
-  const toFig = (e: ReactPointerEvent<SVGSVGElement>): Pt | null => {
-    const el = svg.current;
-    if (!el) return null;
-    const b = el.getBoundingClientRect();
-    const ux = ((e.clientX - b.left) / b.width) * st.tw;
-    const uy = ((e.clientY - b.top) / b.height) * H;
-    const x = (ux - st.fx) / st.fw;
-    const y = uy / H;
-    return x < 0 || x > 1 || y < 0 || y > 1 ? null : [x, y];
+  const toFig = (e: { clientX: number; clientY: number }): Pt | null => {
+    const matrix = svg.current?.getScreenCTM();
+    if (!matrix) return null;
+    const point = new DOMPoint(e.clientX, e.clientY).matrixTransform(matrix.inverse());
+    const x = (point.x - st.fx) / st.fw;
+    const y = point.y / H;
+    return x >= 0 && x <= 1 && y >= 0 && y <= 1 ? [x, y] : null;
   };
-  const nearest = (p: Pt): string | null => {
-    const [x, y] = st.at(p);
-    if (!dots) {
-      const inside = plate.items.filter((it) => inArea(it, p)).sort((a, b) => areaSize(a) - areaSize(b));
-      if (inside.length) return inside[0].key;
-    }
-    let distance = dots ? 8 : 5;
-    let key: string | null = null;
-    for (const it of plate.items) {
-      if (!dots && it.area?.length) continue;
-      for (const target of it.targets) {
-        const [tx, ty] = st.at(target);
-        const d = Math.hypot(x - tx, y - ty);
-        if (d < distance) {
-          distance = d;
-          key = it.key;
-        } else if (d === distance && key !== it.key) {
-          key = null;
-        }
-      }
-    }
-    return key;
-  };
+  const nearest = (p: Pt) => structureAt(plate.items, st, p, dots);
+  const arrow = ([x1, y1]: Pt, [x2, y2]: Pt, i: number) => (
+    <g key={i}>
+      <line className={s.halo} x1={x1} y1={y1} x2={x2} y2={y2} />
+      <line className={s.core} x1={x1} y1={y1} x2={x2} y2={y2} markerEnd={arrowhead} />
+    </g>
+  );
 
   const isMark = (it: BelItem, t: Pt) => it.marks.some((m) => m.at[0] === t[0] && m.at[1] === t[1]);
   const lineEnd = (pl: Placed): Pt => [pl.side === 'l' ? COL : st.fx + st.fw + GAP, pl.y];
@@ -254,7 +272,7 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
   // structure itself — a short way outwards, with an arrow, so the chip does not hide what is asked.
   const chipAt = (it: BelItem): Pt => {
     const [tx, ty] = st.at(it.targets[0]);
-    if (it.arrow) return st.at(it.label);
+    if (it.arrow && distanceTo(st, it.label, it.targets[0]) >= 8) return st.at(it.label);
     const cx = st.fx + st.fw / 2;
     let dx = tx - cx;
     let dy = ty - H / 2;
@@ -296,7 +314,7 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
         }}
         onPointerLeave={() => explore && onHover(null)}
         onClick={(e) => {
-          const p = toFig(e as unknown as ReactPointerEvent<SVGSVGElement>);
+          const p = toFig(e);
           if (!p) return;
           if (mode === 'non' && !answered) onTap(p);
           else if (explore) {
@@ -313,8 +331,8 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
             <rect x={st.fx} width={st.fw} height={H} fill="#fff" />
             {lit?.area?.map((sh, i) => <path key={i} d={pathOf(st, sh)} fill="#000" fillRule="evenodd" />)}
           </mask>
-          <marker id="bel-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse" markerUnits="strokeWidth">
-            <path d="M0 0 L10 5 L0 10 z" fill="currentColor" />
+          <marker id={`${figureId}-head`} viewBox="0 0 10 10" refX="10" refY="5" markerWidth="12" markerHeight="12" orient="auto" markerUnits="userSpaceOnUse">
+            <path d="M0 2 L10 5 L0 8 Z" fill="context-stroke" />
           </marker>
         </defs>
 
@@ -337,11 +355,11 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
             {figureImage()}
           </g>
         )}
-        {lit?.area?.map((sh, i) => <path key={`${lit.key}-${i}`} className={s.extent} d={pathOf(st, sh)} fillRule="evenodd" />)}
-        {lit?.targets.map((target, i) => {
-          if (covers(st, lit, target)) return null;
+        {lit?.area?.map((sh, i) => <path key={`${lit.key}-${i}`} className={s.extent} mask={`url(#${figureId}-isolation)`} d={pathOf(st, sh)} fillRule="evenodd" />)}
+        {explore && numbers && lit?.targets.map((target, i) => {
+          if (!pointOnly(st, lit, target)) return null;
           const [cx, cy] = st.at(target);
-          return <circle key={i} className={s.location} cx={cx} cy={cy} r="5" />;
+          return <circle key={i} className={s.location} cx={cx} cy={cy} r="1.5" />;
         })}
 
         {explore && !numbers && (
@@ -352,16 +370,7 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
               const on = active === pl.key;
               return (
                 <g key={pl.key} className={`${s.leader}${on ? ` ${s.isOn}` : ''}${active && !on ? ` ${s.isFaded}` : ''}${it.kind ? ` ${s.isKind}` : ''}`} style={kindColor(it)}>
-                  {it.targets.map((t, i) => {
-                    const [x2, y2] = st.at(t);
-                    return (
-                      <Fragment key={i}>
-                        <line className={s.halo} x1={x1} y1={y1} x2={x2} y2={y2} />
-                        <line className={s.core} x1={x1} y1={y1} x2={x2} y2={y2} />
-                        <circle className={s.tip} cx={x2} cy={y2} r={on ? 5.5 : 4} />
-                      </Fragment>
-                    );
-                  })}
+                  {it.targets.map((t, i) => arrow([x1, y1], st.at(t), i))}
                 </g>
               );
             })}
@@ -375,7 +384,7 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
               return (
                 <g key={it.key} className={`${s.leader} ${s.isKind} ${s.isDot}${on ? ` ${s.isOn}` : ''}${active && !on ? ` ${s.isFaded}` : ''}`} style={kindColor(it)}>
                   {it.targets.map((t, i) => (
-                    <circle key={i} className={s.tip} cx={st.at(t)[0]} cy={st.at(t)[1]} r={on ? 7 : 5.5} />
+                    <circle key={i} className={s.tip} cx={st.at(t)[0]} cy={st.at(t)[1]} r={on ? 1.5 : 3} />
                   ))}
                 </g>
               );
@@ -393,12 +402,7 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
                   {it.targets.map((t, i) => {
                     const [x2, y2] = st.at(t);
                     if (Math.hypot(x2 - lx, y2 - ly) < 8 || isMark(it, t)) return null;
-                    return (
-                      <Fragment key={i}>
-                        <line className={s.halo} x1={lx} y1={ly} x2={x2} y2={y2} />
-                        <line className={s.core} x1={lx} y1={ly} x2={x2} y2={y2} />
-                      </Fragment>
-                    );
+                    return arrow([lx, ly], [x2, y2], i);
                   })}
                 </g>
               );
@@ -406,36 +410,9 @@ export function Figure({ plate, mode, numbers, covered, active, onHover, onPick,
           </g>
         )}
 
-        {/* quiz arrow: from where the number sat to the structure, the way the figure is printed */}
-        {mode === 'zer' && asked && (
+        {asked && (mode === 'zer' || (mode === 'non' && answered)) && (
           <g className={s.qArrow}>
-            {asked.targets.map((t, i) => {
-              const [lx, ly] = chipAt(asked);
-              const [x2, y2] = st.at(t);
-              if (Math.hypot(x2 - lx, y2 - ly) < 8 || isMark(asked, t)) return null;
-              const k = 1 - 10 / Math.hypot(x2 - lx, y2 - ly);
-              return (
-                <Fragment key={i}>
-                  <line className={s.halo} x1={lx} y1={ly} x2={lx + (x2 - lx) * k} y2={ly + (y2 - ly) * k} />
-                  <line className={s.core} x1={lx} y1={ly} x2={lx + (x2 - lx) * k} y2={ly + (y2 - ly) * k} markerEnd="url(#bel-head)" />
-                </Fragment>
-              );
-            })}
-          </g>
-        )}
-        {mode === 'non' && answered && asked && (
-          <g className={s.qArrow}>
-            {asked.targets.map((t, i) => {
-              const [lx, ly] = chipAt(asked);
-              const [x2, y2] = st.at(t);
-              if (Math.hypot(x2 - lx, y2 - ly) < 8 || isMark(asked, t)) return null;
-              return (
-                <Fragment key={i}>
-                  <line className={s.halo} x1={lx} y1={ly} x2={x2} y2={y2} />
-                  <line className={s.core} x1={lx} y1={ly} x2={x2} y2={y2} />
-                </Fragment>
-              );
-            })}
+            {asked.targets.map((target, i) => arrow(chipAt(asked), st.at(target), i))}
           </g>
         )}
         {tap && (
@@ -763,12 +740,7 @@ export function Belortzioak() {
 
   const tapAt = (p: Pt) => {
     if (!quiz || !q || !asked) return;
-    const st = stageOf(shown);
-    const dist = (t: Pt) => Math.hypot(st.at(t)[0] - st.at(p)[0], st.at(t)[1] - st.at(p)[1]);
-    // Right: near an arrow tip, or anywhere on the structure where its whole extent is known.
-    const right = inArea(asked, p) || asked.targets.some((t, i) => dist(t) <= Math.max(st.rad(asked.r[i] ?? 0.05), 46));
-    // A tap on another structure of the figure is named, so the miss teaches something too.
-    const other = right ? null : structureAt(shown, st, p, 1, asked.key);
+    const { right, other } = evaluateBelLocation(shown, asked, p);
     settle(right, { tap: p, picked: other });
   };
 
@@ -999,6 +971,14 @@ export function Belortzioak() {
                     );
                   })}
                 </ol>
+                {!cover && !!shown.unlocated?.length && (
+                  <div className={s.unlocated}>
+                    <p>Irudian kokapen zehatzik gabe ageri dira legendan.</p>
+                    <ul>
+                      {shown.unlocated.map(({ tag, name }) => <li key={name}>{tag && `${tag}. `}{name}</li>)}
+                    </ul>
+                  </div>
+                )}
                 {elsewhere.length > 0 && activeItem && (
                   <div className={s.elsewhere}>
                     <span>«{activeItem.name}» beste irudietan:</span>

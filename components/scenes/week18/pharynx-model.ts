@@ -1,8 +1,8 @@
-import { add, mix3, type V3 } from '@/lib/three-d/math';
-import { curve3, grid, type Mesh } from '@/lib/three-d/mesh';
+import { add, identity, mix3, sub, type V3 } from '@/lib/three-d/math';
+import { curve3, grid, tube, type Mesh, type TubeOptions } from '@/lib/three-d/mesh';
 import { partition } from '@/lib/three-d/sdf';
 import { cachedMesh } from '@/lib/three-d/mesh-cache';
-import { bean, mergeParts, vessel, type Parts, type VesselOptions } from '@/lib/three-d/organic';
+import { arcLengths, bean, grow, mergeParts, pointAt, radiusAt, resample, vessel, type Parts, type VesselOptions } from '@/lib/three-d/organic';
 import type { Item3 } from '@/lib/three-d/scene';
 import { blobParts, mixHex } from '@/components/scenes/week10/model3d';
 import { ARCH, ARCH_DEEP, TISSUE } from '@/components/scenes/week17/common';
@@ -123,6 +123,49 @@ const ss = (a: number, b: number, x: number) => {
 const gauss = (d: number, w: number) => Math.exp(-(d * d) / (w * w));
 const L = (k: readonly V3[], n = 24) => curve3(k as V3[], n);
 const SX = (s: number, p: V3): V3 => [s * p[0], p[1], p[2]];
+
+// Model one hemineck, then reflect it. The paths start on the actual pouch contour.
+const LOBE_Y = -3.72, LOBE_X = 0.78;
+const PARA_END: Record<3 | 4, V3> = { 3: [LOBE_X + 0.14, LOBE_Y - 0.6, 0.3], 4: [LOBE_X + 0.14, LOBE_Y + 0.56, 0.3] };
+type DescentPath = { origin: V3; line: V3[]; lengths: number[] };
+const descentPaths: Partial<Record<3 | 4, DescentPath>> = {};
+
+function parathyroidAt(pouch: 3 | 4, origin: V3, descend: number): V3 {
+  // The pouch chapter ends at 0.28 after a short initial descent. The third derivative
+  // is still above the fourth there; the audience sees the reversal in the next chapter.
+  const distance = pouch === 3 ? ss(0, 0.78, descend) ** 1.7 : ss(0.2, 1, descend);
+  if (distance === 0) return origin;
+  if (distance === 1) return PARA_END[pouch];
+  let path = descentPaths[pouch];
+  if (!path || path.origin.some((v, i) => v !== origin[i])) {
+    const via: V3[] = pouch === 3
+      ? [add(origin, [-0.05, -0.75, 0.1]), [1.38, -2.05, -0.28], [1.2, -3.0, 0.02]]
+      : [[0.96, -2.2, -0.15], [1.02, -2.75, 0.1]];
+    const line = L([origin, ...via, PARA_END[pouch]], 96);
+    path = { origin, line, lengths: arcLengths(line) };
+    descentPaths[pouch] = path;
+  }
+  return pointAt(path.line, path.lengths, distance * path.lengths[path.lengths.length - 1]);
+}
+
+/** The pouch's ventral bud broadens into a flattened, gently lobulated thymic lobe as it descends. */
+function thymusLobe(line: V3[], bud: number, descend: number): Parts {
+  // A visible bud (bud > 0.01) has a nonzero centreline even before it leaves the pharynx.
+  const points = grow(line, bud, 30)!;
+  const lengths = arcLengths(points);
+  const length = lengths[lengths.length - 1];
+  const broadening = ss(0.12, 0.88, descend);
+  const budProfile = { r0: 0.08, r1: 0.2, flare: 0.4 * (1 - ss(0, 0.05, descend)), flareLen: 0.15, bulb: 0.75, bulbLen: 0.5 };
+  const opts: TubeOptions = {
+    radius: (u) => {
+      const lobe = 0.11 + 0.26 * Math.sin(Math.PI * u) + 0.045 * gauss(u - 0.27, 0.14) + 0.10 * gauss(u - 0.73, 0.16);
+      return lerp(radiusAt(budProfile, u * length, length), lobe, broadening);
+    },
+    around: (a) => 1 - lerp(0.15, 0.4, broadening) * Math.cos(a) ** 2,
+    ref: [0, 0, 1], sides: 14, capStart: true, capEnd: true,
+  };
+  return { mesh: tube(points, opts), hit: tube(resample(points, 10), { ...opts, sides: 8 }) };
+}
 
 /** A smooth curve through knots (x sorted from high to low: Catmull-Rom on the values). */
 const curveOf = (K: readonly (readonly [number, number])[]) => (y: number) => {
@@ -900,79 +943,91 @@ export function pharynxModel(pose: PharynxPose, o: PharynxOpts = {}) {
   const meet = clamp01(pose.meet);
   const thy = clamp01(pose.thyroid);
 
-  // Where the descending glands go (left side; the right mirrors it).
-  const LOBE_Y = -3.72, LOBE_X = 0.78;
-  const PARA_END: Record<3 | 4, V3> = { 3: [LOBE_X + 0.14, LOBE_Y - 0.6, 0.3], 4: [LOBE_X + 0.14, LOBE_Y + 0.56, 0.3] };
-
   /** The dorsal wing's end: the bud grows out of the pouch's tip, behind the cut. */
   const dorsalLine = (k: number): V3[] => {
     const t = tip(k);
     return L([[t[0] + 0.0, t[1], 0.08], [t[0] + 0.1, t[1] + 0.05, -0.26], [t[0] + 0.14, t[1] + 0.12, -0.62]], 16);
   };
-  const ventralLine = (k: number): V3[] => {
+  const ventralKeys = (k: number): V3[] => {
     const t = tip(k);
     if (k === 2)
-      return L([[t[0] - 0.05, t[1], 0.25], [t[0] + 0.16, t[1] - 0.16, 0.62], [t[0] + 0.14, t[1] - 0.72, 0.92], [t[0] - 0.02, t[1] - 1.3, 1.02]], 26);
-    return L([[t[0] - 0.05, t[1], 0.25], [t[0] + 0.18, t[1] - 0.1, 0.56], [t[0] + 0.18, t[1] - 0.32, 0.72]], 18);
+      return [[t[0] - 0.05, t[1], 0.25], [t[0] + 0.16, t[1] - 0.16, 0.62], [t[0] + 0.14, t[1] - 0.72, 0.92], [t[0] - 0.02, t[1] - 1.3, 1.02]];
+    return [[t[0] - 0.05, t[1], 0.25], [t[0] + 0.18, t[1] - 0.1, 0.56], [t[0] + 0.18, t[1] - 0.32, 0.72]];
   };
 
-  // A gland's place at the descent's progress d.
-  const para3At = (s: number, d: number): V3 => {
-    const e0 = dorsalLine(2)[15];
-    const e1 = PARA_END[3];
-    const u = ss(0, 0.78, d);
-    return SX(s, L([e0, [e0[0] - 0.05, e0[1] - 0.75, e0[2] + 0.1], [1.38, -2.05, -0.28], [1.2, -3.0, 0.02], e1], 40)[Math.round(u * 39)]);
+  const origin3 = add(tip(2), [0.14, 0.12, -0.62]);
+  const para3 = parathyroidAt(3, origin3, desc);
+  const para4 = parathyroidAt(4, add(tip(3), [0.14, 0.12, -0.62]), desc);
+  const gland = (key: string, id: string, pos: V3, r: number, color: string, deep: string) => {
+    if (r <= 0.002) return;
+    // The posterior view shows a flattened ovoid on each thyroid lobe. Keep the mesh local so the
+    // mirrored inclination and the travel use the same contour for drawing, picking and flat views.
+    const parts = blobParts({
+      center: [0, 0, 0], radii: [0.88 * r, 1.22 * r, 0.74 * r], rings: 12, sides: 16,
+      shape: ([, y]) => 1 - 0.09 * y,
+    }, 'pharynx18-parathyroid-ovoid');
+    const matrix = identity();
+    const tilt = Math.sign(pos[0]) * 0.18;
+    matrix[0] = matrix[5] = Math.cos(tilt);
+    matrix[1] = Math.sin(tilt);
+    matrix[4] = -matrix[1];
+    matrix[12] = pos[0];
+    matrix[13] = pos[1];
+    matrix[14] = pos[2];
+    put(key, id, parts, color, { deep, matrix });
   };
-  const para4At = (s: number, d: number): V3 => {
-    const e0 = dorsalLine(3)[15];
-    const e1 = PARA_END[4];
-    const u = ss(0.2, 1, d);
-    return SX(s, L([e0, [0.96, -2.2, -0.15], [1.02, -2.75, 0.1], e1], 30)[Math.round(u * 29)]);
-  };
+
+  let thymusLine: V3[] = [];
+  if (pose.p3v > 0.01) {
+    const keys = ventralKeys(2);
+    const u = ss(0, 1, desc);
+    // The ventral and dorsal buds start at separate roots. The ventral head approaches the
+    // dorsal derivative first, travels beside it, then eases away with their shared velocity.
+    const offset = mix3(sub(keys[0], origin3), [-0.06, -0.16, 0.22], ss(0, 0.16, desc));
+    const head = mix3(add(para3, offset), [lerp(0.5, 0.34, meet), -4.9, 0.52], ss(0.72, 1, desc));
+    const tail = mix3(keys[3], [lerp(0.48, 0.3, meet), -6.85, 0.5], u);
+    const guide = (index: 1 | 2) => {
+      const f = index / 3;
+      const initialBend = sub(keys[index], mix3(keys[0], keys[3], f));
+      return add(mix3(head, tail, f), mix3(initialBend, [0.06, 0, 0.1], u));
+    };
+    thymusLine = L([head, guide(1), guide(2), tail], 26);
+  }
 
   for (const s of [1, -1]) {
     // ——— the third pouch: dorsal wing → inferior parathyroid ———
     const d3 = clamp01(pose.p3d);
     if (d3 > 0.01) {
-      const pos = desc > 0.001 ? para3At(s, desc) : SX(s, dorsalLine(2)[15]);
+      const pos = SX(s, para3);
       if (desc < 0.05) vess(`d3${s}`, 'hirugarren-poltsa', dorsalLine(2).map((p) => SX(s, p)), POUCH.p3, { r0: 0.1, r1: 0.1, flare: 0.5, flareLen: 0.12, sides: 12 }, d3, 1 - ss(0, 0.05, desc), { deep: POUCH.p3Deep, groups: ['faringe-poltsak'] });
       const r = 0.2 * ss(0.5, 1, d3);
-      ball(`pi${s}`, 'beheko-paratiroidea', pos, [r, r, r * 0.9], mixHex(POUCH.p3, '#ffffff', 0.32), { deep: POUCH.p3Deep });
-      if (s > 0) pts['beheko-paratiroidea'] = [pos[0] + 0.02, pos[1] + 0.04, pos[2] - 0.17];
+      gland(`pi${s}`, 'beheko-paratiroidea', pos, r, mixHex(POUCH.p3, '#ffffff', 0.32), POUCH.p3Deep);
+      if (s > 0) pts['beheko-paratiroidea'] = add(pos, [r * 0.1, r * 0.2, -r * 0.71]);
     }
     // ——— ventral wing → thymus: grows down, then goes down with the parathyroid at its head ———
     const v3 = clamp01(pose.p3v);
     if (v3 > 0.01) {
-      let line = ventralLine(2).map((p) => SX(s, p));
-      if (desc > 0.001 || meet > 0.001) {
-        const head0 = line[0];
-        const tail0 = line[line.length - 1];
-        const u = ss(0, 1, desc);
-        const headEnd = SX(s, [lerp(0.5, 0.34, meet), -4.9, 0.52]);
-        const tailEnd = SX(s, [lerp(0.48, 0.3, meet), -6.85, 0.5]);
-        const head = desc < 0.72 ? add(para3At(s, desc), SX(s, [-0.06, -0.16, 0.22])) : SX(s, mix3(add(para3At(1, 0.72), [-0.06, -0.16, 0.22]), SX(1, headEnd), ss(0.72, 1, desc)));
-        const tail = mix3(tail0, tailEnd, u);
-        const mid = mix3(mix3(head0, tail0, 0.5), SX(s, [lerp(1.0, 0.4, u), lerp(-2.4, -5.9, u), 0.62]), u);
-        line = L([head, mid, tail], 28);
-      }
-      vess(`thy${s}`, 'timoa', line, POUCH.p3, { r0: lerp(0.08, 0.2, ss(0.3, 1, desc)), r1: 0.2 + 0.18 * desc, flare: desc < 0.04 ? 0.4 : 0, flareLen: 0.15, bulb: 0.75, bulbLen: 0.5, sides: 14, n: 30, flat: 0.15 }, v3, 1, { deep: POUCH.p3Deep });
-      const pl = line[Math.round((line.length - 1) * 0.72 * v3)];
+      const line = thymusLine.map((p) => SX(s, p));
+      const parts = partsCached('ph18-thymus-lobe', [...origin3, v3, desc, meet], s, () => thymusLobe(line, v3, desc));
+      put(`thy${s}`, 'timoa', parts, POUCH.p3, { deep: POUCH.p3Deep });
+      const lengths = arcLengths(line);
+      const pl = pointAt(line, lengths, lengths[lengths.length - 1] * 0.72 * v3);
       if (s > 0) pts['timoa'] = [pl[0] + 0.02, pl[1], pl[2] - 0.15];
     }
     // ——— the fourth pouch: dorsal wing → superior parathyroid ———
     const d4 = clamp01(pose.p4d);
     if (d4 > 0.01) {
-      const pos = desc > 0.001 ? para4At(s, desc) : SX(s, dorsalLine(3)[15]);
+      const pos = SX(s, para4);
       if (desc < 0.05) vess(`d4${s}`, 'laugarren-poltsa', dorsalLine(3).map((p) => SX(s, p)), POUCH.p4, { r0: 0.085, r1: 0.085, flare: 0.5, flareLen: 0.1, sides: 12 }, d4, 1 - ss(0, 0.05, desc), { deep: POUCH.p4Deep, groups: ['faringe-poltsak'] });
       const r = 0.175 * ss(0.5, 1, d4);
-      ball(`ps${s}`, 'goiko-paratiroidea', pos, [r, r, r * 0.9], mixHex(POUCH.p4, '#ffffff', 0.2), { deep: POUCH.p4Deep });
-      if (s > 0) pts['goiko-paratiroidea'] = [pos[0] + 0.02, pos[1] + 0.04, pos[2] - 0.15];
+      gland(`ps${s}`, 'goiko-paratiroidea', pos, r, mixHex(POUCH.p4, '#ffffff', 0.2), POUCH.p4Deep);
+      if (s > 0) pts['goiko-paratiroidea'] = add(pos, [r * 0.1, r * 0.2, -r * 0.71]);
     }
     // ——— ventral wing → ultimobranchial body, which goes to the thyroid and is taken in ———
     const v4 = clamp01(pose.p4v);
     const ubI = clamp01(pose.ubIn);
     if (v4 > 0.01 && ubI < 0.98) {
-      let line = ventralLine(3).map((p) => SX(s, p));
+      let line = L(ventralKeys(3), 18).map((p) => SX(s, p));
       if (desc > 0.001) {
         const u = ss(0.1, 0.85, desc);
         const end = SX(s, [LOBE_X + 0.2, LOBE_Y + 0.1, 0.78]);

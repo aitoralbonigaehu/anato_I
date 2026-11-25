@@ -3,6 +3,7 @@
 import { ARCH, SIDE, KEY_ARCH, endPose, poseStage17, type StageSpec } from './common';
 import { BONES0, bonesModel, type BonesOpts, type BonesPose } from './bones-model';
 import { SITE17 } from './sites';
+import { MeckelSectionViewer } from './MeckelSectionViewer';
 
 /**
  * Topic 17, the arches' cartilages and bones (bones-model.ts): the notes' figure of p.4 right, turned into one model
@@ -19,6 +20,9 @@ const KEY = KEY_ARCH;
 
 export const SB1 = [0, 0.13, 0.27, 0.42, 0.58, 0.72, 0.87] as const;
 
+// Keep both cut stations registered to the same lateral view while bone appears and cartilage regresses.
+const meckelCamera = SIDE(16.35, [0.61, 2.09, 0.81], 72, 8, [16, 6]);
+
 const spec1: StageSpec<BonesPose, BonesOpts> = {
   S: SB1,
   site: SITE17.bones,
@@ -28,9 +32,11 @@ const spec1: StageSpec<BonesPose, BonesOpts> = {
   caption: CAP,
   key: KEY,
   map: 'arch1',
+  over: (t, at, pose) => t < SB1[3] ? <MeckelSectionViewer at={at} pose={pose} /> : null,
   steps: [
     {
-      cam: SIDE(11.5, [0.5, 2.1, 0.7], 80, 4),
+      cam: meckelCamera,
+      fit: false,
       glide: 0.06,
       dim: ['meckel-kartilagoa'],
       names: [{ id: 'meckel-kartilagoa', sub: 'lehenengo arkuko kartilagoa' }],
@@ -39,7 +45,8 @@ const spec1: StageSpec<BonesPose, BonesOpts> = {
     {
       to: { bone: 1 },
       run: [0.08, 0.85],
-      cam: SIDE(10.5, [0.5, 2.0, 1.2], 72, 8),
+      cam: meckelCamera,
+      fit: false,
       glide: 0.05,
       dim: ['meckel-kartilagoa', 'baraila'],
       names: [
@@ -51,7 +58,8 @@ const spec1: StageSpec<BonesPose, BonesOpts> = {
     {
       to: { deg: 1 },
       run: [0.06, 0.8],
-      cam: SIDE(10.5, [0.5, 2.0, 0.9], 84, 4),
+      cam: meckelCamera,
+      fit: false,
       glide: 0.05,
       dim: ['meckel-kartilagoa', 'baraila'],
       names: [

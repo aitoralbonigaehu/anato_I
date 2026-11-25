@@ -44,7 +44,8 @@ export function taughtMap(map: LearningMap): LearningMap {
   // A scheme that is wholly not taught leaves the overview too.
   const kept = map.details.filter((flow) => !flow.blue);
   const roots = kept.length === map.details.length ? map.roots : mergeBranches(kept.flatMap(overviewRoots));
-  return { ...map, roots: taughtNodes(roots), details: kept.map(taughtFlow).filter(flowShown) };
+  const details = kept.map(taughtFlow).filter(flowShown);
+  return { ...map, roots: taughtNodes(roots), details, flowIds: details.map((flow) => flow.id) };
 }
 
 const plainCell = ({ plain, plainNote, ...cell }: GridCell): GridCell => {

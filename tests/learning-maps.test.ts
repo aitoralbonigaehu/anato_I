@@ -29,7 +29,7 @@ describe('fused learning maps', () => {
     }
   });
 
-  it('gives every branch of the topics 15–19 mind maps a visible relationship label', () => {
+  it('gives every branch of the topics 15–20 mind maps a visible relationship label', () => {
     const checkEdges = (node: MNode) => {
       for (const child of node.kids ?? []) {
         // A heading (Kartilagoak / Nerbioa / Muskuluak) only sorts branches; the branches under it carry the relationship.
@@ -38,7 +38,7 @@ describe('fused learning maps', () => {
       }
     };
     const maps = LEARNING_MAPS.filter((map) => map.week >= 15);
-    expect([...new Set(maps.map((map) => map.week))]).toEqual([15, 16, 17, 18, 19]);
+    expect([...new Set(maps.map((map) => map.week))]).toEqual([15, 16, 17, 18, 19, 20]);
     for (const map of maps) {
       map.roots.forEach(checkEdges);
       for (const flow of map.details) flow.roots.forEach(checkEdges);

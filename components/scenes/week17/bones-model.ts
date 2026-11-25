@@ -207,6 +207,24 @@ const ZYGOMA = () => sculpt('zygoma', zygomaticF, [1.1, -1.9, 0.7], [2.3, -0.3, 
 const moved = (p: Parts, d: V3, slot: string): Parts =>
   Math.abs(d[0]) + Math.abs(d[1]) + Math.abs(d[2]) < 1e-4 ? p : { mesh: deformBy(p.mesh, d, (q) => add(q, d), slot), hit: deformBy(p.hit, d, (q) => add(q, d), slot + 'h') };
 
+export const meckelAxis = (adult: number) => curve3(mixLine(MECKEL_E, MECKEL_A, ss(0, 1, adult)), 30);
+
+export function meckelCartilage(line: V3[], deg: number) {
+  if (deg >= 0.985) return null;
+  const radius = (u: number) => (0.27 - 0.06 * u) * (1 - deg * (0.75 + 0.25 * u)) * (u > 0.94 ? Math.sqrt(Math.max(0.05, 1 - ((u - 0.94) / 0.06) ** 2)) : 1);
+  const shown = deg < 0.02 ? line : line.slice(0, Math.max(3, Math.round(line.length * (1 - 0.5 * ss(0.5, 1, deg)))));
+  return tubeParts(shown, { radius, ref: [1, 0, 0], sides: 16, capStart: true, capEnd: true });
+}
+
+export function formingMandible(pose: BonesPose) {
+  const bone = clamp01(pose.bone);
+  if (bone <= 0.01) return null;
+  const a = ss(0, 1, pose.adult);
+  const lift: V3 = [0, 0.6 * (1 - a), 0.3 * (1 - a)];
+  const clip: Clip3 | undefined = bone < 0.999 ? { o: add(FROM_SKULL([0.75, -2.98, 2.3]), lift), grow: { dir: [0, 0, 1], cos: Math.cos(bone * Math.PI * 0.98), spicules: 1 } } : undefined;
+  return { parts: moved(MANDIBLE(), lift, 'mand'), clip };
+}
+
 export function bonesModel(pose: BonesPose, o: BonesOpts = {}) {
   const items: Item3[] = [];
   const pts: Record<string, V3> = {};
@@ -242,27 +260,21 @@ export function bonesModel(pose: BonesPose, o: BonesOpts = {}) {
   put('pharynx', undefined, vessel(phar, { r0: PHARYNX_R, r1: PHARYNX_R * 0.82, ref: [1, 0, 0], sides: 22, n: 24 }), '#e6b9a8', 1, { quiet: true, ground: true, tissue: 'mesenchyme' });
 
   // ———— arch I ————
-  const mLine = curve3(mixLine(MECKEL_E, MECKEL_A, a), 30);
+  const mLine = meckelAxis(pose.adult);
   const ear: V3 = [-0.1 * a, -0.1 * a, -0.18 * a];
   const malleus: V3 = add([0.64, 3.42, -1.45], ear);
   const incus: V3 = add([0.72, 3.55, -2.0], ear);
   const stapes: V3 = add([0.5, 3.0, -2.42], ear);
-  if (deg < 0.985) {
-    // Thins away along its whole length; its top stays joined to the malleus until it has gone.
-    const rm = (u: number) => (0.27 - 0.06 * u) * (1 - deg * (0.75 + 0.25 * u)) * (u > 0.94 ? Math.sqrt(Math.max(0.05, 1 - ((u - 0.94) / 0.06) ** 2)) : 1);
-    const shown = deg < 0.02 ? mLine : mLine.slice(0, Math.max(3, Math.round(mLine.length * (1 - 0.5 * ss(0.5, 1, deg)))));
-    items.push({ key: 'meckel', id: 'meckel-kartilagoa', ...tubeParts(shown, { radius: rm, ref: [1, 0, 0], sides: 16, capStart: true, capEnd: true }), color: ARCH.i, deep: darker(ARCH.i), tissue: 'epithelium', opacity: fade('meckel-kartilagoa') });
-  }
+  const cartilage = meckelCartilage(mLine, deg);
+  if (cartilage) items.push({ key: 'meckel', id: 'meckel-kartilagoa', ...cartilage, color: ARCH.i, deep: darker(ARCH.i), tissue: 'cartilage', opacity: fade('meckel-kartilagoa') });
   pts['meckel-kartilagoa'] = at(mLine, deg < 0.5 ? 0.55 : 0.04);
 
   // The mandible: membranous bone that forms beside Meckel from the chin backwards (spicules at its growing edge),
   // see-through while the cartilage is still there, then carried to its adult place.
-  const bone = clamp01(pose.bone);
-  const mand = boneOf(ARCH.i);
   const lift: V3 = [0, 0.6 * (1 - a), 0.3 * (1 - a)];
-  if (bone > 0.01) {
-    const clip: Clip3 | undefined = bone < 0.999 ? { o: add(FROM_SKULL([0.75, -2.98, 2.3]), lift), grow: { dir: [0, 0, 1], cos: Math.cos(bone * Math.PI * 0.98), spicules: 1 } } : undefined;
-    put('mandible', 'baraila', moved(MANDIBLE(), lift, 'mand'), mand, lerp(0.42, 1, ss(0.15, 0.95, deg)), { tissue: 'bone', clip, outline: !clip });
+  const mandible = formingMandible(pose);
+  if (mandible) {
+    put('mandible', 'baraila', mandible.parts, boneOf(ARCH.i), lerp(0.42, 1, ss(0.15, 0.95, deg)), { tissue: 'bone', clip: mandible.clip, outline: !mandible.clip });
   }
   pts['baraila'] = add(add(FROM_SKULL([1.02, -2.94, 2.0]), [0.14, 0, 0]), lift);
 

@@ -2,7 +2,6 @@ import geometry from './belortzioak-geometry.json';
 import merge from './belortzioak-merge.json';
 import areas from './belortzioak-areas.json';
 import revisedAreas from './belortzioak-revised-areas.json';
-import tips from './belortzioak-tips.json';
 
 /**
  * Belortzioak: the course's labelled figures (an arrow on a structure → its name), from the skin's
@@ -15,8 +14,7 @@ import tips from './belortzioak-tips.json';
  * organ's outline), where the drawing shows one, is traced by `scripts/belortzioak/areas.py` into
  * `belortzioak-areas.json` (how each was decided is written in `areas_spec.py`).
  * A number whose name is not given here (crossed out in the legend, or "not visible") is left out.
- * Where the legend was corrected by hand, the hand-written name wins (the printed one is accepted
- * when typed); labels that exist only in handwriting are under `hand`, keyed by the id the
+ * Where the legend was corrected by hand, the handwritten name wins; labels that exist only in handwriting are under `hand`, keyed by the id the
  * extractor gives them.
  */
 
@@ -79,6 +77,8 @@ export interface BelPlate {
   /** Figure size in pixels (its aspect ratio). */
   size: [number, number];
   items: BelItem[];
+  /** Source legend entries without a distinct visible locator on this plate. */
+  unlocated?: { tag?: string; name: string }[];
   /** Merged figures: the copy whose picture is drawn, placed onto this figure by `imgM`. */
   img?: string;
   imgM?: Affine;
@@ -93,12 +93,15 @@ interface Entry {
 }
 type Legend = Record<number, string | Entry>;
 
-const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend: Legend; hand?: Record<string, string | Entry> }[] = [
+const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend: Legend; hand?: Record<string, string | Entry>; unlocated?: BelPlate['unlocated'] }[] = [
   {
     id: 'p02',
     system: 'azala',
     title: 'Enbrioia kanpotik (1)',
     sub: '1. enbrioia',
+    unlocated: [
+      { tag: '1', name: 'Tolespen neurala: ildo neurala eta orri neurala' },
+    ],
     legend: {
       2: 'Plakoda otikoa',
       3: 'Somitak',
@@ -152,6 +155,9 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
     system: 'azala',
     title: 'Enbrioia kanpotik (3)',
     sub: '3. enbrioia',
+    unlocated: [
+      { tag: '12', name: 'Ildo zerbikala (ez da ikusten)' },
+    ],
     legend: {
       1: { name: 'Atal prosentzefalikoa', group: 'Nerbio-sistemaren atalak' },
       2: { name: 'Atal mesentzefalikoa', group: 'Nerbio-sistemaren atalak' },
@@ -178,6 +184,9 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
     system: 'blastoak',
     title: 'Mesodermoa eta zelomak',
     sub: '1. enbrioia',
+    unlocated: [
+      { tag: '7', name: 'Notokorda' },
+    ],
     legend: {
       1: 'Zeloma perikardikoa',
       2: 'Erreten perikardikoperitoneala',
@@ -215,10 +224,13 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
     system: 'kardio',
     title: 'Bihotza, arteriak eta zainak',
     sub: '1. enbrioia',
+    unlocated: [
+      { tag: '3', name: 'Erreten aurikulobentrikularra' },
+    ],
     legend: {
-      1: { name: 'Zain sinua', group: 'Bihotza', accept: ['sinu benosoa'] },
-      2: { name: 'Atal aurikularra', group: 'Bihotza', accept: ['aurikula'] },
-      4: { name: 'Atal bentrikularra', group: 'Bihotza', accept: ['bentrikulua'] },
+      1: { name: 'Zain sinua', group: 'Bihotza' },
+      2: { name: 'Atal aurikularra', group: 'Bihotza' },
+      4: { name: 'Atal bentrikularra', group: 'Bihotza' },
       5: { name: 'Arteria-bulboa', group: 'Bihotza' },
       8: { name: 'Aorta-zakua', group: 'Arteriak' },
       9: { name: '1. aorta-arkua', group: 'Arteriak' },
@@ -244,7 +256,7 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
       1: 'Bentrikulua',
       2: 'Bulbo arteriosoa',
       3: 'Perikardio-barrunbea',
-      4: { name: 'Arteria enborra', accept: ['enbor arteriosoa'] },
+      4: 'Arteria enborra',
       5: 'Erreten aurikulobentrikularra',
     },
   },
@@ -258,11 +270,11 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
       2: 'Ezkerreko bentrikulua',
       3: 'Bentrikuluarteko zuloa eta trenkada',
       4: 'Muskulu-trabekulak',
-      5: { name: 'Zain sinua', accept: ['sinu benosoa'] },
+      5: 'Zain sinua',
       6: 'Eskuineko aurikula',
       7: 'Ezkerreko aurikula',
-      8: { name: 'Zain-balbulak', accept: ['zain balbulen', 'balbula benosoak', 'balbula sinuaurikularrak'] },
-      9: { name: 'Kuxin endokardikoa', accept: ['bihotz-kuxina'] },
+      8: 'Zain-balbulak',
+      9: 'Kuxin endokardikoa',
       10: 'Eskuineko zulo aurikulobentrikularra',
       11: 'Septum primum',
       12: 'Ostium primum',
@@ -283,7 +295,7 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
       7: { name: 'Kanpoko arteria karotida', group: 'Arteria karotidak' },
       8: { name: 'Barneko arteria karotida', group: 'Arteria karotidak' },
       9: 'Segmentuarteko arteriak',
-      10: { name: 'Lepauztaipeko arteria', accept: ['arteria subklabia'] },
+      10: 'Lepauztaipeko arteria',
       11: { name: 'Aorta dortsalak (eskuinekoa eta ezkerrekoa)', accept: ['aorta dortsalak'] },
       12: 'Beheranzko aorta',
       13: 'Enbor zeliakoa',
@@ -313,6 +325,12 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
     system: 'kardio',
     title: 'Arteriak (3. enbrioia)',
     sub: '3. enbrioia',
+    unlocated: [
+      { tag: '5', name: 'Septum primum (bihotza, gorriz)' },
+      { tag: '6', name: 'Ostium secundum (bihotza, gorriz)' },
+      { tag: '11', name: 'Birika-zain komun primitiboa eta eskuineko birika-zainak (urdinez)' },
+      { tag: '12', name: 'Beheko arteria mesenterikoa' },
+    ],
     legend: {
       1: { name: 'Birika-arteriak: enborra (1a), eskuinekoa (1b) eta ezkerrekoa (1c)', accept: ['birika-arteriak', 'birika-enborra'] },
       2: 'Goranzko aorta',
@@ -325,18 +343,14 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
       9: 'Beheranzko aorta',
       10: 'Enbor zeliakoa',
       11: 'Goiko arteria mesenterikoa',
-      12: 'Beheko arteria mesenterikoa',
       13: { name: 'Arteria iliako komunak (ilio-arteria batuak)', group: 'Arteria iliakoak', accept: ['arteria iliako komunak', 'ilio-arteria batuak'] },
       14: { name: 'Kanpoko arteria iliakoa', group: 'Arteria iliakoak' },
       15: { name: 'Barneko arteria iliakoa', group: 'Arteria iliakoak' },
       16: 'Zilbor-arteriak',
-      19: { name: 'Birika-zain komun primitiboa eta eskuineko birika-zainak', group: 'Zainak', accept: ['birika-zain komun primitiboa', 'birika-zainak'] },
       20: { name: 'Eskuineko arteria subklabia (lepauztaipeko arteria)', accept: ['eskuineko arteria subklabia', 'eskuineko lepauztaipeko arteria'] },
     },
     hand: {
       '9.2': 'Sahietsarteko arteriak',
-      r5: { name: 'Septum primum', group: 'Bihotza (gorriz)' },
-      r6: { name: 'Ostium secundum', group: 'Bihotza (gorriz)' },
       r7: { name: 'Septum secundum', group: 'Bihotza (gorriz)' },
       r8: { name: 'Zulo obalea', group: 'Bihotza (gorriz)' },
       r9: { name: 'Zain sinua', group: 'Bihotza (gorriz)', accept: ['sinu benosoa'] },
@@ -398,7 +412,7 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
       3: 'Laringea',
       4: 'Trakea',
       5: { name: 'Eskuineko bronkio nagusia', group: 'Bronkioak', accept: ['bronkio nagusia'] },
-      7: { name: 'Amigdalina (2. faringe-poltsa)', group: 'Linfa-sistema', accept: ['amigdala', 'amigdalina'] },
+      7: { name: 'Ahosabaiko amigdala (2. faringe-poltsa)', group: 'Linfa-sistema', accept: ['ahosabaiko amigdala'] },
       8: { name: 'Barea', group: 'Linfa-sistema' },
       16: { name: 'Hodi tiroglosoa', group: 'Sistema endokrinoa' },
     },
@@ -408,6 +422,10 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
     system: 'arnas',
     title: 'Eskuineko birika',
     sub: '3. enbrioia',
+    unlocated: [
+      { tag: '13', name: 'Ezkerreko birika (ez da ikusten)' },
+      { tag: '16', name: 'Hodi tiroglosoa (beste argazkian)' },
+    ],
     legend: {
       6: 'Bronkio lobularrak',
       7: 'Bronkio segmentarioak',
@@ -479,19 +497,21 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
     system: 'digestio',
     title: 'Gibela eta aurreko hestea',
     sub: '3. enbrioia',
+    unlocated: [
+      { tag: '17', name: 'Kolona' },
+    ],
     legend: {
       1: 'Ahoa',
       2: 'Mihia',
       3: 'Faringea',
       4: 'Hestegorria',
-      6: { name: 'Gibelaren goiko aldea', accept: ['goiko gibela', 'gibela goikoa'] },
+      6: { name: 'Gibela (goikoa)', accept: ['goiko gibela', 'gibela goikoa'] },
       7: { name: 'Gibelaren eskuineko lobulua', group: 'Gibelaren lobuluak', accept: ['eskuineko lobulua'] },
       8: { name: 'Gibelaren ezkerreko lobulua', group: 'Gibelaren lobuluak', accept: ['ezkerreko lobulua'] },
       9: 'Lotailu faltziformea',
       13: { name: 'Jejunoa eta ileona', accept: ['jejunoa', 'ileona'] },
       15: { name: 'Itsua (heste lodia)', accept: ['itsua'] },
       16: 'Apendize bermiformea',
-      // The handwritten colon (17) has no separate locator on this plate.
     },
   },
   {
@@ -550,7 +570,7 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
       5: { name: 'Giltzurrun-pelbisa', group: 'Metanefrosa' },
       6: { name: 'Ureterra', group: 'Metanefrosa' },
       7: 'Gonada',
-      // The revised legend names the bladder (8) without a confirmed locator.
+      8: 'Gernu-maskuria',
       9: 'Urakoa',
       10: 'Uretra',
       11: 'Kanpoko uretra-zuloa',
@@ -579,7 +599,7 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
     id: 'p27', system: 'muskulu', title: 'Muskuluak, hezurrak eta kartilagoak', sub: '3. enbrioia',
     legend: {
       0: 'Begi-globoaren kanpoko giharrak',
-      1: { name: 'Muskulu tenporala eta maseteroa', accept: ['muskulu tenporala', 'maseteroa'] },
+      1: { name: 'Loki-muskulua eta maseteroa', accept: ['loki-muskulua', 'muskulu tenporala', 'maseteroa'] },
       2: 'Muskulu esternokleidomastoideoa',
       3: 'Trapezioa',
       4: { name: 'Bizkarraren gihar zabala', accept: ['dortsal zabala'] },
@@ -591,30 +611,33 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
       10: 'Eskuaren muskulu hedatzaileak',
       11: { name: 'Ipurmasaileko giharrak', accept: ['muskulu gluteoak'] },
       12: { name: 'Izterreko koadrizepsa', accept: ['koadrizepsa'] },
-      14.1: { name: 'Loki-hezurraren estalkia', group: 'Hezur tenporala' },
-      14.2: { name: 'Loki-hezurraren barrunbea', group: 'Hezur tenporala' },
+      14.1: { name: 'Loki-hezurraren ezkata', group: 'Hezur tenporala (loki-hezurra)' },
+      14.2: { name: 'Loki-hezurraren harkaitza', group: 'Hezur tenporala (loki-hezurra)' },
       15: 'Belarriko hezurtxoak',
       16: { name: 'Klabikula', accept: ['lepauztaia'] },
-      17: 'Sudur-narikoak',
+      17: 'Sudur-kartilagoa',
     },
   },
   {
     id: 'p28', system: 'muskulu', title: 'Gorputz-enborra eta gorputz-adarrak', sub: '3. enbrioia',
+    unlocated: [
+      { name: 'Lepauztaia (klabikula)' },
+    ],
     legend: {
       1: { name: 'Esternoia (bularrezurra)', accept: ['esternoia', 'bularrezurra'] },
       2: 'Saihetsak',
-      3: { name: 'Orno zerbikalak', group: 'Bizkarrezurra', accept: ['iduneko ornoak'] },
+      3: { name: 'Orno zerbikalak (iduneko ornoak)', group: 'Bizkarrezurra', accept: ['iduneko ornoak'] },
       4: { name: 'Orno torazikoak', group: 'Bizkarrezurra' },
-      5: { name: 'Orno lunbarrak', group: 'Bizkarrezurra', accept: ['gerri-ornoak'] },
-      6: { name: 'Orno sakroak', group: 'Bizkarrezurra', accept: ['errain-ornoak'] },
-      7: { name: 'Kokzis hezurra', group: 'Bizkarrezurra', accept: ['buztornoa'] },
+      5: { name: 'Orno lunbarrak (gerri-ornoak)', group: 'Bizkarrezurra', accept: ['gerri-ornoak'] },
+      6: { name: 'Orno sakroak (errainezur-ornoak)', group: 'Bizkarrezurra', accept: ['errainezur-ornoak'] },
+      7: { name: 'Kokzis hezurra (uzkornoa)', group: 'Bizkarrezurra', accept: ['uzkornoa'] },
       8: { name: 'Orno-gorputza', group: 'Bizkarrezurra' },
       9: { name: 'Ornoarteko diskoa (nukleo mamitsua)', group: 'Bizkarrezurra' },
       10: { name: 'Eskapula', group: 'Goiko gorputz-adarra' },
       11: { name: 'Humeroa', group: 'Goiko gorputz-adarra' },
       12: { name: 'Erradioa', group: 'Goiko gorputz-adarra' },
       13: { name: 'Kubitua', group: 'Goiko gorputz-adarra' },
-      14: { name: 'Eskumuturreko, eskuko eta hatzetako hezurrak', group: 'Goiko gorputz-adarra', accept: ['karpoa', 'metakarpoa', 'falangeak'] },
+      14: { name: 'Eskumuturreko, eskuko eta hatzetako hezurrak (karpoa, metakarpoa eta hatz-hezurrak)', group: 'Goiko gorputz-adarra', accept: ['karpoa', 'metakarpoa', 'hatz-hezurrak'] },
       15: { name: 'Femurra (izterrezurra)', group: 'Beheko gorputz-adarra', accept: ['femurra', 'izterrezurra'] },
       16: { name: 'Tibia', group: 'Beheko gorputz-adarra' },
       17: { name: 'Peronea', group: 'Beheko gorputz-adarra' },
@@ -624,10 +647,12 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
   },
   {
     id: 'p29', system: 'nerbio', title: 'Hodi neurala eta garun-besikulak', sub: '1. enbrioia',
+    unlocated: [
+      { tag: '2', name: 'Aurreko neuroporoa' },
+      { tag: '3', name: 'Atzeko neuroporoa' },
+    ],
     legend: {
       1: 'Orno-muina',
-      2: 'Aurreko neuroporoa',
-      3: 'Atzeko neuroporoa',
       4: 'Prosentzefaloa',
       5: 'Mesentzefaloa',
       6: 'Erronboentzefaloa',
@@ -635,7 +660,7 @@ const DEFS: { id: string; system: BelSystem; title: string; sub: string; legend:
   },
   {
     id: 'p30', system: 'nerbio', title: 'Nerbio kranialak', sub: '2. enbrioia · Nerbio-sistema periferikoa',
-    // The handwritten note marks the highlighted nerves as not yet visible.
+    // The handwritten note marks the highlighted nerves as not yet taught.
     legend: {
       3: 'Nerbio trigeminoa (V)',
       4: { name: 'Nerbio oftalmikoa (V1)', group: 'Nerbio trigeminoa' },
@@ -737,27 +762,19 @@ interface Geo {
 const GEO = geometry as unknown as Record<string, Geo>;
 const AREAS = areas as unknown as Record<string, Pt[][]>;
 const REVISED_AREAS = revisedAreas as unknown as Record<string, Pt[][]>;
-/** Arrow tips carried well inside their traced structure (`scripts/belortzioak/tips.py`), in place of the printed ones. */
-const TIPS = tips as unknown as Record<string, Pt[]>;
-
 export const BEL_PLATES: BelPlate[] = DEFS.map((d) => {
   const g = GEO[d.id];
   const items = g.items.flatMap((it): BelItem[] => {
     const raw = d.hand?.[it.id ?? String(it.n)] ?? (it.id ? undefined : d.legend[it.n]);
     if (!raw) return [];
     const e: Entry = typeof raw === 'string' ? { name: raw } : raw;
-    const printed = it.targets.length ? it.targets : [it.label];
+    const targets = it.targets.length ? it.targets : [it.label];
     const key = `${d.id}:${it.id ?? it.n}`;
     const region = REVISED_AREAS[key] ?? AREAS[key];
-    // a tip moved inside its structure carries the hand-written number drawn there with it
-    const targets = TIPS[key]?.length === printed.length ? TIPS[key] : printed;
-    const marks = (it.marks ?? []).map((m) => {
-      const i = printed.findIndex((t) => t[0] === m.at[0] && t[1] === m.at[1]);
-      return i < 0 ? m : { ...m, at: targets[i] };
-    });
+    const marks = it.marks ?? [];
     return [{ key, n: it.n, tag: it.tag ?? String(it.n), ink: it.ink, name: e.name, group: e.group, accept: e.accept, label: it.label, targets, marks, arrow: it.targets.length > 0, r: it.r.length ? it.r : [0.05], area: region?.length ? [region] : undefined }];
   });
-  return { id: d.id, system: d.system, title: d.title, sub: d.sub, size: g.size, items };
+  return { id: d.id, system: d.system, title: d.title, sub: d.sub, size: g.size, items, unlocated: d.unlocated };
 });
 
 export const BEL_ITEMS: { plate: BelPlate; item: BelItem }[] = BEL_PLATES.flatMap((plate) => plate.items.map((item) => ({ plate, item })));
@@ -794,6 +811,12 @@ const levenshtein = (a: string, b: string) => {
 /** Typos forgiven in one word: none in short words, one in middling ones, two in long ones. */
 const slack = (n: number) => (n <= 4 ? 0 : n <= 8 ? 1 : 2);
 
+const answerForms = (item: Pick<BelItem, 'name' | 'accept'>) =>
+  [item.name, item.name.replace(/\(.*?\)/g, ''), ...(item.accept ?? [])].map(normalizeName).filter(Boolean);
+
+const sortedWords = (name: string) => name.split(' ').sort().join(' ');
+const exactAnswers = new Set(BEL_ITEMS.flatMap(({ item }) => answerForms(item).map(sortedWords)));
+
 /**
  * Whether a typed answer names the item. Accents, case, hyphens, Roman/Arabic ordinals and word order
  * are free; each word may carry a small typo. Words are compared one by one, so "Goiko" never passes
@@ -802,7 +825,10 @@ const slack = (n: number) => (n <= 4 ? 0 : n <= 8 ? 1 : 2);
 export function matchesName(typed: string, item: Pick<BelItem, 'name' | 'accept'>): boolean {
   const t = normalizeName(typed);
   if (t.length < 3) return false;
-  const forms = [item.name, item.name.replace(/\(.*?\)/g, ''), ...(item.accept ?? [])].map(normalizeName).filter(Boolean);
+  const forms = answerForms(item);
+  const exact = sortedWords(t);
+  if (forms.some((form) => sortedWords(form) === exact)) return true;
+  if (exactAnswers.has(exact)) return false;
   const tw = t.split(' ');
   return forms.some((f) => {
     const fw = f.split(' ');
@@ -879,10 +905,9 @@ export interface BelMerged {
   all: BelPlate;
 }
 
-const unit = (v: number) => Math.min(1, Math.max(0, v));
 /** An item carried from one figure's fractions to another's by `m` (its spotlight radii rescaled too). */
 const carry = (it: BelItem, m: Affine, from: [number, number], to: [number, number]): BelItem => {
-  const map = ([x, y]: Pt): Pt => [unit(m[0][0] * x + m[0][1] * y + m[0][2]), unit(m[1][0] * x + m[1][1] * y + m[1][2])];
+  const map = ([x, y]: Pt): Pt => [m[0][0] * x + m[0][1] * y + m[0][2], m[1][0] * x + m[1][1] * y + m[1][2]];
   // pixel scale between the two figures, for radii given as a fraction of each one's longer side
   const det = Math.abs(m[0][0] * m[1][1] - m[0][1] * m[1][0]) * ((to[0] * to[1]) / (from[0] * from[1]));
   const rk = (Math.sqrt(det) * Math.max(...from)) / Math.max(...to);
@@ -921,21 +946,21 @@ export const BEL_MERGED: BelMerged[] = Object.entries(MERGE).map(([id, g]) => {
       const kind = kindOf(pid, it);
       // a merged figure renumbers its names, so the red-pen numbering of a copy means nothing here
       const moved: BelItem = { ...carry(it, m, plate.size, base.size), kind, from: pid, ink: undefined };
-      // The same structure named in two copies is one name here, pointing wherever either pointed.
+      // Each merged name uses the geometry of a single source drawing.
       const forms = [it.name, ...(it.accept ?? [])].map(sameKey);
       const twin = forms.map((f) => by.get(`${kind}|${f}`)).find(Boolean);
       if (twin) {
-        moved.targets.forEach((t, i) => {
-          if (twin.targets.some((u) => Math.hypot(u[0] - t[0], u[1] - t[1]) < 0.03)) return;
-          twin.targets.push(t);
-          twin.r.push(moved.r[i] ?? 0.05);
-        });
-        // Use a single traced copy so small registration differences do not grow the silhouette.
         if (!twin.area && moved.area) {
-          twin.area = moved.area;
           twin.from = moved.from;
+          twin.label = moved.label;
+          twin.targets = moved.targets;
+          twin.marks = moved.marks;
+          twin.r = moved.r;
+          twin.area = moved.area;
+          twin.arrow = moved.arrow;
         }
         twin.accept = [...new Set([...(twin.accept ?? []), it.name, ...(it.accept ?? [])])].filter((n) => n !== twin.name);
+        for (const f of forms) by.set(`${kind}|${f}`, twin);
         continue;
       }
       pooled.push(moved);
@@ -960,7 +985,11 @@ export const BEL_MERGED: BelMerged[] = Object.entries(MERGE).map(([id, g]) => {
       copy, inOwn ? (copy === img ? IDENTITY : compose(back, transform)) : transform,
     ]));
     // numbered afresh on each figure (the copies' own numbers clash: two "3"s)
-    const numbered = placed.map((it, i) => ({ ...it, tag: String(i + 1) }));
+    const numbered = placed.map((it, i) => {
+      // A source copy can place the printed number in a margin outside the merged frame.
+      const label: Pt = [Math.max(0, Math.min(1, it.label[0])), Math.max(0, Math.min(1, it.label[1]))];
+      return { ...it, label, tag: String(i + 1) };
+    });
     return { id: pid, system: 'fusio', title: t.title, sub: t.sub, size: inOwn ? own.size : base.size, items: numbered, img, imgM: imgTransforms[img], imgTransforms, merge: { group: id, kind } };
   };
   const kinds = BEL_KINDS.filter((k) => pooled.some((it) => it.kind === k.id)).map((k) => ({ kind: k.id, plate: plateFor(`${id}~${k.id}`, k.id, pooled.filter((it) => it.kind === k.id)) }));

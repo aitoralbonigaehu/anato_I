@@ -1,4 +1,4 @@
-"""Belortzioak: clean figures + arrow geometry from "Belortzioak zuzenduta1.pdf".
+"""Belortzioak: clean figures + arrow geometry from "Belortzioak zuzenduta.pdf".
 
 The figures go to `public/belortzioak-irudiak/` (served as static files), and the geometry to
 `content/belortzioak-geometry.json` — for every numbered label, where the number sat and the
@@ -14,7 +14,12 @@ import numpy as np
 from PIL import Image, ImageDraw
 from scipy import ndimage as ndi
 from skimage import color, measure, filters
-from revised import REVISED_TARGETS, TRACES
+import revised
+import audit_02_12
+import audit_13_23
+import audit_24_35
+
+CORRECTIONS = (revised, audit_02_12, audit_13_23, audit_24_35)
 
 sys.stdout.reconfigure(encoding="utf-8")
 
@@ -27,9 +32,6 @@ PAINT_OUT = {12: [(197, 468, 221, 492)]}  # a crossed-out answer box printed ove
 # Label n's arrow really belongs to label m (the arrow joins two labels): use its far end.
 REASSIGN = {21: [(2, 1)]}
 DROP_TARGETS = {15: {3: [1]}}  # a plain bracket line between 2 and 3, not an arrow
-# Arrows that end on the seam between two structures where carrying the tip on would pick the
-# wrong one: their tip stays where it was printed.
-KEEP_TIP = {12: {19}, 23: {3}}
 # Corrections written by hand on the figures (the hand-written legend names live in
 # content/belortzioak.ts). Points in PDF points, read off the page at 300–900 dpi:
 #   add   — the number written again by hand elsewhere (x, y[, what was written])
@@ -84,6 +86,21 @@ def is_overlay(r, page):
     """The hand-written corrections, saved as a transparent image over the whole page."""
     return (r & page.rect).get_area() / page.rect.get_area() > 0.9
 
+def printed_arrow_ends(items):
+    """Return the head vertex and shaft midpoint of an outlined PDF arrow."""
+    pattern = ''.join(item[0] for item in items)
+    if pattern == 'llllllcclllcc':
+        head = items[4][2]
+        corners = [item[1] for item in items[:4]]
+    elif pattern == 'rellcclllcc':
+        head = items[1][2]
+        rect = items[0][1]
+        corners = [rect.tl, rect.tr, rect.bl, rect.br]
+    else:
+        return None
+    a, b = sorted(corners, key=lambda p: math.dist(head, p))[-2:]
+    return tuple(head), ((a.x + b.x) / 2, (a.y + b.y) / 2)
+
 def page_geometry(page):
     big = []
     for info in page.get_image_info(xrefs=True):
@@ -117,16 +134,26 @@ def page_geometry(page):
                 pts += [(p.x, p.y) for p in it[1:] if isinstance(p, fitz.Point)]
         if not pts: continue
         if fill is None:
-            strokes.append(pts)
-        elif len(d["items"]) <= 3:
-            heads.append(pts)
+            # Closed outlines such as the oval enclosing p34:14 are not leaders.
+            if pts[0] != pts[-1]:
+                strokes.append([pts[0], pts[-1]])
+        elif len(d["items"]) == 3 and kinds == {"l"}:
+            heads.append(list(dict.fromkeys(pts)))
         else:
-            solid.append(pts)
-    # a hand-drawn arrow = stroked polyline + separate filled head at one of its ends
-    for h in heads:
-        c = (sum(p[0] for p in h) / len(h), sum(p[1] for p in h) / len(h))
-        best = min(((min(math.dist(c, s[0]), math.dist(c, s[-1])), i) for i, s in enumerate(strokes)), default=(1e9, -1))
-        if best[0] < 10: strokes[best[1]] = strokes[best[1]] + h
+            ends = printed_arrow_ends(d["items"])
+            if ends:
+                solid.append(ends)
+    # Some handwritten and imported leaders have a separate triangular head. The
+    # farthest vertex along the shaft points outwards, regardless of its rotation.
+    for head in heads:
+        center = tuple(sum(p[i] for p in head) / len(head) for i in (0, 1))
+        nearest = min(((math.dist(p, center), k, end) for k, ends in enumerate(strokes)
+                       for end, p in enumerate(ends)), default=(math.inf, -1, -1))
+        distance, k, end = nearest
+        if distance < 10:
+            other = strokes[k][1 - end]
+            direction = (center[0] - other[0], center[1] - other[1])
+            strokes[k][end] = max(head, key=lambda p: p[0] * direction[0] + p[1] * direction[1])
     labels = []
     for r, t, c in spans:
         if not re.fullmatch(r"\d{1,2}", t): continue
@@ -135,14 +162,9 @@ def page_geometry(page):
         if not boxed and not (area + (-20, -20, 20, 20)).intersects(r): continue
         labels.append({"n": int(t), "rect": r, "boxed": boxed})
     arrows = []
-    for pts in solid + strokes:
-        best = (0, None, None)
-        for i in range(len(pts)):
-            for j in range(i + 1, len(pts)):
-                dd = math.dist(pts[i], pts[j])
-                if dd > best[0]: best = (dd, pts[i], pts[j])
-        if best[0] < 10: continue
-        p, q = best[1], best[2]
+    for p, q in solid + strokes:
+        if math.dist(p, q) < 10:
+            continue
         dp = min(((rect_dist(p, l["rect"]), k) for k, l in enumerate(labels)), default=(1e9, -1))
         dq = min(((rect_dist(q, l["rect"]), k) for k, l in enumerate(labels)), default=(1e9, -1))
         # the end at the number is the label end; the other one touches the structure
@@ -178,65 +200,6 @@ def clean_render(pdf, pg, crop):
             patch[hole] = avg[hole]
         arr[a[1] - m:a[3] + m, a[0] - m:a[2] + m] = patch.clip(0, 255).astype(np.uint8)
     return Image.fromarray(arr), scale, origin
-
-# ---- arrow tips onto their structures -----------------------------------------------------------
-
-def depth_map(img):
-    """Per pixel: how far it lies from the nearest drawn outline or colour change (pixels), which
-    patch between outlines it belongs to, whether it is bare paper, how deep inside a solid dark
-    area it lies, and its (smoothed) colour."""
-    rgb = np.asarray(img).astype(float) / 255
-    lab = color.rgb2lab(filters.gaussian(rgb, sigma=1.5, channel_axis=2))
-    g = np.sqrt(sum(filters.sobel(lab[..., c]) ** 2 for c in range(3)))
-    edge = (g > 3.0) | (lab[..., 0] < 35)
-    paper = (lab[..., 0] > 92) & (np.hypot(lab[..., 1], lab[..., 2]) < 6)
-    dark = ndi.distance_transform_edt(lab[..., 0] < 35)
-    return ndi.distance_transform_edt(~edge), ndi.label(~edge)[0], paper, dark, lab
-
-def snap(fields, tip, u):
-    """The printed arrows stop on a structure's edge, or a hair short of it: carry the tip on into
-    the structure it points at (a little to either side allowed), to a point well inside it. A tip
-    already inside a patch stays in that patch, a tip on a coloured structure (a thin vessel) stays on
-    that colour, a tip inside a dark area stays put, and a tip on the drawing never moves onto bare paper."""
-    depth, patch, paper, dark, lab = fields
-    k = max(depth.shape) / 1600
-    H, W = depth.shape
-    ds, ls = np.arange(-8 * k, 18 * k), np.arange(-9 * k, 9 * k + 1)
-    D, L = np.meshgrid(ds, ls)
-    xs = tip[0] + u[0] * D - u[1] * L
-    ys = tip[1] + u[1] * D + u[0] * L
-    xi, yi = np.clip(np.rint(xs).astype(int), 0, W - 1), np.clip(np.rint(ys).astype(int), 0, H - 1)
-    score = np.minimum(depth[yi, xi], 7 * k) - 0.25 * np.hypot(D, L)
-    tx, ty = int(round(tip[0])), int(round(tip[1]))
-    if dark[ty, tx] >= 3 * k: return tip
-    # a tip on (or right at the outline of) a coloured structure means that structure, not the grey
-    # tissue beside it, however much wider the grey is
-    r = max(1, int(round(5 * k)))
-    y0, x0 = max(0, ty - r), max(0, tx - r)
-    near = lab[y0:ty + r + 1, x0:tx + r + 1]
-    chroma = np.hypot(near[..., 1], near[..., 2])
-    # the first coloured pixel straight ahead of the arrow names the structure; failing that, the
-    # coloured pixel closest to the tip (two colours may be in reach)
-    c = None
-    for d in np.arange(0, 10 * k):
-        for l in (0, -2 * k, 2 * k):
-            x, y = int(round(tip[0] + u[0] * d - u[1] * l)), int(round(tip[1] + u[1] * d + u[0] * l))
-            if 0 <= y < H and 0 <= x < W and math.hypot(*lab[y, x, 1:]) > 12:
-                c = lab[y, x]
-                break
-        if c is not None: break
-    if c is None and chroma.max() > 10:
-        yy, xx = np.mgrid[y0:y0 + near.shape[0], x0:x0 + near.shape[1]]
-        far = np.where(chroma > 10, np.hypot(yy - ty, xx - tx), np.inf)
-        c = near[np.unravel_index(np.argmin(far), far.shape)]
-    if c is not None:
-        cand = lab[yi, xi]
-        score[(np.linalg.norm(cand - c, axis=-1) > 15) | (np.hypot(cand[..., 1], cand[..., 2]) < 0.6 * math.hypot(c[1], c[2]))] = -1e9
-    if depth[ty, tx] >= 2.5 * k: score[patch[yi, xi] != patch[ty, tx]] = -1e9
-    if not paper[ty, tx]: score[paper[yi, xi]] = -1e9
-    if score.max() < -1e8: return tip
-    j = np.unravel_index(np.argmax(score), score.shape)
-    return (float(xs[j]), float(ys[j]))
 
 # ---- structure outlines -------------------------------------------------------------------------
 
@@ -314,12 +277,6 @@ def main():
         px = lambda p: (p[0] * scale - ox, p[1] * scale - oy)
         frac = lambda q: [round(q[0] / W, 4), round(q[1] / H, 4)]
         fx = lambda p: frac(px(p))
-        fields = depth_map(img)
-        def tip(ar, far, near, n):
-            t, s0 = px(ar[far]), px(ar[near])
-            if n in KEEP_TIP.get(pg, ()): return frac(t)
-            L = math.dist(t, s0)
-            return frac(snap(fields, t, ((t[0] - s0[0]) / L, (t[1] - s0[1]) / L)))
         moves = dict(REASSIGN.get(pg, []))
         items = {}
         for k, l in enumerate(labels):
@@ -329,9 +286,9 @@ def main():
             if ar["label"] < 0: continue
             n = labels[ar["label"]]["n"]
             if n in moves:
-                items[moves[n]]["targets"].append(tip(ar, "start", "target", moves[n]))
+                items[moves[n]]["targets"].append(fx(ar["start"]))
             else:
-                items[n]["targets"].append(tip(ar, "target", "start", n))
+                items[n]["targets"].append(fx(ar["target"]))
         for n, drops in DROP_TARGETS.get(pg, {}).items():
             items[n]["targets"] = [t for i, t in enumerate(items[n]["targets"]) if i not in drops]
         h = HAND.get(pg, {})
@@ -350,17 +307,24 @@ def main():
         # The reference page was rendered to 1450 px before measuring its marks and outlines.
         def reference_point(p):
             return fx(tuple(v * page.rect.height / 1450 for v in p))
-        for key, label, targets in REVISED_TARGETS.get(pg, []):
-            if isinstance(key, str):
-                items[key] = {"id": key, "n": 12, "tag": "12"}
-            e = items.setdefault(key, {"n": key})
-            if label is not None:
-                e["label"] = reference_point(label)
-            e["targets"] = [reference_point(t) for t in targets]
-            if pg == 21 and key == 13:
-                e["tag"] = "13/14"
-        for key, rings in TRACES.get(pg, {}).items():
-            revised_areas[f"p{pg:02d}:{key}"] = [[reference_point(point) for point in ring] for ring in rings]
+        prefix = f"p{pg:02d}:"
+        revised_areas = {k: v for k, v in revised_areas.items() if not k.startswith(prefix)}
+        for correction in CORRECTIONS:
+            for key, label, targets in correction.REVISED_TARGETS.get(pg, []):
+                if key not in items:
+                    items[key] = {"id": key, "n": 12, "tag": "12"} if key == "orno-gorputza" else {"n": key}
+                e = items[key]
+                if label is not None:
+                    e["label"] = reference_point(label)
+                e["targets"] = [reference_point(t) for t in targets]
+                if "marks" in e:
+                    e["marks"] = [mark for mark in e["marks"] if mark["at"] in e["targets"]]
+                if pg == 21 and key == 13:
+                    e["tag"] = "13/14"
+            for key, rings in correction.TRACES.get(pg, {}).items():
+                revised_areas[f"{prefix}{key}"] = [[reference_point(point) for point in ring] for ring in rings]
+            for key in getattr(correction, "SUPPRESS", {}).get(pg, []):
+                revised_areas[f"{prefix}{key}"] = []
         # Spotlight size: traced outlines are too unreliable to draw (they leak along vessels and
         # shading), but their extent still tells a pit from a limb bud. Clamped, so a leak only
         # widens the light a little.

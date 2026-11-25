@@ -1,0 +1,39 @@
+.strip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 3px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.strip > span {
+  margin-right: 5px;
+  color: var(--text-2);
+  font-size: 12px;
+}
+
+.strip button {
+  min-height: 36px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.strip button:hover,
+.strip button[aria-pressed="true"] {
+  background: var(--ctl-hover);
+  border-color: var(--ctl-edge-hover);
+}
+
+.strip button[aria-pressed="true"] { font-weight: 700; }
+.strip button:focus-visible { outline: 2px solid var(--signal); outline-offset: -2px; }
+
+@media (pointer: coarse) {
+  .strip button { min-height: 44px; }
+}

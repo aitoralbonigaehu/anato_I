@@ -1,0 +1,60 @@
+:global(.viewport):has(> .host) { container-type: inline-size; }
+.host {
+  position: absolute;
+  z-index: 13;
+  bottom: 12px;
+  left: 13px;
+  color: #f5ede0;
+  font: 500 13px/1.35 var(--font-ui, system-ui);
+}
+.host button {
+  font: inherit; color: inherit; cursor: pointer;
+}
+.host button:focus-visible { outline: 2px solid #ffc47c; outline-offset: 2px; }
+.toggle {
+  display: inline-flex; align-items: center; gap: 7px; min-height: 36px;
+  border: 1px solid #73695f; border-radius: 9px; padding: 4px 11px;
+  background: #282421; box-shadow: 0 2px 8px #0004;
+}
+.toggle > span { font-size: 17px; line-height: 1; color: #eab578; }
+.open {
+  left: auto; right: 65px; top: 45px; bottom: auto;
+  display: flex; flex-direction: column; width: 248px;
+  max-height: calc(100% - 99px); z-index: 60; scrollbar-width: thin;
+  background: #241f1d; border: 1px solid #66594c; border-radius: 12px;
+  box-shadow: 0 5px 18px #0005; overflow: auto;
+  touch-action: pan-y;
+}
+.open .toggle { align-self: flex-start; margin: 5px 9px 0; border: 0; padding: 0 2px; background: none; box-shadow: none; color: #f0c793; }
+.panel {
+  display: grid; gap: 7px; padding: 3px 11px 11px;
+}
+.heading h3 { color: #fff7eb; font: 650 16px/1.1 var(--font-ui, system-ui); margin: 0; }
+.heading small { color: #c8baac; font-size: 11px; }
+.stations { display: flex; gap: 2px; align-items: center; border-radius: 8px; padding: 2px; background: #181514; }
+.stations button { min-height: 30px; flex: 1; background: transparent; border: 1px solid transparent; border-radius: 6px; }
+.stations button[aria-pressed="true"] { background: #51453c; border-color: #7b6b5c; }
+.plot { width: min(100%, 174px); aspect-ratio: 1; height: auto; justify-self: center; display: block; overflow: hidden; background: #b48874; border-radius: 6px; cursor: pointer; }
+.tissues { display: flex; flex-wrap: wrap; gap: 4px; }
+.tissues button { display: flex; align-items: center; gap: 5px; border: 1px solid #60554b; border-radius: 6px; background: #2d2724; padding: 4px 6px; min-height: 29px; font-size: 12px; }
+.tissues button[aria-pressed="true"] { border-color: #efc18a; background: #514335; }
+.tissues i { width: 9px; height: 9px; border-radius: 2px; border: 1px solid #fff5; }
+.mesenchyme { background: #ba8e77; }
+.cartilage { background: #95cfc1; }
+.bone { background: #f0dcaa; }
+.panel p { margin: 1px 0 0; font-size: 12px; color: #e7d9c9; }
+@container (max-width: 860px) {
+  .host { left: 50%; bottom: 7px; transform: translateX(-50%); }
+  .toggle { min-height: 42px; white-space: nowrap; }
+  .open { inset: 0; transform: none; width: auto; max-height: none; border-radius: inherit; border: 0; z-index: 45; }
+  .open .toggle { margin-left: 13px; min-height: 41px; }
+  .panel { padding: 0 13px 10px; grid-template-columns: minmax(0,1.65fr) minmax(100px,1fr); gap: 7px 10px; align-content: start; }
+  .heading { grid-column: 1; grid-row: 1; align-self: center; }
+  .stations { grid-column: 2; grid-row: 1; }
+  .stations button { min-height: 40px; font-size: 12px; padding: 0 3px; }
+  .plot { grid-column: 1; grid-row: 2; align-self: start; width: min(100%, 186px); height: auto; aspect-ratio: 1; }
+  .tissues { grid-column: 2; grid-row: 2; align-content: start; }
+  .tissues button { min-height: 40px; width: 100%; text-align: left; }
+  .panel p { grid-column: 1 / -1; font-size: 13px; }
+  :global(.viewport):has(> .open) > :not(.open) { visibility: hidden; }
+}

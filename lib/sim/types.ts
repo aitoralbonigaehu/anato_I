@@ -144,6 +144,10 @@ export interface Beat {
   plain?: TaughtWording;
   /** Explicit resting frame when the animation finishes later than the default reading hold. Must precede the next beat. */
   completeAt?: number;
+  /** Short name of a resting frame the learner can compare directly with other frames of this stage. */
+  compareLabel?: string;
+  /** Optional teaching frame within the motion, independent of the completed reading hold. */
+  compareAt?: number;
   /** The age this step shows when it runs ahead of the stage's days (a later stage drawn in advance). Same forms as `ViewDef.age`. */
   age?: number | string | null;
   /** Original notes sentence ids (week-prefixed), or paragraph ranges such as w1/4.2/p3/s1-s4. */

@@ -80,9 +80,6 @@
 
 .location {
   fill: var(--signal);
-  stroke: #fff;
-  stroke-width: 1.2;
-  vector-effect: non-scaling-stroke;
   pointer-events: none;
 }
 
@@ -94,16 +91,16 @@
 .leader .halo,
 .qArrow .halo {
   stroke: rgba(255, 255, 255, 0.85);
-  stroke-width: 4;
-  stroke-linecap: round;
+  stroke-width: 2.5;
+  stroke-linecap: butt;
   vector-effect: non-scaling-stroke;
 }
 
 .leader .core,
 .qArrow .core {
   stroke: #26272b;
-  stroke-width: 1.3;
-  stroke-linecap: round;
+  stroke-width: 1;
+  stroke-linecap: butt;
   vector-effect: non-scaling-stroke;
   transition: stroke 0.2s;
 }
@@ -125,11 +122,11 @@
 
 .leader.isOn .core {
   stroke: var(--signal);
-  stroke-width: 2.2;
+  stroke-width: 1.3;
 }
 
 .leader.isOn .halo {
-  stroke-width: 6;
+  stroke-width: 2.5;
   stroke: #fff;
 }
 
@@ -144,11 +141,11 @@
 
 .qArrow .core {
   stroke: var(--signal);
-  stroke-width: 2.6;
+  stroke-width: 1.4;
 }
 
 .qArrow .halo {
-  stroke-width: 7;
+  stroke-width: 2.6;
 }
 
 .tap path {
@@ -542,7 +539,7 @@
 
 .leader.isKind .core {
   stroke: var(--kc);
-  stroke-width: 1.6;
+  stroke-width: 1;
 }
 
 .leader.isKind .tip {
@@ -551,7 +548,7 @@
 
 .leader.isKind.isOn .core {
   stroke: var(--kc);
-  stroke-width: 2.6;
+  stroke-width: 1.3;
 }
 
 .leader.isKind.isOn .tip {
@@ -634,7 +631,7 @@
 
 /* every kind at once on a crowded merged figure: dots (the name pointed at shows in its column) */
 .leader.isDot .tip {
-  stroke-width: 1.6;
+  stroke-width: 0.5;
 }
 
 /* A fine edge keeps the isolated shape legible against the stage. */
@@ -731,4 +728,18 @@
   .keysHint {
     display: none;
   }
+}
+
+.unlocated {
+  color: var(--text-2);
+  font-size: 0.85rem;
+}
+
+.unlocated p {
+  margin-bottom: 0.25rem;
+}
+
+.unlocated ul {
+  margin: 0;
+  padding-inline-start: 1.25rem;
 }

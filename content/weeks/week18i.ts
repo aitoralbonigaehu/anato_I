@@ -6,7 +6,7 @@ const src = (section: string) => ({ file: FILE, section });
 const ORIENT = { top: 'Kraneala', bottom: 'Kaudala' };
 const v = (scene: StageDef['views'][number]['scene'], label: string, description: string, id = '3d') => ({ id, label, plane: 'eskema' as const, description, orientation: ORIENT, scene, travel: false as const });
 
-const DESCENT = 'Faringe hestea eta lepoa atzetik, bi hormak kenduta (3D): burua goian, enbrioiaren ezkerra zure ezkerrean. 3. poltsatik datorrena morea da (timoa eta beheko paratiroidea), 4. poltsatik datorrena berde urdinxka (goiko paratiroidea), tiroidea arrosa-gorrixka. Arrastatu biratzeko.';
+const DESCENT = 'Lehen hiru urratsetan faringea eta lepoa atzetik ikusiko dituzu: burua goian dago, eta enbrioiaren ezkerra zure ezkerrean. Azken urratsean tiroidea aurretik eta goitik ikusiko duzu.';
 const MATURE = 'Tiroide heldua laringearen inguruan (3D): lehenik aurretik (enbrioiaren ezkerra zure eskuinean), gero atzetik. Tiroidea granatea, kartilagoak berde argiak, paratiroideak horia (behekoa) eta gorria (goikoa), timoa hori argia. Arrastatu biratzeko.';
 
 export const stages18i: StageDef[] = [
@@ -15,21 +15,47 @@ export const stages18i: StageDef[] = [
     day: '5.–7. asteak',
     dayRange: [35, 49],
     title: 'Nola jaisten dira guruinak?',
-    subtitle: 'Timoak beheko paratiroidea arrastatzen du, goikoaren ondotik pasatuz',
-    intro: '3. poltsako timoa behera eta erdialdera jaisten da eta 3. poltsako paratiroidea berekin darama. 4. poltsako paratiroidea ia ez da mugitzen: bi guruinak gurutzatzen dira, eta amaierako lekuak ematen die izena.',
+    subtitle: 'Jarraitu 3. eta 4. poltsetako paratiroideei, faringetik tiroideraino',
+    intro: 'Begiratu zein paratiroide dagoen gorago hasieran. Ondoren, jarraitu timoari: zein paratiroide darama berekin, eta non gelditzen da bakoitza?',
     duration: 34,
-    views: [v(GlandDescent18, 'Lepoa 3D', DESCENT)],
+    views: [{
+      ...v(GlandDescent18, 'Lepoa 3D', DESCENT),
+      ownFocus: true,
+      guide: {
+        orientation: 'Atzetik begiratuta, faringea erdian ikusten da. Konparatu alde bereko bi paratiroideak.',
+        observe: 'Aukeratu Hasiera, Bereizketa eta Amaiera. Alderatu bi paratiroideen altuera eta timoarekiko kokapena.',
+        meaning: 'Erabili faringea erreferentzia gisa. Hiru urratsetan ikuspegia bera da.',
+        question: 'Zergatik gelditzen da 3. poltsako paratiroidea 4. poltsakoa baino beherago?',
+        answer: '3. poltsakoa timoarekin jaisten da eta tiroidearen behealdean gelditzen da. 4. poltsakoa gutxiago jaisten da.',
+      },
+    }],
     beats: [
       {
         at: SD[0],
+        completeAt: 0.23,
+        compareLabel: 'Hasiera',
         notes: ['w18/1.2/p6/s1-s2'],
         idea: 'Abiapuntua: 3. poltsakoa goian, 4. poltsakoa behean.',
         text: 'Nola jaisten dira egiturak? Faringea atzetik ikusten ari gara. Bakarra den timoa bi aldeetan eratzen da, 3. poltsetan. Oraindik goian daude timoa eta 3. poltsako paratiroidea; 4. poltsako paratiroidea beherago dago.',
         focus: ['timoa', 'beheko-paratiroidea', 'goiko-paratiroidea'],
+        ask: {
+          q: 'Timoa jaisten hasten denean, zein paratiroide eramango du berekin?',
+          options: ['4. poltsakoa', '3. poltsakoa', 'Biak batera'],
+          answer: 1,
+          why: [
+            '4. poltsakoa beherago hasten da. Begiratu 3. poltsakoari timoa mugitzen denean.',
+            'Bai. Timoa eta paratiroide hori 3. poltsan eratzen dira eta elkarrekin jaisten dira.',
+            'Alderatu bi guruinen ibilbideak: 4. poltsakoa gutxiago jaisten da.',
+          ],
+          comp: 'erlazioak',
+          concept: 'beheko-paratiroidea',
+        },
         view: '3d',
       },
       {
         at: SD[1],
+        completeAt: 0.57,
+        compareLabel: 'Bereizketa',
         notes: ['w18/1.2/p6/s2-s3'],
         idea: 'Timoa jaisten da erdialdera eta beheko paratiroidea berekin darama.',
         text: 'Timoa alde medialera jaisten da. Beherantz desplazatzen doan heinean, 3. poltsan eratzen den beheko paratiroide guruina harekin desplazatzen du, eta horregatik tiroide guruinaren behekaldean kokatzen da.',
@@ -38,8 +64,11 @@ export const stages18i: StageDef[] = [
       },
       {
         at: SD[2],
+        completeAt: 0.77,
+        compareLabel: 'Amaiera',
         notes: ['w18/1.2/p6/s4', 'w18/1.2/p6/s8'],
-        idea: 'Gurutzaketa: izena amaierako lekutik dator.',
+        idea: 'Amaieran, 3. poltsakoa behean dago eta 4. poltsakoa goian.',
+        key: 'Goiko eta beheko izenak paratiroideek tiroidearen atzean hartzen duten kokapenari dagozkio.',
         text: 'Goiko paratiroide guruinak ez dira horrenbeste jaisten: 4. poltsan eratu arren, timoaren gorago gelditzen dira, eta horregatik deitzen dira goiko paratiroide guruinak. Goiko eta beheko izenak behin betiko kokapenetik datoz, ez jatorritik.',
         focus: ['goiko-paratiroidea', 'beheko-paratiroidea'],
         ask: {

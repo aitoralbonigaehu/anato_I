@@ -4,6 +4,7 @@ import { firstSentence } from '@/content/sentence';
 import { useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Beat, MicroQuestion, StageDef, StructureDef, ViewGuide } from '@/lib/sim/types';
 import { ModelGuide } from './ModelGuide';
+import styles from './frame-comparison.module.css';
 import { structures } from '@/content/registry';
 import { IconBolt, IconCalendar, IconChevron, IconClose, IconQuiz, IconCaptions, IconGuide, IconInfo, IconLoop, IconNext, IconNotes, IconPause, IconPlay, IconPrev, IconRestart, IconSkipNext, IconSkipPrev, IconVoice, IconVoiceOff } from './icons';
 import { Popover } from './Popover';
@@ -29,6 +30,7 @@ interface PlayerProps {
   autoContinue: boolean;
   day: string;
   onSeek: (t: number) => void;
+  onCompare?: (t: number) => void;
   onTogglePlay: () => void;
   onStage: (delta: number) => void;
   onBeat: (delta: number) => void;
@@ -371,6 +373,9 @@ export function Player(p: PlayerProps) {
   const [fullText, setFullText] = useState(false);
   const [hover, setHover] = useState<{ x: number; k: number } | null>(null);
   const beats = p.stage.beats;
+  const frames = useMemo(() => beats.flatMap((b) => b.compareLabel && b.completeAt !== undefined
+    ? [{ label: b.compareLabel, t: b.compareAt ?? b.completeAt }]
+    : []), [beats]);
   const n = beats.length;
   const beat = beats[p.activeBeat];
   const atEnd = p.t >= 1;
@@ -449,6 +454,27 @@ export function Player(p: PlayerProps) {
 
   return (
     <div className={`dock${p.travelling ? ' is-travel' : ''}${p.guided ? ' is-guided' : ''}${p.mode === 'azkarra' ? ' is-quick' : ''}`}>
+      {p.onCompare && frames.length > 1 && (!p.ask || p.askState === 'answered') && !p.tourCard && !p.travelling && (
+        <div className={styles.strip} role="group" aria-label="Alderatu uneak">
+          <span aria-hidden="true">Alderatu</span>
+          {frames.map(({ label, t }, i) => (
+            <button key={label} type="button" aria-pressed={!p.playing && !p.intro && Math.abs(p.t - t) < 0.0001}
+              onClick={() => p.onCompare?.(t)}
+              onKeyDown={(event) => {
+                if (event.key === ' ') event.stopPropagation();
+                if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+                if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+                event.preventDefault();
+                event.stopPropagation();
+                const next = i + (event.key === 'ArrowLeft' ? -1 : 1);
+                const target = event.currentTarget.parentElement?.querySelectorAll('button')[next];
+                if (target) { target.focus(); target.click(); }
+              }}>
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
       {/* The step's text takes the card's whole width: the pager lives in the control row below, so it
           never moves and the text wraps (and reserves) fewer lines. */}
       <div className="cap" aria-live="polite">

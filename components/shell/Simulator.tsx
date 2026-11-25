@@ -1699,11 +1699,14 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
     return () => cancelAnimationFrame(raf);
   }, [classFocusKey, mounted]);
 
+  // On a comparison plate the scene supplies its own names, including the primordium's name at that age.
+  const comparing = !playing && view.ownFocus && beat?.compareLabel && beat.completeAt !== undefined
+    && Math.abs(pos.t - (beat.compareAt ?? beat.completeAt)) < 0.0001;
   const ctx: SceneContextValue = {
     selected: find || !selectedLit ? null : selected,
     hovered: find ? hovered : hovered,
     focus: classOn ? classFocus : find || intro !== null ? [] : formation ? (formation.highlight ?? [formation.structure]) : voice && audioState.focus.length ? audioState.focus : (beat?.focus ?? []),
-    mentioned: classOn || find || intro !== null || formation || !beat ? NONE : saidIn(beat.text, stage.structures),
+    mentioned: comparing || classOn || find || intro !== null || formation || !beat ? NONE : saidIn(beat.text, stage.structures),
     dimContext: classOn ? classLit && !view.ownFocus : !formation && focusLit && !view.ownFocus && !find && intro === null,
     spotlight: classOn ? (classLit ? classPoint : null) : !find && intro === null && tour ? tour.items[tour.idx] : null,
     spotKeep: classOn,
@@ -1725,7 +1728,8 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
 
   // Rings for step structures drawn too small to notice: the tour's current one, else the selection, else the step's.
   const spot = !find && intro === null && tour ? tour.items[tour.idx] : null;
-  const marks = classOn ? classFocus : find || intro !== null ? [] : formation ? [formation.structure] : spot ? [spot] : selected && selectedLit ? [selected] : voice && audioState.focus.length ? audioState.focus : (beat?.focus ?? []);
+  const stepMarks = view.ownFocus && beat?.compareLabel ? NONE : (beat?.focus ?? []);
+  const marks = classOn ? classFocus : find || intro !== null ? [] : formation ? [formation.structure] : spot ? [spot] : selected && selectedLit ? [selected] : voice && audioState.focus.length ? audioState.focus : stepMarks;
 
   // Legend: categories present in this stage.
   const legend = legendOf(stage.structures);
@@ -2391,6 +2395,11 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
             autoContinue={autoContinue}
             day={clockLabel(day, stage.day, view.age, stage.beats[glideBeat ?? activeBeat]?.age)}
             onSeek={(t) => seek(pos.i, t)}
+            onCompare={find || formation || classActive ? undefined : (t) => {
+              setPlaying(false);
+              speaking.current = false;
+              seek(pos.i, t);
+            }}
             onTogglePlay={togglePlay}
             onStage={gotoStage}
             onBeat={stepBeat}

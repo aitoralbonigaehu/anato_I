@@ -1,9 +1,9 @@
 import type { MigrationTopic, MNode } from '../migrations';
 
 /**
- * Topic 19 (nerbio sistema), from the notes of 2026-11-23 (11 sections), in their order and from their text only.
- * These notes have no blue (not taught) text. Long pathways are split under step headings so each map stays
- * readable on a tablet.
+ * Topic 19 (nerbio sistema), reorganized into 7 cohesive blocks (no repetition across
+ * vesicles/ventricles/brain parts, cord anatomy/development, or meninges/CSF/clinical).
+ * The notes have no blue (not taught) text. Anatomical errors in the notes are corrected.
  */
 const n = (id: string, kids?: MNode[], extra?: Omit<MNode, 'id' | 'kids'>): MNode => ({ id, kids, ...extra });
 const l = (label: string, kids?: MNode[], extra?: Omit<MNode, 'label' | 'kids'>): MNode => ({ label, kids, ...extra });
@@ -16,38 +16,39 @@ export const SCHEMES_19: MigrationTopic = {
   week: 19,
   short: 'Nerbio sistema',
   flows: [
+    // ── 1. OINARRIAK: MOZKETAK ETA SAILKAPENAK ──────────────────────────────
     {
       id: 'mozketak-19',
-      title: 'Mozketak eta ikuspegiak: ornomuina bertikala, burmuina horizontala',
-      lead: 'Nerbio sisteman orokorrean mozketa horizontala erabiltzen da; ornomuinean, berriz, zeharkakoak. Garuna horizontalizatuta dago eta ornomuina bertikala.',
+      title: 'Mozketak eta ardatzak: ornomuina bertikala, burmuina horizontala',
+      lead: 'Garunaren ardatza horizontala da eta ornomuinarena bertikala. Horregatik, norabide-izenak aldatu egiten dira bien artean.',
       stage: 'mozketak-ardatzak',
       pitfalls: [
         'Garunean dortsala ez da atzekoa, goikoa baizik; bentrala behekoa da.',
         'Ornomuinean (bertikala) bentrala = aurrekoa eta dortsala = atzekoa.',
-        'Garunaren aurrekaldea rostrala da (frontala ere bai); atzekaldea okzipitala.',
+        'Garunean, rostrala aurrealderantz da eta kaudala atzealderantz. Lobulu okzipitala garunaren atzealdean dago.',
       ],
       roots: [
         l('Mozketa motak', [
-          leaf('Horizontala', 'zoruarekin horizontalki'),
-          leaf('Koronala', 'ezkerretik eskuinera'),
-          leaf('Sagitala', 'aurretik atzera'),
+          leaf('Horizontala', 'goiko eta beheko zatiak bereizi'),
+          leaf('Koronala', 'aurreko eta atzeko zatiak bereizi'),
+          leaf('Sagitala', 'ezkerreko eta eskuineko zatiak bereizi'),
         ]),
         n('ornomuina', [
           leaf('Dortsala = atzekoa', 'bertikalki dagoelako'),
           leaf('Bentrala = aurrekoa', 'bertikalki dagoelako'),
         ], { note: 'bertikala · zeharkako mozketak' }),
         n('entzefaloa', [
-          leaf('Dortsala = goikoa', 'horizontalizatuta'),
-          leaf('Bentrala = behekoa', 'horizontalizatuta'),
-          leaf('Rostrala = aurrekaldea', 'frontala ere bai'),
-          leaf('Okzipitala = atzekaldea', 'garunean'),
-        ], { note: 'garuna · horizontala' }),
+          leaf('Dortsala = goikoa', 'garun hemisferioetan'),
+          leaf('Bentrala = behekoa', 'garun hemisferioetan'),
+          leaf('Rostrala = aurrealderantz', 'garunean'),
+          leaf('Kaudala = atzealderantz', 'garunean'),
+        ], { note: 'garun hemisferioen ardatz horizontala' }),
       ],
     },
     {
       id: 'kokapen-sailkapena-19',
       title: 'Kokapenaren araberako sailkapena: zentrala eta periferikoa',
-      lead: 'Hezurrez babestuta dagoena erdiko nerbio sistema da; hortik kanporantz ateratzen diren nerbio guztiak, periferikoa.',
+      lead: 'Nerbio sistema zentralak entzefaloa eta ornomuina biltzen ditu. Periferikoak, besteak beste, nerbioak, gongoilak eta nerbio-sareak biltzen ditu.',
       stage: 'zentrala-periferikoa',
       pitfalls: [
         'Entzefaloa eta ornomuina konektatuta daude: egitura jarraiak dira.',
@@ -57,94 +58,224 @@ export const SCHEMES_19: MigrationTopic = {
         n('nerbio-sistema-zentrala', [
           branch('entzefaloa', 'garezurraren barruan'),
           branch('ornomuina', 'bizkarrezurraren barruan', undefined, 'bizkar muina'),
-        ], { note: 'hezurrez babestua · gorputzaren erdian' }),
+        ], { note: 'garezurrak eta bizkarrezurrak babestua' }),
         n('nerbio-sistema-periferikoa', [
           leaf('Sare zerbikala', 'lepokoa'),
           leaf('Sare brakiala', 'besokoa'),
           leaf('Sare lunbarra eta sakroa', 'lunbar eta sakro mailan'),
-        ], { note: 'kanporantz ateratzen diren nerbio guztiak · sareak' }),
+        ], { note: 'nerbioak, gongoilak eta sareak' }),
       ],
     },
     {
       id: 'sailkapen-funtzionala-19',
       title: 'Sailkapen funtzionala: somatikoa eta autonomoa',
-      lead: 'Somatikoa borondatezkoa da. Autonomoak (begetatiboak) ez borondatezko mugimenduak eragiten ditu, bi sistema konplementariorekin.',
+      lead: 'Sistema somatikoak sentsibilitate somatikoa eta muskulu eskeletikoen kontrola biltzen ditu. Autonomoak (begetatiboak) erraien eta guruinen jarduera erregulatzen du.',
       stage: 'somatikoa-autonomoa',
       pitfalls: [
-        'Bikote kraneal baten nerbioak osagai autonomoa badu, osagai hori beti parasinpatikoa da (adib. bagoa eta faziala).',
-        'Parasinpatikoaren beheko muturrean neuronak ornomuinean bertan; goiko muturrean garezurreko nerbioen gongoiletan.',
-        'Aurpegiko inerbazio parasinpatikoa ia guztiz guruinetara doa; 3. bikotetik datorrena izan ezik (begi-ninia dilatatzeko, apunteen arabera).',
+        'Garun-enborreko zuntz parasinpatiko preganglionarrak III., VII., IX. eta X. nerbio kranealek eramaten dituzte.',
+        'Neurona parasinpatiko preganglionarren somak garun-enborrean eta S2–S4 segmentuetan daude. Postganglionarrenak itu-organotik gertu edo haren barruan.',
+        'III. nerbioaren zuntz parasinpatikoek begi-ninia uzkurtzen dute, gongoil ziliarrean sinapsia egin ondoren.',
       ],
       roots: [
-        l('Nerbio sistema somatikoa', [leaf('Borondatezko mugimenduak', 'bideratu')]),
+        l('Nerbio sistema somatikoa', [
+          leaf('Sentsibilitate somatikoa', 'informazioa jaso'),
+          leaf('Muskulu eskeletikoak', 'borondatezko mugimenduak eta erreflexuak kontrolatu'),
+        ]),
         n('nerbio-sistema-begetatiboa', [
           branch('sistema-sinpatikoa', 'estresaren sistema', [
-            leaf('Bihotza', 'erritmoa arindu'),
-            leaf('Arnasa', 'asko eta arin'),
+            leaf('Bihotza', 'erritmoa azkartu'),
+            leaf('Bronkioak', 'zabaldu'),
             leaf('Izerdi guruinak', 'aktibatu'),
-          ], 'T1–T12 (T1–L2 gutxi gorabehera)'),
+          ], 'T1–L2 · jatorri torakolunbarra'),
           branch('sistema-parasinpatikoa', 'lasaitasunera: egoera basalera itzuli', [
             leaf('Bihotza', 'erritmoa jaitsi'),
-            leaf('Esfinterrak', 'zabaldu'),
-            branch('buruko-gongoil-parasinpatikoak', 'goiko muturra: garezurreko nerbioen gongoiletan', [
+            leaf('Digestio-hodia', 'mugikortasuna eta jariaketa sustatu'),
+            branch('buruko-gongoil-parasinpatikoak', 'buruko organoetatik gertu', [
               branch('malko-guruina', 'aurpegiko guruinak'),
-              branch('listu-guruinak', 'aurpegiko guruinak'),
+              branch('listu-guruinak', 'listua jariatu'),
+              leaf('Begi-ninia', 'uzkurtu · III. nerbioa eta gongoil ziliarra'),
             ]),
-          ], 'S2–S4 eta entzefaloan · bi muturretan'),
+          ], 'garun-enborra eta S2–S4 · jatorri kraneosakroa'),
           branch('errai-sareak', 'erraien inguruan', undefined, 'sinpatikoak eta parasinpatikoak'),
         ], { note: 'autonomoa · ez borondatezkoa: erraiak, esfinterrak, peristaltismoa' }),
       ],
     },
+
+    // ── 2. PLAKA NEURALA ETA GANDOR NEURALA ─────────────────────────────────
     {
-      id: 'ornomuin-orokortasunak-19',
-      title: 'Ornomuina: gai grisa, gai zuria, sustraiak eta gongoila',
-      lead: 'Ornomuinean beti: barnean gai grisa H forman (somak), kanpoan gai zuria (axoiak). Sustraitxoak elkartu eta sustraiak; atzeko sustraian gongoila, neurona bipolarrekin.',
-      stage: 'gai-grisa-zuria',
+      id: 'plaka-neurala-19',
+      title: 'Plaka neuraletik hodi neuralera: neuroporoak',
+      lead: 'Plaka neurala tolestean, tolestura neuralak erdiko lerroan elkartzen dira eta hodi neurala eratzen dute. Mutur kranealean eta kaudalean neuroporoak geratzen dira aldi baterako.',
+      stage: 'plaka-neurala',
       pitfalls: [
-        'Aurreko adarrak (bentralak) motorrak; atzeko adarrak (dortsalak) sentsitiboak; tartean interneuronak.',
-        'Gongoila atzeko sustraian dago: neurona bipolarrak, luzapen zentripetoa (ornomuinera) eta zentrifugoa (periferiara).',
-        'Gai zurian goranzko bideak sentsitiboak dira; beheranzkoak motorrak.',
+        'Aurreko neuroporoa lehenago ixten da, 25. egunaren inguruan. Atzekoa 4. astearen amaieran (27–28. egunetan) ixten da.',
+        'Fusioa erdialdeko eremu batean hasten da eta bi norabideetan hedatzen da.',
+      ],
+      roots: [
+        n('plaka-neurala', [
+          branch('hodi-neurala', 'tolestura neuralak elkartu', [
+            branch('neuroporo-kraneala', 'aurrekoa · 25. egunaren inguruan itxi'),
+            branch('neuroporo-kaudala', 'atzekoa · 4. astearen amaieran itxi'),
+          ], 'fusioa erdialdean hasi'),
+          branch('gandor-neurala', 'tolestura neuralen ertzetan bereizi'),
+        ]),
+      ],
+    },
+    {
+      id: 'gandor-neuraleko-eratorriak-19',
+      title: 'Gandor neuralaren eratorriak',
+      lead: 'Hasieran hodi neuralaren eta azaleko ektodermoaren artean daude. Gero, gandorreko zelulak askatu, migratu eta bereizi egiten dira.',
+      stage: 'gandor-eratorriak',
+      pitfalls: [
+        'Gandor neuralak gongoil espinal eta autonomoetako neuronak ematen ditu. Gongoil kraneal sentsitibo batzuetan plakoda ektodermikoek ere parte hartzen dute.',
+        'Giltzurrun gaineko guruinean muineko zelula kromafinak bakarrik (kortexa ez).',
+        'Gandor neuralak aurreko garunaren inguruko meningei laguntzen die. Meningeen jatorria eskualdearen arabera aldatzen da.',
+        'Mielina: periferikoan Schwann zelulek; zentralean oligodendrozitoek.',
+      ],
+      roots: [
+        n('gandor-neurala', [
+          g('Gongoilak', [
+            branch('gongoil-errakideoak', 'espinalak'),
+            branch('gongoil-sinpatikoak', 'sinpatikoak'),
+            branch('gongoil-parasinpatikoak', 'parasinpatikoak'),
+            leaf('Hesteetako gongoilak', 'hestearen paretara migratu', undefined, 'nerbio-sistema enterikoko neuronak eta glia'),
+          ]),
+          g('Beste eratorriak', [
+            n('zelula-kromafinak', undefined, { via: 'giltzurrun gaineko muinean', move: true }),
+            leaf('1., 2. eta 3. faringe-arkuetako hezur eta kartilagoen osagaiak', 'mesenkimara migratu'),
+            leaf('Aurreko garunaren inguruko meningeak', 'eskualde horretan parte hartu', [
+              branch('dura-materra', 'kanpoan'),
+              branch('araknoidesa', 'erdian'),
+              branch('pia-materra', 'barnean'),
+            ]),
+            branch('schwann-zelulak', 'mielina, periferikoan'),
+            n('melanozitoak', undefined, { via: 'larruazala eta ilea koloreztatu', move: true }),
+          ]),
+        ]),
+      ],
+    },
+
+    // ── 3. ORNOMUINA: GARAPENA, EGITURA HELDUA ETA HAZKUNTZA ────────────────
+    {
+      id: 'ornomuin-geruzak-egitura-19',
+      title: 'Ornomuina barnetik kanpora: enbrioi-geruzak → egitura heldua',
+      lead: 'Hodi neuralaren paretako geruzek zuzenean ematen dute ornomuin helduaren antolaketa: barnean ependimoa eta gai grisa (H forman), kanpoan gai zuria eta pia materra.',
+      stage: 'ornomuin-geruzak',
+      pitfalls: [
+        'Manto-geruza → gai grisa (barnean · somak); geruza marginala → gai zuria (kanpoan · axoiak).',
+        'Gai zurian goranzko bideak sentsitiboak dira eta beheranzkoak motorrak.',
+        'Neuroepitelioan geratzen diren zelulek ependimo-geruza eratzen dute; pia materra kanpoko gainazalari atxikitzen zaio.',
       ],
       roots: [
         n('ornomuina', [
-          branch('gai-grisa', 'barnean · H forma', [
-            leaf('2 aurreko adar', 'bentralak · motorrak'),
-            leaf('2 atzeko adar', 'dortsalak · sentsitiboak'),
-            branch('interneurona', 'aurreko eta atzeko adarrak lotu'),
-          ], 'neuronen somak'),
-          branch('gai-zuria', 'kanpoan · axoiak', [
-            branch('goranzko-bideak', 'sentsitiboak'),
-            branch('beheranzko-bideak', 'motorrak'),
-          ]),
-          branch('sustraitxoak', 'ornomuinetik atera', [
-            branch('atzeko-sustraia', 'atzekoak elkartu', [
-              branch('gongoil-errakideoak', 'atzeko sustraian', [
-                leaf('Luzapen zentripetoa', 'ornomuinerantz'),
-                leaf('Luzapen zentrifugoa', 'periferiarantz'),
-              ], 'neurona bipolarrak'),
+          g('Barnetik kanpora (geruzak → heldua)', [
+            branch('barneko-mintz-mugatzailea', 'hodi zentralaren ertzean', [
+              branch('neuroepitelioa', 'lotuta, kanporantz begira', [
+                branch('neuroblastoak', 'bereizi', undefined, 'ornomuinaren neuronak'),
+                branch('ependimo-geruza', 'geratzen diren zelulak', [
+                  branch('hodi-ependimarioa', 'barrunbe estua mugatu'),
+                ]),
+              ]),
             ]),
-            branch('aurreko-sustraia', 'aurrekoak elkartu'),
+            branch('manto-geruza', 'neuroblastoen somak', [
+              branch('gai-grisa', 'bihurtu · barnean, H forma', [
+                branch('interneurona', 'zirkuitu lokaletan parte hartu'),
+              ], 'neuronen somak'),
+            ]),
+            branch('geruza-marginala', 'axoiak', [
+              branch('gai-zuria', 'bihurtu · kanpoan', [
+                branch('goranzko-bideak', 'sentsitiboak'),
+                branch('beheranzko-bideak', 'motorrak'),
+              ]),
+            ]),
+            branch('kanpoko-mintz-mugatzailea', 'hodiaren gainazalean', [
+              branch('pia-materra', 'kanpotik atxikita'),
+            ]),
           ]),
         ]),
       ],
     },
     {
-      id: 'sentsibilitatea-erreflexua-19',
-      title: 'Sentsibilitatea eta arku erreflexua',
-      lead: 'Sentsazioa larruazaletik gongoilaren somara eta luzapen zentraletik ornomuinera sartzen da, beti atzeko sustraietatik. Burmuinera iritsi gabe erantzuten bada: arku erreflexua.',
-      stage: 'aktu-erreflexua',
+      id: 'ornomuin-plakak-sustraiak-19',
+      title: 'Ornomuina dortsaletik bentralera: plakak, adarrak eta sustraiak',
+      lead: 'Ildo mugatzaileak hegal-plaka dortsala (sentsitiboa) eta oinalde-plaka bentrala (motorra) bereizten ditu. Haietatik eratzen dira adarrak, sustraiak eta nerbio espinal mistoak.',
+      stage: 'ornomuin-plakak',
       pitfalls: [
-        'Luzapen periferikoa (zentrifugoa) larruazalerantz doa, baina informazioa kontrako norantzan dabil: larruazaletik somara.',
-        'Informazio sentsitiboa beti atzeko sustraietatik eta sustraitxoetatik sartzen da.',
-        'Nerbio espinalak mistoak dira: axoi sentsitiboak eta motorrak.',
-        'Arku erreflexua: mugimendu automatikoa; ezagunena erreflexu rotulianoa.',
+        'Hegal-plaka (dortsala) → eremu sentsitiboa / atzeko adarrak; oinalde-plaka (bentrala) → eremu motorra / aurreko adarrak.',
+        'Alboko adar sinpatikoak T1–L2 mailetan bakarrik agertzen dira (alde motorrean).',
+        'Atzeko sustraiko gongoilean neurona pseudounipolarrak daude: adar zentrala ornomuinera eta periferikoa larruazalera.',
+        'Ornomuin garatuan bi ildo daude: aurrekoa askoz sakonagoa. Sabai- eta zoru-plaketan ez dago somarik.',
       ],
       roots: [
-        l('Arku erreflexua', [
-          g('Gorantz', [
-            leaf('Larruazaleko hartzaileak', '1 · beroa, mina hauteman'),
-            branch('neurona-sentsitiboa', '2 · luzapen zentrifugotik somara, gongoilean'),
-            branch('atzeko-sustraia', '3 · luzapen zentripetotik ornomuinera'),
+        n('ornomuina', [
+          g('Dortsaletik bentralera (plakak → sustraiak)', [
+            branch('sabai-plaka', 'mutur dortsalean', undefined, 'erdiko lerroa · axoiak bakarrik'),
+            branch('hegal-plaka', 'dortsala · sentsitiboa', [
+              branch('eremu-sentsitiboa', 'helduan · 2 atzeko adar', [
+                branch('atzeko-sustraia', 'atzeko sustraitxoak elkartu', [
+                  branch('gongoil-errakideoak', 'atzeko sustraian', [
+                    leaf('Adar zentrala', 'ornomuinerantz'),
+                    leaf('Adar periferikoa', 'periferiarantz'),
+                  ], 'neurona pseudounipolarrak'),
+                ]),
+              ]),
+            ]),
+            branch('ildo-mugatzailea', 'tartean · barruko paretan', undefined, 'dortsala eta bentrala bereizi'),
+            branch('oinalde-plaka', 'bentrala · motorra', [
+              branch('eremu-motorra', 'helduan · 2 aurreko adar', [
+                branch('aurreko-sustraia', 'aurreko sustraitxoak elkartu'),
+              ]),
+              branch('alboko-adarra', 'T1–L2 mailetan', undefined, 'neurona sinpatikoak'),
+            ]),
+            branch('zoru-plaka', 'mutur bentralean', undefined, 'erdiko lerroa · axoiak bakarrik'),
+            branch('sustraitxoak', 'ornomuinarekin lotu', [
+              branch('nerbio-espinalak', 'aurreko eta atzeko sustraiak elkartu', undefined, 'nerbio mistoak'),
+            ]),
+          ]),
+        ]),
+      ],
+    },
+    {
+      id: 'ornomuinaren-igoera-19',
+      title: 'Hazkuntza diferentziala: konoa, zaldi-buztana eta filum terminale',
+      lead: 'Bizkarrezurra ornomuina baino gehiago hazten da. Horren ondorioz, ornomuina L1–L2 mailetan amaitzen da eta beheko nerbio-sustraiak beherantz luzatzen dira.',
+      stage: 'ornomuinaren-igoera',
+      pitfalls: [
+        'Helduan, ornomuina L1–L2 ornoen parean amaitzen da normalean.',
+        'Zaldi-buztana ornomuinaren konoaren azpitik jaisten diren nerbio-sustraiek osatzen dute.',
+        'Filum terminale pia materraren luzapena da, zaldi-buztanaren erdian.',
+      ],
+      roots: [
+        n('ornomuina', [
+          g('Hazkuntza (L1–L2 amaiera)', [
+            leaf('Loditzeak', 'zerbikala eta lunbosakroa'),
+            branch('ornomuinaren-konoa', 'L1–L2 inguruan amaitu', [
+              branch('zuntz-terminala', 'pia materraren luzapena', undefined, 'filum terminale'),
+            ]),
+            branch('zaldi-buztana', 'konoaren azpitik', undefined, 'beherantz luzatutako nerbio-sustraiak'),
+            branch('poltsa-durala', 'dura materraren zakua', undefined, 'LZR barnean · sakroraino'),
+          ]),
+        ]),
+      ],
+    },
+
+    // ── 4. BIDEAK: SENTSIBILITATEA, ERREFLEXUAK ETA MUGIMENDUAK ─────────────
+    {
+      id: 'sentsibilitatea-erreflexua-19',
+      title: 'Sentsibilitatea eta arku erreflexua',
+      lead: 'Estimulu periferikoaren seinalea atzeko sustraitik sartzen da ornomuinera. Ornomuineko erreflexuetan erantzun motorra bertan antolatzen da.',
+      stage: 'aktu-erreflexua',
+      pitfalls: [
+        'Seinalea adar periferikotik adar zentralera igarotzen da. Neuronaren soma atzeko sustraiko gongoilean dago.',
+        'Ornomuineko aferentzia sentsitiboa atzeko sustraietatik sartzen da beti.',
+        'Erreflexu errotulianoan, neurona sentsitiboak sinapsi zuzena egiten du kuadrizepseko motoneuronarekin (monosinaptikoa).',
+      ],
+      roots: [
+        l('Erretiratze-erreflexua', [
+          g('Sarrera sentsitiboa', [
+            leaf('Larruazaleko hartzaileak', '1 · estimulu mingarria hauteman'),
+            branch('neurona-sentsitiboa', '2 · adar periferikotik zentralera'),
+            branch('atzeko-sustraia', '3 · adar zentraletik ornomuinera'),
           ]),
           g('Ornomuinean', [
             branch('interneurona', '4 · sinapsia'),
@@ -152,26 +283,35 @@ export const SCHEMES_19: MigrationTopic = {
           ]),
           g('Erantzuna', [
             branch('aurreko-sustraia', '6 · axoiak irten'),
-            leaf('Muskulua', '7 · agindua', undefined, 'adib. erreflexu rotulianoa'),
+            leaf('Muskulua', '7 · uzkurtu', undefined, 'gorputz-adarra erretiratu'),
           ]),
-        ], { note: 'burmuinera iritsi gabe' }),
+        ], { note: 'erreflexu polisinaptikoa' }),
+        l('Erreflexu errotulianoa', [
+          leaf('Kuadrizepseko muskulu-ardatza', '1 · tendoia jotzean aktibatu', [
+            branch('neurona-sentsitiboa', '2 · seinalea ornomuinera', [
+              branch('motoneurona', '3 · sinapsi zuzena', [
+                leaf('Kuadrizepsa', '4 · uzkurtu eta belauna luzatu'),
+              ]),
+            ]),
+          ]),
+        ], { note: 'erreflexu monosinaptikoa' }),
       ],
     },
     {
       id: 'borondatezko-bidea-19',
       title: 'Borondatezko mugimendua: kortex sentsitibotik kortex motorrera',
-      lead: 'Borondatezkoa bada, informazio sentsitiboa burmuineraino eraman behar da: bertan prozesatu eta erantzun motorra agintzen da (nerbio sistema somatikoa).',
+      lead: 'Mugimendu borondatezkoetan informazio sentsitiboa garuneko kortexera iristen da, eta handik agindu motorra beheranzko bideetatik jaisten da.',
       stage: 'borondatezko-mugimenduak',
       pitfalls: [
-        'Batzuetan gongoileko neuronaren axoia zuzenean burmuinera heltzen da.',
-        'Kortex sentsitiboan konturatzen gara zer sentitzen dugun; gero kortex motorrera pasatzen da.',
+        'Atzeko zutabeen bidean, lehen neuronak erraboileraino iristen dira, eta hantxe egiten dute lehen sinapsia.',
+        'Kortex sentsitiboan pertzepzio kontzientea gertatzen da; kortex motorrak erantzuna antolatzen du.',
         'Agindua beheranzko bideetatik jaisten da (batzuetan sinapsiak eginez).',
       ],
       roots: [
         l('Borondatezko mugimendua', [
           g('Gorantz', [
             branch('neurona-sentsitiboa', '1 · luzapen zentrala ornomuinera'),
-            branch('goranzko-bideak', '2 · sinapsia; axoiak garunera', undefined, 'edo zuzenean burmuinera'),
+            branch('goranzko-bideak', '2 · goranzko bide sentsitiboetatik', undefined, 'sinapsiaren maila bidearen araberakoa'),
             branch('kortex-sentsitiboa', '3 · hainbat sinapsiren ondoren', undefined, 'konturatu'),
           ]),
           g('Beherantz', [
@@ -186,395 +326,224 @@ export const SCHEMES_19: MigrationTopic = {
     {
       id: 'mugimendu-automatikoak-19',
       title: 'Mugimendu automatikoak eta arinak',
-      lead: 'Ondo ikasitako mugimenduak automatikoki egiten ditugu (bizikleta, gidatu): zerebeloak hartzen du parte. Mugimendu arinak ikasiak dira, baina oso arin egiten dira.',
+      lead: 'Praktikarekin mugimendu batzuk automatizatzen dira (bizikletan ibili, gidatu). Erortzean eskuak aurrera luzatzea babes-erantzun postural azkarra da.',
       stage: 'mugimendu-automatikoak',
       pitfalls: [
-        'Mugimendu automatikoak muskulu somatikoek eragindakoak dira, ez autonomoak.',
-        'Haurrek buruan hartzen dituzte kolpeak eskuak jartzen ikasi arte; mugimendu arinetan ere zirkuitu osoa betetzen da.',
+        'Mugimendu automatiko ikasiek muskulu eskeletikoak erabiltzen dituzte (sistema somatikoa) eta zerebeloak hartzen du parte.',
+        'Eskuak jartzea bezalako mugimendu arinek zirkuitu osoa betetzen dute nerbio-sisteman.',
       ],
       roots: [
         l('Mugimendu automatikoak', [
           branch('garuntxoa', 'parte hartu', undefined, 'zerebeloa'),
           leaf('Adibideak', 'bizikletan ibili, gidatu'),
         ], { note: 'ondo ikasiak · muskulu somatikoak' }),
-        l('Mugimendu arinak', [
-          leaf('Haurrak erortzean', 'burua handia eta pisutsua: buruan kolpea'),
-          leaf('Eskuak jartzen ikasi', 'mugimendu arina', undefined, 'zirkuitu osoa betetzen da'),
+        l('Babes-erantzun posturala', [
+          leaf('Aurrerantz erortzea', 'erantzuna abiarazi'),
+          leaf('Besoak eta eskuak', 'aurrerantz luzatu', undefined, 'gorputza babesteko'),
         ]),
       ],
     },
+
+    // ── 5. ENTZEFALOA: XIXKUAK, BARRUNBEAK, TOLESPEANAK ETA ATALAK ──────────
     {
-      id: 'plaka-neurala-19',
-      title: 'Plaka neuraletik hodi neuralera: neuroporoak',
-      lead: 'Plaka zapalean bi goragune sortzen dira; muturrak (gandor neuralak) erdian fusionatu arte gerturatzen dira. Fusioa erdian hasi eta neuroporoak uzten ditu.',
-      stage: 'plaka-neurala',
+      id: 'prosentzefaloa-19',
+      title: 'Prosentzefaloa: telentzefaloa, dientzefaloa eta hipofisia',
+      lead: 'Aurreko xixku primarioa telentzefaloan eta dientzefaloan banatzen da. Hasieran dientzefaloa handiagoa da; gero telentzefaloak estaltzen du. Hipofisiak bi jatorri ditu.',
+      stage: 'talamoa',
       pitfalls: [
-        'Aurreko neuroporoa lehenago ixten da: 25. egunean; atzekoa 27./28. egunean.',
-        'Fusioa erdi mailan hasten da, ez muturretan.',
-      ],
-      roots: [
-        n('plaka-neurala', [
-          branch('hodi-neurala', 'goraguneen muturrak erdian fusionatu', [
-            branch('neuroporo-kraneala', 'aurrekoa · 25. egunean itxi'),
-            branch('neuroporo-kaudala', 'atzekoa · 27./28. egunean itxi'),
-          ], 'fusioa erdian hasi'),
-          branch('gandor-neurala', 'tolestean muturretan bereizi'),
-        ]),
-      ],
-    },
-    {
-      id: 'gandor-neuraleko-eratorriak-19',
-      title: 'Gandor neuralaren eratorriak',
-      lead: 'Hasieran hodiaren (ornomuinaren) eta ektodermoaren artean; gero zelulak askatu eta bereizi egiten dira, egitura desberdinak eratuz.',
-      stage: 'gandor-eratorriak',
-      pitfalls: [
-        'Gongoil GUZTIETAKO neuronak gandorretik datoz, katean edo sarean egon.',
-        'Giltzurrun gaineko guruinean muineko zelula kromafinak bakarrik (kortexa ez).',
-        'Meningeetatik pia materra eta araknoidea bakarrik; dura materra ez.',
-        'Mielina: periferikoan Schwann zelulek; zentralean oligodendrozitoek.',
-        'Jaioberrien malformazio kongenitoen herena gandor neuraleko akatsengatik.',
-      ],
-      roots: [
-        n('gandor-neurala', [
-          g('Gongoilak (neuronak)', [
-            branch('gongoil-errakideoak', 'espinalak'),
-            branch('gongoil-sinpatikoak', 'sinpatikoak'),
-            branch('gongoil-parasinpatikoak', 'parasinpatikoak'),
-          ]),
-          g('Beste eratorriak', [
-            n('zelula-kromafinak', undefined, { via: 'giltzurrun gaineko muinean', move: true }),
-            leaf('1., 2. eta 3. arkuetako hezurrak eta kartilagoak', 'faringe-arkuetan', undefined, 'anomalia → aurpegiko hezurrik ez'),
-            branch('pia-materra', 'meningea'),
-            branch('araknoidesa', 'meningea'),
-            branch('schwann-zelulak', 'mielina, periferikoan'),
-            n('melanozitoak', undefined, { via: 'larruazala eta ilea koloreztatu', move: true }),
-          ]),
-        ], { note: 'anomaliak: malformazio kongenitoen herena' }),
-      ],
-    },
-    {
-      id: 'ornomuinaren-geruzak-19',
-      title: 'Ornomuinaren geruzak: barnetik kanpora',
-      lead: 'Ependimoa hasieran zabala, gero estu eta borobila. Barneko mintz mugatzaileari lotuta neuroepitelioa: neuroblastoak, eta hauetatik neuronak.',
-      stage: 'ornomuin-geruzak',
-      pitfalls: [
-        'Manto geruza → gai grisa (somak); geruza marginala → gai zuria (axoiak).',
-        'Kanpoko mintz mugatzailea pia zelulak dira: gero pia materra.',
-        'Neuroepitelioan geratzen diren zelulek ependimo geruza eratzen dute.',
-      ],
-      roots: [
-        n('barneko-mintz-mugatzailea', [
-          branch('neuroepitelioa', 'lotuta, kanporantz begira', [
-            branch('neuroblastoak', 'bereizi', undefined, 'neuronak sortu'),
-            branch('ependimo-geruza', 'geratzen diren zelulak'),
-          ]),
-        ], { note: 'ependimoa mugatu' }),
-        n('manto-geruza', [branch('gai-grisa', 'bihurtu')], { note: 'neuroblastoen somak' }),
-        n('geruza-marginala', [branch('gai-zuria', 'bihurtu')], { note: 'axoiak' }),
-        n('kanpoko-mintz-mugatzailea', [branch('pia-materra', 'bihurtu')], { note: 'pia zelulak' }),
-      ],
-    },
-    {
-      id: 'ornomuinaren-plakak-19',
-      title: 'Ornomuinaren plakak: dortsala sentsitiboa, bentrala motorra',
-      lead: 'Bi plaka nagusi, ildo mugatzaileak banatuta; sabai eta zoru plaketan axoiak bakarrik. Helduan izenak aldatzen dira: eremu sentsitiboa eta motorra.',
-      stage: 'ornomuin-plakak',
-      pitfalls: [
-        'Ildo mugatzailea muga birtuala da, ez anatomikoa.',
-        'Sabai eta zoru plaketan ez dago manto geruzarik ez gai grisik: geruza marginala bakarrik.',
-        'Alboko adarrak (neurona sinpatikoak) T1/T2–L2 artean: mozketan ikusten badira, maila hori da.',
-        'Ornomuin garatuan bi ildo: aurrekoa askoz sakonagoa.',
-      ],
-      roots: [
-        n('hodi-neurala', [
-          branch('sabai-plaka', 'dortsalaren muturrean', undefined, 'axoiak bakarrik'),
-          branch('hegal-plaka', 'dortsala · sentsitiboa', [branch('eremu-sentsitiboa', 'helduan')], 'atzeko sustraiak'),
-          branch('ildo-mugatzailea', 'tartean · birtuala'),
-          branch('oinalde-plaka', 'bentrala · motorra', [
-            branch('eremu-motorra', 'helduan'),
-            branch('alboko-adarra', 'T1/T2–L2', undefined, 'neurona sinpatikoak'),
-          ], 'aurreko sustraiak'),
-          branch('zoru-plaka', 'bentralaren muturrean', undefined, 'axoiak bakarrik'),
-        ]),
-      ],
-    },
-    {
-      id: 'ornomuinaren-igoera-19',
-      title: 'Bizkarrezurra ornomuina baino gehiago hazten da',
-      lead: 'Hasieran tamaina berekoak; bizkarrezurra askoz azkarrago hazten da. 3. hilabetean nerbio bakoitza bere pareko zulotik; helduan beherago dauden zuloetatik.',
-      stage: 'ornomuinaren-igoera',
-      pitfalls: [
-        'Ornomuina L1/L2 inguruan amaitzen da; bizkarrezurra sakroraino doa.',
-        'L1–L2tik behera ez dago ornomuin trinkorik: zaldi buztana.',
-        'Filum terminale pia materraren luzapena da.',
-      ],
-      roots: [
-        n('ornomuina', [
-          leaf('Loditzeak', 'lepoan eta amaiera toraziko/lunbarrean'),
-          branch('ornomuinaren-konoa', 'amaiera, kono forma', [
-            branch('zuntz-terminala', 'pia materraren luzapena', undefined, 'filum terminale'),
-          ]),
-          branch('zaldi-buztana', 'L1/L2tik behera', undefined, 'nerbio multzoak, lotu gabe'),
-          branch('nerbio-espinalak', 'zuloak beherantz', undefined, 'helduan beherago dauden zuloetatik'),
-          branch('poltsa-durala', 'dura materraren zakua', undefined, 'likido zefalorrakideoa barnean'),
-        ], { note: 'L1/L2 inguruan amaitu' }),
-      ],
-    },
-    {
-      id: 'puntzioa-epidurala-19',
-      title: 'Likido zefalorrakideoaren lagina eta anestesia epidurala',
-      lead: 'Biak zaldi buztanaren eremuan: orratza likidoraino iritsi behar da ornomuina lesionatu gabe; nerbioak apartatu egiten dira.',
-      stage: 'puntzioa-epidurala',
-      pitfalls: [
-        'Erdiko nerbio sistemako infekzioak likido zefalorrakideoan ikusten dira.',
-        'Eremu epidurala hezurraren eta dura materraren artean (odol hodiak, gantza). Burmuinean EZ dago.',
-      ],
-      roots: [
-        l('Lagina', [
-          branch('zaldi-buztana', 'orratza sartu', undefined, 'nerbioak apartatu: lesiorik ez'),
-          branch('likido-zefalorrakideoa', 'atera', undefined, 'infekzioak'),
-        ]),
-        n('anestesia-epidurala', [
-          branch('eremu-epidurala', 'hezurraren eta dura materraren artean', undefined, 'odol hodiak, gantza'),
-        ], { note: 'zaldi buztanean' }),
-      ],
-    },
-    {
-      id: 'garun-xixkuen-eratorriak-19',
-      title: 'Burmuina: 3 xixkutik 5era eta haien eratorriak',
-      lead: 'Lepotik kaudalera hodia itxi eta ornomuina da. Alde kranealean hodia zabaldu eta 3 xixku sortzen ditu; hauetatik beste batzuk.',
-      stage: 'hiru-xixkuak',
-      pitfalls: [
-        'Mesentzefaloa BETI berdin geratzen da.',
-        'Dientzefaloa, dortsaletik bentralera: epitalamoa, talamoa, hipotalamoa, azpitalamoa.',
-        'Metentzefaloa: zubia bentralean, garuntxoa dortsalean. Mielentzefaloa: erraboila.',
+        'Ez esan I. edo II. bentrikulua: ALBOKO bentrikuluak dira (handienak).',
+        'Talamoak informazio sentsitibo gehiena bideratzen du kortexera, usaimena izan ezik (zuzenean usaimen-kortexera doa).',
+        'Hipofisia: adenohipofisia estomodeotik (Rathke / hipofisi-poltsa); neurohipofisia hipotalamotik (infundibulua).',
       ],
       roots: [
         n('prosentzefaloa', [
-          branch('telentzefaloa', 'luzatu eta dientzefaloa estali', [branch('garun-hemisferioak', 'atera')]),
-          branch('dientzefaloa', 'erdian', [
-            branch('epitalamoa', 'dortsalean', undefined, 'guruin pineala'),
-            branch('talamoa', 'garrantzitsuena'),
-            branch('hipotalamoa', 'hormonak'),
-            leaf('Azpitalamoa', 'garrantzi txikiena'),
+          branch('telentzefaloa', 'bigarren mailako xixkua', [
+            branch('alboko-bentrikuluak', 'barrunbea', undefined, 'ezkerra eta eskuina · handienak'),
+            branch('garun-hemisferioak', 'eratorria · hazi eta dientzefaloa estali'),
           ]),
-        ], { note: '1 · aurrekoa' }),
-        n('mesentzefaloa', undefined, { note: '2 · tartekoa · BETI berdin' }),
+          branch('dientzefaloa', 'bigarren mailako xixkua · erdian', [
+            branch('hirugarren-bentrikulua', 'barrunbea', undefined, 'sare koroideak sabaian'),
+            branch('epitalamoa', 'dortsalean', [
+              branch('guruin-pineala', 'barruan', undefined, 'melatonina · loaldi-esnaldia'),
+            ]),
+            branch('talamoa', 'III. bentrikuluaren alboetan', undefined, 'errelebo sentsitiboa · usaimena izan ezik'),
+            branch('hipotalamoa', 'bentralean', [
+              branch('hipofisi-infundibulua', 'neuroektodermoa beherantz', [
+                branch('neurohipofisia', 'eratu', undefined, 'oxitozina eta basopresina askatu'),
+              ]),
+            ], 'erregulazio endokrinoa'),
+            leaf('Azpitalamoa', 'talamoaren azpian'),
+          ]),
+        ], { note: '1 · aurreko xixkua' }),
+        n('estomodeoa', [
+          branch('rathke-poltsa', 'aho-ektodermoa gorantz', [
+            branch('adenohipofisia', 'estomodeotik askatu eta bereizi', undefined, 'hormonak ekoitzi: somatotropina, prolaktina'),
+          ], 'hipofisi-poltsa · 3.–4. astean hasi'),
+        ]),
+      ],
+    },
+    {
+      id: 'mesentzefaloa-19',
+      title: 'Mesentzefaloa: akueduktoa, pedunkuluak, gai beltza eta tolespen zefalikoa',
+      lead: 'Tarteko xixkua ez da banatzen: paretak loditzen dira eta erdiko hodia garun-akuedukto bihurtzen da. Alde bentralean garun-pedunkuluak eta gai beltza daude.',
+      stage: 'mesentzefaloa',
+      pitfalls: [
+        'Mesentzefaloan ez dago bentrikulurik: garun-akueduktoak (Silvio) III. eta IV. bentrikuluak lotzen ditu.',
+        'Gai beltza ez dago tindatuta: pigmentu beltza dute. Parkinsonean neurona dopaminergikoak hiltzean, dopamina ez da oinaldeko nukleoetara iristen.',
+        'Tolespen zefalikoa mesentzefaloaren inguruan sortzen da (4. astean), eta istmoa metentzefaloarekiko estutasuna da (5. astean).',
+      ],
+      roots: [
+        n('mesentzefaloa', [
+          branch('garun-akueduktoa', 'barrunbe estua', undefined, 'Silvio · III. eta IV. bentrikuluak lotu'),
+          branch('garun-pedunkuluak', 'mutur bentralean', undefined, 'goranzko eta beheranzko zuntzak'),
+          branch('gai-beltza', 'zelula dopaminergikoak', [
+            branch('oinaldeko-nukleoak', 'dopamina bidali', undefined, 'Parkinson: neurona hauek hil'),
+          ], 'pigmentu beltza'),
+          branch('tolespen-zefalikoa', '4. astean · bentralki okertu'),
+          branch('istmoa-entzefaloa', '5. astean · metentzefaloarekiko muga estua'),
+        ], { note: '2 · tarteko xixkua · banatu gabe' }),
+      ],
+    },
+    {
+      id: 'erronbentzefaloa-19',
+      title: 'Erronbentzefaloa: IV. bentrikulua, metentzefaloa eta mielentzefaloa',
+      lead: 'Azken xixkuak erronbo forma du (IV. bentrikulua) eta metentzefaloan (zubia, zerebeloa) eta mielentzefaloan (erraboila) banatzen da.',
+      stage: 'metentzefaloa',
+      pitfalls: [
+        'IV. bentrikuluaren zorua zabaltzean, eremu motorra medial (erdian) geratzen da eta sentsitiboa lateral (alboetan).',
+        'Zerebeloa metentzefaloaren hegal-plaken alde dortsaletik (ezpain erronboideak) garatzen da eta IV. bentrikuluaren sabaia estaltzen du.',
+        'Zubi-tolespena dortsalki okertzen da (tolespen zefaliko eta zerbikalaren kontrako noranzkoan).',
+        'Erraboilaren zati kaudalean hodi ependimarioak jarraitzen du; rostrala IV. bentrikulura irekitzen da. Zuntza = axoia.',
+      ],
+      roots: [
         n('erronbentzefaloa', [
-          branch('metentzefaloa', 'banatu', [
-            branch('zubia', 'bentralean'),
-            branch('garuntxoa', 'dortsalean', undefined, 'zerebeloa'),
+          branch('laugarren-bentrikulua', 'barrunbea · erronbo forma', undefined, 'motorra medial · sentsitiboa lateral'),
+          branch('metentzefaloa', 'xixku kraneala', [
+            branch('zubia', 'bentralean · IV.aren zoruan', [
+              branch('zubi-tolespena', '5. astean · dortsalki okertu'),
+            ], 'goranzko eta beheranzko bide trinkoak'),
+            branch('hegal-plaka', 'dortsalean loditu', [
+              branch('ezpain-erronboideak', 'ertz dortsaletan eratu', [
+                branch('garuntxoa', 'fusionatu eta IV.aren sabaia estali', undefined, 'zerebeloa'),
+              ]),
+            ]),
           ]),
-          branch('mielentzefaloa', 'banatu', [branch('erraboila', 'burmuina eta ornomuina lotu')]),
-        ], { note: '3 · azkena, erronbo forma' }),
+          branch('mielentzefaloa', 'xixku kaudala', [
+            branch('erraboila', 'eratorria · burmuina ↔ ornomuina', [
+              branch('hodi-ependimarioa', 'zati kaudalean'),
+              branch('piramideak', 'bentralean', undefined, 'axoi motorrak beherantz'),
+              leaf('Atzeko zutabeen nukleoak', 'dortsalean', undefined, 'errelebo sentsitiboa'),
+              branch('tolespen-zerbikala', '4. astean · ornomuinarekiko mugan'),
+            ]),
+          ]),
+        ], { note: '3 · azken xixkua · erronbo forma' }),
       ],
     },
+
+    // ── 6. BABESA: MENINGEAK, LIKIDO ZEFALORRAKIDEOA ETA KLINIKA ────────────
     {
-      id: 'xixkuen-tolespenak-19',
-      title: 'Bost xixkuak eta tolespenak',
-      lead: '28. egunean enbrioia tolesten hasten da: bi tolespen. 5. astean bost xixku; gero zubi tolespena.',
-      stage: 'bost-xixkuak',
+      id: 'meningeak-19',
+      title: 'Meningeak: hiru mintz eta haien arteko eremuak',
+      lead: 'Meningeek entzefaloa eta ornomuina babesten dituzte (5.–8. asteetan garatuak). Kanpotik barrurako ordena: dura materra, araknoidea eta pia materra.',
+      stage: 'garuneko-meningeak',
       pitfalls: [
-        'Hasieran dientzefaloa handiagoa da; gero telentzefaloa askoz handiagoa.',
-        'Istmoa mesentzefaloaren eta metentzefaloaren arteko estutasuna da.',
-        'Tolespen zefalikoa eta zerbikala mantendu egiten dira (mesentzefaloan eta erraboilan).',
+        'Meningeen mesenkimak gandor neuraleko eta mesodermoko ekarpenak ditu (apunteetan: pia + araknoidea gandor neuraletik; dura mesodermotik).',
+        'Garezurrean, dura materra hezurrari itsatsita dago eta eremu epidurala potentziala da. Orno-kanalean eremu epidural erreala dago (gantza, zainak, nerbioak).',
+        'Araknoidearen eta pia materraren artean eremu azpiaraknoideoa dago, likido zefalorrakideoz betea.',
       ],
       roots: [
-        l('28. eguna', [
-          branch('tolespen-zefalikoa', 'mesentzefaloaren inguruan'),
-          branch('tolespen-zerbikala', 'erronbentzefaloaren eta ornomuinaren mugan', undefined, 'lepoko tolespena'),
-        ]),
-        l('5. astea', [
-          leaf('Telentzefaloa eta dientzefaloa', 'prosentzefalotik', undefined, 'hasieran dientzefaloa handiagoa'),
-          leaf('Metentzefaloa eta mielentzefaloa', 'erronbentzefalotik', undefined, 'zerebeloaren irtengunea'),
-          branch('istmoa-entzefaloa', 'mesen- eta metentzefaloaren artean estutu'),
-          branch('zubi-tolespena', 'geroago: hemen zubia'),
-        ]),
-      ],
-    },
-    {
-      id: 'bentrikuluak-19',
-      title: 'Sistema bentrikularra: xixku bakoitzaren barrunbea',
-      lead: 'Ornomuinean hodi forma ez da aldatzen: ependimoa. Garunean xixkuaren barrunbea zabaldu eta bentrikulua deitzen da.',
-      stage: 'bentrikuluak',
-      pitfalls: [
-        'Ez esan I. edo II. bentrikulua: ALBOKOAK dira.',
-        'Alboko bentrikuluak tamainaz nagusienak dira.',
-        'Mesentzefaloan ez dago bentrikulurik: pareta lodia eta hodia estu, akueduktoa (Silvio).',
-      ],
-      roots: [
-        n('telentzefaloa', [branch('alboko-bentrikuluak', 'ezkerra eta eskuina', undefined, 'handienak')]),
-        n('dientzefaloa', [branch('hirugarren-bentrikulua', 'barnean')]),
-        n('mesentzefaloa', [branch('garun-akueduktoa', 'hodia estutu', undefined, 'Silvio akueduktoa')]),
-        n('erronbentzefaloa', [branch('laugarren-bentrikulua', 'erronbo forma mantendu')]),
-        n('ornomuina', [branch('hodi-ependimarioa', 'hodi forma mantendu', undefined, 'ependimoa')]),
+        n('dura-materra', [
+          leaf('Garunean', 'hezurrari itsatsita', undefined, 'eremu epidural potentziala'),
+          leaf('Ornomuinean', 'hezurrari lotu gabe', [branch('eremu-epidurala', 'tartean · gantza eta zainak')]),
+        ], { note: '1 · kanpokoa · gogorrena' }),
+        n('araknoidesa', [
+          branch('eremu-azpiaraknoideoa', 'piarekiko tartean', [
+            leaf('Zain-sistema', 'likidoa pasa eta xurgatu'),
+          ], 'likido zefalorrakideoa'),
+        ], { note: '2 · erdikoa · armiarma-sarea' }),
+        n('pia-materra', [leaf('Ehunari lotuta', 'garunean eta ornomuinean')], { note: '3 · barnekoa' }),
       ],
     },
     {
       id: 'likido-zefalorrakideoa-19',
-      title: 'Likido zefalorrakideoa: ekoizpena eta bidea',
-      lead: 'Likido amortiguatzailea: 5. astean hasi, etengabe. Sare koroideek (arteriolak) ekoizten dute bentrikuluen sabaian; hezurrak eremua mugatzen duenez, xurgatu behar da.',
+      title: 'Likido zefalorrakideoa: ekoizpena, zirkulazioa eta drainatzea',
+      lead: 'Likido zefalorrakideoa 5. astean hasten da eratzen bentrikuluetako sare koroideetan. Etengabe ekoizten da, NSZ amortiguatzen du eta zain-sistemara xurgatzen da.',
       stage: 'likido-zefalorrakideoa',
       pitfalls: [
-        'IV. bentrikuluan ere gehiago ekoizten da.',
-        'IV. bentrikulutik: parte bat ependimotik; bestea 3 zulotik (2 Luschka albokoak, Magendie erdikoa).',
-        'Eremu azpiaraknoideotik zain-sistemara pasatzen da: xurgatu.',
+        'Sare koroideak alboko bi bentrikuluetan eta III. eta IV. bentrikuluetan daude (sabaian).',
+        'IV. bentrikulutik 3 zulotatik irteten da eremu azpiaraknoideora: 2 albokoak (Luschka) eta 1 erdikoa (Magendie); beste zati batek hodi ependimariotik jarraitzen du.',
+        'Eremu azpiaraknoideoan zirkulatu ondoren, araknoideko granulazioetatik dura materraren zain-sinuetara drainatzen da.',
       ],
       roots: [
         n('sare-koroideak', [
           g('Barnetik', [
             branch('alboko-bentrikuluak', '1 · abiatu'),
-            branch('monro-zuloak', '2 · bentrikulu arteko zuloa'),
+            branch('monro-zuloak', '2 · alboko bakoitza III.arekin lotu'),
             branch('hirugarren-bentrikulua', '3 · iritsi'),
             branch('garun-akueduktoa', '4 · pasa'),
-            branch('laugarren-bentrikulua', '5 · iritsi', undefined, 'gehiago ekoitzi'),
+            branch('laugarren-bentrikulua', '5 · iritsi'),
           ]),
-          g('IV. bentrikulutik', [
-            branch('hodi-ependimarioa', '6a · parte batek jarraitu'),
-            branch('luschka-zuloak', '6b · 2 albokoak'),
-            branch('magendie-zuloa', '6b · erdikoa'),
-            branch('eremu-azpiaraknoideoa', '7 · inguratu'),
-            leaf('Zain-sistema', '8 · xurgatu'),
-          ]),
-        ], { note: 'arteriolak · bentrikuluen sabaian' }),
-      ],
-    },
-    {
-      id: 'meningeak-19',
-      title: 'Meningeak: hiru mintz, bi jatorri',
-      lead: 'Meningeak 5.–8. astean garatzen dira: kanpoan dura materra, barnean araknoidea eta pia materra. Likido zefalorrakideoa meningeetan xurgatzen da.',
-      stage: 'garuneko-meningeak',
-      pitfalls: [
-        'Pia materra eta araknoidea gandor neuraletik (ektodermikoak); dura materra mesodermikoa.',
-        'Garunean dura hezurrari itsatsita: ez dago eremu epiduralik. Ornomuinean dura ez dago hezurrari lotuta: eremu epidurala.',
-        'Araknoidea eta pia ez daude lotuta: tartean eremu azpiaraknoideoa, likidoa.',
-      ],
-      roots: [
-        n('dura-materra', [
-          leaf('Garunean', 'hezurrari itsatsita', undefined, 'eremu epiduralik ez'),
-          leaf('Ornomuinean', 'hezurrari lotu gabe', [branch('eremu-epidurala', 'tartean')]),
-        ], { note: '1 · kanpokoa · mesodermikoa' }),
-        n('araknoidesa', [
-          branch('eremu-azpiaraknoideoa', 'piarekiko tartean', [
-            leaf('Zain-sistema', 'likidoa pasa eta xurgatu'),
-          ], 'likido zefalorrakideoa'),
-        ], { note: '2 · armiarma sarea · gandor neurala' }),
-        n('pia-materra', [leaf('Ehunari lotuta', 'garunean eta ornomuinean')], { note: '3 · barnekoa · gandor neurala' }),
-      ],
-    },
-    {
-      id: 'erraboila-19',
-      title: 'Mielentzefaloa: erraboila',
-      lead: 'Burmuinaren lehen atala mutur kaudaletik: burmuina eta ornomuina lotzen ditu; ornomuinaren antzekoa, lodiagoa eta zabalagoa.',
-      stage: 'erraboila',
-      pitfalls: [
-        'Hodi ependimarioak (zentralak) izen bera mantentzen du.',
-        'Piramideak bentralean (axoi motorrak beherantz); goranzko bideak dortsalean (sentsitiboak).',
-        'Zuntza = axoia.',
-      ],
-      roots: [
-        n('mielentzefaloa', [
-          branch('erraboila', 'eratorria', [
-            branch('hodi-ependimarioa', 'erdian', undefined, 'izen bera'),
-            branch('piramideak', 'bentralean', undefined, 'axoi motorrak beherantz'),
-            branch('goranzko-bideak', 'dortsalean', undefined, 'sentsitiboak'),
-          ], 'burmuina ↔ ornomuina'),
-        ]),
-      ],
-    },
-    {
-      id: 'metentzefaloa-19',
-      title: 'Metentzefaloa: IV. bentrikulua, zubia eta zerebeloa',
-      lead: 'Sabai plaka zabaldu eta hodia goitik irekitzen da: IV. bentrikulua. Zoruan zubia; sabaian ezpain erronboideak, fusionatu eta zerebeloa.',
-      stage: 'metentzefaloa',
-      pitfalls: [
-        'Sabai eta zoru plakak finak dira: hasieran axoiak bakarrik.',
-        'Irekitzean: eremu motorra bentralean eta erdian; sentikorrak dortsalean eta alboetan.',
-        'Hegal plakak kranealean bakarrik garatzen dira; zerebeloak IV. bentrikulu osoa estaltzen du.',
-      ],
-      roots: [
-        n('sabai-plaka', [
-          branch('laugarren-bentrikulua', 'zabaldu, hodia goitik ireki', [
-            branch('zubia', 'zoruan', undefined, 'axoi sentsitibo eta motorrak'),
-            branch('ezpain-erronboideak', 'sabaian: hegal plaken eremu dortsala loditu', [
-              branch('garuntxoa', 'erdian fusionatu', undefined, 'zerebelo hasikina → IV. bentrikulua estali'),
+          g('IV. bentrikulutik kanpora', [
+            branch('luschka-zuloak', '6 · alboko bi irekidura'),
+            branch('magendie-zuloa', '6 · erdiko irekidura'),
+            branch('eremu-azpiaraknoideoa', '7 · entzefaloa eta ornomuina inguratu'),
+            leaf('Araknoideko granulazioak', '8 · drainatze-bideetako bat', [
+              leaf('Dura materraren zain-sinuak', 'likidoa zain-sistemara igaro'),
             ]),
           ]),
-        ]),
-        n('hegal-plaka', [leaf('Eremu sentikorrak', 'alboratu', undefined, 'dortsalean eta alboetan')]),
-        n('oinalde-plaka', [leaf('Eremu motorra', 'bentralean geratu', undefined, 'erdian')]),
+          g('IV. bentrikuluaren jarraipen kaudala', [
+            branch('hodi-ependimarioa', 'ornomuinaren hodi zentralarekin jarraitu'),
+          ]),
+        ], { note: 'epitelio jariatzailea eta kapilarrak' }),
       ],
     },
     {
-      id: 'mesentzefaloa-19',
-      title: 'Mesentzefaloa: akueduktoa, pedunkuluak eta gai beltza',
-      lead: '6. astean hodi forma; 12. asterako zuloa estu eta gai zuri asko; 16. astean dortsalean sentikorrak, bentralean motorrak eta garun pedunkuluak.',
-      stage: 'mesentzefaloa',
+      id: 'puntzioa-epidurala-19',
+      title: 'Klinika: puntzio lunbarra eta anestesia epidurala',
+      lead: 'Bi prozedurak ornomuinaren konoaren (L1–L2) azpitik egiten dira, zaldi-buztanaren mailan, ornomuina ez lesionatzeko.',
+      stage: 'puntzioa-epidurala',
       pitfalls: [
-        'Akueduktoak III. eta IV. bentrikuluak lotzen ditu.',
-        'Gai beltza ez dago tindatuta: zelulek pigmentu beltza dute.',
-        'Parkinson: neurona dopaminergikoak hil → dopamina ez oinaldeko nukleoetara → mugimendu automatikoak geldirik daudenean.',
+        'Puntzio lunbarrean dura eta araknoidea zeharkatzen dira LZR lagina hartzeko (NSZko infekzioak detektatzeko); zaldi-buztaneko nerbioak apartatu egiten dira.',
+        'Anestesia epiduralean EZ da dura materra zeharkatzen: eremu epiduralean (hezurra eta dura materraren artean) ematen da.',
       ],
       roots: [
-        n('mesentzefaloa', [
-          branch('garun-akueduktoa', 'zuloa estutu', undefined, 'III. ↔ IV.'),
-          branch('garun-pedunkuluak', 'mutur bentralean', undefined, 'axoi guztiak gora eta behera'),
-          branch('gai-beltza', 'barruan', [
-            branch('oinaldeko-nukleoak', 'dopamina bidali', undefined, 'telentzefaloan'),
-          ], 'zelula dopaminergikoak'),
+        l('Puntzio lunbarra', [
+          branch('eremu-azpiaraknoideoa', 'dura eta araknoidea zeharkatu', [
+            branch('likido-zefalorrakideoa', 'lagina hartu'),
+          ], 'konoaren azpitik · zaldi-buztana'),
+        ]),
+        n('anestesia-epidurala', [
+          branch('eremu-epidurala', 'anestesikoa eman', undefined, 'dura materraren kanpoaldean'),
         ]),
       ],
     },
-    {
-      id: 'dientzefaloa-19',
-      title: 'Dientzefaloa eta hipofisia',
-      lead: 'Xixku telentzefalikoek dientzefaloa estaltzen dute; barruan III. bentrikulua eta sare koroideak. Hipofisiak bi jatorri ditu.',
-      stage: 'talamoa',
-      pitfalls: [
-        'Talamoa errelebo-zentroa da: DENA talamotik pasatzen da, usaimena izan ezik.',
-        'Adenohipofisia estomodeotik (hipofisi poltsa); neurohipofisia hipotalamotik (infundibulua).',
-        'Hipofisia: 3. astean hasi, 2. hilabetearen bukaeran eratuta.',
-      ],
-      roots: [
-        n('dientzefaloa', [
-          branch('epitalamoa', 'goian', [branch('guruin-pineala', 'barruan', undefined, 'melatonina: loaldi-esnaldia')]),
-          branch('talamoa', 'nagusia', undefined, 'errelebo-zentroa · usaimena ez'),
-          branch('hipotalamoa', 'behean', [
-            branch('hipofisi-infundibulua', 'beherantz hazi', [branch('neurohipofisia', 'eratu', undefined, 'hipotalamoko hormonak askatu')]),
-          ], 'hormonak'),
-        ]),
-        n('estomodeoa', [
-          branch('rathke-poltsa', 'sabaitik gorantz', [
-            branch('adenohipofisia', 'askatu', undefined, 'hormonak ekoitzi: somatotropina, prolaktina'),
-          ], 'hipofisi poltsa'),
-        ]),
-      ],
-    },
+
+    // ── 7. 12 BIKOTE KRANEALAK ──────────────────────────────────────────────
     {
       id: 'bikote-kranealak-19',
       title: '12 bikote kranealak, aurretik atzera',
-      lead: 'Burmuinetik ateratzen diren 12 bikoteak. IV.a da alde dortsaletik ateratzen den bakarra.',
+      lead: 'Hamabi nerbio-bikote kraneal daude. IV.a garun-enborraren alde dortsaletik ateratzen den bakarra da.',
       stage: 'bikote-kranealak',
       pitfalls: [
-        'I. eta II. ez dira ikusten (usaimen erraboila bakarrik); ikusmen nerbioa prestaketetan beti moztuta.',
-        'III., IV. eta VI.: begiaren mugimenduak.',
-        'X. bagoa: gorputz osoko nerbio parasinpatikorik handiena.',
-        'XI. osagarria: zati bat burmuinetik, bestea ornomuinetik.',
+        'I. bikoteko zuntzak usaimen-erraboilera iristen dira. II. bikoteak erretinako informazioa darama (preparatuetan moztuta ageri da).',
+        'III., IV. eta VI.: begiaren mugimenduak (III.ak begi-ninia uzkurtzeko zuntz parasinpatikoak ere baditu).',
+        'X. bagoa gorputz osoko nerbio parasinpatiko nagusia da (mistoa).',
+        'XI. nerbio osagarriaren sustrai espinalak lepoaldeko ornomuinetik datoz.',
       ],
       roots: [
         l('Bikote kranealak', [
           branch('usaimen-nerbioa', 'I', undefined, 'nerbio txiki asko · erraboilak'),
           branch('nerbio-optikoa', 'II', undefined, 'ikusmena'),
-          branch('nerbio-begi-eragilea', 'III', undefined, 'begiaren mugimendua'),
+          branch('nerbio-begi-eragilea', 'III', undefined, 'begiaren mugimendua eta ninia uzkurtzea'),
           branch('nerbio-troklearra', 'IV', undefined, 'begia · dortsaletik bakarra'),
-          branch('nerbio-trigeminoa', 'V', undefined, 'aurpegiaren sentsazioa · 3 adar'),
+          branch('nerbio-trigeminoa', 'V', undefined, 'aurpegiko sentsibilitatea eta murtxikatzea · 3 adar'),
           branch('nerbio-aldentzailea', 'VI', undefined, 'begiaren mugimendua'),
-          branch('aurpegi-nerbioa', 'VII', undefined, 'adierazpen muskuluak'),
+          branch('aurpegi-nerbioa', 'VII', undefined, 'aurpegiko mimika, dastamena eta guruinak'),
           branch('nerbio-estatoakustikoa', 'VIII', undefined, 'oreka eta entzumena'),
-          branch('nerbio-glosofaringeoa', 'IX', undefined, 'ahoaren atzea eta faringea'),
-          branch('nerbio-bagoa', 'X', undefined, 'parasinpatikorik handiena'),
-          branch('nerbio-osagarria', 'XI', undefined, 'lepoa eta burua'),
-          branch('nerbio-hipoglosoa', 'XII', undefined, 'mihia'),
+          branch('nerbio-glosofaringeoa', 'IX', undefined, 'mihiaren atzealdeko dastamena eta faringea'),
+          branch('nerbio-bagoa', 'X', undefined, 'nerbio mistoa · erraietako parasinpatikoa'),
+          branch('nerbio-osagarria', 'XI', undefined, 'esternokleidomastoideoa eta trapezioa'),
+          branch('nerbio-hipoglosoa', 'XII', undefined, 'mihiaren mugimendua'),
         ]),
       ],
     },
