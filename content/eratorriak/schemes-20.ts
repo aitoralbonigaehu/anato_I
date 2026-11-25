@@ -143,14 +143,21 @@ export const SCHEMES_20: MigrationTopic = {
       ],
       plainPitfalls: hipofisiPitfalls,
       roots: [
+        n('prosentzefaloa', undefined, [
+          n('dientzefaloa', 'bereizi', [
+            {
+              ...n('hipotalamoa', 'alde bentralean', [
+                n('hipofisi-infundibulua', 'neuroektodermoa beherantz luzatu', [
+                  n('neurohipofisia', 'bereizi'),
+                ]),
+              ], 'erregulazio endokrinoa · tenperatura, gosea eta egarria'),
+              plain: { note: 'erregulazio endokrinoa' },
+            },
+          ]),
+        ]),
         n('estomodeoa', undefined, [
           n('rathke-poltsa', 'aho-ektodermoa gorantz luzatu', [
             n('adenohipofisia', 'estomodeotik askatu eta bereizi'),
-          ]),
-        ]),
-        n('hipotalamoa', undefined, [
-          n('hipofisi-infundibulua', 'neuroektodermoa beherantz luzatu', [
-            n('neurohipofisia', 'bereizi'),
           ]),
         ]),
       ],

@@ -154,7 +154,7 @@ export const SCHEMES_16: MigrationTopic = {
         n('obarioaren-kortexa', [n('kortex-kordoiak', [
           l('Folikulu primordialak', undefined, { via: 'zelulek obozitoa inguratu' }),
         ], { via: 'bigarren belaunaldia eratu' })], { note: 'emeak: epitelioa loditu' }),
-        n('hasierako-hozi-zelulak', [n('obozito-primarioak', undefined, { via: 'oogonioak meiosian sartu' })]),
+        n('hasierako-hozi-zelulak', [n('obozito-primarioak', undefined, { via: 'oogonioak meiosian sartu' })], { note: 'epiblastoan zehazten dira' }),
       ],
     },
     {
@@ -181,7 +181,7 @@ export const SCHEMES_16: MigrationTopic = {
       roots: [
         n('hodi-paramesonefrikoa', [
           n('falopioren-tronpak', undefined, { via: 'emeak: atal kraneala', note: 'goian irekita' }),
-          n('utero-hodia', [n('uteroa', undefined, { via: 'paretak eta barrunbea garatu' }), n('baginaren-fornixa', undefined, { via: 'baginaren goiko zatia' })], { via: 'emeetan atal kaudalak batu' }),
+          n('utero-hodia', [n('uteroa', undefined, { via: 'paretak eta barrunbea garatu' }), n('baginaren-fornixa', undefined, { via: 'baginaren goiko zatia', note: 'mesodermikoa' })], { via: 'emeetan atal kaudalak batu' }),
           n('barrabil-apendizea', undefined, { via: 'arrak: aztarna' }),
           n('prostataren-utrikulua', undefined, { via: 'arrak: aztarna' }),
         ]),
@@ -192,7 +192,9 @@ export const SCHEMES_16: MigrationTopic = {
       title: 'Bagina: bi jatorri',
       stage: 'bagina',
       roots: [
-        n('utero-hodia', [n('baginaren-fornixa', undefined, { via: 'goiko zatia eratu', note: 'mesodermikoa' })]),
+        n('hodi-paramesonefrikoa', [
+          n('utero-hodia', [n('baginaren-fornixa', undefined, { via: 'baginaren goiko zatia', note: 'mesodermikoa' })], { via: 'emeetan atal kaudalak batu' }),
+        ]),
         n('sinu-urogenitala', [n('bulbo-sinubaginalak', [n('plaka-baginala', [n('bagina', undefined, { via: 'lumena ireki', note: 'beheko zatia · endodermikoa' })], { via: 'bulboak ugaldu eta elkartu' })], { via: 'bi kimu hazi' })]),
       ],
     },

@@ -329,10 +329,14 @@ export const SCHEMES_18: MigrationTopic = {
         'Tiroidearen atzealdean, irekita dagoen tokian, 4 paratiroide: 2 goian eta 2 behean.',
       ],
       roots: [
-        n('timoa', [l('Tiroidearen behekaldea, lepoan', undefined, { via: 'behera eta medialera jaitsi', move: true })], { note: '3. poltsa · bi aldeetan sortu, bakarra' }),
-        n('beheko-paratiroidea', [l('Tiroidearen atzean, behean', undefined, { via: 'timoarekin jaitsi', move: true })], { note: '3. poltsa' }),
-        n('goiko-paratiroidea', [l('Tiroidearen atzean, goian', undefined, { via: 'gutxi jaitsi', move: true })], { note: '4. poltsa' }),
-        n('gorputz-ultimobrankiala', [n('tiroide-guruina', undefined, { via: 'jaitsi eta barneratu', move: true, note: 'C zelulak' })], { note: '4. poltsa' }),
+        n('hirugarren-poltsa', [
+          n('beheko-paratiroidea', [l('Tiroidearen atzean, behean', undefined, { via: 'timoarekin jaitsi', move: true })], { via: 'alde dortsala', note: 'paratohormona', plain: { note: null } }),
+          n('timoa', [l('Tiroidearen behekaldea, lepoan', undefined, { via: 'behera eta medialera jaitsi', move: true })], { via: 'alde bentrala', note: 'immunitatea · pubertarotik endekatu' }),
+        ], { note: 'bi kimu, biak jaitsi' }),
+        n('laugarren-poltsa', [
+          n('goiko-paratiroidea', [l('Tiroidearen atzean, goian', undefined, { via: 'gutxi jaitsi', move: true })], { via: 'alde dortsala' }),
+          n('gorputz-ultimobrankiala', [n('tiroide-guruina', undefined, { via: 'jaitsi eta barneratu', move: true, note: 'C zelulak' })], { via: 'alde bentrala' }),
+        ], { note: 'bi kimu' }),
       ],
     },
     {
