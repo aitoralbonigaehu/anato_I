@@ -122,6 +122,12 @@ export interface UroOpts {
   /** The yolk sac and its stalk (0..1, topic 16's germ cells). */
   yolk?: number;
   dim?: { ids: readonly string[]; k: number } | null;
+  /**
+   * Where the mesonephric duct and the ureter end, when another model draws the cloaca and the bladder (the
+   * study room's whole-topic map places the pelvis model there): each side's opening point. Default: the
+   * wall model's own cloaca.
+   */
+  sink?: { wolff?: (s: number) => V3; ureter?: (s: number) => V3 };
   /** The wall's own colours (topic 16 draws all its grounds in one lighter tone); default `UC`'s. */
   tone?: { wall: string; wallDeep: string; cut: string; cutDeep: string };
 }
@@ -166,6 +172,8 @@ const WOLFF_X = 1.1;
 
 /** The mesonephric duct of one side: down the ridge's lateral edge, then medially into the cloaca. */
 export const wolffLine = (s: number) => L([X(s, [WOLFF_X, 2.25, -0.42]), X(s, [WOLFF_X, 0.0, -0.4]), X(s, [WOLFF_X, -2.8, -0.38]), X(s, [0.92, -3.85, -0.12]), X(s, [0.42, -4.55, 0.15])], 40);
+/** The same duct ending at a given opening (the study room's map, where the pelvis model draws the cloaca). */
+const wolffTo = (s: number, end: V3) => L([X(s, [WOLFF_X, 2.25, -0.42]), X(s, [WOLFF_X, 0.0, -0.4]), X(s, [WOLFF_X, -2.8, -0.38]), X(s, [0.92, -3.85, -0.12]), end], 40);
 /** The ascent's stages at which the kidney takes a new artery (the first from the common iliac). */
 const RENAL_LEVELS = [0, 0.45, 1];
 /** The kidney's centre during the ascent. */
@@ -336,7 +344,7 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
   }
   if (pose.wolff > 0.01)
     for (const s of [-1, 1]) {
-      const line = wolffLine(s);
+      const line = o.sink?.wolff ? wolffTo(s, o.sink.wolff(s)) : wolffLine(s);
       // Growing caudally to the cloaca: its tip leads, a little swollen, and it widens where it opens into the cloaca.
       vess(`wolff${s}`, 'hodi-mesonefrikoa', line, UC.wolff, { r0: 0.068, r1: 0.06, bulb: 0.4 * (1 - ss(0.9, 1, pose.wolff)), bulbLen: 0.25, cup: 0.5 * ss(0.95, 1, pose.wolff), cupLen: 0.25, sides: 12, n: 40 }, pose.wolff, 1, { deep: UC.wolffDeep });
       // Named high on its course, between two tubules (lower down it met the metanephros' name and blastema).
@@ -365,7 +373,7 @@ export function uroModel(pose: UroPose, o: UroOpts = {}): UroModel {
     if (pose.bud > 0.01) {
       // Before the kidney: the bud from the duct up into the blastema. After: the ureter from the hilum down to the bladder.
       const hilum = add(K, X(s, [-0.28, -0.05, 0.08]));
-      const end = mix3(root, X(s, [0.32, -4.15, 0.32]), bl);
+      const end = o.sink?.ureter ? o.sink.ureter(s) : mix3(root, X(s, [0.32, -4.15, 0.32]), bl);
       const budLine = L([root, X(s, [0.9, -3.75, -0.5]), add(kidneyAt(s, 0), X(s, [-0.05, -0.1, 0.05]))], 12);
       const ureter = L([hilum, add(mix3(hilum, end, 0.5), X(s, [0.05, 0, -0.1])), end], 20);
       const id = kid < 0.5 ? 'ureter-kimua' : 'ureterra';

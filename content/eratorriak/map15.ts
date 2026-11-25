@@ -1,0 +1,440 @@
+/**
+ * Topic 15's whole-topic map (Ikasgela 15, "Mapa osoa"): every structure of the notes as a node and the
+ * relations between them as typed links, so a student can walk the topic as one web: where each piece comes
+ * from, what it gives, what sprouts out of it, where it empties, what lies beside it, what replaces it.
+ * Every link is said in the notes (content/notes-text/w15.ts; section in `sec`); the notes' prose wins.
+ *
+ * The 3D map (components/scenes/week15/map-model.ts) draws the structures at the size of the whole system;
+ * what is too small for it (the calyces, a nephron's parts, the suprarenal's layers) lights its container
+ * (`in3d`) and links to the simulator's close-up (`stage`).
+ */
+
+export type Layer = 'meso' | 'endo' | 'ekto' | 'neural';
+
+export const LAYER_NAME: Record<Layer, string> = {
+  meso: 'Mesodermoa (bitartekoa)',
+  endo: 'Endodermoa',
+  ekto: 'Ektodermoa',
+  neural: 'Gandor neurala (ektodermoa)',
+};
+
+export interface MapNode {
+  id: string;
+  /** Notes section (1.1 … 2.4). */
+  sec: string;
+  layer: Layer;
+  /** First and last moment of the map (MAP_MOMENTS index) at which it is drawn (or its container is). */
+  at: number;
+  until?: number;
+  /** Drawn in the 3D map as itself (omit) or lit through its container. */
+  in3d?: string;
+  /** The simulator stage that shows it close (/astea/15?etapa=…). */
+  stage?: string;
+  /** One line: what it is, in the notes' words. */
+  what: string;
+  /** A notes trap. */
+  kontuz?: string;
+}
+
+/**
+ * ematen: a gives / becomes b · kimua: b sprouts (branches) out of a · isuri: a empties / opens into b ·
+ * ondoan: a lies against b (both ways) · ordez: a is followed (replaced) by b · zatia: a is a part of b.
+ */
+export type LinkKind = 'ematen' | 'kimua' | 'isuri' | 'ondoan' | 'ordez' | 'zatia';
+
+export interface MapLink {
+  a: string;
+  kind: LinkKind;
+  b: string;
+  /** Optional precision (when, in whom, how). */
+  say?: string;
+}
+
+/** How a link reads from each end (the panel's group titles). */
+export const LINK_READ: Record<LinkKind, { out: string; in: string }> = {
+  ematen: { out: 'Zer ematen du', in: 'Nondik dator' },
+  kimua: { out: 'Hemendik ateratzen da', in: 'Nondik ateratzen da' },
+  isuri: { out: 'Nora isurtzen du', in: 'Zer isurtzen da hemen' },
+  ondoan: { out: 'Ondoan', in: 'Ondoan' },
+  ordez: { out: 'Ondoren', in: 'Aurretik' },
+  zatia: { out: 'Zeren zatia', in: 'Zatiak' },
+};
+
+export const MAP15_NODES: MapNode[] = [
+  // ———— 1. Gernu sistema ————
+  { id: 'bitarteko-mesodermoa', sec: '1', layer: 'meso', at: 0, what: 'Gernu sistema osoaren jatorria: hiru azpisistemak hemendik (atzeko paretan, 4. astean).' },
+  { id: 'nefrotomak', sec: '1.1', layer: 'meso', at: 0, until: 0, stage: 'nefrotomak', what: 'Pronefrosaren unitateak: 7–10 bikote lepo mailan; zelula metaketa → xixku.' },
+  { id: 'pronefrosa', sec: '1.1', layer: 'meso', at: 0, until: 0, stage: 'pronefrosa', what: 'Lehena eta primitiboena: lepo mailan, 4. astean sortu eta endekatu. Ez da funtzionala.' },
+  { id: 'hodixka-pronefrikoak', sec: '1.1', layer: 'meso', at: 0, until: 0, stage: 'nefrotomak', what: 'Xixkua luzatuta: mutur laterala zabaldu, mediala zelomara irekita. Zuzenak.' },
+  { id: 'hodi-pronefrikoa', sec: '1.1', layer: 'meso', at: 0, until: 0, stage: 'nefrotomak', what: 'Luzetarako hodia: hodixken alboko zabalguneak batuta, maila desberdinetako nefrotomak lotzen ditu.' },
+  { id: 'aorta-dortsalak', sec: '1.1', layer: 'meso', at: 0, what: 'Haren adarretatik glomeruluak (pronefrosa eta mesonefrosa).' },
+  { id: 'glomeruluak', sec: '1.1', layer: 'meso', at: 1, until: 3, in3d: 'mesonefrosa', stage: 'glomeruluak', what: 'Arteriola-ovilloak aortaren adarren muturretan; kanpokoak (zelomara) eta barnekoak (hodixkara).' },
+  {
+    id: 'korpuskulua',
+    sec: '1.1',
+    layer: 'meso',
+    at: 1,
+    until: 3,
+    in3d: 'mesonefrosa',
+    stage: 'glomeruluak',
+    what: 'Glomerulua + kapsula (txanoa): hasierako iraitz unitatea.',
+    kontuz: 'Glomerulua eta hodixka ez dira fusionatzen ez lotzen: kontaktuan jartzen dira, hodixkak txanoa eginez.',
+  },
+  { id: 'kapsula-glomerularra', sec: '1.2', layer: 'meso', at: 1, until: 3, in3d: 'mesonefrosa', stage: 'glomeruluak', what: 'Bowman kapsula: hodixkaren mutur medialak glomerulua inguratzen du (txano forma).' },
+  {
+    id: 'mesonefrosa',
+    sec: '1.2',
+    layer: 'meso',
+    at: 1,
+    until: 4,
+    stage: 'mesonefrosa',
+    what: 'Bigarrena: alde torazikotik lunbarrera, gandor urogenitalean; 4. astean sortu eta ia endekatu (ez guztiz).',
+    kontuz: 'Apunteek biak diote: "ez da funtzionala" eta, korpuskuluetan iraizpena dela eta, "mesonefrosa funtzionala da".',
+  },
+  { id: 'kordoi-nefrogenoa', sec: '1.2', layer: 'meso', at: 1, until: 1, in3d: 'mesonefrosa', stage: 'mesonefrosa', what: 'Bi gandor trinko (ezker, eskuin) atzeko paretan, goitik behera: gero gandor urogenitalak.' },
+  { id: 'gandor-urogenitala', sec: '1.2', layer: 'meso', at: 1, until: 3, in3d: 'mesonefrosa', stage: 'mesonefrosa', what: 'Kordoi nefrogenoa, gernu eta osagai genitalak eratu ondoren; bitan banatzen da.' },
+  { id: 'gernu-gandorra', sec: '1.2', layer: 'meso', at: 1, until: 3, in3d: 'mesonefrosa', stage: 'mesonefrosa', what: 'Gandor urogenitalaren alboko aldea: gernu osagaiak (hemen mesonefrosa).' },
+  { id: 'gonada-gandorra', sec: '1.2', layer: 'meso', at: 1, stage: 'mesonefrosa', what: 'Gandor urogenitalaren erdialdea: osagai genitalak (gonadak; 16. gaia).' },
+  { id: 'xixku-mesonefrikoa', sec: '1.2', layer: 'meso', at: 1, until: 3, in3d: 'mesonefrosa', stage: 'mesonefros-hodixkak', what: 'Gernu gandorraren zelula metaketa hustuta (bakuolizatuta).' },
+  { id: 'hodixka-mesonefrikoak', sec: '1.2', layer: 'meso', at: 1, until: 4, stage: 'mesonefros-hodixkak', what: 'Xixkua "S" forman luzatuta: laterala Wolff hodian ireki, mediala glomerulurantz. Bihurrituak.' },
+  {
+    id: 'hodi-mesonefrikoa',
+    sec: '1.2',
+    layer: 'meso',
+    at: 1,
+    stage: 'mesonefrosa',
+    what: 'Wolff hodia: gandorraren barruan goitik behera, hodi biltzailea; kloakan amaitzen da.',
+    kontuz: 'Pronefrosean hodia hodixken atzean eratzen da; mesonefrosean, gandorraren barruan.',
+  },
+  { id: 'metanefrosa', sec: '1.3', layer: 'meso', at: 2, stage: 'metanefrosa', what: 'Hirugarrena eta garatuena: alde sakroan, 28–29. egunean; behin betiko giltzurruna. Bi jatorri.' },
+  {
+    id: 'ureter-kimua',
+    sec: '1.3',
+    layer: 'meso',
+    at: 2,
+    until: 2,
+    stage: 'metanefrosa',
+    what: 'Hodi mesonefrikoaren mutur kaudaletik ateratzen den adarra; atzeko paretako mesenkiman sartzen da.',
+    kontuz: 'Ez da kloakatik ateratzen: hodi mesonefrikotik. Hasieran hodi mesonefrikoaren bidez irekitzen da kloakan.',
+  },
+  { id: 'blastema-metanefrikoa', sec: '1.3', layer: 'meso', at: 2, until: 2, stage: 'metanefrosa', what: 'Mesenkima trinkoa ureter kimuaren mailan: sistema iraizlearen hasikina.' },
+  { id: 'metanefros-hasikina', sec: '1.3', layer: 'meso', at: 2, until: 2, in3d: 'ureter-kimua', stage: 'sistema-biltzailea', what: 'Ureter kimuaren muturra zabalduta (inbutu forma).' },
+  { id: 'giltzurrun-pelbisa', sec: '1.3', layer: 'meso', at: 3, in3d: 'giltzurruna', stage: 'sistema-biltzailea', what: 'Inbutu nagusia; hemendik adarkatzen da sistema biltzailea. Blastematik kanpo geratzen den bakarra.' },
+  { id: 'kaliza-nagusiak', sec: '1.3', layer: 'meso', at: 3, in3d: 'giltzurruna', stage: 'sistema-biltzailea', what: 'Pelbisaren lehen adarrak: 2–3, kopa formakoak.' },
+  { id: 'kaliza-txikiak', sec: '1.3', layer: 'meso', at: 3, in3d: 'giltzurruna', stage: 'sistema-biltzailea', what: 'Kaliza nagusien adarrak; 7. asterako.' },
+  { id: 'hodi-biltzaileak', sec: '1.3', layer: 'meso', at: 3, in3d: 'giltzurruna', stage: 'sistema-biltzailea', what: 'Kaliza txikien adar luze eta finak; 9–10. asterako. Hainbat nefronaren gernua biltzen dute.' },
+  { id: 'kapsula-metanefrikoa', sec: '1.3', layer: 'meso', at: 3, until: 3, in3d: 'giltzurruna', stage: 'nefrona', what: 'Hodi biltzaileen adar muturren inguruko txano itxurako metaketa (blastematik).' },
+  { id: 'xixku-metanefrikoa', sec: '1.3', layer: 'meso', at: 3, until: 3, in3d: 'giltzurruna', stage: 'nefrona', what: 'Kapsula bakuolizatuta; luzatu eta hodi bihurtzen da (bi mutur).' },
+  { id: 'nefrona', sec: '1.3', layer: 'meso', at: 3, in3d: 'giltzurruna', stage: 'nefrona', what: 'Unitate funtzionala (blastematik): odola filtratu, gernua 12.–14. astetik.' },
+  { id: 'hodixka-bihurgunetsu-proximala', sec: '1.3', layer: 'meso', at: 3, in3d: 'giltzurruna', stage: 'nefrona', what: 'Kapsulatik hurbilena, glomeruluarekin kontaktuan.' },
+  { id: 'henle-lakioa', sec: '1.3', layer: 'meso', at: 3, in3d: 'giltzurruna', stage: 'nefrona', what: 'Tarteko atal zuzena ("U" forma).' },
+  { id: 'hodixka-bihurgunetsu-distala', sec: '1.3', layer: 'meso', at: 3, in3d: 'giltzurruna', stage: 'nefrona', what: 'Atal bihurria, hodi biltzailearekin kontaktuan.' },
+  { id: 'giltzurrun-arteriak', sec: '1.3', layer: 'meso', at: 4, in3d: 'giltzurruna', stage: 'nefrona', what: 'Metanefrosaren glomeruluak hauetatik (ez aortatik zuzenean).' },
+
+  // ———— 2. Giltzurrunak ————
+  {
+    id: 'giltzurruna',
+    sec: '2',
+    layer: 'meso',
+    at: 3,
+    stage: 'giltzurrun-igoera',
+    what: 'Alde sakroan sortu, kloakatik gertu; helduan alde lunbarrean. Gernua 12. astetik; nefrogenesia 35. astean amaitu.',
+    kontuz: 'Ez dira berez mugitzen (mugimendu pasiboa): enbrioia zuzentzean eta alde lunbarra haztean arrastatuta igotzen dira.',
+  },
+  { id: 'ureterra', sec: '2.3', layer: 'meso', at: 3, stage: 'giltzurrun-igoera', what: 'Ureter kimutik: giltzurrunetik maskurira. Giltzurruna igo ahala luzatzen da.' },
+  { id: 'gonadak', sec: '2', layer: 'meso', at: 4, stage: 'giltzurrun-igoera', what: 'Mesonefrosaren parean eratu, gero jaitsi (giltzurrunen kontrako norabidean).' },
+  {
+    id: 'giltzurrun-gaineko-guruinak',
+    sec: '2.1',
+    layer: 'meso',
+    at: 3,
+    stage: 'giltzurrun-gaineko-guruinak',
+    what: '6. astetik; bi jatorri: kortexa mesodermotik, muina gandor neuraletik. Jaio ondoren ere garatzen.',
+    kontuz: 'Ez dira mugitzen: garatzen diren tokian geratzen dira (giltzurruna da haiengana igotzen dena).',
+  },
+  { id: 'fetu-kortexa', sec: '2.1', layer: 'meso', at: 3, in3d: 'giltzurrun-gaineko-guruinak', stage: 'giltzurrun-gaineko-guruinak', what: 'Lehena: gandor urogenitaleko zelulak bereizi eta multzotuta. Lehen urtean desagertzen da.' },
+  { id: 'giltzurrun-gaineko-muina', sec: '2.1', layer: 'neural', at: 3, in3d: 'giltzurrun-gaineko-guruinak', stage: 'giltzurrun-gaineko-guruinak', what: 'Gandor neuraleko zelulak (maila bereko gongoiletatik) kortexaren alde medialera.' },
+  { id: 'gandor-neurala', sec: '2.1', layer: 'neural', at: 3, in3d: 'giltzurrun-gaineko-guruinak', stage: 'giltzurrun-gaineko-guruinak', what: 'Guruinen mailako gongoiletako zelulak: muina ematen dute.' },
+  { id: 'behin-betiko-kortexa', sec: '2.1', layer: 'meso', at: 3, in3d: 'giltzurrun-gaineko-guruinak', stage: 'giltzurrun-gaineko-guruinak', what: 'Muina barneratzean bereizten den geruza berria.' },
+
+  // ———— 2.2 Sinu urogenitala ————
+  { id: 'atzeko-hestea', sec: '2.2', layer: 'endo', at: 0, what: 'Digestio hodiaren azken zatia: kloakan amaitzen da.' },
+  { id: 'kloaka', sec: '2.2', layer: 'endo', at: 0, until: 2, stage: 'sinu-urogenitala', what: 'Barrunbe bakarra digestio hodiaren muturrean, kloaka mintzarekin.' },
+  { id: 'kloaka-mintza', sec: '2.2', layer: 'endo', at: 0, until: 2, stage: 'sinu-urogenitala', what: 'Kloaka ixten duen mintz bakarra (jatorri endodermikoa).' },
+  { id: 'trenkada-uroerrektala', sec: '2.2', layer: 'meso', at: 1, stage: 'sinu-urogenitala', what: 'Behera hazten den mesodermo tolesa: kloaka banatzen du (4.–7. asteak).' },
+  { id: 'sinu-urogenitala', sec: '2.2', layer: 'endo', at: 3, stage: 'sinu-urogenitala', what: 'Kloakaren aurrealdea: hiru atal (maskuria, atal pelbianoa, falo atala). Atzeko hestetik.' },
+  { id: 'uzki-hodia', sec: '2.2', layer: 'endo', at: 3, stage: 'sinu-urogenitala', what: 'Kloakaren atzealdea (ondestea eta uzki hodia), uzki mintzarekin.' },
+  { id: 'mintz-urogenitala', sec: '2.2', layer: 'endo', at: 3, until: 3, stage: 'sinu-urogenitala', what: 'Kloaka mintzaren aurreko zatia: sinua ixten du.' },
+  { id: 'uzki-mintza', sec: '2.2', layer: 'endo', at: 3, until: 3, stage: 'sinu-urogenitala', what: 'Kloaka mintzaren atzeko zatia.' },
+  { id: 'perineoa', sec: '2.2', layer: 'meso', at: 3, stage: 'sinu-urogenitala', what: 'Eremu muskularra sinuaren eta uzkiaren artean: trenkadaren muturra.' },
+  { id: 'alantoidea', sec: '2.2', layer: 'endo', at: 0, until: 3, stage: 'sinu-urogenitala', what: 'Kloakatik zilborrera doan hodia; barrunbea du hasieran.' },
+  { id: 'urakoa', sec: '2.2', layer: 'endo', at: 4, until: 4, stage: 'gernu-maskuria', what: 'Alantoidearen barrunbea itxita: kordoi fibrotikoa maskuriaren erpinetik zilborrera.' },
+  { id: 'erdiko-zilbor-lotailua', sec: '2.3', layer: 'endo', at: 5, stage: 'gernu-maskuria', what: 'Urakoaren hondar fibrotikoa helduan: maskuria eusten du (aurreko hormatik zilborreraino).' },
+  { id: 'fistula-urakala', sec: '2.2', layer: 'endo', at: 4, in3d: 'urakoa', stage: 'gernu-maskuria', what: 'Urakoa guztiz ixten ez bada barrunbeak geratzen dira: arazoak jaioberrietan.' },
+  { id: 'atal-pelbianoa', sec: '2.2', layer: 'endo', at: 3, until: 3, stage: 'sinu-urogenitala', what: 'Maskuriaren ondoren hodia estutzen den atala: hortik uretra.' },
+  { id: 'behin-betiko-sinu-urogenitala', sec: '2.2', layer: 'endo', at: 3, until: 3, stage: 'sinu-urogenitala', what: 'Egitura zapala kanporatzeko zuloan (falo atala).' },
+
+  // ———— 2.3 Gernu maskuria ————
+  {
+    id: 'gernu-maskuria',
+    sec: '2.3',
+    layer: 'endo',
+    at: 3,
+    stage: 'gernu-maskuria',
+    what: 'Sinuaren lehen zabalgunea (hurbilena, zabalena). Epitelioa endodermikoa, trigonoa izan ezik.',
+  },
+  {
+    id: 'trigonoa',
+    sec: '2.3',
+    layer: 'meso',
+    at: 4,
+    stage: 'gernu-maskuria',
+    what: 'Maskuriaren atzeko paretako hirukia: ureterra gora eta Wolff hodia behera banantzean sortua. Ureter zuloak goiko izkinetan.',
+    kontuz: 'Mesodermikoa hasieran (hodi mesonefrikotik); gero endodermoak estaltzen du: helduan epitelio osoa endodermikoa, hiruki aztarna barrutik ikusten da.',
+  },
+
+  // ———— 2.4 Uretra ————
+  { id: 'uretra', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Atal pelbianotik. Emakumean laburra (4 cm), gizonean luzea (hiru atal).' },
+  { id: 'uretra-prostatikoa', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Gizona: maskuriaren azpian, prostata inguruan.' },
+  { id: 'mintzezko-uretra', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Emakumean atal pelbianotik; gizonean prostatikoaren ondoren.' },
+  { id: 'zakil-uretra', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Zakil osoan zehar, luzeena; ildo koronarioraino iristen da (ez muturreraino).' },
+  { id: 'prostata', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Uretraren ebaginazioak 3. hilabetearen bukaeran; sistema genitaleko guruinik handiena.' },
+  { id: 'uretra-guruinak', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Emakumea: guruin uretralak eta parauretralak, ebaginazioetatik (3. hilabetea).' },
+  { id: 'baginaren-bestibulua', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Emakumea: behin betiko sinutik; uretra eta bagina bertan irekitzen dira.' },
+  { id: 'zakila', sec: '2.4', layer: 'ekto', at: 4, stage: 'uretra', what: 'Gizona: falo atala hazi eta luzatuta; uretra barrutik.' },
+  { id: 'ildo-koronarioa', sec: '2.4', layer: 'ekto', at: 4, stage: 'zakil-uretra', what: 'Zakilaren gorputzaren eta glandearen arteko ildo zirkularra.' },
+  { id: 'glandea', sec: '2.4', layer: 'ekto', at: 4, stage: 'zakil-uretra', what: 'Ildo koronarioaren aurreko atal zabala.' },
+  { id: 'kordoi-ektodermikoa', sec: '2.4', layer: 'ekto', at: 4, until: 4, stage: 'zakil-uretra', what: 'Glandearen muturrean azaleko ektodermotik barrurantz sartzen den kordoia, uretrarekin kontaktuan.' },
+  {
+    id: 'hobi-nabikularra',
+    sec: '2.4',
+    layer: 'ekto',
+    at: 5,
+    stage: 'zakil-uretra',
+    what: 'Kordoi ektodermikoa hustuta (kanalizatuta) sortzen den hodiaren zabalgunea; uretra bertara isurtzen da.',
+    kontuz: 'Ektodermotik (glandeko kordoia), ez alantoidetik: alantoidea → urakoa, maskuriaren goiko muturrean, zilborrera.',
+  },
+  { id: 'kanpoko-uretra-zuloa', sec: '2.4', layer: 'ekto', at: 5, stage: 'zakil-uretra', what: 'Gizona: kordoiaren muturrean, hobi nabikularrean. Emakumea: baginaren bestibuluan.' },
+  {
+    id: 'prepuzioa',
+    sec: '2.4',
+    layer: 'ekto',
+    at: 5,
+    stage: 'zakil-uretra',
+    what: 'Glandea inguratzen duen larruazal ektodermikoko alboko trenkadak, xixku bihurtu eta irekita: glandea babesten du.',
+    kontuz: 'Glandearen inguruko alboko trenkadak = prepuzioa. Trigonoa beste muturrean dago: maskuriaren atzeko paretan.',
+  },
+  { id: 'azaleko-ektodermoa', sec: '2.4', layer: 'ekto', at: 4, in3d: 'glandea', what: 'Glandearen larruazala: hemendik kordoi ektodermikoa eta prepuzioaren trenkadak.' },
+];
+
+export const MAP15_LINKS: MapLink[] = [
+  // Three systems, one after another (cranial → caudal), all from the intermediate mesoderm.
+  { a: 'bitarteko-mesodermoa', kind: 'ematen', b: 'nefrotomak' },
+  { a: 'bitarteko-mesodermoa', kind: 'ematen', b: 'kordoi-nefrogenoa' },
+  { a: 'bitarteko-mesodermoa', kind: 'ematen', b: 'blastema-metanefrikoa', say: 'alde sakroko mesenkima' },
+  { a: 'pronefrosa', kind: 'ordez', b: 'mesonefrosa', say: 'bata garatu ahala aurrekoa endekatzen (kranealetik kaudalera)' },
+  { a: 'mesonefrosa', kind: 'ordez', b: 'metanefrosa' },
+  // Pronephros.
+  { a: 'nefrotomak', kind: 'zatia', b: 'pronefrosa' },
+  { a: 'nefrotomak', kind: 'ematen', b: 'hodixka-pronefrikoak', say: 'xixkua luzatuta' },
+  { a: 'hodixka-pronefrikoak', kind: 'ematen', b: 'hodi-pronefrikoa', say: 'mutur lateralak batuta' },
+  { a: 'hodixka-pronefrikoak', kind: 'zatia', b: 'pronefrosa' },
+  { a: 'hodi-pronefrikoa', kind: 'zatia', b: 'pronefrosa' },
+  { a: 'aorta-dortsalak', kind: 'kimua', b: 'glomeruluak', say: 'adarren muturretan' },
+  { a: 'glomeruluak', kind: 'zatia', b: 'korpuskulua' },
+  { a: 'kapsula-glomerularra', kind: 'zatia', b: 'korpuskulua' },
+  { a: 'glomeruluak', kind: 'ondoan', b: 'kapsula-glomerularra', say: 'kontaktuan, ez fusionatuta' },
+  // Mesonephros.
+  { a: 'kordoi-nefrogenoa', kind: 'ematen', b: 'gandor-urogenitala' },
+  { a: 'gandor-urogenitala', kind: 'ematen', b: 'gernu-gandorra', say: 'alboko aldea' },
+  { a: 'gandor-urogenitala', kind: 'ematen', b: 'gonada-gandorra', say: 'erdialdea' },
+  { a: 'gernu-gandorra', kind: 'ematen', b: 'mesonefrosa' },
+  { a: 'gernu-gandorra', kind: 'ematen', b: 'xixku-mesonefrikoa' },
+  { a: 'xixku-mesonefrikoa', kind: 'ematen', b: 'hodixka-mesonefrikoak', say: '"S" forman luzatuta' },
+  { a: 'hodixka-mesonefrikoak', kind: 'isuri', b: 'hodi-mesonefrikoa', say: 'mutur laterala' },
+  { a: 'hodixka-mesonefrikoak', kind: 'ematen', b: 'kapsula-glomerularra', say: 'mutur mediala, glomerulua inguratuz' },
+  { a: 'hodixka-mesonefrikoak', kind: 'zatia', b: 'mesonefrosa' },
+  { a: 'hodi-mesonefrikoa', kind: 'zatia', b: 'mesonefrosa' },
+  { a: 'korpuskulua', kind: 'zatia', b: 'mesonefrosa' },
+  { a: 'hodi-mesonefrikoa', kind: 'isuri', b: 'kloaka', say: 'hasieran' },
+  { a: 'gonada-gandorra', kind: 'ematen', b: 'gonadak' },
+  { a: 'gonadak', kind: 'ondoan', b: 'mesonefrosa', say: 'haren parean eratzen dira' },
+  // Metanephros: two origins.
+  { a: 'hodi-mesonefrikoa', kind: 'kimua', b: 'ureter-kimua', say: 'mutur kaudaletik' },
+  { a: 'ureter-kimua', kind: 'zatia', b: 'metanefrosa' },
+  { a: 'blastema-metanefrikoa', kind: 'zatia', b: 'metanefrosa' },
+  { a: 'ureter-kimua', kind: 'ondoan', b: 'blastema-metanefrikoa', say: 'kimua blasteman sartzen da' },
+  { a: 'metanefrosa', kind: 'ematen', b: 'giltzurruna', say: 'behin betiko giltzurruna' },
+  // Collecting system (from the bud).
+  { a: 'ureter-kimua', kind: 'ematen', b: 'ureterra' },
+  { a: 'ureter-kimua', kind: 'ematen', b: 'metanefros-hasikina', say: 'muturra zabalduta' },
+  { a: 'metanefros-hasikina', kind: 'ematen', b: 'giltzurrun-pelbisa', say: 'inbutu forma' },
+  { a: 'giltzurrun-pelbisa', kind: 'kimua', b: 'kaliza-nagusiak' },
+  { a: 'kaliza-nagusiak', kind: 'kimua', b: 'kaliza-txikiak' },
+  { a: 'kaliza-txikiak', kind: 'kimua', b: 'hodi-biltzaileak' },
+  // Excretory system (from the blastema).
+  { a: 'blastema-metanefrikoa', kind: 'ematen', b: 'kapsula-metanefrikoa' },
+  { a: 'hodi-biltzaileak', kind: 'ondoan', b: 'kapsula-metanefrikoa', say: 'adar muturren inguruan, txano itxuran' },
+  { a: 'kapsula-metanefrikoa', kind: 'ematen', b: 'xixku-metanefrikoa', say: 'bakuolizatuta' },
+  { a: 'xixku-metanefrikoa', kind: 'ematen', b: 'nefrona' },
+  { a: 'hodixka-bihurgunetsu-proximala', kind: 'zatia', b: 'nefrona' },
+  { a: 'henle-lakioa', kind: 'zatia', b: 'nefrona' },
+  { a: 'hodixka-bihurgunetsu-distala', kind: 'zatia', b: 'nefrona' },
+  { a: 'giltzurrun-arteriak', kind: 'kimua', b: 'glomeruluak', say: 'metanefrosan (aortaren adarrak)' },
+  { a: 'nefrona', kind: 'zatia', b: 'giltzurruna' },
+  { a: 'hodi-biltzaileak', kind: 'zatia', b: 'giltzurruna' },
+  // The urine's way out.
+  { a: 'nefrona', kind: 'isuri', b: 'hodi-biltzaileak', say: 'mutur mediala hodi biltzailearen adarrarekin fusionatuta' },
+  { a: 'hodi-biltzaileak', kind: 'isuri', b: 'kaliza-txikiak' },
+  { a: 'kaliza-txikiak', kind: 'isuri', b: 'kaliza-nagusiak' },
+  { a: 'kaliza-nagusiak', kind: 'isuri', b: 'giltzurrun-pelbisa' },
+  { a: 'giltzurrun-pelbisa', kind: 'isuri', b: 'ureterra' },
+  { a: 'ureterra', kind: 'isuri', b: 'gernu-maskuria', say: 'atzeko hormara, trigonoaren goiko izkinetan' },
+  { a: 'gernu-maskuria', kind: 'isuri', b: 'uretra' },
+  { a: 'zakil-uretra', kind: 'isuri', b: 'hobi-nabikularra', say: 'gizona' },
+  { a: 'hobi-nabikularra', kind: 'isuri', b: 'kanpoko-uretra-zuloa' },
+  { a: 'uretra', kind: 'isuri', b: 'baginaren-bestibulua', say: 'emakumea: kanpoko zuloa bertan' },
+  // Kidneys and suprarenals.
+  { a: 'giltzurruna', kind: 'ondoan', b: 'giltzurrun-gaineko-guruinak', say: 'giltzurruna igotzen da; guruinak geratu' },
+  { a: 'gandor-urogenitala', kind: 'ematen', b: 'fetu-kortexa', say: 'zelulak bereizi eta multzotuta' },
+  { a: 'gandor-neurala', kind: 'ematen', b: 'giltzurrun-gaineko-muina' },
+  { a: 'fetu-kortexa', kind: 'zatia', b: 'giltzurrun-gaineko-guruinak' },
+  { a: 'giltzurrun-gaineko-muina', kind: 'zatia', b: 'giltzurrun-gaineko-guruinak' },
+  { a: 'behin-betiko-kortexa', kind: 'zatia', b: 'giltzurrun-gaineko-guruinak' },
+  { a: 'fetu-kortexa', kind: 'ordez', b: 'behin-betiko-kortexa', say: 'fetu-kortexa lehen urtean desagertzen da' },
+  // The cloaca divided.
+  { a: 'atzeko-hestea', kind: 'isuri', b: 'kloaka' },
+  { a: 'kloaka', kind: 'ematen', b: 'sinu-urogenitala', say: 'aurrealdea' },
+  { a: 'kloaka', kind: 'ematen', b: 'uzki-hodia', say: 'atzealdea (ondestea)' },
+  { a: 'trenkada-uroerrektala', kind: 'ondoan', b: 'kloaka', say: 'behera hazi eta banatzen du (4.–7. asteak)' },
+  { a: 'trenkada-uroerrektala', kind: 'ematen', b: 'perineoa', say: 'haren muturra' },
+  { a: 'kloaka-mintza', kind: 'ematen', b: 'mintz-urogenitala', say: 'aurrean' },
+  { a: 'kloaka-mintza', kind: 'ematen', b: 'uzki-mintza', say: 'atzean' },
+  { a: 'perineoa', kind: 'ondoan', b: 'uzki-hodia' },
+  { a: 'perineoa', kind: 'ondoan', b: 'behin-betiko-sinu-urogenitala' },
+  { a: 'gernu-maskuria', kind: 'zatia', b: 'sinu-urogenitala', say: 'lehen zabalgunea (zabalena)' },
+  { a: 'atal-pelbianoa', kind: 'zatia', b: 'sinu-urogenitala', say: 'estua' },
+  { a: 'behin-betiko-sinu-urogenitala', kind: 'zatia', b: 'sinu-urogenitala', say: 'falo atala' },
+  { a: 'gernu-maskuria', kind: 'ondoan', b: 'atal-pelbianoa', say: 'maskuriaren ondoren hodia estutzen da' },
+  // Allantois.
+  { a: 'alantoidea', kind: 'ondoan', b: 'gernu-maskuria', say: 'maskuriaren erpinarekin jarraitzen du' },
+  { a: 'alantoidea', kind: 'ematen', b: 'urakoa', say: 'barrunbea itxita' },
+  { a: 'urakoa', kind: 'ematen', b: 'erdiko-zilbor-lotailua', say: 'helduan' },
+  { a: 'urakoa', kind: 'ematen', b: 'fistula-urakala', say: 'guztiz ixten ez bada' },
+  { a: 'urakoa', kind: 'ondoan', b: 'gernu-maskuria', say: 'erpinetik zilborrera, aurreko hormatik' },
+  // Bladder and trigone.
+  { a: 'hodi-mesonefrikoa', kind: 'ematen', b: 'trigonoa', say: 'ureterra gora eta Wolff behera banantzean' },
+  { a: 'trigonoa', kind: 'zatia', b: 'gernu-maskuria', say: 'atzeko paretan' },
+  { a: 'ureterra', kind: 'ondoan', b: 'trigonoa', say: 'ureter zuloak goiko izkinetan' },
+  { a: 'ureterra', kind: 'ondoan', b: 'hodi-mesonefrikoa', say: 'hasieran bat; gero askatu: ureterra gora, Wolff behera' },
+  // Urethra.
+  { a: 'atal-pelbianoa', kind: 'ematen', b: 'uretra' },
+  { a: 'atal-pelbianoa', kind: 'ematen', b: 'mintzezko-uretra', say: 'emakumea; gizonean baita' },
+  { a: 'atal-pelbianoa', kind: 'ematen', b: 'uretra-prostatikoa', say: 'gizona' },
+  { a: 'behin-betiko-sinu-urogenitala', kind: 'ematen', b: 'baginaren-bestibulua', say: 'emakumea' },
+  { a: 'behin-betiko-sinu-urogenitala', kind: 'ematen', b: 'zakil-uretra', say: 'gizona: zakila hazi eta luzatuta' },
+  { a: 'uretra-prostatikoa', kind: 'zatia', b: 'uretra' },
+  { a: 'mintzezko-uretra', kind: 'zatia', b: 'uretra' },
+  { a: 'zakil-uretra', kind: 'zatia', b: 'uretra' },
+  { a: 'uretra-prostatikoa', kind: 'ordez', b: 'mintzezko-uretra', say: 'goitik behera' },
+  { a: 'mintzezko-uretra', kind: 'ordez', b: 'zakil-uretra' },
+  { a: 'uretra-prostatikoa', kind: 'kimua', b: 'prostata', say: 'ebaginazioak, 3. hilabetearen bukaeran' },
+  { a: 'uretra', kind: 'kimua', b: 'uretra-guruinak', say: 'emakumea, 3. hilabetearen bukaeran' },
+  { a: 'zakil-uretra', kind: 'zatia', b: 'zakila', say: 'barrutik, zakil osoan zehar' },
+  { a: 'glandea', kind: 'zatia', b: 'zakila', say: 'muturra' },
+  { a: 'zakil-uretra', kind: 'ondoan', b: 'ildo-koronarioa', say: 'hortaraino iristen da, ez muturreraino' },
+  { a: 'ildo-koronarioa', kind: 'ondoan', b: 'glandea' },
+  // Glans: the outer part is ectoderm.
+  { a: 'azaleko-ektodermoa', kind: 'ematen', b: 'kordoi-ektodermikoa', say: 'glandearen muturretik barrurantz' },
+  { a: 'kordoi-ektodermikoa', kind: 'ondoan', b: 'zakil-uretra', say: 'barneko muturra uretrarekin fusionatzen da' },
+  { a: 'kordoi-ektodermikoa', kind: 'ematen', b: 'hobi-nabikularra', say: 'hustuta (kanalizatuta), zabalduta' },
+  { a: 'kordoi-ektodermikoa', kind: 'ematen', b: 'kanpoko-uretra-zuloa', say: 'muturrean' },
+  { a: 'azaleko-ektodermoa', kind: 'ematen', b: 'prepuzioa', say: 'glandearen inguruko alboko trenkadak, irekita' },
+  { a: 'prepuzioa', kind: 'ondoan', b: 'glandea', say: 'estaltzen du' },
+  { a: 'hobi-nabikularra', kind: 'zatia', b: 'glandea', say: 'barruan' },
+];
+
+/** Ready-made walks through the map ("bideak"): each a chain read in order, the 3D lighting step by step. */
+export interface MapTrail {
+  id: string;
+  title: string;
+  /** What the walk teaches, one line. */
+  lead: string;
+  /** Node ids in order; each may set the moment to show it at. */
+  steps: { id: string; moment?: number; line: string }[];
+}
+
+export const MAP15_TRAILS: MapTrail[] = [
+  {
+    id: 'hiru',
+    title: 'Hiru giltzurrunak, goitik behera',
+    lead: 'Bata bestearen ondoren, kranealetik kaudalera: bakoitza garatzen den heinean aurrekoa endekatzen da.',
+    steps: [
+      { id: 'bitarteko-mesodermoa', moment: 0, line: 'Dena hemendik: bitarteko mesodermoa, aortaren alde bietan.' },
+      { id: 'pronefrosa', moment: 0, line: 'Lepoan: pronefrosa (4. astea). Ez funtzionala.' },
+      { id: 'mesonefrosa', moment: 1, line: 'Torazikotik lunbarrera: mesonefrosa, gandor urogenitalean.' },
+      { id: 'hodi-mesonefrikoa', moment: 1, line: 'Haren hodia (Wolff) behera, kloakaraino.' },
+      { id: 'metanefrosa', moment: 2, line: 'Sakroan: metanefrosa (28–29. eguna), bi jatorri.' },
+      { id: 'giltzurruna', moment: 4, line: 'Behin betiko giltzurruna: sakrotik lunbarrera igotzen da (pasiboki).' },
+    ],
+  },
+  {
+    id: 'bi-jatorri',
+    title: 'Giltzurrunaren bi jatorriak',
+    lead: 'Hodiak ureter kimutik (sistema biltzailea); nefronak blastematik (sistema iraizlea). Biak mesodermikoak.',
+    steps: [
+      { id: 'hodi-mesonefrikoa', moment: 2, line: 'Wolff hodiaren mutur kaudaletik…' },
+      { id: 'ureter-kimua', moment: 2, line: '…ureter kimua ateratzen da, atzeko paretan sartuz.' },
+      { id: 'blastema-metanefrikoa', moment: 2, line: 'Kimuaren mailan, blastema metanefrikoa (mesenkima trinkoa).' },
+      { id: 'giltzurrun-pelbisa', moment: 3, line: 'Kimutik: pelbisa → kaliza nagusiak → txikiak → hodi biltzaileak.' },
+      { id: 'nefrona', moment: 3, line: 'Blastematik: kapsula → xixkua → nefrona, hodi biltzailearekin fusionatuta.' },
+    ],
+  },
+  {
+    id: 'gernua',
+    title: 'Gernuaren bidea, nefronatik kanpora',
+    lead: 'Adarkadura gertatu zen kontrako norabidean: nefronatik kanpoko zulora.',
+    steps: [
+      { id: 'nefrona', moment: 5, line: 'Nefronan odola filtratzen da: gernua.' },
+      { id: 'hodi-biltzaileak', moment: 5, line: 'Hodi biltzaileetara (bakoitzak hainbat nefronarena).' },
+      { id: 'kaliza-txikiak', moment: 5, line: 'Kaliza txikietara, gero nagusietara.' },
+      { id: 'giltzurrun-pelbisa', moment: 5, line: 'Pelbisera (inbutu nagusia).' },
+      { id: 'ureterra', moment: 5, line: 'Ureterretik behera…' },
+      { id: 'trigonoa', moment: 5, line: '…maskuriaren atzeko paretara, trigonoaren goiko izkinetan.' },
+      { id: 'gernu-maskuria', moment: 5, line: 'Gernu maskurian gordetzen da.' },
+      { id: 'uretra-prostatikoa', moment: 5, line: 'Uretra: prostatikoa (gizona)…' },
+      { id: 'mintzezko-uretra', moment: 5, line: '…mintzezkoa…' },
+      { id: 'zakil-uretra', moment: 5, line: '…zakil-uretra, ildo koronarioraino.' },
+      { id: 'hobi-nabikularra', moment: 5, line: 'Hobi nabikularra (ektodermoa!) eta kanpoko zuloa.' },
+    ],
+  },
+  {
+    id: 'kloaka',
+    title: 'Kloakatik maskurira eta uretrara',
+    lead: 'Barrunbe bakarra bitan; aurrekoak (sinu urogenitala) hiru atal ematen ditu, goitik behera.',
+    steps: [
+      { id: 'kloaka', moment: 0, line: 'Digestio hodiaren muturra: kloaka, mintz bakarrarekin.' },
+      { id: 'trenkada-uroerrektala', moment: 2, line: 'Trenkada uroerrektala behera hazten da (4.–7. asteak).' },
+      { id: 'uzki-hodia', moment: 3, line: 'Atzean: ondestea eta uzki hodia.' },
+      { id: 'sinu-urogenitala', moment: 3, line: 'Aurrean: sinu urogenitala, hiru atal:' },
+      { id: 'gernu-maskuria', moment: 3, line: '1) goian, zabalena: gernu maskuria;' },
+      { id: 'atal-pelbianoa', moment: 3, line: '2) estua: atal pelbianoa → uretra;' },
+      { id: 'behin-betiko-sinu-urogenitala', moment: 3, line: '3) zapala: behin betiko sinua → bestibulua (♀) / zakil-uretra (♂).' },
+      { id: 'perineoa', moment: 3, line: 'Tartean, trenkadaren muturra: perineoa.' },
+    ],
+  },
+  {
+    id: 'muturrak',
+    title: 'Goiko muturra vs beheko muturra',
+    lead: 'Maskuriaren gainean alantoidea (endodermoa); uretraren amaieran glandea (ektodermoa). Ez nahastu.',
+    steps: [
+      { id: 'alantoidea', moment: 3, line: 'GOIAN: alantoidea, maskuriaren erpinetik zilborrera.' },
+      { id: 'urakoa', moment: 4, line: 'Barrunbea itxita: urakoa (kordoi fibrotikoa).' },
+      { id: 'erdiko-zilbor-lotailua', moment: 5, line: 'Helduan: erdiko zilbor-lotailua.' },
+      { id: 'trigonoa', moment: 5, line: 'ERDIAN, atzeko paretan: trigonoa (Wolff + ureterra; mesodermoa).' },
+      { id: 'kordoi-ektodermikoa', moment: 4, line: 'BEHEAN: glandearen muturretik kordoi ektodermikoa sartzen da…' },
+      { id: 'hobi-nabikularra', moment: 5, line: '…hustu eta zabaldu: hobi nabikularra eta kanpoko zuloa.' },
+      { id: 'prepuzioa', moment: 5, line: 'Inguruko alboko trenkadak irekita: prepuzioa.' },
+    ],
+  },
+];

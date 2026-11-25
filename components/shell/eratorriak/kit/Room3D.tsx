@@ -26,6 +26,16 @@ export interface Frame3 {
   names: CalloutSpec[];
 }
 
+/**
+ * A room whose pieces are picked in the 3D (topic 15's map): the picked piece lit, what it is linked to lit
+ * less, the rest shaded; a click on the model picks.
+ */
+export interface RoomPick3 {
+  lit: string | null;
+  related: readonly string[];
+  onPick: (id: string) => void;
+}
+
 interface Live {
   u: number;
   frame: (u: number) => Frame3;
@@ -78,6 +88,7 @@ function View3D({
   label,
   big,
   onBig,
+  pick,
 }: {
   u: number;
   frame: Live['frame'];
@@ -85,7 +96,9 @@ function View3D({
   label: string;
   big: boolean;
   onBig: () => void;
+  pick?: RoomPick3;
 }) {
+  const [hovered, setHovered] = useState<string | null>(null);
   const mounted = useSyncExternalStore(
     subscribeNothing,
     () => true,
@@ -110,18 +123,22 @@ function View3D({
     () => (host ? { host, scene: sceneEl, zoomed: false, orbitRequest: turn } : null),
     [host, sceneEl, turn],
   );
+  const lit = pick?.lit ?? null;
   const ctx: SceneContextValue = {
     selected: null,
-    hovered: null,
-    focus: [],
+    hovered: pick ? hovered : null,
+    focus: pick && lit ? [lit, ...pick.related] : [],
+    spotlight: pick ? lit : null,
+    spotKeep: true,
+    dimContext: !!(pick && lit),
     showLabels: true,
     quiz: false,
     quizFlash: null,
     nameOf,
     isSpace,
     partsOf,
-    onSelect: noop,
-    onHover: noop,
+    onSelect: pick ? pick.onPick : noop,
+    onHover: pick ? setHovered : noop,
   };
   const ask = (direction: NonNullable<Underlay['orbitRequest']>['direction']) =>
     setTurn((t) => ({ direction, serial: (t?.serial ?? 0) + 1 }));
@@ -174,11 +191,13 @@ export function Room3D({
   frame,
   continuity,
   label,
+  pick,
 }: {
   state: RoomViewState;
   frame: Live['frame'];
   continuity: string;
   label: string;
+  pick?: RoomPick3;
 }) {
   const u = useGlide(state.stage);
   const [big, setBig] = useState(false);
@@ -197,7 +216,7 @@ export function Room3D({
 
   const toggle = () => setBig((b) => !b);
   // One view at a time: while enlarged, the side slot keeps its place empty (one WebGL scene).
-  if (!big) return <View3D u={u} frame={frame} continuity={continuity} label={label} big={false} onBig={toggle} />;
+  if (!big) return <View3D u={u} frame={frame} continuity={continuity} label={label} big={false} onBig={toggle} pick={pick} />;
   return (
     <>
       <div className={`${styles.view3d} theme-stage`} aria-hidden />
@@ -237,7 +256,7 @@ export function Room3D({
             )}
           </div>
           <div className={styles.bigView}>
-            <View3D u={u} frame={frame} continuity={continuity} label={label} big onBig={toggle} />
+            <View3D u={u} frame={frame} continuity={continuity} label={label} big onBig={toggle} pick={pick} />
           </div>
         </div>,
         document.body,

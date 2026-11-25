@@ -1,0 +1,387 @@
+/* Topic 15 Ikasgela: the whole-topic map (3D + linked panel + index). Tokens as the other rooms. */
+
+.map {
+  display: grid;
+  gap: 14px;
+  outline: none;
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.top > :first-child {
+  flex: 1 1 520px;
+  min-width: 0;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(280px, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.view {
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  border: 1px solid var(--line-2);
+  background: #0b0a0d;
+}
+
+.hint {
+  margin: 0;
+  padding: 8px 14px 10px;
+  font-size: 12.5px;
+  color: #a7a1ad;
+  background: #0b0a0d;
+}
+
+.side {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+/* ——— a structure's card ——— */
+
+.card,
+.idle,
+.trailBox,
+.trails {
+  padding: 16px 18px;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--line-2);
+  background: var(--sheen), var(--surface);
+}
+
+.cardHead h4,
+.idle h4 {
+  margin: 6px 0 2px;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 24px;
+  font-weight: 560;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.idle h4 {
+  margin-top: 0;
+}
+
+.idle p {
+  margin: 8px 0 12px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.meta {
+  margin: 0;
+  font: 500 11.5px/1.5 var(--font-mono);
+  color: var(--text-4);
+}
+
+.what {
+  margin: 10px 0 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.kontuz {
+  margin: 10px 0 0;
+  padding: 9px 12px;
+  border-radius: var(--r-md);
+  border: 1px solid color-mix(in srgb, var(--warm) 45%, transparent);
+  background: color-mix(in srgb, var(--warm) 12%, var(--surface));
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.kontuz b {
+  margin-right: 6px;
+  font: 700 11px/1 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-warm, var(--warm));
+}
+
+.groups {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.group {
+  display: grid;
+  gap: 6px;
+}
+
+.groupTitle {
+  font: 600 11px/1.3 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-4);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  --dot: var(--text-4);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  max-width: 100%;
+  padding: 5px 10px 5px 20px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+  position: relative;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.chip::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 11px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dot);
+}
+
+.chip:hover {
+  border-color: var(--line-3);
+  background: var(--surface-2);
+}
+
+.chip b {
+  font-size: 13px;
+  font-weight: 560;
+  color: var(--text);
+}
+
+.chip small {
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--text-3);
+}
+
+.chipOn {
+  border-color: var(--text);
+  background: var(--surface-3);
+}
+
+/* Not drawn at this moment: picking it moves the moment there. */
+.later {
+  opacity: 0.55;
+}
+
+.later:hover {
+  opacity: 1;
+}
+
+.meso {
+  --dot: #f97360;
+}
+.endo {
+  --dot: #e0a92e;
+}
+.ekto {
+  --dot: #5b8def;
+}
+.neural {
+  --dot: #8b6cf0;
+}
+
+.layer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 600 10.5px/1.4 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-3);
+}
+
+.layer::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dot);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+
+.simLink {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 560;
+  color: var(--topic, var(--signal));
+}
+
+/* ——— walks ——— */
+
+.trails {
+  display: grid;
+  gap: 8px;
+}
+
+.trailBtn {
+  display: grid;
+  gap: 2px;
+  padding: 9px 12px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.trailBtn:hover {
+  border-color: var(--line-3);
+  background: var(--surface-2);
+}
+
+.trailBtn b {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.trailBtn small {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-3);
+}
+
+.trailBox {
+  border-color: color-mix(in srgb, var(--warm) 55%, var(--line-2));
+}
+
+.trailHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.x {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-sm);
+  color: var(--text-3);
+}
+
+.x:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.trailSteps {
+  display: flex;
+  gap: 5px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trailSteps button {
+  width: 22px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--line-2);
+}
+
+.trailSteps .stepPast {
+  background: color-mix(in srgb, var(--warm) 50%, var(--line-2));
+}
+
+.trailSteps .stepOn {
+  background: var(--warm);
+}
+
+.trailLine {
+  margin: 12px 0;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.trailNav {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* ——— the index of every structure ——— */
+
+.index {
+  display: grid;
+  gap: 10px;
+  padding: 16px 18px;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.indexRow {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 10px;
+  align-items: baseline;
+}
+
+@media (max-width: 900px) {
+  .indexRow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+}
+
+.indexSec {
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+.indexSec b {
+  margin-right: 4px;
+  font: 600 11.5px/1 var(--font-mono);
+  color: var(--text-4);
+}
+
+.index .chip {
+  padding: 4px 9px 4px 19px;
+}
+
+.index .chip::before {
+  top: 10px;
+}
