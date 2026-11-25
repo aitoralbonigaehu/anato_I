@@ -385,3 +385,30 @@
 .index .chip::before {
   top: 10px;
 }
+
+.germ {
+  --dot: #e8c547;
+}
+
+/* The other sex's counterpart: the topic-16 heart of the map. */
+.homolog {
+  padding: 8px 10px;
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--warm) 9%, transparent);
+}
+
+.sexTag {
+  margin-left: 5px;
+  font-style: normal;
+  font-weight: 500;
+  color: var(--text-3);
+}
+
+/* Before the sexes differ the switch stays, quieter. */
+.same {
+  opacity: 0.6;
+}
+
+.kanpo {
+  --dot: #e89aa8;
+}

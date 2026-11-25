@@ -9,56 +9,10 @@
  * (`in3d`) and links to the simulator's close-up (`stage`).
  */
 
-export type Layer = 'meso' | 'endo' | 'ekto' | 'neural';
+import type { MapLink, MapNode, MapTrail } from './map-kit';
 
-export const LAYER_NAME: Record<Layer, string> = {
-  meso: 'Mesodermoa (bitartekoa)',
-  endo: 'Endodermoa',
-  ekto: 'Ektodermoa',
-  neural: 'Gandor neurala (ektodermoa)',
-};
-
-export interface MapNode {
-  id: string;
-  /** Notes section (1.1 … 2.4). */
-  sec: string;
-  layer: Layer;
-  /** First and last moment of the map (MAP_MOMENTS index) at which it is drawn (or its container is). */
-  at: number;
-  until?: number;
-  /** Drawn in the 3D map as itself (omit) or lit through its container. */
-  in3d?: string;
-  /** The simulator stage that shows it close (/astea/15?etapa=…). */
-  stage?: string;
-  /** One line: what it is, in the notes' words. */
-  what: string;
-  /** A notes trap. */
-  kontuz?: string;
-}
-
-/**
- * ematen: a gives / becomes b · kimua: b sprouts (branches) out of a · isuri: a empties / opens into b ·
- * ondoan: a lies against b (both ways) · ordez: a is followed (replaced) by b · zatia: a is a part of b.
- */
-export type LinkKind = 'ematen' | 'kimua' | 'isuri' | 'ondoan' | 'ordez' | 'zatia';
-
-export interface MapLink {
-  a: string;
-  kind: LinkKind;
-  b: string;
-  /** Optional precision (when, in whom, how). */
-  say?: string;
-}
-
-/** How a link reads from each end (the panel's group titles). */
-export const LINK_READ: Record<LinkKind, { out: string; in: string }> = {
-  ematen: { out: 'Zer ematen du', in: 'Nondik dator' },
-  kimua: { out: 'Hemendik ateratzen da', in: 'Nondik ateratzen da' },
-  isuri: { out: 'Nora isurtzen du', in: 'Zer isurtzen da hemen' },
-  ondoan: { out: 'Ondoan', in: 'Ondoan' },
-  ordez: { out: 'Ondoren', in: 'Aurretik' },
-  zatia: { out: 'Zeren zatia', in: 'Zatiak' },
-};
+export { LAYER_NAME, LINK_READ } from './map-kit';
+export type { Layer, LinkKind, MapLink, MapNode, MapTrail } from './map-kit';
 
 export const MAP15_NODES: MapNode[] = [
   // ———— 1. Gernu sistema ————
@@ -195,20 +149,21 @@ export const MAP15_NODES: MapNode[] = [
 
   // ———— 2.4 Uretra ————
   { id: 'uretra', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Atal pelbianotik. Emakumean laburra (4 cm), gizonean luzea (hiru atal).' },
-  { id: 'uretra-prostatikoa', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Gizona: maskuriaren azpian, prostata inguruan.' },
+  { id: 'uretra-prostatikoa', sec: '2.4', layer: 'endo', sex: 'm', at: 4, stage: 'uretra', what: 'Gizona: maskuriaren azpian, prostata inguruan.' },
   { id: 'mintzezko-uretra', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Emakumean atal pelbianotik; gizonean prostatikoaren ondoren.' },
-  { id: 'zakil-uretra', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Zakil osoan zehar, luzeena; ildo koronarioraino iristen da (ez muturreraino).' },
-  { id: 'prostata', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Uretraren ebaginazioak 3. hilabetearen bukaeran; sistema genitaleko guruinik handiena.' },
-  { id: 'uretra-guruinak', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Emakumea: guruin uretralak eta parauretralak, ebaginazioetatik (3. hilabetea).' },
-  { id: 'baginaren-bestibulua', sec: '2.4', layer: 'endo', at: 4, stage: 'uretra', what: 'Emakumea: behin betiko sinutik; uretra eta bagina bertan irekitzen dira.' },
-  { id: 'zakila', sec: '2.4', layer: 'ekto', at: 4, stage: 'uretra', what: 'Gizona: falo atala hazi eta luzatuta; uretra barrutik.' },
-  { id: 'ildo-koronarioa', sec: '2.4', layer: 'ekto', at: 4, stage: 'zakil-uretra', what: 'Zakilaren gorputzaren eta glandearen arteko ildo zirkularra.' },
-  { id: 'glandea', sec: '2.4', layer: 'ekto', at: 4, stage: 'zakil-uretra', what: 'Ildo koronarioaren aurreko atal zabala.' },
-  { id: 'kordoi-ektodermikoa', sec: '2.4', layer: 'ekto', at: 4, until: 4, stage: 'zakil-uretra', what: 'Glandearen muturrean azaleko ektodermotik barrurantz sartzen den kordoia, uretrarekin kontaktuan.' },
+  { id: 'zakil-uretra', sec: '2.4', layer: 'endo', sex: 'm', at: 4, stage: 'uretra', what: 'Zakil osoan zehar, luzeena; ildo koronarioraino iristen da (ez muturreraino).' },
+  { id: 'prostata', sec: '2.4', layer: 'endo', sex: 'm', at: 4, stage: 'uretra', what: 'Uretraren ebaginazioak 3. hilabetearen bukaeran; sistema genitaleko guruinik handiena.' },
+  { id: 'uretra-guruinak', sec: '2.4', layer: 'endo', sex: 'f', at: 4, stage: 'uretra', what: 'Emakumea: guruin uretralak eta parauretralak, ebaginazioetatik (3. hilabetea).' },
+  { id: 'baginaren-bestibulua', sec: '2.4', layer: 'endo', sex: 'f', at: 4, stage: 'uretra', what: 'Emakumea: behin betiko sinutik; uretra eta bagina bertan irekitzen dira.' },
+  { id: 'zakila', sec: '2.4', layer: 'ekto', sex: 'm', at: 4, stage: 'uretra', what: 'Gizona: falo atala hazi eta luzatuta; uretra barrutik.' },
+  { id: 'ildo-koronarioa', sec: '2.4', layer: 'ekto', sex: 'm', at: 4, stage: 'zakil-uretra', what: 'Zakilaren gorputzaren eta glandearen arteko ildo zirkularra.' },
+  { id: 'glandea', sec: '2.4', layer: 'ekto', sex: 'm', at: 4, stage: 'zakil-uretra', what: 'Ildo koronarioaren aurreko atal zabala.' },
+  { id: 'kordoi-ektodermikoa', sec: '2.4', layer: 'ekto', sex: 'm', at: 4, until: 4, stage: 'zakil-uretra', what: 'Glandearen muturrean azaleko ektodermotik barrurantz sartzen den kordoia, uretrarekin kontaktuan.' },
   {
     id: 'hobi-nabikularra',
     sec: '2.4',
     layer: 'ekto',
+    sex: 'm',
     at: 5,
     stage: 'zakil-uretra',
     what: 'Kordoi ektodermikoa hustuta (kanalizatuta) sortzen den hodiaren zabalgunea; uretra bertara isurtzen da.',
@@ -219,6 +174,7 @@ export const MAP15_NODES: MapNode[] = [
     id: 'prepuzioa',
     sec: '2.4',
     layer: 'ekto',
+    sex: 'm',
     at: 5,
     stage: 'zakil-uretra',
     what: 'Glandea inguratzen duen larruazal ektodermikoko alboko trenkadak, xixku bihurtu eta irekita: glandea babesten du.',
@@ -353,16 +309,6 @@ export const MAP15_LINKS: MapLink[] = [
   { a: 'prepuzioa', kind: 'ondoan', b: 'glandea', say: 'estaltzen du' },
   { a: 'hobi-nabikularra', kind: 'zatia', b: 'glandea', say: 'barruan' },
 ];
-
-/** Ready-made walks through the map ("bideak"): each a chain read in order, the 3D lighting step by step. */
-export interface MapTrail {
-  id: string;
-  title: string;
-  /** What the walk teaches, one line. */
-  lead: string;
-  /** Node ids in order; each may set the moment to show it at. */
-  steps: { id: string; moment?: number; line: string }[];
-}
 
 export const MAP15_TRAILS: MapTrail[] = [
   {

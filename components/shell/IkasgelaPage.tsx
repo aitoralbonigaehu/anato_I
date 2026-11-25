@@ -14,6 +14,7 @@ import { Topic11Study } from './eratorriak/Topic11';
 import { Topic12Study } from './eratorriak/Topic12';
 import { Topic13Study } from './eratorriak/Topic13';
 import { Topic15Study } from './eratorriak/Topic15';
+import { Topic16Study } from './eratorriak/Topic16';
 import { Topic17Study } from './eratorriak/Topic17';
 import { hueStyle } from './topicHue';
 
@@ -26,6 +27,7 @@ const ROOMS: Record<number, () => ReactNode> = {
   12: () => <Topic12Study />,
   13: () => <Topic13Study />,
   15: () => <Topic15Study />,
+  16: () => <Topic16Study />,
   17: () => <Topic17Study />,
 };
 
