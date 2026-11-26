@@ -10,6 +10,8 @@ import { ReferenceTables, TABLE_TOPICS } from './eratorriak/ReferenceTables';
 import { hasRoom } from './eratorriak/roomWeeks';
 import { LearningMaps } from './eratorriak/LearningMaps';
 import { GridSchemes, hasGridSchemes } from './eratorriak/GridSchemes';
+import { VisualDerivatives } from './eratorriak/VisualDerivatives';
+import { hasVisualDerivatives } from '@/lib/learning/visual-derivatives';
 import { flowShown, hasBlueContent, taughtFlow } from '@/content/eratorriak/taught';
 import { hueStyle } from './topicHue';
 
@@ -17,7 +19,7 @@ import { hueStyle } from './topicHue';
 type Mode = { week: number; part?: Part; source?: undefined; arch?: undefined } | { source: string; week?: undefined; part?: undefined; arch?: undefined } | { arch: true; week?: undefined; part?: undefined; source?: undefined };
 
 /** Inside a topic only one part shows at a time. Study rooms live at /ikasgela/N. */
-type Part = 'taulak' | 'eskemak';
+type Part = 'taulak' | 'eskemak' | 'bisualak';
 
 /** Topics 7+ in tab order: every topic with schemes or quick tables. */
 const WEEKS = [...new Set([...MIGRATIONS.map((t) => t.week), ...TABLE_TOPICS])].sort((a, b) => a - b);
@@ -28,6 +30,7 @@ const resolveStructureName = (id: string) => structures.get(id)?.name ?? id;
 const partsOf = (week: number) => {
   const parts = ([
     ['taulak', 'Taulak', TABLE_TOPICS.includes(week)],
+    ['bisualak', 'Bisualak (3D)', hasVisualDerivatives(week)],
     ['eskemak', week >= 15 ? 'Mapa mentalak' : 'Eskemak', MIGRATIONS.some((t) => t.week === week)],
   ] as const).filter(([, , has]) => has).map(([id, label]) => ({ id, label }));
   return week >= 15 ? parts.reverse() : parts;
@@ -274,10 +277,12 @@ const parseHash = (): Mode | null => {
   if (h === 'arku-sistemak') return { arch: true };
   const w = /^gaia-(\d+)$/.exec(h);
   if (w && WEEKS.includes(+w[1])) return { week: +w[1] };
-  // A topic's quick tables or schemes ("a14-laburrak", "a7-eskemak"); an old link into a study room ("a12-taula") goes to its page.
+  // A topic's quick tables, schemes or 3D visuals ("a14-laburrak", "a7-eskemak", "a15-bisualak"); an old link into a study room ("a12-taula") goes to its page.
   const room = /^a(\d+)-(.+)$/.exec(h);
   if (room && WEEKS.includes(+room[1])) {
-    if (room[2] === 'laburrak' || room[2] === 'eskemak') return { week: +room[1], part: room[2] === 'eskemak' ? 'eskemak' : 'taulak' };
+    if (room[2] === 'laburrak' || room[2] === 'eskemak' || room[2] === 'bisualak') {
+      return { week: +room[1], part: room[2] === 'eskemak' ? 'eskemak' : room[2] === 'bisualak' ? 'bisualak' : 'taulak' };
+    }
     if (hasRoom(+room[1])) {
       window.location.replace(`/ikasgela/${room[1]}${room[2] === 'ikasgela' ? '' : `#${h}`}`);
       return null;
@@ -374,7 +379,9 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
           ? 'orriak'
           : m.part === 'eskemak'
               ? `a${m.week}-eskemak`
-              : `gaia-${m.week}`;
+              : m.part === 'bisualak'
+                ? `a${m.week}-bisualak`
+                : `gaia-${m.week}`;
     history.replaceState(null, '', `#${hash}`);
     setMenu(false);
     const el = top.current;
@@ -477,7 +484,7 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
               </button>
             </div>
           )}
-          {!layersTab && !(topic && part === 'eskemak') && (
+          {!layersTab && !(topic && (part === 'eskemak' || part === 'bisualak')) && (
             <button className={`mg-quiz${quizOn ? ' is-on' : ''}`} aria-pressed={quizOn} onClick={toggleQuiz} title="Erantzunak ezkutatu eta zeure burua probatu">
               <i aria-hidden />
               <span>Proba modua</span>
@@ -502,10 +509,13 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
           </div>
         )}
 
-      <div className={`mg-list${quizOn && !(topic && part === 'eskemak') ? ' is-quiz' : ''}`} key={mode.arch ? 'arch' : (mode.source ?? `${mode.week}-${part}`)}>
+      <div className={`mg-list${quizOn && !(topic && (part === 'eskemak' || part === 'bisualak')) ? ' is-quiz' : ''}`} key={mode.arch ? 'arch' : (mode.source ?? `${mode.week}-${part}`)}>
         {layersTab && <div className="mg-early">{layers}</div>}
         {mode.arch && <ReferenceTables scope="arkuak" quiz={quizOn} />}
         {part === 'taulak' && <ReferenceTables scope={mode.week!} quiz={quizOn} />}
+        {topic && part === 'bisualak' && (
+          <VisualDerivatives key={`${topic.week}${taughtOnly ? '' : '-osoa'}`} week={topic.week} taughtOnly={taughtOnly} />
+        )}
         {((topic && part === 'eskemak') || src) && (
           <header className="mg-schemes-head" id={topic ? `a${topic.week}-eskemak` : undefined}>
             <p className="mg-intro">
