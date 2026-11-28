@@ -3,6 +3,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { SceneContext, type SceneContextValue } from '@/components/kit/context';
 import { structures, weeks } from '@/content/registry';
 import { archHead } from '@/components/scenes/week17/arch-head';
+import { taldeaOf, topicNo } from '@/content/topic-no';
 
 const ctx: SceneContextValue = {
   selected: null,
@@ -24,8 +25,10 @@ describe('structure registry', () => {
     const dups: string[] = [];
     for (const w of weeks)
       for (const s of w.structures) {
-        if (seen.has(s.id)) dups.push(`${s.id} (${seen.get(s.id)}. astea eta ${w.week}. astea)`);
-        else seen.set(s.id, w.week);
+        // The two classes' versions of one topic (content/topic-no.ts) each list their structures; the first owns them.
+        const other = seen.get(s.id);
+        if (other !== undefined && !(topicNo(other) === topicNo(w.week) && taldeaOf(other) !== taldeaOf(w.week))) dups.push(`${s.id} (${other}. astea eta ${w.week}. astea)`);
+        else if (other === undefined) seen.set(s.id, w.week);
       }
     expect(dups).toEqual([]);
   });

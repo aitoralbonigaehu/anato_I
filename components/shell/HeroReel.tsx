@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { getWeek } from '@/content/registry-lite';
 import { hueStyle } from './topicHue';
+import { topicNo } from '@/content/topic-no';
 
 /**
  * The simulator's own 3D, played back to back as a showreel: what the app does, shown rather than told. Each
@@ -37,7 +38,7 @@ export const REEL: Reel[] = PICKS.flatMap((p) => {
   const s = w?.stages.find((x) => x.id === p.stage);
   const v = s?.views[0];
   if (!w || !s || !v) return [];
-  return [{ week: p.week, n: String(p.week).padStart(2, '0'), topic: w.title, title: s.title, label: p.label, day: s.day, clip: `${p.week}-${p.stage}`, href: `/astea/${p.week}?etapa=${p.stage}&ikuspegia=${v.id}` }];
+  return [{ week: p.week, n: String(topicNo(p.week)).padStart(2, '0'), topic: w.title, title: s.title, label: p.label, day: s.day, clip: `${p.week}-${p.stage}`, href: `/astea/${p.week}?etapa=${p.stage}&ikuspegia=${v.id}` }];
 });
 
 /** The clips' length (seconds), then a rest on the last frame and a dissolve into the next. */
@@ -194,7 +195,7 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
         </div>
         <figcaption className="scr-cap" key={f.i}>
           <small>
-            <i>{cur.week}. gaia</i> {cur.topic}
+            <i>{topicNo(cur.week)}. gaia</i> {cur.topic}
           </small>
           <b>{cur.title}</b>
         </figcaption>
@@ -207,12 +208,12 @@ export function HeroReel({ playing = true }: { playing?: boolean }) {
         {REEL.map((r, k) => {
           const part = k === f.i ? clamp(f.local / HOLD) : 0;
           return (
-            <button key={r.n + r.title} style={hueStyle(r.week)} className={k === f.i ? 'is-on' : ''} onClick={() => go(k)} aria-current={k === f.i ? 'true' : undefined} aria-label={`${r.week}. gaia: ${r.title}`} title={`${r.week}. gaia · ${r.title}`}>
+            <button key={r.n + r.title} style={hueStyle(r.week)} className={k === f.i ? 'is-on' : ''} onClick={() => go(k)} aria-current={k === f.i ? 'true' : undefined} aria-label={`${topicNo(r.week)}. gaia: ${r.title}`} title={`${topicNo(r.week)}. gaia · ${r.title}`}>
               <i aria-hidden>
                 <b style={{ transform: `scaleX(${part})` }} />
               </i>
               <span>
-                <em>{r.week}</em>
+                <em>{topicNo(r.week)}</em>
                 {r.label}
               </span>
             </button>

@@ -6,17 +6,12 @@ sagittal section the notochord and primitive streak follow the green ink.
 The two views of the right atrium have separate outlines.
 """
 
-# Some surface projections have a number but no visible tissue boundary.
-# The white cavities continue beyond their printed callout. Cropping them to
-# the rectangle of the callout would incorrectly mark the surrounding paper.
+# Some surface projections have a number but no visible tissue boundary; since 2026-11-27 those are
+# traced as the bulge or band the number sits on (areas_spec.py), so the student sees where to look.
+# Still left out: white cavities that continue beyond their printed callout (cropping them to the
+# callout's rectangle would mark the surrounding paper), and cutaway parts too small to outline.
 SUPPRESS = {
-    2: [11],  # nephric ridge, adjacent to the row of somites
-    3: [4, 20, 21, 22, 23, 24, 25],  # surface projections have no closed border
-    4: [1, 2, 3, 4, 5, 6, 7, 8, 14, 17, 19],  # indistinct transitions and cut edges
-    5: [1, 2, 5],  # one continuous coelom; indistinct intermediate mesoderm
-    6: [9, 10, 11, 12, 13, 14, "d"],
-    7: [2, 4, 5],  # contiguous coloured chambers; their callouts remain
-    8: [1, 2, 4, 5],  # shared lumen with no line at the reconstructed divisions
+    6: [9, 10, 12, 13],
     9: [8, 10, 11, 12],  # no separate closed borders in the cardiac cutaway
     12: [10],  # both nearby mesenteric branches use the same pigment
 }

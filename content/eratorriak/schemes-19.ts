@@ -349,7 +349,7 @@ export const SCHEMES_19: MigrationTopic = {
       id: 'prosentzefaloa-19',
       title: 'Prosentzefaloa: telentzefaloa, dientzefaloa eta hipofisia',
       lead: 'Aurreko xixku primarioa telentzefaloan eta dientzefaloan banatzen da. Hasieran dientzefaloa handiagoa da; gero telentzefaloak estaltzen du. Hipofisiak bi jatorri ditu.',
-      stage: 'talamoa',
+      stage: 'bost-xixkuak',
       pitfalls: [
         'Ez esan I. edo II. bentrikulua: ALBOKO bentrikuluak dira (handienak).',
         'Talamoak informazio sentsitibo gehiena bideratzen du kortexera, usaimena izan ezik (zuzenean usaimen-kortexera doa).',
@@ -386,7 +386,7 @@ export const SCHEMES_19: MigrationTopic = {
       id: 'mesentzefaloa-19',
       title: 'Mesentzefaloa: akueduktoa, pedunkuluak, gai beltza eta tolespen zefalikoa',
       lead: 'Tarteko xixkua ez da banatzen: paretak loditzen dira eta erdiko hodia garun-akuedukto bihurtzen da. Alde bentralean garun-pedunkuluak eta gai beltza daude.',
-      stage: 'mesentzefaloa',
+      stage: 'bost-xixkuak',
       pitfalls: [
         'Mesentzefaloan ez dago bentrikulurik: garun-akueduktoak (Silvio) III. eta IV. bentrikuluak lotzen ditu.',
         'Gai beltza ez dago tindatuta: pigmentu beltza dute. Parkinsonean neurona dopaminergikoak hiltzean, dopamina ez da oinaldeko nukleoetara iristen.',
@@ -408,7 +408,7 @@ export const SCHEMES_19: MigrationTopic = {
       id: 'erronbentzefaloa-19',
       title: 'Erronbentzefaloa: IV. bentrikulua, metentzefaloa eta mielentzefaloa',
       lead: 'Azken xixkuak erronbo forma du (IV. bentrikulua) eta metentzefaloan (zubia, zerebeloa) eta mielentzefaloan (erraboila) banatzen da.',
-      stage: 'metentzefaloa',
+      stage: 'bost-xixkuak',
       pitfalls: [
         'IV. bentrikuluaren zorua zabaltzean, eremu motorra medial (erdian) geratzen da eta sentsitiboa lateral (alboetan).',
         'Zerebeloa metentzefaloaren hegal-plaken alde dortsaletik (ezpain erronboideak) garatzen da eta IV. bentrikuluaren sabaia estaltzen du.',
@@ -514,36 +514,6 @@ export const SCHEMES_19: MigrationTopic = {
         ]),
         n('anestesia-epidurala', [
           branch('eremu-epidurala', 'anestesikoa eman', undefined, 'dura materraren kanpoaldean'),
-        ]),
-      ],
-    },
-
-    // ── 7. 12 BIKOTE KRANEALAK ──────────────────────────────────────────────
-    {
-      id: 'bikote-kranealak-19',
-      title: '12 bikote kranealak, aurretik atzera',
-      lead: 'Hamabi nerbio-bikote kraneal daude. IV.a garun-enborraren alde dortsaletik ateratzen den bakarra da.',
-      stage: 'bikote-kranealak',
-      pitfalls: [
-        'I. bikoteko zuntzak usaimen-erraboilera iristen dira. II. bikoteak erretinako informazioa darama (preparatuetan moztuta ageri da).',
-        'III., IV. eta VI.: begiaren mugimenduak (III.ak begi-ninia uzkurtzeko zuntz parasinpatikoak ere baditu).',
-        'X. bagoa gorputz osoko nerbio parasinpatiko nagusia da (mistoa).',
-        'XI. nerbio osagarriaren sustrai espinalak lepoaldeko ornomuinetik datoz.',
-      ],
-      roots: [
-        l('Bikote kranealak', [
-          branch('usaimen-nerbioa', 'I', undefined, 'nerbio txiki asko · erraboilak'),
-          branch('nerbio-optikoa', 'II', undefined, 'ikusmena'),
-          branch('nerbio-begi-eragilea', 'III', undefined, 'begiaren mugimendua eta ninia uzkurtzea'),
-          branch('nerbio-troklearra', 'IV', undefined, 'begia · dortsaletik bakarra'),
-          branch('nerbio-trigeminoa', 'V', undefined, 'aurpegiko sentsibilitatea eta murtxikatzea · 3 adar'),
-          branch('nerbio-aldentzailea', 'VI', undefined, 'begiaren mugimendua'),
-          branch('aurpegi-nerbioa', 'VII', undefined, 'aurpegiko mimika, dastamena eta guruinak'),
-          branch('nerbio-estatoakustikoa', 'VIII', undefined, 'oreka eta entzumena'),
-          branch('nerbio-glosofaringeoa', 'IX', undefined, 'mihiaren atzealdeko dastamena eta faringea'),
-          branch('nerbio-bagoa', 'X', undefined, 'nerbio mistoa · erraietako parasinpatikoa'),
-          branch('nerbio-osagarria', 'XI', undefined, 'esternokleidomastoideoa eta trapezioa'),
-          branch('nerbio-hipoglosoa', 'XII', undefined, 'mihiaren mugimendua'),
         ]),
       ],
     },

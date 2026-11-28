@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { IkasgelaPage } from '@/components/shell/IkasgelaPage';
 import { hasRoom, ROOM_WEEKS } from '@/components/shell/eratorriak/roomWeeks';
 import { getWeek } from '@/content/registry';
+import { topicNo } from '@/content/topic-no';
 
 export function generateStaticParams() {
   return ROOM_WEEKS.map((week) => ({ week: String(week) }));
@@ -11,7 +12,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ week: string }> }): Promise<Metadata> {
   const { week } = await params;
   const w = getWeek(Number(week));
-  return { title: w ? `${w.week}. gaia · Ikasgela — EnbrioAtlas` : 'EnbrioAtlas' };
+  return { title: w ? `${topicNo(w.week)}. gaia · Ikasgela — EnbrioAtlas` : 'EnbrioAtlas' };
 }
 
 export default async function RoomPage({ params }: { params: Promise<{ week: string }> }) {

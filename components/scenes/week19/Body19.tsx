@@ -532,10 +532,420 @@ const specAutom: StageSpec<BodyPose, BodyOpts> = {
       dim: ['neurona-sentsitiboa', 'motoneurona', 'kortex-sentsitiboa', 'kortex-motorra'],
       names: [
         { id: 'neurona-sentsitiboa', p: [0.714, 2.683, -0.256], text: 'Zirkuito osoa', sub: 'sentsitiboa gora…' },
-        { id: 'motoneurona', text: '…eta motorra behera', small: true, from: 0.4 },
+        { id: 'motoneurona', p: [0.328, 2.75, -0.195], text: '…eta motorra behera', small: true, from: 0.4 },
       ],
       note: 'Hala ere, mugimendu horiek egiteko zirkuito osoa bete behar da nerbio sisteman',
     },
   ],
 };
 export const Automatic19 = withGeo(poseStage19(specAutom, build));
+
+// ———————————————————————— class 31 (topic 21), reshaped since for class 32: the scenes as its steps were written ————————————————————————
+
+export const S_CUTS31 = [0, 0.16, 0.3, 0.44, 0.58, 0.74, 0.88] as const;
+const specCuts31: StageSpec<BodyPose, BodyOpts> = {
+  S: S_CUTS31,
+  pose: endPose(specIntro).pose,
+  opts: {},
+  site: SITE19.body,
+  arrive: 'Gorputz berean, burura hurbilduz: burmuina mozteko planoak',
+  caption: CAP,
+  key: [
+    { color: '#3e7bf0', text: 'horizontala' },
+    { color: '#e5484d', text: 'koronala' },
+    { color: '#3fb950', text: 'sagitala' },
+  ],
+  steps: [
+    {
+      to: { pns: 0.25 },
+      run: [0, 0.3],
+      cam: FRONT19(9, [0, 2.4, -0.1], 0, 4),
+      fit: false,
+      glide: 0.1,
+      dim: ['ornomuina', 'entzefaloa'],
+      names: [
+        { id: 'ornomuina', sub: 'bertikalki (luzetara)' },
+        { id: 'entzefaloa', text: 'Burmuina', sub: 'horizontalki', from: 0.3 },
+      ],
+      note: 'Enbrioian dena luzetara dago; helduan ornomuina bertikalki dago eta burmuina horizontalki',
+    },
+    {
+      to: { hor: 1 },
+      run: [0.1, 0.6],
+      cam: HEAD(3.6, 26, 18),
+      fit: false,
+      glide: 0.08,
+      dim: ['plano-horizontala', 'entzefaloa'],
+      names: [{ id: 'plano-horizontala', p: [0.62, 4.039, 0.187], text: 'Horizontala', sub: 'lurraren paraleloa: gorputzeko zeharkakoa', from: 0.3 }],
+      note: 'Horizontala: lurraren paraleloa; gainerako gorputzeko zeharkako mozketaren baliokidea',
+    },
+    {
+      to: { hor: 0, cor: 1 },
+      run: [0.05, 0.55],
+      cam: HEAD(3.6, 26, 12),
+      fit: false,
+      glide: 0.05,
+      dim: ['plano-koronala', 'entzefaloa'],
+      names: [{ id: 'plano-koronala', text: 'Frontala edo koronala', sub: 'ezkerretik eskuinera', from: 0.3 }],
+      note: 'Frontala edo koronala: ezkerretik eskuinera',
+    },
+    {
+      to: { cor: 0, sag: 1 },
+      run: [0.05, 0.55],
+      cam: HEAD(3.6, 34, 12),
+      fit: false,
+      glide: 0.05,
+      dim: ['plano-sagitala', 'entzefaloa'],
+      names: [{ id: 'plano-sagitala', text: 'Sagitala', sub: 'aurretik atzera, bertikalki', from: 0.3 }],
+      note: 'Sagitala: aurretik atzera, bertikalki',
+    },
+    {
+      to: { sag: 0, axes: 1 },
+      run: [0.05, 0.5],
+      cam: LEFT19(8.6, [0, 2.9, -0.2], 90, 6),
+      fit: false,
+      glide: 0.12,
+      dim: ['ornomuina'],
+      names: [{ id: 'ornomuina', sub: 'dortsala = atzekoa', from: 0.4 }],
+      marks: [
+        { p: 'ax-c-dors', text: 'dortsala (atzekoa)' },
+        { p: 'ax-c-vent', text: 'bentrala (aurrekoa)' },
+      ],
+      note: 'Ornomuinean, orain arte bezala: dortsala atzekoa da eta bentrala aurrekoa',
+    },
+    {
+      cam: LEFT19(4.4, [0, 3.96, -0.02], 90, 6),
+      fit: false,
+      glide: 0.08,
+      dim: ['entzefaloa'],
+      names: [{ id: 'entzefaloa', text: 'Burmuina', sub: 'makurtuta: dortsala goian' }],
+      marks: [
+        { p: 'ax-b-dors', text: 'dortsala (goikoa)' },
+        { p: 'ax-b-vent', text: 'bentrala (behekoa)' },
+      ],
+      note: 'Makurduraren ondorioz, burmuinean dortsala ez da atzekoa, goikoa baizik; bentrala behekoa da',
+      plainNote: 'Burmuinean dortsala ez da atzekoa, goikoa baizik; bentrala behekoa da',
+      plainNames: [
+        { id: 'entzefaloa', text: 'Burmuina', sub: 'dortsala goian' },
+      ],
+      warn: true,
+    },
+    {
+      cam: LEFT19(4.6, [0, 3.98, -0.02], 90, 4),
+      fit: false,
+      glide: 0.05,
+      dim: ['entzefaloa'],
+      names: [{ id: 'entzefaloa', text: 'Burmuina', small: true }],
+      marks: [
+        { p: 'ax-b-ros', text: 'rostrala (frontala)' },
+        { p: 'ax-b-occ', text: 'okzipitala' },
+      ],
+      note: 'Burmuinaren aurrealdea atal rostrala (frontala ere bai) da; atzealdea atal okzipitala, ez kaudala',
+    },
+  ],
+};
+export const Cuts31 = withGeo(poseStage19(specCuts31, build));
+
+export const S_CNS31 = [0, 0.18, 0.4, 0.6, 0.8] as const;
+const specCns31: StageSpec<BodyPose, BodyOpts> = {
+  S: S_CNS31,
+  pose: { ...endPose(specCuts31).pose, axes: 0 },
+  opts: {},
+  site: SITE19.body,
+  arrive: 'Gorputz osora itzuli gara: nerbio sistemaren bi sailkapenak',
+  caption: CAP,
+  key: KEY19.cnsPns,
+  steps: [
+    {
+      to: { pns: 1, axes: 0 },
+      run: [0, 0.2],
+      cam: WHOLE,
+      fit: false,
+      glide: 0.1,
+      names: [
+        { id: 'nerbio-sistema-zentrala', text: 'Kokapena', sub: 'zentrala / periferikoa' },
+        { id: 'nerbio-bagoa', p: [0.13, 2.655, -0.022], text: 'Funtzioa', sub: 'somatikoa / autonomoa', from: 0.3 },
+        { id: 'nerbio-sistema-periferikoa', small: true, from: 0.45 },
+      ],
+      note: 'Bi sailkapen, sistema berarenak: ezin dira batu. Zentralean eta periferikoan badaude somatikoa eta autonomoa',
+    },
+    {
+      cam: TRUNK(9.5, 2.3),
+      fit: false,
+      glide: 0.06,
+      dim: ['nerbio-sistema-zentrala', 'neurokraneoa', 'ornoak'],
+      names: [
+        { id: 'entzefaloa', text: 'Entzefaloa', sub: 'garezurraren barruan' },
+        { id: 'ornomuina', sub: 'bizkarrezurraren barruan', from: 0.2 },
+        { id: 'neurokraneoa', p: [-0.034, 4.365, -0.1], text: 'Kraneoa', small: true, from: 0.45 },
+        { id: 'ornoak', small: true, from: 0.55 },
+      ],
+      note: 'Erdiko nerbio sistema (zentrala): entzefaloa eta ornomuina, jarraiak, hezurrez babestuta; zelulak ez dira erregeneratzen',
+      plainNote: 'Erdiko nerbio sistema (zentrala): entzefaloa eta ornomuina, jarraiak, hezurrez babestuta',
+    },
+    {
+      cam: TRUNK(12, 1.3),
+      fit: false,
+      glide: 0.06,
+      dim: ['nerbio-sistema-periferikoa'],
+      names: [
+        { id: 'nerbio-kranialak', text: 'Nerbio (bikote) kranealak', sub: 'kraneotik' },
+        { id: 'nerbio-espinalak', sub: 'ornomuinetik, bikoteka', from: 0.3 },
+      ],
+      note: 'Nerbio sistema periferikoa: hezurrez babestu gabeko nerbioak. Kraneotik bikote kranealak, ornomuinetik nerbio espinalak',
+    },
+    {
+      cam: FRONT19(5.5, [0.3, 2.3, -0.2], 18, 4),
+      fit: false,
+      glide: 0.06,
+      dim: ['nerbio-espinalak', 'gongoil-errakideoak'],
+      names: [
+        { id: 'nerbio-espinalak', sub: 'eskuinera eta ezkerrera, ornoen arteko zuloetatik' },
+        { id: 'ornomuina', small: true, from: 0.3 },
+        { id: 'gongoil-errakideoak', text: 'Gongoilak', small: true, from: 0.45 },
+      ],
+      note: 'Nerbio espinalak bikoteka ateratzen dira, eskuinera eta ezkerrera, eta gorputz osotik adarkatzen dira',
+    },
+    {
+      cam: WHOLE,
+      fit: false,
+      glide: 0.08,
+      dim: ['nerbio-sareak', 'nerbio-ziatikoa'],
+      names: [
+        { id: 'nerbio-sareak', text: 'Sare zerbikala eta brakiala', sub: 'lepoa, goiko gorputz adarra' },
+        { id: 'nerbio-ziatikoa', sub: 'sare lunbosakrotik', from: 0.35 },
+      ],
+      note: 'Gune batzuetan adarrak nahasten dira sareak eginez, inoiz fusionatu gabe: zerbikala, brakiala, lunbosakroa (nerbio ziatikoa)',
+    },
+  ],
+};
+export const Cns31 = withGeo(poseStage19(specCns31, build));
+
+export const S_VOL31 = [0, 0.16, 0.36, 0.58, 0.78] as const;
+const specVol31: StageSpec<BodyPose, BodyOpts> = {
+  S: S_VOL31,
+  pose: { ...BP0, hand: 1 },
+  opts: {},
+  site: SITE19.body,
+  arrive: 'Gorputz osora itzuli gara: eskutik burmuinera, eta itzuli',
+  caption: CAP,
+  key: [
+    { color: C19.sens, text: 'sentsitiboa (goranzkoa)' },
+    { color: C19.motor, text: 'motorra (beheranzkoa)' },
+  ],
+  steps: [
+    {
+      cam: FRONT19(9, [0.5, 1.6, -0.1], 10, 4),
+      fit: false,
+      glide: 0.08,
+      dim: ['larruazala', 'muskulu-ildaskatuak'],
+      names: [
+        { id: 'larruazala', text: 'Larruazala', sub: 'estimulua: erretzen da' },
+        { id: 'muskulu-ildaskatuak', text: 'Muskulua', sub: 'eskua kentzeko', from: 0.3 },
+      ],
+      note: 'Borondatezko mugimenduak ikasi egiten dira: umeek erretzen direnean eskua kendu behar dela ikasten dute',
+    },
+    {
+      to: { sens: 0.36 },
+      run: [0.05, 0.9],
+      cam: FRONT19(7, [0.6, 1.6, -0.1], 12, 4),
+      fit: false,
+      glide: 0.06,
+      dim: ['neurona-sentsitiboa', 'gongoil-errakideoak', 'larruazala'],
+      names: [
+        { id: 'neurona-sentsitiboa', text: 'Neurona sentsitiboa', sub: 'atzeko sustraitik sartzen da', from: 0.4 },
+        { id: 'gongoil-errakideoak', text: 'Gongoila', sub: 'atzeko sustraian: sentsitiboa bakarrik', small: true, from: 0.45 },
+      ],
+      note: 'Sentsazioa larruazaleko nerbiotik, atzeko sustraitik (sentsitiboa bakarrik) sartzen da ornomuinera',
+    },
+    {
+      to: { sens: 1 },
+      run: [0.05, 0.85],
+      cam: FRONT19(7.5, [0.2, 3.2, -0.1], 8, 4),
+      fit: false,
+      glide: 0.06,
+      dim: ['neurona-sentsitiboa', 'kortex-sentsitiboa'],
+      names: [
+        { id: 'neurona-sentsitiboa', p: [0.053, 3.543, -0.099], text: 'Burmuineraino', small: true, from: 0.3 },
+        { id: 'kortex-sentsitiboa', text: 'Kortex somatosentsitiboa', sub: 'hemen nabaritzen da', from: 0.8 },
+      ],
+      note: 'Axoia luzatuz burmuineraino: goikaldean sinapsiak egin eta informazioa kortex somatosentsitibora iristen da; han nabaritzen dugu',
+    },
+    {
+      to: { motor: 0.45 },
+      run: [0.05, 0.9],
+      cam: HEAD(3.2, 18, 14),
+      fit: false,
+      glide: 0.06,
+      dim: ['kortex-sentsitiboa', 'kortex-motorra', 'motoneurona'],
+      names: [
+        { id: 'kortex-motorra', text: 'Kortex motorra', sub: 'agindua' },
+        { id: 'motoneurona', text: 'Neurona motorra', sub: 'axoia beherantz, gai zuritik', from: 0.5 },
+      ],
+      note: 'Kortex somatosentsitiboak kortex motorrari pasatzen dio informazioa; honek agindua bidaltzen du, axoiak beherantz',
+    },
+    {
+      to: { motor: 1 },
+      run: [0.05, 0.8],
+      cam: FRONT19(9, [0.5, 1.9, -0.1], 10, 4),
+      fit: false,
+      glide: 0.06,
+      dim: ['motoneurona', 'muskulu-ildaskatuak'],
+      names: [
+        { id: 'motoneurona', text: 'Aurreko sustraitik', sub: 'agindu motorra' },
+        { id: 'muskulu-ildaskatuak', text: 'Muskulua', sub: 'eskua kendu', from: 0.6 },
+      ],
+      note: 'Agindu motorra aurreko sustraitik ateratzen da eta muskuluan mugimendua: dena milisegundutan',
+    },
+  ],
+};
+export const Voluntary31 = withGeo(poseStage19(specVol31, build));
+
+// ———————————————————————— class 31 (topic 21): the scenes as its notes go ————————————————————————
+
+export const S_AUTO31 = [0, 0.2, 0.42, 0.64, 0.84] as const;
+const specAuto31: StageSpec<BodyPose, BodyOpts> = {
+  S: S_AUTO31,
+  pose: endPose(specCns31).pose,
+  opts: {},
+  site: SITE19.body,
+  arrive: 'Gorputz bera, orain funtzioaren arabera',
+  caption: CAP,
+  key: KEY19.auto,
+  steps: [
+    {
+      cam: WHOLE,
+      fit: false,
+      glide: 0.05,
+      dim: ['nerbio-espinalak', 'nerbio-sareak', 'nerbio-ziatikoa'],
+      names: [
+        { id: 'nerbio-sareak', text: 'Nerbio sistema somatikoa', sub: 'borondatez mugitzeko: gorputz adarrak, lepoa, burua' },
+        { id: 'nerbio-ziatikoa', small: true, from: 0.4 },
+      ],
+      note: 'Nerbio sistema somatikoa: gauzak borondatez mugitzeko (gorputz adarrak, lepoa, burua…)',
+    },
+    {
+      to: { auto: 1 },
+      run: [0.05, 0.6],
+      cam: TRUNK(8.5, 1.3),
+      fit: false,
+      glide: 0.06,
+      dim: ['nerbio-sistema-begetatiboa', 'bihotza', 'birikak', 'urdaila', 'gernu-maskuria'],
+      names: [
+        { id: 'nerbio-sistema-begetatiboa', text: 'Nerbio sistema autonomoa / begetatiboa', sub: 'borondatetik kanpo: erraiak', from: 0.3 },
+        { id: 'bihotza', small: true, from: 0.5 },
+        { id: 'birikak', small: true, from: 0.55 },
+        { id: 'urdaila', small: true, from: 0.6 },
+      ],
+      note: 'Autonomoa edo begetatiboa: berak bakarrik egiten ditu gauzak, gure borondatetik kanpo; erraiak mugitzen ditu',
+    },
+    {
+      cam: TRUNK(6.6, 1.65, 14),
+      fit: false,
+      glide: 0.06,
+      dim: ['sistema-sinpatikoa', 'kate-sinpatikoa', 'alboko-adarra'],
+      names: [
+        { id: 'kate-sinpatikoa', text: 'Sinpatikoa', sub: 'T1–T12, eremu toraxikoan' },
+        { id: 'alboko-adarra', sub: 'neuronen somak', from: 0.3 },
+        { id: 'sistema-sinpatikoa', p: [0.253, 2.506, -0.21], small: true, from: 0.5 },
+      ],
+      note: 'Sinpatikoa (T1–T12, eremu toraxikoa): estresaren eta emergentziaren sistema; bihotza azkartu, bronkioak zabaldu, begi-nini dilatazioa…',
+    },
+    {
+      cam: TRUNK(10.5, 1.9, -8),
+      fit: false,
+      glide: 0.06,
+      dim: ['sistema-parasinpatikoa', 'nerbio-bagoa', 'entzefalo-enborra'],
+      names: [
+        { id: 'nerbio-bagoa', p: [0.119, 2.654, -0.031], text: 'Parasinpatikoa: entzefaloan', sub: 'bagoa (bikote kraneala)' },
+        { id: 'sistema-parasinpatikoa', text: 'Parasinpatikoa: S2–S4', sub: 'alde sakroa', p: [0.12, -0.3, -0.14], from: 0.35 },
+      ],
+      note: 'Parasinpatikoa (S2–S4 eta entzefaloan): lasaitasunera, egoera basalera itzultzeko; erlaxazioaren sistema',
+      plainNote: 'Parasinpatikoa: lasaitasunera, egoera basalera itzultzeko; erlaxazioaren sistema',
+      plainNames: [
+        { id: 'nerbio-bagoa', text: 'Parasinpatikoa: entzefaloan', sub: 'bagoa (bikote kraneala)' },
+        { id: 'sistema-parasinpatikoa', text: 'Parasinpatikoa: alde sakroa', p: [0.12, -0.3, -0.14], from: 0.35 },
+      ],
+    },
+    {
+      cam: WHOLE,
+      fit: false,
+      glide: 0.08,
+      dim: ['nerbio-sistema-begetatiboa'],
+      names: [
+        { id: 'sistema-parasinpatikoa', p: [0.13, 2.655, -0.022], text: 'Parasinpatikoa', sub: 'bi muturretan' },
+        { id: 'sistema-sinpatikoa', p: [0.241, 2.498, -0.223], text: 'Sinpatikoa', sub: 'tartean', from: 0.3 },
+      ],
+      note: 'Osagarriak dira: parasinpatikoa bi muturretan (garunean eta alde sakroan), sinpatikoa tartean',
+    },
+  ],
+};
+export const Auto31 = withGeo(poseStage19(specAuto31, build));
+
+// ———————————————————————— topic 20 (both classes), 3.2: the parasympathetic way ————————————————————————
+
+/** The two ends of the parasympathetic (the cranial pairs and S2–S4), the vagus to the viscera, intramural synapses. */
+export const S_PARA = [0, 0.24, 0.48, 0.72] as const;
+const specPara: StageSpec<BodyPose, BodyOpts> = {
+  S: S_PARA,
+  pose: { ...endPose(specCns31).pose, auto: 1 },
+  opts: {},
+  site: SITE19.body,
+  arrive: 'Gorputz osoa: nerbio sistema autonomoa',
+  caption: CAP,
+  key: KEY19.auto,
+  steps: [
+    {
+      cam: TRUNK(10.5, 1.9, -8),
+      fit: false,
+      glide: 0.08,
+      dim: ['sistema-parasinpatikoa', 'nerbio-bagoa', 'entzefalo-enborra'],
+      names: [
+        { id: 'nerbio-bagoa', p: [0.147, 2.781, -0.063], text: 'Osagai kraneala', sub: 'bikote kranealak' },
+        { id: 'sistema-parasinpatikoa', text: 'Osagai sakroa: S2–S4', p: [0.12, -0.3, -0.14], from: 0.35 },
+      ],
+      note: 'Parasinpatikoak bi osagai ditu: kraneala (bikote kranealetatik) eta sakroa (S2–S4)',
+    },
+    {
+      to: { face: 1 },
+      run: [0.1, 0.7],
+      cam: FACE(2.8, 22, 6),
+      fit: false,
+      glide: 0.08,
+      dim: ['buruko-gongoil-parasinpatikoak', 'nerbio-begi-eragilea', 'aurpegi-nerbioa'],
+      names: [
+        { id: 'buruko-gongoil-parasinpatikoak', text: 'Bikote kranealetako gongoilak', sub: 'sinapsia: gongoil aurrekoa → ostekoa' },
+        { id: 'nerbio-begi-eragilea', text: 'III', small: true, from: 0.35 },
+        { id: 'aurpegi-nerbioa', text: 'VII', small: true, p: [0.179, 3.6, -0.064], from: 0.45 },
+      ],
+      note: 'Bikote kranealak garunetik gongoil aurreko neurona gisa atera, gongoilean sinapsia; gongoil ostekoek buru eta lepoko egiturak inerbatzen dituzte',
+    },
+    {
+      to: { face: 0 },
+      run: [0, 0.4],
+      cam: TRUNK(8.5, 1.3),
+      fit: false,
+      glide: 0.08,
+      dim: ['nerbio-bagoa', 'urdaila'],
+      names: [
+        { id: 'nerbio-bagoa', text: 'Nerbio bagoa', sub: 'inerbazio parasinpatiko nagusiena' },
+        { id: 'urdaila', text: 'Aurreko eta bitarteko hestea', sub: 'zeharkako kolonaren lehen 2/3-raino', from: 0.35 },
+      ],
+      note: 'Bagoak darama inerbazio parasinpatiko nagusiena: aurreko eta bitarteko hesteen erraiak, zeharkako kolonaren lehen bi herenetaraino; hortik aurrera S2–S4',
+    },
+    {
+      to: { plex: 1 },
+      run: [0.1, 0.6],
+      cam: TRUNK(7.6, 1.5, 4),
+      fit: false,
+      glide: 0.06,
+      dim: ['errai-sareak', 'nerbio-bagoa'],
+      names: [
+        { id: 'errai-sareak', p: [-0.045, 2.521, -0.072], text: 'Erraien inguruko sareak', sub: 'zeharkatu, sinaptatu gabe' },
+        { id: 'nerbio-bagoa', text: 'Sinapsi intramurala', sub: 'erraiaren horman; gongoil ostekoa motza', small: true, from: 0.4 },
+      ],
+      note: 'Gongoil aurreko axoi luzeak sareak sinaptatu gabe zeharkatu eta erraiaren horman egiten dute sinapsia (intramurala); gongoil ostekoa motza',
+    },
+  ],
+};
+export const Para20 = withGeo(poseStage19(specPara, build));

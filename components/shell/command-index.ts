@@ -1,4 +1,5 @@
 import type { WeekDef } from '@/lib/sim/types';
+import { topicNo } from '@/content/topic-no';
 
 /** One row of the command bar: a place to go, or something to do. */
 export interface Command {
@@ -72,10 +73,10 @@ export const ACTIONS: (Command & { sim?: boolean })[] = [
 export function buildIndex(weeks: WeekDef[], structureStages: Map<string, { week: number; stage: string }>, structures: Map<string, { name: string; es?: string; aka?: string[]; definition?: string }>): Command[] {
   const out: Command[] = [];
   for (const w of weeks) {
-    out.push({ id: `g:${w.week}`, group: 'gaiak', title: w.title, sub: w.subtitle, href: `/astea/${w.week}`, week: w.week, also: [`${w.week}. gaia`, `gaia ${w.week}`] });
+    out.push({ id: `g:${w.week}`, group: 'gaiak', title: w.title, sub: w.subtitle, href: `/astea/${w.week}`, week: w.week, also: [`${topicNo(w.week)}. gaia`, `gaia ${w.week}`] });
     for (const s of w.stages) {
       if (s.views.every((v) => v.description === 'Prestatzen')) continue;
-      out.push({ id: `e:${w.week}:${s.id}`, group: 'etapak', title: s.title, sub: `${w.week}. gaia · ${s.day}`, href: `/astea/${w.week}?etapa=${s.id}`, week: w.week, also: s.subtitle ? [s.subtitle] : undefined });
+      out.push({ id: `e:${w.week}:${s.id}`, group: 'etapak', title: s.title, sub: `${topicNo(w.week)}. gaia · ${s.day}`, href: `/astea/${w.week}?etapa=${s.id}`, week: w.week, also: s.subtitle ? [s.subtitle] : undefined });
     }
   }
   for (const [id, def] of structures) {
@@ -84,7 +85,7 @@ export function buildIndex(weeks: WeekDef[], structureStages: Map<string, { week
       id: `s:${id}`,
       group: 'egiturak',
       title: def.name,
-      sub: def.es ? `${def.es}${at ? ` · ${at.week}. gaia` : ''}` : at ? `${at.week}. gaia` : 'Egituren atlasa',
+      sub: def.es ? `${def.es}${at ? ` · ${topicNo(at.week)}. gaia` : ''}` : at ? `${topicNo(at.week)}. gaia` : 'Egituren atlasa',
       href: at ? `/astea/${at.week}?etapa=${at.stage}&egitura=${id}` : `/egiturak?egitura=${id}`,
       week: at?.week,
       also: [...(def.aka ?? []), ...(def.es ? [def.es] : [])],

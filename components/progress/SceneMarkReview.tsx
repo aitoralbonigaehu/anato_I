@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 import { getWeek, nameOf } from '@/content/registry';
 import { useSceneMarks } from '@/lib/study/scene-marks';
 import p from './aurrerapena.module.css';
+import { topicNo } from '@/content/topic-no';
 
 const SECTION = 'izenak-errepasatu';
 
@@ -51,7 +52,7 @@ export function SceneMarkReview() {
                   {stage ? (
                     <Link href={`/astea/${mark.week}?${query}`} prefetch={false}>{name} <span aria-hidden>→</span></Link>
                   ) : <strong>{name}</strong>}
-                  <small>{mark.week}. gaia · {stage?.title ?? 'Eszena ez dago erabilgarri'}</small>
+                  <small>{topicNo(mark.week)}. gaia · {stage?.title ?? 'Eszena ez dago erabilgarri'}</small>
                 </div>
               </li>
             );

@@ -7,6 +7,7 @@ import { loadPracticePool, pickPractice, wantsPractice } from './practice';
 import { CONFIDENT, confident, describeHere, factsFrom, GO, isFormationQuestion, nearestFrom, search, toTarget, vocabulary, wantsPlace, withFrom, type Hit } from './search';
 import { askingWord, detectLang, fold, keyWords, match, queryTokens, spell, tokens, topicIn, withoutTopic, type Lang } from './text';
 import type { KimuAsk, KimuHere, KimuModelReply, KimuReply, KimuTurn } from './types';
+import { topicNo } from '@/content/topic-no';
 
 /** "Explain this", "zer da hau?": the question is about what is on screen, not about a named thing. */
 const DEICTIC = /\b(esto|esta|este|eso|aqu[ií]|ahora|hau|hori|hemen|orain|this|here|now)\b/i;
@@ -110,7 +111,7 @@ function practiceReply(question: string, here: KimuHere | null, answers: Answers
   const c = PRACTICE[lang];
   if (!items.length) return { reply: c.none, targets: [], sources: [], followups: [], mood: 'curious', source: 'offline' };
   const stage = here && weeks.find((w) => w.week === here.week)?.stages.find((s) => s.id === here.stage);
-  const scopeName = concept ? structures.get(concept)?.name : items.every((q) => q.week === items[0].week && q.stageId === here?.stage) && stage ? stage.title : here ? `${here.week}. gaia` : null;
+  const scopeName = concept ? structures.get(concept)?.name : items.every((q) => q.week === items[0].week && q.stageId === here?.stage) && stage ? stage.title : here ? `${topicNo(here.week)}. gaia` : null;
   return { reply: c.start(scopeName ?? c.all), targets: [], sources: [], practice: items, followups: [], mood: 'happy', source: 'offline' };
 }
 
@@ -152,7 +153,7 @@ export async function askKimu(question: string, history: KimuTurn[], here: KimuH
   const step = aboutStep ? stepReply(here!, lang) : null;
 
   // "mediastinoa, 7. gaian": the topic is where to look; the rest is what to look for.
-  const asked = topicIn(question);
+  const asked = topicIn(question, here?.week);
   const week = asked ?? here?.week;
   const full = retrievalQuestion(question, history, here);
   const rq = withoutTopic(full);

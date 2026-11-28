@@ -18,8 +18,9 @@ import revised
 import audit_02_12
 import audit_13_23
 import audit_24_35
+import v1127
 
-CORRECTIONS = (revised, audit_02_12, audit_13_23, audit_24_35)
+CORRECTIONS = (revised, audit_02_12, audit_13_23, audit_24_35, v1127)
 
 sys.stdout.reconfigure(encoding="utf-8")
 
@@ -29,6 +30,8 @@ MAX_SIDE = 1600
 # Page-specific fixes, in PDF points (72/inch).
 CROP = {7: (None, None, 380, None)}  # legend bullets sit inside the figure image on p.7
 PAINT_OUT = {12: [(197, 468, 221, 492)]}  # a crossed-out answer box printed over the figure
+# Pictures that are not part of the figure: the white-out pasted over p32's legend (2026-11-27).
+NOT_FIGURE = {32: [(96, 602, 290, 693)]}
 # Label n's arrow really belongs to label m (the arrow joins two labels): use its far end.
 REASSIGN = {21: [(2, 1)]}
 DROP_TARGETS = {15: {3: [1]}}  # a plain bracket line between 2 and 3, not an arrow
@@ -106,6 +109,7 @@ def page_geometry(page):
     for info in page.get_image_info(xrefs=True):
         r = fitz.Rect(info["bbox"])
         if is_overlay(r, page): continue
+        if any(abs(r.x0 - b[0]) + abs(r.y0 - b[1]) + abs(r.x1 - b[2]) + abs(r.y1 - b[3]) < 4 for b in NOT_FIGURE.get(page.number + 1, [])): continue
         if r.get_area() / page.rect.get_area() > 0.03:
             big.append(r & page.rect)
     area = fitz.Rect(big[0])
@@ -310,10 +314,12 @@ def main():
         prefix = f"p{pg:02d}:"
         revised_areas = {k: v for k, v in revised_areas.items() if not k.startswith(prefix)}
         for correction in CORRECTIONS:
-            for key, label, targets in correction.REVISED_TARGETS.get(pg, []):
+            for key, label, targets, *extra in correction.REVISED_TARGETS.get(pg, []):
                 if key not in items:
-                    items[key] = {"id": key, "n": 12, "tag": "12"} if key == "orno-gorputza" else {"n": key}
+                    items[key] = {"id": key, "n": 12, "tag": "12"} if key == "orno-gorputza" else {"id": key} if isinstance(key, str) else {"n": key}
                 e = items[key]
+                if extra:
+                    e.update(extra[0])
                 if label is not None:
                     e["label"] = reference_point(label)
                 e["targets"] = [reference_point(t) for t in targets]

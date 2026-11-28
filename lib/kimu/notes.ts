@@ -12,6 +12,7 @@ import { NOTES } from '@/content/notes';
 import { notesOf, sentenceAnchors, sentenceText, type NotesBlock } from '@/content/notes-text';
 import { weeks } from '@/content/registry';
 import { droppedAsking, match, queryTokens, spell, tokens } from './text';
+import { topicNo } from '@/content/topic-no';
 
 export interface NotesSentenceRef {
   id: string;
@@ -392,7 +393,7 @@ export function joinBest(h: NotesHit): string {
 const clip = (s: string, n: number) => (s.length <= n ? s : `${s.slice(0, s.lastIndexOf(' ', n - 1) > n * 0.6 ? s.lastIndexOf(' ', n - 1) : n - 1).trimEnd()}…`);
 
 /** "7. gaia · 3.1 Diafragmaren eraketan…" */
-export const refOf = (p: Passage) => `${p.week}. gaia${p.section && p.section !== 'intro' ? ` · ${p.section}` : ''}${p.title ? ` ${p.title}` : ''}`;
+export const refOf = (p: Passage) => `${topicNo(p.week)}. gaia${p.section && p.section !== 'intro' ? ` · ${p.section}` : ''}${p.title ? ` ${p.title}` : ''}`;
 
 /** The heading as printed, in sentence case and without its number ("3.1. DIAFRAGMAREN…" → "Diafragmaren…"). */
 export function headingOf(p: Passage): string {

@@ -6,6 +6,7 @@ import { getWeek } from '@/content/registry-lite';
 import { lerp, seg } from '@/lib/sim/anim';
 import { useLastPlace } from '../progress';
 import { cleavageFrame, cleavageStep, ZONA } from './cleavage';
+import { topicNo } from '@/content/topic-no';
 
 /** Seen this session (sessionStorage): the opening does not come back until the browser is reopened. */
 export const INTRO_KEY = 'enbrioatlas:intro';
@@ -366,7 +367,7 @@ export function Intro({ onDone, onOut, full: forceFull }: { onDone: () => void; 
 
   // Returning: a word of welcome and where they left off.
   const lastStage = lastWeek?.stages.find((x) => x.id === last?.stage);
-  const welcome = full === false ? (lastWeek ? `Ongi etorri berriro · ${lastStage ? `${lastStage.title}, ` : ''}${lastWeek.week}. gaia` : 'Ongi etorri berriro') : 'Giza garapena, zelulaz zelula';
+  const welcome = full === false ? (lastWeek ? `Ongi etorri berriro · ${lastStage ? `${lastStage.title}, ` : ''}${topicNo(lastWeek.week)}. gaia` : 'Ongi etorri berriro') : 'Giza garapena, zelulaz zelula';
 
   // The iris opens round the mark and travels with it to the bar: the logo pulls the page open behind it.
   const vw = geo?.vw ?? 1440;

@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { appearances, structures } from '@/content/registry';
 import { categoryColor, categoryLabel } from '@/lib/sim/palette';
 import { IconClose, IconSearch } from './icons';
+import { topicNo } from '@/content/topic-no';
 
 const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
@@ -65,7 +66,7 @@ export function Glossary({ onClose, onPick }: GlossaryProps) {
                     {first && (
                       <>
                         <br />
-                        {first.week.week}. gaia · {first.stage.day}
+                        {topicNo(first.week.week)}. gaia · {first.stage.day}
                       </>
                     )}
                   </span>

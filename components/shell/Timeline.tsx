@@ -38,6 +38,7 @@ import { categoryColor } from '@/lib/sim/palette';
 import { LandFoot, LandNav } from './LandNav';
 import { IconCheck, IconNext, IconPrev, IconRestart } from './icons';
 import './timeline.css';
+import { topicNo } from '@/content/topic-no';
 
 /** A notes sentence a milestone cites, resolved on the server (the notes text is not shipped to the page). */
 export interface Source {
@@ -673,7 +674,7 @@ export function Timeline({ sources, initial }: { sources: Record<string, Source>
             {at && view && (
               <figcaption>
                 <span>
-                  <b>{at.week}. gaia</b> · {at.stage.title}
+                  <b>{topicNo(at.week)}. gaia</b> · {at.stage.title}
                 </span>
                 <span className="tl-fig-view">{view.label}</span>
                 <Link className="btn small primary tl-fig-go" href={simHref(at)}>
@@ -784,4 +785,4 @@ export function Timeline({ sources, initial }: { sources: Record<string, Source>
 }
 
 /** For Chronicle: the topic a key date belongs to, with its title (derived from the registry). */
-export const topicTitle = (week: number) => getWeek(week)?.title ?? `${week}. gaia`;
+export const topicTitle = (week: number) => getWeek(week)?.title ?? `${topicNo(week)}. gaia`;

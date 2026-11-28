@@ -449,7 +449,6 @@ export const structures16: StructureDef[] = [
     color: LIG,
     definition: 'Obulutegitik gorantz, paretara irteten den lotailua.',
     location: 'Obarioaren goiko polotik paretara.',
-    caution: '4.2 atalak «obarioaren euspen lotailua: obariotik uterora» dio; obariotik uterora doana lotailu utero-obarikoa (berariazkoa) da.',
     related: ['lotailu-utero-obarikoa', 'obarioa'],
   },
   {
@@ -460,8 +459,8 @@ export const structures16: StructureDef[] = [
     category: 'anatomia',
     color: LIG,
     definition: 'Uteroa eta obarioa lotzen dituen lotailua; gubernakuluaren atal batetik dator.',
-    location: 'Obariotik umetokiaren gorputzera.',
-    origin: 'Gubernakulua.',
+    location: 'Obariotik uteroaren gorputzeraino.',
+    origin: 'Gubernakulua (4.2).',
     related: ['obarioaren-euspen-lotailua', 'uteroaren-lotailu-biribila', 'gubernakulua'],
   },
   {

@@ -22,6 +22,7 @@ import type { Orientation, SceneComponent } from '@/lib/sim/types';
 // Prewarm off-thread 3D sculpted meshes so stepping through a tree never hits a loading spinner.
 import { warmGeo } from '@/lib/three-d/geo-client';
 import styles from './VisualDerivatives.module.css';
+import { topicNo } from '@/content/topic-no';
 
 const subscribeNothing = () => () => {};
 
@@ -745,7 +746,7 @@ export function VisualDerivatives({ week, taughtOnly }: VisualDerivativesProps) 
                 {target && (
                   <>
                     <span className={styles.stageBadge}>
-                      {target.week}. gaia · {target.stageTitle}
+                      {topicNo(target.week)}. gaia · {target.stageTitle}
                     </span>
                     {target.stagePeriod && <span className={styles.stagePeriod}>{target.stagePeriod}</span>}
                   </>

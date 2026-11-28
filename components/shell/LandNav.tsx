@@ -10,6 +10,7 @@ import { BarScroll } from './BarScroll';
 import { NewsLink } from './NewsLink';
 import { ProgressKey } from '@/components/progress/ProgressKey';
 import { WelcomeLink } from '@/components/onboarding/Welcome';
+import { LAST_TOPIC_NO } from '@/content/topic-no';
 
 /** A week whose only scenes are placeholders is still being prepared. */
 export const isWip = (w: (typeof weeks)[number]) => w.stages.every((s) => s.views.every((v) => v.description === 'Prestatzen'));
@@ -106,7 +107,7 @@ export function LandFoot({ children }: { children?: ReactNode }) {
       </div>
       <div className="foot-base">
         <p>
-          Iturria: Giza Anatomia I ikasgaiko apunteak (1.–{weeks.length}. gaiak) eta haietako irudiak (Langman). Simulagailu honek ez du ordezkatzen irakaslearen irizpidea.
+          Iturria: Giza Anatomia I ikasgaiko apunteak (1.–{LAST_TOPIC_NO}. gaiak) eta haietako irudiak (Langman). Simulagailu honek ez du ordezkatzen irakaslearen irizpidea.
         </p>
         {children}
       </div>

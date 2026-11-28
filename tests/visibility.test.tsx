@@ -33,6 +33,8 @@ const ctx: SceneContextValue = {
  */
 const GONE: Record<string, string> = {
   '19/metentzefaloa/6/ezpain-erronboideak': 'erdian fusionatu eta garuntxo bihurtzen dira urrats honetan (hasieran izendatuta)',
+  '20/zubia-garuntxoa/6/ezpain-erronboideak': 'erdian fusionatu eta garuntxo bihurtzen dira urrats honetan (hasieran izendatuta)',
+  '22/garuntxoa/2/ezpain-erronboideak': 'erdian fusionatu eta garuntxo bihurtzen dira urrats honetan (hasieran izendatuta)',
   '17/josturak-fontanelak/4/atzeko-fontanela': 'urrats honetan ixten da (hasieran izendatuta)',
   '17/josturak-fontanelak/5/aurreko-fontanela': 'urrats honetan ixten da (hasieran izendatuta)',
   '17/faringe-arkuak/3/bosgarren-arkua': 'agertu eta endekatzen da urrats honetan (bira-irudian izendatuta)',
@@ -74,6 +76,18 @@ const GONE: Record<string, string> = {
 const MENTION_ONLY: Record<string, string> = {
   '19/garuneko-meningeak/2/ornomuina': 'garuna eta ornomuina alderatzen dira: ornomuineko meningeak 6. etapan ikusi dira',
   '19/garuneko-meningeak/4/ornomuina': '"bai garunean bai ornomuinean": ornomuina 6. etapan ikusi da',
+  '21/garuneko-meningeak/2/ornomuina': 'garuna eta ornomuina alderatzen dira: ornomuineko meningeak aurreko etapan ikusi dira',
+  '21/garuneko-meningeak/4/ornomuina': '"bai garunean bai ornomuinean": ornomuina aurreko etapan ikusi da',
+  '20/garun-ornomuin/2/gai-grisa': 'garunaren kanpoko geruza "Burmuinean: gai grisa kanpoan" izenez (garun hemisferioetan); gai grisaren zatia ornomuinekoa da',
+  '22/garun-ornomuin/2/gai-grisa': 'garunaren kanpoko geruza "Burmuinean: gai grisa kanpoan" izenez (garun hemisferioetan); gai grisaren zatia ornomuinekoa da',
+  '20/erraboila/1/ornomuina': 'lotura azaltzeko: ornomuina hurrengo urratsean izendatuta',
+  '22/erraboila/1/ornomuina': 'lotura azaltzeko: ornomuina hurrengo urratsean izendatuta',
+  '20/dientzefaloa/1/prosentzefaloa': 'jatorria aipatzen da: xixkua 19. gaian (burmuina); hemen bere eratorriak',
+  '22/dientzefaloa/1/prosentzefaloa': 'jatorria aipatzen da: xixkua 19. gaian (burmuina); hemen bere eratorriak',
+  '20/hipofisia/4/estomodeoa': 'jatorria aipatzen da: estomodeoa 2. urratsean izendatuta',
+  '22/hipofisia/4/estomodeoa': 'jatorria aipatzen da: estomodeoa 2. urratsean izendatuta',
+  '22/zubia/1/erraboila': '"erraboiletik gorantz": erraboila aurreko etapan, zeharkako mozketa honen azpian',
+  '22/zubia/4/garuntxoa': '"sabaian zerebeloa eratuko da": hurrengo etapan eratzen da',
   '19/borondatezko-mugimenduak/5/kortex-motorra': 'kortex motorra aurreko urratsean izendatu da; hemen bere axoiaren bidea jarraitzen da ornomuinean behera, kortexa irudiaz kanpo dagoela',
   '19/aktu-erreflexua/4/motoneurona': 'interneuronek neurona motorrak aktibatzen dituztela esaten da: neurona motorra eta haren axoia hurrengo urratsean pizten dira',
   '19/bentrikuluak/6/erronbentzefaloa': 'xixkuaren izena (erronbentzefaloa) bentrikuluaren jatorria esateko: helduaren garunean bere eratorriak daude (zubia, garuntxoa, erraboila), ez xixkua',

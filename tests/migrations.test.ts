@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { MIGRATIONS, migrationIds, sourceIds, flowIds } from '@/content/migrations';
 import { getWeek, structures, weeks } from '@/content/registry';
+import { topicNo } from '@/content/topic-no';
 
 describe('migration maps (Eratorriak, topics 7+)', () => {
   it('uses only structures that exist', () => {
@@ -9,8 +10,10 @@ describe('migration maps (Eratorriak, topics 7+)', () => {
   });
 
   it('covers every built topic from 7 on, allowing schemes before their simulator and checking stages when built', () => {
+    // A class's version of a topic (content/topic-no.ts) shares the derivative trees of the topic's other version.
     const built = weeks.map((w) => w.week).filter((w) => w >= 7);
-    expect(MIGRATIONS.map((t) => t.week)).toEqual(expect.arrayContaining(built));
+    const covered = new Set(MIGRATIONS.map((t) => topicNo(t.week)));
+    expect(built.filter((w) => !covered.has(topicNo(w)))).toEqual([]);
     for (const t of MIGRATIONS) {
       const week = getWeek(t.week);
       const stages = new Set(week?.stages.map((s) => s.id));

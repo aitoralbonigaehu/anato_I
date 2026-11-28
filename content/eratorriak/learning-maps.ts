@@ -68,7 +68,6 @@ const GROUPS: Group[] = [
   [19, 'bideak', 'Bideak: sentsibilitatea, erreflexuak eta mugimenduak', ['sentsibilitatea-erreflexua-19', 'borondatezko-bidea-19', 'mugimendu-automatikoak-19']],
   [19, 'entzefaloa', 'Entzefaloa: xixkuak, barrunbeak eta atalak', ['prosentzefaloa-19', 'mesentzefaloa-19', 'erronbentzefaloa-19']],
   [19, 'babesa', 'Babesa: meningeak, LZR eta klinika', ['meningeak-19', 'likido-zefalorrakideoa-19', 'puntzioa-epidurala-19']],
-  [19, 'bikoteak', '12 bikote kranealak', ['bikote-kranealak-19']],
   [20, 'enborra', 'Entzefalo-enborra', ['entzefalo-enborraren-eratorriak-20', 'bikote-kranealen-irteerak-20']],
   [20, 'garuntxoa', 'Garuntxoa: ezpain erronboideak, bermisa eta hemisferioak', ['garuntxoaren-jatorria-20']],
   [20, 'dientzefaloa', 'Dientzefaloa eta hipofisiaren bi jatorriak', ['dientzefaloaren-eratorriak-20', 'hipofisiaren-bi-jatorriak-20']],

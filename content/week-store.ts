@@ -28,6 +28,9 @@ const LOAD: Record<number, () => Promise<WeekDef>> = {
   17: () => import('./weeks/week17').then((m) => m.week17),
   18: () => import('./weeks/week18').then((m) => m.week18),
   19: () => import('./weeks/week19').then((m) => m.week19),
+  20: () => import('./weeks/week20').then((m) => m.week20),
+  21: () => import('./weeks/week21').then((m) => m.week21),
+  22: () => import('./weeks/week22').then((m) => m.week22),
 };
 
 const loaded = new Map<number, WeekDef>();

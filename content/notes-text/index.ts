@@ -19,6 +19,9 @@ import { w16 } from './w16';
 import { w17 } from './w17';
 import { w18 } from './w18';
 import { w19 } from './w19';
+import { w20 } from './w20';
+import { w21 } from './w21';
+import { w22 } from './w22';
 
 /** `u`: set in blue in the original (topics 16+): not taught this year; the reader may skip it. */
 export interface NotesPart { text: string; b?: boolean; i?: boolean; u?: boolean }
@@ -30,7 +33,7 @@ export interface NotesBlock {
   sentences: NotesSentence[];
 }
 export interface NotesAnchor { week: number; stageId: string; beat: number }
-const documents: Record<number, NotesBlock[]> = { 1: w1, 2: w2, 3: w3, 4: w4, 5: w5, 6: w6, 7: w7, 8: w8, 9: w9, 10: w10, 11: w11, 12: w12, 13: w13, 14: w14, 15: w15, 16: w16, 17: w17, 18: w18, 19: w19 };
+const documents: Record<number, NotesBlock[]> = { 1: w1, 2: w2, 3: w3, 4: w4, 5: w5, 6: w6, 7: w7, 8: w8, 9: w9, 10: w10, 11: w11, 12: w12, 13: w13, 14: w14, 15: w15, 16: w16, 17: w17, 18: w18, 19: w19, 20: w20, 21: w21, 22: w22 };
 export const notesOf = (week: number): NotesBlock[] => documents[week] ?? [];
 export const sentenceText = (s: NotesSentence) => s.parts.map(p => p.text).join('');
 export const blockText = (b: NotesBlock) => b.sentences.map(sentenceText).join('');
@@ -85,7 +88,13 @@ for (const week of weeks) for (const stage of week.stages) stage.beats.forEach((
 
 /** Audited exceptions where a scene teaches detail absent from this ORIGINAL PDF. */
 export const NOTES_EXCEPTIONS: Record<string, { sections?: string[]; reason: string }> = {
-  '19/erraboila/0': { sections: ['10'], reason: '10. atalaren izenburuak (burmuinaren atalak, mutur kaudaletik; gai grisa kanpoan, gai zuria barnean) 10.1eko lehen urratsa irekitzen du; 10. atalak ez du bere etaparik.' },
+  '20/entzefalo-enborra': { sections: ['2', '3.2'], reason: '2. atalaren sarrera (kaudaletik kranealera) eta 3.2ko laburpena (enborraren 3 osagaiak) enborraren etapan irakurtzen dira; 2. atalak ez du bere etaparik.' },
+  '22/entzefalo-enborra': { sections: ['2'], reason: '2. atalaren sarrera (kaudaletik kranealera) enborraren lehen urratsean irakurtzen da; 2. atalak ez du bere etaparik.' },
+  '22/mesentzefaloa': { sections: ['2.4'], reason: 'Gai beltzeko neurona dopaminergikoak (2.4, oinaldeko nukleoak) gai beltzarekin batera erakusten dira mesentzefaloan.' },
+  '21/mozketak-ardatzak': { sections: ['1.2.1'], reason: '1.2.1 Ikuspegi aldaketak: aurkibidean ez dagoen azpiatala, mozketa moten jarraipena.' },
+  '21/ornomuin-plakak': { sections: ['6'], reason: '"4. astean oraindik hodi neurala, ez ornomuina" oharra (6. atalaren amaieran) ornomuinaren garapenean irakurtzen da.' },
+  '21/bost-xixkuak': { sections: ['5.1'], reason: 'Tolespenak (zefalikoa, zerbikala, zubikoa) apunteetan 5.1 azpian idatzita daude; bost xixkuekin erakusten dira.' },
+  '21/kortexa': { sections: ['5.1'], reason: '5.1 Mugimendu erreflexuak: kortexera iritsi gabe; kortexaren funtzioekin alderatzen da.' },
   '17/sarrera': { sections: ['intro', '2'], reason: 'Apunteen sarrera zenbakirik gabea da, 1. atalaren aurretik; gaiaren lehen etapak irakurtzen du, aurkibideko 2. atalaren izenburuarekin batera (gaiaren bi zatiak aurkezteko).' },
   '17/arkuen-mapa': { sections: ['2', '2.2.1', '2.2.2', '2.2.3', '2.3.1', '2.3.2', '2.3.3', '2.4.1', '2.4.2', '2.4.3', '2.5', '2.6.1', '2.6.2', '2.6.3'], reason: '2. ataleko azken laburpena: arku bakoitzaren nerbioa, kartilagoak eta muskuluak batera, beren ataletatik.' },
   '18/mihiaren-gorputza/0': { sections: ['2'], reason: '2. atalaren sarrerak (mihiaren jatorria) 2.1eko lehen urratsa irekitzen du; 2. atalak ez du bere etaparik.' },

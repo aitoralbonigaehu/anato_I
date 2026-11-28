@@ -225,8 +225,9 @@ export const GRID_19: GridScheme[] = [
   },
   {
     id: 'bikote-kranealak-matrizea-19',
-    week: 19,
-    section: '2 · 11',
+    // Class 32's notes moved the cranial pairs to their topic 20 (2.1.4): the table goes with its stage.
+    week: 20,
+    section: '2.1.4',
     title: '12 bikote kranealak: funtzioa eta berezitasunak',
     lead: 'Aurretik atzera ordenatuta, begiko mugimenduak eta osagai parasinpatikoak bereizita.',
     stage: 'bikote-kranealak',

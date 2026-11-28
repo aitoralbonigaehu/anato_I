@@ -308,10 +308,10 @@ const stages: StageDef[] = [
       },
       {
         at: S5[5],
-        notes: ['w16/3.1/p10/s2-s3', 'w16/3.1/p12/s1'],
+        notes: ['w16/3.1/p10/s2-s3', 'w16/3.1/p12/s1', 'w16/3.1/p13/s1-s3'],
         idea: 'Pubertaroan kordoiak bakuolizatu: hodixka seminiferoak. AMH (Sertoli): hodi paramesonefrikoa endekatu (bi aztarna); hodi mesonefrikoa geratu.',
         key: 'Bi hormona, bi efektu: testosteronak hodi mesonefrikoa mantentzen du, AMHk hodi paramesonefrikoa endekatzen du.',
-        text: 'Barrabil kordoiak trinkoak dira pubertarora arte. Pubertaroan bakuolizatu (hustu) egiten dira eta hodi bihurtzen dira: hodixka seminiferoak, espermatozoideen ekoizpenaren lekua. Sertoli zelulen hormona antimüllerianoaren eraginez, hodi paramesonefrikoa endekatu egiten da, baina ez osoki: funtziorik gabeko bi aztarna geratzen dira (arazo klinikoak sor ditzakete): prostataren utrikulua, prostata barruko zakuondo txikia, eta barrabil apendizea. Hodi mesonefrikoa geratu eta garatzen da.',
+        text: 'Barrabil kordoiak trinkoak dira pubertarora arte. Pubertaroan bakuolizatu (hustu) egiten dira eta hodi bihurtzen dira: hodixka seminiferoak, espermatozoideen ekoizpenaren lekua. Sertoli zelulen hormona antimüllerianoaren eraginez, hodi paramesonefrikoa endekatu egiten da, baina ez osoki: funtziorik gabeko bi aztarna geratzen dira (arazo klinikoak sor ditzakete): prostataren utrikulua, prostata barruko zakuondo txikia, eta barrabil apendizea. Apendizea batzuetan bihurtu (tortzionatu) egiten da eta mina ematen du; ez da barrabilaren beraren bihurketa, eta farmakoekin kentzen da. Hodi mesonefrikoa geratu eta garatzen da.',
         focus: ['hodixka-seminiferoak', 'hodi-paramesonefrikoa', 'hodi-mesonefrikoa'],
         exam: 'Pubertaroan kordoiak bakuolizatu → hodixka seminiferoak. AMH (Sertoli) → hodi paramesonefrikoa endekatu, ez osoki: prostataren utrikulua + barrabil apendizea.',
         view: '3d',
@@ -348,7 +348,7 @@ const stages: StageDef[] = [
       },
       {
         at: S6[1],
-        notes: ['w16/3.1/p13/s1-s2'],
+        notes: ['w16/3.1/p14/s1-s2'],
         idea: 'Semen xixkua eta hodi deferentea prostataren bidez uretrara; barrabil trenkada.',
         text: 'Irudi helduan ikusten da semen xixkuak hodi deferentearekin batera prostataren bidez uretrara isurtzen duela, eta hortik likido seminala kanporatzen dela. Barrabilen artean trenkada bat dago: barrabil bakoitza bere atalean geratzen da.',
         focus: ['semen-xixkua', 'hodi-deferentea', 'prostata'],
@@ -905,7 +905,7 @@ const stages: StageDef[] = [
       },
       {
         at: S14[3],
-        notes: ['w16/4/p8/s1-s4'],
+        notes: ['w16/4/p7/s1-s4'],
         idea: 'Emeetan obulutegiak hodi paramesonefrikoek arrastatu: atzeko paretatik pelbisera, hodien atzera.',
         text: 'Emeen kasua: hodi paramesonefrikoek lehen ikusitako bidea egitean, obulutegiak ere arrastatzen dituzte. Arretan bezala, abdomeneko atzeko paretan garatzen dira, eta gero pelbisera jaitsi behar dute: giltzurrunak pelbisetik abdomenera igotzean, gonadek kontrako prozesua egiten dute. Horrela, gonadak hodi paramesonefrikoen alde medialeko aurrean edo alboan egotetik, atzeko aldean egotera pasatzen dira.',
         focus: ['obarioa', 'falopioren-tronpak'],
@@ -1006,7 +1006,7 @@ const stages: StageDef[] = [
     beats: [
       {
         at: S16[0],
-        notes: ['w16/4.2/p3/s1-s2'],
+        notes: ['w16/4.2/p3/s1-s3'],
         recall: ['gubernakulua'],
         idea: 'Iztai hodia hasi eta ia desagertu; obulutegiak pelbisera (bide motzagoa); gubernakulua pelbis hezurraren aurretik ezpain handien larruazalera.',
         text: 'Hasieran iztai hodia eratzen hasten da, baina obarioak barruan geratzen direnez desagertu egiten da, eta ia ez da existitzen. Obulutegiek ere abdomenetik pelbiserako bidea egiten dute, nahiz eta bide hau motzagoa den. Emakumeetan gubernakulua pelbis hezurraren aurretik igaro eta ezpain handien larruazalera lotzen da; ez da horrenbeste txikitzen.',
@@ -1016,11 +1016,10 @@ const stages: StageDef[] = [
       {
         at: S16[1],
         notes: ['w16/4.2/p4/s1', 'w16/4.2/p5/s1', 'w16/4.2/p6/s1'],
-        idea: 'Gubernakulua → bi lotailu: obariotik uterora (utero-obarikoa) eta uteroaren lotailu biribila.',
-        text: 'Aurrerago gubernakulua endekatu egiten da, eta lehen gubernakulua zena bi lotailu bihurtzen da: obariotik uterora doana, eta uteroaren lotailu biribila, uteroaren gorputzetik ezpain nagusietara (larruazalera).',
+        idea: 'Gubernakulua → bi lotailu: lotailu utero-obarikoa (obariotik uteroaren gorputzeraino) eta uteroaren lotailu biribila.',
+        text: 'Aurrerago gubernakulua endekatu egiten da, eta lehen gubernakulua zena bi lotailu bihurtzen da: lotailu utero-obarikoa, obariotik uteroaren gorputzeraino, eta uteroaren lotailu biribila, uteroaren gorputzetik ezpain nagusietara (larruazalera).',
         focus: ['lotailu-utero-obarikoa', 'uteroaren-lotailu-biribila'],
         exam: 'Emeetan gubernakulua → lotailu utero-obarikoa + uteroaren lotailu biribila.',
-        caution: 'Apunteek lehen lotailuari «obarioaren euspen lotailua: obariotik uterora» deitzen diote. 3.4 atalean euspen lotailua paretara doa; obariotik uterora doana lotailu utero-obarikoa (berariazkoa) da.',
         view: '3d',
       },
       {
@@ -1045,7 +1044,6 @@ const stages: StageDef[] = [
       'Gubernakulua → lotailu utero-obarikoa + uteroaren lotailu biribila.',
       'Iztai hodia itxita eta txikiagoa: lotailu biribila bakarrik.',
     ],
-    cautions: ['«Obarioaren euspen lotailua: obariotik uterora» (4.2) = lotailu utero-obarikoa; euspen lotailua paretara doa (3.4).'],
   },
 
   // ———————————————————————————— 5. Kanpo genitalen desberdindu gabeko garaia ————————————————————————————
@@ -1199,9 +1197,9 @@ const stages: StageDef[] = [
       },
       {
         at: S19[2],
-        notes: ['w16/6.2/p4/s1-s2'],
+        notes: ['w16/6.2/p4/s1-s3'],
         idea: 'Tolespen ezpaineskrotalak loditu: eskroto goragunea → eskroto poltsa; kanpoan eskroto errafea.',
-        text: 'Horrez gain, tolespen ezpaineskrotalak loditu egiten dira: eskroto goragunea eta gero eskroto poltsa eratzen dute. Bi poltsak barnetik trenkadatuta daude; kanpotik trenkada ez da ikusten, baina utzitako hastapena bai: ildo horri eskroto errafea deritzo.',
+        text: 'Horrez gain, tolespen ezpaineskrotalak loditu egiten dira: eskroto goragunea eta gero eskroto poltsa eratzen dute. Bi poltsak barnetik trenkadatuta daude; kanpotik trenkada ez da ikusten, baina utzitako hastapena bai: ildo horri eskroto errafea deritzo. Gauza bera gertatzen da uretra ildoa ixtean: zakilaren behealdean marka bat geratzen da, zakil errafea.',
         focus: ['eskrotoa', 'eskroto-errafea'],
         exam: 'Tolespen ezpaineskrotalak → eskrotoa; eskroto errafea.',
         view: '3d',

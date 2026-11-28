@@ -261,7 +261,6 @@ export const MAP16_NODES: MapNode[] = [
     sex: 'f',
     stage: 'jaisketa-emeak',
     what: 'Obarioa uterora lotzen du (obarioaren berariazko lotailua).',
-    kontuz: '4.2-k "obarioaren euspen lotailua: obariotik uterora" deitzen dio; obariotik uterora doana hau da, ez paretara doan euspen lotailua.',
   },
   { id: 'uteroaren-lotailu-biribila', sec: '4.2', layer: 'meso', at: 4, sex: 'f', stage: 'jaisketa-emeak', what: 'Uteroaren gorputzetik ezpain nagusietara (larruazaleraino), iztai hoditik pasatuz.' },
 
@@ -600,7 +599,7 @@ export const MAP16_TRAILS: MapTrail[] = [
       { id: 'iztai-hodia', moment: 4, sex: 'm', line: '…luzapenaren hormak estututa: iztai hodia (herniak).' },
       { id: 'geruza-baginala', moment: 4, sex: 'm', line: 'Paretaren geruzak barrabilaren inguruan.' },
       { id: 'gubernakulua', moment: 3, sex: 'f', line: '♀: gubernakulua ezpain nagusietaraino, gutxi laburtuta.' },
-      { id: 'lotailu-utero-obarikoa', moment: 4, sex: 'f', line: 'Endekatuta: obariotik uterora…' },
+      { id: 'lotailu-utero-obarikoa', moment: 4, sex: 'f', line: 'Gubernakulutik: obariotik uteroaren gorputzeraino…' },
       { id: 'uteroaren-lotailu-biribila', moment: 4, sex: 'f', line: '…eta uterotik ezpain nagusietara (lotailu biribila).' },
     ],
   },

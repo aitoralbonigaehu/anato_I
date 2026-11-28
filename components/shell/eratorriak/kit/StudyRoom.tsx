@@ -20,6 +20,7 @@ import { TestTable } from './TestTable';
 import { TimelineLayout } from './TimelineLayout';
 import styles from '../eratorriak.module.css';
 import additions from './study.module.css';
+import { topicNo } from '@/content/topic-no';
 
 export interface DiagramProps {
   stage: number;
@@ -153,7 +154,7 @@ export function StudyRoom({
       }}
     >
       <header className={styles.roomHead}>
-        <p className={styles.eyebrow}>{d.week}. gaia · Ikasgela</p>
+        <p className={styles.eyebrow}>{topicNo(d.week)}. gaia · Ikasgela</p>
         <h2 id={`a${d.week}-title`}>{d.title}</h2>
         <p className={styles.lead}>{d.lead}</p>
       </header>

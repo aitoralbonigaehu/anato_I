@@ -41,8 +41,21 @@ export interface CordPose {
   motor: number;
   /** The skin and the muscle at the two ends of the arc shown (0..1). */
   ends?: number;
+  /**
+   * The sympathetic way (topic 20, 3.1), on the left side: the chain beside the vertebral body with its paravertebral
+   * ganglion, the white and grey communicating rami, the splanchnic nerve to a prevertebral ganglion on the aorta and
+   * an organ (`symp` 0..1). The two neurons: the preganglionic axon from the lateral horn out through the anterior
+   * root and the white ramus into the chain (`pre` 0..1); after a synapse there, the postganglionic axon back through
+   * the grey ramus into the nerve (`post` 0..1); or on through the chain without a synapse, down the splanchnic nerve
+   * to the prevertebral ganglion, and from there the postganglionic one to the organ (`splanch` 0..1: 0-0.6 the
+   * first, 0.6-1 the second).
+   */
+  symp?: number;
+  pre?: number;
+  post?: number;
+  splanch?: number;
 }
-export const CP0: CordPose = { roots: 1, rami: 1, dura: 0, arach: 0, pia: 0, csf: 0, bone: 0, fn: 0, lat: 0, tracts: 0, sens: 0, inter: 0, motor: 0, ends: 0 };
+export const CP0: CordPose = { roots: 1, rami: 1, dura: 0, arach: 0, pia: 0, csf: 0, bone: 0, fn: 0, lat: 0, tracts: 0, sens: 0, inter: 0, motor: 0, ends: 0, symp: 0, pre: 0, post: 0, splanch: 0 };
 
 export interface CordOpts {
   dim?: { ids: readonly string[]; k: number } | null;
@@ -178,6 +191,31 @@ export const ARC_INTER: V3[] = L([SOMA_I, [0.36, -0.08, FZ], SOMA_M], 20);
 /** Motor: soma in the anterior horn → anterior root → nerve → ventral ramus → muscle. */
 export const ARC_MOTOR: V3[] = L([SOMA_M, [0.7, -0.5, FZ], [0.85, -0.55, RZ + 0.25], [1.4, -0.5, RZ - 0.05], [2.1, -0.3, RZ - 0.05], [2.85, 0.06, RZ - 0.05], [3.4, -0.05, RZ - 0.05], [4.3, -0.62, RZ - 0.05], [5.0, -1.3, RZ - 0.05], [5.45, -2.05, RZ - 0.02]], 90);
 
+// ———————————————————————— the sympathetic way (topic 20, 3.1): left side only ————————————————————————
+
+/** The chain runs cranio-caudally beside the vertebral body; its ganglion at the nerve's level. */
+const CHAIN_X = 3.05, CHAIN_Y = -1.9;
+const CHAIN_G: V3 = [CHAIN_X, CHAIN_Y, RZ];
+const CHAIN_G2: V3 = [CHAIN_X, CHAIN_Y, RZ - 1.9];
+/** The aorta in front of the vertebral body (along z), the prevertebral ganglion on its front, an organ below. */
+const AORTA_X = 0.15, AORTA_Y = -3.35, AORTA_R = 0.42;
+const PREV_G: V3 = [0.72, -3.82, RZ - 0.1];
+const ORGAN: V3 = [1.55, -5.0, RZ - 0.1];
+/** The white ramus leaves the nerve's start (myelinated, to the chain); the grey one joins it further out. */
+const WHITE_RAMUS: V3[] = [[3.36, -0.06, RZ], [3.36, -0.85, RZ + 0.04], [CHAIN_X + 0.08, CHAIN_Y + 0.22, RZ]];
+const GREY_RAMUS: V3[] = [[CHAIN_X + 0.2, CHAIN_Y + 0.16, RZ - 0.02], [3.72, -0.9, RZ - 0.02], [3.86, -0.32, RZ]];
+const SPLANCH: V3[] = [[CHAIN_X - 0.14, CHAIN_Y - 0.12, RZ - 0.04], [2.2, -2.75, RZ - 0.08], [1.35, -3.45, RZ - 0.1], [PREV_G[0] + 0.12, PREV_G[1] + 0.06, PREV_G[2]]];
+const SOMA_SY: V3 = [0.62, -0.04, FZ];
+const PRE_AX: V3[] = [SOMA_SY, [0.82, -0.44, FZ], [0.9, -0.56, RZ + 0.3], [1.4, -0.48, RZ + 0.06], [2.1, -0.28, RZ + 0.06], [2.85, 0.1, RZ + 0.06], [3.32, -0.04, RZ + 0.06], [3.33, -0.85, RZ + 0.08], [CHAIN_X + 0.05, CHAIN_Y + 0.08, RZ + 0.04]];
+/** Preganglionic, synapse in the chain ganglion. */
+export const SYMP_PRE: V3[] = L(PRE_AX, 80);
+/** Postganglionic from the chain ganglion: grey ramus, nerve, ventral ramus, out to the body wall. */
+export const SYMP_POST: V3[] = L([[CHAIN_X, CHAIN_Y, RZ - 0.04], [3.5, -1.2, RZ - 0.06], [3.84, -0.36, RZ - 0.06], [4.3, -0.62, RZ - 0.06], [5.0, -1.25, RZ - 0.06], [5.6, -1.55, RZ - 0.06]], 50);
+/** Preganglionic through the chain without a synapse, down the splanchnic nerve to the prevertebral ganglion. */
+export const SYMP_PRE2: V3[] = L([...PRE_AX, [CHAIN_X - 0.06, CHAIN_Y - 0.1, RZ + 0.02], ...SPLANCH.slice(1, 3).map((q): V3 => [q[0], q[1], q[2] + 0.06]), PREV_G], 110);
+/** Postganglionic from the prevertebral ganglion to the organ. */
+export const SYMP_POST2: V3[] = L([PREV_G, [1.0, -4.4, RZ - 0.1], ORGAN], 30);
+
 export function cordModel(pose: CordPose, o: CordOpts = {}) {
   const items: Item3[] = [];
   const pts: Record<string, V3> = {};
@@ -273,6 +311,46 @@ export function cordModel(pose: CordPose, o: CordOpts = {}) {
   pts['eremu-epidurala'] = [-1.95, 0.55, -0.6];
   pts['ornoak'] = [-2.3, 1.2, -0.6];
   pts['meningeak'] = [-1.06, 0.98, 0.7];
+
+  // ———— the sympathetic way (left side) ————
+  const symp = clamp01(pose.symp ?? 0);
+  if (symp > 0.01) {
+    const green = C19.symp, greenD = C19.sympDeep;
+    const SY = ['sistema-sinpatikoa'];
+    const trunk = vessel(L([[CHAIN_X, CHAIN_Y, LEN], CHAIN_G, CHAIN_G2, [CHAIN_X, CHAIN_Y, -LEN - 0.4]], 16), { r0: 0.07, r1: 0.07, sides: 10 }, symp);
+    const gang = mergeParts([CHAIN_G, CHAIN_G2].map((c) => blobParts({ center: c, radii: [0.24, 0.22, 0.34], rings: 10, sides: 14 })));
+    put('chain', 'kate-sinpatikoa', mergeParts([trunk]), mixHex(green, C19.nerve, 0.35), greenD, { tissue: 'nerve', groups: SY, opacity: symp });
+    put('chain-g', 'gongoil-parabertebralak', gang, mixHex(green, C19.ganglion, 0.3), greenD, { tissue: 'nerve', groups: [...SY, 'kate-sinpatikoa'], opacity: symp });
+    put('ram-white', 'adar-komunikante-zuria', vessel(L(WHITE_RAMUS, 12), { r0: 0.06, r1: 0.06, sides: 10 }, symp), C19.white, C19.whiteDeep, { tissue: 'nerve', groups: SY, opacity: symp });
+    put('ram-grey', 'adar-komunikante-grisa', vessel(L(GREY_RAMUS, 12), { r0: 0.055, r1: 0.055, sides: 10 }, symp), mixHex(C19.grey, '#9a9090', 0.4), C19.greyDeep, { tissue: 'nerve', groups: SY, opacity: symp });
+    put('splanch', 'nerbio-esplaknikoa', vessel(L(SPLANCH, 16), { r0: 0.06, r1: 0.055, sides: 10 }, symp), mixHex(green, C19.nerve, 0.35), greenD, { tissue: 'nerve', groups: SY, opacity: symp });
+    put('aorta', 'aorta', vessel(L([[AORTA_X, AORTA_Y, LEN + 0.2], [AORTA_X, AORTA_Y, -LEN - 0.2]], 4), { r0: AORTA_R, r1: AORTA_R, sides: 20 }), '#d8524c', '#6e1a18', { tissue: 'vessel', opacity: 0.85 * symp });
+    put('prev-g', 'gongoil-prebertebralak', blobParts({ center: PREV_G, radii: [0.24, 0.18, 0.3], rings: 10, sides: 14 }), mixHex(green, C19.ganglion, 0.3), greenD, { tissue: 'nerve', groups: SY, opacity: symp });
+    put('organ', 'erraiak', blobParts({ center: ORGAN, radii: [0.62, 0.42, 0.55], rings: 12, sides: 16 }), '#e6a08a', '#7a3a2a', { tissue: 'muscle', opacity: symp });
+    pts['kate-sinpatikoa'] = [CHAIN_X, CHAIN_Y, -0.35];
+    pts['gongoil-parabertebralak'] = [CHAIN_X + 0.1, CHAIN_Y + 0.05, RZ + 0.2];
+    pts['adar-komunikante-zuria'] = [3.36, -0.8, RZ + 0.04];
+    pts['adar-komunikante-grisa'] = [3.72, -0.9, RZ - 0.02];
+    pts['nerbio-esplaknikoa'] = [2.2, -2.75, RZ - 0.08];
+    pts['aorta'] = [AORTA_X - 0.3, AORTA_Y - 0.25, -0.7];
+    pts['gongoil-prebertebralak'] = [PREV_G[0], PREV_G[1] - 0.05, PREV_G[2] + 0.2];
+    pts['erraiak'] = [ORGAN[0], ORGAN[1], ORGAN[2] + 0.3];
+    pts['sistema-sinpatikoa'] = pts['gongoil-parabertebralak'];
+    const axon = (key: string, id: string, line: V3[], g: number, color: string, deep: string, soma: V3 | null, r = 0.04) => {
+      if (g <= 0.001) return;
+      const parts: (Parts | null)[] = [vessel(line, { r0: r, r1: r, bulb: 0.8, bulbLen: 0.12, sides: 10, n: line.length }, g)];
+      if (soma) parts.push(blobParts({ center: soma, radii: [0.1, 0.1, 0.07], rings: 10, sides: 12 }));
+      put(key, id, mergeParts(parts), color, deep, { tissue: 'nerve' });
+    };
+    const preC = mixHex(green, '#ffffff', 0.15), postC = mixHex(green, '#ffe9a0', 0.45);
+    const pre = clamp01(pose.pre ?? 0), post = clamp01(pose.post ?? 0), sp = clamp01(pose.splanch ?? 0);
+    axon('pre', 'gongoil-aurreko-neurona', SYMP_PRE, pre, preC, greenD, SOMA_SY);
+    axon('post', 'gongoil-osteko-neurona', SYMP_POST, post, postC, greenD, post > 0.02 ? CHAIN_G : null, 0.035);
+    axon('pre2', 'gongoil-aurreko-neurona', SYMP_PRE2, clamp01(sp / 0.6), preC, greenD, pre > 0.01 ? null : SOMA_SY);
+    axon('post2', 'gongoil-osteko-neurona', SYMP_POST2, clamp01((sp - 0.6) / 0.4), postC, greenD, sp > 0.62 ? PREV_G : null, 0.035);
+    if (pre + sp > 0.01) pts['gongoil-aurreko-neurona'] = [3.33, -0.5, RZ + 0.1];
+    if (post > 0.01 || sp > 0.62) pts['gongoil-osteko-neurona'] = post > 0.01 ? [4.3, -0.62, RZ - 0.06] : [1.0, -4.4, RZ - 0.1];
+  }
 
   // ———— the reflex arc ————
   const sens = clamp01(pose.sens), inter = clamp01(pose.inter), motor = clamp01(pose.motor);

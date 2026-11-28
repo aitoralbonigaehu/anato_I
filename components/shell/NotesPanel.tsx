@@ -7,6 +7,7 @@ import type { StageDef } from '@/lib/sim/types';
 import { blueSteps } from '@/lib/sim/skip-blue';
 import { IconClose, IconList, IconMoon, IconSun } from './icons';
 import { useTheme } from './theme';
+import { topicNo } from '@/content/topic-no';
 
 /* ——— Reading preferences (text size, paper/dark), remembered per browser ——— */
 
@@ -375,7 +376,7 @@ export function NotesPanel({ week, stage, activeBeat: playbackBeat, progress, so
       <div className="notes-head">
         <div className="notes-name">
           <strong>Apunteak</strong>
-          <small>{week}. gaia · jatorrizko testua{skipBlue ? ' · aurten emandakoa' : ''}</small>
+          <small>{topicNo(week)}. gaia · jatorrizko testua{skipBlue ? ' · aurten emandakoa' : ''}</small>
         </div>
         <div className="notes-tools">
           <button className="icon-btn notes-size" onClick={() => setReading({ font: font - 1 })} disabled={font <= 13} aria-label="Letra txikiagoa" data-tip="Letra txikiagoa" data-tip-pos="bottom">
@@ -410,7 +411,7 @@ export function NotesPanel({ week, stage, activeBeat: playbackBeat, progress, so
           <IconList size={15} />
         </button>
         <p className="notes-crumbs" title={crumbs.join(' › ')}>
-          {crumbs.length ? crumbs.map((c, i) => <span key={i}>{c}</span>) : <span>{week}. gaia</span>}
+          {crumbs.length ? crumbs.map((c, i) => <span key={i}>{c}</span>) : <span>{topicNo(week)}. gaia</span>}
         </p>
         {tocOpen && (
           <nav className="notes-toc-pop" aria-label="Apunteen aurkibidea">

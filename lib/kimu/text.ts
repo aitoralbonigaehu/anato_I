@@ -3,6 +3,8 @@
  * accents) against the Basque notes: "notocorda" has to find "Notokorda".
  */
 
+import { LAST_TOPIC_NO, topicId } from '@/content/topic-no';
+
 export type Lang = 'eu' | 'es' | 'en';
 
 /** Spelling folded to one sound-alike form, so Spanish and Basque spellings of the same word meet. */
@@ -274,14 +276,17 @@ export function stem(w: string): string {
  */
 const TOPIC = /(?:\b(\d{1,2})\s*\.?\s*(?:gai\w*|tema\w*|topic)\b|\b(?:gai\w*|tema|topic)\s*\.?\s*(\d{1,2})\b)/gi;
 
-/** The last topic of the atlas (tests/kimu.test.ts pins it to the registry, so a new topic cannot be missed). */
-export const LAST_TOPIC = 19;
+/** The last topic number of the atlas (tests/kimu.test.ts pins it to the registry, so a new topic cannot be missed). */
+export const LAST_TOPIC = LAST_TOPIC_NO;
 
-/** The topic number (1–LAST_TOPIC) a question names, or null. */
-export function topicIn(question: string): number | null {
+/**
+ * The topic a question names, as the topic's id (1–LAST_TOPIC by number; "19. gaian" is the version of the class of
+ * `from`, the topic the student is in: content/topic-no.ts), or null.
+ */
+export function topicIn(question: string, from?: number): number | null {
   for (const m of question.matchAll(TOPIC)) {
     const n = Number(m[1] ?? m[2]);
-    if (n >= 1 && n <= LAST_TOPIC) return n;
+    if (n >= 1 && n <= LAST_TOPIC) return topicId(n, from);
   }
   return null;
 }

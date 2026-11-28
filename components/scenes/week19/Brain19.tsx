@@ -489,7 +489,10 @@ const specHyp: StageSpec<BrainPose, BrainOpts> = {
       fit: false,
       glide: 0.05,
       dim: ['adenohipofisia', 'rathke-poltsa', 'estomodeoa'],
-      names: [{ id: 'adenohipofisia', text: 'Adenohipofisia', sub: 'poltsa estomodeotik askatu', from: 0.4 }],
+      names: [
+        { id: 'rathke-poltsa', p: [0.054, -0.657, 0.329], text: 'Hipofisi poltsa', small: true },
+        { id: 'adenohipofisia', text: 'Adenohipofisia', sub: 'poltsa estomodeotik askatu', from: 0.4 },
+      ],
       note: 'Hipofisi poltsa estomodeotik askatzen da (harekin zuen lotura galduz): hortik adenohipofisia garatzen da',
     },
     {
@@ -525,7 +528,11 @@ const specHyp: StageSpec<BrainPose, BrainOpts> = {
       fit: false,
       glide: 0.06,
       dim: ['hipofisia', 'adenohipofisia', 'neurohipofisia'],
-      names: [{ id: 'hipofisia', text: '2. hilabetearen bukaeran eratuta', sub: '3. astean hasi, bi hilabete inguru' }],
+      names: [
+        { id: 'hipofisia', text: '2. hilabetearen bukaeran eratuta', sub: '3. astean hasi, bi hilabete inguru' },
+        { id: 'adenohipofisia', small: true, from: 0.3 },
+        { id: 'neurohipofisia', small: true, from: 0.4 },
+      ],
       note: 'Bi luzapenak 3. astean hasten dira, eta prozesuak bi hilabete inguru irauten du: 2. hilabetearen bukaeran hipofisia guztiz eratuta dago, bi atalekin',
     },
   ],
@@ -652,3 +659,637 @@ const specCn: StageSpec<BrainPose, BrainOpts> = {
   ],
 };
 export const Cranial19 = stage(specCn);
+
+// ———————————————————————— class 31 (topic 21), reshaped since for class 32: the scenes as its steps were written ————————————————————————
+
+
+// ———————————————————————— class 31 (topic 21): the scenes as its notes go ————————————————————————
+
+export const S_BMEN31 = [0, 0.26, 0.52, 0.76] as const;
+const specBMen31: StageSpec<BrainPose, BrainOpts> = {
+  S: S_BMEN31,
+  pose: { ...BR0 },
+  opts: {},
+  site: SITE19.head,
+  arrive: 'Ornomuinetik burura igo gara: burua erditik moztuta',
+  caption: CAP,
+  key: KEY19.meninges,
+  steps: [
+    {
+      to: { men: 1 },
+      run: [0.15, 0.75],
+      cam: SAG(8.2, -0.4),
+      fit: false,
+      glide: 0.08,
+      dim: ['meningeak', 'entzefaloa'],
+      names: [
+        { id: 'entzefaloa', text: 'Entzefaloa', sub: 'erditik moztuta' },
+        { id: 'meningeak', text: 'Meningeak', sub: 'ornomuinekoen jarraipena', from: 0.6 },
+      ],
+      note: 'Meningeak ornomuinetik garunera jarraitzen dute: hiru mintz nerbio sistema zentral osoaren inguruan',
+    },
+    {
+      cam: SAG(4.2, 0.9, 0.1, 90, 8),
+      fit: false,
+      glide: 0.06,
+      dim: ['dura-materra', 'neurokraneoa'],
+      names: [
+        { id: 'dura-materra', text: 'Dura materra', sub: 'kraneoari itsatsita' },
+        { id: 'neurokraneoa', text: 'Kraneoa', small: true, from: 0.3 },
+      ],
+      note: 'Garunean dura materra hezurrari (kraneoari) itsatsita dago: garunean ez dago eremu epiduralik',
+      warn: true,
+    },
+    {
+      to: { csf: 1 },
+      run: [0.05, 0.4],
+      cam: SAG(3.6, 1.0, -0.4, 90, 8),
+      fit: false,
+      glide: 0.05,
+      dim: ['araknoidesa', 'eremu-azpiaraknoideoa'],
+      names: [
+        { id: 'araknoidesa', text: 'Araknoidesa', sub: 'dura materretik hurbil' },
+        { id: 'eremu-azpiaraknoideoa', text: 'Eremu azpiaraknoideoa', sub: 'likido zefalorrakideoa', from: 0.35 },
+      ],
+      note: 'Araknoidesaren eta pia materraren artean eremu azpiaraknoideoa: likido zefalorrakideoa',
+    },
+    {
+      cam: SAG(3.4, 1.0, 0.2, 90, 8),
+      fit: false,
+      glide: 0.05,
+      dim: ['pia-materra'],
+      names: [{ id: 'pia-materra', text: 'Pia materra', sub: 'garunari lotuta' }],
+      note: 'Pia materra beti ehunari lotuta: garunean ere, bihurguneetan sartuz',
+    },
+  ],
+};
+export const BrainMen31 = stage(specBMen31, MENINGES19_GEO, VENTRICLES19_GEO);
+
+export const S_THAL31 = [0, 0.24, 0.48, 0.74] as const;
+const specThal31: StageSpec<BrainPose, BrainOpts> = {
+  S: S_THAL31,
+  pose: { ...BR0, origin: 1 },
+  opts: {},
+  site: SITE19.head,
+  arrive: 'Xixkuetatik garun heldura: dientzefaloa talamoa da orain',
+  caption: CAP,
+  key: [
+    { color: C19.sens, text: 'sentsitiboa' },
+    { color: C19.dien, text: 'talamoa (dientzefaloa)' },
+    { color: '#b48cf0', text: 'usaimena' },
+  ],
+  steps: [
+    {
+      to: { origin: 0 },
+      run: [0.3, 0.9],
+      cam: SAG(7.8, -0.5),
+      fit: false,
+      glide: 0.08,
+      dim: ['entzefaloa', 'ornomuina'],
+      names: [
+        { id: 'talamoa', sub: 'dientzefalotik', from: 0.1 },
+        { id: 'garun-hemisferioak', text: 'Kortexa', sub: 'telentzefalotik', from: 0.3 },
+        { id: 'entzefaloa', small: true, from: 0.5 },
+      ],
+      note: 'Nerbio sistema ingurunearekin erlazionatzeko sistema nagusia da: estimulu guztiak (ikusi, usaindu, ukitu, mina…) bertatik hartzen ditugu',
+    },
+    {
+      to: { sens: 0.5 },
+      run: [0.05, 0.9],
+      cam: SAG(7.2, -0.9),
+      fit: false,
+      glide: 0.06,
+      dim: ['neurona-sentsitiboa', 'ornomuina', 'talamoa'],
+      names: [{ id: 'neurona-sentsitiboa', p: [-0.127, -1.894, -0.7], text: 'Neurona sentsitiboa', sub: 'garunerantz', from: 0.3 }],
+      note: 'Neurona sentsitibo batek estimulua garunerantz darama: batzuetan ornomuinean sinapsia, bestela entzefaloan egiten du lehena',
+    },
+    {
+      cam: SAG(3.6, 0.0, -0.1, 90, 6),
+      fit: false,
+      glide: 0.06,
+      dim: ['talamoa', 'neurona-sentsitiboa'],
+      names: [{ id: 'talamoa', text: 'Talamoa', sub: 'sinapsi garrantzitsuena' }],
+      note: 'Kortexera iritsi aurretik, sinapsi garrantzitsuena talamoan: hor sinapsia egin ezean ez gara sentsazioaz kontziente',
+      warn: true,
+    },
+    {
+      to: { smell: 1 },
+      run: [0.1, 0.8],
+      cam: SAG(4.6, 0.1, 0.3, 90, 6),
+      fit: false,
+      glide: 0.06,
+      dim: ['usaimen-nerbioa', 'talamoa'],
+      names: [
+        { id: 'usaimen-nerbioa', text: 'Usaimena', sub: 'sudurretik zuzenean kortexera', from: 0.4 },
+        { id: 'talamoa', small: true, from: 0.5 },
+      ],
+      note: 'Sentsazio guztiak talamotik, usaimena izan ezik: sudurretik zuzenean kortexera doa (primitiboena delako)',
+    },
+  ],
+};
+export const Thalamus31 = stage(specThal31, VENTRICLES19_GEO);
+
+export const S_CX31 = [0, 0.26, 0.54, 0.76] as const;
+const specCx31: StageSpec<BrainPose, BrainOpts> = {
+  S: S_CX31,
+  pose: endPose(specThal31).pose,
+  opts: {},
+  site: SITE19.head,
+  arrive: 'Garun berean: talamotik kortexera',
+  caption: CAP,
+  key: [
+    { color: C19.sens, text: 'sentsitiboa (goranzkoa)' },
+    { color: C19.motor, text: 'motorra (beheranzkoa)' },
+  ],
+  steps: [
+    {
+      to: { smell: 0, sens: 1 },
+      run: [0.05, 0.8],
+      cam: SAG(4.8, 0.4, -0.1, 90, 8),
+      fit: false,
+      glide: 0.06,
+      dim: ['kortex-sentsitiboa', 'kortex-motorra', 'neurona-sentsitiboa'],
+      names: [
+        { id: 'kortex-sentsitiboa', p: [-0.197, 1.153, -0.204], text: 'Kortex sentsitiboa', sub: 'informazioa prozesatu', from: 0.5 },
+        { id: 'kortex-motorra', text: 'Kortex motorra', sub: 'erantzun motorra agindu', from: 0.75 },
+      ],
+      note: 'Kortexean prozesatzen da informazioa: kortex sentsitiboak kortex motorrari pasatzen dio, erantzun motor bat agintzeko',
+    },
+    {
+      to: { motor: 1 },
+      run: [0.05, 0.9],
+      cam: SAG(9.6, -0.8),
+      fit: false,
+      glide: 0.06,
+      dim: ['motoneurona', 'ornomuina'],
+      names: [
+        { id: 'motoneurona', p: [-0.229, 0.307, 0.025], text: 'Axoia beherantz', sub: 'gai zuritik ornomuinera', from: 0.3 },
+        { id: 'kortex-motorra', p: [-0.187, 1.173, 0.1], small: true, from: 0.1 },
+      ],
+      note: 'Kortex motorreko neuronak axoiaren bidez beherantz bidaltzen du, gai zuritik; ornomuinaren mailan neurona motorrak aurreko sustraitik muskulura',
+    },
+    {
+      cam: SAG(7.6, -0.6),
+      fit: false,
+      glide: 0.05,
+      dim: ['kortex-sentsitiboa', 'kortex-motorra', 'talamoa'],
+      names: [
+        { id: 'kortex-motorra', p: [-0.187, 1.173, 0.1], text: 'Milisegundutan', sub: 'mina: eskua kendu' },
+        { id: 'kortex-sentsitiboa', p: [-0.197, 1.153, -0.204], small: true, from: 0.3 },
+      ],
+      note: 'Goitik behera, sinapsi batzuen ondoren, azken moto neurona muskulura: guztia milisegundutan (mina badaukagu, eskua kendu)',
+    },
+    {
+      to: { sens: 0, motor: 0 },
+      run: [0, 0.35],
+      cam: SAG(7.6, -1.0),
+      fit: false,
+      glide: 0.05,
+      dim: ['ornomuina'],
+      names: [{ id: 'ornomuina', text: 'Erreflexuak', sub: 'ornomuinean, kortexera iritsi gabe' }],
+      note: 'Mugimendu erreflexuak askoz azkarragoak dira: informazio sentsitiboa ez da kortexera iristen, ornomuinean prozesatzen da',
+    },
+  ],
+};
+export const Cortex31 = stage(specCx31, VENTRICLES19_GEO);
+
+export const S_VENT31 = [0, 0.16, 0.32, 0.48, 0.62, 0.76, 0.88] as const;
+const specVent31: StageSpec<BrainPose, BrainOpts> = {
+  S: S_VENT31,
+  pose: endPose(specCx31).pose,
+  opts: {},
+  site: SITE19.head,
+  arrive: 'Garun berean: orain bere barrunbeak',
+  caption: CAP,
+  key: [
+    { color: C19.csf, text: 'bentrikuluak (likido zefalorrakideoa)' },
+    { color: C19.tel, text: 'telentzefaloa' },
+    { color: C19.dien, text: 'dientzefaloa' },
+    { color: C19.mes, text: 'mesentzefaloa' },
+  ],
+  steps: [
+    {
+      to: { glass: 0.7, vent: 1, origin: 1 },
+      run: [0.1, 0.8],
+      cam: SAG(7.6, -0.7),
+      fit: false,
+      glide: 0.06,
+      dim: ['bentrikulu-sistema', 'hodi-ependimarioa'],
+      names: [
+        { id: 'bentrikulu-sistema', text: 'Hodiaren barrunbea', sub: 'garunean zabaldua', from: 0.5 },
+        { id: 'hodi-ependimarioa', text: 'Ependimoa', small: true, from: 0.6 },
+      ],
+      note: 'Nerbio sistema zentral osoa hodi neuraletik dator: ornomuinean hodi forma mantentzen du, garunean zabaldu eta estutu egiten da: xixkuak',
+    },
+    {
+      cam: SAG(7.6, -1.2),
+      fit: false,
+      glide: 0.05,
+      dim: ['hodi-ependimarioa', 'bentrikulu-sistema'],
+      names: [
+        { id: 'hodi-ependimarioa', text: 'Ependimoa', sub: 'ornomuinean' },
+        { id: 'bentrikulu-sistema', text: 'Bentrikuluak', sub: 'garunean', from: 0.3 },
+      ],
+      note: 'Hodi bat izan denez, barnean espazio bat du: ornomuinean ependimoa (hodi ependimarioa), garunean bentrikuluak',
+    },
+    {
+      cam: SAG(5.6, -0.2),
+      fit: false,
+      glide: 0.05,
+      dim: ['bentrikulu-sistema'],
+      names: [{ id: 'bentrikulu-sistema', text: 'Denak komunikatuta', sub: 'likido zefalorrakideoa' }],
+      note: 'Bentrikuluak ez daude hutsik: likido zefalorrakideoa dabil, eta horretarako barrunbe guztiak komunikatuta daude',
+    },
+    {
+      cam: SAG(4.0, 0.25, 0.0, 120, 18),
+      fit: false,
+      glide: 0.06,
+      dim: ['alboko-bentrikuluak'],
+      names: [{ id: 'alboko-bentrikuluak', p: [-0.021, 0.162, 0.32], text: 'Alboko bentrikuluak', sub: 'telentzefaloan, bat hemisferio bakoitzean' }],
+      note: 'Telentzefaloan, hemisferio bakoitzean bat: bi alboko bentrikuluak (helduetan nahiko handiak)',
+      plainNote: 'Telentzefaloan, hemisferio bakoitzean bat: bi alboko bentrikuluak',
+      warn: true,
+    },
+    {
+      cam: SAG(3.6, 0.0, 0.1, 100, 10),
+      fit: false,
+      glide: 0.05,
+      dim: ['hirugarren-bentrikulua', 'monro-zuloak', 'talamoa'],
+      names: [
+        { id: 'hirugarren-bentrikulua', text: 'III. bentrikulua', sub: 'dientzefaloan, talamoaren mailan' },
+        { id: 'monro-zuloak', text: 'Monro-ren zuloak', sub: 'bentrikulu arteko zuloak', from: 0.35 },
+        { id: 'alboko-bentrikuluak', p: [-0.042, 0.166, 0.322], small: true, from: 0.5 },
+      ],
+      note: 'Dientzefaloan (talamoaren mailan) III. bentrikulua; alboko bentrikuluekin bentrikulu arteko zuloek (Monro-ren zuloak) komunikatzen dute',
+    },
+    {
+      cam: SAG(3.4, -0.45, -0.4, 90, 6),
+      fit: false,
+      glide: 0.05,
+      dim: ['garun-akueduktoa', 'mesentzefaloa'],
+      names: [{ id: 'garun-akueduktoa', text: 'Garun akueduktoa', sub: 'mesentzefaloan: hodi estua' }],
+      note: 'Mesentzefaloan ez du hodi forma galtzen: estutu egiten da, garun (mesentzefalo) akueduktoa',
+    },
+    {
+      cam: SAG(3.8, -0.9, -0.7, 110, 6),
+      fit: false,
+      glide: 0.05,
+      dim: ['laugarren-bentrikulua', 'luschka-zuloak', 'magendie-zuloa'],
+      names: [
+        { id: 'laugarren-bentrikulua', text: 'IV. bentrikulua', sub: 'erronbentzefaloan: erronbo forma' },
+        { id: 'luschka-zuloak', text: 'Luschka zuloak', sub: '2, alboetan', from: 0.3 },
+        { id: 'magendie-zuloa', text: 'Magendie zuloa', sub: 'erdian', from: 0.45 },
+      ],
+      note: 'Erronbentzefaloan IV. bentrikulua, erronbo formakoa: 3 zulo ditu, 2 alboko (Luschka) eta erdiko bat (Magendie)',
+    },
+  ],
+};
+export const Ventricles31 = stage(specVent31);
+
+export const S_CSF31 = [0, 0.18, 0.36, 0.56, 0.78] as const;
+const specCsf31: StageSpec<BrainPose, BrainOpts> = {
+  S: S_CSF31,
+  pose: endPose(specVent31).pose,
+  opts: {},
+  site: SITE19.head,
+  arrive: 'Bentrikulu berak: orain likidoa nondik datorren eta nora doan',
+  caption: CAP,
+  key: [
+    { color: C19.csf, text: 'likido zefalorrakideoa' },
+    { color: '#e0607a', text: 'sare koroideak' },
+    { color: C19.arach, text: 'araknoidesa' },
+  ],
+  steps: [
+    {
+      to: { origin: 0, men: 1, csf: 1 },
+      run: [0.05, 0.7],
+      cam: SAG(8.4, -0.4),
+      fit: false,
+      glide: 0.06,
+      dim: ['likido-zefalorrakideoa', 'bentrikulu-sistema'],
+      names: [
+        { id: 'eremu-azpiaraknoideoa', text: 'Barrutik eta kanpotik', sub: 'kolpeak amortiguatu', from: 0.5 },
+        { id: 'bentrikulu-sistema', text: 'Bentrikuluak', small: true, from: 0.3 },
+        { id: 'hodi-ependimarioa', text: 'Ependimoa', small: true, from: 0.6 },
+      ],
+      note: 'Likido zefalorrakideoa 5. astean ekoizten hasten da: nerbio sistema zentralaren barrutik eta kanpotik doa, kolpeetatik babesteko',
+    },
+    {
+      to: { plex: 1 },
+      run: [0.05, 0.6],
+      cam: SAG(4.6, -0.2, -0.3, 100, 10),
+      fit: false,
+      glide: 0.06,
+      dim: ['sare-koroideak', 'bentrikulu-sistema'],
+      names: [
+        { id: 'sare-koroideak', text: 'Sare koroideak', sub: 'bentrikuluen sabaian: ekoizten dute', from: 0.3 },
+        { id: 'bentrikulu-sistema', text: 'Bentrikuluak', small: true, from: 0.5 },
+      ],
+      note: 'Sare koroideak (arteriolak eta benulak) alboko, 3. eta 4. bentrikuluen sabaian: haiek ekoizten dute likidoa etengabe',
+    },
+    {
+      to: { flowShow: 1, flow: 6 },
+      run: [0.02, 1],
+      cam: SAG(5.4, -0.3, -0.2),
+      fit: false,
+      glide: 0.06,
+      dim: ['bentrikulu-sistema', 'monro-zuloak', 'garun-akueduktoa', 'laugarren-bentrikulua'],
+      names: [
+        { id: 'monro-zuloak', text: 'Monro', small: true },
+        { id: 'bentrikulu-sistema', text: 'Bentrikuluak', small: true, from: 0.15 },
+        { id: 'garun-akueduktoa', text: 'Akueduktoa', small: true, from: 0.3 },
+        { id: 'laugarren-bentrikulua', text: 'IV. bentrikulua', small: true, from: 0.5 },
+      ],
+      note: 'Alboko bentrikuluetatik Monro-ren zuloetatik 3.era, akueduktotik 4.era',
+    },
+    {
+      to: { flow: 13 },
+      run: [0, 1],
+      cam: SAG(8.4, -0.5),
+      fit: false,
+      glide: 0.06,
+      dim: ['likido-zefalorrakideoa', 'luschka-zuloak', 'magendie-zuloa', 'hodi-ependimarioa'],
+      names: [
+        { id: 'magendie-zuloa', text: '3 zulotik kanpora', sub: 'Luschka eta Magendie' },
+        { id: 'hodi-ependimarioa', text: 'Ependimotik behera', sub: 'zati bat', from: 0.4 },
+        { id: 'luschka-zuloak', small: true, from: 0.5 },
+      ],
+      note: '4. bentrikuluan 3 zulotatik kanporatzen da (2 alboko eta erdiko bat); zati batek ependimotik jarraitzen du',
+    },
+    {
+      to: { flow: 20 },
+      run: [0, 1],
+      cam: SAG(8.8, -0.2),
+      fit: false,
+      glide: 0.06,
+      dim: ['eremu-azpiaraknoideoa', 'araknoidesa', 'pia-materra'],
+      names: [{ id: 'eremu-azpiaraknoideoa', text: 'Eremu azpiaraknoideoa', sub: 'pia eta araknoidesaren artean; gero zainetara' }],
+      note: 'Kanpotik eremu azpiaraknoideotik (pia materra eta araknoidesaren artean) doa, eta kraneoko egitura batzuetatik zain-sistemak berxurgatzen du',
+    },
+  ],
+};
+export const Csf31 = stage(specCsf31, VENTRICLES19_GEO, MENINGES19_GEO);
+
+// ———————————————————————— topic 20 (both classes): grey and white, the brainstem, telencephalon, commissures ————————————————————————
+
+/** 20. gaia, 1: the cord keeps its grey matter inside, the brain turns it outside (brain-model `matter`). */
+export const S_MATTER = [0, 0.36, 0.7] as const;
+const specMatter: StageSpec<BrainPose, BrainOpts> = {
+  S: S_MATTER,
+  pose: { ...BR0 },
+  opts: {},
+  site: SITE19.head,
+  arrive: 'Burua erditik moztuta: ornomuina eta garuna, barrutik',
+  caption: CAP,
+  key: [
+    { color: C19.grey, text: 'gai grisa (somak)' },
+    { color: C19.white, text: 'gai zuria (axoiak)' },
+  ],
+  steps: [
+    {
+      to: { matter: 1 },
+      run: [0.2, 0.8],
+      cam: SAG(8.6, -1.5, -0.4, 90, 4),
+      fit: false,
+      glide: 0.08,
+      dim: ['gai-grisa', 'ornomuina'],
+      names: [
+        { id: 'gai-grisa', text: 'Ornomuinean: gai grisa barnean', sub: 'somak, H forman', from: 0.4 },
+        { id: 'ornomuina', text: 'Gai zuria kanpoan', sub: 'axoiak', from: 0.6 },
+      ],
+      note: 'Ornomuinean gai grisa (somak, H forman) barnean dago eta gai zuria (axoiak) kanpoan',
+    },
+    {
+      cam: SAG(7.6, 0.25, 0.05, 90, 6),
+      fit: false,
+      glide: 0.06,
+      dim: ['garun-hemisferioak', 'gai-zuria'],
+      names: [
+        { id: 'garun-hemisferioak', text: 'Burmuinean: gai grisa kanpoan', sub: 'somak kanpoko geruzan (kortexa)' },
+        { id: 'gai-zuria', text: 'Gai zuria barnean', sub: 'axoiak barnerantz', from: 0.35 },
+      ],
+      note: 'Burmuinean alderantziz: gai grisa kanpoaldean (somak kanpoko geruzan) eta gai zuria barnean (axoiak barnerantz)',
+    },
+    {
+      cam: SAG(9.2, -0.7, -0.2, 90, 4),
+      fit: false,
+      glide: 0.05,
+      dim: ['gai-grisa', 'gai-zuria', 'ornomuina', 'garun-hemisferioak'],
+      names: [
+        { id: 'gai-zuria', text: 'Garunean: zuria barnean', small: true },
+        { id: 'gai-grisa', text: 'Ornomuinean: grisa barnean', small: true },
+      ],
+      note: 'Garun eta ornomuinaren arteko desberdintasun garrantzitsuenetako bat: gai grisa eta zuria alderantziz kokatuta',
+    },
+  ],
+};
+export const Matter20 = stage(specMatter);
+
+/** 20. gaia, 2.1: medulla, pons and midbrain, one unit (the cerebrum fades: brain-model `stem`). */
+export const S_STEM = [0, 0.3, 0.62] as const;
+const specStem: StageSpec<BrainPose, BrainOpts> = {
+  S: S_STEM,
+  pose: { ...BR0 },
+  opts: {},
+  site: SITE19.head,
+  arrive: 'Burua erditik moztuta: garunaren behekaldea',
+  caption: CAP,
+  key: [
+    { color: C19.mes, text: 'mesentzefaloa' },
+    { color: C19.met, text: 'zubia' },
+    { color: C19.miel, text: 'erraboila' },
+  ],
+  steps: [
+    {
+      to: { origin: 0.6 },
+      run: [0.2, 0.8],
+      cam: SAG(7.2, -0.5, -0.1, 90, 4),
+      fit: false,
+      glide: 0.08,
+      dim: ['erraboila', 'zubia', 'mesentzefaloa'],
+      names: [
+        { id: 'mesentzefaloa', text: 'Mesentzefaloa', from: 0.2 },
+        { id: 'zubia', text: 'Zubia', sub: 'IV. bentrikuluaren zorua', from: 0.35 },
+        { id: 'erraboila', text: 'Erraboila', from: 0.5 },
+      ],
+      note: 'Erraboila, zubia eta mesentzefaloa funtzionalki estuki erlazionatuta daude: fisiologikoki unitate bakarra',
+    },
+    {
+      to: { stem: 1 },
+      run: [0.05, 0.7],
+      cam: SAG(4.6, -0.8, -0.3, 100, 6),
+      fit: false,
+      glide: 0.06,
+      dim: ['entzefalo-enborra', 'erraboila', 'zubia', 'mesentzefaloa'],
+      names: [
+        { id: 'entzefalo-enborra', p: [-0.143, -0.861, -0.092], text: 'Entzefalo-enborra', sub: 'erraboila + zubia + mesentzefaloa', from: 0.3 },
+        { id: 'mesentzefaloa', text: 'Mesentzefaloa', small: true },
+        { id: 'zubia', text: 'Zubia', small: true },
+        { id: 'erraboila', text: 'Erraboila', small: true },
+      ],
+      note: 'Hiru egitura anatomikoen baturari entzefalo-enborra (enbor entzefalikoa) deitzen zaio',
+    },
+    {
+      to: { nerves: 1 },
+      run: [0.05, 0.7],
+      cam: SAG(5.0, -0.9, -0.1, 70, 4),
+      fit: false,
+      glide: 0.05,
+      dim: ['entzefalo-enborra', 'bikote-kranealak'],
+      names: [
+        { id: 'entzefalo-enborra', text: 'Enborretik', sub: 'bikote kraneal gehienak' },
+        { id: 'bikote-kranealak', text: 'Bikote kranealak', small: true, from: 0.4 },
+      ],
+      note: 'Bikote kraneal gehienak entzefalo-enborretik ateratzen dira; ornomuineko eskema (oinalde eta hegal plakak) aldatuz doa',
+    },
+  ],
+};
+export const Stem20 = stage(specStem);
+
+/** 20. gaia, 2.4: the hemispheres, the cortex, the basal nuclei and the internal capsule. */
+export const S_TEL = [0, 0.17, 0.34, 0.52, 0.7, 0.86] as const;
+const specTel: StageSpec<BrainPose, BrainOpts> = {
+  S: S_TEL,
+  pose: { ...BR0 },
+  opts: {},
+  site: SITE19.head,
+  arrive: 'Garun berean: telentzefaloa, hemisferioak',
+  caption: CAP,
+  key: [
+    { color: C19.tel, text: 'telentzefaloa' },
+    { color: '#b48fd6', text: 'oinaldeko nukleoak' },
+    { color: C19.white, text: 'gai zuria (axoiak)' },
+  ],
+  steps: [
+    {
+      to: { origin: 1 },
+      run: [0.1, 0.6],
+      cam: SAG(7.4, 0.1, 0.1, 90, 6),
+      fit: false,
+      glide: 0.08,
+      dim: ['garun-hemisferioak', 'talamoa'],
+      names: [
+        { id: 'garun-hemisferioak', text: 'Bi xixku telentzefaliko', sub: 'handitu: hemisferioak' },
+        { id: 'talamoa', text: 'Dientzefaloa', sub: 'hemisferioek estalita', from: 0.4 },
+      ],
+      note: 'Bi xixku hedatzen dira: biak handituko dira hemisferioak sortuz eta dientzefaloa estaliko dute',
+    },
+    {
+      to: { origin: 0, vent: 1, plex: 1, glass: 0.45 },
+      run: [0.05, 0.6],
+      cam: SAG(5.6, 0.35, 0.0, 80, 14),
+      fit: false,
+      glide: 0.06,
+      dim: ['alboko-bentrikuluak', 'sare-koroideak'],
+      names: [
+        { id: 'alboko-bentrikuluak', text: 'Alboko bentrikuluak', sub: 'hemisferio bakoitzean bat', from: 0.3 },
+        { id: 'sare-koroideak', text: 'Sare koroideak', small: true, from: 0.5 },
+      ],
+      note: 'Hemisferio bakoitzean bentrikulu sistemaren osagai bat: alboko bentrikuluak, sare koroideekin',
+    },
+    {
+      to: { vent: 0, plex: 0, glass: 0, matter: 1 },
+      run: [0.05, 0.6],
+      cam: SAG(6.0, 0.5, 0.15, 64, 18),
+      fit: false,
+      glide: 0.06,
+      dim: ['garun-hemisferioak', 'gai-zuria'],
+      names: [
+        { id: 'garun-hemisferioak', text: 'Kortexa: gai grisa kanpoan', sub: 'bihurguneak: kraneoak mugatzen du' },
+        { id: 'gai-zuria', text: 'Gai zuria barnean', from: 0.35 },
+      ],
+      note: '5. astean kortexa lamina fina da; loditzean, kraneoak eremua mugatzen duenez, bihurguneak eratzen dira. Barnean gai zuria, kanpoan grisa',
+    },
+    {
+      to: { matter: 0, nuclei: 1, glass: 0.85 },
+      run: [0.05, 0.6],
+      cam: SAG(4.6, 0.2, 0.05, 58, 16),
+      fit: false,
+      glide: 0.06,
+      dim: ['oinaldeko-nukleoak', 'nukleo-kaudatua', 'nukleo-lentikularra'],
+      names: [
+        { id: 'nukleo-kaudatua', text: 'Nukleo kaudatua', from: 0.3 },
+        { id: 'nukleo-lentikularra', text: 'Nukleo lentikularra', sub: '6. astetik', from: 0.45 },
+        { id: 'oinaldeko-nukleoak', p: [-0.657, -0.117, 0.142], text: 'Oinaldeko nukleoak', small: true, from: 0.6 },
+      ],
+      note: 'Hemisferioen oinaldean oinaldeko nukleoak, 6. astean eratzen hasiak: nukleo kaudatua eta nukleo lentikularra',
+    },
+    {
+      cam: SAG(4.4, 0.0, -0.05, 52, 12),
+      fit: false,
+      glide: 0.05,
+      dim: ['barneko-kapsula', 'oinaldeko-nukleoak'],
+      names: [
+        { id: 'barneko-kapsula', text: 'Barneko kapsula', sub: 'beheranzko eta goranzko bideen axoiak', from: 0.2 },
+        { id: 'oinaldeko-nukleoak', text: 'Oinaldeko nukleoen artetik', small: true, from: 0.4 },
+      ],
+      note: 'Telentzefalotik beherantz eta ornomuinetik gorantz doazen bideek oinaldeko nukleoetan barneko kapsula osatzen dute',
+    },
+    {
+      cam: SAG(5.2, 0.1, 0.05, 60, 14),
+      fit: false,
+      glide: 0.05,
+      dim: ['oinaldeko-nukleoak', 'nukleo-kaudatua', 'nukleo-lentikularra'],
+      names: [
+        { id: 'oinaldeko-nukleoak', text: 'Oinaldeko nukleoak', sub: 'borondatezko mugimenduen HASIERA, jarrera' },
+        { id: 'nukleo-kaudatua', text: 'Parkinson, Huntington', small: true, from: 0.4 },
+        { id: 'nukleo-lentikularra', p: [-0.666, -0.107, 0.108], text: 'Nukleo lentikularra', small: true, from: 0.5 },
+      ],
+      note: 'Oinaldeko nukleoak borondatezko mugimenduen hasieraz eta gorputz jarreraren doikuntzaz arduratzen dira; Parkinson eta Huntington gaixotasunekin lotuta',
+      warn: true,
+    },
+  ],
+};
+export const Tel20 = stage(specTel, VENTRICLES19_GEO);
+
+/** 20. gaia, 2.4.1: the commissures, the anterior and posterior first, then the corpus callosum from front to back. */
+export const S_COMM = [0, 0.3, 0.62] as const;
+const specComm: StageSpec<BrainPose, BrainOpts> = {
+  S: S_COMM,
+  pose: { ...BR0 },
+  opts: {},
+  site: SITE19.head,
+  arrive: 'Garun berean: bi hemisferioak lotzen dituzten bideak',
+  caption: CAP,
+  key: [{ color: C19.white, text: 'komisurak (gai zuria)' }],
+  steps: [
+    {
+      to: { comm: 0.3, glass: 0.3 },
+      run: [0.15, 0.8],
+      cam: SAG(4.4, -0.05, 0.05, 96, 6),
+      fit: false,
+      glide: 0.08,
+      dim: ['komisurak', 'aurreko-komisura', 'atzeko-komisura'],
+      names: [
+        { id: 'aurreko-komisura', text: 'Aurreko komisura', sub: 'aurrekaldean', from: 0.4 },
+        { id: 'atzeko-komisura', text: 'Atzeko komisura', sub: 'epitalamoaren mailan', from: 0.55 },
+      ],
+      note: 'Bi hemisferioak axoi mielinizatuzko bideek lotzen dituzte (gai zuria): komisurak. Aurrean aurreko komisura, atzean atzeko komisura',
+    },
+    {
+      to: { comm: 1 },
+      run: [0.05, 0.95],
+      cam: SAG(5.8, 0.35, 0.0, 92, 8),
+      fit: false,
+      glide: 0.06,
+      dim: ['gorputz-kailukara'],
+      names: [{ id: 'gorputz-kailukara', text: 'Gorputz kailukara', sub: '10. astetik, aurretik atzera', from: 0.25 }],
+      note: 'Komisura nagusia gorputz kailukara da: 10. astean eratzen da, aurrekaldetik atzekaldera luzatuz',
+    },
+    {
+      to: { glass: 0 },
+      run: [0, 0.4],
+      cam: SAG(6.6, 0.15, 0.0, 70, 12),
+      fit: false,
+      glide: 0.05,
+      dim: ['komisurak', 'gorputz-kailukara', 'aurreko-komisura', 'atzeko-komisura'],
+      names: [
+        { id: 'gorputz-kailukara', text: 'Gorputz kailukara', small: true },
+        { id: 'aurreko-komisura', text: 'Aurrekoa', small: true },
+        { id: 'atzeko-komisura', text: 'Atzekoa', small: true },
+      ],
+      note: 'Hiru komisura: aurrekoa, atzekoa eta gorputz kailukara; informazioa hemisferio batetik bestera',
+    },
+  ],
+};
+export const Comm20 = stage(specComm);

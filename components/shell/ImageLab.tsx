@@ -14,6 +14,7 @@ import { PLANE_TEXT } from './Locator';
 import { PrivateImages, PrivateTab } from './PrivateImages';
 import { SceneView } from '@/components/kit';
 import { CourseFigures } from './CourseFigures';
+import { topicNo } from '@/content/topic-no';
 
 /**
  * Image lab: our own scenes shown as plain figures (black and white, no labels, sometimes turned or
@@ -588,7 +589,7 @@ export function ImageLab() {
                     .filter((w) => !isWip(w))
                     .map((w) => (
                       <option key={w.week} value={w.week}>
-                        {w.week}. gaia · {w.title}
+                        {topicNo(w.week)}. gaia · {w.title}
                       </option>
                     ))}
                 </select>
@@ -668,7 +669,7 @@ export function ImageLab() {
                       </>
                     )}
                     <p className="lab-where">
-                      {wk?.week}. gaia · {stage?.title} · {view?.label}
+                      {topicNo(wk?.week)}. gaia · {stage?.title} · {view?.label}
                       {transformNote && item.kind !== 'orientazioa' ? ` · ${transformNote}` : ''}
                     </p>
                   </div>

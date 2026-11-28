@@ -139,6 +139,10 @@ const HOVER_KNOWN = new Set<string>([
   '18|mihiaren-sustraia|2|ildo-terminala:2|rim', // → kupula, mihiaren-gorputza
   '19|ornomuin-geruzak|1|barneko-mintz-mugatzailea:1|pick', // → neuroepitelioa
   '19|puntzioa-epidurala|0|likido-zefalorrakideoa:0|pick', // → ornoak
+  // Class 31's copies of the same two scenes (topic 21 plays topic 19's notes for the other class).
+  '21|ornomuin-geruzak|1|barneko-mintz-mugatzailea:1|pick', // → neuroepitelioa
+  '21|puntzioa-epidurala|0|likido-zefalorrakideoa:0|pick', // → ornoak
+  '21|puntzioa-epidurala|1|likido-zefalorrakideoa:1|pick', // → ornoak
 ]);
 
 for (const [w, week] of weeks.entries()) {

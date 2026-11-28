@@ -1092,10 +1092,10 @@
     ]
   },
   "16": {
-    "file": "16 GAIA_SISTEMA UROGENITALA (GONADAK) (zuzenduta) fitxategiaren kopia fitxategiaren kopia.pdf",
+    "file": "16 GAIA_SISTEMA UROGENITALA (GONADAK) (zuzenduta) fitxategiaren kopia fitxategiaren kopia (2).docx.pdf",
     "pages": 15,
-    "characters": 26351,
-    "sha256": "b339b6ce0778a5175543fe32cd7e34bb90559ba2b22abfa2d9695d0210bdad62",
+    "characters": 26907,
+    "sha256": "3546d6762b6b3019974891c6a3668c2b4af83840d94ed6369284473f009e1477",
     "removed": [
       {
         "page": 1,
@@ -1700,6 +1700,286 @@
       {
         "page": 21,
         "text": "21"
+      }
+    ]
+  },
+  "20": {
+    "file": "Copy of 20. GAIA_ ENTZEFALOAREN GARAPENA (ZUZENDUTA).docx.pdf",
+    "pages": 13,
+    "characters": 22690,
+    "sha256": "d7d5b9e06535f5e6f2ef15d8af29ad4ff29b4dfbce1afdcd5b70fda0504b9ce0",
+    "removed": [
+      {
+        "page": 1,
+        "text": "1. Medikuntza 32. Taldea Giza Anatomia I Inmaculada Guerricagoitia"
+      },
+      {
+        "page": 1,
+        "text": "1"
+      },
+      {
+        "page": 2,
+        "text": "2"
+      },
+      {
+        "page": 3,
+        "text": "1. Medikuntza 32. Taldea Giza Anatomia I Inmaculada Guerricagoitia"
+      },
+      {
+        "page": 3,
+        "text": "3"
+      },
+      {
+        "page": 4,
+        "text": "4"
+      },
+      {
+        "page": 5,
+        "text": "1. Medikuntza 32. Taldea Giza Anatomia I Inmaculada Guerricagoitia"
+      },
+      {
+        "page": 5,
+        "text": "5"
+      },
+      {
+        "page": 6,
+        "text": "6"
+      },
+      {
+        "page": 7,
+        "text": "1. Medikuntza 32. Taldea Giza Anatomia I Inmaculada Guerricagoitia"
+      },
+      {
+        "page": 7,
+        "text": "7"
+      },
+      {
+        "page": 8,
+        "text": "8"
+      },
+      {
+        "page": 9,
+        "text": "1. Medikuntza 32. Taldea Giza Anatomia I Inmaculada Guerricagoitia"
+      },
+      {
+        "page": 9,
+        "text": "9"
+      },
+      {
+        "page": 10,
+        "text": "10"
+      },
+      {
+        "page": 11,
+        "text": "1. Medikuntza 32. Taldea Giza Anatomia I Inmaculada Guerricagoitia"
+      },
+      {
+        "page": 11,
+        "text": "11"
+      },
+      {
+        "page": 12,
+        "text": "12"
+      },
+      {
+        "page": 13,
+        "text": "1. Medikuntza 32. Taldea Giza Anatomia I Inmaculada Guerricagoitia"
+      },
+      {
+        "page": 13,
+        "text": "13"
+      }
+    ]
+  },
+  "21": {
+    "file": "19. GAIA. NERBIO SISTEMA (zuzenduta).docx.pdf",
+    "pages": 17,
+    "characters": 36923,
+    "sha256": "1515dad6a039967c3f3731c9f07f6581301f321a6f0446980ca91eac674defc7",
+    "removed": [
+      {
+        "page": 1,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 1,
+        "text": "1"
+      },
+      {
+        "page": 2,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 2,
+        "text": "2"
+      },
+      {
+        "page": 3,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 3,
+        "text": "3"
+      },
+      {
+        "page": 4,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 4,
+        "text": "4"
+      },
+      {
+        "page": 5,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 5,
+        "text": "5"
+      },
+      {
+        "page": 6,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 6,
+        "text": "6"
+      },
+      {
+        "page": 7,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 7,
+        "text": "7"
+      },
+      {
+        "page": 8,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 8,
+        "text": "8"
+      },
+      {
+        "page": 9,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 9,
+        "text": "9"
+      },
+      {
+        "page": 10,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 10,
+        "text": "10"
+      },
+      {
+        "page": 11,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 11,
+        "text": "11"
+      },
+      {
+        "page": 12,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 12,
+        "text": "12"
+      },
+      {
+        "page": 13,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 13,
+        "text": "13"
+      },
+      {
+        "page": 14,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 14,
+        "text": "14"
+      },
+      {
+        "page": 15,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 15,
+        "text": "15"
+      },
+      {
+        "page": 16,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 16,
+        "text": "16"
+      },
+      {
+        "page": 17,
+        "text": "Medikuntza 1.maila Giza Anatomia I 3. taldea"
+      },
+      {
+        "page": 17,
+        "text": "17"
+      }
+    ]
+  },
+  "22": {
+    "file": "20. GAIA_ ENTZEFALOAREN GARAPENA (ZUZENDU GABE).docx.pdf",
+    "pages": 10,
+    "characters": 15742,
+    "sha256": "22bf83ad68e17d8e6ff5e20fcdc4caafcd3b74c2fb1a762432c6fbb77fe63cfe",
+    "removed": [
+      {
+        "page": 1,
+        "text": "8. taldea 2026-2027 ENBRIOLOGIA BEREZIA II"
+      },
+      {
+        "page": 2,
+        "text": "8. taldea 2026-2027 ENBRIOLOGIA BEREZIA II"
+      },
+      {
+        "page": 3,
+        "text": "8. taldea 2026-2027 ENBRIOLOGIA BEREZIA II"
+      },
+      {
+        "page": 4,
+        "text": "8. taldea 2026-2027 ENBRIOLOGIA BEREZIA II"
+      },
+      {
+        "page": 5,
+        "text": "8. taldea 2026-2027 ENBRIOLOGIA BEREZIA II"
+      },
+      {
+        "page": 6,
+        "text": "8. taldea 2026-2027 ENBRIOLOGIA BEREZIA II"
+      },
+      {
+        "page": 7,
+        "text": "8. taldea 2026-2027 ENBRIOLOGIA BEREZIA II"
+      },
+      {
+        "page": 8,
+        "text": "8. taldea 2026-2027 ENBRIOLOGIA BEREZIA II"
+      },
+      {
+        "page": 9,
+        "text": "8. taldea 2026-2027 ENBRIOLOGIA BEREZIA II"
+      },
+      {
+        "page": 10,
+        "text": "8. taldea 2026-2027 ENBRIOLOGIA BEREZIA II"
       }
     ]
   }

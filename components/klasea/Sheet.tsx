@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { nameOf } from '@/content/registry';
 import type { Lesson } from '@/lib/klasea/types';
 import styles from './klasea.module.css';
+import { topicNo } from '@/content/topic-no';
 
 /**
  * The class's summary sheet ("Laburpen-orria"): the goals, the whole board, the cautions Kimu raised,
@@ -35,7 +36,7 @@ export function Sheet({ lesson, weak, onReview, onClose }: { lesson: Lesson; wea
       <article className={styles.sheet} role="dialog" aria-modal="true" aria-label="Laburpen-orria">
         <header className={styles.sheetHead}>
           <div>
-            <span className={styles.kicker}>Laburpen-orria · {lesson.week}. gaia</span>
+            <span className={styles.kicker}>Laburpen-orria · {topicNo(lesson.week)}. gaia</span>
             <h2>{lesson.title}</h2>
           </div>
           <div className={styles.sheetActions}>

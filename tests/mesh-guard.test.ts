@@ -70,12 +70,12 @@ describe('mesh guard: topic 19 models built while a stage plays', () => {
   const full = { ...CP0, dura: 1, arach: 1, pia: 1, csf: 1, bone: 1, fn: 1, lat: 1, tracts: 1, sens: 1, inter: 1, motor: 1, ends: 1 };
   const slotsByModel: Record<string, string[]> = {
     body: ['body19'],
-    brain: ['brain19', 'meninges19', 'ventricles19'],
+    brain: ['brain19', 'meninges19', 'ventricles19', 'cores20', 'nuclei20'],
   };
   const runs: [string, () => { items: { key: string; mesh: { idx: Uint32Array } }[] }[]][] = [
     ['body', () => [bodyModel(BP0), bodyModel({ ...BP0, auto: 1, cor: 1, hor: 1, sag: 1, axes: 1, sens: 1, motor: 1 })]],
-    ['brain', () => [brainModel(BR0), brainModel({ ...BR0, men: 1, csf: 1, vent: 1, plex: 1, flowShow: 1 })]],
-    ['cord', () => [cordModel(CP0), cordModel(full), cordModel({ ...full, sens: 0.4, motor: 0.6 })]],
+    ['brain', () => [brainModel(BR0), brainModel({ ...BR0, men: 1, csf: 1, vent: 1, plex: 1, flowShow: 1 }), brainModel({ ...BR0, matter: 1, nuclei: 1, comm: 1 }), brainModel({ ...BR0, comm: 0.6 })]],
+    ['cord', () => [cordModel(CP0), cordModel(full), cordModel({ ...full, sens: 0.4, motor: 0.6 }), cordModel({ ...full, symp: 1, pre: 1, post: 1, splanch: 1 })]],
     ['section', () => [-1, -0.5, 0, 0.5, 1].map((m) => sectionModel({ ...SP0, fold: 1, crest: 1, drg: 1, chain: 1, mature: m, layers: 1, plates: 1, blasts: 1, lat: 1 })).concat([sectionModel({ ...SP0, fold: 0.5 })])],
     ['spine', () => [0, 0.5, 1].map((g) => spineModel({ ...SPP0, grow: g, sac: g, epi: g, needle: g, drops: g, epiNeedle: g }))],
     ['neural', () => [0, 0.5, 1].map((g) => neuralModel({ ...NP0, fold: g, zip: g, three: g, five: g, flex: g, tint: g }))],

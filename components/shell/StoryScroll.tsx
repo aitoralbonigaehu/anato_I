@@ -7,6 +7,7 @@ import { nameOf } from '@/content/registry-lite';
 import { AgeScene, dayParts } from './Timeline';
 import { hueStyle } from './topicHue';
 import './timeline.css';
+import { topicNo } from '@/content/topic-no';
 
 /**
  * The home page's story of development, told by scrolling: the key dates of the notes, in order, each with
@@ -155,7 +156,7 @@ export function StoryScroll() {
             <AgeScene at={scene} className="tl-scene story-scene" />
             <figcaption>
               <span>
-                <b>{at.week}. gaia</b> · {at.stage.title}
+                <b>{topicNo(at.week)}. gaia</b> · {at.stage.title}
               </span>
               <Link className="btn small primary" href={simHref(at)}>
                 Ireki simulagailuan <span aria-hidden>→</span>

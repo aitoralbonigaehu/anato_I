@@ -10,6 +10,7 @@ import type { StructureDef } from '@/lib/sim/types';
 import { frameAround, shotsOf, type Box } from './AtlasFigure';
 import styles from './structure-atlas.module.css';
 import { SceneView } from '@/components/kit';
+import { topicNo } from '@/content/topic-no';
 
 const W = 1000;
 const H = 640;
@@ -159,7 +160,7 @@ function Card({ s, selected, onChoose }: { s: StructureDef; selected: boolean; o
           <span className={styles.cardFirst}>
             {first ? (
               <>
-                <em>Lehen aldiz</em> {`${first.week.week}. gaia · ${first.stage.title} · ${first.stage.day}`}
+                <em>Lehen aldiz</em> {`${topicNo(first.week.week)}. gaia · ${first.stage.title} · ${first.stage.day}`}
               </>
             ) : (
               <em>Simulagailuan ez dago oraindik</em>
@@ -188,7 +189,7 @@ export function AtlasCards({ items, topic, selectedId, onChoose }: { items: Stru
             <section key={w.week} className={styles.cardSection} aria-labelledby={`atlas-cards-${w.week}`}>
               <header>
                 <p className="eyebrow">
-                  {w.week}. gaia · {list.length} egitura
+                  {topicNo(w.week)}. gaia · {list.length} egitura
                 </p>
                 <h2 id={`atlas-cards-${w.week}`}>{w.title}</h2>
               </header>

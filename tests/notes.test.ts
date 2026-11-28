@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { blockText, expandNotes, firstAnchorInSection, NOTES_EXCEPTIONS, notesOf, sectionMatches, sentence, sentenceAnchors } from '@/content/notes-text';
 
 describe('original notes and reviewed alignment', () => {
-  const lengths = [17921, 10991, 17577, 23697, 13010, 18297, 16479, 23379, 27720, 20337, 25845, 21028, 25568, 37344, 28335, 26351, 17870, 29947, 34370];
+  const lengths = [17921, 10991, 17577, 23697, 13010, 18297, 16479, 23379, 27720, 20337, 25845, 21028, 25568, 37344, 28335, 26907, 17870, 29947, 34370, 22690, 36923, 15742];
   const hashes = [
     'f8abeb46de6a656b112e6b89b9c99802bab9a7af8affd6c63ed4ac2a6e0524db',
     'fd368f4eb7b398bec5c5275cd244233a86f4f5e099f796bbf42328b3ac32994c',
@@ -25,11 +25,16 @@ describe('original notes and reviewed alignment', () => {
     '295fb1d6d0829f412378c727df6813ab8ed6f1023b639fe0f3e9247b7189d376',
     // Topics 15–18: the owner's final notes of 2026-11-18 (18 came as DOCX, exported to PDF with Word), without the remarks.
     'b2d1a16ab54d56b0c193bb93eb4b6c7a9f9fee8b201f72f1d2b30877b35546a8',
-    'b339b6ce0778a5175543fe32cd7e34bb90559ba2b22abfa2d9695d0210bdad62',
+    '3546d6762b6b3019974891c6a3668c2b4af83840d94ed6369284473f009e1477',
     '36e2ef89f2d21fed34f221f8bbe9435f28953f01091754e46c9bafed7a800779',
     'd57ac15a5422c83050368e3b75e13fdb2f6e07a46a0d58c4303b39fe2fb753dd',
     // Topic 19: the new notes of 2026-11-23 (PDF, 11 sections).
     '71684057bd756f6edafc1258f4aaf06fae6f7adeba0620f8dfe24559bf9eb055',
+    // Topic 20 (class 32): "Copy of 20. GAIA_ ENTZEFALOAREN GARAPENA (ZUZENDUTA)", 2026-11-27 (DOCX exported to PDF).
+    'd7d5b9e06535f5e6f2ef15d8af29ad4ff29b4dfbce1afdcd5b70fda0504b9ce0',
+    // Topics 19 and 20 of class 31 (ids 21, 22): "19. GAIA. NERBIO SISTEMA (zuzenduta)" (without the note-takers' FALTAFOTO and "hau azalpenean gehitu"), "20. GAIA_ … (ZUZENDU GABE)".
+    '1515dad6a039967c3f3731c9f07f6581301f321a6f0446980ca91eac674defc7',
+    '22bf83ad68e17d8e6ff5e20fcdc4caafcd3b74c2fb1a762432c6fbb77fe63cfe',
   ];
 
   it('pins the complete original text of each of the PDFs', () => {
@@ -62,7 +67,7 @@ describe('original notes and reviewed alignment', () => {
       }
       for (const id of refs) expect(sentence(id), `${key}: ${id}`).toBeDefined();
     });
-    expect(count).toBe(1552);
+    expect(count).toBe(1759);
     // The second: topic 10 stage 6's summary step (the flat map of the derivatives).
     expect(unmapped).toBe(2);
   });

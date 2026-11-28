@@ -10,6 +10,7 @@ import type { StageDef } from '@/lib/sim/types';
 import { IconClose, IconExpand } from './icons';
 import styles from './structure-atlas.module.css';
 import { SceneView } from '@/components/kit';
+import { topicNo } from '@/content/topic-no';
 
 interface Shot {
   week: number;
@@ -171,7 +172,7 @@ export function AtlasFigure({ id }: { id: string }) {
         </svg>
       </Link>
       <figcaption>
-        {shot.week}. gaia · {shot.stage.title}
+        {topicNo(shot.week)}. gaia · {shot.stage.title}
         {shot.stage.views.length > 1 && <> · {view.label}</>}
       </figcaption>
     </figure>

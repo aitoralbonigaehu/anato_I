@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { KimuFace } from '@/components/kimu/KimuFace';
 import type { KimuReply } from '@/lib/kimu/types';
 import s from './journey.module.css';
+import { topicNo } from '@/content/topic-no';
 
 const questions = ['Non kokatzen dira somitak?', 'Non dago bihotz-goragunea?', 'Zer dira arku faringeoak?'];
 export function KimuTrial({
@@ -95,7 +96,7 @@ export function KimuTrial({
                   visit('/astea/' + place.week + '?' + params);
                 }}
               >
-                Ireki {place.week}. gaia ↗
+                Ireki {topicNo(place.week)}. gaia ↗
               </button>
             )}
             <button

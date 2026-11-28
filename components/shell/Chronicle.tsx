@@ -6,6 +6,7 @@ import { ORDERED, milestoneAt, momentAt, momentOf, simHref, systemOf, whenOf, ty
 import { AgeScene, DayChart, dayParts } from './Timeline';
 import { IconNext, IconPause, IconPlay, IconPrev } from './icons';
 import './timeline.css';
+import { topicNo } from '@/content/topic-no';
 
 /** The key dates of the notes, in order: the chapters the home page plays through. */
 const KEYS = ORDERED.filter((m) => m.weight === 'gakoa');
@@ -99,7 +100,7 @@ export function Chronicle() {
           {at && view && (
             <figcaption>
               <span>
-                <b>{at.week}. gaia</b> · {at.stage.title}
+                <b>{topicNo(at.week)}. gaia</b> · {at.stage.title}
               </span>
               <span className="tl-fig-view">{view.label}</span>
               <Link className="btn small primary tl-fig-go" href={simHref(base!)}>

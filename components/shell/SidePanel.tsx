@@ -9,6 +9,7 @@ import type { StageDef, WeekDef } from '@/lib/sim/types';
 import { IconCalendar, IconCheck, IconChevron, IconClose, IconList, IconWarn } from './icons';
 import { stageExamDates } from '@/content/examDates';
 import { StageLineage, branchOf } from './StageLineage';
+import { topicNo } from '@/content/topic-no';
 
 
 /** Sidebar glyph: a panel with an arrow pointing the way it will move. */
@@ -137,7 +138,7 @@ export function Outline(p: OutlineProps) {
       </button>
       <div className="outline-head">
         <p className="kicker">
-          {week.week}. gaia · {spanOf(week).long}
+          {topicNo(week.week)}. gaia · {spanOf(week).long}
         </p>
         <h1>{week.title}</h1>
         <div className="outline-meter" aria-label={`${seen}/${week.stages.length} etapa ikusita`}>
@@ -230,7 +231,7 @@ export function StageNav({ week, current, visited, onStage, label, outlineShown,
         <div className="snav-sheet" ref={sheet} role="dialog" aria-label="Apunteen aurkibidea" onKeyDown={onKey}>
           <div className="snav-head">
             <p className="kicker">
-              {week.week}. gaia · Apunteen aurkibidea
+              {topicNo(week.week)}. gaia · Apunteen aurkibidea
             </p>
             <span className="snav-seen">
               {seen}/{week.stages.length} etapa ikusita

@@ -10,6 +10,7 @@ import { useVisitedAll } from './progress';
 import { IconChevron } from './icons';
 import { hueStyle } from './topicHue';
 import { Ring } from './Ring';
+import { topicNo, LAST_TOPIC_NO } from '@/content/topic-no';
 
 /** The topic sheet is two columns that read down, then across (1–5 | 6–10; 11 topics: 1–6 | 7–11). */
 
@@ -82,11 +83,11 @@ export function WeekNav({ current, stageId }: { current: WeekDef; stageId?: stri
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-haspopup="dialog"
-        aria-label={`Gaia: ${current.week}. ${current.title}. Gaiak aldatu`}
+        aria-label={`Gaia: ${topicNo(current.week)}. ${current.title}. Gaiak aldatu`}
         data-tip={open ? undefined : 'Gaiak: guztiak, beren etapekin'}
         data-tip-pos="bottom"
       >
-        <span className="tsw-n">{current.week}</span>
+        <span className="tsw-n">{topicNo(current.week)}</span>
         <span className="tsw-t">{current.title}</span>
         <IconChevron size={14} className="tsw-caret" />
       </button>
@@ -95,12 +96,12 @@ export function WeekNav({ current, stageId }: { current: WeekDef; stageId?: stri
           <div className="tsw-head">
             <div>
               <b className="tsw-title">Gaiak</b>
-              <span className="tsw-sub">Garapenaren ordenan · {weeks.length} gai</span>
+              <span className="tsw-sub">Garapenaren ordenan · {LAST_TOPIC_NO} gai</span>
             </div>
             <span className="tsw-here">
               <Ring part={current.stages.length ? curDone / current.stages.length : 0} />
               <span>
-                <b>{current.week}. gaia</b> · {curDone}/{current.stages.length} etapa ikusita
+                <b>{topicNo(current.week)}. gaia</b> · {curDone}/{current.stages.length} etapa ikusita
               </span>
             </span>
           </div>
@@ -129,7 +130,7 @@ export function TopicList({ current, stageId, visited, onPick }: { current: Week
             <p className="tsw-group-h">
               {g.title}
               <span>
-                {list[0].week}–{list[list.length - 1].week}
+                {topicNo(list[0].week)}–{Math.max(...list.map((w) => topicNo(w.week)))}
               </span>
             </p>
             <ol className="tsw-grid" style={{ '--rows': Math.ceil(list.length / 2) } as CSSProperties}>
@@ -148,11 +149,11 @@ export function TopicList({ current, stageId, visited, onPick }: { current: Week
                       style={hueStyle(w.week)}
                       className={`tsw-item${on ? ' is-on' : ''}${wip ? ' is-wip' : ''}${done === w.stages.length && done > 0 ? ' is-done' : ''}`}
                       aria-current={on ? 'page' : undefined}
-                      aria-label={`${w.week}. gaia: ${w.title} (${span.long})${prep ? ' · prestatzen' : ''}${wip ? '' : ` · ${done}/${w.stages.length} etapa ikusita`}`}
+                      aria-label={`${topicNo(w.week)}. gaia: ${w.title} (${span.long})${prep ? ' · prestatzen' : ''}${wip ? '' : ` · ${done}/${w.stages.length} etapa ikusita`}`}
                       onClick={onPick}
                       title={w.subtitle}
                     >
-                      <span className="tsw-item-n">{w.week}</span>
+                      <span className="tsw-item-n">{topicNo(w.week)}</span>
                       <span className="tsw-item-body">
                         <b>{w.title}</b>
                         <span className="tsw-item-meta">

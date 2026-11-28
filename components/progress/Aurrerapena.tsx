@@ -19,6 +19,7 @@ import { hueOf } from '@/components/shell/topicHue';
 import { Glyph } from './glyphs';
 import { SceneMarkReview } from './SceneMarkReview';
 import p from './aurrerapena.module.css';
+import { topicNo } from '@/content/topic-no';
 
 const TOPICS = weeks.map((w) => ({ week: w.week, title: w.title, ready: !isWip(w), stages: w.stages.map((s) => ({ id: s.id, title: s.title })) }));
 const SYSTEMS = BEL_SYSTEMS.map((s) => ({ id: s.id, title: s.short, keys: BEL_ITEMS.filter((x) => x.plate.system === s.id).map((x) => x.item.key) }));
@@ -244,7 +245,7 @@ function StartGuide({ sum }: { sum: Summary }) {
             <select aria-label="Gaia" value={week} onChange={(e) => setWeek(Number(e.target.value))}>
               {ready.map((w) => (
                 <option key={w.week} value={w.week}>
-                  {w.week}. gaia · {w.title}
+                  {topicNo(w.week)}. gaia · {w.title}
                 </option>
               ))}
             </select>
@@ -257,7 +258,7 @@ function StartGuide({ sum }: { sum: Summary }) {
             Gaia irekitzean simulazioa agertzen da. Barruan, goian ezkerrean, <em>gaiaren izena ▾</em> sakatuta beste gai batera alda zaitezke, eta <em>Etapa ▾</em> menuan gaiaren etapa bat aukeratu.
           </p>
           <Link href={`/astea/${week}`} className={`btn primary ${p.guideGo}`}>
-            Ireki {week}. gaia simulazioan <span aria-hidden>→</span>
+            Ireki {topicNo(week)}. gaia simulazioan <span aria-hidden>→</span>
           </Link>
           <small className={p.guideTopic}>{title}</small>
         </li>
@@ -315,13 +316,13 @@ function Next({ sum }: { sum: Summary }) {
   const fresh = sum.topics.find((t) => t.ready && t.seen === 0);
   const half = sum.topics.filter((t) => t.ready && t.seen > 0 && t.seen < t.total).sort((a, b) => b.last - a.last)[0];
   const items: { href: string; icon: string; title: string; text: string; tone: string }[] = [];
-  if (lw && ls) items.push({ href: resumeHref(lw.week, lw.stages, last), icon: 'play', title: 'Jarraitu utzi zenuen lekutik', text: `${lw.week}. gaia · ${ls.title}`, tone: p.toneSignal });
+  if (lw && ls) items.push({ href: resumeHref(lw.week, lw.stages, last), icon: 'play', title: 'Jarraitu utzi zenuen lekutik', text: `${topicNo(lw.week)}. gaia · ${ls.title}`, tone: p.toneSignal });
   if (sum.totals.due) items.push({ href: '/belortzioak', icon: 'cards', title: `${sum.totals.due} txartel errepasatzeko`, text: 'Belortzioak · Ikasketa modua', tone: p.toneAmber });
   if (half && half.week !== lw?.week) {
     const nextStage = half.stages.find((s) => !s.views);
-    if (nextStage) items.push({ href: `/astea/${half.week}?etapa=${nextStage.id}`, icon: 'flag', title: `Amaitu ${half.week}. gaia`, text: `${half.total - half.seen} etapa falta · ${nextStage.title}`, tone: p.toneOk });
+    if (nextStage) items.push({ href: `/astea/${half.week}?etapa=${nextStage.id}`, icon: 'flag', title: `Amaitu ${topicNo(half.week)}. gaia`, text: `${half.total - half.seen} etapa falta · ${nextStage.title}`, tone: p.toneOk });
   }
-  if (fresh && items.length < 3) items.push({ href: `/astea/${fresh.week}`, icon: 'compass', title: 'Gai berri bat', text: `${fresh.week}. gaia · ${fresh.title}`, tone: p.toneViolet });
+  if (fresh && items.length < 3) items.push({ href: `/astea/${fresh.week}`, icon: 'compass', title: 'Gai berri bat', text: `${topicNo(fresh.week)}. gaia · ${fresh.title}`, tone: p.toneViolet });
   if (!items.length) return null;
   return (
     <section className={p.next} aria-label="Hurrengo urratsa">
@@ -455,7 +456,7 @@ function TopicCard({ t, open, onToggle }: { t: TopicRow; open: boolean; onToggle
     <article className={`${p.topic}${open ? ` ${p.isOpen}` : ''}${t.seen === t.total && t.total ? ` ${p.isFull}` : ''}${!t.ready ? ` ${p.isPrep}` : ''}`} style={{ ['--h' as string]: hueOf(t.week) }}>
       <button className={p.topicHead} onClick={onToggle} aria-expanded={open}>
         <span className={p.ring} style={{ ['--p' as string]: `${Math.round(pct * 100)}%` }}>
-          <b>{t.week}</b>
+          <b>{topicNo(t.week)}</b>
         </span>
         <span className={p.topicText}>
           <b>{t.title}</b>

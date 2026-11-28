@@ -33,7 +33,7 @@ describe('belortzioak: the figure set', () => {
 
   it('uses the revised digestive labels and leaves out crossed-out or hidden parts', () => {
     const at = (key: string) => BEL_ITEMS.find(({ item }) => item.key === key)?.item;
-    for (const key of ['p16:6', 'p18:3', 'p18:4', 'p19:9', 'p20:2', 'p20:14', 'p21:5', 'p23:10', 'p26:6', 'p27:13', 'p30:10', 'p30:11', 'p32:2', 'p32:4']) {
+    for (const key of ['p16:6', 'p18:3', 'p18:4', 'p19:9', 'p20:2', 'p20:14', 'p21:5', 'p23:10', 'p26:6', 'p27:13', 'p30:10', 'p30:11', 'p32:4']) {
       expect(at(key), key).toBeUndefined();
     }
     expect(at('p16:16')?.name).toBe('Hodi tiroglosoa');
@@ -100,12 +100,45 @@ describe('belortzioak: the figure set', () => {
     for (const [tag, term] of [['5', 'Septum primum'], ['6', 'Ostium secundum'], ['11', 'Birika-zain komun primitiboa'], ['12', 'Beheko arteria mesenterikoa']]) {
       expect(plate.unlocated?.some((entry) => entry.tag === tag && entry.name.includes(term)), term).toBe(true);
     }
-    const neuralTube = BEL_PLATES.find((p) => p.id === 'p29')!;
-    expect(neuralTube.items.some((it) => it.n === 2 || it.n === 3)).toBe(false);
-    expect(neuralTube.unlocated).toEqual([
-      { tag: '2', name: 'Aurreko neuroporoa' }, { tag: '3', name: 'Atzeko neuroporoa' },
-    ]);
     expect(BEL_PLATES.find((p) => p.id === 'p21')?.unlocated).toContainEqual({ tag: '17', name: 'Kolona' });
+  });
+
+  it('follows the 2026-11-27 corrections (eye and ear, cranial nerves, brain vesicles)', () => {
+    const at = (key: string) => BEL_ITEMS.find(({ item }) => item.key === key)?.item;
+    expect(at('p04:9')?.name).toBe('Begia: kristalinoa');
+    expect(['p27:18', 'p27:19', 'p27:20', 'p27:21', 'p27:24', 'p27:25'].map((k) => at(k)?.name)).toEqual([
+      'Irisa', 'Kristalinoa', 'Tronpa faringotinpanikoa', 'Hodi erdizirkularrak', 'Koklea (hemen entzumenaren errezeptoreak)', 'Esklerotika (zuri dagoena)',
+    ]);
+    expect(at('p27:22')).toMatchObject({ tag: '22,23', name: 'Utrikulua eta sakulua' });
+    expect(at('p27:21')!.targets).toHaveLength(2);
+    // the bracket marks the closed tube: each neuropore is where it ends
+    const tube = BEL_PLATES.find((p) => p.id === 'p29')!;
+    expect(tube.unlocated).toBeUndefined();
+    expect(at('p29:2')!.targets[0][1]).toBeLessThan(at('p29:3')!.targets[0][1]);
+    // III, IV and VI are taught now; 1 has its own arrow, the printed one is IV
+    expect(['p30:1', 'p30:2', 'p30:8', 'p30:12'].map((k) => at(k)?.name)).toEqual([
+      'Nerbio okulomotorra (III)', 'Nerbio troklearra (IV)', 'Nerbio abdentzailea (VI)', 'Nerbio estatoakustikoa (VIII)',
+    ]);
+    expect(at('p32:3')?.name).toBe('Atzeko sustraia');
+    expect(at('p32:2')!.arrow).toBe(false);
+    expect(at('p33:istmoa')).toMatchObject({ tag: 'a', name: 'Istmoa (estugunea)' });
+    expect(at('p33:8')!.arrow).toBe(false);
+    expect(['p35:5', 'p35:6', 'p35:6.1', 'p35:19'].map((k) => at(k)?.name)).toEqual(['Erraboila', 'Zubia', 'Zubi-tolespena', 'Lepo-tolespena']);
+    expect(at('p35:13')?.name).toBe('Bentrikulu arteko zuloa');
+    // p02 and p34 were corrected too: renamed 2 and 8; 17 and 18 circled by hand, 15 and 16 "ez da ikusten"
+    expect(['p02:2', 'p02:8'].map((k) => at(k)?.name)).toEqual(['Plakoda otikoa (aurrerago belarria)', 'Nerbio trigeminoaren gongoilaren goragunea']);
+    expect(['p34:17', 'p34:18'].map((k) => at(k)?.group)).toEqual(['Nerbio errakideoak', 'Nerbio errakideoak']);
+    expect(at('p34:18')!.targets[0][0]).toBeGreaterThan(at('p34:17')!.targets[0][0]);
+    expect(BEL_PLATES.find((p) => p.id === 'p34')!.unlocated?.map((u) => u.tag)).toEqual(['15', '16']);
+    // the iris arrow starts on the blue arc, the lens one on the ring below it
+    expect(at('p27:18')!.targets[0][1]).toBeLessThan(at('p27:19')!.targets[0][1]);
+  });
+
+  it('lights every structure of the corrected plates as an area, not only a dot', () => {
+    for (const id of ['p02', 'p03', 'p04', 'p05', 'p07', 'p08', 'p27', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34', 'p35']) {
+      const plate = BEL_PLATES.find((p) => p.id === id)!;
+      expect(plate.items.filter((it) => !it.area?.length).map((it) => it.key), id).toEqual([]);
+    }
   });
 
   it('uses the audited anatomical landmarks in both drawings and removes extraneous leaders', () => {

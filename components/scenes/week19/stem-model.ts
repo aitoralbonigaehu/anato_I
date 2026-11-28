@@ -50,8 +50,10 @@ export interface StemPose {
   nigra: number;
   dopa: number;
   pd: number;
+  /** The four colliculi on the dorsal side (topic 20, 2.1.3): caudal pair (hearing), cranial pair (sight) (0..1). */
+  coll?: number;
 }
-export const STEM0: StemPose = { pyr: 0, dors: 0, fib: 0, cord: 0, flow: 0, flowShow: 0, fn: 0, open: 0, pons: 0, lips: 0, fuse: 0, cover: 0, mat: 0, nigra: 0, dopa: 0, pd: 0 };
+export const STEM0: StemPose = { pyr: 0, dors: 0, fib: 0, cord: 0, flow: 0, flowShow: 0, fn: 0, open: 0, pons: 0, lips: 0, fuse: 0, cover: 0, mat: 0, nigra: 0, dopa: 0, pd: 0, coll: 0 };
 
 export interface StemOpts {
   kind: StemKind;
@@ -367,6 +369,17 @@ export function stemModel(pose: StemPose, o: StemOpts) {
     // Its dopaminergic cells: dark dots in the crescent, fading as they die.
     const cells = mergeParts([0.24, 0.36, 0.48, 0.6].flatMap((x, i) => [-1, 1].map((sg) => blobParts({ center: [sg * x, -0.6 + 0.12 * i * 0.6 + (x - 0.42) * 0.45, LEN + 0.012], radii: [0.03, 0.03, 0.01], rings: 5, sides: 8 }))));
     put('nigra-cells', 'gai-beltza', cells, '#140d10', '#000000', { opacity: nig * (1 - pd) });
+  }
+  // The colliculi (topic 20): four mounds on the dorsal side, two pairs; the caudal ones (hearing), the cranial ones (sight).
+  const coll = clamp01(pose.coll ?? 0);
+  if (coll > 0.01) {
+    const top = lerp(0.62, 0.86, ss(0, 1, m));
+    const mound = (z: number) => mergeParts([-1, 1].map((sg) => blobParts({ center: [sg * 0.3, top - 0.05, z], radii: [0.25 * coll, 0.2 * coll, 0.36 * LEN], rings: 10, sides: 14 })));
+    put('coll-inf', 'beheko-kolikuluak', mound(-0.5 * LEN), mixHex(W, '#e9b86a', 0.55), '#7a5418', { groups: ['mesentzefaloa', 'kolikuluak'], opacity: coll });
+    put('coll-sup', 'goiko-kolikuluak', mound(0.5 * LEN), mixHex(W, '#9ac4f0', 0.55), '#244a72', { groups: ['mesentzefaloa', 'kolikuluak'], opacity: coll });
+    pts['beheko-kolikuluak'] = [-0.3, top + 0.12, -0.5 * LEN];
+    pts['goiko-kolikuluak'] = [-0.3, top + 0.12, 0.5 * LEN];
+    pts['kolikuluak'] = [-0.3, top + 0.12, 0];
   }
   const dopa = clamp01(pose.dopa) * (1 - pd);
   const basalShow = Math.max(clamp01(pose.dopa) * 0.9, 0);

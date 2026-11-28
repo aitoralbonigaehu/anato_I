@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { TopicList, WeekNav } from '@/components/shell/WeekNav';
 import { weeks } from '@/content/registry';
 import { isWip } from '@/components/shell/LandNav';
+import { topicNo } from '@/content/topic-no';
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -23,7 +24,7 @@ describe('top-bar topic switcher', () => {
   it('lists every topic with its name and span, and marks only the current one', () => {
     const html = renderToStaticMarkup(createElement(TopicList, { current: cur, stageId: cur.stages[0].id, visited: {} }));
     for (const w of weeks) {
-      expect(html).toContain(`aria-label="${esc(`${w.week}. gaia: ${w.title}`)}`);
+      expect(html).toContain(`aria-label="${esc(`${topicNo(w.week)}. gaia: ${w.title}`)}`);
       expect(html).toContain(`href="/astea/${w.week}"`);
       expect(html).toContain(esc(w.title));
       if (isWip(w)) expect(html).toContain('Prestatzen');

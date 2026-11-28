@@ -6,6 +6,7 @@ import { firstSeenOf } from '@/content/chronology';
 import { getWeek, nameOf, weeks } from '@/content/registry';
 import { IconCheck, IconClose } from './icons';
 import { competenceLevel, isDue, recordAnswer, useAnswers, type Answers } from './answers';
+import { topicNo } from '@/content/topic-no';
 
 interface QuestionsProps {
   week: number;
@@ -212,7 +213,7 @@ export function Questions({ week: startWeek, onClose, onGoto, onFind, concept, r
               </button>
             </div>
           ) : (
-            <p className="qz-scope">{scope === 'denak' ? 'Gai guztiak' : `${week}. gaia · ${getWeek(week)?.title ?? ''}`}</p>
+            <p className="qz-scope">{scope === 'denak' ? 'Gai guztiak' : `${topicNo(week)}. gaia · ${getWeek(week)?.title ?? ''}`}</p>
           )}
           <button className="icon-btn" onClick={onClose} aria-label="Itxi">
             <IconClose />
@@ -251,7 +252,7 @@ export function Questions({ week: startWeek, onClose, onGoto, onFind, concept, r
                 className={`qz-topic${scope === 'gaia' && week === t.week ? ' is-on' : ''}`}
                 onClick={() => reset(mode, 'gaia', kind, undefined, t.week)}
                 aria-pressed={scope === 'gaia' && week === t.week}
-                aria-label={`${t.week}. gaia: ${t.title} · ${t.mastered}/${t.keys} gaitasun menderatuta${t.due ? ` · ${t.due} errepasatzeko` : ''}`}
+                aria-label={`${topicNo(t.week)}. gaia: ${t.title} · ${t.mastered}/${t.keys} gaitasun menderatuta${t.due ? ` · ${t.due} errepasatzeko` : ''}`}
                 data-tip={`${t.title} · ${t.tried}/${t.total} galdera erantzunda`}
                 data-tip-pos="bottom"
               >
@@ -368,7 +369,7 @@ export function Questions({ week: startWeek, onClose, onGoto, onFind, concept, r
                 <p className="qz-why">{q.why ? q.why[q.answer] : q.explanation}</p>
                 {where && (
                   <p className="qz-where">
-                    Simulazioan: {q.week}. gaia · {where.stage.title}
+                    Simulazioan: {topicNo(q.week)}. gaia · {where.stage.title}
                     {where.step ? ` · ${where.step}. urratsa` : ''}
                   </p>
                 )}
@@ -398,7 +399,7 @@ export function Questions({ week: startWeek, onClose, onGoto, onFind, concept, r
                     </button>
                   )}
                   {picked !== null && q.stageId && (
-                    <button className="btn qz-goto" onClick={() => onGoto(q.week, q.stageId!, q.concept)} title={where ? `${q.week}. gaia · ${where.stage.title}${where.step ? ` · ${where.step}. urratsa` : ''}` : undefined}>
+                    <button className="btn qz-goto" onClick={() => onGoto(q.week, q.stageId!, q.concept)} title={where ? `${topicNo(q.week)}. gaia · ${where.stage.title}${where.step ? ` · ${where.step}. urratsa` : ''}` : undefined}>
                       Simulazioan ikusi
                       {where?.step && (
                         <small aria-label={`${where.step}. urratsa ${where.steps}etik`}>

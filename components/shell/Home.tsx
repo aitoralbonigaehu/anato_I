@@ -20,6 +20,7 @@ import './landing.css';
 import { spanOf } from '@/lib/sim/age';
 import { hueStyle } from './topicHue';
 import { Ring } from './Ring';
+import { topicNo, LAST_TOPIC_NO } from '@/content/topic-no';
 
 const stageCount = weeks.reduce((n, w) => n + w.stages.filter((s) => !s.views.every((v) => v.description === 'Prestatzen')).length, 0);
 
@@ -48,7 +49,7 @@ function TopicCard({ w }: { w: (typeof weeks)[number] }) {
       <span className="pl-fig">
         <TopicShot week={w.week} hot={hot} />
         <span className="pl-n" aria-hidden>
-          {w.week}
+          {topicNo(w.week)}
         </span>
         {(wip || prep) && <span className="pl-flag">Prestatzen</span>}
         {!wip && (
@@ -59,7 +60,7 @@ function TopicCard({ w }: { w: (typeof weeks)[number] }) {
       </span>
       <span className="pl-body">
         <b>
-          <span className="sr-only">{w.week}. gaia: </span>
+          <span className="sr-only">{topicNo(w.week)}. gaia: </span>
           {w.title}
         </b>
         <small>{w.subtitle}</small>
@@ -97,7 +98,7 @@ function RulerTick({ w, here }: { w: (typeof weeks)[number]; here: boolean }) {
   const part = w.stages.length ? done / w.stages.length : 0;
   const inner = (
     <>
-      <span className="rul-n">{w.week}</span>
+      <span className="rul-n">{topicNo(w.week)}</span>
       <span className="rul-bar" aria-hidden>
         <i style={{ transform: `scaleX(${part})` }} />
       </span>
@@ -113,7 +114,7 @@ function RulerTick({ w, here }: { w: (typeof weeks)[number]; here: boolean }) {
       {wip ? (
         <span className="rul-tick">{inner}</span>
       ) : (
-        <Link className="rul-tick" href={resumeHref(w.week, w.stages, saved, visited)} aria-label={`${w.week}. gaia: ${w.title}, ${done}/${w.stages.length} etapa ikusita`} aria-current={here ? 'true' : undefined}>
+        <Link className="rul-tick" href={resumeHref(w.week, w.stages, saved, visited)} aria-label={`${topicNo(w.week)}. gaia: ${w.title}, ${done}/${w.stages.length} etapa ikusita`} aria-current={here ? 'true' : undefined}>
           {inner}
         </Link>
       )}
@@ -130,7 +131,7 @@ function TopicRuler() {
     <nav className="rul rv" aria-label="Gaiak, garapenaren ordenan">
       <p className="rul-head">
         <span>
-          <b>{weeks.length} gai</b>, garapenaren ordenan
+          <b>{LAST_TOPIC_NO} gai</b>, garapenaren ordenan
         </span>
         <span className="rul-seen">{seen > 0 ? `${seen}/${stageCount} etapa ikusita` : `${stageCount} etapa`}</span>
       </p>
@@ -160,7 +161,7 @@ function ContinueCta() {
       <span className="cta-continue-t">
         Jarraitu
         <small>
-          {w.week}. gaia · {st.title}
+          {topicNo(w.week)}. gaia · {st.title}
         </small>
       </span>
     </Link>
@@ -265,7 +266,7 @@ export function Home() {
       <section id="gaiak" className="shelf hm-topics" aria-labelledby="shelf-h">
         <header className="hm-head" data-rv>
           <div>
-            <h2 id="shelf-h">{weeks.length <= 12 ? `${countWord(weeks.length)} gai` : `${weeks.length} gai`}, bakoitza bere eszenarekin</h2>
+            <h2 id="shelf-h">{LAST_TOPIC_NO <= 12 ? `${countWord(LAST_TOPIC_NO)} gai` : `${LAST_TOPIC_NO} gai`}, bakoitza bere eszenarekin</h2>
             <p className="shelf-note">{shelfView === 'mapa' ? 'Gai bakoitza urrats-kate labur batean: hau buruan izanda, xehetasun bakoitzak badu bere lekua.' : 'Etapatan banatuta. Pasatu sagua gainetik eta ikusiko duzu mugitzen.'}</p>
           </div>
           <div className="seg" role="tablist" aria-label="Gaien ikuspegia">

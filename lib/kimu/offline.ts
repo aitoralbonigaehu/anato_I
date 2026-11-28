@@ -7,6 +7,7 @@ import { anchorOf, CUE, fairHit, headingOf, itemHead, joinBest, quoteOf, refOf, 
 import { CONFIDENT, confident, SAMPLE_TOPICS, toTarget, type Hit } from './search';
 import { fold, keyWord, match, queryTokens, tokens, type Lang } from './text';
 import type { KimuFrom, KimuHere, KimuReply, KimuSource, KimuTarget } from './types';
+import { topicNo } from '@/content/topic-no';
 
 /**
  * Kimu's answer built from the notes alone: what most students get (no key, limit reached, no
@@ -222,7 +223,7 @@ export function notesTarget(h: NotesHit): KimuTarget | undefined {
     sentence: a.sentence,
     action: 'explanation',
     label: stage.title,
-    where: `${a.week}. gaia · ${stage.day}`,
+    where: `${topicNo(a.week)}. gaia · ${stage.day}`,
   };
 }
 

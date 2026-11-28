@@ -10,6 +10,7 @@ import { ERA_MAP, KIMU_QUESTION, PLATE_FIGURE, framePlate, playScene, runFullscr
 import Show, { type Place } from './show/Show';
 import ReleaseFilm, { type PalateState } from './ReleaseFilm';
 import s from './journey.module.css';
+import { LAST_TOPIC_NO } from '@/content/topic-no';
 
 /**
  * The first-visit journey, after the opening film: the problem (notes are flat, embryology moves), then
@@ -145,7 +146,7 @@ const KIMU_STEPS = ['Zure hitzekin galdetu', 'Apunteetatik erantzuten du, gaia e
 
 const live = (v: { description: string }) => v.description !== 'Prestatzen';
 const STATS = [
-  { n: weeks.length, w: 'gai' },
+  { n: LAST_TOPIC_NO, w: 'gai' },
   { n: weeks.reduce((n, w) => n + w.stages.filter((st) => st.views.some(live)).length, 0), w: 'etapa' },
   { n: weeks.reduce((n, w) => n + w.stages.reduce((m, st) => m + st.views.filter(live).length, 0), 0), w: 'ikuspegi' },
   { n: structures.size, w: 'egitura eta kontzeptu' },

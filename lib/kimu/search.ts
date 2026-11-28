@@ -11,6 +11,7 @@ import { structures, weeks } from '@/content/registry';
 import { formationOf } from '@/content/formation';
 import type { KimuFrom, KimuHere, KimuTarget } from './types';
 import { match, queryTokens, spell, tokens, topicIn, withoutTopic } from './text';
+import { topicNo } from '@/content/topic-no';
 
 interface Doc {
   kind: KimuTarget['kind'];
@@ -78,7 +79,7 @@ function bestSpot(id: string, first: NonNullable<ReturnType<typeof firstSeenOf>>
 
 function build(): { docs: Doc[]; idf: Map<string, number> } {
   const docs: Doc[] = [];
-  const stageWhere = (week: number, day: string) => `${week}. gaia · ${day}`;
+  const stageWhere = (week: number, day: string) => `${topicNo(week)}. gaia · ${day}`;
 
   for (const w of weeks) {
     for (const s of w.stages) {
@@ -229,7 +230,7 @@ export const vocabulary = () => index().idf;
 export function search(raw: string, limit = 4, week?: number): Hit[] {
   const { docs, idf } = index();
   // A topic named in the question ("7. gaian") is a filter on where to look, not words to match.
-  const asked = topicIn(raw);
+  const asked = topicIn(raw, week);
   const question = withoutTopic(raw);
   const prefer = asked ?? week;
   const q = queryTokens(question).map((alts) => spell(alts, idf));
@@ -366,7 +367,7 @@ export function nearestFrom(here: KimuHere, hit: Hit): Hit | null {
     if (k < 0 && si > hi && stage.structures.includes(id)) k = 0;
     if (k < 0) continue;
     const beat = stage.beats[k];
-    const where = `${week.week}. gaia · ${stage.day}`;
+    const where = `${topicNo(week.week)}. gaia · ${stage.day}`;
     const from = fromHere(here, week.week, stage.id, beat.at);
     return {
       score: hit.score,
@@ -402,7 +403,7 @@ export function describeHere(here: { week: number; stage: string; beat: number; 
   const picked = here.structure ? structures.get(here.structure) : null;
   const view = here.view ? stage.views.find((v) => v.id === here.view)?.label : undefined;
   return {
-    title: `${week.week}. gaia · ${stage.title}${view ? ` (${view})` : ''}`,
+    title: `${topicNo(week.week)}. gaia · ${stage.title}${view ? ` (${view})` : ''}`,
     step: beat ? clip(oneLine(`${beat.idea ?? ''} ${beat.text}`), 320) : '',
     picked: picked ? clip(oneLine(`${picked.name}${picked.es ? ` (${picked.es})` : ''}: ${picked.definition}`), 260) : '',
   };

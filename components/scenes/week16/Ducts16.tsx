@@ -515,11 +515,10 @@ const spec16: StageSpec<DuctPose, DuctOpts> = {
       glide: 0.06,
       dim: ['lotailu-utero-obarikoa', 'uteroaren-lotailu-biribila', 'gubernakulua'],
       names: [
-        { id: 'lotailu-utero-obarikoa', text: '«Obarioaren euspen lotailua»', sub: 'obariotik uterora (berariazkoa)', from: 0.25 },
+        { id: 'lotailu-utero-obarikoa', sub: 'obariotik uteroaren gorputzeraino', from: 0.25 },
         { id: 'uteroaren-lotailu-biribila', sub: 'uterotik ezpain nagusietara', from: 0.45 },
       ],
-      note: 'KONTUZ: gubernakulua endekatu eta bi lotailu. Apunteek «obarioaren euspen lotailua: obariotik uterora» diote; hori lotailu utero-obarikoa da (euspen lotailua paretara doa)',
-      warn: true,
+      note: 'Gubernakulua endekatu eta bi lotailu: lotailu utero-obarikoa (obariotik uteroaren gorputzeraino) eta uteroaren lotailu biribila (larruazaleraino)',
     },
     {
       cam: CAM(9, [1.2, -1.8, 0.4], 44, -4),

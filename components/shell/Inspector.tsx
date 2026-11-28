@@ -9,6 +9,7 @@ import type { WeekDef } from '@/lib/sim/types';
 import { IconClose, IconWarn } from './icons';
 import { COMPETENCES, compKey, imageId } from '@/content/pool-keys';
 import { competenceLevel, errorsOf, levelLabel, useAnswers, type Answers } from './answers';
+import { topicNo } from '@/content/topic-no';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -177,9 +178,9 @@ export function Inspector({ id, week, onClose, onSelect, onGoto, onReplay, onPra
 
         {recall && (
           <aside className="recall">
-            <p className="recall-h">Gogoratu · {recall.week.week}. gaia{life ? ` · ${dayLabel(life.from)}` : ''}</p>
+            <p className="recall-h">Gogoratu · {topicNo(recall.week.week)}. gaia{life ? ` · ${dayLabel(life.from)}` : ''}</p>
             <p>
-              <b>{s.name}</b> {recall.week.week}. gaian ikasi zenuen: {recall.stage.title}.
+              <b>{s.name}</b> {topicNo(recall.week.week)}. gaian ikasi zenuen: {recall.stage.title}.
             </p>
             {chain.length > 1 && (
               <p className="recall-chain">
@@ -197,7 +198,7 @@ export function Inspector({ id, week, onClose, onSelect, onGoto, onReplay, onPra
               </button>
             ) : (
               <button className="link-quiet" onClick={() => onGoto(recall.week.week, recall.stage.id)}>
-                Ikusi berriro {recall.week.week}. gaian <span aria-hidden>→</span>
+                Ikusi berriro {topicNo(recall.week.week)}. gaian <span aria-hidden>→</span>
               </button>
             )}
           </aside>
@@ -267,7 +268,7 @@ export function Inspector({ id, week, onClose, onSelect, onGoto, onReplay, onPra
                     <span>
                       Ikusi nola sortzen den
                       <small>
-                        {first.week}. gaia · {firstStage.title}
+                        {topicNo(first.week)}. gaia · {firstStage.title}
                       </small>
                     </span>
                   </button>

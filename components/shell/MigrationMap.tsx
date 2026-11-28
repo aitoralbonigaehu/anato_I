@@ -14,6 +14,7 @@ import { VisualDerivatives } from './eratorriak/VisualDerivatives';
 import { hasVisualDerivatives } from '@/lib/learning/visual-derivatives';
 import { flowShown, hasBlueContent, taughtFlow } from '@/content/eratorriak/taught';
 import { hueStyle } from './topicHue';
+import { topicNo } from '@/content/topic-no';
 
 /** A topic tab (week 0 = the topics 1–6 germ-layer trees), the arch-systems tab, or one origin followed across topics. */
 type Mode = { week: number; part?: Part; source?: undefined; arch?: undefined } | { source: string; week?: undefined; part?: undefined; arch?: undefined } | { arch: true; week?: undefined; part?: undefined; source?: undefined };
@@ -412,10 +413,10 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
   const grids = !!topic && part === 'eskemak' && hasGridSchemes(topic.week);
   const gridsFirst = grids && topic.week < 15;
   const quiz: Quiz = { on: quizOn, shown, reveal: (k) => setShown((s) => new Set(s).add(k)) };
-  const nameOf = (week: number) => MIGRATIONS.find((t) => t.week === week)?.short ?? SHORT[week] ?? `${week}. gaia`;
+  const nameOf = (week: number) => MIGRATIONS.find((t) => t.week === week)?.short ?? SHORT[week] ?? `${topicNo(week)}. gaia`;
   const mark = mode.arch ? '★' : src ? '→' : layersTab ? '1–6' : String(mode.week);
   const short = mode.arch ? 'Arku sistemak' : src ? (structures.get(src.id)?.name ?? src.id) : layersTab ? 'Ernetze orriak' : nameOf(mode.week!);
-  const eyebrow = mode.arch ? '8., 9. eta 12. gaiak' : src ? 'Iturri bat gai guztietan' : layersTab ? '1.–6. gaiak' : `${mode.week}. gaia`;
+  const eyebrow = mode.arch ? '8., 9. eta 12. gaiak' : src ? 'Iturri bat gai guztietan' : layersTab ? '1.–6. gaiak' : `${topicNo(mode.week)}. gaia`;
   const follow = (
     <select
       className={`mg-follow${src ? ' is-on' : ''}`}
@@ -460,7 +461,7 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
           </button>
           {WEEKS.map((week) => (
             <button key={week} type="button" style={hueStyle(week)} className={mode.week === week ? 'is-on' : undefined} aria-current={mode.week === week ? 'page' : undefined} onClick={() => pick({ week })}>
-              <b>{week}</b>
+              <b>{topicNo(week)}</b>
               {nameOf(week)}
             </button>
           ))}
@@ -493,7 +494,7 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
         </header>
         {(parts.length > 1 || (mode.week && hasRoom(mode.week))) && (
           <div className="mg-parts">
-            <div role="tablist" aria-label={`${mode.week}. gaiaren atalak`}>
+            <div role="tablist" aria-label={`${topicNo(mode.week)}. gaiaren atalak`}>
               {parts.length > 1 &&
                 parts.map((p) => (
                   <button key={p.id} role="tab" aria-selected={part === p.id} className={part === p.id ? 'is-on' : undefined} onClick={() => pick({ week: mode.week!, part: p.id })}>
@@ -582,7 +583,7 @@ export function MigrationMap({ layers }: { layers: ReactNode }) {
             {src.groups.map((g) => (
               <section key={g.t.week} className="mg-group">
                 <h4>
-                  <b>{g.t.week}. gaia</b> {g.t.short}
+                  <b>{topicNo(g.t.week)}. gaia</b> {g.t.short}
                 </h4>
                 {g.flows
                   .map((f) => (taughtOnly && hasBlueContent(g.t.week) && flowShown(f) ? taughtFlow(f) : f))

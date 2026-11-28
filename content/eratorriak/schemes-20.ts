@@ -51,7 +51,7 @@ export const SCHEMES_20: MigrationTopic = {
     {
       id: 'bikote-kranealen-irteerak-20',
       title: 'Bikote kranealen lotuneak eta irteerak',
-      stage: 'bikote-kranealen-irteerak',
+      stage: 'bikote-kranealak',
       blue: true,
       lead: 'Bikote kraneal gehienak entzefalo-enborrari lotzen zaizkio. I.a eta II.a aurreko garunari lotzen zaizkio, eta XI.aren osagai espinala lepoko ornomuinean hasten da.',
       pitfalls: [
@@ -87,7 +87,7 @@ export const SCHEMES_20: MigrationTopic = {
     {
       id: 'garuntxoaren-jatorria-20',
       title: 'Garuntxoa: hegal plaketatik zerebelo plakara',
-      stage: 'garuntxoaren-garapena',
+      stage: 'zubia-garuntxoa',
       lead: 'Garuntxoa metentzefaloaren hegal-plaken alde dortsaletik garatzen da. Alde dortsolaterala loditzean, ezpain erronboideak sortzen dira.',
       pitfalls: [
         'Ezpain erronboideak sabai-plakaren ondoan daude. Ezpainek eta eremu bentrikularrak garuntxoko neuronen sorreran parte hartzen dute.',
@@ -109,7 +109,7 @@ export const SCHEMES_20: MigrationTopic = {
     {
       id: 'dientzefaloaren-eratorriak-20',
       title: 'Dientzefaloa: lau eskualde eta III. bentrikulua',
-      stage: 'dientzefaloaren-garapena',
+      stage: 'dientzefaloa',
       lead: 'Prosentzefalotik bereizitako dientzefaloak lau eskualde nagusi ditu. Eskuineko eta ezkerreko pareten artean III. bentrikulua dago.',
       pitfalls: [
         'Kortex sentsorial primariora heltzen diren seinale gehienek talamoan dute erreleboa. Usaimena zuzenean heltzen da lehen mailako usaimen-kortexera.',
@@ -135,7 +135,7 @@ export const SCHEMES_20: MigrationTopic = {
     {
       id: 'hipofisiaren-bi-jatorriak-20',
       title: 'Hipofisia: aho-ektodermoa eta neuroektodermoa',
-      stage: 'hipofisiaren-garapena',
+      stage: 'hipofisia',
       lead: 'Estomodeoaren sabaiko hipofisi poltsak eta dientzefalo bentraleko infundibuluak hipofisiaren bi atalak eratzen dituzte.',
       pitfalls: [
         ...hipofisiPitfalls,
@@ -165,7 +165,7 @@ export const SCHEMES_20: MigrationTopic = {
     {
       id: 'telentzefaloaren-eratorriak-20',
       title: 'Telentzefaloa: hemisferioak, kortexa eta oinaldeko nukleoak',
-      stage: 'telentzefaloaren-garapena',
+      stage: 'telentzefaloa',
       lead: 'Bi xixku telentzefalikoek hemisferioak sortzen dituzte. Handitzean dientzefaloa estaltzen dute; xixkuen barrunbeak alboko bentrikulu bihurtzen dira.',
       pitfalls: [
         'Ornomuinean, H formako gai grisa barruan dago eta gai zuria kanpoan. Garun-hemisferioetan kortexa kanpoko gai grisa da. Barruan gai zuria eta gai griseko nukleo sakonak daude.',
@@ -191,7 +191,7 @@ export const SCHEMES_20: MigrationTopic = {
     {
       id: 'komisurak-20',
       title: 'Komisurak: erdiko lerroa zeharkatzen duten zuntzak',
-      stage: 'komisuren-garapena',
+      stage: 'komisurak',
       lead: 'Komisuretako axoiek erdiko lerroa zeharkatzen dute eta bi aldeetako egiturak lotzen dituzte.',
       pitfalls: [
         'Gorputz kailukarra eta aurreko komisura hemisferioen arteko lotuneak dira. Atzeko komisura dientzefaloaren eta mesentzefaloaren arteko mugaren inguruan dago.',
@@ -209,7 +209,7 @@ export const SCHEMES_20: MigrationTopic = {
     {
       id: 'bide-sinpatikoak-20',
       title: 'Bide sinpatikoak: katea eta orno aurreko gongoilak',
-      stage: 'bide-sinpatikoak',
+      stage: 'sinpatikoa',
       lead: 'T1–L2 inguruko neurona gongoil-aurrekoen axoiak aurreko sustraitik eta nerbio espinaletik igarotzen dira, kate sinpatikora heldu arte.',
       pitfalls: [
         'Adar komunikante zuria: gongoil-aurreko axoi mielinadunak katera sartzen dira. Grisa: gongoil-osteko axoi mielinagabeak nerbio espinalera itzultzen dira.',
@@ -233,7 +233,7 @@ export const SCHEMES_20: MigrationTopic = {
     {
       id: 'bide-parasinpatikoak-20',
       title: 'Bide parasinpatikoak: irteera kraneala eta sakroa',
-      stage: 'bide-parasinpatikoak',
+      stage: 'parasinpatikoa',
       lead: 'Bide parasinpatikoa entzefalo-enborretik eta ornomuin sakrotik abiatzen da. Sinapsia xede-organoaren ondoan edo haren paretan gertatzen da.',
       pitfalls: [
         'III., VII. eta IX. nerbioek buruko egiturak inerbatzen dituzte. X. nerbioa toraxeko eta abdomeneko erraietara heltzen da.',
@@ -259,7 +259,7 @@ export const SCHEMES_20: MigrationTopic = {
     {
       id: 'entzefalo-enborreko-zutabeak-20',
       title: 'Entzefalo-enborreko zutabe funtzionalak',
-      stage: 'entzefalo-enborreko-zutabeak',
+      stage: 'zubia-garuntxoa',
       blue: true,
       lead: 'IV. bentrikuluaren barrunbea zabaltzean, nukleo motorren eremua erdialdean geratzen da eta sentsitiboena alboetarantz zabaltzen da.',
       pitfalls: [

@@ -8,6 +8,7 @@ import { allPassages, intentOf, searchNotes } from '@/lib/kimu/notes';
 import { buildMessages } from '@/lib/kimu/prompt';
 import { CONFIDENT, fromHere, search, toTarget } from '@/lib/kimu/search';
 import { detectLang, fold, LAST_TOPIC, topicIn } from '@/lib/kimu/text';
+import { topicNo } from '@/content/topic-no';
 import { loadPracticePool, pickPractice, practiceScope, wantsPractice } from '@/lib/kimu/practice';
 import type { KimuAsk, KimuModelReply } from '@/lib/kimu/types';
 import { FORMATIONS, formationFrame, formationOf } from '@/content/formation';
@@ -698,7 +699,9 @@ describe('Kimu sweep fixes (2026-10-29): headings, names, numbers, typos, other 
 
   // 2026-11-18: «Sinu urogenitala 15. gaian» said "nothing found" because a topic above 11 was not read.
   it('reads every topic of the registry in a question, up to the last one', async () => {
-    expect(LAST_TOPIC).toBe(Math.max(...weeks.map((w) => w.week)));
+    expect(LAST_TOPIC).toBe(Math.max(...weeks.map((w) => topicNo(w.week))));
+    expect(topicIn('zer da hau 19. gaian', 21)).toBe(21);
+    expect(topicIn('zer da hau 20. gaian', 19)).toBe(20);
     expect(topicIn(`zer da hau ${LAST_TOPIC}. gaian`)).toBe(LAST_TOPIC);
     expect(topicIn('sinu urogenitala tema 15')).toBe(15);
     for (const q of ['Sinu urogenitala 15. gaian', 'sinu urogenitala tema 15', 'Sinu urogenitala']) {

@@ -17,6 +17,7 @@ import { Topic15Study } from './eratorriak/Topic15';
 import { Topic16Study } from './eratorriak/Topic16';
 import { Topic17Study } from './eratorriak/Topic17';
 import { hueStyle } from './topicHue';
+import { topicNo } from '@/content/topic-no';
 
 const ROOMS: Record<number, () => ReactNode> = {
   7: () => <Topic7Study />,
@@ -31,7 +32,7 @@ const ROOMS: Record<number, () => ReactNode> = {
   17: () => <Topic17Study />,
 };
 
-const nameOf = (week: number) => MIGRATIONS.find((t) => t.week === week)?.short ?? getWeek(week)?.title ?? `${week}. gaia`;
+const nameOf = (week: number) => MIGRATIONS.find((t) => t.week === week)?.short ?? getWeek(week)?.title ?? `${topicNo(week)}. gaia`;
 
 /** One topic's study room (3D, time diagram, tables, figures, flashcards) on a page of its own. */
 export function IkasgelaPage({ week }: { week: number }) {

@@ -12,6 +12,7 @@ import { imageId } from '@/content/pool-keys';
 import { isSpace, nameOf, partsOf, structures, weeks } from '@/content/registry';
 import { recordAnswer } from './answers';
 import { LandFoot, LandNav } from './LandNav';
+import { topicNo } from '@/content/topic-no';
 
 /**
  * Image cards: the atlas's own figures as numbered plates, the way a printed figure is read. Study mode
@@ -331,7 +332,7 @@ export function PlateCards() {
 
           <aside className="lab-side plate-side">
             <p className="kicker">
-              {plate.week}. gaia{plate.key ? ' · ' : ''}
+              {topicNo(plate.week)}. gaia{plate.key ? ' · ' : ''}
               {plate.key && <span className="plate-key">★ Funtsezkoa</span>}
             </p>
             <h2 className="lab-q plate-title">{plate.title}</h2>

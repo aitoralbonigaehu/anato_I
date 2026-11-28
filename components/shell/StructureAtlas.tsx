@@ -13,6 +13,7 @@ import { categoryColor } from '@/lib/sim/palette';
 import type { StructureDef } from '@/lib/sim/types';
 import { LandFoot, LandNav } from './LandNav';
 import styles from './structure-atlas.module.css';
+import { topicNo, LAST_TOPIC_NO } from '@/content/topic-no';
 
 const catalogue = [...structures.values()].sort((a, b) => a.name.localeCompare(b.name, 'eu'));
 const relationLabels: Record<AtlasRelation['kind'], string> = {
@@ -158,7 +159,7 @@ function TopicScheme({ topic, targets, selectedId, onChoose, searching, onPath }
     </li>;
   }
   return <section className={styles.topicSection} aria-labelledby={`atlas-topic-${topic.week}`}>
-    <header><p className="eyebrow">{topic.week}. gaia · {targets.length} egitura</p><h2 id={`atlas-topic-${topic.week}`}>{topic.title}</h2></header>
+    <header><p className="eyebrow">{topicNo(topic.week)}. gaia · {targets.length} egitura</p><h2 id={`atlas-topic-${topic.week}`}>{topic.title}</h2></header>
     {roots.length > 0 && <ul className={`${styles.tree} ${styles.rootTree}`}>{roots.map((id) => branch(id, new Set()))}</ul>}
     {independent.length > 0 && <details className={styles.independent} open={searching || roots.length === 0}>
       <summary>Beste egiturak <span>{independent.length}</span></summary>
@@ -323,7 +324,7 @@ export function StructureAtlas() {
       <LandNav current="egiturak" />
       <main className={styles.main}>
         <header className={styles.hero}>
-          <p className="eyebrow">1.–{weeks.length}. gaiak · Egituren atlasa</p>
+          <p className="eyebrow">1.–{LAST_TOPIC_NO}. gaiak · Egituren atlasa</p>
           <h1>Egituren garapena, eskema batean</h1>
           <p>Gai guztietako egiturak eta haien garapen-loturak, adarrez adar.</p>
           <Link href="/eratorriak" className={styles.related}>Eratorriak orrian ikusi <span aria-hidden="true">↗</span></Link>
@@ -340,8 +341,8 @@ export function StructureAtlas() {
               <span id="atlas-topic-label">Gaia</span>
               <div className={styles.topics} role="group" aria-labelledby="atlas-topic-label">
                 <button type="button" aria-pressed={topic === 0} onClick={() => filter(query, 0)}>Denak</button>
-                {weeks.map((week) => <button key={week.week} type="button" aria-pressed={topic === week.week} title={`${week.week}. gaia · ${week.title}`}
-                  aria-label={`${week.week}. gaia · ${week.title}`} onClick={() => filter(query, week.week)}>{week.week}</button>)}
+                {weeks.map((week) => <button key={week.week} type="button" aria-pressed={topic === week.week} title={`${topicNo(week.week)}. gaia · ${week.title}`}
+                  aria-label={`${topicNo(week.week)}. gaia · ${week.title}`} onClick={() => filter(query, week.week)}>{week.week}</button>)}
               </div>
             </div>
             <div className={styles.filterFoot}>
@@ -450,7 +451,7 @@ export function StructureAtlas() {
                 <h3 id="atlas-appearances-title">Gaietan zehar</h3>
                 <p className={styles.mapIntro}>Egitura hau simulagailuko etapa hauetan agertzen da.</p>
                 {seen.length ? <ul>{seen.map(({ week, stage }) => <li key={`${week.week}-${stage.id}`}>
-                  <Link href={`/astea/${week.week}?etapa=${stage.id}&egitura=${selected.id}`}><span>{week.week}. gaia · {stage.day}</span><b>{stage.title}</b><span aria-hidden="true">↗</span></Link>
+                  <Link href={`/astea/${week.week}?etapa=${stage.id}&egitura=${selected.id}`}><span>{topicNo(week.week)}. gaia · {stage.day}</span><b>{stage.title}</b><span aria-hidden="true">↗</span></Link>
                 </li>)}</ul> : <p className={styles.empty}>Egitura katalogoan jasota dago; ez du oraindik simulagailuko etapa loturik.</p>}
               </section>
             </article>

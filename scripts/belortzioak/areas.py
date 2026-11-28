@@ -185,6 +185,10 @@ def colour(lab, name):
         'purple': (a >= 133) & (b <= 125),
         'brown': (b >= 134) & (L < 200),
         'yellow': (b >= 140),
+        # the nerves' yellow pencil over a body tinted pale yellow itself (b ≈ 138)
+        'nerve': (b >= 146),
+        # a cranial-nerve root drawn in deep yellow over a head that is itself yellowish (b ≈ 141-150)
+        'nervedeep': (b >= 154),
         'gut': (a <= 123) & (b >= 129),
         'olive': (a >= 124) & (a <= 131) & (b >= 137) & (L < 215),
         'any': chroma >= 7,

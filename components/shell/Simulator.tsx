@@ -68,6 +68,7 @@ import { hasRoom } from './eratorriak/roomWeeks';
 import { RUN_COMMAND, SearchKey } from './CommandBar';
 import { ThemeKey } from './ThemeKey';
 import { hueStyle } from './topicHue';
+import { inLine, rememberTaldea, topicNo } from '@/content/topic-no';
 
 // Loaded when opened: both bring the whole question pool (a second of work) that the simulator itself does not need to show a scene.
 const Questions = dynamic(() => import('./Questions').then((m) => m.Questions), { ssr: false });
@@ -646,6 +647,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
     if (!reviewingFrame) for (const k of ['une', 'izenak', 'ikasgaia']) url.searchParams.delete(k);
     window.history.replaceState(null, '', url);
     markVisited(week.week, stage.id);
+    rememberTaldea(week.week);
   }, [linkedWeek, week.week, stage.id, view.id, reviewingFrame]);
 
   // While paused, the loop's position follows the committed one (deep links, scrubbing). While
@@ -1824,13 +1826,15 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
 
   const nextStage = week.stages[pos.i + 1];
   // The topic's last stage ends on the next topic (or, after the last one, on the questions): no dead end.
-  const nextTopic = nextStage ? undefined : weeks.find((w) => w.week > week.week && !isWip(w));
+  // Topics 19–20 come in one version per class: the student stays in their class's line (content/topic-no.ts).
+  const line = inLine(weeks, week.week);
+  const nextTopic = nextStage ? undefined : line.find((w) => w.week > week.week && !isWip(w));
   const finish = nextStage
     ? undefined
     : nextTopic
-      ? { label: 'Hurrengo gaia', tip: `Hurrengo gaia: ${nextTopic.week}. ${nextTopic.title}`, onClick: () => router.push(`/astea/${nextTopic.week}`) }
+      ? { label: 'Hurrengo gaia', tip: `Hurrengo gaia: ${topicNo(nextTopic.week)}. ${nextTopic.title}`, onClick: () => router.push(`/astea/${nextTopic.week}`) }
       : { label: 'Galderak', tip: 'Gaiak amaituta: frogatu zure burua galderekin', onClick: () => { setQuestionsConcept(undefined); setQuestionsOpen(true); } };
-  const prevWeek = weeks[weeks.indexOf(week) - 1];
+  const prevWeek = line[line.indexOf(week) - 1];
   const prevStage = week.stages[pos.i - 1] ?? prevWeek?.stages[prevWeek.stages.length - 1];
   // The command bar (⌘K) runs the simulator's own actions through one event.
   const commandRef = useRef<(a: string) => void>(() => {});
@@ -2021,7 +2025,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
                   current={pos.i}
                   visited={visited}
                   onStage={openStage}
-                  label={notesAt ? sectionLabel(notesAt.section) : `${week.week}. gaia`}
+                  label={notesAt ? sectionLabel(notesAt.section) : `${topicNo(week.week)}. gaia`}
                   outlineShown={outlineShown}
                   onToggleOutline={toggleOutline}
                 />
@@ -2133,7 +2137,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
                     // Says where we are, then steps out of the way: the bottom-left corner holds names.
                     <p className="focus-title" key={`ft-${stage.id}`}>
                       <span>
-                        {week.week}. gaia{notesAt ? ` › ${sectionLabel(notesAt.section)}` : ''}
+                        {topicNo(week.week)}. gaia{notesAt ? ` › ${sectionLabel(notesAt.section)}` : ''}
                       </span>
                       <b>{stage.title}</b>
                     </p>
@@ -2181,7 +2185,7 @@ export function Simulator({ weekNumber }: { weekNumber: number }) {
                       </div>
                       {notesAt && (
                         <p className="pv-prev pv-notes">
-                          <span>Apunteetan</span> {week.week}. gaia › {sectionLabel(notesAt.section)}
+                          <span>Apunteetan</span> {topicNo(week.week)}. gaia › {sectionLabel(notesAt.section)}
                         </p>
                       )}
                       {prevStage && pos.i === 0 && (

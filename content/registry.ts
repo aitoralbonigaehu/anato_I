@@ -18,9 +18,12 @@ import { week16 } from './weeks/week16';
 import { week17 } from './weeks/week17';
 import { week18 } from './weeks/week18';
 import { week19 } from './weeks/week19';
+import { week20 } from './weeks/week20';
+import { week21 } from './weeks/week21';
+import { week22 } from './weeks/week22';
 import { provideWeeks } from './week-store';
 
-export const weeks: WeekDef[] = [week1, week2, week3, week4, week5, week6, week7, week8, week9, week10, week11, week12, week13, week14, week15, week16, week17, week18, week19];
+export const weeks: WeekDef[] = [week1, week2, week3, week4, week5, week6, week7, week8, week9, week10, week11, week12, week13, week14, week15, week16, week17, week18, week19, week20, week21, week22];
 // Pages that import this have every topic's scenes already: the on-demand loader (homepage) needs nothing more.
 provideWeeks(weeks);
 

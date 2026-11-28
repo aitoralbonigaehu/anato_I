@@ -32,10 +32,10 @@ REVISED_TARGETS = {24: [(2, (462, 898), [(365, 773)]),
       (12, None, [(379, 986)]), (14, None, [(161, 484), (183, 480)])],
  35: [(1, (148, 758), []), (11, None, [(487, 488)]), (12, None, [(517, 518)])]}
 
-# The outline of one lobule does not describe the mesonephros. The uniform yellow
-# forebrain drawing has no visible border with the midbrain.
+# The outline of one lobule does not describe the mesonephros.
 # The bladder continues into the urethra without a dividing line in the drawing.
-SUPPRESS = {24: [1], 25: [8], 29: [4]}
+# (p29:4, the forebrain, is traced in areas_spec_v1127.py: the section shows where the tube ends.)
+SUPPRESS = {24: [1], 25: [8]}
 
 TRACES = {
     24: {

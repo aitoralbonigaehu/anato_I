@@ -50,8 +50,17 @@ export interface BrainPose {
   horm: number;
   /** The pineal gland in the epithalamus (0..1). */
   pineal: number;
+  /**
+   * Topic 20. `matter`: grey and white matter told apart on the cut (the cerebrum's grey outside, white inside; the
+   * cord's grey inside, white outside) (0..1). `nuclei`: the basal nuclei (caudate, lentiform) and the internal capsule
+   * between them, deep in the hemisphere (0..1). `comm`: the commissures, the anterior and posterior first (0..0.3),
+   * then the corpus callosum from front to back (0.3..1).
+   */
+  matter?: number;
+  nuclei?: number;
+  comm?: number;
 }
-export const BR0: BrainPose = { men: 0, csf: 0, origin: 0, vent: 0, glass: 0, plex: 0, flow: 0, flowShow: 0, sens: 0, motor: 0, smell: 0, whole: 0, stem: 0, nerves: 0, hyp: 0, lobes: 0, horm: 0, pineal: 0 };
+export const BR0: BrainPose = { men: 0, csf: 0, origin: 0, vent: 0, glass: 0, plex: 0, flow: 0, flowShow: 0, sens: 0, motor: 0, smell: 0, whole: 0, stem: 0, nerves: 0, hyp: 0, lobes: 0, horm: 0, pineal: 0, matter: 0, nuclei: 0, comm: 0 };
 
 export interface BrainOpts {
   dim?: { ids: readonly string[]; k: number } | null;
@@ -207,6 +216,42 @@ function buildBrainParts() {
   return parts;
 }
 
+// ———————————————————————— topic 20: grey and white, the basal nuclei, the commissures ————————————————————————
+
+/**
+ * The cerebrum's white core: the hemisphere less a rim of cortex (grey outside, white inside), and the cord's grey
+ * core (grey inside, white outside). Each is cut a hair nearer the viewer than its part, so on the midline cut the
+ * core shows inside its part's rim; seen from outside it stays hidden in the part.
+ */
+const CORES: Record<string, { f: SDF; lo: V3; hi: V3; at: number }> = {
+  cerebrum: {
+    f: (x, y, z) => carve(smax(cerebrumRaw(x, y, z), -(dienRegion(x, y, z) - 0.03), 0.06) + 0.085, x, y, z),
+    lo: [-0.85, -0.4, -1.1], hi: [0.02, 1.1, 1.22], at: -0.011,
+  },
+  cord: { f: (x, y, z) => carve(cordF(x, y, z) + 0.085, x, y, z), lo: [-0.12, -3.1, -0.9], hi: [0.02, -1.5, -0.6], at: -0.009 },
+};
+function buildCores() {
+  const out: Record<string, { m: Mesh; h: Mesh }> = {};
+  for (const [k, c] of Object.entries(CORES)) out[k] = solid(c.f, c.lo, c.hi, 0.028, { ...MID, at: c.at }, 0.008);
+  return out;
+}
+/** The basal nuclei: the caudate along the lateral ventricle (head, body, tail), the lentiform lateral to the thalamus. */
+const CAUDATE: V3[] = [[-0.42, 0.3, 0.56], [-0.42, 0.44, 0.22], [-0.42, 0.46, -0.18], [-0.44, 0.3, -0.56], [-0.5, 0.0, -0.66]];
+const caudateF: SDF = (() => {
+  const segs = CAUDATE.slice(1).map((q, i) => capsule(CAUDATE[i], q, [0.14, 0.09, 0.07, 0.05][i], [0.09, 0.07, 0.05, 0.04][i]));
+  return (x, y, z) => segs.reduce((d, s) => smin(d, s(x, y, z), 0.04), Infinity);
+})();
+const lentiformF = ellipsoid([-0.6, 0.06, 0.16], [0.13, 0.2, 0.32]);
+function buildNuclei() {
+  const box = (lo: V3, hi: V3) => ({ lo, hi });
+  const c = box([-0.62, -0.12, -0.78], [-0.26, 0.6, 0.74]);
+  const l = box([-0.76, -0.18, -0.2], [-0.44, 0.3, 0.52]);
+  return {
+    caudate: { m: surfaceMesh(caudateF, c.lo, c.hi, 0.02), h: surfaceMesh(caudateF, c.lo, c.hi, 0.05) },
+    lentiform: { m: surfaceMesh(lentiformF, l.lo, l.hi, 0.02), h: surfaceMesh(lentiformF, l.lo, l.hi, 0.05) },
+  };
+}
+
 function buildMeninges() {
   const shells: Record<string, { m: Mesh; h: Mesh }> = {};
   // Each distance from the brain is one surface, shared by the layer outside it (its inner face, pushed out a hair)
@@ -255,6 +300,20 @@ function buildVentricles() {
 export const BRAIN19_GEO = geoSlot('brain19', buildBrainParts);
 export const MENINGES19_GEO = geoSlot('meninges19', buildMeninges);
 export const VENTRICLES19_GEO = geoSlot('ventricles19', buildVentricles);
+export const CORES20_GEO = geoSlot('cores20', buildCores);
+export const NUCLEI20_GEO = geoSlot('nuclei20', buildNuclei);
+
+/**
+ * The internal capsule: a fan of myelinated axons from the cortex down between the caudate (and thalamus) and the
+ * lentiform nucleus to the cerebral peduncle. The commissures: bundles of axons crossing the midline (x = 0) into the
+ * hemisphere; the corpus callosum an arch of them from the genu (front) to the splenium (back).
+ */
+const CAPSULE_FIBRES: V3[][] = [0.42, 0.22, 0.02, -0.18].map((z, i) => L([[-0.5, 0.82, z + 0.05], [-0.5, 0.42, z * 0.8], [-0.48, 0.08, z * 0.55 - 0.02], [-0.3, -0.3, -0.18 - 0.03 * i], [-0.16, -0.52, -0.32 - 0.03 * i]], 24));
+const CC_ARC: [number, number][] = [[0.4, 0.5], [0.52, 0.62], [0.64, 0.42], [0.69, 0.15], [0.7, -0.12], [0.66, -0.36], [0.56, -0.52], [0.46, -0.58]];
+const ccFibre = (y: number, z: number, side = 1): V3[] => L([[0.02, y, z], [-0.2, y + 0.02, z], [-0.38, y + 0.1, z * 1.02], [-0.5, y + 0.3 * side, z * 1.05]], 12);
+const CC_FIBRES: V3[][] = CC_ARC.flatMap(([y, z]) => [ccFibre(y, z), ccFibre(y - 0.04, z - 0.02, -0.4)]);
+const AC_FIBRES: V3[][] = [[-0.1, 0.5], [-0.13, 0.49], [-0.07, 0.49]].map(([y, z]) => L([[0.02, y, z], [-0.2, y, z + 0.02], [-0.42, y - 0.1, z - 0.05], [-0.55, y - 0.3, z - 0.2]], 12));
+const PC_FIBRES: V3[][] = [[-0.12, -0.44], [-0.15, -0.43]].map(([y, z]) => L([[0.02, y, z], [-0.14, y + 0.02, z], [-0.26, y + 0.06, z + 0.02]], 8));
 
 // ———————————————————————— paths ————————————————————————
 
@@ -398,7 +457,9 @@ export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
   };
 
   // ———— the brain, cut down the middle ————
-  half('cerebrum', 'garun-hemisferioak', parts.cerebrum, tone(B, C19.tel), BD, { groups: ['telentzefaloa', ...ENC], opacity: fadeOp, calm: true });
+  // Topic 20 (grey and white matter): the cortex turns grey, the cord's outside white (their cores: below).
+  const matterK = clamp01(pose.matter ?? 0);
+  half('cerebrum', 'garun-hemisferioak', parts.cerebrum, mixHex(tone(B, C19.tel), C19.grey, 0.6 * matterK), BD, { groups: ['telentzefaloa', ...ENC], opacity: fadeOp, calm: true });
   half('thal', 'talamoa', parts.thal, tone(mixHex(B, '#c99a90', 0.35), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
   half('hypo', 'hipotalamoa', parts.hypo, tone(mixHex(B, '#d6a092', 0.4), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
   half('epi', 'epitalamoa', parts.epi, tone(mixHex(B, '#b98a80', 0.4), C19.dien), BD, { groups: ['dientzefaloa', ...ENC], opacity: brainOp });
@@ -406,7 +467,7 @@ export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
   half('pons', 'zubia', parts.pons, tone(mixHex(B, '#d2a898', 0.3), C19.met), BD, { groups: ['metentzefaloa', 'entzefalo-enborra', ...ENC], opacity: brainOp });
   half('cbl', 'garuntxoa', parts.cbl, tone(mixHex(B, '#d99a8c', 0.4), C19.met), BD, { groups: ['metentzefaloa', ...ENC], opacity: fadeOp });
   half('med', 'erraboila', parts.med, tone(mixHex(B, '#c99a90', 0.3), C19.miel), BD, { groups: ['mielentzefaloa', 'entzefalo-enborra', ...ENC], opacity: brainOp });
-  half('cord', 'ornomuina', parts.cord, B, BD, { groups: ['nerbio-sistema-zentrala', 'hodi-ependimarioa'], opacity: brainOp });
+  half('cord', 'ornomuina', parts.cord, mixHex(B, C19.white, 0.6 * matterK), BD, { groups: ['nerbio-sistema-zentrala', 'hodi-ependimarioa'], opacity: brainOp });
   pts['garun-hemisferioak'] = [0, 0.86, 0.5];
   pts['talamoa'] = [-0.07, 0.02, -0.05];
   pts['hipotalamoa'] = [0, -0.3, 0.32];
@@ -422,6 +483,50 @@ export function brainModel(pose: BrainPose, o: BrainOpts = {}) {
   pts['telentzefaloa'] = [0, 0.86, 0.5];
   pts['metentzefaloa'] = [0, -0.8, -1.2];
   pts['mielentzefaloa'] = [0, -1.3, -0.52];
+
+  // ———— topic 20: grey and white matter on the cut ————
+  const matter = clamp01(pose.matter ?? 0);
+  if (matter > 0.01) {
+    const cores = geoOf(CORES20_GEO);
+    // The cerebrum's rim reads as the grey cortex, its core as the white matter; the cord the other way round.
+    half('core-cerebrum', 'gai-zuria', cores.cerebrum, mixHex(B, C19.white, matter), C19.whiteDeep, { groups: ['telentzefaloa', 'garun-hemisferioak'], opacity: fadeOp, calm: true });
+    half('core-cord', 'gai-grisa', cores.cord, mixHex(B, C19.grey, matter), C19.greyDeep, { groups: ['ornomuina'], opacity: brainOp });
+    pts['gai-zuria'] = [0, 0.6, 0.05];
+    pts['gai-grisa'] = [0, -2.3, -0.7];
+  }
+  // ———— topic 20: the basal nuclei and the internal capsule, deep in the hemisphere ————
+  const nuclei = clamp01(pose.nuclei ?? 0);
+  if (nuclei > 0.01) {
+    const n = geoOf(NUCLEI20_GEO);
+    const NB = ['oinaldeko-nukleoak', 'telentzefaloa'];
+    half('caudate', 'nukleo-kaudatua', n.caudate, '#b48fd6', '#4e2f6c', { groups: NB, opacity: nuclei });
+    half('lentiform', 'nukleo-lentikularra', n.lentiform, '#c99ee0', '#5a3478', { groups: NB, opacity: nuclei });
+    const fan = mergeParts(CAPSULE_FIBRES.map((l) => vessel(l, { r0: 0.022, r1: 0.022, sides: 8, n: l.length }, nuclei)));
+    put('capsule', 'barneko-kapsula', fan, '#fbf6ea', '#9a8c70', { groups: ['telentzefaloa', 'gai-zuria'], tissue: 'nerve' });
+    pts['nukleo-kaudatua'] = [-0.42, 0.44, 0.22];
+    pts['nukleo-lentikularra'] = [-0.6, 0.06, 0.16];
+    pts['oinaldeko-nukleoak'] = [-0.6, 0.06, 0.16];
+    pts['barneko-kapsula'] = [-0.49, 0.3, 0.12];
+  }
+  // ———— topic 20: the commissures, axons crossing the midline ————
+  const comm = clamp01(pose.comm ?? 0);
+  if (comm > 0.01) {
+    const small = clamp01(comm / 0.3), cc = clamp01((comm - 0.3) / 0.7);
+    const fib = (lines: V3[][], g: number, r: number) => mergeParts(lines.map((l) => vessel(l, { r0: r, r1: r * 0.8, sides: 8, n: l.length }, g)));
+    const W = '#fbf6ea', WD = '#9a8c70';
+    put('ac', 'aurreko-komisura', fib(AC_FIBRES, small, 0.024), W, WD, { groups: ['komisurak', 'gai-zuria'], tissue: 'nerve' });
+    put('pc', 'atzeko-komisura', fib(PC_FIBRES, small, 0.022), W, WD, { groups: ['komisurak', 'gai-zuria'], tissue: 'nerve' });
+    pts['aurreko-komisura'] = [0, -0.1, 0.5];
+    pts['atzeko-komisura'] = [0, -0.13, -0.44];
+    pts['komisurak'] = [0, -0.1, 0.5];
+    // The corpus callosum grows from the front (genu) backwards (splenium): its fibres appear in that order.
+    const shown = CC_FIBRES.map((l, i) => vessel(l, { r0: 0.04, r1: 0.03, sides: 8, n: l.length }, clamp01(cc * CC_FIBRES.length - i)));
+    if (cc > 0.01) {
+      put('cc', 'gorputz-kailukara', mergeParts(shown), W, WD, { groups: ['komisurak', 'gai-zuria'], tissue: 'nerve' });
+      const at = CC_ARC[Math.min(CC_ARC.length - 1, Math.floor(cc * (CC_ARC.length - 1) * 0.5))];
+      pts['gorputz-kailukara'] = [0, at[0], at[1]];
+    }
+  }
 
   // ———— the ventricles ————
   const vent = clamp01(pose.vent);

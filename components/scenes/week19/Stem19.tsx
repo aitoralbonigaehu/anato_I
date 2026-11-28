@@ -1,6 +1,6 @@
 'use client';
 
-import { BLOCK19, poseStage19, type StageSpec } from './common';
+import { BLOCK19, endPose, poseStage19, type StageSpec } from './common';
 import { SITE19B } from './sites-b';
 import { STEM0, stemModel, type StemOpts, type StemPose } from './stem-model';
 import { C19 } from './tones';
@@ -205,7 +205,7 @@ export const Hind19 = poseStage19(specMet, build);
 
 // ———————————————————————— 10.3 Mesentzefaloa ————————————————————————
 
-export const S_MES = [0, 0.17, 0.34, 0.5, 0.66, 0.82] as const;
+export const S_MES = [0, 0.14, 0.28, 0.42, 0.56, 0.7, 0.84] as const;
 const specMes: StageSpec<StemPose, StemOpts> = {
   S: S_MES,
   pose: { ...STEM0 },
@@ -229,9 +229,9 @@ const specMes: StageSpec<StemPose, StemOpts> = {
       dim: ['mesentzefaloa', 'garun-akueduktoa'],
       names: [
         { id: 'mesentzefaloa', text: '6. astea: hodi forma', sub: 'ornomuin baten antzekoa' },
-        { id: 'garun-akueduktoa', text: '12. astea: zuloa estutu', sub: 'gai zuri asko', from: 0.6 },
+        { id: 'garun-akueduktoa', p: [0.09, 0.052, 1.108], text: '16. astea: zuloa estutu', sub: 'gorputza loditu', from: 0.6 },
       ],
-      note: '6. astean hodi forma du, ornomuin baten antzekoa; 12. asteraino erdiko zuloa askoz estuagoa bihurtzen da eta gai zuri (axoi) asko batzen da',
+      note: '6. astean hodi forma du, ornomuin baten antzekoa; 16. asterako gorputza loditu eta erdiko zuloa askoz estuagoa bihurtzen da',
     },
     {
       to: { mat: 2, fn: 1, flowShow: 1, flow: 8 },
@@ -254,6 +254,19 @@ const specMes: StageSpec<StemPose, StemOpts> = {
       dim: ['garun-akueduktoa'],
       names: [{ id: 'garun-akueduktoa', text: 'Akueduktoa', sub: 'III. eta IV. bentrikuluak elkartzen ditu' }],
       note: 'Estutzen den hodia akueduktoa bihurtzen da: III. eta IV. bentrikuluak elkartzen ditu',
+    },
+    {
+      to: { coll: 1 },
+      run: [0.05, 0.6],
+      cam: FACE(5.4, 24, 52, 0.2),
+      fit: false,
+      glide: 0.05,
+      dim: ['kolikuluak', 'beheko-kolikuluak', 'goiko-kolikuluak'],
+      names: [
+        { id: 'goiko-kolikuluak', text: 'Goiko kolikuluak', sub: 'kranealenak: ikusmena', from: 0.3 },
+        { id: 'beheko-kolikuluak', text: 'Beheko kolikuluak', sub: 'kaudalenak: entzumena', from: 0.45 },
+      ],
+      note: 'Alde dortsalean 4 goragune, bi bikote: beheko kolikuluak (entzumena) eta goiko kolikuluak (ikusmena); erreflexu motorrak, burua jiratu',
     },
     {
       to: { nigra: 1, flowShow: 0 },
@@ -295,3 +308,21 @@ const specMes: StageSpec<StemPose, StemOpts> = {
   ],
 };
 export const Midbrain19 = poseStage19(specMes, build);
+
+// ———————————————————————— class 31 (topic 22): the pons and the cerebellum as two stages ————————————————————————
+
+/** Class 31's notes take the pons (2.1.2) and the cerebellum (2.2) apart: the metencephalon's steps, split in two. */
+const PONS_STEPS = specMet.steps.slice(0, 4);
+export const S_PONS31 = [0, 0.24, 0.48, 0.72] as const;
+const specPons31: StageSpec<StemPose, StemOpts> = { ...specMet, S: S_PONS31, steps: PONS_STEPS };
+export const Pons31 = poseStage19(specPons31, build);
+
+export const S_CBL31 = [0, 0.32, 0.64] as const;
+const specCbl31: StageSpec<StemPose, StemOpts> = {
+  ...specMet,
+  S: S_CBL31,
+  pose: endPose(specPons31).pose,
+  arrive: 'Metentzefalo berean: IV. bentrikuluaren sabaia',
+  steps: specMet.steps.slice(4),
+};
+export const Cbl31 = poseStage19(specCbl31, build);

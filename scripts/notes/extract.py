@@ -35,12 +35,21 @@ FILES = [
     ('14.GAIA_DIGESTIO APARATUA 1.ATALA (Zuzenduta).pdf', '14.GAIA_DIGESTIO APARATUA 2.Atala (Zuzenduta).docx.pdf'),
     # Topics 15-18: the owner's final notes of 2026-11-18 (topic 18 came as DOCX: exported to PDF with Word, same name + .pdf).
     '15. GAIA. SISTEMA-UROGENITALA zuzenduta.pdf',
-    '16 GAIA_SISTEMA UROGENITALA (GONADAK) (zuzenduta) fitxategiaren kopia fitxategiaren kopia.pdf',
+    # Topic 16: the corrected copy of 2026-11-27 (DOCX, exported to PDF with Word): the gubernaculum's two ligaments fixed.
+    '16 GAIA_SISTEMA UROGENITALA (GONADAK) (zuzenduta) fitxategiaren kopia fitxategiaren kopia (2).docx.pdf',
     '17. GAIA. BURUA ETA LEPOA (ZUZENDUTA) fitxategiaren kopia (1).pdf',
     '18. GAIA. Burua eta lepoa ll (Zuzenduta).docx.pdf',
     # Topic 19: the owner's new notes of 2026-11-23 (PDF, 11 sections; they replace the first DOCX of 13 sections).
     '19. gaia_ Nerbio sistema (ZUZENDU GABE).pdf',
+    # Topics 19 and 20 come in two versions, one per class (taldea). Internal ids: 19–20 = class 32, 21–22 = class 31
+    # (shown as "19. gaia" and "20. gaia" with the class: content/taldeak.ts). The DOCX were exported to PDF with Word.
+    'Copy of 20. GAIA_ ENTZEFALOAREN GARAPENA (ZUZENDUTA).docx.pdf',
+    '19. GAIA. NERBIO SISTEMA (zuzenduta).docx.pdf',
+    '20. GAIA_ ENTZEFALOAREN GARAPENA (ZUZENDU GABE).docx.pdf',
 ]
+
+# The nervous-system topics of both classes (their quirks are shared).
+NERVE = {19, 20, 21, 22}
 
 # First topic whose blue (supplementary) text is marked for the "skip blue" reading mode.
 BLUE_FROM = 15
@@ -66,7 +75,7 @@ def block_text(block):
 def furniture(line, page):
     text = norm(''.join(s['text'] for s in line['spans']))
     y = line['bbox'][1]
-    return (y < 65 and bool(re.search(r'GIZA ANATOMIA|ANATOMIA I|MEDIKUNTZA 1|RAFAEL SARRIA|31 TALDEA', text, re.I)) or (y < 90 and bool(re.fullmatch(r'31\. TALDEA \d{4}/\d\d/\d\d', text))) or (y < 65 and bool(re.fullmatch(r'3\. taldea', text))) or (y < 65 and bool(re.search(r'32\. Taldea|^_{20,}$', text)))) or (y > page.rect.height - 65 and bool(re.fullmatch(r'\d+', text)))
+    return (y < 65 and bool(re.search(r'GIZA ANATOMIA|ANATOMIA I|MEDIKUNTZA 1|RAFAEL SARRIA|31 TALDEA', text, re.I)) or (y < 90 and bool(re.fullmatch(r'31\. TALDEA \d{4}/\d\d/\d\d', text))) or (y < 65 and bool(re.fullmatch(r'[38]\. taldea(?: +2026-2027 +ENBRIOLOGIA BEREZIA II)?', text, re.I))) or (y < 65 and bool(re.search(r'32\. Taldea|^_{20,}$', text)))) or (y > page.rect.height - 65 and bool(re.fullmatch(r'\d+', text)))
 
 
 # The teacher's remarks about what will or will not be asked, or about names not to use, never reach the app
@@ -88,10 +97,24 @@ REMARKS = [
     (re.compile(r'\s*Oraindik ez dago dena zuzenduta'), ''),
     # Topic 19's new notes (2026-11-23): where the class stopped, what need not be known, and the word "exam".
     (re.compile(r'\s*\(HEMEN BUKATU DU 20/11 an\)'), ''),
+    # Class 31's topic 19 (2026-11-27): the note-takers' own reminders.
+    (re.compile(r'FALTAFOTO[^.]*\.\.\.\s*'), ''),
+    (re.compile(r'\s*\(hau azalpenean gehitu\)'), ''),
     (re.compile(r'\s*\(ez dago detaileak jakin beharrik\)'), ''),
     (re.compile(r'KONTUZ AZTERKETAN'), 'KONTUZ'),
     (re.compile(r'\s+azterketan(?= TXARTO DAGO)'), ''),
+    # Topic 20 (both classes, 2026-11-27): what is or is not asked, and a remark about the previous class.
+    (re.compile(r'AZTERKETARAKO:\s*'), ''),
+    (re.compile(r'EZ DU AZTERKETAN GALDETUKO:\s*'), ''),
+    (re.compile(r'\s*\(aurreko klasean aipatu zuen\)'), ''),
 ]
+
+# Topic 20's notes run some headings into the body line ("2.1.2. ZUBIA: egitura trinkoa…") or space the number
+# ("3. 1 Sistema sinpatikoa"): such a line opens its section (the line stays body text).
+RUNIN = {
+    20: {'1.Garun eta ornomuinaren': '1', '3. 1 Sistema sinpatikoa': '3.1'},
+    22: {'2.1. ENTZEFALO ENBORRA': '2.1', '2.1.2. ZUBIA': '2.1.2', '3. 1 Sistema sinpatikoa': '3.1'},
+}
 
 
 def strip_text(t):
@@ -146,7 +169,7 @@ def split_sentences(parts, week=0):
         prefix = text[:m.start()]
         token = re.search(r'[\w,]+$', prefix)
         word = token.group() if token else ''
-        if word.isdigit() or re.fullmatch(r'\d+,\d+', word) or len(word) == 1 or word.lower() in {'adib', 'etab', 'etc', 'dr', 'irud', 'vs'} or (week == 12 and word == 'ezk') or (week in {9, 12, 14, 19} and re.fullmatch(r'[IVX]+', word)):
+        if word.isdigit() or re.fullmatch(r'\d+,\d+', word) or len(word) == 1 or word.lower() in {'adib', 'etab', 'etc', 'dr', 'irud', 'vs'} or (week == 12 and word == 'ezk') or (week in {9, 12, 14} | NERVE and re.fullmatch(r'[IVX]+', word)):
             continue
         ends.append(m.end())
     if not ends or ends[-1] != len(text):
@@ -254,8 +277,11 @@ def extract(path, week, part=1, counts=None):
         elif toc and heading and (line['bold'] > .75 and text.upper() == text or text.startswith('0. 2.astearen') or line['size'] >= 15.5):
             # Some last TOC lines have an empty 22pt span: size above ignores it.
             toc = False
+        runin = next((s for k, s in RUNIN.get(week, {}).items() if text.startswith(k)), None)
         if toc:
             kind = 'toc'
+        elif runin:
+            section, kind = runin, 'h2' if len(text) < 40 else 'p'
         elif week == 14 and text in HEADINGS_14:
             section, kind = HEADINGS_14[text], 'h1'
         elif line['size'] >= 20 and line['bold'] > .7:
@@ -263,7 +289,7 @@ def extract(path, week, part=1, counts=None):
         elif heading:
             # "28. EGUNETIK AURRERA" and week 8's "5. astea" are headings inside a section.
             # Topic 19 numbers its sections up to 13.
-            if int(number.group(1).split('.')[0]) <= (13 if week == 19 else 9) and not re.match(r'^\d+\.\s*astea', text, re.I):
+            if int(number.group(1).split('.')[0]) <= (13 if week in NERVE else 9) and not re.match(r'^\d+\.\s*astea', text, re.I):
                 section = number.group(1)
                 kind = 'h2' if '.' in section else 'h1'
             else:
@@ -271,7 +297,7 @@ def extract(path, week, part=1, counts=None):
         elif re.match(r'^(?:[●•➔\-]|\d+\.\u200b)', text) or (week == 14 and re.match(r'^[a-z]\.​', text)):
             kind = 'li'
         # Weeks 11–14 wrap body text beside their figures (indented lines); week 12's tables have a right column.
-        elif (line['italic'] and line['size'] <= 11.2 and len(text) < 110 and line['box'][0] > 100) or re.match(r'^\d+\.?\s*irudia', text, re.I) or (week not in {11, 12, 13, 14, 19} and line['box'][0] > 150 and len(text) < 100 and not line['bold']):
+        elif (line['italic'] and line['size'] <= 11.2 and len(text) < 110 and line['box'][0] > 100) or re.match(r'^\d+\.?\s*irudia', text, re.I) or (week not in {11, 12, 13, 14} | NERVE and line['box'][0] > 150 and len(text) < 100 and not line['bold']):
             kind = 'caption'
         elif week == 14 and part == 1 and line['all_italic'] and line['size'] <= 11.2 and len(text) < 110:
             # Week 14's first caption sits left of its figure, at body indent.
@@ -304,6 +330,9 @@ def extract(path, week, part=1, counts=None):
             blocks.append({'kind': kind, 'section': block_section, 'parts': list(line['parts'])})
         # Week 18's TOC box comes after page 1's first paragraphs and is followed by body text, not a heading.
         if week == 18 and toc and text.strip() == 'Odontogenesia':
+            toc = False
+        # Topic 20's TOC ends at its last entry (the first body heading is set like a TOC line).
+        if week in {20, 22} and toc and text.strip() == '3.2 Parasinpatikoa':
             toc = False
         previous = line
     # A later part of the same topic numbers its blocks on from the earlier parts' (part 1's TOC already holds sections 4–6).
